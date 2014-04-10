@@ -1,0 +1,31 @@
+You'll find here below the list of external products that are used for EZmanager. 
+Each product remains the entire property of its original author and keeps its original license.
+
+* ColorBox v1.3.17.2 under the MIT license, copyright Gabriel Bull <https://github.com/gavroche/php-browser>
+--> ./htdocs/css/colorbox.css
+--> ./htdocs/js/jquery.colorbox.js
+
+* Uploadify v2.1.4 under the MIT license, copyright Ronnie Garcia, Travis Nickels
+--> ./htdocs/css/uploadify.css
+--> ./htdocs/js/jquery.uploadify.v2.1.4.js
+--> ./htdocs/js/jquery.uploadify.v2.1.4.min.js
+--> ./htdocs/check.php
+
+* JQUERY 1.3.2 under the MIT license, copyright John Resig <http://jquery.org/license>,
+  including sizzle.js under the MIT license, copyright The Dojo Foundation <http://sizzlejs.com/>
+--> ./htdocs/js/jQuery/jquery-1.3.2.min.js
+
+* JQUERY SERIALSCROLL v1.2.2 under the MIT license, copyright Ariel Flesler <http://flesler.blogspot.com>
+--> ./htdocs/js/jQuery/jquery.serialScroll-min.js
+
+* JQUERY SCROLLTO v1.4.2 under the MIT license, copyright Ariel Flesler <http://flesler.blogspot.com>
+--> ./htdocs/js/jQuery/jquery.scrollTo-min.js
+
+* EASING EQUATION under the BSD license, copyright Robert Penner <http://gsgd.co.uk/sandbox/jquery/easing/>
+--> ./htdocs/js/jQuery/function.js
+
+* ZEROCLIPBOARD v1.0.7 under the LGPL license, copyright Joseph Huckaby 
+--> ./htdocs/js/ZeroClipboard.js
+
+* SWFOBJECT under the MIT license, copyright <http://code.google.com/p/swfobject/>  
+--> ./htdocs/js/swfobject.js

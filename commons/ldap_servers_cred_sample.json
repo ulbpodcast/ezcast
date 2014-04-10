@@ -1,0 +1,10 @@
+{
+    "cred_server_name":
+    {
+        "hostname"  :   "your.host.name",
+        "rdn"       :   "cn=user_login,ou=whatever,o=root",
+        "base_dn"   :   "ou=whatever,o=root",
+        "filter"    :   "(uid=!LOGIN) <-- Where !LOGIN will be replaced by the user we want info about",
+        "password"  :   "user_login_password"
+    }
+}

@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ * EZCAST EZplayer
+ *
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 	      Arnaud Wijns <awijns@ulb.ac.be>
+ *            Carlos Avidmadjessi
+ * UI Design by Julien Di Pietrantonio
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ 
+    Document   : translations.xml
+    Created on : 28 juillet 2011, 17:19
+    Author     : antoinedewilde
+    Description:
+        Message translations for all the user interface.
+-->
+
+<data>
+    <!-- Labels are keywords that appear in templates 
+         Note: please use the same label name as the keyword between ®'s that appears in the template -->
+    <labels>
+        <!-- Product-wise stuff -->
+        <label id="service_name" lang="fr">EZplayer - ULB Podcast</label>
+        <label id="service_name" lang="en">EZplayer - ULB Podcast</label>
+        <label id="service_description" lang="fr">Interface de consultation des vidéos</label>
+        <label id="service_description" lang="en">Video player interface</label>
+        <label id="ezplayer_page_title" lang="fr">ULB Podcast</label>
+        <label id="ezplayer_page_title" lang="en">ULB Podcast</label>
+        
+        <!-- Useful keywords -->
+        <label id="All" lang="fr">Tout</label>
+        <label id="All" lang="en">All</label>
+        <label id="Yes" lang="fr">Oui</label>
+        <label id="Yes" lang="en">Yes</label>
+        <label id="No" lang="fr">Non</label>
+        <label id="No" lang="en">No</label>
+        <label id="Current" lang="fr">Courant</label>
+        <label id="Current" lang="en">Current</label>
+        <label id="Cancel" lang="fr">Annuler</label>
+        <label id="Cancel" lang="en">Cancel</label>
+        <label id="OK" lang="fr">OK</label>
+        <label id="OK" lang="en">OK</label>
+        <label id="Next" lang="fr">Suivant</label>
+        <label id="Next" lang="en">Next</label>
+        <label id="Type" lang="fr">Type</label>
+        <label id="Type" lang="en">Type</label>
+        <label id="Not_available" lang="fr">Non disponible</label>
+        <label id="Not_available" lang="en">Not available</label>
+        <label id="private" lang="fr">privé</label>
+        <label id="private" lang="en">private</label>
+        <label id="public" lang="fr">public</label>
+        <label id="public" lang="en">public</label>
+        <label id="Help" lang="fr">Aide</label>
+        <label id="Help" lang="en">Help</label>
+        <label id="Help_title" lang="fr">Aide à l'utilisation d'EZplayer</label>
+        <label id="Help_title" lang="en">Help for EZplayer</label>
+        <label id="Home" lang="fr">Accueil</label>
+        <label id="Home" lang="en">Home</label>
+        <label id="Toc" lang="fr">Signets officiels</label>
+        <label id="Toc" lang="en">Official bookmarks</label>
+        <label id="Personal" lang="fr">Signets personnels</label>
+        <label id="Personal" lang="en">Personal bookmarks</label>
+        <label id="Loading..." lang="fr">Chargement ...</label>
+        <label id="Loading..." lang="en">Loading ...</label>
+        <label id="Login" lang="fr">Connexion</label>
+        <label id="Login" lang="en">Log in</label>
+        <label id="Login_title" lang="fr">Connexion à EZplayer</label>
+        <label id="Login_title" lang="en">Log in to EZplayer</label>
+        <label id="Logout" lang="fr">Déconnexion</label>
+        <label id="Logout" lang="en">Log out</label>
+        <label id="Logout_title" lang="fr">Déconnexion de EZplayer</label>
+        <label id="Logout_title" lang="en">Log out from EZplayer</label>
+        <label id="Update" lang="fr">Sauvegarder</label>
+        <label id="Update" lang="en">Update</label>
+        <label id="Deleted" lang="fr">Supprimé</label>
+        <label id="Deleted" lang="en">Deleted</label>
+        <label id="Album" lang="fr">Cours</label>
+        <label id="Album" lang="en">Course</label>
+        <label id="Albums" lang="fr">Cours</label>
+        <label id="Albums" lang="en">Courses</label>
+        <label id="Private_album" lang="fr">Album privé</label>
+        <label id="Private_album" lang="en">Private album</label>
+        <label id="Public_album" lang="fr">Album public</label>
+        <label id="Public_album" lang="en">Public album</label>
+        <label id="Video" lang="fr">Vidéo</label>
+        <label id="Video" lang="en">Video</label>
+        <label id="Slides" lang="fr">Diaporama</label>
+        <label id="Slides" lang="en">Slides</label>
+        <label id="Bookmark" lang="fr">Signet</label>
+        <label id="Bookmark" lang="en">Bookmark</label>
+        <label id="Information" lang="fr">Informations</label>
+        <label id="Information" lang="en">Information</label>
+        <label id="Advanced_info" lang="fr">Informations avancées</label>
+        <label id="Advanced_info" lang="en">Advanced information</label>
+        <label id="More_options" lang="fr">Options avancées</label>
+        <label id="More_options" lang="en">More</label>
+        <label id="More_info" lang="fr">En savoir plus</label>
+        <label id="More_info" lang="en">More info</label>
+        <label id="Timecode" lang="fr">Code temps</label>
+        <label id="Timecode" lang="en">Timecode</label>
+        <label id="Timecode_info" lang="fr">Position en secondes dans la vidéo</label>
+        <label id="Timecode_info" lang="en">Position in seconds</label>
+        <label id="Bad_timecode" lang="fr">Le code temps est incorrect</label>
+        <label id="Bad_timecode" lang="en">Incorrect timecode</label>
+        <label id="Title" lang="fr">Titre</label>
+        <label id="Title" lang="en">Title</label>
+        <label id="No_title" lang="fr">Sans titre</label>
+        <label id="No_title" lang="en">No title</label>
+        <label id="Title_info" lang="fr">Max. 70 caractères</label>
+        <label id="Title_info" lang="en">Max. 70 characters</label>  
+        <label id="Description" lang="fr">Description</label>
+        <label id="Description" lang="en">Description</label>
+        <label id="Video_description" lang="fr">Description de la vidéo</label>
+        <label id="Video_description" lang="en">Video description</label>
+        <label id="Keywords" lang="fr">Mots clés</label>
+        <label id="Keywords" lang="en">Keywords</label>
+        <label id="Keywords_info" lang="fr">Séparés par des virgules</label>
+        <label id="Keywords_info" lang="en">Comma separated values</label>
+        <label id="Level" lang="fr">Niveau</label>
+        <label id="Level" lang="en">Level</label>
+        <label id="Level_info" lang="fr">Niveau hiérarchique du signet</label>
+        <label id="Level_info" lang="en">Level of the bookmark</label>
+        <label id="Bad_level" lang="fr">Niveau incorrect. Le niveau doit être compris entre 1 et 5</label>
+        <label id="Bad_level" lang="en">Incorrect level. The level must be a number between 1 and 5</label>
+        <label id="optional" lang="fr">Facultatif</label>
+        <label id="optional" lang="en">Optional</label>
+        <label id="File_info" lang="fr">Max. 2Mo</label>
+        <label id="File_info" lang="en">Max. 2Mo</label>
+        <label id="Author" lang="fr">Auteur</label>
+        <label id="Author" lang="en">Author</label>
+        <label id="Date" lang="fr">Date</label>
+        <label id="Date" lang="en">Date</label>
+        <label id="Duration" lang="fr">Durée</label>
+        <label id="Duration" lang="en">Duration</label>
+        <label id="Replace" lang="fr">Remplace le signet</label>
+        <label id="Replace" lang="en">Replaces the bookmark</label>
+        <label id="Origin" lang="fr">Origine</label>
+        <label id="Origin" lang="en">Origin</label>
+        <label id="Status" lang="fr">Statut</label>
+        <label id="Status" lang="en">Status</label>
+        <label id="File" lang="fr">Fichier</label>
+        <label id="File" lang="en">File</label>
+        <label id="Filename" lang="fr">Nom de fichier</label>
+        <label id="Filename" lang="en">Filename</label>
+        <label id="Filesize_HD" lang="fr">Taille du fichier (HD)</label>
+        <label id="Filesize_HD" lang="en">Filesize (HD)</label>
+        <label id="Filesize_SD" lang="fr">Taille du fichier (BD)</label>
+        <label id="Filesize_SD" lang="en">Filesize (SD)</label>
+        <label id="Megabyte_unit" lang="fr">Mo</label>
+        <label id="Megabyte_unit" lang="en">MB</label>
+        <label id="Dimensions_HD" lang="fr">Dimensions (HD)</label>
+        <label id="Dimensions_HD" lang="en">Dimensions (HD)</label>
+        <label id="Dimensions_SD" lang="fr">Dimensions (BD)</label>
+        <label id="Dimensions_SD" lang="en">Dimensions (SD)</label>
+        <label id="File_format" lang="fr">Codec</label>
+        <label id="File_format" lang="en">Codec</label>
+        <label id="View_count" lang="fr">Nombre de vues</label>
+        <label id="View_count" lang="en">View count</label>
+        <label id="Publication" lang="fr">Publication</label>
+        <label id="Publication" lang="en">Publication</label>
+        <label id="Download" lang="fr">Téléchargement</label>
+        <label id="Download" lang="en">Download</label>   
+        <label id="Download_movie" lang="fr">Télécharger la vidéo</label>
+        <label id="Download_movie" lang="en">Download movie</label>   
+        <label id="Download_slide" lang="fr">Télécharger le diaporama</label>
+        <label id="Download_slide" lang="en">Download slide</label>   
+        <label id="Embed" lang="fr">Embed</label>
+        <label id="Embed" lang="en">Embed</label>
+        <label id="high_res" lang="fr">Haute résolution</label>
+        <label id="high_res" lang="en">High resolution</label>
+        <label id="low_res" lang="fr">Basse résolution</label>
+        <label id="low_res" lang="en">Low resolution</label>
+        <label id="HD_RSS_feed" lang="fr">Flux RSS haute résolution</label>
+        <label id="HD_RSS_feed" lang="en">High resolution RSS feed</label>
+        <label id="SD_RSS_feed" lang="fr">Flux RSS basse résolution</label>
+        <label id="SD_RSS_feed" lang="en">Low resolution RSS feed</label>
+        <label id="RSS_feed" lang="fr">Flux RSS</label>
+        <label id="RSS_feed" lang="en">RSS feed</label>
+        <label id="Manual_submit" lang="fr">Soumission manuelle</label>
+        <label id="Manual_submit" lang="en">Manual submit</label>
+        <label id="progress_bar" lang="fr">Barre de progression</label>
+        <label id="progress_bar" lang="en">Progress Bar</label>
+        <label id="normal" lang="fr">normal</label>
+        <label id="select" lang="fr">Choisir</label>
+        <label id="select" lang="en">Select</label>
+        <label id="Search_in" lang="fr">Chercher dans</label>
+        <label id="Search_in" lang="en">Search in</label>
+        <label id="Search_album" lang="fr">La recherche porte uniquement sur le cours "&lt;strong&gt;&lt;?php echo suffix_remove($_SESSION['album']); ?&gt;&lt;/strong&gt;"</label>
+        <label id="Search_album" lang="en">The search is only applied on course "&lt;strong&gt;&lt;?php echo suffix_remove($_SESSION['album']); ?&gt;&lt;/strong&gt;"</label>
+        <label id="Search_asset" lang="fr"> dans l'enregistrement "&lt;strong&gt;&lt;?php echo get_asset_title($_SESSION['album'], $_SESSION['asset']); ?&gt;&lt;/strong&gt;".</label>
+        <label id="Search_asset" lang="en"> in record "&lt;strong&gt;&lt;?php echo get_asset_title($_SESSION['album'], $_SESSION['asset']); ?&gt;&lt;/strong&gt;".</label>
+        <label id="Search_global" lang="fr">La recherche porte sur tous vos cours</label>
+        <label id="Search_global" lang="en">The search is applied on all of your courses</label>
+        <label id="Search_among" lang="fr">Chercher parmi</label>
+        <label id="Search_among" lang="en">Search among</label>
+         <label id="Copy_to_clipboard" lang="fr">Copier dans le presse-papier</label>
+         <label id="Copy_to_clipboard" lang="en">Copy to clipboard</label>
+         <label id="Content_in_clipboard" lang="fr">Contenu copié dans le presse-papier</label>
+         <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
+         <label id="To_podcast" lang="fr">Accéder à ULB Podcast</label>
+         <label id="To_podcast" lang="en">Navigate to ULB Podcast</label>
+         <label id="Back_to_album" lang="fr">Retour à l'album</label>
+         <label id="Back_to_album" lang="en">Back to the album</label>
+         <label id="Back_to_home" lang="fr">Retour à l'accueil</label>
+         <label id="Back_to_home" lang="en">Back home</label>
+         <label id="Display_bookmarks" lang="fr">Afficher les signets de l'album</label>
+         <label id="Display_bookmarks" lang="en">Display the album bookmarks</label>
+         <label id="Display_asset_bookmarks" lang="fr">Afficher les signets de l'enregistrement</label>
+         <label id="Display_asset_bookmarks" lang="en">Display the asset bookmarks</label>
+         <label id="Display_assets" lang="fr">Afficher les assets de l'album</label>
+         <label id="Display_assets" lang="en">Display the album assets</label>
+         <label id="Display_asset" lang="fr">Afficher les informations de l'asset</label>
+         <label id="Display_asset" lang="en">Display the asset information</label>
+         <label id="Display_toc" lang="fr">Afficher les signets officiels</label>
+         <label id="Display_toc" lang="en">Display official bookmarks</label>
+         <label id="No_content" lang="fr">Cet album ne contient aucun enregistrement.</label>
+         <label id="No_content" lang="en">This album contains no video.</label>
+         <label id="Watch_video" lang="fr">Regarder la vidéo</label>
+         <label id="Watch_video" lang="en">Watch the video</label>
+         <label id="Watch_slide" lang="fr">Regarder le diaporama</label>
+         <label id="Watch_slide" lang="en">Watch the slides</label>
+         <label id="Watch_high" lang="fr">Regarder en haute résolution</label>
+         <label id="Watch_high" lang="en">Watch high resolution</label>
+         <label id="Watch_low" lang="fr">Regarder en basse résolution</label>
+         <label id="Watch_low" lang="en">Watch low resolution</label>
+         <label id="Rewind" lang="fr">Rembobiner</label>
+         <label id="Rewind" lang="en">Rewind</label>
+         <label id="Forward" lang="fr">Avance rapide</label>
+         <label id="Forward" lang="en">Fast forward</label>
+         <label id="No_album" lang="fr">Aucun album</label>
+         <label id="No_album" lang="en">No album</label>
+         <label id="No_consulted_album" lang="fr">Vous n'avez consulté aucun album. Veuillez utiliser une URL depuis l'université virtuelle pour accéder à un album.</label>
+         <label id="No_consulted_album" lang="en">No album has been previously consulted. Please use a URL from the virtual university.</label>
+         <label id="No_bookmarks" lang="fr">Il n'y a aucun signet à afficher.</label>
+         <label id="No_bookmarks" lang="en">There is no bookmark to display.</label>
+         <label id="No_toc" lang="fr">Il n'y a pas de signet officiel pour ce cours.</label>
+         <label id="No_toc" lang="en">There is no official bookmark for this course.</label>
+         <label id="No_authentication" lang="fr">Poursuivre sans s'identifier</label>
+         <label id="No_authentication" lang="en">Continue without authentication.</label>
+        
+
+
+        
+        <!-- Actions and buttons -->
+        <label id="Browse" lang="fr">Parcourir</label>
+        <label id="Browse" lang="en">Browse</label>
+        <label id="Delete" lang="fr">Supprimer</label>
+        <label id="Delete" lang="en">Delete</label>
+        <label id="Copy" lang="fr">Copier</label>
+        <label id="Copy" lang="en">Copy</label>
+        <label id="Edit" lang="fr">Editer</label>
+        <label id="Edit" lang="en">Edit</label>
+        <label id="Edit_bookmark" lang="fr">Editer le signet</label>
+        <label id="Edit_bookmark" lang="en">Edit the bookmark</label>
+        <label id="Share_bookmark" lang="fr">Partager le signet</label>
+        <label id="Share_bookmark" lang="en">Share the bookmark</label>
+        <label id="Share_asset" lang="fr">Partager l'enregistrement</label>
+        <label id="Share_asset" lang="en">Share the record</label>
+        <label id="Share_time" lang="fr">Partager cette minute de la vidéo</label>
+        <label id="Share_time" lang="en">Share this minute of the video</label>
+        <label id="Copy_bookmark" lang="fr">Ajouter le signet aux signets officiels</label>
+        <label id="Copy_bookmark" lang="en">Add the bookmark to official bookmarks</label>
+        <label id="Move" lang="fr">Déplacer</label>
+        <label id="Move" lang="en">Move</label>
+        <label id="Move_up" lang="fr">Monter</label>
+        <label id="Move_up" lang="en">Move up</label>
+        <label id="Move_down" lang="fr">Descendre</label>
+        <label id="Move_down" lang="en">Move down</label>
+        <label id="view" lang="fr">afficher</label>
+        <label id="view" lang="en">show</label>
+        <label id="copy" lang="fr">copier</label>
+        <label id="copy" lang="en">copier</label>
+        <label id="Publish" lang="fr">Déplacer dans l'album public</label>
+        <label id="Publish" lang="en">Move to public album</label>
+        <label id="Unpublish" lang="fr">Déplacer dans l'album privé</label>
+        <label id="Unpublish" lang="en">Move to private album</label>
+        <label id="Create_album" lang="fr">Créer un album</label>
+        <label id="Create_album" lang="en">New album</label>
+        <label id="Edit_album" lang="fr">Propriétés de l'album</label>
+        <label id="Edit_album" lang="en">Album properties</label>
+        <label id="Regenerate_RSS" lang="fr">Régénérer RSS</label>
+        <label id="Regenerate_RSS" lang="en">Reset RSS</label>
+        <label id="Submit" lang="fr">Soumettre</label>
+        <label id="Submit" lang="en">Submit</label>
+        <label id="Bookmarks_actions" lang="fr">Gestion des signets</label>
+        <label id="Bookmarks_actions" lang="en">Bookmarks management</label>
+        <label id="Toc_actions" lang="fr">Gestion des signets officiels</label>
+        <label id="Toc_actions" lang="en">Official bookmarks management</label>
+        <label id="Submit_record" lang="fr">Soumettre un enregistrement</label>
+        <label id="Submit_record" lang="en">Submit a new record</label>
+        <label id="Delete_asset" lang="fr">Supprimer l'enregistrement</label>
+        <label id="Delete_asset" lang="en">Delete</label>
+        <label id="Delete_album" lang="fr">Supprimer le cours et les signets qu'il contient</label>
+        <label id="Delete_album" lang="en">Delete the course and all related bookmarks</label>
+        <label id="Delete_bookmark" lang="fr">Supprimer le signet</label>
+        <label id="Delete_bookmark" lang="en">Delete the bookmark</label>
+        <label id="Delete_bookmarks" lang="fr">Supprimer les signets</label>
+        <label id="Delete_bookmarks" lang="en">Delete the bookmarks</label>
+        <label id="Delete_album_bookmarks" lang="fr">Supprimer les signets liés à ce cours</label>
+        <label id="Delete_album_bookmarks" lang="en">Delete bookmarks related to this course</label>
+        <label id="Delete_asset_bookmarks" lang="fr">Supprimer les signets liés à cet enregistrement</label>
+        <label id="Delete_asset_bookmarks" lang="en">Delete bookmarks related to this record</label>
+        <label id="Delete_selected_bookmarks" lang="fr">Supprimer les signets sélectionnés</label>
+        <label id="Delete_selected_bookmarks" lang="en">Delete the selected bookmarks</label>
+        <label id="Export_bookmarks" lang="fr">Exporter les signets</label>
+        <label id="Export_bookmarks" lang="en">Export the bookmarks</label>
+        <label id="Export_asset_bookmarks" lang="fr">Exporter les signets de l'enregistrement</label>
+        <label id="Export_asset_bookmarks" lang="en">Export the related bookmarks</label>
+        <label id="Export_album_bookmarks" lang="fr">Exporter les signets du cours</label>
+        <label id="Export_album_bookmarks" lang="en">Export the related bookmarks</label>
+        <label id="Export_selected_bookmarks" lang="fr">Exporter les signets sélectionnés</label>
+        <label id="Export_selected_bookmarks" lang="en">Export the selected bookmarks</label>
+        <label id="Export" lang="fr">Exporter</label>
+        <label id="Export" lang="en">Export</label>
+        <label id="Import_bookmarks" lang="fr">Importer les signets</label>
+        <label id="Import_bookmarks" lang="en">Import the bookmarks</label>
+        <label id="Import_asset_bookmarks" lang="fr">Importer les signets de l'enregistrement</label>
+        <label id="Import_asset_bookmarks" lang="en">Import the related bookmarks</label>
+        <label id="Import_album_bookmarks" lang="fr">Importer les signets du cours</label>
+        <label id="Import_album_bookmarks" lang="en">Import the related bookmarks</label>
+        <label id="Import_selected_bookmarks" lang="fr">Importer les signets sélectionnés</label>
+        <label id="Import_selected_bookmarks" lang="en">Import the selected bookmarks</label>
+        <label id="Import" lang="fr">Importer</label>
+        <label id="Import" lang="en">Import</label>
+        <label id="Reverse_bookmarks_order" lang="fr">Inverser l'ordre des signets</label>
+        <label id="Reverse_bookmarks_order" lang="en">Reverse bookmarks order</label>
+        <label id="New_video" lang="fr">vidéo non visionnée</label>
+        <label id="New_video" lang="en">not yet watched video</label>
+        <label id="New_videos" lang="fr">vidéos non visionnées</label>
+        <label id="New_videos" lang="en">not yet watched videos</label>
+        <label id="Watch_video" lang="fr">Regarder la vidéo</label>
+        <label id="Watch_video" lang="en">Watch video</label>
+        <label id="Watch_slides" lang="fr">Regarder le diaporama</label>
+        <label id="Watch_slides" lang="en">Watch slides</label>
+        <label id="Close_and_return_to_index" lang="fr">Fermer</label>
+        <label id="Close_and_return_to_index" lang="en">Close</label>
+        <label id="Close_and_return_to_source_album" lang="fr">Fermer cette fenêtre et retourner au cours de départ</label>
+        <label id="Close_and_return_to_source_album" lang="en">Close this window and return to source coursex</label>
+        <label id="Close_and_go_to_destination_album" lang="fr">Fermer cette fenêtre et aller au cours de destination</label>
+        <label id="Close_and_go_to_destination_album" lang="en">Close this window and go to destination course</label>
+        <label id="Keep_quality" lang="fr">Garder la qualité originale</label>
+        <label id="Keep_quality" lang="en">Keep the original video quality</label>
+        <label id="Change_speedrate" lang="fr">Modifier la vitesse de lecture</label>
+        <label id="Change_speedrate" lang="en">Modify the speed rate</label>
+        <label id="Add_title_album" lang="fr">Ajouter un titre aux vidéos publiées dans cet album</label>
+        <label id="Add_title_album" lang="en">Add a title to videos published in this album</label>
+        <label id="Add_bookmark" lang="fr">Ajouter un signet privé</label>
+        <label id="Add_bookmark" lang="en">Add a private bookmark</label>
+        <label id="Add_toc" lang="fr">Ajouter un signet aux signets officiels</label>
+        <label id="Add_toc" lang="en">Add a bookmark to officials bookmarks</label>
+        <label id="Add_comment" lang="fr">Ajouter un commentaire public</label>
+        <label id="Add_comment" lang="en">Add a public comment</label>
+        <label id="Toggle_fullscreen" lang="fr">Modifier l'affichage</label>
+        <label id="Toggle_fullscreen" lang="en">Change the display</label>
+        <label id="Display_tab" lang="fr">Afficher les signets</label>
+        <label id="Display_tab" lang="en">Show bookmarks</label>
+        
+        <!-- Titles -->
+        <label id="Album_creation_succeeded_title" lang="fr">Création d'album terminée</label>
+        <label id="Album_creation_succeeded_title" lang="en">Album successfully created</label>
+        <label id="Album_deletion_succeeded_title" lang="fr">Suppression d'album terminée</label>
+        <label id="Album_deletion_succeeded_title" lang="en">Album successfully deleted</label>
+        <label id="Album_edition_succeeded_title" lang="fr">Propriétés d'album éditées</label>
+        <label id="Album_edition_succeeded_title" lang="en">Album properties successfully edited</label>
+        <label id="Asset_deletion_succeeded_title" lang="fr">Suppression d'enregistrement terminée</label>
+        <label id="Asset_deletion_succeeded_title" lang="en">Record successfully deleted</label>
+        <label id="Asset_publishing_succeeded_title" lang="fr">Publication d'un enregistrement effectué</label>
+        <label id="Asset_publishing_succeeded_title" lang="en">Record successfully published</label>
+        <label id="Asset_unpublishing_succeeded_title" lang="fr">Enregistrement déplacé avec succès</label>
+        <label id="Asset_unpublishing_succeeded_title" lang="en">Record successfully moved</label>
+        <label id="Asset_moving_succeeded_title" lang="fr">Enregistrement déplacé avec succès</label>
+        <label id="Asset_moving_succeeded_title" lang="en">Record successfully moved</label>
+        <label id="Processing_error" lang="fr">Erreur d'encodage</label>
+        <label id="Processing_error" lang="en">Processing error</label>
+        <label id="No_title" lang="fr">Veuillez entrer un titre</label>
+        <label id="No_title" lang="en">Please input a title</label>
+        <label id="No_file" lang="fr">Veuillez sélectionner un fichier</label>
+        <label id="No_file" lang="en">Please select a file</label>
+        <label id="bad_extension" lang="fr">Type de fichier non reconnu</label>
+        <label id="bad_extension" lang="en">Bad extension</label>
+        <label id="search_results" lang="fr">Résultats de la recherche</label>
+        <label id="search_results" lang="en">Search results</label>
+        <label id="no_result" lang="fr">Aucun résultat</label>
+        <label id="no_result" lang="en">No result</label>
+        <label id="connect" lang="fr">Se connecter</label>
+        <label id="connect" lang="en">Connect</label>
+        
+   
+        <!-- Long texts -->
+        <label id="Warning_browser" lang="fr">Ce site n'est pas optimisé pour votre navigateur. Certaines fonctionnalités risquent de ne pas fonctionner.
+                    &lt;br /&gt;Seuls les navigateurs suivants sont pleinement compatibles</label>
+        <label id="Warning_browser" lang="en">This site is not optimized for your web browser. Some functionalities might not properly work.
+                    &lt;br /&gt;Only the following browsers are fully compatible</label>        
+        <label id="connect_message" lang="fr">En vous identifiant, vous aurez accès à plus de possibilités, telles que l’ajout de signets sur les vidéos, le partage d’un moment précis d’une vidéo, l’import/export de signets, la gestion de vos cours favoris, etc.</label>
+        <label id="connect_message" lang="en">By authenticating, you have access to more features, such as adding bookmarks on the videos, sharing a specific moment in the video, importing/exporting bookmarks, handling your favorite courses, etc.</label>
+        <label id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</label>
+        <label id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</label>
+        <label id="Error_permission_denied" lang="fr">Vous n'avez plus accès à ce cours mais il est toujours affiché sur votre page d'accueil. Souhaitez-vous:</label>
+        <label id="Error_permission_denied" lang="en">You are not allowed anymore to access this course but it is still displayed on your home page. Would you like to:</label>
+        <label id="Non-existant_album" lang="fr">Accès refusé: cours inexistant</label>
+        <label id="Non-existant_album" lang="en">Access denied: the course does not exist</label>
+        <label id="Error_album_not_found" lang="fr">Ce cours n'existe plus mais il est toujours affiché sur votre page d'accueil. Souhaitez-vous:</label>
+        <label id="Error_album_not_found" lang="en">This course does not exist anymore but is still displayed on your home page. Would you like to:</label>
+        <label id="Non-existant_asset" lang="fr">Accès refusé: enregistrement inexistant</label>
+        <label id="Non-existant_asset" lang="en">Access denied: the record does not exist</label>
+        <label id="Error_asset_not_found" lang="fr">Cet enregistrement n'existe plus mais il est toujours affiché parmi vos signets. Souhaitez-vous:</label>
+        <label id="Error_asset_not_found" lang="en">This record does not exist anymore but is still displayed among your bookmarks. Would you like to:</label>
+        <label id="Destructive_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération destructive non-réversible.</label>
+        <label id="Destructive_operation" lang="en">&lt;strong&gt;Caution: &lt;/strong&gt;destructive, non-reversible operation.</label>
+        <label id="Non_reversible_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération non-réversible.</label>
+        <label id="Non_reversible_operation" lang="en">&lt;strong&gt;Caution: &lt;/strong&gt;non-reversible operation.</label>
+        <label id="Do_you_wish_to_continue" lang="fr">Voulez-vous vraiment continuer ?</label>
+        <label id="Do_you_wish_to_continue" lang="en">Do you wish to continue?</label>
+        <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, et à bientôt.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php">Revenir à la page de connexion&lt;/a&gt;</label>
+        <label id="Logout_confirmation_message" lang="en">You are now logged out.&lt;br /&gt;Thanks for using our services, see you soon.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
+        <label id="HD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer ce cours en haute définition, veuillez utiliser le lien suivant :</label>
+        <label id="HD_RSS_feed_URL_message" lang="en">You can watch or broadcast this course in high definition by using the following link:</label>
+        <label id="SD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer ce cours en basse définition, veuillez utiliser le lien suivant :</label>
+        <label id="SD_RSS_feed_URL_message" lang="en">You can watch or broadcast this course in low definition by using the following link:</label>
+        <label id="media_URL_message" lang="fr">Pour regarder ou distribuer cette vidéo, veuillez utiliser le lien suivant :</label>
+        <label id="media_URL_message" lang="en">You can watch or distribute this video by using the following link:</label>
+        <label id="Bookmark_link_message" lang="fr">Pour regarder ou partager ce signet, veuillez utiliser le lien suivant :</label>
+        <label id="Bookmark_link_message" lang="en">You can watch or share this bookmark by using the following link:</label>
+        <label id="Asset_link_message" lang="fr">Pour regarder ou partage cet enregistrement, veuillez utiliser le lien suivant :</label>
+        <label id="Asset_link_message" lang="en">You can watch or share this record by using the following link:</label>
+        <label id="Share_time_message" lang="fr">Pour regarder ou partage cet instant de l'enregistrement, veuillez utiliser le lien suivant :</label>
+        <label id="Share_time_message" lang="en">You can watch or share this moment of the record by using the following link:</label>
+        <label id="embed_code_message" lang="fr">Vous pouvez inclure cette vidéo dans une autre page en copiant/collant le code suivant : </label>
+        <label id="embed_code_message" lang="en">You may include this video in another page by copypasting the following code: </label>
+        <label id="ULBcode_message" lang="fr">Ce code contient les informations relatives à la vidéo: </label>
+        <label id="ULBcode_message" lang="en">This code contains information about the video: </label>
+        <label id="Create_album_message" lang="fr">Veuillez choisir dans la liste ci-dessous le cours correspondant à l'album que vous désirez créer :</label>
+        <label id="Create_album_message" lang="en">Please select the album you want to create in the following list:</label>
+        <label id="Download_movie_message" lang="fr">Pour télécharger la vidéo, cliquez sur la résolution souhaitée.</label>
+        <label id="Download_movie_message" lang="en">Click on the following buttons to download the movie in the desired resolution.</label>
+        <label id="Download_slide_message" lang="fr">Pour télécharger le diaporama, cliquez sur la résolution souhaitée.</label>
+        <label id="Download_slide_message" lang="en">Click on the following buttons to download the slide in the desired resolution.</label>
+        <label id="All_albums_already_created" lang="fr">Tous les albums à votre disposition ont déjà été créés</label>
+        <label id="All_albums_already_created" lang="en">Tous les albums à votre disposition ont déjà été créés</label>
+        <label id="No_album_created" lang="fr">Aucun album créé</label>
+        <label id="No_album_created" lang="en">No album created</label>
+        <label id="No_album_available" lang="fr">Aucun cours disponible</label>
+        <label id="No_album_available" lang="en">No available course</label>
+        <label id="Album_creation_succeeded_message" lang="fr">Votre album a été correctement créé</label>
+        <label id="Album_creation_succeeded_message" lang="en">Your album has been successfully created.</label>
+        <label id="Album_deletion_succeeded_message" lang="fr">Albums public et privé supprimés.</label>
+        <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
+        <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>
+        <label id="Album_edition_succeeded_message" lang="en">Album properties have been updated.</label>
+        <label id="Select_bookmarks_message" lang="fr">Sélectionnez les signets que vous souhaitez exporter</label>
+        <label id="Select_bookmarks_message" lang="en">Select the bookmarks to be exported.</label>
+        <label id="Delete_asset_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un enregistrement. Cette opération est irréversible.</label>
+        <label id="Delete_asset_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;You are about to delete a record. This operation can't be reverted</label>
+        <label id="Delete_bookmark_message" lang="fr">Attention, vous vous apprêtez à supprimer un signet. Cette opération est irréversible.</label>
+        <label id="Delete_bookmark_message" lang="en">Caution, you are about to delete a bookmark. This operation can't be reverted.</label>
+        <label id="Copy_bookmark_message" lang="fr">Souhaitez-vous copier ce signet vers les signets officiels ? Si les signets officiels contiennent déjà un signet à ce moment de la vidéo, celui-ci sera remplacé par le nouveau.</label>
+        <label id="Copy_bookmark_message" lang="en">Do you want to copy this bookmark in the official bookmarks ? If the official bookmarks already contain a bookmark at this time of the video, it will be replaced by the new one.</label>
+        <label id="Delete_bookmarks_message" lang="fr">Sélectionnez les signets que vous souhaitez supprimer. Cette opération est irréversible.</label>
+        <label id="Delete_bookmarks_message" lang="en">Select the bookmarks to be deleted. This operation can't be reverted.</label>
+        <label id="Delete_album_message" lang="fr">&lt;strong&gt;Attention&lt;/strong&gt;, vous vous apprêtez à supprimer un &lt;strong&gt;cours&lt;/strong&gt; et &lt;strong&gt;tous les signets&lt;/strong&gt; qu'il contient. Cette opération est &lt;strong&gt;irréversible&lt;/strong&gt;. Si vous souhaitez malgré tout conserver les signets, assurez vous de les avoir exportés au préalable.</label>
+        <label id="Delete_album_message" lang="en">&lt;strong&gt;Caution&lt;/strong&gt;, you are about to delete an &lt;strong&gt;course&lt;/strong&gt; and &lt;strong&gt;all bookmarks&lt;/strong&gt; related to this course. This operation &lt;strong&gt;can't be reverted&lt;/strong&gt;. If you'd like to keep your bookmarks, make sure they have been exported yet.</label>
+        <label id="Asset_deletion_succeeded_message" lang="fr">Votre enregistrement a bien été supprimé.</label>
+        <label id="Asset_deletion_succeeded_message" lang="en">The slected record has been successfully deleted.</label>
+        <label id="Regenerate_RSS_message" lang="fr">Le flux RSS va être régénéré. Les personnes abonnées à ce flux RSS ne pourront plus y accéder.</label>
+        <label id="Regenerate_RSS_message" lang="en">The RSS feed will be reset. All subscribers will lose their access to the album.</label>
+        <label id="RSS_successfully_reset_message" lang="fr">Le flux RSS a été régénéré avec succès. &lt;br/&gt;&lt;br/&gt;Les personnes qui étaient abonnées à votre album n'y auront donc plus accès.</label>
+        <label id="RSS_successfully_reset_message" lang="en">The RSS feed has been successfully reset. &lt;br/&gt;&lt;br/&gt;The persons who subscribed to this feed do not have access to it anymore.</label>
+        <label id="Publish_asset_message" lang="fr">Votre enregistrement va être déplacé dans l'album public.</label>
+        <label id="Publish_asset_message" lang="en">Your record will now be moved to the public folder.</label>
+        <label id="Unpublish_asset_message" lang="fr">Votre enregistrement va être déplacé dans l'album privé</label>
+        <label id="Unpublish_asset_message" lang="en">Your record will now be moved to the private folder.</label>
+        <label id="Asset_publishing_succeeded_message" lang="fr">Votre enregistrement a bien été déplacé dans l'album public. Il est maintenant à la disposition des personnes abonnées à votre album.</label>
+        <label id="Asset_publishing_succeeded_message" lang="en">Your record has been successfully moved to the public album. People who subscribed to your feed will now have access to it.</label>
+        <label id="Asset_unpublishing_succeeded_message" lang="fr">Votre enregistrement a bien été déplacé dans l'album privé. Il n'est désormais plus disponible pour les personnes abonnées à votre album public.</label>
+        <label id="Asset_unpublishing_succeeded_message" lang="en">Your record has been successfully moved to the private album. People who subscribed to your public feed will no longer have access to it.</label>
+        <label id="Move_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
+        <label id="Move_asset_message" lang="en">Please select the destination album in the following list:</label>
+        <label id="No_albums_to_move_asset_to" lang="fr">Aucun album disponible</label>
+        <label id="No_albums_to_move_asset_to" lang="en">No album available</label>
+        <label id="Asset_moving_succeeded_message" lang="fr">Votre enregistrement a été correctement déplacé.</label>
+        <label id="Asset_moving_succeeded_message" lang="en">Your record has been successfully moved.</label>
+        <label id="Submit_bookmarks_file" lang="fr">Soumettre un fichier contenant des signets :</label>
+        <label id="Submit_bookmarks_file" lang="en">Submit a file containing bookmarks</label>
+        <label id="Submit_bookmarks_file_message" lang="fr">Sélectionnez un fichier XML contenant les signets que vous souhaitez importer.</label>
+        <label id="Submit_bookmarks_file_message" lang="en">Select an XML file that contains the bookmarks to be imported.</label>
+        <label id="Available_bookmarks" lang="fr">Voici la liste des signets disponibles pour l'importation.</label>
+        <label id="Available_bookmarks" lang="en">Find here the bookmarks that can be imported.</label>
+        <label id="No_eligible_bookmarks" lang="fr">Les signets du fichier que vous souhaitez importer ne correspondent pas au cours ou l'enregistrement sélectionné. Veuillez choisir le cours approprié.</label>
+        <label id="No_eligible_bookmarks" lang="en">The bookmarks contained in the submitted file are not related to the selected course or record. Please choose the adequate course.</label>
+        <label id="Select_imported_bookmarks" lang="fr">Sélectionnez les signets que vous souhaitez importer dans votre liste. Les signets apparaissant en rouge vont remplacer vos signets personnels.</label>
+        <label id="Select_imported_bookmarks" lang="en">Select the bookmarks you want to import in your own list. The red bookmarks will replace your own bookmarks.</label>
+        <label id="Media_submit_ok_message" lang="fr">Enregistrement envoyé, actuellement en cours de traitement.</label>
+        <label id="Media_submit_ok_message" lang="en">Record sent, currently being processed.</label>
+        <label id="Title_too_long" lang="fr">Titre trop long (max. &lt;?php echo $title_max_length; ?&gt; caractères)</label>
+        <label id="Title_too_long" lang="en">Title too long (max. &lt;?php echo $title_max_length; ?&gt; characters).</label>
+        <label id="Not_available_while_processing" lang="fr">Opération non disponible pendant l'encodage. Réessayez plus tard.</label>
+        <label id="Not_available_while_processing" lang="en">Opération not available while processing. Try again later</label>
+        <label id="Submitting" lang="fr">En cours de soumission...</label>
+        <label id="Submitting" lang="en">Submitting...</label>
+        <label id="Only_small_files_message" lang="fr">Attention, à n'utiliser qu'avec des vidéos de courte durée.</label>
+        <label id="Only_small_files_message" lang="en">Please only use with short videos.</label>
+        <label id="update" lang="fr">Suite à une importante mise-à-jour du site, il se peut que vous rencontriez des problèmes d'affichage. Veuillez suivre &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;ce lien&lt;/a&gt; pour en savoir plus.</label>
+        <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
+        <label id="Load_for_switch" lang="fr">Les deux vidéos doivent être chargées une première fois pour disposer de la fonction de switch. Appuyez sur "Play" et le switch sera fonctionnel.</label>
+        <label id="Load_for_switch" lang="en">Both videos must be loaded to enable the switch function. Press "Play" to load this video.</label>
+
+    </labels>
+    
+    <!-- Messages are texts that are dynamically generated (errors, etc.) -->
+    <messages>
+        <!-- Random messages -->
+        <message id="view_video" lang="fr">Voir la vidéo</message>
+        <message id="view_video" lang="en">View video</message>
+        
+        <message id="month_01" lang="fr">janvier</message>
+        <message id="month_01" lang="en">January</message>
+        <message id="month_02" lang="fr">février</message>
+        <message id="month_02" lang="en">February</message>
+        <message id="month_03" lang="fr">mars</message>
+        <message id="month_03" lang="en">March</message>
+        <message id="month_04" lang="fr">avril</message>
+        <message id="month_04" lang="en">April</message>
+        <message id="month_05" lang="fr">mai</message>
+        <message id="month_05" lang="en">May</message>
+        <message id="month_06" lang="fr">juin</message>
+        <message id="month_06" lang="en">June</message>
+        <message id="month_07" lang="fr">juillet</message>
+        <message id="month_07" lang="en">July</message>
+        <message id="month_08" lang="fr">août</message>
+        <message id="month_08" lang="en">August</message>
+        <message id="month_09" lang="fr">septembre</message>
+        <message id="month_09" lang="en">September</message>
+        <message id="month_10" lang="fr">octobre</message>
+        <message id="month_10" lang="en">October</message>
+        <message id="month_11" lang="fr">novembre</message>
+        <message id="month_11" lang="en">November</message>
+        <message id="month_12" lang="fr">décembre</message>
+        <message id="month_12" lang="en">December</message>
+        
+        <!-- Errors -->
+        <message id="error_mimetype" lang="fr">Le fichier soumis ne semble pas être de type text/xml</message>
+        <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a text/xml file</message>
+        <message id="error_size" lang="fr">Le fichier soumis ne respecte pas la limite de taille de 2Mo</message>
+        <message id="error_size" lang="en">The submitted file doesn't respect the size limit, fixed to 2Mo</message>
+        <message id="error_structure" lang="fr">Le fichier XML soumis ne respecte pas la structure imposée.</message>
+        <message id="error_structure" lang="en">The submitted file doesn't respect the expected structure of XML file.</message>
+        <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
+        <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
+        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une erreur, contactez podcast@ulb.ac.be</message>
+        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact podcast@ulb.ac.be</message>
+        <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
+        <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
+        <message id="Non-existant_album" lang="fr">Accès refusé: cours inexistant</message>
+        <message id="Non-existant_album" lang="en">Access denied: the course does not exist</message>
+        <message id="Non-existant_asset" lang="fr">Accès refusé: enregistrement inexistant</message>
+        <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
+        <message id="File_not_found" lang="fr">Fichier introuvable</message>
+        <message id="File_not_found" lang="en">Could not find your file, sorry</message>
+        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast.tech@ulb.ac.be</message>
+        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast.tech@ulb.ac.be</message>
+        <message id="Invalid_token" lang="fr">Accès refusé</message>
+        <message id="Invalid_token" lang="en">Access denied</message>
+        <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>
+        <message id="Invalid_quality" lang="en">Access denied: invalid quality</message>
+        <message id="Invalid_type" lang="fr">Accès refusé: type de média non-valide</message>
+        <message id="Invalid_type" lang="en">Access denied: invalid media type</message>        
+        <message id="Inexistant" lang="fr">Enregistrement non disponible</message>
+        <message id="Inexistant" lang="en">Recording not available</message>
+    </messages>
+</data>

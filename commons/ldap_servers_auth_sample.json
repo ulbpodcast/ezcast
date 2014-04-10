@@ -1,0 +1,10 @@
+{
+    "auth_server_name":
+    {
+        "hostname"  :   "your.host.name",
+        "rdn"       :   "uid=!LOGIN,ou=whatever,o=root <-- Where !LOGIN will be replaced by user's login (trying to connect)", 
+        "base_dn"   :   "ou=whatever,o=root",
+        "filter"    :   "(uid=!LOGIN) <-- Where !LOGIN will be replaced by user's login ",
+        "password"  :   ""
+    }
+}

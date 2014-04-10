@@ -1,0 +1,10 @@
+**/config.inc
+**/ldap_servers_auth.json
+**/ldap_servers_cred.json
+**/classroom_recorder_ip.inc
+**/admin.inc
+**/HELLO
+**/*.log
+**/renderers.inc
+**/var/**
+**/**/var/**

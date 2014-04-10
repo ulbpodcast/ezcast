@@ -1,0 +1,54 @@
+***************
+* lib_acl.php *
+***************
+
+Purpose
+-------
+
+Library containing all functions somehow related to Access Control Lists
+Namely, this library allows you to check whether a user has a special right,
+or to get all the albums a user can manage.
+
+Dependencies
+------------
+
+    Already included:
+
+    config.inc
+      uses $repository_path in acl_init()
+
+    ../commons/lib_courses.php
+      uses courses_list() in acl_init() to check the permissions
+
+    lib_ezmam.php
+      uses ezmam_album_list() in acl_init() to get the albums the user has/hasn't created
+
+    To include:
+
+    lib_error.php
+      uses error_print_message() in various functions
+
+
+Session variables used
+-----------------------
+
+    Managed by the library
+
+    acl_created_albums(array)
+        Array containing all the albums a user has created.
+        The array content is the album name without suffix
+    acl_not_created_albums(array)
+        Array containing all the albums may create, but hasn't
+    acl_permitted_albums(array)
+        A junction of the two arrays above
+
+    Used by the library, but created elsewhere
+
+    podman_logged
+        Initialized in web_index.php, method user_login()
+        Used for sanity checks in the code.
+
+Notes
+-----
+
+    Please always call acl_init() first.

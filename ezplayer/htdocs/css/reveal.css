@@ -1,0 +1,155 @@
+/*	--------------------------------------------------
+	Reveal Modals
+	-------------------------------------------------- */
+		
+	.reveal-modal-bg { 
+		position: fixed; 
+		height: 100%;
+		width: 100%;
+		background: #000;
+		background: rgba(0,0,0,.8);
+		z-index: 950;
+		display: none;
+		top: 0;
+		left: 0; 
+		}
+	
+	.reveal-modal {
+		visibility: hidden;
+                font-family: Helvetica, Arial, sans-serif;
+		top: 20px; 
+		left: 50%;
+		margin-left: -300px;
+		width: 520px;
+		background: #eee url(../images/Generale/modal-gloss.png) no-repeat -200px -80px;
+		position: absolute;
+		z-index: 951;
+		padding: 30px 40px 34px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		-moz-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		-webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		}
+                
+	.reveal-modal h2 {
+            color: #555555;
+        }
+        
+	.reveal-modal p {
+            color: #AAAAAA;
+        }
+		
+	.reveal-modal p a {
+            color: #004D94;
+            text-decoration: none;
+        }
+        	
+	.reveal-modal p a:hover {
+            text-decoration: underline;
+        }
+        
+	.reveal-modal.small 		{ width: 200px; margin-left: -140px;}
+	.reveal-modal.medium 		{ width: 400px; margin-left: -240px;}
+	.reveal-modal.large 		{ width: 600px; margin-left: -340px;}
+	.reveal-modal.xlarge 		{ width: 800px; margin-left: -440px;}
+	.reveal-modal.left 		{ left: 0%; margin-left: -460px;}
+	.reveal-modal.right 		{ left: 0%; margin-left: 180px;}
+	.reveal-modal.up 		{ top: -20px; }
+	.reveal-modal.down 		{ top: 200px; }
+	
+	.reveal-modal .close-reveal-modal {
+		font-size: 22px;
+		line-height: .5;
+		position: absolute;
+		top: 8px;
+		right: 11px;
+		color: #aaa;
+		text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+		font-weight: bold;
+		cursor: pointer;
+                text-decoration: none;
+		} 
+
+        .reveal-modal .close-reveal-modal-button,
+        .reveal-modal .delete-button-confirm,
+        .reveal-modal .simple-button
+        {
+                display: block;
+                float: right;
+                margin: 4px;
+                background: #333333;
+                color: #ffffff;
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
+                padding: 4px 8px;
+                cursor: pointer;
+                text-decoration: none;
+        }
+
+        .reveal-modal .copy-to-clipboard-button
+        {
+                display: block;
+                margin: 4px;
+                background: #333333;
+                color: #ffffff;
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
+                padding: 4px 4px;
+                cursor: pointer;
+                text-decoration: none;
+                text-align: center;
+                width: 200px;
+                margin-left: 155px;
+        }
+
+        .reveal-modal .close-reveal-modal-button:hover {
+                background: #7bb3b6;
+                color: #ffffff;
+        }
+        
+        .reveal-modal .delete-button-confirm:hover {
+                background: #ff0000;
+                color: #ffffff;
+        }
+        
+        .reveal-modal .copy-to-clipboard-button:hover{
+                background: #11acea; 
+                color: #ffffff;
+        }
+        
+        .reveal-modal .simple-button:hover{
+                background: #7bb3b6;
+                color: #ffffff;
+        }
+        
+        .reveal-modal .simple-button.purple:hover{
+                background: #a71a8a;
+                color: #ffffff;
+        }
+        
+        .reveal-modal .simple-button.blue:hover{
+                background: #11acea; 
+                color: #ffffff;
+        }
+        
+                     
+	/*
+		
+	NOTES
+	
+	Close button entity is &#215;
+	
+	Example markup
+	
+	<div id="myModal" class="reveal-modal">
+		<h2>Awesome. I have it.</h2>
+		<p class="lead">Your couch.  I it's mine.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices aliquet placerat. Duis pulvinar orci et nisi euismod vitae tempus lorem consectetur. Duis at magna quis turpis mattis venenatis eget id diam. </p>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+	
+	*/

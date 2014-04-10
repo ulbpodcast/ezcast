@@ -1,0 +1,12 @@
+You'll find here below the list of external products that are used for EZadmin. 
+Each product remains the entire property of its original author and keeps its original license.
+
+
+* BOOTSTRAP v2.1.0 under the Apache license V2.0, copyright Twitter, Inc. <http://twitter.github.com/bootstrap/javascript.html#transitions>
+--> ./htdocs/bootstrap/*
+
+* MODERNIZR v2.6.1 under the MIT license, copyright <http://modernizr.com/download/#-input-inputtypes-shiv>
+--> ./htdocs/js/modernizr.custom.23345.js
+
+* JQUERY 1.8.0 under the MIT license, copyright John Resig <http://jquery.org/license>,
+--> ./htdocs/js/jquery-1.8.0.min.js

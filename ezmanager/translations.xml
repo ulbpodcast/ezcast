@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ * EZCAST EZmanager 
+ *
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 	   Arnaud Wijns <awijns@ulb.ac.be>
+ *         Antoine Dewilde
+ * UI Design by Julien Di Pietrantonio
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+    Document   : translations.xml
+    Author     : Université libre de Bruxelles
+    Description:
+        Message translations for all the user interface.
+-->
+
+<data>
+    <!-- Labels are keywords that appear in templates 
+    Note: please use the same label name as the keyword between ®'s that appears in the template -->
+    <labels>
+        <!-- Product-wise stuff -->
+        <!-- <label id="service_logo" lang="fr"><strong>ULB</strong>podcast</label>
+        <label id="service_logo" lang="en"><strong>ULB</strong>podcast</label> -->
+        <label id="service_name" lang="fr">EZmanager - ULB Podcast</label>
+        <label id="service_name" lang="en">EZmanager - ULB Podcast</label>
+        <label id="service_description" lang="fr">Interface de gestion des enregistrements</label>
+        <label id="service_description" lang="en">Recordings management interface</label>
+        <label id="podman_page_title" lang="fr">ULB Podcast</label>
+        <label id="podman_page_title" lang="en">ULB Podcast</label>
+        
+        <!-- Useful keywords -->
+        <label id="Yes" lang="fr">Oui</label>
+        <label id="Yes" lang="en">Yes</label>
+        <label id="No" lang="fr">Non</label>
+        <label id="No" lang="en">No</label>
+        <label id="Cancel" lang="fr">Annuler</label>
+        <label id="Cancel" lang="en">Cancel</label>
+        <label id="OK" lang="fr">OK</label>
+        <label id="OK" lang="en">OK</label>
+        <label id="Next" lang="fr">Suivant</label>
+        <label id="Next" lang="en">Next</label>
+        <label id="Type" lang="fr">Type</label>
+        <label id="Type" lang="en">Type</label>
+        <label id="Not_available" lang="fr">Non disponible</label>
+        <label id="Not_available" lang="en">Not available</label>
+        <label id="private" lang="fr">privé</label>
+        <label id="private" lang="en">private</label>
+        <label id="public" lang="fr">public</label>
+        <label id="public" lang="en">public</label>
+        <label id="Help" lang="fr">Aide</label>
+        <label id="Help" lang="en">Help</label>
+        <label id="Loading..." lang="fr">Chargement ...</label>
+        <label id="Loading..." lang="en">Loading ...</label>
+        <label id="Logout" lang="fr">Déconnexion</label>
+        <label id="Logout" lang="en">Log out</label>
+        <label id="Update" lang="fr">Sauvegarder</label>
+        <label id="Update" lang="en">Update</label>
+        <label id="Album" lang="fr">Album</label>
+        <label id="Album" lang="en">Album</label>
+        <label id="Private_album" lang="fr">Album privé</label>
+        <label id="Private_album" lang="en">Private album</label>
+        <label id="Public_album" lang="fr">Album public</label>
+        <label id="Public_album" lang="en">Public album</label>
+        <label id="Video" lang="fr">Vidéo</label>
+        <label id="Video" lang="en">Video</label>
+        <label id="Slides" lang="fr">Diaporama</label>
+        <label id="Slides" lang="en">Slides</label>
+        <label id="Information" lang="fr">Informations</label>
+        <label id="Information" lang="en">Information</label>
+        <label id="Advanced_info" lang="fr">Informations avancées</label>
+        <label id="Advanced_info" lang="en">Advanced information</label>
+        <label id="More_options" lang="fr">Options avancées</label>
+        <label id="More_options" lang="en">More</label>
+        <label id="More_info" lang="fr">En savoir plus</label>
+        <label id="More_info" lang="en">More info</label>
+        <label id="Intro" lang="fr">Intro</label>
+        <label id="Intro" lang="en">Intro</label>
+        <label id="Jingle" lang="fr">Générique</label>
+        <label id="Jingle" lang="en">Jingle</label>
+        <label id="Jingle_info" lang="fr">Animation visuelle ajoutée en début de vidéo.</label>
+        <label id="Jingle_info" lang="en">Animation added before the actual video.</label>
+        <label id='None_intro' lang="fr">Aucun</label>
+        <label id='None_intro' lang="en">None</label>
+        <label id="Title" lang="fr">Titre</label>
+        <label id="Title" lang="en">Title</label>
+        <label id="Title_info" lang="fr">Max. 70 caractères</label>
+        <label id="Title_info" lang="en">Max. 70 characters</label>        
+        <label id="Titling" lang="fr">Titrage</label>
+        <label id="Titling" lang="en">Titling</label>
+        <label id="Titling_info" lang="fr">Information affichée après le générique, en début de vidéo. Le titrage par défaut reprend l'album dans lequel est soumise la vidéo, le titre, l'auteur et la date de publication de la vidéo.</label>
+        <label id="Titling_info" lang="en">Information displayed after the jingle. The default titling contains the album name, the title, the author and the date of publication of the video.</label>
+        <label id="None_titling" lang="fr">Aucun</label>
+        <label id="None_titling" lang="en">None</label>
+        <label id="Description" lang="fr">Description</label>
+        <label id="Description" lang="en">Description</label>
+        <label id="Description_info" lang="fr">Facultatif</label>
+        <label id="Description_info" lang="en">Optional</label>
+        <label id="Author" lang="fr">Auteur</label>
+        <label id="Author" lang="en">Author</label>
+        <label id="Date" lang="fr">Date</label>
+        <label id="Date" lang="en">Date</label>
+        <label id="Length" lang="fr">Durée</label>
+        <label id="Length" lang="en">Length</label>
+        <label id="Origin" lang="fr">Origine</label>
+        <label id="Origin" lang="en">Origin</label>
+        <label id="Status" lang="fr">Statut</label>
+        <label id="Status" lang="en">Status</label>
+        <label id="File" lang="fr">Fichier</label>
+        <label id="File" lang="en">File</label>
+        <label id="File_info" lang="fr">Max. 2Go</label>
+        <label id="File_info" lang="en">Max. 2Go</label>
+        <label id="Filename" lang="fr">Nom de fichier</label>
+        <label id="Filename" lang="en">Filename</label>
+        <label id="Filesize_HD" lang="fr">Taille du fichier (HD)</label>
+        <label id="Filesize_HD" lang="en">Filesize (HD)</label>
+        <label id="Filesize_SD" lang="fr">Taille du fichier (BD)</label>
+        <label id="Filesize_SD" lang="en">Filesize (SD)</label>
+        <label id="Megabyte_unit" lang="fr">Mo</label>
+        <label id="Megabyte_unit" lang="en">MB</label>
+        <label id="Dimensions_HD" lang="fr">Dimensions (HD)</label>
+        <label id="Dimensions_HD" lang="en">Dimensions (HD)</label>
+        <label id="Dimensions_SD" lang="fr">Dimensions (BD)</label>
+        <label id="Dimensions_SD" lang="en">Dimensions (SD)</label>
+        <label id="File_format" lang="fr">Codec</label>
+        <label id="File_format" lang="en">Codec</label>
+        <label id="View_count" lang="fr">Nombre de vues</label>
+        <label id="View_count" lang="en">View count</label>
+        <label id="Publication" lang="fr">Publication</label>
+        <label id="Publication" lang="en">Publication</label>
+        <label id="Download" lang="fr">Téléchargement</label>
+        <label id="Download" lang="en">Download</label>  
+        <label id="ULBcode" lang="fr">Site Manager</label>    
+        <label id="ULBcode" lang="en">Site Manager</label>      
+        <label id="Embed" lang="fr">Embed</label>
+        <label id="Embed" lang="en">Embed</label>
+        <label id="high_res" lang="fr">Haute résolution</label>
+        <label id="high_res" lang="en">High resolution</label>
+        <label id="low_res" lang="fr">Basse résolution</label>
+        <label id="low_res" lang="en">Low resolution</label>
+        <label id="HD_RSS_feed" lang="fr">Flux RSS haute résolution</label>
+        <label id="HD_RSS_feed" lang="en">High resolution RSS feed</label>
+        <label id="SD_RSS_feed" lang="fr">Flux RSS basse résolution</label>
+        <label id="SD_RSS_feed" lang="en">Low resolution RSS feed</label>
+        <label id="RSS_feed" lang="fr">Flux RSS</label>
+        <label id="RSS_feed" lang="en">RSS feed</label>
+        <label id="Player_url" lang="fr">Lien EZplayer</label>
+        <label id="Player_url" lang="en">EZplayer link</label>
+        <label id="Processing" lang="fr">en cours de traitement</label>
+        <label id="Processing" lang="en">processing</label>
+        <label id="Manual_submit" lang="fr">Soumission manuelle</label>
+        <label id="Manual_submit" lang="en">Manual submit</label>
+        <label id="progress_bar" lang="fr">Barre de progression</label>
+        <label id="progress_bar" lang="en">Progress Bar</label>
+        <label id="normal" lang="fr">normal</label>
+        <label id="submit_files" lang="fr">Choisir le fichier</label>
+        <label id="submit_files" lang="en">Choose File</label>
+        <label id="select" lang="fr">Choisir</label>
+        <label id="select" lang="en">Select</label>
+        <label id="submit" lang="fr">Soumettre l'enregistrement</label>
+        <label id="submit" lang="en">Submit</label>
+        <label id="Upload_in_progress" lang="fr">Fichier en cours d\'envoi ...</label>
+        <label id="Upload_in_progress" lang="en">Upload in progress ...</label>
+        <label id="Upload_finished_title" lang="fr">Envoi terminé</label>
+        <label id="Upload_finished_title" lang="en">File submitted</label>
+        <label id="Upload_finished" lang="fr">Fichier envoyé et en cours de traitement</label>
+        <label id="Upload_finished" lang="en">File uploaded and ready for processing</label>
+        <label id="Copy_to_clipboard" lang="fr">Copier dans le presse-papier</label>
+        <label id="Copy_to_clipboard" lang="en">Copy to clipboard</label>
+        <label id="Content_in_clipboard" lang="fr">Contenu copié dans le presse-papier</label>
+        <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
+        
+
+
+        
+        <!-- Actions and buttons -->
+        <label id="Browse" lang="fr">Parcourir</label>
+        <label id="Browse" lang="en">Browse</label>
+        <label id="Delete" lang="fr">Supprimer</label>
+        <label id="Delete" lang="en">Delete</label>
+        <label id="Edit" lang="fr">Editer</label>
+        <label id="Edit" lang="en">Edit</label>
+        <label id="Move" lang="fr">Déplacer</label>
+        <label id="Move" lang="en">Move</label>
+        <label id="view" lang="fr">afficher</label>
+        <label id="view" lang="en">show</label>
+        <label id="copy" lang="fr">copier</label>
+        <label id="copy" lang="en">copier</label>
+        <label id="Publish" lang="fr">Déplacer dans l'album public</label>
+        <label id="Publish" lang="en">Move to public album</label>
+        <label id="Unpublish" lang="fr">Déplacer dans l'album privé</label>
+        <label id="Unpublish" lang="en">Move to private album</label>
+        <label id="Create_album" lang="fr">Créer un album</label>
+        <label id="Create_album" lang="en">New album</label>
+        <label id="Delete_album" lang="fr">Supprimer l'album</label>
+        <label id="Delete_album" lang="en">Delete this album</label>
+        <label id="Edit_album" lang="fr">Propriétés de l'album</label>
+        <label id="Edit_album" lang="en">Album properties</label>
+        <label id="Regenerate_RSS" lang="fr">Régénérer RSS</label>
+        <label id="Regenerate_RSS" lang="en">Reset RSS</label>
+        <label id="Submit" lang="fr">Soumettre</label>
+        <label id="Submit" lang="en">Submit</label>
+        <label id="Submit_record" lang="fr">Soumettre un enregistrement</label>
+        <label id="Submit_record" lang="en">Submit a new record</label>
+        <label id="Delete_asset" lang="fr">Supprimer l'enregistrement</label>
+        <label id="Delete_asset" lang="en">Delete</label>
+        <label id="Watch_video" lang="fr">Regarder la vidéo</label>
+        <label id="Watch_video" lang="en">Watch video</label>
+        <label id="Watch_slides" lang="fr">Regarder le diaporama</label>
+        <label id="Watch_slides" lang="en">Watch slides</label>
+        <label id="Close_and_return_to_index" lang="fr">Fermer</label>
+        <label id="Close_and_return_to_index" lang="en">Close</label>
+        <label id="Close_and_return_to_source_album" lang="fr">Fermer cette fenêtre et retourner à l'album de départ</label>
+        <label id="Close_and_return_to_source_album" lang="en">Close this window and return to source albumx</label>
+        <label id="Close_and_go_to_destination_album" lang="fr">Fermer cette fenêtre et aller à l'album de destination</label>
+        <label id="Close_and_go_to_destination_album" lang="en">Close this window and go to destination album</label>
+        <label id="Keep_quality" lang="fr">Garder la qualité originale</label>
+        <label id="Keep_quality" lang="en">Keep the original video quality</label>
+        <label id="Add_title_album" lang="fr">Ajouter un titre aux vidéos publiées dans cet album</label>
+        <label id="Add_title_album" lang="en">Add a title to videos published in this album</label>
+        
+        <!-- Titles -->
+        <label id="Album_creation_succeeded_title" lang="fr">Création d'album terminée</label>
+        <label id="Album_creation_succeeded_title" lang="en">Album successfully created</label>
+        <label id="Album_deletion_succeeded_title" lang="fr">Suppression d'album terminée</label>
+        <label id="Album_deletion_succeeded_title" lang="en">Album successfully deleted</label>
+        <label id="Album_edition_succeeded_title" lang="fr">Propriétés d'album éditées</label>
+        <label id="Album_edition_succeeded_title" lang="en">Album properties successfully edited</label>
+        <label id="Asset_deletion_succeeded_title" lang="fr">Suppression d'enregistrement terminée</label>
+        <label id="Asset_deletion_succeeded_title" lang="en">Record successfully deleted</label>
+        <label id="Asset_publishing_succeeded_title" lang="fr">Publication d'un enregistrement effectué</label>
+        <label id="Asset_publishing_succeeded_title" lang="en">Record successfully published</label>
+        <label id="Asset_unpublishing_succeeded_title" lang="fr">Enregistrement déplacé avec succès</label>
+        <label id="Asset_unpublishing_succeeded_title" lang="en">Record successfully moved</label>
+        <label id="Asset_moving_succeeded_title" lang="fr">Enregistrement déplacé avec succès</label>
+        <label id="Asset_moving_succeeded_title" lang="en">Record successfully moved</label>
+        <label id="Processing_error" lang="fr">Erreur d'encodage</label>
+        <label id="Processing_error" lang="en">Processing error</label>
+        <label id="No_title" lang="fr">Veuillez entrer un titre</label>
+        <label id="No_title" lang="en">Please input a title</label>
+        <label id="No_file" lang="fr">Veuillez sélectionner un fichier</label>
+        <label id="No_file" lang="en">Please select a file</label>
+        <label id="bad_extension" lang="fr">Type de fichier non reconnu</label>
+        <label id="bad_extension" lang="en">Bad extension</label>
+        <label id="Unsafe_connection" lang="fr">Connexion non sécurisée</label>
+        <label id="Unsafe_connection" lang="en">Unsafe connection</label>
+        <label id="Unencrypted_connection" lang="fr">Se connecter en mode non encrypté</label>
+        <label id="Unencrypted_connection" lang="en">Connect in unencrypted mode</label>
+        
+        <!-- Long texts -->
+        <label id="Destructive_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération destructive non-réversible.</label>
+        <label id="Destructive_operation" lang="en">&lt;strong&gt;Caution: &lt;/strong&gt;destructive, non-reversible operation.</label>
+        <label id="Non_reversible_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération non-réversible.</label>
+        <label id="Non_reversible_operation" lang="en">&lt;strong&gt;Caution: &lt;/strong&gt;non-reversible operation.</label>
+        <label id="Do_you_wish_to_continue" lang="fr">Voulez-vous vraiment continuer ?</label>
+        <label id="Do_you_wish_to_continue" lang="en">Do you wish to continue?</label>
+        <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, et à bientôt.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php">Revenir à la page de connexion&lt;/a&gt;</label>
+        <label id="Logout_confirmation_message" lang="en">You are now logged out.&lt;br /&gt;Thanks for using our services, see you soon.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
+        <label id="HD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer cet album en haute définition, veuillez utiliser le lien suivant :</label>
+        <label id="HD_RSS_feed_URL_message" lang="en">You can watch or broadcast this album in high definition by using the following link:</label>
+        <label id="SD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer cet album en basse définition, veuillez utiliser le lien suivant :</label>
+        <label id="SD_RSS_feed_URL_message" lang="en">You can watch or broadcast this album in low definition by using the following link:</label>
+        <label id="Player_url_message" lang="fr">Pour consulter ou distribuer cet album via le lecteur enrichi "EZplayer", veuillez utiliser le lien suivant :</label>
+        <label id="Player_url_message" lang="en">You can watch or broadcast this album via EZplayer, the rich media player, by using the following link:</label>
+        <label id="media_URL_message" lang="fr">Pour regarder ou distribuer cette vidéo, veuillez utiliser le lien suivant :</label>
+        <label id="media_URL_message" lang="en">You can watch or distribute this video by using the following link:</label>
+        <label id="embed_code_message" lang="fr">Vous pouvez inclure cette vidéo dans une autre page en copiant/collant le code suivant : </label>
+        <label id="embed_code_message" lang="en">You may include this video in another page by copypasting the following code: </label>
+        <label id="ULBcode_message" lang="fr">Ce code contient les informations relatives à la vidéo: </label>
+        <label id="ULBcode_message" lang="en">This code contains information about the video: </label>
+        <label id="Create_album_message" lang="fr">Veuillez choisir dans la liste ci-dessous le cours correspondant à l'album que vous désirez créer :</label>
+        <label id="Create_album_message" lang="en">Please select the album you want to create in the following list:</label>
+        <label id="All_albums_already_created" lang="fr">Tous les albums à votre disposition ont déjà été créés</label>
+        <label id="All_albums_already_created" lang="en">Tous les albums à votre disposition ont déjà été créés</label>
+        <label id="No_album_created" lang="fr">Aucun album créé</label>
+        <label id="No_album_created" lang="en">No album created</label>
+        <label id="No_album_available" lang="fr">Aucun album disponible</label>
+        <label id="No_album_available" lang="en">No available album</label>
+        <label id="Album_creation_succeeded_message" lang="fr">Votre album a été correctement créé</label>
+        <label id="Album_creation_succeeded_message" lang="en">Your album has been successfully created.</label>
+        <label id="Delete_album_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer l'album &lt;?php echo $album_name; ?&gt;. En faisant ainsi, vous supprimerez définitivement l'&lt;strong&gt;album public&lt;/strong&gt; &lt;i&gt;et&lt;/i&gt; l'&lt;strong&gt;album privé&lt;/strong&gt; de ce cours, ainsi que tout leur contenu. Les autres titulaires de l'album n'y auront plus accès non plus</label>
+        <label id="Delete_album_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete the albums for &lt;?php echo $album_name; ?&gt;. By doing so, you will delete both the &lt;strong&gt;public&lt;/strong&gt; &lt;i&gt;and&lt;/i&gt; &lt;strong&gt;private&lt;/strong&gt; albums, as well as all of their content. The other owners of the album will also lose access to this album.</label>
+        <label id="Album_deletion_succeeded_message" lang="fr">Albums public et privé supprimés.</label>
+        <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
+        <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>
+        <label id="Album_edition_succeeded_message" lang="en">Album properties have been updated.</label>
+        <label id="Delete_asset_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un enregistrement. Cette opération est irréversible.</label>
+        <label id="Delete_asset_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;You are about to delete a record. This operation can't be reverted</label>
+        <label id="Asset_deletion_succeeded_message" lang="fr">Votre enregistrement a bien été supprimé.</label>
+        <label id="Asset_deletion_succeeded_message" lang="en">The slected record has been successfully deleted.</label>
+        <label id="Regenerate_RSS_message" lang="fr">Le flux RSS va être régénéré. Les personnes abonnées à ce flux RSS ne pourront plus y accéder.</label>
+        <label id="Regenerate_RSS_message" lang="en">The RSS feed will be reset. All subscribers will lose their access to the album.</label>
+        <label id="RSS_successfully_reset_message" lang="fr">Le flux RSS a été régénéré avec succès. &lt;br/&gt;&lt;br/&gt;Les personnes qui étaient abonnées à votre album n'y auront donc plus accès.</label>
+        <label id="RSS_successfully_reset_message" lang="en">The RSS feed has been successfully reset. &lt;br/&gt;&lt;br/&gt;The persons who subscribed to this feed do not have access to it anymore.</label>
+        <label id="Publish_asset_message" lang="fr">Votre enregistrement va être déplacé dans l'album public.</label>
+        <label id="Publish_asset_message" lang="en">Your record will now be moved to the public folder.</label>
+        <label id="Unpublish_asset_message" lang="fr">Votre enregistrement va être déplacé dans l'album privé</label>
+        <label id="Unpublish_asset_message" lang="en">Your record will now be moved to the private folder.</label>
+        <label id="Asset_publishing_succeeded_message" lang="fr">Votre enregistrement a bien été déplacé dans l'album public. Il est maintenant à la disposition des personnes abonnées à votre album.</label>
+        <label id="Asset_publishing_succeeded_message" lang="en">Your record has been successfully moved to the public album. People who subscribed to your feed will now have access to it.</label>
+        <label id="Asset_unpublishing_succeeded_message" lang="fr">Votre enregistrement a bien été déplacé dans l'album privé. Il n'est désormais plus disponible pour les personnes abonnées à votre album public.</label>
+        <label id="Asset_unpublishing_succeeded_message" lang="en">Your record has been successfully moved to the private album. People who subscribed to your public feed will no longer have access to it.</label>
+        <label id="Move_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
+        <label id="Move_asset_message" lang="en">Please select the destination album in the following list:</label>
+        <label id="No_albums_to_move_asset_to" lang="fr">Aucun album disponible</label>
+        <label id="No_albums_to_move_asset_to" lang="en">No album available</label>
+        <label id="Asset_moving_succeeded_message" lang="fr">Votre enregistrement a été correctement déplacé.</label>
+        <label id="Asset_moving_succeeded_message" lang="en">Your record has been successfully moved.</label>
+        <label id="Media_submit_ok_message" lang="fr">Enregistrement envoyé, actuellement en cours de traitement.</label>
+        <label id="Media_submit_ok_message" lang="en">Record sent, currently being processed.</label>
+        <label id="Title_too_long" lang="fr">Titre trop long (max. &lt;?php echo $title_max_length; ?&gt; caractères)</label>
+        <label id="Title_too_long" lang="en">Title too long (max. &lt;?php echo $title_max_length; ?&gt; characters).</label>
+        <label id="Not_available_while_processing" lang="fr">Opération non disponible pendant l'encodage. Réessayez plus tard.</label>
+        <label id="Not_available_while_processing" lang="en">Opération not available while processing. Try again later</label>
+        <label id="Submitting" lang="fr">En cours de soumission...</label>
+        <label id="Submitting" lang="en">Submitting...</label>
+        <label id="Only_small_files_message" lang="fr">Attention, à n'utiliser qu'avec des vidéos de courte durée.</label>
+        <label id="Only_small_files_message" lang="en">Please only use with short videos.</label>
+        <label id="update" lang="fr">Suite à une importante mise-à-jour du site, il se peut que vous rencontriez des problèmes d'affichage. Veuillez suivre &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;ce lien&lt;/a&gt; pour en savoir plus.</label>
+        <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
+
+    </labels>
+    
+    <!-- Messages are texts that are dynamically generated (errors, etc.) -->
+    <messages>
+        <!-- Random messages -->
+        <message id="view_video" lang="fr">Voir la vidéo</message>
+        <message id="view_video" lang="en">View video</message>
+        
+        <message id="month_01" lang="fr">janvier</message>
+        <message id="month_01" lang="en">January</message>
+        <message id="month_02" lang="fr">février</message>
+        <message id="month_02" lang="en">February</message>
+        <message id="month_03" lang="fr">mars</message>
+        <message id="month_03" lang="en">March</message>
+        <message id="month_04" lang="fr">avril</message>
+        <message id="month_04" lang="en">April</message>
+        <message id="month_05" lang="fr">mai</message>
+        <message id="month_05" lang="en">May</message>
+        <message id="month_06" lang="fr">juin</message>
+        <message id="month_06" lang="en">June</message>
+        <message id="month_07" lang="fr">juillet</message>
+        <message id="month_07" lang="en">July</message>
+        <message id="month_08" lang="fr">août</message>
+        <message id="month_08" lang="en">August</message>
+        <message id="month_09" lang="fr">septembre</message>
+        <message id="month_09" lang="en">September</message>
+        <message id="month_10" lang="fr">octobre</message>
+        <message id="month_10" lang="en">October</message>
+        <message id="month_11" lang="fr">novembre</message>
+        <message id="month_11" lang="en">November</message>
+        <message id="month_12" lang="fr">décembre</message>
+        <message id="month_12" lang="en">December</message>
+        
+        <!-- Errors -->
+        <message id="error_mimetype" lang="fr">Le fichier soumis ne semble pas être de type video</message>
+        <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a movie</message>
+        <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
+        <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
+        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une erreur, contactez podcast@ulb.ac.be</message>
+        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact podcast@ulb.ac.be</message>
+        <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
+        <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
+        <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
+        <message id="Non-existant_album" lang="en">Access denied: the album does not exist</message>
+        <message id="Non-existant_asset" lang="fr">Accès refusé: enregistrement inexistant</message>
+        <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
+        <message id="File_not_found" lang="fr">Fichier introuvable</message>
+        <message id="File_not_found" lang="en">Could not find your file, sorry</message>
+        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast@ulb.ac.be</message>
+        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast@ulb.ac.be</message>
+        <message id="Invalid_token" lang="fr">Accès refusé</message>
+        <message id="Invalid_token" lang="en">Access denied</message>
+        <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>
+        <message id="Invalid_quality" lang="en">Access denied: invalid quality</message>
+        <message id="Invalid_type" lang="fr">Accès refusé: type de média non-valide</message>
+        <message id="Invalid_type" lang="en">Access denied: invalid media type</message>
+    </messages>
+</data>

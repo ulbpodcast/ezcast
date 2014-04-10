@@ -1,0 +1,76 @@
+This document briefly describes each file and its purpose.
+For more information, please refer to the file with the same name as the library you want information about.
+
+
+Config files
+------------
+
+config.inc
+    user-editable.
+    Contains various global variables used throughout the code.
+
+classroom_recorder_ip.inc
+    user-editable.
+    Contains the IP addresses for both the video recorder (podcv_ip) and the slides recorder (podcs_ip)
+    Edit to your own needs, each cell of the arrays represent one lecture room.
+
+pwfile.inc
+    user-editable. Unsafe.
+    Contains a list of login/passwords (unencrypted!) that can be used to access podman.
+    When logging in, the program will first use LDAP, then use this file if no result were found.
+
+
+Libraries
+---------
+
+lib_acl.php
+    Manages access control lists for albums and assets. 
+    You shouldn't have to modify this file to make the project run.
+
+lib_error.php
+    Contains various helper functions to manage and display errors.
+    There is no need to change this file, unless you want the error to be displayed in another way.
+
+lib_ezmam.php
+    Contains all the functions related to album, asset and media management.
+    You might have to edit the global variables declared at the top of the file.
+
+../commons/lib_auth.php
+    edit to your own needs.
+    This file manages user authentification through the check_auth() function, which uses
+    both LDAP and pwfile.php for now.
+
+../commons/lib_courses.php
+    A library providing a list of courses and lecture rooms available.
+    Since this library relies on the university's infrastructure, you most likely
+    will have to redeclare your own.
+
+../commons/lib_template.php
+    Template parsing and template display. Used by both the web scripts and cli_template_generate.php
+    You may have to change the variables at the top of the page to your own needs.
+
+lib_various.php
+    Various helper functions. Relies on naming conventions inside the repository,
+    so you might have to edit this if you decide not to go with the standard naming rules for albums.
+
+
+CLI scripts
+-----------
+cli_recorder_download.php
+    Downloads recorded movies from the classroom recorders via rsync
+cli_mam_insert.php
+    Insert the originals (downloaded with cli_recorder_download_pgm.php) in the repository
+cli_submit_intro_title_movie.php
+    Submits original movie to the render hosts to get movies info (resolution, duration,...), add a intro jingle, title and compresses for the 'low'(res) movie.
+
+Web pages and scripts
+---------------------
+web_distribute.php
+    Distribute RSS files and videos to the students
+web_download_from_recorder.php
+    Allows the classroom recorders to warn that a new recording is waiting to be downloaded.
+web_index.php
+    Main podcast manager application
+
+Templates
+---------

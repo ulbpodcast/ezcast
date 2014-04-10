@@ -1,0 +1,27 @@
+You'll find here below the list of external products that are used for EZplayer. 
+Each product remains the entire property of its original author and keeps its original license.
+
+* PHP-BROWSER under the MIT license, copyright Gabriel Bull <https://github.com/gavroche/php-browser>
+--> ./Browser/Autoloader.php
+--> ./Browser/Browser.php
+--> ./Browser/Language.php
+--> ./Browser/OS.php
+
+* HIGHLIGHT V4 under the MIT license, copyright Johann Burkard <http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html>
+--> ./htdocs/js/jQuery/highlight-js.js
+
+* JQUERY 1.6.2 under the MIT license, copyright John Resig <http://jquery.org/license>,
+  including sizzle.js under the MIT license, copyright The Dojo Foundation <http://sizzlejs.com/>
+--> ./htdocs/js/jQuery/jquery-1.6.2.min.js
+
+* JQUERY LOCALSCROLL v1.2.7 under the MIT license, copyright Ariel Flesler <http://flesler.blogspot.com>
+--> ./htdocs/js/jQuery/jquery.localscroll-1.2.7-min.js
+
+* JQUERY SCROLLTO v1.4.2 under the MIT license, copyright Ariel Flesler <http://flesler.blogspot.com>
+--> ./htdocs/js/jQuery/jquery.scrollTo-1.4.3.1-min.js
+--> ./htdocs/js/jQuery/jquery.scrollTo-min.js
+
+* JQUERY REVEAL v1.0 under the MIT license, copyright ZURB <www.zurb.com>
+--> ./htdocs/js/jQuery/jquery.reveal.js
+
+* ZEROCLIPBOARD v1.0.7 under the LGPL license, copyright Joseph Huckaby 

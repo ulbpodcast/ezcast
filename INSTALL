@@ -1,0 +1,140 @@
+# How to install EZcast ?
+
+## Requirements
+
+In order to use EZrecorder, you need to install / enable several components:
+
+- Apache2
+- mySQL 
+- PHP5
+-- LIB SIMPLEXML for PHP5
+-- LIB CURL for PHP5
+-- MIB MYSQL for PHP5
+-- LIB APC for PHP5
+-- LIB LDAP for PHP5 
+- SSH
+- AT 
+- RSYNC
+
+
+## Detailed installation 
+
+1. Download the source code
+
+Open your terminal and call Git in command line to download the source code of EZcast
+
+2. Create a MySQL database
+
+Open your terminal and call mysql in command line to create a user and the database for EZadmin. 
+The database will be used to store users and courses for the EZcast components. 
+Make sure you have sufficient permissions to create a user and a database in MySQL. If you don’t, call your database administrator.
+
+Please refer to the following example to configure your database. Variables between ‘< >’ are explained here below. 
+
+```
+$ mysql –u <admin_user_name> –p
+Enter password :
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5340 to server version: 3.23.54
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+Mysql> CREATE USER ‘<ezcast_user_name>’ IDENTIFIED BY ‘<ezcast_password>’;
+
+mysql> CREATE DATABASE <database_name>;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> GRANT ALL PRIVILEGES ON <database_name>.* TO "<ezcast_user_name>"@"<host>"
+    -> IDENTIFIED BY "<ezcast_password>";
+Query OK, 0 rows affected (0.00 sec)
+ 
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.01 sec)
+
+Musql> EXIT
+Bye
+$
+```
+
+In the above example : 
+
+    * <admin_user_name> should be root or another high rank user
+    * ezcast or ezadmin are typical values for <ezcast_user_name>
+    * ezcast is a typical value for <database_name>
+    * <host> is usually localhost. If you do not know this value, consult your sysadmin. 
+    * Feel free to choose a safe password for <ezcast_user>
+
+Please keep in mind these values because you will be requested to enter them in a further step of the installation
+
+
+3. Move the EZcast directory
+
+Now you have to decide where you want to install EZcast and its components. We recommend you to install it under « /usr/local/ » directory. 
+
+```
+cd
+#change user to be root (may be ‘sudo’ depending on the distribution)
+su
+#following line creates the directories /usr/local/ if they don’t exist yet
+mkdir –p /usr/local/
+#moves the ezcast directory from current user’s home dir to /usr/local
+#change the following path if you want to install ezcast somewhere else
+mv ezcast /usr/local
+```
+
+4. Edit php.ini
+
+Since EZmanager allows you to submit your own video files, it may come handy to increase the max file size for upload.
+
+```
+# this depends on your distribution 
+vi /etc/php5/apache2/php.ini
+# change upload_max_filesize in the ‘File uploads’ section
+upload_max_filesize = 2000M 
+```
+
+5. Execute the ‘install.sh’ script for installing EZcast
+
+Go in the ezcast folder. Make sure the file ‘install.sh’ can be executed. Launch the ‘install.sh’ script as root and follow the instructions written on the screen.
+
+```
+<?php
+#change user to be root (may be ‘sudo’ depending on the distribution)
+su
+#move to the ezcast directory (change the path if you have installed ezcast somewhere else)
+cd /usr/local/ezcast
+#change permissions for install.sh
+chmod 755 install.sh
+#execute install.sh
+./install.sh
+```
+
+6. Configure EZcast
+
+You are now going to configure EZcast and its components. For this part of the installation, please open your favorite web browser.
+
+Go to the EZadmin webpage. At the first visit, you will be requested to enter some information required by EZcast to run. 
+
+```
+http://your.server.address/ezadmin
+``` 
+If you prefere to configure EZcast by editing the file manually, go to the EZcast folder. For each subdirectories (ezmanager / ezadmin / ezplayer / common), edit the ‘config-sample.inc’ file to match your configuration and rename it ‘config.inc’.
+
+EZcast is now partially installed. Before using it, please install EZrenderer, which is required to process the submitted movies. EZrenderer can be installed on the same machine or on a remote machine. The complete installation is described in [add location].
+You can also install EZrecorder which is the interface used to record in the classroom.
+
+Once EZrenderer has been installed, you can access the different interfaces using the following URL’s.
+
+```
+http://your.server.address/ezadmin
+http://your.server.address/ezmanager
+http://your.server.address/ezplayer
+``` 
+
+## About this document
+
+This document is written using [Markdown][] syntax, making it possible to
+provide usable information in both plain text and HTML format. Whenever
+modifying this document please use [Markdown][] syntax.
+
+[markdown]: http://www.daringfireball.net/projects/markdown

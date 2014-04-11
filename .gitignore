@@ -8,3 +8,7 @@
 **/renderers.inc
 **/var/**
 **/**/var/**
+/nbproject/private/
+/nbproject/**
+**/nbproject
+!/ezmanager/var/

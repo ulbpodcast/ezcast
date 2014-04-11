@@ -56,7 +56,7 @@ WARNING: Please call template_repository_path() BEFORE including this template
             var clippy;
             var ie_browser = false;
             
-            ZeroClipboard.setMoviePath( 'http://podcast.ulb.ac.be/ezplayerdev/swf/ZeroClipboard10.swf' );  
+            ZeroClipboard.setMoviePath( './swf/ZeroClipboard10.swf' );  
                               
             $(document).ready(function(){
                 $(".container").css("min-height", ($(window).height() - 100) + "px");

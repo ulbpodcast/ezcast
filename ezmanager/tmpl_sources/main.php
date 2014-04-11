@@ -51,7 +51,7 @@
              * Retrieves album header and displays it in div_album_header
              */
             var current_album = '<?php if (isset($_SESSION['podman_album'])) echo $_SESSION['podman_album']; ?>';
-            ZeroClipboard.setMoviePath('http://podcast.ulb.ac.be/ezmanager/swf/ZeroClipboard10.swf');
+            ZeroClipboard.setMoviePath('./swf/ZeroClipboard10.swf');
 
 
             // Links an instance of clipboard to its position in the rss pop-up
@@ -296,7 +296,7 @@ echo json_encode($valid_extensions);
 
 <?php if (isset($head_code)) echo $head_code; ?>
     </head>
-    <body onload="MM_preloadImages('images/page4/BCreerAlbum.png')">
+    <body>
         <div id="test"></div>
 
         <div class="container">

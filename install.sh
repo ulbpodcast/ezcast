@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 # EZCAST 
 #
@@ -23,6 +23,20 @@
 # License along with this software; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+#try to find fullpath of command if in path or returns default value
+cmd_path_find()
+{
+  COMMAND=$1
+  DEFAULT=$2
+  cmdpath=`which $1`
+  if [ "$?" -eq "0" ]; then 
+    RES=$cmdpath
+    return 0
+   else
+    RES=$DEFAULT  
+    return 0
+  fi
+}
 
 G='\033[32m\033[1m'
 R='\033[31m\033[1m'
@@ -63,7 +77,8 @@ then
     echo "*************************************************";
     echo "Verification for Apache2 ...";
     echo "*************************************************";
-    default_path="/usr/sbin/apachectl";  
+    cmd_path_find apachectl /usr/sbin/apachectl 
+    default_path=$RES
     echo "Please enter the path to 'apachectl' bin (with tailing 'apachectl'):";
     read -p "[default:$default_path]:" apachectl_path ;
     if [ "$apachectl_path" == "" ];
@@ -100,9 +115,11 @@ then
     read whatever;
     echo " ";
     echo "*************************************************";
-    echo "Verification for PHP5 ...";
+    echo "Verification for PHP ...";
     echo "*************************************************";
-    default_path="/usr/bin/php";
+    cmd_path_find php /usr/bin/php
+    default_path=$RES
+
     echo "Please enter the path to 'php' bin (with tailing 'php')";
     read -p "[default:$default_path]:" php_path ;
     if [ "$php_path" == "" ];
@@ -117,8 +134,8 @@ then
     fi;
     # Retry as long as PHP has not been found
     while [ $check -lt 1 ]; do
-        echo "If PHP5 is installed, please enter its path now (with tailing 'php')";
-        echo "otherwise, please enter 'exit' to quit this script and install PHP5";
+        echo "If PHP is installed, please enter its path now (with tailing 'php')";
+        echo "otherwise, please enter 'exit' to quit this script and install PHP";
         read php_path;
         if [ "$php_path" == "exit" ]; then exit; fi;
         if [ "$php_path" == "" ];
@@ -151,7 +168,7 @@ then
     read whatever;
     echo " ";
     echo "*************************************************";
-    echo "Verification of LDAP extension for PHP5 ...";
+    echo "Verification of LDAP extension for PHP ...";
     echo "*************************************************";
     echo "";
     echo "The script will now test if the ldap extension for PHP is enabled.";
@@ -160,16 +177,16 @@ then
     if [ "$choice" != "skip" ]; then
         check=$($php_path -r "echo (function_exists('ldap_connect'))? 'enabled' : 'disabled';");
         if [[ "$check" == "disabled" ]]; then
-            echo "${R}LDAP seems not to be enabled for PHP5.${N}";
+            echo "${R}LDAP seems not to be enabled for PHP.${N}";
             echo "Press [Enter] to quit this script or enter 'continue' to go to the";
             echo "next step anyway.";
             read choice;
             if [ "$choice" != "continue" ]; then exit; fi;
         fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}LDAP is enabled for PHP5${N}"; fi;
+        if [ "$choice" != "continue" ]; then echo -e "${G}LDAP is enabled for PHP${N}"; fi;
     fi;
     echo "*************************************************";
-    echo "Verification of CURL extension for PHP5 ...";
+    echo "Verification of CURL extension for PHP ...";
     echo "*************************************************";
     echo "";
     echo "The script will now test if the curl extension for PHP is enabled.";
@@ -178,16 +195,16 @@ then
     if [ "$choice" != "skip" ]; then
         check=$($php_path -r "echo (function_exists('curl_version'))? 'enabled' : 'disabled';");
         if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}CURL seems not to be enabled for PHP5.${N}";
+            echo -e "${R}CURL seems not to be enabled for PHP.${N}";
             echo "Press [Enter] to quit this script or enter 'continue' to go to the";
             echo "next step anyway.";
             read choice;
             if [ "$choice" != "continue" ]; then exit; fi;
         fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}CURL is enabled for PHP5${N}"; fi;
+        if [ "$choice" != "continue" ]; then echo -e "${G}CURL is enabled for PHP${N}"; fi;
     fi;
     echo "*************************************************";
-    echo "Verification of MySQL extension for PHP5 ...";
+    echo "Verification of MySQL extension for PHP ...";
     echo "*************************************************";
     echo "";
     echo "The script will now test if the MySQL extension for PHP is enabled.";
@@ -196,16 +213,16 @@ then
     if [ "$choice" != "skip" ]; then
         check=$($php_path -r "echo (function_exists('mysql_connect'))? 'enabled' : 'disabled';");
         if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}MySQL seems not to be enabled for PHP5.${N}";
+            echo -e "${R}MySQL seems not to be enabled for PHP.${N}";
             echo "Press [Enter] to quit this script or enter 'continue' to go to the";
             echo "next step anyway.";
             read choice;
             if [ "$choice" != "continue" ]; then exit; fi;
         fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}MySQL is enabled for PHP5${N}"; fi;
+        if [ "$choice" != "continue" ]; then echo -e "${G}MySQL is enabled for PHP${N}"; fi;
     fi;
     echo "*************************************************";
-    echo "Verification of APC extension for PHP5 ...";
+    echo "Verification of APC extension for PHP ...";
     echo "*************************************************";
     echo "";
     echo "The script will now test if the APC extension for PHP is enabled.";
@@ -214,16 +231,16 @@ then
     if [ "$choice" != "skip" ]; then
         check=$($php_path -r "echo (function_exists('apc_fetch'))? 'enabled' : 'disabled';");
         if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}APC seems not to be enabled for PHP5.${N}";
-            echo "Press [Enter] to quit this script or enter 'continue' to go to the";
-            echo "next step anyway.";
+            echo -e "${R}APC seems not to be enabled for PHP.${N} APC is not strictly neccessary but improves performance. It can also be replaced by PHP's OPCache";
+            echo "Press [Enter] to continue this script";
             read choice;
-            if [ "$choice" != "continue" ]; then exit; fi;
+            #if [ "$choice" != "continue" ]; then exit; fi;
+        else
+        if [ "$choice" != "continue" ]; then echo -e "${G}APC is enabled for PHP${N}"; fi;
         fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}APC is enabled for PHP5${N}"; fi;
     fi;
     echo "*************************************************";
-    echo "Verification of SimpleXML extension for PHP5 ...";
+    echo "Verification of SimpleXML extension for PHP ...";
     echo "*************************************************";
     echo "";
     echo "The script will now test if the SimpleXML extension for PHP is enabled.";
@@ -232,16 +249,16 @@ then
     if [ "$choice" != "skip" ]; then
         check=$($php_path -r "echo (function_exists('simplexml_load_file'))? 'enabled' : 'disabled';");
         if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}SimpleXML seems not to be enabled for PHP5.${N}";
+            echo -e "${R}SimpleXML seems not to be enabled for PHP.${N}";
             echo "Press [Enter] to quit this script or enter 'continue' to go to the";
             echo "next step anyway.";
             read choice;
             if [ "$choice" != "continue" ]; then exit; fi;
         fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}SimpleXML is enabled for PHP5${N}"; fi;
+        if [ "$choice" != "continue" ]; then echo -e "${G}SimpleXML is enabled for PHP${N}"; fi;
     fi;
     echo "*************************************************";
-    echo "Verification of JSON extension for PHP5 ...";
+    echo "Verification of JSON extension for PHP ...";
     echo "*************************************************";
     echo "";
     echo "The script will now test if the JSON extension for PHP is enabled.";
@@ -250,19 +267,20 @@ then
     if [ "$choice" != "skip" ]; then
         check=$($php_path -r "echo (function_exists('json_encode'))? 'enabled' : 'disabled';");
         if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}JSON seems not to be enabled for PHP5.${N}";
+            echo -e "${R}JSON seems not to be enabled for PHP.${N}";
             echo "Press [Enter] to quit this script or enter 'continue' to go to the";
             echo "next step anyway.";
             read choice;
             if [ "$choice" != "continue" ]; then exit; fi;
         fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}JSON is enabled for PHP5${N}"; fi;
+        if [ "$choice" != "continue" ]; then echo -e "${G}JSON is enabled for PHP${N}"; fi;
     fi;
     echo "*************************************************";
     echo "Verification for RSYNC ...";
     echo "*************************************************";
     check=1;
-    default_path="/usr/bin/rsync";
+    cmd_path_find rsync /usr/bin/rsync
+    default_path=$RES
     echo "Please enter the path to 'rsync' bin (with tailing 'rsync')";
     read -p "[default: $default_path]:" rsync_path ;
     if [ "$rsync_path" == "" ];
@@ -353,13 +371,14 @@ then
     read whatever;
 else 
     default_php_path="/usr/bin/php";
-    echo "Please, enter the path to PHP5 (with tailing 'php'):";
+    echo "Please, enter the path to PHP (with tailing 'php'):";
     read -p "[default: $default_php_path]" php_path;
     if [ "$php_path" == "" ] 
     then 
 	php_path=$default_php_path;
     fi;
-    default_rsync_path="/usr/bin/rsync";
+    cmd_path_find rsync /usr/bin/rsync 
+    default_rsync_path=$RES
     echo "Enter the path to RSYNC (with tailing 'rsync'):";
     read -p "[default: $default_rsync_path]" rsync_path;
     if [ "$rsync_path" == "" ] 
@@ -377,14 +396,22 @@ echo "or user preferences.";
 echo " ";
 ezcast_basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 echo "Please, enter the path to your webspace (DocumentRoot).";
-read webspace_directory;
+default_documentroot=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'DocumentRoot'|awk '{print $3}'`
+read -p "[default: $default_documentroot]:" webspace_directory ;
+
 echo "EZmanager, EZadmin and EZplayer web interfaces will be placed";
 echo "in subfolders of the $webspace_directory dir to be accessed";
 echo "via a web browser.";
 echo " ";
+default_apache_username=`ps -ef | grep httpd | grep -v grep | head -1 | awk '{print $1}'`
 echo "Please, enter the username for Apache.";
 echo "(typically 'www-data' or '_www')";
-read apache_username;
+    read -p "[default: $default_apache_username]:" apache_username ;
+    if [ "$apache_username" == "" ];
+    then
+        apache_username=$default_apache_username;
+    fi;
+
 echo "Please, enter the path where you want to put the video repository ";
 echo "and the working directories (with tailing '/').";
 echo "We recommend '/var/lib/' as the size of this directory will vary";

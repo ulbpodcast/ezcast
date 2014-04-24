@@ -5,66 +5,77 @@
 In order to use EZrecorder, you need to install / enable several components:
 
 - Apache2
-- mySQL 
-- PHP5
--- LIB SIMPLEXML for PHP5
--- LIB CURL for PHP5
--- MIB MYSQL for PHP5
--- LIB APC for PHP5
--- LIB LDAP for PHP5 
-- SSH
-- AT 
-- RSYNC
+- MySQL 5.x 
+- PHP5.3 ( or greater ) with following extensions activated:
+  -curl
+  -APC (for performance and upload progress bar PHP 5.3->5.4 )
+  -OPCache (for performance on PHP 5.5 )
+  -ldap
+  -pdo_mysql 
+- ssh (unix command, usually installed by default)
+- at (unix command, usually installed by default)
+- rsync (unix command, usually installed by default)
 
+## Quick Installation
+
+1. Download the latest available version of EZcast from our Git repository http://podcast.ulb.ac.be/...
+2. Create a MySQL database for EZcast on your server (grant all privileges on the database).
+3. Put the EZcast directory wherever you want on your server (we recommend to place it under « /usr/local/ezcast»)
+4. Edit the php.ini file to increase max file size upload.
+5. Launch the « install.sh » script as root from the EZcast directory and follow the instructions.
+6. Open the EZadmin page in your web browser for the configuration of EZcast and all of its components. This is a one-time operation
+`i.e :   http://my.server.address/ezadmin`
+#
 
 ## Detailed installation 
 
 1. Download the source code
 
 Open your terminal and call Git in command line to download the source code of EZcast
+root# cd <wherever you want to install ezcast>
+root# git clone http://podcast.ulb.ac.be/ezcast
 
 2. Create a MySQL database
 
 Open your terminal and call mysql in command line to create a user and the database for EZadmin. 
 The database will be used to store users and courses for the EZcast components. 
-Make sure you have sufficient permissions to create a user and a database in MySQL. If you don’t, call your database administrator.
+Make sure you have sufficient permissions to create a user and a database in MySQL. If you don't, call your database administrator.
 
-Please refer to the following example to configure your database. Variables between ‘< >’ are explained here below. 
+Please refer to the following example to configure your database. Variables between < > are explained here below. 
 
 ```
-$ mysql –u <admin_user_name> –p
+$ mysql -u root -p
 Enter password :
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 5340 to server version: 3.23.54
 
 Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
 
-Mysql> CREATE USER ‘<ezcast_user_name>’ IDENTIFIED BY ‘<ezcast_password>’;
+Mysql> CREATE USER <ezcast_user_name> IDENTIFIED BY <ezcast_password>;
 
 mysql> CREATE DATABASE <database_name>;
 Query OK, 1 row affected (0.00 sec)
 
-mysql> GRANT ALL PRIVILEGES ON <database_name>.* TO "<ezcast_user_name>"@"<host>"
-    -> IDENTIFIED BY "<ezcast_password>";
+mysql> GRANT ALL PRIVILEGES ON <database_name>.* TO "<ezcast_user_name>"@"<host>";
 Query OK, 0 rows affected (0.00 sec)
  
-mysql> FLUSH PRIVILEGES;
-Query OK, 0 rows affected (0.01 sec)
+mysql> create database ezcast;
+Query OK, 1 row affected (0.00 sec)
 
-Musql> EXIT
+
+Mysql> exit
 Bye
 $
 ```
 
 In the above example : 
 
-    * <admin_user_name> should be root or another high rank user
     * ezcast or ezadmin are typical values for <ezcast_user_name>
     * ezcast is a typical value for <database_name>
     * <host> is usually localhost. If you do not know this value, consult your sysadmin. 
     * Feel free to choose a safe password for <ezcast_user>
 
-Please keep in mind these values because you will be requested to enter them in a further step of the installation
+Please keep in mind these values (you will need them in a further step)
 
 
 3. Move the EZcast directory
@@ -73,7 +84,7 @@ Now you have to decide where you want to install EZcast and its components. We r
 
 ```
 cd
-#change user to be root (may be ‘sudo’ depending on the distribution)
+#change user to be root (alternatively, use 'sudo bash' depending on the distribution)
 su
 #following line creates the directories /usr/local/ if they don’t exist yet
 mkdir –p /usr/local/

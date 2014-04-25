@@ -25,6 +25,20 @@
 #DESCRIPTION: 	Generate templates in all available languages
 #AUTHOR:	Université libre de Bruxelles
 
+cmd_path_find()
+{
+  COMMAND=$1
+  DEFAULT=$2
+  cmdpath=`which $1`
+  if [ "$?" -eq "0" ]; then 
+    RES=$cmdpath
+    return 0
+   else
+    RES=$DEFAULT  
+    return 0
+  fi
+}
+
 G='\033[32m\033[1m'
 R='\033[31m\033[1m'
 N='\033[0m'
@@ -36,7 +50,9 @@ if [ "$#" -lt 3 ]; then
     exit 0;
 fi;
 
-default_path="/usr/bin/php";
+cmd_path_find php /usr/bin/php
+default_path=$RES;
+
 #php_path=$default_php_path;
 
 clear;

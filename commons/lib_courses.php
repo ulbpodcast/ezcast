@@ -43,7 +43,7 @@ function courses_list($netid) {
     global $db_login;
     global $db_prefix;
 
-    $db = db_open($db_host, $db_name, $db_login, $db_passwd);
+    $db = db_prepare($db_host, $db_name, $db_login, $db_passwd, $db_prefix);
     if (!$db) {
         debuglog("could not connect to sgbd:" . mysql_error());
         die;
@@ -54,23 +54,19 @@ function courses_list($netid) {
 
     if ($netid == "") {
         // retrieves all courses in the database
-        $sql = "SELECT DISTINCT course_code AS mnemonic, course_name AS label FROM " . $db_prefix . "courses ORDER BY course_code ASC";
-        $course_list = db_select($db, $sql);
+        $course_list = db_courses_list();
         $result = array();
         foreach ($course_list as $value)
             $result[$value['mnemonic']] = utf8_decode($value['mnemonic'] . '|' . $value['label']);
     } else {
         // retrieves all courses for a given netid
-        $sql = "SELECT DISTINCT " . $db_prefix . "courses.course_code AS mnemonic, " . $db_prefix . "courses.course_name AS label FROM " . $db_prefix . "courses, " . $db_prefix . "users_courses " .
-                "WHERE " . $db_prefix . "courses.course_code = " . $db_prefix . "users_courses.course_code " .
-                "AND " . $db_prefix . "users_courses.user_ID = '" . $netid . "' ORDER BY " . $db_prefix . "courses.course_code";
-        $course_list = db_select($db, $sql);
-
+        $course_list = db_user_courses_get($netid);
+        
         $result = array();
         foreach ($course_list as $value)
             $result[$value['mnemonic']] = utf8_decode($value['mnemonic'] . '|' . $value['label']);
     }
-    db_close($db);
+    db_close();
     return $result;
 }
 

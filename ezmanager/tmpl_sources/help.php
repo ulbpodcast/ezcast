@@ -33,6 +33,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
         <title>®podman_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
+        <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
         <link rel="stylesheet" type="text/css" href="css/styleHelp.css" />
         <script type="text/javascript" src="js/AppearDissapear.js"></script>
         <script type="text/javascript" src="js/hover.js"></script>
@@ -52,19 +53,18 @@
             }
         </script>
     </head>
-    <body onload="MM_preloadImages('images/page4/BCreerAlbum.png')">
+    <body>
         <div class="container">
+            <?php include_once 'tmpl/' . get_lang() . '/div_help_header.php'; ?>
             <div id="global">
 
-                <?php include_once 'tmpl/' . get_lang() . '/div_help_header.php'; ?>
                 <div id="Bloc-ensemble">
                     <?php include_once 'tmpl/' . get_lang() . '/div_help_content.php'; ?>
                 </div>
-
-                <!-- FOOTER - INFOS COPYRIGHT -->
-                <?php include_once 'tmpl/' . get_lang() . '/div_main_footer.php'; ?>
-                <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
             </div>
+            <!-- FOOTER - INFOS COPYRIGHT -->
+            <?php include_once 'tmpl/' . get_lang() . '/div_main_footer.php'; ?>
+            <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
         </div><!-- Container fin -->
     </body>
 </html>

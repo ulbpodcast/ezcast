@@ -2,7 +2,7 @@
     <h2>Aide à l'utilisation d'EZplayer</h2>
     <p>Ce tutoriel a pour objectif de vous permettre d’utiliser les fonctionnalités essentielles de l’interface 
         de visualisation des podcasts “EZplayer” et de pouvoir créer et gérer une liste de signets pour chacune des vidéos.</p>
-    <p>Si vous ne trouvez pas l'aide que vous recherchez, contactez : <a href="mailto:podcast.tech@ulb.ac.be">podcast.tech@ulb.ac.be</a></p>
+    <p>Si vous ne trouvez pas l'aide que vous recherchez, contactez : <a href="mailto:<?php global $mailto_alert; echo $mailto_alert; ?>"><?php echo $mailto_alert; ?></a></p>
     <p>Ce tutoriel existe au format .pdf ; vous pouvez le télécharger dans l'espace étudiants du site 
         "<a href="http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf">ULB Podcast</a>"</p>
     <ul id="topics">

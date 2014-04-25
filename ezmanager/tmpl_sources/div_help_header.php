@@ -23,13 +23,10 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 
-<div id="BarreSup">
-<!-- bouton Aide et déconnexion -->
-    <div class="infoAide">
-        <p></p>
+<div class="header">
+    <div class="header_content">
+        <div class="logo"> 
+            <a href="index.php"><img src="./images/Generale/EZmanager.png" alt="" /></a>
+        </div>
     </div>
 </div>
-<!-- bouton Aide et déconnexion [Fin] -->
-
-
-<div id="logo"><a href="http://podcast.ulb.ac.be/" target="_blank"><img src="images/page4/LogoPodcast.png" /></a><a href="http://www.ulb.ac.be/" target="_blank"><img src="images/page4/UlbLogo.png" /></a> </div>

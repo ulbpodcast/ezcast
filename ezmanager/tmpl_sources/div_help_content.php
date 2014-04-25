@@ -31,7 +31,7 @@
       <h1>Aide - Utilisation &quot;EZcast EZmanager&quot;</h1>
       <p>&nbsp;</p>
 
-      <p>Ce tutoriel a pour objectif de vous permettre d’utiliser les fonctionnalités essentielles de l’interface de gestion des podcasts, de pouvoir publier vos productions ainsi que de répondre à vos questions. Si vous ne trouvez pas la réponse, contactez : <a href="mailto:podcast@ulb.ac.be">podcast@ulb.ac.be</a></p>
+      <p>Ce tutoriel a pour objectif de vous permettre d’utiliser les fonctionnalités essentielles de l’interface de gestion des podcasts, de pouvoir publier vos productions ainsi que de répondre à vos questions. Si vous ne trouvez pas la réponse, contactez : <a href="mailto:<?php global $mailto_alert; echo $mailto_alert; ?>"><?php echo $mailto_alert; ?></a></p>
       <p><br />
         Ce tutoriel existe au format .pdf ; vous pouvez le télécharger dans l'<em>Espace enseignant</em>s du site &quot;<a href="http://podcast.ulb.ac.be" target="_blank">ULB Podcast</a>&quot;.</p>
 <p>&nbsp;</p>

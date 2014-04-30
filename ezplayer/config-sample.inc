@@ -42,4 +42,6 @@ $accepted_media_types = array('cam', 'slide');    // Media types accepted by the
 $template_folder = 'tmpl/';
 $ezplayer_logs = $basedir . '/ezplayer/ezplayer.log';
 
+$valid_extensions = array('xml'); // accepted extensions for imported bookmarks
+
 ?>

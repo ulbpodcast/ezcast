@@ -80,7 +80,7 @@ function acl_update_permissions_list() {
         foreach ($courses_list_for_author as $key => $title){
             if (!ezmam_album_exists("$key-pub")) unset ($courses_list_for_author[$key]);
         }
-        $album_tokens_list = user_prefs_tokenlist_get($_SESSION['user_login']);
+        $album_tokens_list = user_prefs_tokens_get($_SESSION['user_login']);
         foreach ($album_tokens_list as $album_token) {
             $consulted_albums[] = $album_token['album'];
             $global_count[$album_token['album']] = ezmam_asset_count($album_token['album']);

@@ -50,7 +50,7 @@
                     <li>
                         <input style="float: left;" type="checkbox" name="import_selection[]" value="<?php echo $index ?>"/>
                         <?php if (($_SESSION['target'] == 'custom' && user_prefs_asset_bookmark_exists($_SESSION['user_login'], $bookmark['album'], $bookmark['asset'], $bookmark['timecode']))
-                                || ($_SESSION['target'] == 'official' && toc_bookmark_exists($bookmark['album'], $bookmark['asset'], $bookmark['timecode']))) {
+                                || ($_SESSION['target'] == 'official' && toc_asset_bookmark_exists($bookmark['album'], $bookmark['asset'], $bookmark['timecode']))) {
                             ?>
 
                             <div style="display: inline-block; width: 457px; padding-left: 8px; color:#ff0000;">
@@ -62,7 +62,7 @@
                                     <div class="tip"><b class="green-title">®Replace® :</b>
                                         <?php
                                         if ($_SESSION['target'] == 'official') {
-                                            $personal_bookmark = toc_bookmark_get($bookmark['album'], $bookmark['asset'], $bookmark['timecode']);
+                                            $personal_bookmark = toc_asset_bookmark_get($bookmark['album'], $bookmark['asset'], $bookmark['timecode']);
                                         } else {
                                             $personal_bookmark = user_prefs_asset_bookmark_get($_SESSION['user_login'], $bookmark['album'], $bookmark['asset'], $bookmark['timecode']);
                                         }

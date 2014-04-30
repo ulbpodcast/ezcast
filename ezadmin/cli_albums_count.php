@@ -29,7 +29,7 @@
  */
 
 require_once 'config.inc';
-require_once 'lib_database.php';
+require_once '../commons/lib_database.php';
 
 $dircontent = scandir($repository_path);
 

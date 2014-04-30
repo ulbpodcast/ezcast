@@ -34,7 +34,7 @@ include_once 'lib_ezmam.php';
  * @param type $album the name of the album 
  * @return the list of bookmarks for a given album; false if an error occurs
  */
-function toc_album_bookmarklist_get($album) {
+function toc_album_bookmarks_list_get($album) {
     // Sanity check
 
     if (!ezmam_album_exists($album))
@@ -67,8 +67,8 @@ function toc_album_bookmarklist_get($album) {
  * @return boolean|array the list of bookmarks related to the given asset, 
  * false if an error occurs
  */
-function toc_asset_bookmarklist_get($album, $asset) {
-    $assoc_album_bookmarks = toc_album_bookmarklist_get($album);
+function toc_asset_bookmark_list_get($album, $asset) {
+    $assoc_album_bookmarks = toc_album_bookmarks_list_get($album);
     if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false)
         return false;
 
@@ -94,16 +94,16 @@ function toc_asset_bookmarklist_get($album, $asset) {
  * @param type $selection a selection of indexes in the bookmark list
  * @return boolean|array the list of selected bookmarks; false if an error occurs
  */
-function toc_selected_bookmarks_get($album, $asset, $selection) {
+function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
     $bookmarks_list;
     $selected_bookmarks = array();
 
     if (!isset($album) || $album == '')
         return false;
     if (!isset($asset) || $asset == '') {
-        $bookmarks_list = toc_album_bookmarklist_get($album);
+        $bookmarks_list = toc_album_bookmarks_list_get($album);
     } else {
-        $bookmarks_list = toc_asset_bookmarklist_get($album, $asset);
+        $bookmarks_list = toc_asset_bookmark_list_get($album, $asset);
     }
     if (count($bookmarks_list) > 0) {
         $min_index = 0;
@@ -126,8 +126,8 @@ function toc_selected_bookmarks_get($album, $asset, $selection) {
  * @param type $timecode the timecode of the bookmark
  * @return boolean true if the bookmark exists; false otherwise
  */
-function toc_bookmark_exists($album, $asset, $timecode) {
-    $assoc_asset_bookmarks = toc_album_bookmarklist_get($album);
+function toc_asset_bookmark_exists($album, $asset, $timecode) {
+    $assoc_asset_bookmarks = toc_album_bookmarks_list_get($album);
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['asset'] == $asset
                 && $bookmark['timecode'] == $timecode) {
@@ -144,8 +144,8 @@ function toc_bookmark_exists($album, $asset, $timecode) {
  * @param type $timecode the timecode of the bookmark
  * @return the bookmark if it exists; false otherwise
  */
-function toc_bookmark_get($album, $asset, $timecode) {
-    $assoc_asset_bookmarks = toc_album_bookmarklist_get($album);
+function toc_asset_bookmark_get($album, $asset, $timecode) {
+    $assoc_asset_bookmarks = toc_album_bookmarks_list_get($album);
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['asset'] == $asset
                 && $bookmark['timecode'] == $timecode) {
@@ -153,6 +153,22 @@ function toc_bookmark_get($album, $asset, $timecode) {
         }
     }
     return false;
+}
+
+/**
+ * Moves all bookmarks of an asset from the public to the private album and reverse.
+ * @param type $album
+ * @param type $asset
+ */
+function toc_album_bookmarks_swap($album, $asset){
+        $bookmarks = toc_asset_bookmark_list_get($album, $asset);
+        toc_asset_bookmarks_delete_all($album, $asset);
+        $album = suffix_replace($album);
+        $count = count($bookmarks);
+        for ($index = 0; $index < $count; $index++){
+            $bookmarks[$index]['album'] = $album;
+        }
+        toc_album_bookmarks_add($bookmarks);    
 }
 
 /**
@@ -167,7 +183,7 @@ function toc_bookmark_get($album, $asset, $timecode) {
  * @return boolean true if the bookmark has been added to the table of contents;
  * false otherwise
  */
-function toc_bookmark_add($album, $asset, $timecode, $title = '', $description = '', $keywords = '', $level = '1', $type = '') {
+function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $description = '', $keywords = '', $level = '1', $type = '') {
     // Sanity check
 
     if (!ezmam_album_exists($album))
@@ -188,10 +204,10 @@ function toc_bookmark_add($album, $asset, $timecode, $title = '', $description =
     // set user's file path
     $toc_path = $toc_path . '/' . $album;
     // remove the previous same bookmark if it existed yet
-    toc_bookmark_remove($album, $asset, $timecode);
+    toc_asset_bookmark_delete($album, $asset, $timecode);
 
     // Get the bookmarks list
-    $bookmarks_list = toc_album_bookmarklist_get($album);
+    $bookmarks_list = toc_album_bookmarks_list_get($album);
     $count = count($bookmarks_list);
     $index = 0;
 
@@ -244,7 +260,7 @@ function toc_bookmark_add($album, $asset, $timecode, $title = '', $description =
  * @param type $bookmarks an array of bookmarks
  * @return boolean true if the bookmarks have been added; false otherwise
  */
-function toc_bookmarks_add($bookmarks) {
+function toc_album_bookmarks_add($bookmarks) {
     // Sanity check
     if (!isset($bookmarks) || count($bookmarks) == 0)
         return false;
@@ -263,7 +279,7 @@ function toc_bookmarks_add($bookmarks) {
     $toc_path = $toc_path . '/' . $album;
 
     // Get the bookmarks list
-    $bookmarks_list = toc_album_bookmarklist_get($album);
+    $bookmarks_list = toc_album_bookmarks_list_get($album);
 
     if (!isset($bookmarks_list) || $bookmarks_list == false)
         $bookmarks_list = array();
@@ -325,7 +341,7 @@ function toc_bookmarks_add($bookmarks) {
  * @param type $timecode the timecode of the bookmark
  * @return an array of bookmarks if the bookmark has been deleted; false otherwise
  */
-function toc_bookmark_remove($album, $asset, $timecode) {
+function toc_asset_bookmark_delete($album, $asset, $timecode) {
     // Sanity check
     if (!ezmam_album_exists($album))
         return false;
@@ -342,12 +358,12 @@ function toc_bookmark_remove($album, $asset, $timecode) {
     // set user's file path
     $toc_path = $toc_path . '/' . $album;
 
-    if (toc_bookmark_exists($album, $asset, $timecode)) {
-        $bookmarks_list = toc_album_bookmarklist_get($album);
+    if (toc_asset_bookmark_exists($album, $asset, $timecode)) {
+        $bookmarks_list = toc_album_bookmarks_list_get($album);
 
         // if it is the last bookmark in the file, the file is deleted
         if (count($bookmarks_list) == 1) {
-            return toc_bookmarklist_delete($album);
+            return toc_album_bookmarks_delete_all($album);
         }
         foreach ($bookmarks_list as $index => $bookmark) {
             if ($bookmark['asset'] == $asset
@@ -360,7 +376,12 @@ function toc_bookmark_remove($album, $asset, $timecode) {
     }
 }
 
-function toc_bookmarks_remove($bookmarks) {
+/**
+ * Deletes a selection of bookmarks in the official bookmarks file
+ * @param type $bookmarks
+ * @return boolean
+ */
+function toc_album_bookmarks_delete($bookmarks) {
     // Sanity check
     if (!isset($bookmarks) || count($bookmarks) == 0)
         return false;
@@ -379,7 +400,7 @@ function toc_bookmarks_remove($bookmarks) {
     // set user's file path
     $toc_path = $toc_path . '/' . $album;
 
-    $bookmarks_list = toc_album_bookmarklist_get($album);
+    $bookmarks_list = toc_album_bookmarks_list_get($album);
 
     foreach ($bookmarks as $bookmark) {
         if ($bookmark['album'] == $album
@@ -396,7 +417,7 @@ function toc_bookmarks_remove($bookmarks) {
     }
 
     if (count($bookmarks_list) == 0) {
-        return toc_bookmarklist_delete($album);
+        return toc_album_bookmarks_delete_all($album);
     } else {
         return assoc_array2xml_file($bookmarks_list, $toc_path . "/_bookmarks.xml", "bookmarks", "bookmark");
     }
@@ -408,7 +429,7 @@ function toc_bookmarks_remove($bookmarks) {
  * @param type $asset the asset we want to remove bookmarks from
  * @return an array of bookmarks if the bookmarks have been deleted; false otherwise
  */
-function toc_bookmarklist_remove($album, $asset) {
+function toc_asset_bookmarks_delete_all($album, $asset) {
     // Sanity check
 
     if (!ezmam_album_exists($album))
@@ -423,7 +444,7 @@ function toc_bookmarklist_remove($album, $asset) {
     // set user's file path
     $toc_path = $toc_path . '/' . $album;
 
-    $bookmarks_list = toc_album_bookmarklist_get($album);
+    $bookmarks_list = toc_album_bookmarks_list_get($album);
     foreach ($bookmarks_list as $index => $bookmark) {
         if ($bookmark['asset'] == $asset) {
             unset($bookmarks_list[$index]);
@@ -431,7 +452,7 @@ function toc_bookmarklist_remove($album, $asset) {
     }
     // if there is no bookmark anymore, the file is deleted
     if (count($bookmarks_list) == 0) {
-        return toc_bookmarklist_delete($album);
+        return toc_album_bookmarks_delete_all($album);
     }
     return assoc_array2xml_file($bookmarks_list, $toc_path . "/_bookmarks.xml", "bookmarks", "bookmark");
 }
@@ -441,7 +462,7 @@ function toc_bookmarklist_remove($album, $asset) {
  * @param type $album the album containing bookmarks
  * @return boolean true if the file has been deleted; false otherwise
  */
-function toc_bookmarklist_delete($album) {
+function toc_album_bookmarks_delete_all($album) {
     // Sanity check
 
     if (!ezmam_album_exists($album))
@@ -509,7 +530,7 @@ function simple_assoc_array2xml_file($assoc_array, $file_path, $global) {
  * @param type $each each item of the xml file
  * @return boolean
  */
-function assoc_array2xml_file($array, $file_path, $global, $each) {
+function assoc_array2xml_file($array, $file_path, $global = 'bookmarks', $each = 'bookmark') {
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
     $xml = new SimpleXMLElement($xmlstr);
     foreach ($array as $assoc_array) {
@@ -532,7 +553,7 @@ function assoc_array2xml_file($array, $file_path, $global, $each) {
  * @param type $array the list of album tokens
  * @return boolean
  */
-function assoc_array2xml_string($array, $global, $each) {
+function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark') {
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
     $xml = new SimpleXMLElement($xmlstr);
     foreach ($array as $assoc_array) {
@@ -543,7 +564,7 @@ function assoc_array2xml_string($array, $global, $each) {
     }
 
     $xml_txt = $xml->asXML();
-    return $xml_txt;
+    return trim($xml_txt);
 }
 
 ?>

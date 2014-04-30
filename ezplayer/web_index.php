@@ -169,27 +169,27 @@ function load_page() {
             break;
 
         case 'search_bookmark':
-            search_bookmark();
+            bookmarks_search();
             break;
 
         case 'sort_asset_bookmark':
-            sort_asset_bookmark();
+            bookmarks_sort();
             break;
 
         case 'add_asset_bookmark':
-            add_asset_bookmark();
+            bookmark_add();
             break;
 
         case 'copy_bookmark':
-            copy_bookmark();
+            bookmark_copy();
             break;
 
         case 'remove_asset_bookmark':
-            remove_asset_bookmark();
+            bookmark_delete();
             break;
 
         case 'remove_asset_bookmarks':
-            remove_asset_bookmarks();
+            bookmarks_delete_all();
             break;
 
         case 'view_import':
@@ -197,35 +197,35 @@ function load_page() {
             break;
 
         case 'upload_bookmarks':
-            upload_bookmarks();
+            bookmarks_upload();
             break;
 
         case 'import_bookmarks':
-            import_bookmarks();
+            bookmarks_import();
             break;
 
         case 'export_bookmarks':
-            export_bookmarks();
+            bookmarks_export();
             break;
 
         case 'export_album_bookmarks':
-            export_all_bookmarks();
+            bookmarks_export_all();
             break;
 
         case 'export_asset_bookmarks':
-            export_all_bookmarks(true);
+            bookmarks_export_all(true);
             break;
 
         case 'delete_bookmarks':
-            delete_bookmarks();
+            bookmarks_delete();
             break;
 
         case 'move_album_token':
-            move_album_token();
+            album_token_move();
             break;
 
         case 'delete_album_token':
-            delete_album_token();
+            album_token_delete();
             break;
         // No action selected: we choose to display the homepage again
         default:
@@ -474,7 +474,7 @@ function view_album_assets($refresh_center = true) {
     //    
     $album_name = get_album_title($album);
     $album_token = array('title' => $album_name, 'album' => $album, 'token' => $token);
-    if (!array_token_contains($_SESSION['acl_album_tokens'], $album_token)) {
+    if (!token_array_contains($_SESSION['acl_album_tokens'], $album_token)) {
         if (acl_user_is_logged()) {
             // logged user : consulted albums are stored in file
             user_prefs_token_add($_SESSION['user_login'], $album, $album_name, $token);
@@ -488,7 +488,7 @@ function view_album_assets($refresh_center = true) {
 
     if (acl_user_is_logged()) {
         // bookmarks to display in 'div_side_assets.php'
-        $album_bookmarks = user_prefs_album_bookmarklist_get($_SESSION['user_login'], $album);
+        $album_bookmarks = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
         // sorts the bookmarks following user's prefs
         $order = acl_value_get("bookmarks_order");
         if (isset($order) && $order != '' && $order != $default_bookmarks_order) {
@@ -497,7 +497,7 @@ function view_album_assets($refresh_center = true) {
     }
 
     // 4) table of contents to display in 'div_side_assets.php'
-    $toc_bookmarks = toc_album_bookmarklist_get($album);
+    $toc_bookmarks = toc_album_bookmarks_list_get($album);
     // sorts the bookmarks following user's prefs
     $order = acl_value_get("toc_order");
     if (isset($order) && $order != '' && $order != $default_toc_order) {
@@ -635,7 +635,7 @@ function view_asset_details($refresh_center = true) {
 
     if ($is_bookmark) {
         // loads all bookmarks for the selected asset (displayed in 'div_side_details.php')
-        $asset_bookmarks = user_prefs_asset_bookmarklist_get($_SESSION['user_login'], $album, $asset);
+        $asset_bookmarks = user_prefs_asset_bookmarks_list_get($_SESSION['user_login'], $album, $asset);
         // sorts the bookmarks following user's prefs
         $order = acl_value_get("bookmarks_order");
         if (isset($order) && $order != '' && $order != $default_bookmarks_order) {
@@ -644,7 +644,7 @@ function view_asset_details($refresh_center = true) {
     }
 
     // loads the table of contents for the selected asset (displayed in 'div_side_details.php')
-    $toc_bookmarks = toc_asset_bookmarklist_get($album, $asset);
+    $toc_bookmarks = toc_asset_bookmark_list_get($album, $asset);
     // sorts the bookmarks following user's prefs
     $order = acl_value_get("toc_order");
     if (isset($order) && $order != '' && $order != $default_toc_order) {
@@ -803,7 +803,7 @@ function view_asset_bookmark($refresh_center = true) {
 
     // user is logged and has acces to the selected album
     if ($is_bookmark) {
-        $asset_bookmarks = user_prefs_asset_bookmarklist_get($_SESSION['user_login'], $album, $asset);
+        $asset_bookmarks = user_prefs_asset_bookmarks_list_get($_SESSION['user_login'], $album, $asset);
         // sorts the bookmarks following user's prefs
         $order = acl_value_get("bookmarks_order");
         if (isset($order) && $order != '' && $order != $default_bookmarks_order) {
@@ -811,7 +811,7 @@ function view_asset_bookmark($refresh_center = true) {
         }
     }
 
-    $toc_bookmarks = toc_asset_bookmarklist_get($album, $asset);
+    $toc_bookmarks = toc_asset_bookmark_list_get($album, $asset);
     // sorts the bookmarks following user's prefs
     $order = acl_value_get("toc_order");
     if (isset($order) && $order != '' && $order != $default_toc_order) {
@@ -843,7 +843,7 @@ function view_asset_bookmark($refresh_center = true) {
  * @global type $user_files_path
  * @global type $words 
  */
-function search_bookmark() {
+function bookmarks_search() {
     global $input;
     global $bookmarks;
     global $bookmarks_toc;
@@ -881,10 +881,10 @@ function search_bookmark() {
 
     // bookmarks to display in 'div_search_result.php'
     if (in_array('official', $tab)) {
-        $bookmarks_toc = user_prefs_bookmark_search($_SESSION['user_login'], $search, $target, $albums, $fields, $level, 'official');
+        $bookmarks_toc = user_prefs_bookmarks_search($_SESSION['user_login'], $search, $target, $albums, $fields, $level, 'official');
     }
     if (in_array('custom', $tab)) {
-        $bookmarks = user_prefs_bookmark_search($_SESSION['user_login'], $search, $target, $albums, $fields, $level);
+        $bookmarks = user_prefs_bookmarks_search($_SESSION['user_login'], $search, $target, $albums, $fields, $level);
     }
 
     include_once template_getpath('div_search_result.php');
@@ -914,7 +914,7 @@ function view_import() {
  * @global type $album
  * @global type $asset
  */
-function upload_bookmarks() {
+function bookmarks_upload() {
     global $imported_bookmarks;
     global $repository_path;
     global $user_files_path;
@@ -990,7 +990,7 @@ function upload_bookmarks() {
  * @global type $user_files_path
  * @global type $repository_path
  */
-function import_bookmarks() {
+function bookmarks_import() {
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -1012,10 +1012,10 @@ function import_bookmarks() {
 
     if ($target == 'official') {
         if (acl_has_album_moderation($album)) { // authorization check
-            toc_bookmarks_add($selected_bookmarks);
+            toc_album_bookmarks_add($selected_bookmarks);
         }
     } else {
-        user_prefs_bookmarks_add($_SESSION['user_login'], $selected_bookmarks);
+        user_prefs_album_bookmarks_add($_SESSION['user_login'], $selected_bookmarks);
     }
 
     log_append('import_bookmarks: bookmarks added to the album ' . $album);
@@ -1035,7 +1035,7 @@ function import_bookmarks() {
  * @global type $user_files_path
  * @global type $repository_path
  */
-function export_bookmarks() {
+function bookmarks_export() {
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -1061,9 +1061,9 @@ function export_bookmarks() {
 
     // download popup
     if ($target == 'official') { // bookmarks from the table of contents
-        $bookmarks = toc_selected_bookmarks_get($album, $asset, $selection);
+        $bookmarks = toc_asset_bookmarks_selection_get($album, $asset, $selection);
     } else { // personal bookmarks
-        $bookmarks = user_prefs_selected_bookmarks_get($_SESSION['user_login'], $album, $asset, $selection);
+        $bookmarks = user_prefs_asset_bookmarks_selection_get($_SESSION['user_login'], $album, $asset, $selection);
     }
     header("Cache-Control: public");
     header("Content-Description: File Transfer");
@@ -1092,7 +1092,7 @@ function export_bookmarks() {
  * @param type $export_asset false if all album's bookmarks must be exported;
  * true if only specified asset's bookmarks must be exported
  */
-function export_all_bookmarks($export_asset = false) {
+function bookmarks_export_all($export_asset = false) {
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -1115,9 +1115,9 @@ function export_all_bookmarks($export_asset = false) {
 
     // download popup
     if ($export_asset) {
-        $bookmarks = user_prefs_asset_bookmarklist_get($_SESSION['user_login'], $album, $asset);
+        $bookmarks = user_prefs_asset_bookmarks_list_get($_SESSION['user_login'], $album, $asset);
     } else {
-        $bookmarks = user_prefs_album_bookmarklist_get($_SESSION['user_login'], $album);
+        $bookmarks = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
     }
     header("Cache-Control: public");
     header("Content-Description: File Transfer");
@@ -1144,7 +1144,7 @@ function export_all_bookmarks($export_asset = false) {
  * @global type $user_files_path
  * @global type $repository_path
  */
-function delete_bookmarks() {
+function bookmarks_delete() {
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -1160,17 +1160,17 @@ function delete_bookmarks() {
 
     // get bookmarks to be deleted
     if ($target == 'official') { // from table of contents
-        $bookmarks = toc_selected_bookmarks_get($album, $asset, $selection);
+        $bookmarks = toc_asset_bookmarks_selection_get($album, $asset, $selection);
     } else { // from personal bookmarks
-        $bookmarks = user_prefs_selected_bookmarks_get($_SESSION['user_login'], $album, $asset, $selection);
+        $bookmarks = user_prefs_asset_bookmarks_selection_get($_SESSION['user_login'], $album, $asset, $selection);
     }
 
     if ($target == 'official') {
         if (acl_has_album_moderation($album)) {
-            toc_bookmarks_remove($bookmarks);
+            toc_album_bookmarks_delete($bookmarks);
         }
     } else {
-        user_prefs_bookmarks_remove($_SESSION['user_login'], $bookmarks);
+        user_prefs_album_bookmarks_delete($_SESSION['user_login'], $bookmarks);
     }
 
     log_append('delete_bookmarks: ' . count($selection) . ' bookmarks deleted from the album ' . $album);
@@ -1189,7 +1189,7 @@ function delete_bookmarks() {
  * @global type $repository_path
  * @global type $user_files_path
  */
-function add_asset_bookmark() {
+function bookmark_add() {
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -1220,10 +1220,10 @@ function add_asset_bookmark() {
     user_prefs_repository_path($user_files_path);
 
     if ($bookmark_source == 'custom') { // personal bookmarks
-        user_prefs_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level, $bookmark_type);
+        user_prefs_asset_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level, $bookmark_type);
     } else { // table of contents
         if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
-            toc_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level, $bookmark_type);
+            toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level, $bookmark_type);
         }
     }
     log_append('add_asset_bookmark', 'bookmark added : album -' . $bookmark_album . PHP_EOL .
@@ -1240,7 +1240,7 @@ function add_asset_bookmark() {
  * @global type $user_files_path
  * @global type $tab
  */
-function copy_bookmark() {
+function bookmark_copy() {
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -1259,14 +1259,14 @@ function copy_bookmark() {
     user_prefs_repository_path($user_files_path);
 
     if ($input['tab'] == 'official') { // copies from table of contents to personal bookmarks
-        user_prefs_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
+        user_prefs_asset_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
 
         log_append('copy_bookmark', 'bookmark copied from official to personal : album -' . $bookmark_album .
                 ' asset - ' . $bookmark_asset .
                 ' timecode - ' . $bookmark_timecode);
     } else { // copies from personal bookmarks to table of contents 
         if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
-            toc_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
+            toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
 
             log_append('copy_bookmark', 'bookmark copied from personal to official : album -' . $bookmark_album .
                     ' asset - ' . $bookmark_asset .
@@ -1288,7 +1288,7 @@ function copy_bookmark() {
  * @global type $user_files_path
  * @global type $repository_path
  */
-function remove_asset_bookmarks() {
+function bookmarks_delete_all() {
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -1299,7 +1299,7 @@ function remove_asset_bookmarks() {
     $album = $input['album'];
     $asset = $input['asset'];
 
-    $bookmarks = user_prefs_bookmarklist_remove($_SESSION['user_login'], $album, $asset);
+    $bookmarks = user_prefs_asset_bookmarks_delete($_SESSION['user_login'], $album, $asset);
 
     log_append('remove_asset_bookmarks: all bookmarks deleted from the asset ' . $asset . ' in the album ' . $album);
 
@@ -1315,7 +1315,7 @@ function remove_asset_bookmarks() {
  * @global type $repository_path
  * @global type $user_files_path
  */
-function remove_asset_bookmark() {
+function bookmark_delete() {
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -1329,10 +1329,10 @@ function remove_asset_bookmark() {
     user_prefs_repository_path($user_files_path);
 
     if ($input['tab'] == 'custom') { // remove from personal bookmarks
-        user_prefs_bookmark_remove($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode);
+        user_prefs_asset_bookmark_delete($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode);
     } else { // removes from table of contents
         if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
-            toc_bookmark_remove($bookmark_album, $bookmark_asset, $bookmark_timecode);
+            toc_asset_bookmark_delete($bookmark_album, $bookmark_asset, $bookmark_timecode);
         }
     }
 
@@ -1348,7 +1348,13 @@ function remove_asset_bookmark() {
     }
 }
 
-function sort_asset_bookmark() {
+/**
+ * Defines user's preferences on how bookmarks should be ordered in the web interface
+ * @global type $input
+ * @global type $repository_path
+ * @global type $user_files_path
+ */
+function bookmarks_sort() {
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -1385,7 +1391,7 @@ function sort_asset_bookmark() {
  * @global type $repository_path
  * @global type $user_files_path
  */
-function delete_album_token() {
+function album_token_delete() {
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -1397,7 +1403,7 @@ function delete_album_token() {
     user_prefs_repository_path($user_files_path);
 
     user_prefs_token_remove($_SESSION['user_login'], $album);
-    user_prefs_bookmarklist_delete($_SESSION['user_login'], $album);
+    user_prefs_album_bookmarks_delete_all($_SESSION['user_login'], $album);
     acl_update_permissions_list();
     log_append('delete_album_token', 'album token removed : album -' . $album);
 
@@ -1410,7 +1416,7 @@ function delete_album_token() {
  * @global type $repository_path
  * @global type $user_files_path
  */
-function move_album_token() {
+function album_token_move() {
     global $input;
     global $repository_path;
     global $user_files_path;

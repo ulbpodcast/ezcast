@@ -119,12 +119,12 @@ else {
 
         // The user selected an album to create. We now create the two albums (-pub and -priv) they want
         case 'create_album':
-            create_album();
+            album_create();
             break;
 
         // The user chose to delete an album.
         case 'delete_album':
-            delete_album();
+            album_delete();
             break;
 
         // reset rss token
@@ -147,7 +147,7 @@ else {
 
         // users has filled in the edit album form and has confirmed
         case 'edit_album':
-            edit_album();
+            album_edit();
             break;
 
         //user has filled in the upload form, we need to handle the data.
@@ -161,25 +161,25 @@ else {
             break;
 
         case 'edit_asset':
-            edit_asset();
+            asset_edit();
             break;
 
         case 'delete_asset':
-            delete_asset();
+            asset_delete();
             break;
 
         case 'move_asset':
-            move_asset();
+            asset_move();
             break;
 
         //move asset from album -priv to -pub
         case 'publish_asset':
-            publish_unpublish_asset('publish');
+            asset_publish_unpublish('publish');
             break;
 
         //move asset from album -pub to -priv
         case 'unpublish_asset':
-            publish_unpublish_asset('unpublish');
+            asset_publish_unpublish('unpublish');
             break;
 
         // Returning the content to display in a popup
@@ -650,7 +650,7 @@ function user_logout() {
  * @global type $dir_date_format
  * @global type $default_intro 
  */
-function create_album() {
+function album_create() {
     global $input;
     global $ezmanager_url;
     global $repository_path;
@@ -712,7 +712,7 @@ function create_album() {
     require_once template_getpath('popup_album_successfully_created.php');
 }
 
-function delete_album() {
+function album_delete() {
     global $input;
     global $repository_path;
 
@@ -732,7 +732,7 @@ function delete_album() {
     ezmam_repository_path($repository_path);
 
     // Deletes the table of contents (EZcast Player)
-    toc_bookmarklist_delete($input['album'] . '-priv');
+    toc_album_bookmarks_delete_all($input['album'] . '-priv');
 
     $res = ezmam_album_delete($input['album'] . '-priv');
     if (!$res) {
@@ -740,7 +740,7 @@ function delete_album() {
         die;
     }
 
-    toc_bookmarklist_delete($input['album'] . '-pub');
+    toc_album_bookmarks_delete_all($input['album'] . '-pub');
 
     $res = ezmam_album_delete($input['album'] . '-pub');
     if (!$res) {
@@ -764,7 +764,7 @@ function delete_album() {
 /**
  * Effectively deletes an asset from the repository, and displays a nice message to the user
  */
-function delete_asset() {
+function asset_delete() {
     global $input;
     global $repository_path;
 
@@ -791,7 +791,7 @@ function delete_asset() {
     }
 
     // We remove the bookmarks list from the table of contents (EZcast Player)
-    toc_bookmarklist_remove($input['album'], $input['asset']);
+    toc_asset_bookmarks_delete_all($input['album'], $input['asset']);
     //
     // Now we simply use lib_ezmam to delete the asset from the repository
     //
@@ -993,7 +993,7 @@ function get_upload_progress() {
     exit;
 }
 
-function edit_album() {
+function album_edit() {
     global $input;
     global $repository_path;
 
@@ -1041,7 +1041,7 @@ function edit_album() {
  * Edits asset data and re-draws the asset details
  * @global type $input 
  */
-function edit_asset() {
+function asset_edit() {
     global $input;
     global $repository_path;
     global $title_max_length;
@@ -1092,7 +1092,7 @@ function edit_asset() {
  * @global type $input
  * @global type $repository_path 
  */
-function move_asset() {
+function asset_move() {
     global $input;
     global $repository_path;
     ezmam_repository_path($repository_path);
@@ -1118,9 +1118,9 @@ function move_asset() {
     }
 
     // saves the bookmarks to copy
-    $bookmarks = toc_asset_bookmarklist_get($input['from'], $input['asset']);
+    $bookmarks = toc_asset_bookmark_list_get($input['from'], $input['asset']);
     // deletes the bookmarks from the source album
-    toc_bookmarklist_remove($input['from'], $input['asset']);
+    toc_asset_bookmarks_delete_all($input['from'], $input['asset']);
     //
     // Moving the asset
     // TODO: the moving won't work if there is a different asset with the same name in dest folder. Should be corrected in the future (new asset renamed)
@@ -1136,7 +1136,7 @@ function move_asset() {
     for ($index = 0; $index < $count; $index++) {
         $bookmarks[$index]['album'] = $input['to'];
     }
-    toc_bookmarks_add($bookmarks);
+    toc_album_bookmarks_add($bookmarks);
 
     include_once template_getpath('popup_asset_successfully_moved.php');
 }
@@ -1182,7 +1182,7 @@ function reset_rss() {
  * @global type $repository_path
  * @param string $action publish|unpublish
  */
-function publish_unpublish_asset($action = 'publish') {
+function asset_publish_unpublish($action = 'publish') {
     global $input;
     global $repository_path;
     ezmam_repository_path($repository_path);
@@ -1210,7 +1210,7 @@ function publish_unpublish_asset($action = 'publish') {
             die;
         }
         // moves asset bookmarks from private to public 
-        toc_bookmarks_swap($input['album'], $input['asset']);
+        toc_album_bookmarks_swap($input['album'], $input['asset']);
 
         require_once template_getpath('popup_asset_successfully_published.php');
         //include_once "tmpl/fr/popup_asset_successfully_published.php";
@@ -1221,7 +1221,7 @@ function publish_unpublish_asset($action = 'publish') {
             die;
         }
         // moves asset bookmarks from public to private
-        toc_bookmarks_swap($input['album'], $input['asset']);
+        toc_album_bookmarks_swap($input['album'], $input['asset']);
 
         require_once template_getpath('popup_asset_successfully_unpublished.php');
     } else {

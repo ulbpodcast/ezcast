@@ -34,7 +34,7 @@ if (!file_exists('config.inc')) {
 require 'config.inc';
 session_name($appname);
 session_start();
-require_once 'lib_database.php';
+require_once '../commons/lib_database.php';
 require_once 'lib_error.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';

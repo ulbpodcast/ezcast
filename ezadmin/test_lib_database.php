@@ -23,7 +23,7 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-require_once 'lib_database.php';
+require_once '../commons/lib_database.php';
 
 $course_name = "COURSE_MNEMO";
 $user_name = "netid";

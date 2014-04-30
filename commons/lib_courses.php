@@ -28,7 +28,7 @@
  */
 
 require_once 'config.inc';
-require_once 'lib_mysql.php';
+require_once 'lib_database.php';
 
 /**
  * return array of the courses associated to a netid
@@ -43,7 +43,7 @@ function courses_list($netid) {
     global $db_login;
     global $db_prefix;
 
-    $db = db_prepare($db_host, $db_name, $db_login, $db_passwd, $db_prefix);
+    $db = db_prepare();
     if (!$db) {
         debuglog("could not connect to sgbd:" . mysql_error());
         die;
@@ -54,17 +54,17 @@ function courses_list($netid) {
 
     if ($netid == "") {
         // retrieves all courses in the database
-        $course_list = db_courses_list();
+        $course_list = db_courses_all_list();
         $result = array();
         foreach ($course_list as $value)
             $result[$value['mnemonic']] = utf8_decode($value['mnemonic'] . '|' . $value['label']);
     } else {
         // retrieves all courses for a given netid
-        $course_list = db_user_courses_get($netid);
+        $course_list = db_user_get_courses($netid);
         
         $result = array();
         foreach ($course_list as $value)
-            $result[$value['mnemonic']] = utf8_decode($value['mnemonic'] . '|' . $value['label']);
+            $result[$value['course_code']] = utf8_decode($value['course_code'] . '|' . $value['course_name']);
     }
     db_close();
     return $result;

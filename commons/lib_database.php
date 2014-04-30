@@ -66,6 +66,16 @@ function db_prepare() {
     
     db_statement_prepare('update_courses_hasalbums', 'UPDATE '.  db_gettable('courses').' SET has_albums = 1 WHERE course_code = :course_code');
     
+        
+    db_statement_prepare('course_all_list',
+        'SELECT DISTINCT ' . 
+            db_gettable('courses') . '.course_code AS mnemonic, ' .
+            db_gettable('courses') . '.course_name AS label ' .
+        'FROM ' . db_gettable('courses') . ' ' .
+        'ORDER BY mnemonic ASC'
+    );
+    
+    
     db_statement_prepare('course_list',
         'SELECT ' . 
             db_gettable('courses') . '.course_code, ' .
@@ -137,7 +147,7 @@ function db_prepare() {
     );
     
     db_statement_prepare('user_get_courses', 
-        'SELECT ' .
+        'SELECT DISTINCT ' .
             db_gettable('users_courses').'.ID, '.
             db_gettable('courses').'.course_code, '.
             db_gettable('courses').'.shortname, '.
@@ -409,6 +419,23 @@ function db_courses_update_hasalbums($repo_content) {
     }
     
     $db_object->commit();
+}
+
+/**
+ * Retrieve all courses
+ * @param String $course_code
+ * @param String $course_name
+ * @param String $shortname
+ * @param boolean $in_recorders
+ * @param integer $has_albums
+ * @param Stirng $origin
+ * 
+ */
+function db_courses_all_list() {
+    global $statements;
+    
+    $statements['course_all_list']->execute();
+    return $statements['course_all_list']->fetchAll();  
 }
 
 /**

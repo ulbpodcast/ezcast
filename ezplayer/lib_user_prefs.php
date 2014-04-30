@@ -66,7 +66,7 @@ function user_prefs_repository_path($path = "") {
  * @return assoc_album_tokens || false : the list if user and album exist, 
  * false otherwise
  */
-function user_prefs_tokenlist_get($user) {
+function user_prefs_tokens_get($user) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -96,7 +96,7 @@ function user_prefs_tokenlist_get($user) {
  * @param type $user the owner of the file
  * @return boolean true if the file has been deleted; false otherwise
  */
-function user_prefs_tokenlist_delete($user) {
+function user_prefs_tokens_delete($user) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -122,7 +122,7 @@ function user_prefs_tokenlist_delete($user) {
 function user_prefs_token_get($user, $album) {
 
     // Get the list that contains all album tokens
-    $token_list = user_prefs_tokenlist_get($user);
+    $token_list = user_prefs_tokens_get($user);
 
     // if no result, the user and/or album are not correct
     if (!isset($token_list) || $token_list == false)
@@ -147,7 +147,7 @@ function user_prefs_token_get($user, $album) {
 function user_prefs_token_index($user, $album) {
 
     // Get the list that contains all album tokens
-    $token_list = user_prefs_tokenlist_get($user);
+    $token_list = user_prefs_tokens_get($user);
 
     // if no result, the user and/or album are not correct
     if (!isset($token_list) || $token_list == false)
@@ -192,10 +192,10 @@ function user_prefs_tokens_add($user, $tokens_array) {
     }
 
     // Get the albums list
-    $token_list = user_prefs_tokenlist_get($user);
+    $token_list = user_prefs_tokens_get($user);
 
     foreach ($tokens_array as &$token) {
-        if (ezmam_album_exists($token['album']) && !array_token_contains($token_list, $token)) {
+        if (ezmam_album_exists($token['album']) && !token_array_contains($token_list, $token)) {
             array_unshift($token_list, $token);
         }
     }
@@ -206,7 +206,7 @@ function user_prefs_tokens_add($user, $tokens_array) {
 }
 
 // checks if the array contains the token
-function array_token_contains(&$array, $token) {
+function token_array_contains(&$array, $token) {
     if (count($array) == 0)
         return false;
     foreach ($array as $index => $array_token) {
@@ -252,7 +252,7 @@ function user_prefs_token_add($user, $album, $title, $token, $index = 0) {
         mkdir($user_path, 0755, true);
     }
     // Get the albums list
-    $token_list = user_prefs_tokenlist_get($user);
+    $token_list = user_prefs_tokens_get($user);
     $album_token = array('title' => $title, 'album' => $album, 'token' => $token);
     if (!in_array($album_token, $token_list)) {
         // add a token at the specified index in the albums list
@@ -288,7 +288,7 @@ function user_prefs_token_update_count($user, $album) {
     if ($index >= 0) {
         // set user's file path
         $user_path = $user_files_path . '/' . $user;
-        $token_list = user_prefs_tokenlist_get($user);
+        $token_list = user_prefs_tokens_get($user);
         // updates the count
         $count = count(ezmam_asset_list($album));
         $token_list[$index]['count'] = $count;
@@ -317,14 +317,14 @@ function user_prefs_token_remove($user, $album) {
     }
 
     // 2) loop on the albums list and removes the token if it exists
-    $token_list = user_prefs_tokenlist_get($user);
+    $token_list = user_prefs_tokens_get($user);
     $removed = false;
     foreach ($token_list as $index => $album_token) {
         if ($album_token['album'] == $album) {
             // if it is the only token contained in the file
             if (count($token_list) == 1)
             // the file is deleted
-                return user_prefs_tokenlist_delete($user);
+                return user_prefs_tokens_delete($user);
             // else
             unset($token_list[$index]);
             $removed = true;
@@ -356,12 +356,12 @@ function user_prefs_token_remove_at($user, $index) {
     }
 
     // 2) loop on the albums list and removes the token if it exists
-    $token_list = user_prefs_tokenlist_get($user);
+    $token_list = user_prefs_tokens_get($user);
     if ($index > count($token_list))
         return false;
 
     if (count($token_list) == 1)
-        return user_prefs_tokenlist_delete($user);
+        return user_prefs_tokens_delete($user);
     unset($token_list[$index]);
     $user_path = $user_files_path . '/' . $user;
     return assoc_array2xml_file($token_list, $user_path . "/_album_tokens.xml", "album_tokens", "album_token");
@@ -389,7 +389,7 @@ function user_prefs_token_swap($user, $index, $new_index) {
         return false;
     }
 
-    $token_list = user_prefs_tokenlist_get($user);
+    $token_list = user_prefs_tokens_get($user);
     $max_index = count($token_list);
     if ($index >= $max_index
             || $new_index >= $max_index)
@@ -503,7 +503,7 @@ function user_prefs_watchedlist_get($user) {
  * @return the list of matching bookmarks; false if an error occurs; null 
  * no bookmark matches the pattern
  */
-function user_prefs_bookmark_search($user, $search, $target, $albums, $fields, $level, $source = 'custom') {
+function user_prefs_bookmarks_search($user, $search, $target, $albums, $fields, $level, $source = 'custom') {
     // Sanity check
     if (!isset($user) || $user == '')
         return null;
@@ -528,9 +528,9 @@ function user_prefs_bookmark_search($user, $search, $target, $albums, $fields, $
             if (isset($albums) && count($albums) > 0) {
                 foreach ($albums as $album) {
                     if ($source == 'custom') // personal bookmarks
-                        $temp = user_prefs_album_bookmarklist_get($_SESSION['user_login'], $album);
+                        $temp = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
                     else  // table of contents
-                        $temp = toc_album_bookmarklist_get($album);
+                        $temp = toc_album_bookmarks_list_get($album);
                     $bookmarks = array_merge($bookmarks, $temp);
                 }
             } else {
@@ -541,15 +541,15 @@ function user_prefs_bookmark_search($user, $search, $target, $albums, $fields, $
             if (isset($album) && $album != '') {
                 if ($source == 'custom') { // personal bookmarks
                     if (isset($asset) && $asset != '') {
-                        $bookmarks = user_prefs_asset_bookmarklist_get($_SESSION['user_login'], $album, $asset);
+                        $bookmarks = user_prefs_asset_bookmarks_list_get($_SESSION['user_login'], $album, $asset);
                     } else {
-                        $bookmarks = user_prefs_album_bookmarklist_get($_SESSION['user_login'], $album);
+                        $bookmarks = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
                     }
                 } else { // table of contents
                     if (isset($asset) && $asset != '') {
-                        $bookmarks = toc_asset_bookmarklist_get($album, $asset);
+                        $bookmarks = toc_asset_bookmark_list_get($album, $asset);
                     } else {
-                        $bookmarks = toc_album_bookmarklist_get($album);
+                        $bookmarks = toc_album_bookmarks_list_get($album);
                     }
                 }
             }
@@ -559,9 +559,9 @@ function user_prefs_bookmark_search($user, $search, $target, $albums, $fields, $
             $albums = acl_authorized_albums_list();
             foreach ($albums as $album) {
                 if ($source == 'custom') // personal bookmarks
-                    $temp = user_prefs_album_bookmarklist_get($_SESSION['user_login'], $album);
+                    $temp = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
                 else  // table of contents
-                    $temp = toc_album_bookmarklist_get($album);
+                    $temp = toc_album_bookmarks_list_get($album);
                 $bookmarks = array_merge($bookmarks, $temp);
             }
             break;
@@ -620,7 +620,7 @@ function search_in_array($search, $bookmarks, $fields, $level) {
  * @param type $album the album 
  * @return the bookmarks list ; false if an error occurs
  */
-function user_prefs_album_bookmarklist_get($user, $album) {
+function user_prefs_album_bookmarks_list_get($user, $album) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -652,8 +652,8 @@ function user_prefs_album_bookmarklist_get($user, $album) {
  * @param type $asset the asset
  * @return boolean|array the list of bookmarks ; false if an error occurs
  */
-function user_prefs_asset_bookmarklist_get($user, $album, $asset) {
-    $assoc_album_bookmarks = user_prefs_album_bookmarklist_get($user, $album);
+function user_prefs_asset_bookmarks_list_get($user, $album, $asset) {
+    $assoc_album_bookmarks = user_prefs_album_bookmarks_list_get($user, $album);
     if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false)
         return false;
 
@@ -673,14 +673,14 @@ function user_prefs_asset_bookmarklist_get($user, $album, $asset) {
 }
 
 /**
- * Returns a selection of bookmark in a specific asset of a given album
+ * Returns a selection of bookmarks in a specific asset of a given album
  * @param type $user the user
  * @param type $album the album
  * @param type $asset the asset or empty if the selection is just on the album
  * @param type $selection the list of positions for the bookmarks we want to keep
  * @return boolean|array the selection of bookmarks
  */
-function user_prefs_selected_bookmarks_get($user, $album, $asset, $selection) {
+function user_prefs_asset_bookmarks_selection_get($user, $album, $asset, $selection) {
     $bookmarks_list;
     $selected_bookmarks = array();
 
@@ -689,10 +689,10 @@ function user_prefs_selected_bookmarks_get($user, $album, $asset, $selection) {
 
     if (!isset($asset) || $asset == '') {
         // selection is on the whole album
-        $bookmarks_list = user_prefs_album_bookmarklist_get($user, $album);
+        $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
     } else {
         // selection is on the specific asset
-        $bookmarks_list = user_prefs_asset_bookmarklist_get($user, $album, $asset);
+        $bookmarks_list = user_prefs_asset_bookmarks_list_get($user, $album, $asset);
     }
 
     if (count($bookmarks_list) > 0) {
@@ -718,7 +718,7 @@ function user_prefs_selected_bookmarks_get($user, $album, $asset, $selection) {
  * @return boolean true if the bookmark exists ; false otherwise
  */
 function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode) {
-    $assoc_asset_bookmarks = user_prefs_asset_bookmarklist_get($user, $album, $asset);
+    $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get($user, $album, $asset);
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['timecode'] == $timecode) {
             return true;
@@ -736,7 +736,7 @@ function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode) {
  * @return the bookmark if it exists; false otherwise
  */
 function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode) {
-    $assoc_asset_bookmarks = user_prefs_asset_bookmarklist_get($user, $album, $asset);
+    $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get($user, $album, $asset);
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['timecode'] == $timecode) {
             return $bookmark;
@@ -757,7 +757,7 @@ function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode) {
  * @param type $level the level of the bookmark
  * @return boolean
  */
-function user_prefs_bookmark_add($user, $album, $asset, $timecode, $title = '', $description = '', $keywords = '', $level = '1', $type = '') {
+function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title = '', $description = '', $keywords = '', $level = '1', $type = '') {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -780,7 +780,7 @@ function user_prefs_bookmark_add($user, $album, $asset, $timecode, $title = '', 
     // set user's file path
     $user_path = $user_files_path . '/' . $user;
     // remove the previous same bookmark if it existed yet
-    user_prefs_bookmark_remove($user, $album, $asset, $timecode);
+    user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode);
 
     // if the user's directory doesn't exist yet, we create it
     if (!file_exists($user_path)) {
@@ -789,7 +789,7 @@ function user_prefs_bookmark_add($user, $album, $asset, $timecode, $title = '', 
 
 
     // Get the bookmarks list
-    $bookmarks_list = user_prefs_album_bookmarklist_get($user, $album);
+    $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
     $count = count($bookmarks_list);
     $index = 0;
 
@@ -843,7 +843,7 @@ function user_prefs_bookmark_add($user, $album, $asset, $timecode, $title = '', 
  * @param type $bookmarks an array of bookmarks
  * @return boolean true if the bookmarks have been added; false otherwise
  */
-function user_prefs_bookmarks_add($user, $bookmarks) {
+function user_prefs_album_bookmarks_add($user, $bookmarks) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -871,7 +871,7 @@ function user_prefs_bookmarks_add($user, $bookmarks) {
     $user_path = $user_files_path . '/' . $user;
 
     // Get the bookmarks list
-    $bookmarks_list = user_prefs_album_bookmarklist_get($user, $album);
+    $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
 
     if (!isset($bookmarks_list) || $bookmarks_list == false)
         $bookmarks_list = array();
@@ -934,7 +934,7 @@ function user_prefs_bookmarks_add($user, $bookmarks) {
  * @param type $timecode the timecode of the bookmark
  * @return boolean true if the bookmark has been deleted; false otherwise
  */
-function user_prefs_bookmark_remove($user, $album, $asset, $timecode) {
+function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -955,11 +955,11 @@ function user_prefs_bookmark_remove($user, $album, $asset, $timecode) {
     $user_path = $user_files_path . '/' . $user;
 
     if (user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode)) {
-        $bookmarks_list = user_prefs_album_bookmarklist_get($user, $album);
+        $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
 
         // if there is no bookmark anymore, the file is deleted
         if (count($bookmarks_list) == 1) {
-            return user_prefs_bookmarklist_delete($user, $album);
+            return user_prefs_album_bookmarks_delete_all($user, $album);
         }
         foreach ($bookmarks_list as $index => $bookmark) {
             if ($bookmark['asset'] == $asset
@@ -977,7 +977,7 @@ function user_prefs_bookmark_remove($user, $album, $asset, $timecode) {
  * @param type $bookmarks the array of bookmarks to be deleted
  * @return boolean true if the bookmarks have been removed; false otherwise
  */
-function user_prefs_bookmarks_remove($user, $bookmarks) {
+function user_prefs_album_bookmarks_delete($user, $bookmarks) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -1000,7 +1000,7 @@ function user_prefs_bookmarks_remove($user, $bookmarks) {
     // set user's file path
     $user_path = $user_files_path . '/' . $user;
 
-    $bookmarks_list = user_prefs_album_bookmarklist_get($user, $album);
+    $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
 
     foreach ($bookmarks as $bookmark) {
         if ($bookmark['album'] == $album
@@ -1017,7 +1017,7 @@ function user_prefs_bookmarks_remove($user, $bookmarks) {
     }
 
     if (count($bookmarks_list) == 0) {
-        return user_prefs_bookmarklist_delete($user, $album);
+        return user_prefs_album_bookmarks_delete_all($user, $album);
     } else {
         return assoc_array2xml_file($bookmarks_list, $user_path . "/bookmarks_$album.xml", "bookmarks", "bookmark");
     }
@@ -1030,7 +1030,7 @@ function user_prefs_bookmarks_remove($user, $bookmarks) {
  * @param type $asset the asset we want to remove bookmarks from
  * @return boolean true if the bookmarks have been deleted; false otherwise
  */
-function user_prefs_bookmarklist_remove($user, $album, $asset) {
+function user_prefs_asset_bookmarks_delete($user, $album, $asset) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -1047,7 +1047,7 @@ function user_prefs_bookmarklist_remove($user, $album, $asset) {
     // set user's file path
     $user_path = $user_files_path . '/' . $user;
 
-    $bookmarks_list = user_prefs_album_bookmarklist_get($user, $album);
+    $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
     foreach ($bookmarks_list as $index => $bookmark) {
         if ($bookmark['asset'] == $asset) {
             unset($bookmarks_list[$index]);
@@ -1055,7 +1055,7 @@ function user_prefs_bookmarklist_remove($user, $album, $asset) {
     }
     // if there is no bookmark anymore, the file is deleted
     if (count($bookmarks_list) == 0) {
-        return user_prefs_bookmarklist_delete($user, $album);
+        return user_prefs_album_bookmarks_delete_all($user, $album);
     }
     return assoc_array2xml_file($bookmarks_list, $user_path . "/bookmarks_$album.xml", "bookmarks", "bookmark");
 }
@@ -1066,7 +1066,7 @@ function user_prefs_bookmarklist_remove($user, $album, $asset) {
  * @param type $album the album 
  * @return boolean true if the file has been deleted; false otherwise
  */
-function user_prefs_bookmarklist_delete($user, $album) {
+function user_prefs_album_bookmarks_delete_all($user, $album) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;

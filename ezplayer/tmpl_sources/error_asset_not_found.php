@@ -28,7 +28,7 @@
 
     <?php
     if (acl_has_album_permissions($album)
-            && user_prefs_asset_bookmarklist_get($_SESSION['user_login'], $album, $error_asset)) {
+            && user_prefs_asset_bookmarks_list_get($_SESSION['user_login'], $album, $error_asset)) {
         ?>
         <div style="margin-top: 18px;">
             ®Error_asset_not_found®

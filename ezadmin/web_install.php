@@ -31,7 +31,7 @@
  */
 
 require_once '../commons/lib_template.php';
-require_once 'lib_database.php';
+require_once '../commons/lib_database.php';
 require_once 'lib_various.php';
 require_once 'lib_error.php';
 

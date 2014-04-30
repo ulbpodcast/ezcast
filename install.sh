@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash  -x
 
 # EZCAST 
 #
@@ -164,8 +164,6 @@ then
     fi;
     echo -e "${G}Your current version of PHP [$version] matches EZcast's needs${N}";
     echo " ";
-    echo "Press [Enter] to continue";
-    read whatever;
     echo " ";
     echo "*************************************************";
     echo "Verification of LDAP extension for PHP ...";
@@ -220,24 +218,6 @@ then
             if [ "$choice" != "continue" ]; then exit; fi;
         fi;
         if [ "$choice" != "continue" ]; then echo -e "${G}MySQL is enabled for PHP${N}"; fi;
-    fi;
-    echo "*************************************************";
-    echo "Verification of APC extension for PHP ...";
-    echo "*************************************************";
-    echo "";
-    echo "The script will now test if the APC extension for PHP is enabled.";
-    echo "Press [Enter] to continue or enter 'skip' to skip the test.";
-    read choice;
-    if [ "$choice" != "skip" ]; then
-        check=$($php_path -r "echo (function_exists('apc_fetch'))? 'enabled' : 'disabled';");
-        if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}APC seems not to be enabled for PHP.${N} APC is not strictly neccessary but improves performance. It can also be replaced by PHP's OPCache";
-            echo "Press [Enter] to continue this script";
-            read choice;
-            #if [ "$choice" != "continue" ]; then exit; fi;
-        else
-        if [ "$choice" != "continue" ]; then echo -e "${G}APC is enabled for PHP${N}"; fi;
-        fi;
     fi;
     echo "*************************************************";
     echo "Verification of SimpleXML extension for PHP ...";
@@ -396,14 +376,18 @@ echo "or user preferences.";
 echo " ";
 ezcast_basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 echo "Please, enter the path to your webspace (DocumentRoot).";
-default_documentroot=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'DocumentRoot'|awk '{print $3}'`
+default_documentroot=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'DocumentRoot'| awk '{print $3}'`
 read -p "[default: $default_documentroot]:" webspace_directory ;
+    if [ "$webspace_directory" == "" ];
+    then
+        webspace_directory=$default_documentroot;
+    fi;
 
 echo "EZmanager, EZadmin and EZplayer web interfaces will be placed";
 echo "in subfolders of the $webspace_directory dir to be accessed";
 echo "via a web browser.";
 echo " ";
-default_apache_username=`ps -ef | grep httpd | grep -v grep | head -1 | awk '{print $1}'`
+default_apache_username=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'User:' | awk 'BEGIN {FS= "\""}{ print $2}'`
 echo "Please, enter the username for Apache.";
 echo "(typically 'www-data' or '_www')";
     read -p "[default: $default_apache_username]:" apache_username ;

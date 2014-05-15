@@ -143,7 +143,7 @@ if (isset($input['install']) && !empty($input['install'])) {
                 '`user_ID` varchar(50) NOT NULL COMMENT \'For ULB: netid\',' .
                 '`surname` varchar(255) DEFAULT NULL,' .
                 '`forename` varchar(255) DEFAULT NULL,' .
-                '`passwd` varchar(255) NOT NULL,' .
+                '`passwd` varchar(255) NOT NULL DEFAULT \'\',' .
                 '`recorder_passwd` varchar(255) DEFAULT NULL COMMENT \'Password as saved in the recorders, if different from global passwd\',' .
                 '`permissions` int(11) NOT NULL DEFAULT \'0\' COMMENT \'1 for admin, 0 for non-admin\',' .
                 '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'"external" or "internal"\',' .

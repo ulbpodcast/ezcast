@@ -162,6 +162,7 @@ if (isset($input['install']) && !empty($input['install'])) {
     } catch (PDOException $e) {
         $errors['db_error'] = $e->getMessage();
         require template_getpath('install.php');
+        die;
     }
 
     // Write config file

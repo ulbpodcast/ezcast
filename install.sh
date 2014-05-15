@@ -531,7 +531,7 @@ else
         echo -e "${R}Warning: Apache user's homedir is the webspace. It means that the SSH public and private keys will be available to everybody. This is a serious security issue. Please change the homedir in /etc/passwd.${N}";
         read -p "Do you want to continue anyway ? [y/N]: " choice;
         if [ "$choice" == "y" ]; then
-            htaccess=1;
+            htaccess="1";
         fi;
     else
         choice="y";
@@ -543,20 +543,26 @@ else
             echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/dsa.pub" `>> localpaths;
         else 
             echo "";
-            echo "You don't have an SSH public key yet."
-            echo -e "${G}Creating .ssh directory in `eval "echo ~$apache_username" ` ${N}";
-            mkdir `eval "echo ~$apache_username" `/.ssh;
-            echo -e "${G}Generating SSH keys in `eval "echo ~$apache_username" `/.ssh ${N}";
-            echo -e  'y\n'|ssh-keygen -q -t dsa -N "" -f `eval "echo ~$apache_username" `/.ssh/id_dsa;
-            chown -R $apache_username `eval "echo ~$apache_username" `/.ssh;
-            chmod -R 755 `eval "echo ~$apache_username" `/.ssh;
-            if [ $htaccess == 1 ]; then
-                # creates .htaccess in .ssh
-                if [ ! -e `eval "echo ~$apache_username/.ssh/.htaccess" ` ]; then
-                    echo "deny from all" >> `eval "echo ~$apache_username/.ssh/.htaccess" `;
+            echo "You don't have an SSH public key yet. It is required for communications with EZrenderer and EZrecorder."
+            read -p "Do you want to create it now ? [Y/n]: " choice
+            if [ "$choice" != "n" ]; then
+                echo -e "${G}Creating .ssh directory in `eval "echo ~$apache_username" ` ${N}";
+                mkdir `eval "echo ~$apache_username" `/.ssh;
+                echo -e "${G}Generating SSH keys in `eval "echo ~$apache_username" `/.ssh ${N}";
+                echo -e  'y\n'|ssh-keygen -q -t dsa -N "" -f `eval "echo ~$apache_username" `/.ssh/id_dsa;
+                chown -R $apache_username `eval "echo ~$apache_username" `/.ssh;
+                chmod -R 755 `eval "echo ~$apache_username" `/.ssh;
+                if [ "$htaccess" == "1" ]; then
+                    # creates .htaccess in .ssh
+                    if [ ! -e `eval "echo ~$apache_username/.ssh/.htaccess" ` ]; then
+                        echo "deny from all" >> `eval "echo ~$apache_username/.ssh/.htaccess" `;
+                    fi;
                 fi;
+                echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/dsa.pub" `>> localpaths;
+            else 
+                echo -e "${R}Do not forget to create an SSH key for this server before adding a recorder and/or a renderer.${N}";
+                echo "Use 'ssh-keygen -t dsa' as $apache_username to generate an SSH key for Apache";
             fi;
-            echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/dsa.pub" `>> localpaths;
         fi;
     else 
         echo "Modify Apache user's homedir in /etc/passwd and use 'ssh-keygen -t dsa' as $apache_username to generate an SSH key for Apache";

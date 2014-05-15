@@ -2,13 +2,13 @@
 
 ## Requirements
 
-In order to use EZrecorder, you need to install / enable several components:
+In order to use EZcast, you need to install / enable several components:
 
 - Apache2
 - MySQL 5.x 
 - PHP5.3 ( or greater ) with following extensions activated:
   -curl
-  -APC (for performance and upload progress bar PHP 5.3->5.4 )
+  -[APC (for performance and upload progress bar PHP 5.3->5.4 )]
   -OPCache (for performance on PHP 5.5 )
   -ldap
   -pdo_mysql 
@@ -18,13 +18,14 @@ In order to use EZrecorder, you need to install / enable several components:
 
 ## Quick Installation
 
-1. Download the latest available version of EZcast from our Git repository http://podcast.ulb.ac.be/...
+1. Download the latest available version of EZcast from our Git repository https://github.com/ulbpodcast/ezcast.git
 2. Create a MySQL database for EZcast on your server (grant all privileges on the database).
 3. Put the EZcast directory wherever you want on your server (we recommend to place it under « /usr/local/ezcast»)
-4. Edit the php.ini file to increase max file size upload.
+4. Edit the php.ini file to increase upload_max_filesize, post_max_size, max_execution_time and max_input_time.
 5. Launch the « install.sh » script as root from the EZcast directory and follow the instructions.
 6. Open the EZadmin page in your web browser for the configuration of EZcast and all of its components. This is a one-time operation
 `i.e :   http://my.server.address/ezadmin`
+7. Create the first renderer for EZcast in EZadmin web interface
 #
 
 ## Detailed installation 
@@ -32,8 +33,10 @@ In order to use EZrecorder, you need to install / enable several components:
 1. Download the source code
 
 Open your terminal and call Git in command line to download the source code of EZcast
+```
 root# cd <wherever you want to install ezcast>
-root# git clone http://podcast.ulb.ac.be/ezcast
+root# git clone https://github.com/ulbpodcast/ezcast.git
+```
 
 2. Create a MySQL database
 
@@ -53,15 +56,15 @@ Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
 
 Mysql> CREATE USER <ezcast_user_name> IDENTIFIED BY <ezcast_password>;
 
-mysql> CREATE DATABASE <database_name>;
+mysql> CREATE DATABASE <database_name> CHARACTER SET utf8 COLLATE utf8_general_ci;
 Query OK, 1 row affected (0.00 sec)
 
-mysql> GRANT ALL PRIVILEGES ON <database_name>.* TO "<ezcast_user_name>"@"<host>";
+mysql> GRANT ALL PRIVILEGES ON <database_name>.* TO "<ezcast_user_name>"@"<host>"
+    -> IDENTIFIED BY "<ezcast_password>";
 Query OK, 0 rows affected (0.00 sec)
  
-mysql> create database ezcast;
-Query OK, 1 row affected (0.00 sec)
-
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.01 sec)
 
 Mysql> exit
 Bye
@@ -102,6 +105,9 @@ Since EZmanager allows you to submit your own video files, it may come handy to 
 vi /etc/php5/apache2/php.ini
 # change upload_max_filesize in the ‘File uploads’ section
 upload_max_filesize = 2000M 
+post_max_size = 2000M
+max_execution_time = 300
+max_input_time = 300
 ```
 
 5. Execute the ‘install.sh’ script for installing EZcast
@@ -131,10 +137,17 @@ http://your.server.address/ezadmin
 ``` 
 If you prefere to configure EZcast by editing the file manually, go to the EZcast folder. For each subdirectories (ezmanager / ezadmin / ezplayer / common), edit the ‘config-sample.inc’ file to match your configuration and rename it ‘config.inc’.
 
-EZcast is now partially installed. Before using it, please install EZrenderer, which is required to process the submitted movies. EZrenderer can be installed on the same machine or on a remote machine. The complete installation is described in [add location].
+7. Create the first renderer for EZcast in EZadmin web interface. 
+
+Prepare your renderer by installing all dependencies. Refer to EZrenderer's documentation to know what are the required dependencies.
+
+Click on "Create renderer" in the left menu of EZadmin web interface and follow instructions on the screen. 
+
+
+EZcast is now installed. Before using it, make sure EZrenderer is installed. It is required to process the submitted movies. 
 You can also install EZrecorder which is the interface used to record in the classroom.
 
-Once EZrenderer has been installed, you can access the different interfaces using the following URL’s.
+Once EZrenderer has been installed, you can use the different interfaces using the following URL’s.
 
 ```
 http://your.server.address/ezadmin

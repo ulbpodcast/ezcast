@@ -28,10 +28,11 @@
  * This file is part of the installation process
  */
 
-if ($argc != 9) {
-    echo "usage: " . $argv[0] . " <php_path> <rsync_path> <ezcast_basedir> <repository_basedir> <user> <passwd> <fullname> <email>" .
+if ($argc != 11) {
+    echo "usage: " . $argv[0] . " <php_path> <rsync_path> <apache_documentroot> <ezcast_basedir> <repository_basedir> <user> <passwd> <fullname> <apache_username>" .
     "\n <php_path> the path to the php binary" .
     "\n <rsync_path> the path to the rsync binary" .
+    "\n <apache_documentroot> the path Apache's documentroot" .
     "\n <ezcast_basedir> the root directory for the ezcast application" .
     "\n <repository_basedir> the root directory for the repository".
     "\n <user> the username for the web installer" .
@@ -43,41 +44,47 @@ if ($argc != 9) {
 
 $php_cli_cmd = $argv[1];
 $rsync_pgm = $argv[2];
-$basedir = $argv[3];
-$repository_basedir = $argv[4];
-$username = $argv[5];
-$password = $argv[6];
-$firstname = $argv[7];
-$lastname = $argv[8];
+$apache_documentroot = $argv[3];
+$basedir = $argv[4];
+$repository_basedir = $argv[5];
+$username = $argv[6];
+$password = $argv[7];
+$firstname = $argv[8];
+$lastname = $argv[9];
+$apache_username = $argv[10];
 
 /*
  * First of all, we adapt the paths in webspace according to the actual
  * position of EZcast products
  */
 
-$web_file = file_get_contents($basedir . "/ezadmin/htdocs/index.php");
+$web_file = file_get_contents($apache_documentroot . "/index.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($basedir . "/ezadmin/htdocs/index.php", $web_file);
+file_put_contents($apache_documentroot . "/index.php", $web_file);
 
-$web_file = file_get_contents($basedir . "/ezadmin/htdocs/install.php");
+$web_file = file_get_contents($apache_documentroot . "/ezadmin/install.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($basedir . "/ezadmin/htdocs/install.php", $web_file);
+file_put_contents($apache_documentroot . "/ezadmin/install.php", $web_file);
 
-$web_file = file_get_contents($basedir . "/ezmanager/htdocs/index.php");
+$web_file = file_get_contents($apache_documentroot . "/ezadmin/index.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($basedir . "/ezmanager/htdocs/index.php", $web_file);
+file_put_contents($apache_documentroot . "/ezadmin/index.php", $web_file);
 
-$web_file = file_get_contents($basedir . "/ezmanager/htdocs/distribute.php");
+$web_file = file_get_contents($apache_documentroot . "/ezmanager/index.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($basedir . "/ezmanager/htdocs/distribute.php", $web_file);
+file_put_contents($apache_documentroot . "/ezmanager/index.php", $web_file);
 
-$web_file = file_get_contents($basedir . "/ezmanager/htdocs/recorder/index.php");
+$web_file = file_get_contents($apache_documentroot . "/ezmanager/distribute.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($basedir . "/ezmanager/htdocs/recorder/index.php", $web_file);
+file_put_contents($apache_documentroot . "/ezmanager/distribute.php", $web_file);
 
-$web_file = file_get_contents($basedir . "/ezplayer/htdocs/index.php");
+$web_file = file_get_contents($apache_documentroot . "/ezmanager/recorder/index.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($basedir . "/ezplayer/htdocs/index.php", $web_file);
+file_put_contents($apache_documentroot . "/ezmanager/recorder/index.php", $web_file);
+
+$web_file = file_get_contents($apache_documentroot . "/ezplayer/index.php");
+$web_file = str_replace("!PATH", $basedir, $web_file);
+file_put_contents($apache_documentroot . "/ezplayer/index.php", $web_file);
 
 /*
  * Then, we add user's configuration in commons/config.inc
@@ -89,6 +96,7 @@ $config = preg_replace('/\$repository_basedir = (.+);/', '\$repository_basedir =
 $config = preg_replace('/\$basedir = (.+);/', '\$basedir = "' . $basedir . '";', $config);
 $config = preg_replace('/\$php_cli_cmd = (.+);/', '\$php_cli_cmd = "' . $php_cli_cmd . '";', $config);
 $config = preg_replace('/\$rsync_pgm = (.+);/', '\$rsync_pgm = "' . $rsync_pgm . '";', $config);
+$config = preg_replace('/\$apache_username = (.+);/', '\$apache_username = "' . $apache_username . '";', $config);
 file_put_contents($basedir . "/commons/config.inc", $config);
 
 /*

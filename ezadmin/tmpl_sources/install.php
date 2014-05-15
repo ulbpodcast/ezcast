@@ -113,7 +113,7 @@
                                         <label class="control-label">®settings_application_url®</label>
                                         <div class="controls">
                                             <input type="url" required name="application_url" value="<?php echo htmlspecialchars($input['application_url']) ?>" />
-                                            <span class="help-block">URL to the application</span>
+                                            <span class="help-block">Root URL of EZcast applications</span>
                                         </div>
                                     </div>
 
@@ -171,7 +171,7 @@
                                         <label class="control-label">®settings_php_path®</label>
                                         <div class="controls">
                                             <input type="text" required name="php_cli_cmd" value="<?php echo htmlspecialchars($input['php_cli_cmd']) ?>" />
-                                            <span class="help-block">Path to the PHP binary</span>
+                                            <span class="help-block">Path to the PHP binary (for command line scripts)</span>
                                         </div>
                                     </div>
 

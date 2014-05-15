@@ -114,6 +114,10 @@ $options['Renderers'] = array(
    'podcastcours_renderers' => array(
        'name' => '®renderers_list®',
        'action' => 'view_renderers'
+   ),
+   'create_renderer' => array(
+       'name' => '®create_renderer®',
+       'action' => 'create_renderer'
    )
 );
 

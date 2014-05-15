@@ -25,6 +25,9 @@
 #DESCRIPTION: 	Generate templates in all available languages
 #AUTHOR:	Université libre de Bruxelles
 
+# includes localpaths 
+source $(dirname $0)/localpaths
+
 cmd_path_find()
 {
   COMMAND=$1
@@ -50,8 +53,10 @@ if [ "$#" -lt 3 ]; then
     exit 0;
 fi;
 
-cmd_path_find php /usr/bin/php
-default_path=$RES;
+if [ "$php_path" == "" ]; then
+    cmd_path_find php /usr/bin/php
+    php_path=$RES;
+fi;
 
 #php_path=$default_php_path;
 
@@ -65,36 +70,7 @@ echo " ";
 echo -e "${R}/!\WARNING : This script will override all existing files with ${N}";
 echo -e "${R}             with the same name inside specified folders. ${N}";
 echo " ";
-echo "PHP is required to continue, please enter the 'php' bin (with tailing 'php')";
-read -p "[default:$default_path]:" php_path ;
-if [ "$php_path" == "" ]; then
-    php_path=$default_path;
-fi;
-value=$( $php_path -v);
-# Verify that a version of PHP is installed
-if [[ "$value" != PHP* ]]; then
-    check=0;
-    echo "PHP does not seem to be installed at $php_path" ;
-fi;
-# Retry as long as PHP has not been found
-while [ "$check" ==  "0" ]; do
-    echo "If PHP5 is installed, please enter its path now (with tailing 'php')";
-    echo "otherwise, please enter 'exit' to quit this script and install PHP5";
-    read php_path;
-    if [ "$php_path" == "exit" ]; then exit; fi;
-    if [ "$php_path" == "" ];
-    then
-        php_path=$default_path;
-    fi;
-    value=$( $php_path -v );
-    if [[ "$value" == PHP* ]]; then
-        check=1;
-    fi;
-    php_path=$default_path;
-done;
-echo -e "${G}PHP found !${N}";
-echo " ";
-
+ 
 if [ $1 == 1 ]; then
     echo -e "${G}--- Starting EZplayer template installation...${N}";
     #EZplayer template

@@ -63,3 +63,29 @@ font-family: Verdana, Arial, Helvetica, sans-serif;
 font-size: 10px;
 color: #000000;
 }
+
+.green{
+    color: rgb(114,187,29);
+}
+
+.red{
+    color: red;
+}
+
+.button{
+    display: block; 
+    margin-left: 10px; 
+    width: 120px; 
+    text-align:center; 
+    padding: 4px 0px; 
+    background: #AAA; 
+    color: #fff; 
+    text-decoration: none; 
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.button:hover{
+    background: #777; 
+}

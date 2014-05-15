@@ -56,7 +56,7 @@ function template_repository_path($path="") {
 
       if($path==""){
         if($tmpl_repository_path===false){
-          ezmam_last_error("1 Error: repository path not defined");
+          template_last_error("1 Error: repository path not defined");
           return false;
          }
         else{
@@ -69,7 +69,7 @@ function template_repository_path($path="") {
       if($res)
         $tmpl_repository_path=$path;
        else
-        ezmam_last_error ("2 Error: repository path not found: $path");
+        template_last_error ("2 Error: repository path not found: $path");
       return $res;
 }
 

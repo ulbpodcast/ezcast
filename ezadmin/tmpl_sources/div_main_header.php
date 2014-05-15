@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <!-- Note: for details about the layout and Boostrap framwork, see http://twitter.github.com/bootstrap/ -->
 
@@ -27,7 +27,7 @@
         * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
         -->
 
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <title><?php
             global $appname;
             echo $appname;
@@ -35,6 +35,7 @@
                 echo ' (®unsaved_changes®)';
             ?></title>
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
         <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.23345.js"></script>
         <script>

@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash 
 
 # EZCAST 
 #
@@ -22,6 +22,9 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this software; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+# includes localpaths 
+source $(dirname $0)/commons/localpaths
 
 #try to find fullpath of command if in path or returns default value
 cmd_path_find()
@@ -64,11 +67,11 @@ read whatever;
 echo "First of all, this script will verify you have all programs,";
 echo "commands and libraries required by EZcast to run properly";
 echo " ";
-echo "Press [Enter] to continue or [n] to skip this step.";
+echo "You can skip the tests if you want.";
 echo -e "${R}Warning ! Skipping this verification may have critical repercussions${N}";
 echo -e "${R}          on the use of EZcast after its installation.${N}";
 echo " ";
-read choice;
+read -p "Would you like to verify your server ? [y/n]: " choice;
 if [ "$choice" != "n" ];
 then
     check=1;
@@ -77,10 +80,16 @@ then
     echo "*************************************************";
     echo "Verification for Apache2 ...";
     echo "*************************************************";
-    cmd_path_find apachectl /usr/sbin/apachectl 
-    default_path=$RES
-    echo "Please enter the path to 'apachectl' bin (with tailing 'apachectl'):";
-    read -p "[default:$default_path]:" apachectl_path ;
+    # checks if apachectl_path is already in commons/localpaths
+    if [ "$apachectl_path" != "" ]; then
+        default_path=$apachectl_path;
+    else 
+        # apachectl_path is not in commons/localpaths so checks if it is in PATH
+        cmd_path_find apachectl /usr/sbin/apachectl;
+        default_path=$RES;
+    fi;
+    echo "Enter the path to 'apachectl' bin (with trailing 'apachectl'):";
+    read -p "[default: $default_path]:" apachectl_path ;
     if [ "$apachectl_path" == "" ];
     then
     	apachectl_path=$default_path;
@@ -94,9 +103,9 @@ then
     # Retry as long as apachectl has not been found
     while [ $check -lt 1 ]; do
 	apachectl_path=$default_path;
-        echo "If apache is installed, please enter the path to the 'apachectl' bin (with tailing 'apachectl')";
+        echo "If apache is installed, enter the path to the 'apachectl' bin (with trailing 'apachectl')";
         echo "Otherwise, please enter 'exit' to quit this script and install apache";
-        read apachectl_path;
+        read -p "[default: $default_path]:" apachectl_path;
         if [ "$apachectl_path" == "exit" ]; 
 	    then exit; 
 	fi;
@@ -109,18 +118,21 @@ then
             check=1;
         fi;
     done;
+    echo "apachectl_path=$apachectl_path" >> ./commons/localpaths;
     echo -e "${G}Apache is installed on your machine${N}";
     echo "";
-    echo "Press [Enter] to continue";
-    read whatever;
-    echo " ";
     echo "*************************************************";
     echo "Verification for PHP ...";
     echo "*************************************************";
-    cmd_path_find php /usr/bin/php
-    default_path=$RES
+    
+    if [ "$php_path" != "" ]; then
+        default_path=$php_path;
+    else 
+        cmd_path_find php /usr/bin/php
+        default_path=$RES
+    fi;
 
-    echo "Please enter the path to 'php' bin (with tailing 'php')";
+    echo "Enter the path to 'php' bin (with trailing 'php')";
     read -p "[default:$default_path]:" php_path ;
     if [ "$php_path" == "" ];
     then
@@ -134,9 +146,9 @@ then
     fi;
     # Retry as long as PHP has not been found
     while [ $check -lt 1 ]; do
-        echo "If PHP is installed, please enter its path now (with tailing 'php')";
+        echo "If PHP is installed, enter its path now (with trailing 'php')";
         echo "otherwise, please enter 'exit' to quit this script and install PHP";
-        read php_path;
+        read -p "[default:$default_path]:" php_path;
         if [ "$php_path" == "exit" ]; then exit; fi;
         if [ "$php_path" == "" ];
         then
@@ -148,6 +160,7 @@ then
         fi;
 	php_path=$default_path;
     done;
+    echo "php_path=$php_path" >> ./commons/localpaths;
     echo "-------------------------------------------------";
     echo -e "${G}PHP is installed${N}, verification of your version ...";
     echo "-------------------------------------------------";
@@ -155,113 +168,98 @@ then
     # 'php -v' always starts by 'PHP 5.x.x'
     version=${value:4:3};
     if [ $(expr $version '<' 5.3) -eq 1 ]; then
-        echo -e "${R}You are using a deprecated version${N} of PHP [$version]. Please update your version";
+        echo -e "${R}You are using a deprecated version${N} of PHP [$version]. Update your version";
         echo "of PHP (at least 5.3) to ensure a good compatibility with EZcast";
         echo "Press [Enter] to quit this script or enter 'continue' to go to the";
         echo "next step anyway.";
         read choice;
         if [ "$choice" != "continue" ]; then exit; fi;
-    fi;
-    echo -e "${G}Your current version of PHP [$version] matches EZcast's needs${N}";
+    else 
+        echo -e "${G}Your current version of PHP [$version] matches EZcast's needs${N}";
     echo " ";
-    echo " ";
-    echo "*************************************************";
-    echo "Verification of LDAP extension for PHP ...";
-    echo "*************************************************";
-    echo "";
-    echo "The script will now test if the ldap extension for PHP is enabled.";
-    echo "Press [Enter] to continue or enter 'skip' to skip the test.";
-    read choice;
-    if [ "$choice" != "skip" ]; then
-        check=$($php_path -r "echo (function_exists('ldap_connect'))? 'enabled' : 'disabled';");
-        if [[ "$check" == "disabled" ]]; then
-            echo "${R}LDAP seems not to be enabled for PHP.${N}";
-            echo "Press [Enter] to quit this script or enter 'continue' to go to the";
-            echo "next step anyway.";
-            read choice;
-            if [ "$choice" != "continue" ]; then exit; fi;
-        fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}LDAP is enabled for PHP${N}"; fi;
     fi;
     echo "*************************************************";
-    echo "Verification of CURL extension for PHP ...";
+    echo "Verification of extensions for PHP ...";
     echo "*************************************************";
-    echo "";
-    echo "The script will now test if the curl extension for PHP is enabled.";
-    echo "Press [Enter] to continue or enter 'skip' to skip the test.";
-    read choice;
-    if [ "$choice" != "skip" ]; then
-        check=$($php_path -r "echo (function_exists('curl_version'))? 'enabled' : 'disabled';");
-        if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}CURL seems not to be enabled for PHP.${N}";
-            echo "Press [Enter] to quit this script or enter 'continue' to go to the";
-            echo "next step anyway.";
-            read choice;
-            if [ "$choice" != "continue" ]; then exit; fi;
-        fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}CURL is enabled for PHP${N}"; fi;
+    read -p "Do you want to check PHP extensions ? [y/n]: " choice;
+    if [ "$choice" != "n" ]; then
+        # Verification for CURL
+        check=0;
+        while [ $check -lt 1 ]; do
+            check=$($php_path -r "echo (function_exists('curl_version'))? 'enabled' : 'disabled';");
+            if [[ "$check" == "disabled" ]]; then
+                echo -e "${R}CURL seems not to be enabled for PHP.${N}";
+                echo "Enable CURL for PHP and press [Enter] to retry.";
+                read -p "Enter 'force' to continue without CURL enabled or 'quit' to leave: " choice;
+                if [ "$choice" == "quit" ]; then exit; fi;
+                check=0;
+                if [ "$choice" == "force" ]; then check=1; fi;
+            else 
+                echo -e "${G}CURL is enabled for PHP${N}";
+                check=1;
+            fi;
+        done;
+        # Verification for SIMPLE_XML
+        check=0;
+        while [ $check -lt 1 ]; do
+            check=$($php_path -r "echo (function_exists('simplexml_load_file'))? 'enabled' : 'disabled';");
+            if [[ "$check" == "disabled" ]]; then
+                echo -e "${R}SimpleXML seems not to be enabled for PHP.${N}";
+                echo "Enable SimpleXML for PHP and press [Enter] to retry.";
+                read -p "Enter 'force' to continue without SimpleXML enabled or 'quit' to leave: " choice;
+                if [ "$choice" == "quit" ]; then exit; fi;
+                check=0;
+                if [ "$choice" == "force" ]; then check=1; fi;
+            else 
+                echo -e "${G}SimpleXML is enabled for PHP${N}";
+                check=1;
+            fi;
+        done;
+        # Verification for PDO
+        check=0;
+        while [ $check -lt 1 ]; do
+            check=$($php_path -r "echo (extension_loaded('PDO') && extension_loaded('pdo_mysql'))? 'enabled' : 'disabled';");
+            if [[ "$check" == "disabled" ]]; then
+                echo -e "${R}PDO or pdo_mysql seems not to be enabled for PHP.${N}";
+                echo "Enable PDO and pdo_mysql for PHP and press [Enter] to retry.";
+                read -p "Enter 'force' to continue without PDO enabled or 'quit' to leave: " choice;
+                if [ "$choice" == "quit" ]; then exit; fi;
+                check=0;
+                if [ "$choice" == "force" ]; then check=1; fi;
+            else 
+                echo -e "${G}PDO and pdo_mysql are enabled for PHP${N}";
+                check=1;
+            fi;
+        done;
+        # Verification for JSON
+        check=0;
+        while [ $check -lt 1 ]; do
+            check=$($php_path -r "echo (function_exists('json_encode'))? 'enabled' : 'disabled';");
+            if [[ "$check" == "disabled" ]]; then
+                echo -e "${R}JSON seems not to be enabled for PHP.${N}";
+                echo "Enable JSON for PHP and press [Enter] to retry.";
+                read -p "Enter 'force' to continue without JSON enabled or 'quit' to leave: " choice;
+                if [ "$choice" == "quit" ]; then exit; fi;
+                check=0;
+                if [ "$choice" == "force" ]; then check=1; fi;
+            else 
+                echo -e "${G}JSON is enabled for PHP${N}";
+                check=1;
+            fi;
+        done;
     fi;
-    echo "*************************************************";
-    echo "Verification of MySQL extension for PHP ...";
-    echo "*************************************************";
     echo "";
-    echo "The script will now test if the MySQL extension for PHP is enabled.";
-    echo "Press [Enter] to continue or enter 'skip' to skip the test.";
-    read choice;
-    if [ "$choice" != "skip" ]; then
-        check=$($php_path -r "echo (function_exists('mysql_connect'))? 'enabled' : 'disabled';");
-        if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}MySQL seems not to be enabled for PHP.${N}";
-            echo "Press [Enter] to quit this script or enter 'continue' to go to the";
-            echo "next step anyway.";
-            read choice;
-            if [ "$choice" != "continue" ]; then exit; fi;
-        fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}MySQL is enabled for PHP${N}"; fi;
-    fi;
-    echo "*************************************************";
-    echo "Verification of SimpleXML extension for PHP ...";
-    echo "*************************************************";
-    echo "";
-    echo "The script will now test if the SimpleXML extension for PHP is enabled.";
-    echo "Press [Enter] to continue or enter 'skip' to skip the test.";
-    read choice;
-    if [ "$choice" != "skip" ]; then
-        check=$($php_path -r "echo (function_exists('simplexml_load_file'))? 'enabled' : 'disabled';");
-        if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}SimpleXML seems not to be enabled for PHP.${N}";
-            echo "Press [Enter] to quit this script or enter 'continue' to go to the";
-            echo "next step anyway.";
-            read choice;
-            if [ "$choice" != "continue" ]; then exit; fi;
-        fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}SimpleXML is enabled for PHP${N}"; fi;
-    fi;
-    echo "*************************************************";
-    echo "Verification of JSON extension for PHP ...";
-    echo "*************************************************";
-    echo "";
-    echo "The script will now test if the JSON extension for PHP is enabled.";
-    echo "Press [Enter] to continue or enter 'skip' to skip the test.";
-    read choice;
-    if [ "$choice" != "skip" ]; then
-        check=$($php_path -r "echo (function_exists('json_encode'))? 'enabled' : 'disabled';");
-        if [[ "$check" == "disabled" ]]; then
-            echo -e "${R}JSON seems not to be enabled for PHP.${N}";
-            echo "Press [Enter] to quit this script or enter 'continue' to go to the";
-            echo "next step anyway.";
-            read choice;
-            if [ "$choice" != "continue" ]; then exit; fi;
-        fi;
-        if [ "$choice" != "continue" ]; then echo -e "${G}JSON is enabled for PHP${N}"; fi;
-    fi;
     echo "*************************************************";
     echo "Verification for RSYNC ...";
     echo "*************************************************";
     check=1;
-    cmd_path_find rsync /usr/bin/rsync
-    default_path=$RES
-    echo "Please enter the path to 'rsync' bin (with tailing 'rsync')";
+    if [ "$rsync_path" != "" ]; then 
+        default_path=$rsync_path;
+    else 
+        cmd_path_find rsync /usr/bin/rsync
+        default_path=$RES
+    fi;
+    echo "Enter the path to 'rsync' bin (with trailing 'rsync')";
     read -p "[default: $default_path]:" rsync_path ;
     if [ "$rsync_path" == "" ];
     then
@@ -275,8 +273,8 @@ then
     fi;
     # Retry as long as rsync has not been found
     while [ $check -lt 1 ]; do
-        echo "If RSYNC is installed, please enter its path now (with tailing 'rsync').";
-        echo "Otherwise, please enter 'exit' to quit this script and install RSYNC";
+        echo "If RSYNC is installed, enter its path now (with trailing 'rsync').";
+        echo "Otherwise, enter 'exit' to quit this script and install RSYNC";
         read rsync_path;
         if [ "$rsync_path" == "exit" ]; then exit; fi;
         if [ "$rsync_path" == "" ];
@@ -288,10 +286,9 @@ then
             check=1;
         fi;
     done;
+    echo "rsync_path=$rsync_path" >> ./commons/localpaths;
     echo -e "${G}RSYNC is installed on your machine${N}";
     echo "";
-    echo "Press [Enter] to continue";
-    read whatever;
     echo "*************************************************";
     echo "Verification for AT ...";
     echo "*************************************************";
@@ -317,8 +314,8 @@ then
     done;
     # Retry as long as AT has not been found
     while [ $check -lt 1 ]; do
-        echo "If AT is installed, please enter its path now (with tailing 'at').";
-        echo "Otherwise, please enter 'exit' to quit this script and install AT";
+        echo "If AT is installed, enter its path now (with trailing 'at').";
+        echo "Otherwise, enter 'exit' to quit this script and install AT";
         read at_path;
         if [ "$at_path" == "exit" ]; then exit; fi;
         echo "echo test > at.tmp | $at_path now";
@@ -344,30 +341,63 @@ then
     echo " ";
     echo -e "${G}AT is installed on your machine${N}";
     echo "";
-    echo "Press [Enter] to continue";
-    read whatever;
+    echo "";
     echo -e "${G}Congratulations, your server is ready to install EZcast and its components${N}";
     echo "Press [Enter] to install EZcast";
     read whatever;
 else 
-    default_php_path="/usr/bin/php";
-    echo "Please, enter the path to PHP (with tailing 'php'):";
+    # tests have been skipped
+
+    if [ "$apachectl_path" != "" ]; then
+        default_apachectl_path=$apachectl_path;
+    else 
+        # apachectl_path is not in commons/localpaths so checks if it is in PATH
+        cmd_path_find apachectl /usr/sbin/apachectl;
+        default_apachectl_path=$RES;
+    fi;
+    echo "Enter the path to Apachectl (with trailing 'apachectl'):";
+    read -p "[default: $default_apachectl_path]" apachectl_path;
+    if [ "$apachectl_path" == "" ] 
+    then 
+	apachectl_path=$default_apachectl_path;
+    fi;
+    echo "apachectl_path=$apachectl_path" >> commons/localpaths;
+
+    if [ "$php_path" != "" ]; then
+        default_php_path=$php_path;
+    else 
+        cmd_path_find php /usr/bin/php
+        default_php_path=$RES
+    fi;
+    echo "Enter the path to PHP (with trailing 'php'):";
     read -p "[default: $default_php_path]" php_path;
     if [ "$php_path" == "" ] 
     then 
 	php_path=$default_php_path;
     fi;
-    cmd_path_find rsync /usr/bin/rsync 
-    default_rsync_path=$RES
-    echo "Enter the path to RSYNC (with tailing 'rsync'):";
+    echo "php_path=$php_path" >> commons/localpaths;
+
+    if [ "$rsync_path" != "" ]; then
+        default_rsync_path=$rsync_path;
+    else 
+        cmd_path_find rsync /usr/bin/rsync 
+        default_rsync_path=$RES
+    fi;
+    echo "Enter the path to RSYNC (with trailing 'rsync'):";
     read -p "[default: $default_rsync_path]" rsync_path;
     if [ "$rsync_path" == "" ] 
     then 
 	rsync_path=$default_rsync_path;
     fi;
+    echo "rsync_path=$rsync_path" >> commons/localpaths;
 fi;
 
 clear;
+
+    echo "*************************************************";
+    echo "Server configuration ...";
+    echo "*************************************************";
+
 echo -e "${G}EZcast will now be installed on the server.${N}";
 echo " ";
 echo "During the installation process, you will be requested";
@@ -375,29 +405,50 @@ echo "to enter some information such as path to specific directories";
 echo "or user preferences.";
 echo " ";
 ezcast_basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
-echo "Please, enter the path to your webspace (DocumentRoot).";
+echo "ezcast_basedir=$ezcast_basedir" >> ./commons/localpaths;
+echo "Enter the path to your webspace (DocumentRoot).";
 default_documentroot=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'DocumentRoot'| awk '{print $3}'`
-read -p "[default: $default_documentroot]:" webspace_directory ;
+if [ "$default_documentroot" == "" ]; then
+    if [ -e "/var/www" ]; then
+        default_documentroot="/var/www";
+    fi;
+fi;
+while [[ "$webspace_directory" == "" || ( ! -e $webspace_directory ) ]]; do
+    read -p "[default: $default_documentroot]:" webspace_directory ;
     if [ "$webspace_directory" == "" ];
     then
         webspace_directory=$default_documentroot;
     fi;
+done;
+echo "apache_documentroot=$webspace_directory" >> ./commons/localpaths;
 
 echo "EZmanager, EZadmin and EZplayer web interfaces will be placed";
 echo "in subfolders of the $webspace_directory dir to be accessed";
 echo "via a web browser.";
 echo " ";
 default_apache_username=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'User:' | awk 'BEGIN {FS= "\""}{ print $2}'`
-echo "Please, enter the username for Apache.";
-echo "(typically 'www-data' or '_www')";
+if [ "$default_apache_username" == "" ]; then
+    if [ `grep _www /etc/passwd | wc -l` -ge 1 ]; then default_apache_username="_www"; fi;
+    if [ `grep www-data /etc/passwd | wc -l` -ge 1 ]; then default_apache_username="www-data"; fi;
+fi;
+echo "Enter the username for Apache.";
+while [[ "$apache_username" == "" || "$choice" != "continue" ]]; do 
     read -p "[default: $default_apache_username]:" apache_username ;
     if [ "$apache_username" == "" ];
     then
         apache_username=$default_apache_username;
     fi;
+    if [ `grep $apache_username /etc/passwd | wc -l` -lt 1 ]; then
+        echo -e "${R}$apache_username user is not in /etc/passwd.${N}"
+        read -p "Press [enter] to retry or enter 'continue' to skip this verification: " choice;
+    else 
+        choice=continue;
+    fi;
+done;
+echo "apache_username=$apache_username" >> ./commons/localpaths;
 
-echo "Please, enter the path where you want to put the video repository ";
-echo "and the working directories (with tailing '/').";
+echo "Enter the path where you want to put the video repository ";
+echo "and the working directories (with trailing '/').";
 echo "We recommend '/var/lib/' as the size of this directory will vary";
 default_repository_path='/var/lib/';
 read -p "[default: $default_repository_path]" repository_basedir;
@@ -409,12 +460,13 @@ fi;
 # moves repository and working directories 
 mkdir -p $repository_basedir;
 repository_basedir=$repository_basedir/ezcast;
+echo "repository_basedir=$repository_basedir" >> ./commons/localpaths;
 #mv $ezcast_basedir/ezmanager/ezcast_tree $repository_basedir;
 cp -r $ezcast_basedir/ezmanager/ezcast_tree $repository_basedir;
 chown -R $apache_username $repository_basedir;
 #chgrp -R $apache_username $repository_basedir;
 chmod -R 755 $repository_basedir;
-echo "Please, enter a username and password for the web installer.";
+echo "Enter a username and password for the web installer.";
 echo "These information will be requested by the web installer.";
 echo "The user you are now creating will be automatically set as the";
 echo "first EZcast administrator. If you want to add other administrators";
@@ -430,7 +482,7 @@ while [ "$registration" != "1" ]; do
 	echo "";
     else
 	echo " ";
-	echo -e "${R}Password doesn't match, please try again.${N}";
+	echo -e "${R}Password doesn't match, try again.${N}";
 	echo "";
     fi;
 done;
@@ -441,18 +493,76 @@ done;
 while [ "$lastname" == "" ]; do
     read -p "User's last name: " lastname; 
 done;
-$php_path $ezcast_basedir/cli_install.php "$php_path" "$rsync_path" "$ezcast_basedir" "$repository_basedir" "$username" "$password" "$firstname" "$lastname";
-# set permissions for Apache user on EZcast files
-chown -R $apache_username $ezcast_basedir;
-#chgrp -R $apache_username $ezcast_basedir;
-chmod -R 755 $ezcast_basedir;
 # places web files in the webspace
+cp -rp $ezcast_basedir/commons/htdocs/* $webspace_directory/.;
 cp -rp $ezcast_basedir/ezadmin/htdocs $webspace_directory/ezadmin;
 cp -rp $ezcast_basedir/ezmanager/htdocs $webspace_directory/ezmanager;
 cp -rp $ezcast_basedir/ezplayer/htdocs $webspace_directory/ezplayer;
+$php_path $ezcast_basedir/cli_install.php "$php_path" "$rsync_path" "$webspace_directory" "$ezcast_basedir" "$repository_basedir" "$username" "$password" "$firstname" "$lastname" "$apache_username";
+# set permissions for Apache user on EZcast files
+chown -R $apache_username $ezcast_basedir;
+chown -R $apache_username $webspace_directory/ezadmin;
+chown -R $apache_username $webspace_directory/ezmanager;
+chown -R $apache_username $webspace_directory/ezplayer;
+#chgrp -R $apache_username $ezcast_basedir;
+chmod -R 755 $ezcast_basedir; 
 echo " ";
 cd commons/;
 ./install_templates.sh 1 1 1;
+echo "";
+clear;
+
+echo "*************************************************";
+echo "SSH generation ...";
+echo "*************************************************";
+choice="";
+while [[ ( ! -e `eval "echo ~$apache_username" ` ) && "$choice" != "continue" ]]; do
+    echo -e "${R}Apache user doesn't have a home directory.${N} Add Apache user's home dir in /etc/passwd file and retry.";
+    read -p "Press [Enter] to retry, enter 'continue' to continue without configuring SSH sharing and 'quit' to quit this installation: " choice;
+    if [ "$choice" == "quit" ]; then exit; fi;
+done; 
+
+if [ "$choice" == "continue" ]; then
+    echo -e "${R}SSH configuration has been skipped.${N} Make sure you generate SSH key for this server before adding a recorder and/or a renderer.";
+    echo "Use 'ssh-keygen -t dsa' as $apache_username to generate an SSH key for Apache";
+else 
+    echo "this is a test file. It is aimed to be deleted. Do not hesitate to delete it." >> $webspace_directory/test_apache_homedir.killme;
+    if [ -f `eval "echo ~$apache_username/test_apache_homedir.killme" ` ]; then 
+        echo -e "${R}Warning: Apache user's homedir is the webspace. It means that the SSH public and private keys will be available to everybody. This is a serious security issue. Please change the homedir in /etc/passwd.${N}";
+        read -p "Do you want to continue anyway ? [y/N]: " choice;
+        if [ "$choice" == "y" ]; then
+            htaccess=1;
+        fi;
+    else
+        choice="y";
+    fi;
+    rm -rf $webspace_directory/test_apache_homedir.killme;
+    if [ "$choice" == "y" ]; then
+        if [ -e `eval "echo ~$apache_username/.ssh/id_dsa.pub" ` ]; then
+            echo -e "${G}You have a valid SSH public key in Apache user's home dir.${N}";
+            echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/dsa.pub" `>> localpaths;
+        else 
+            echo "";
+            echo "You don't have an SSH public key yet."
+            echo -e "${G}Creating .ssh directory in `eval "echo ~$apache_username" ` ${N}";
+            mkdir `eval "echo ~$apache_username" `/.ssh;
+            echo -e "${G}Generating SSH keys in `eval "echo ~$apache_username" `/.ssh ${N}";
+            echo -e  'y\n'|ssh-keygen -q -t dsa -N "" -f `eval "echo ~$apache_username" `/.ssh/id_dsa;
+            chown -R $apache_username `eval "echo ~$apache_username" `/.ssh;
+            chmod -R 755 `eval "echo ~$apache_username" `/.ssh;
+            if [ $htaccess == 1 ]; then
+                # creates .htaccess in .ssh
+                if [ ! -e `eval "echo ~$apache_username/.ssh/.htaccess" ` ]; then
+                    echo "deny from all" >> `eval "echo ~$apache_username/.ssh/.htaccess" `;
+                fi;
+            fi;
+            echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/dsa.pub" `>> localpaths;
+        fi;
+    else 
+        echo "Modify Apache user's homedir in /etc/passwd and use 'ssh-keygen -t dsa' as $apache_username to generate an SSH key for Apache";
+    fi;
+fi; 
+
 echo "";
 echo -e "${G}EZcast is correctly installed !${N}";
 

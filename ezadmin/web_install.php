@@ -1,42 +1,47 @@
 <?php
 
 /*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ * EZCAST EZadmin 
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 		    Arnaud Wijns <awijns@ulb.ac.be>
+ *                   Antoine Dewilde
+ *                   Thibaut Roskam
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 /**
  * This file is aimed to install EZcast and its components.
  * It creates the tables of the database and sets up the configuration files 
  * according to the user's preferences
  */
-
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_database.php';
 require_once 'lib_various.php';
 require_once 'lib_error.php';
 
-if (file_exists('config.inc'))
+$template_folder = 'tmpl/';
+template_repository_path($template_folder . get_lang());
+template_load_dictionnary('translations.xml');
+
+if (file_exists('config.inc')){
+    echo "Nothing to do here ;-)";
     die;
+}
 
 session_name("ezcast_installer");
 session_start();
@@ -45,9 +50,6 @@ $_SESSION['install'] = true;
 $errors = array();
 $input = array_merge($_GET, $_POST);
 
-$template_folder = 'tmpl/';
-template_repository_path($template_folder . get_lang());
-template_load_dictionnary('translations.xml');
 
 if (!isset($_SESSION['user_logged'])) {
     if (isset($input['action']) && $input['action'] == 'login') {
@@ -177,7 +179,7 @@ if (isset($input['install']) && !empty($input['install'])) {
     $passwd = $first_user[1];
     $permissions = 1;
 
-    include 'config.inc'; 
+    include 'config.inc';
     if (!db_ready())
         db_prepare();
     db_user_create($user_ID, $surname, $forename, $passwd, $permissions);
@@ -186,15 +188,11 @@ if (isset($input['install']) && !empty($input['install'])) {
     db_log(db_gettable('users'), 'Created user ' . $user_ID, $_SESSION['user_login']);
     db_close();
 
-    /* require template_getpath('div_header.php');
-      echo '<div class="alert alert-success">Install successful. For improved security, we advise you to delete or rename the "install.php" file.</div>';
-      require template_getpath('div_footer.php'); */
-
     session_destroy();
     unlink("../first_user");
 
-    echo "Installation has been completed !\n" .
-    "Please install EZrenderer and configure it before using EZcast.";
+    require template_getpath('install_success.php');
+    
 } else {
     if (file_exists("../commons/config.inc")) {
         include_once '../commons/config.inc';
@@ -202,10 +200,16 @@ if (isset($input['install']) && !empty($input['install'])) {
         include_once '../commons/config-sample.inc';
     }
 
+    if (!(isset($input['skip_ext']) && $input['skip_ext']) && !(isset($input['skip_srv']) && $input['skip_srv']))
+        check_php_extensions();
+
+    if (!(isset($input['skip_srv']) && $input['skip_srv']))
+        check_server_config();
+
     $input['php_cli_cmd'] = $php_cli_cmd;
     $input['rsync_pgm'] = $rsync_pgm;
-    $input['https_ready'] = $https_ready;
-    $input['application_url'] = $application_url;
+    $input['https_ready'] = $_SERVER['SERVER_PORT'] == '443' ? true : false;
+    $input['application_url'] = "http://" . $_SERVER['SERVER_NAME'];
     $input['organization_name'] = $organization_name;
     $input['copyright'] = $copyright;
     $input['mailto_alert'] = $mailto_alert;
@@ -240,6 +244,126 @@ function view_login_form() {
 
     // template include goes here
     include_once template_getpath('login.php');
+}
+
+function check_php_extensions() {
+    $php_extensions = array('ldap', 'curl', "PDO", "pdo_mysql", "mysql", "json", "apc");
+
+    $all_dependences = true;
+    $display = "<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+        <title>Check PHP modules</title>
+        <link href=\"css/style.css\" rel=\"stylesheet\">
+     </head>
+     <body>";
+
+    foreach ($php_extensions as $extension) {
+        if (extension_loaded($extension)) {
+            $display .= "<div class=\"green\">$extension extension loaded ...</div>";
+            $all_dependences = $all_dependences && true;
+        } else {
+            $display .= "<div class=\"red\">$extension extension NOT loaded ...</div>";
+            $all_dependences = $all_dependences && false;
+        } 
+    }
+    $display .=
+            "<br/>Load the missing PHP extensions for Apache, restart the web server and reconnect to this web installer.
+         <br/><br/>If you want to continue anyway, click on the following button.
+         <br/><br/><br/><a class='button' href='install.php?skip_ext=true'>Continue</a>
+    </body>
+    </html>";
+    if (!$all_dependences) {
+        print $display;
+        die;
+    }
+}
+
+function check_server_config() {
+
+    $upload_max_filesize = ini_get("upload_max_filesize");
+    $post_max_size = ini_get("post_max_size");
+    $max_execution_time = ini_get("max_execution_time");
+    $max_input_time = ini_get("max_input_time");
+
+    $display = "<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+        <title>Check server config</title>
+        <link href=\"css/style.css\" rel=\"stylesheet\">
+     </head>
+     <body>";
+
+    $all_good = true;
+    
+    if (convert_size($upload_max_filesize) < 2000000000) {
+        $display .= "<div><span class=\"red\">upload_max_filesize = $upload_max_filesize</span> <-- Determines the max size of the files that a user can upload in EZmanager. We recommend <b>2G</b></div>";
+        $all_good = $all_good & false;
+    } else {
+        $display .= "<div class=\"green\">upload_max_filesize = $upload_max_filesize</div>";
+        $all_good = $all_good & true;
+    }
+
+    if (convert_size($post_max_size) < 2000000000) {
+        $display .= "<div><span class=\"red\">post_max_size = $post_max_size</span> <-- Determines the max size of post data allowed. This should be at least the value of 'upload_max_filesize'. We recommend <b>2G</b></div>";
+        $all_good = $all_good & false;
+    } else {
+        $display .= "<div class=\"green\">post_max_size = $post_max_size</div>";
+        $all_good = $all_good & true;
+    }
+
+    if ((int) $max_execution_time < 300) {
+        $display .= "<div><span class=\"red\">max_execution_time = $max_execution_time</span> <-- Determines the maximum time in seconds a script is allowed to run before it is terminated by the parser. We recommend <b>300</b></div>";
+        $all_good = $all_good & false;
+    } else {
+        $display .= "<div class=\"green\">max_execution_time = $max_execution_time </div>";
+        $all_good = $all_good & true;
+    }
+
+    if ((int) $max_input_time < 300) {
+        $display .= "<div><span class=\"red\">max_input_time = $max_input_time</span> <-- Determines the maximum time in seconds a script is allowed to parse input data, like POST and GET. We recommend <b>300</b></div>";
+        $all_good = $all_good & false;
+    } else {
+        $display .= "<div class=\"green\">max_input_time = $max_input_time </div>";
+        $all_good = $all_good & true;
+    }
+    $display .=
+            "<br/>Edit the '<b>". php_ini_loaded_file() ."</b>' file to match your own needs.
+         <br/><br/>If you want to continue anyway, click on the following button.
+         <br/><br/><br/><a class='button' href='install.php?skip_srv=true'>Continue</a>
+    </body>
+    </html>";
+ 
+    if (!$all_good) {
+        print $display;
+        die;
+    }
+}
+
+function convert_size($string) {
+
+    switch (substr($string, -1)) {
+        case 'G':
+            $int = (int) substr_replace($string, "", -1);
+            $int *= 1000000000;
+            break;
+        case 'M':
+            $int = (int) substr_replace($string, "", -1);
+            $int *= 1000000;
+            break;
+        case 'K':
+            $int = (int) substr_replace($string, "", -1);
+            $int *= 1000;
+            break;
+        default:
+            if (is_numeric($string))
+                $int = (int) $string;
+            else
+                $int = 0;
+    }
+    return $int;
 }
 
 ?>

@@ -1,27 +1,28 @@
 <?php
+
 /*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ * EZCAST EZadmin 
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 		    Arnaud Wijns <awijns@ulb.ac.be>
+ *                   Antoine Dewilde
+ *                   Thibaut Roskam
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 /**
  * Parses the config file and returns the settings that can be changed in it.
@@ -115,6 +116,138 @@ function parse_admin_file() {
     }
 
     return $admins;
+}
+
+function renderer_exists($name) {
+
+    if (file_exists('renderers.inc')) {
+        $renderers = require_once 'renderers.inc';
+        foreach ($renderers as $index => $renderer) {
+            if (strtoupper($renderer['name']) == strtoupper($name)) {
+                return $index;
+            }
+        }
+    } else {
+        return false;
+    }
+    return false;
+}
+
+function renderer_get($name) {
+
+    if (file_exists('renderers.inc')) {
+        $renderers = require_once 'renderers.inc';
+        foreach ($renderers as $renderer) {
+            if (strtoupper($renderer['name']) == strtoupper($name)) {
+                return $renderer;
+            }
+        }
+    }
+    return false;
+}
+
+function renderer_update_enabled($name, $enable, &$error) {
+    $renderer_index = renderer_exists($name);
+
+    if ($renderer_index === false) {
+        $error = "renderer_not_found";
+        return false;
+    }
+
+    $renderers = include 'renderers.inc';
+    $renderer = $renderers[$renderer_index];
+
+    if ($enable) {
+        $remote_test = dirname($renderer['launch']) . "/cli_renderer_test.php";
+        if(test_over_ssh($renderer['client'], $renderer['host'], 30, $renderer['php'], $remote_test, $error)){
+            $renderers[$renderer_index]["status"] = "enabled";            
+        } else {
+            return false;
+        }
+        
+    } else {
+        $renderers[$renderer_index]["status"] = "disabled";
+    }
+
+    $string = "<?php" . PHP_EOL . "return ";
+    $string .= var_export($renderers, true) . ';';
+    $string .= PHP_EOL . "?>";
+
+    $res = file_put_contents('renderers_tmp.inc', $string);
+    if ($res === false) {
+        $error = "renderer_file_error";
+        return false;
+    }
+
+    if (file_exists('./renderers.inc.old'))
+        unlink('./renderers.inc.old');
+    rename('./renderers.inc', './renderers.inc.old');
+    rename('./renderers_tmp.inc', './renderers.inc');
+    return true;
+}
+
+function renderer_delete($name){
+    $renderer_index = renderer_exists($name);
+
+    if ($renderer_index === false) {
+        $error = "renderer_not_found";
+        return false;
+    }
+
+    $renderers = include 'renderers.inc';
+    unset($renderers[$renderer_index]);
+    
+
+    $string = "<?php" . PHP_EOL . "return ";
+    $string .= var_export($renderers, true) . ';';
+    $string .= PHP_EOL . "?>";
+
+    $res = file_put_contents('renderers_tmp.inc', $string);
+    if ($res === false) {
+        $error = "renderer_file_error";
+        return false;
+    }
+
+    if (file_exists('./renderers.inc.old'))
+        unlink('./renderers.inc.old');
+    rename('./renderers.inc', './renderers.inc.old');
+    rename('./renderers_tmp.inc', './renderers.inc');
+    return true;
+}
+
+function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_cli) {
+    if (!file_exists('renderers.inc')) {
+        $renderers = array();
+    } else {
+        $renderers = require_once 'renderers.inc';
+    }
+
+    array_push($renderers, array(
+        "name" => $name,
+        "host" => $address,
+        "client" => $user,
+        "status" => ($status) ? 'enabled' : 'disabled',
+        "downloading_dir" => "$root_path/queues/downloading",
+        "downloaded_dir" => "$root_path/queues/downloaded",
+        "processed_dir" => "$root_path/queues/processed",
+        "statistics" => "$root_path/bin/cli_statistics_get.php",
+        "php" => $php_cli,
+        "launch" => "$root_path/bin/intro_title_movie.bash",
+        "kill" => "$root_path/bin/cli_job_kill.php"
+    ));
+    $string = "<?php" . PHP_EOL . "return ";
+    $string .= var_export($renderers, true) . ';';
+    $string .= PHP_EOL . "?>";
+
+    $res = file_put_contents('renderers_tmp.inc', $string);
+    if ($res === false)
+        return false;
+
+    if (file_exists('./renderers.inc.old'))
+        unlink('./renderers.inc.old');
+    rename('./renderers.inc', './renderers.inc.old');
+    rename('./renderers_tmp.inc', './renderers.inc');
+    return true;
 }
 
 function add_admin_to_file($netid) {
@@ -320,6 +453,36 @@ function push_classrooms_to_ezmanager() {
     return true;
 }
 
+/**
+ * Overwrites renderers.inc in ezmanager
+ */
+function push_renderers_to_ezmanager() {
+    global $ezmanager_host;
+    global $ezmanager_user;
+    global $ezmanager_basedir;
+    global $ezmanager_subdir;
+
+
+    // Copying on ezmanager
+    if (empty($ezmanager_host) || !isset($ezmanager_host)) {
+        // Local copy
+        $res = copy('renderers.inc', $ezmanager_basedir . $ezmanager_subdir . '/renderers.inc');
+        if ($res === false)
+            return false;
+    }
+    else {
+        // Remote copy
+        $cmd = 'scp ./renderers.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+        exec($cmd, $output, $return_var);
+
+        if ($return_var != 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 function push_users_to_ezmanager() {
     global $ezmanager_host;
     global $ezmanager_user;
@@ -413,5 +576,141 @@ function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node) {
 function bool2str($bool) {
     return ($bool) ? 'true' : 'false';
 }
+
+function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts = true) {
+    include 'config.inc';
+    // test the SSH connection  
+    exec("ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"", $output, $returncode);
+
+    if ($update_known_hosts && $returncode) {
+        // SSH connection failed so we verify that the remote renderer is in 
+        // the 'known_hosts' file, if not we add it and retry to connect via SSH
+        // find .ssh/known_hosts file
+
+        if ($ssh_pub_key_location == "")
+            $ssh_known_hosts = "~$apache_username/.ssh/known_hosts";
+        else
+            $ssh_known_hosts = dirname($ssh_pub_key_location) . "/known_hosts";
+
+        // changes user's relative path in absolute path (required for file_exists(...))
+        $ssh_known_hosts = exec("echo `echo $ssh_known_hosts`");
+
+        // retrieves SSH public key of remote renderer
+        exec("ssh-keyscan -T $timeout " . $hostname, $output, $returncode);
+        if (!$returncode) {
+            // adds renderer SSH key to known_hosts file (if not there yet)
+            if (!file_exists($ssh_known_hosts) || strpos(file_get_contents($ssh_known_hosts), $output[0]) === false) {
+                exec("echo $output[0] >> $ssh_known_hosts", $output, $returncode);
+                if ($returncode) {
+                    // could not add SSH public key from remote renderer to known_hosts file
+                    return "known_hosts_error";
+                }
+            }
+        } else {
+            // could not retrieve SSH public key from renderer
+            if (!file_exists($ssh_known_hosts) || strpos(file_get_contents($ssh_known_hosts), $hostname) === false) {
+                // SSH public key from remote renderer is not in known_hosts yet
+                return "keyscan_error";
+            }
+        }
+        // tests the SSH connection
+        exec("ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"", $output, $returncode);
+        return $returncode ? false : true;
+    } else if ($returncode) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
+    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " . $remote_php . " ]; then echo 'exists'; fi;\"") != 'exists') {
+        // PHP binary doesn't exist on remote renderer
+        return "php_not_found";
+    } else {
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_php -v\"", $output, $returncode);
+        if (strpos(strtoupper($output[0]), 'PHP') === false) {
+            // PHP not found on remote renderer
+            return "php_not_found";
+        } else {
+            // Test PHP version
+            $php_version = substr($output[0], 4, 3);
+            if (is_nan($php_version) || (double) $php_version < 5.3) {
+                // PHP is deprecated
+                return "php_deprecated";
+            } else {
+                // Test PHP modules
+                exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_php -m\"", $output, $returncode);
+                if (!in_array("SimpleXML", $output)) {
+                    return "php_missing_xml";
+                }
+                if (!in_array("gd", $output)) {
+                    return "php_missing_gd";
+                }
+                unset($output);
+                exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes $ssh_user@$ssh_host \"$remote_php -r 'echo serialize(gd_info());'\"", $output, $returncode);
+                $gd_info = unserialize(implode($output));
+                if (!$gd_info['FreeType Support']){
+                    return "gd_missing_freetype";
+                }
+            }
+        }
+        return "";
+    }
+}
+
+function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg) {
+
+    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " . $remote_ffmpeg . " ]; then echo 'exists'; fi;\"") != 'exists') {
+        // FFMPEG binary doesn't exist on remote renderer
+        return "ffmpeg_not_found";
+    } else {
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffmpeg -version\"", $output, $returncode);
+        if (strpos(strtoupper($output[0]), 'FFMPEG') === false) {
+            // FFMPEG not found on remote renderer
+            return "ffmpeg_not_found";
+        } else {
+            // Test FFMPEG codecs
+            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffmpeg -codecs | grep 'libfdk_aac'\"");
+            if (strpos(strtoupper($output), 'AAC') === false) {
+                return "missing_codec_aac";
+            }
+            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffmpeg -codecs | grep 'h264'\"");
+            if (strpos(strtoupper($output), 'H.264') === false) {
+                return "missing_codec_h264";
+            }
+            return "";
+        }
+    }
+}
+
+function test_ffprobe_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffprobe) {
+    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " . $remote_ffprobe . " ]; then echo 'exists'; fi;\"") != 'exists') {
+        // FFPROBE binary doesn't exist on remote renderer
+        return "ffprobe_not_found";
+    } else {
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffprobe -version\"", $output, $returncode);
+        if (strpos(strtoupper($output[0]), 'FFPROBE') === false) {
+            // FFMPEG not found on remote renderer
+            return "ffprobe_not_found";
+        }
+        return "";
+    }
+}
+
+function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_test_script, &$error) {
+    if (ssh_connection_test($ssh_user, $ssh_host, $ssh_timeout)) {
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_php $remote_test_script\"", $output, $returncode);
+        if ($returncode || in_array("test ok", $output) === false){
+            $error = $output[0];
+            return false;
+        }
+        return true;
+    } else {
+        $error = "ssh_error";
+        return false;
+    }
+}
+
 
 ?>

@@ -67,7 +67,7 @@ $db_name = "ezcast";
 $db_prefix = "ezcast_";
 
 // Paths for the remote recorder
-$recorder_user = "podclient";
+$recorder_user = "ezrecorder";
 $recorder_basedir = '/Library/ezrecorder/'; // Path from the root to the recorder
 $recorder_subdir = '/etc/users/'; // Path from basedir to the admin.inc file
 $recorder_recorddir = "~$recorder_user/"; // Path from the root to the recorder local repository 
@@ -75,6 +75,8 @@ $recorder_recorddir = "~$recorder_user/"; // Path from the root to the recorder 
 $php_cli_cmd = "/opt/csw/bin/php";//locate php cli to use
 $rsync_pgm = "/opt/sfw/bin/rsync";
 $ssh_pgm = "/usr/bin/ssh";
+$apache_username = "www-data"; // used by ezadmin to retrieve public SSH key for renderer creation
+$ssh_pub_key_location = ""; // leave empty for default location or enter absolute path to Apache user's ssh public key 
 
 $mailto_alert = "mail@your.organization"; //who to call in case of problem in the processing chain
 

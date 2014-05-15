@@ -103,8 +103,8 @@
         <label id="push_to_recorder" lang="en">Push changes</label>
         <label id="renderers_queue" lang="fr">Liste de jobs</label>
         <label id="renderers_queue" lang="en">Job queue</label>
-        <label id="renderers_list" lang="fr">Machines de traitement</label>
-        <label id="renderers_list" lang="en">Renderers</label>
+        <label id="renderers_list" lang="fr">Liste renderers</label>
+        <label id="renderers_list" lang="en">Renderers list</label>
         <label id="processing_stats" lang="fr">Traitements</label>
         <label id="processing_stats" lang="en">Processings</label>
         <label id="recorder_stats" lang="fr">Enregistreurs</label>
@@ -279,6 +279,16 @@
         <label id="add_admin_error" lang="en">Unkown user or already present.</label>
         <label id="create" lang="fr">Valider</label>
         <label id="create" lang="en">Create</label>
+        <label id="continue" lang="fr">Suivant</label>
+        <label id="continue" lang="en">Next</label>
+        <label id="previous" lang="fr">Précédent</label>
+        <label id="previous" lang="en">Previous</label>
+        <label id="skip" lang="fr">Ignorer les tests</label>
+        <label id="skip" lang="en">Skip tests</label>
+        <label id="finish" lang="fr">Terminer</label>
+        <label id="finish" lang="en">Finish</label>
+        <label id="retry" lang="fr">Réessayer</label>
+        <label id="retry" lang="en">Retry</label>
         <label id="password" lang="fr">Mot de passe</label>
         <label id="password" lang="en">Password</label>   
         <label id="delete" lang="fr">Supprimer</label>   
@@ -337,8 +347,22 @@
         <label id="job_actions" lang="en">Actions</label>
         <label id="renderer_name" lang="fr">Nom</label>
         <label id="renderer_name" lang="en">Name</label>
+        <label id="renderer_address" lang="fr">Adresse du serveur</label>
+        <label id="renderer_address" lang="en">Server address</label>
+        <label id="renderer_user" lang="fr">Nom utilisateur</label>
+        <label id="renderer_user" lang="en">User name</label>
+        <label id="renderer_enabled" lang="fr">Activé</label>
+        <label id="renderer_enabled" lang="en">Enabled</label>
         <label id="renderer_hostname" lang="fr">Nom d'hôte</label>
         <label id="renderer_hostname" lang="en">Hostname</label>
+        <label id="renderer_php" lang="fr">PHP (cli)</label>
+        <label id="renderer_php" lang="en">PHP (cli)</label>
+        <label id="renderer_ffmpeg" lang="fr">FFMPEG path</label>
+        <label id="renderer_ffmpeg" lang="en">FFMPEG path</label>
+        <label id="renderer_ffprobe" lang="fr">FFPROBE path</label>
+        <label id="renderer_ffprobe" lang="en">FFPROBE path</label>
+        <label id="renderer_root_path" lang="fr">Racine EZrenderer</label>
+        <label id="renderer_root_path" lang="en">EZrenderer root path</label>
         <label id="renderer_jobs" lang="fr">Jobs</label>
         <label id="renderer_jobs" lang="en">Jobs</label>
         <label id="renderer_status" lang="fr">Status</label>
@@ -382,21 +406,39 @@
         <label id="classroom_enabled" lang="fr">Activé</label>
         <label id="classroom_enabled" lang="en">Activate</label>
         <label id="create_classroom" lang="fr">Créer auditoire</label>
-        <label id="create_classroom" lang="en">Create classroom</label>        
+        <label id="create_classroom" lang="en">Create classroom</label>     
+        <label id="create_renderer" lang="fr">Créer renderer</label>
+        <label id="create_renderer" lang="en">Create renderer</label>      
+        <label id="create_renderer_step_1" lang="fr">Créer renderer</label>
+        <label id="create_renderer_step_1" lang="en">Create renderer</label>      
+        <label id="create_renderer_step_2" lang="fr">Créer renderer > Configuration SSH</label>
+        <label id="create_renderer_step_2" lang="en">Create renderer > SSH configuration</label>   
+        <label id="create_renderer_step_3" lang="fr">Créer renderer > Informations supplémentaires</label>
+        <label id="create_renderer_step_3" lang="en">Create renderer > Additional information</label>   
+        <label id="create_renderer_step_4" lang="fr">Créer renderer > Installation</label>
+        <label id="create_renderer_step_4" lang="en">Create renderer > Installation</label>        
         <label id="cancel" lang="fr">Annuler</label>
         <label id="cancel" lang="en">Cancel</label>
-        <label id="delete_confirm" lang="fr">Etes vous sûr de vouloir supprimer cette élément ?</label>
-        <label id="delete_confirm" lang="en">Are you sure to want delete this item ?</label>
+        <label id="delete_confirm" lang="fr">Etes vous sûr de vouloir supprimer cet élément ?</label>
+        <label id="delete_confirm" lang="en">Are you sure you want to delete this item ?</label>
         <label id="unknown_user" lang="fr">n'est pas un utilisateur valide. Essaye encore.</label>
         <label id="unknown_user" lang="en">is not a valid user. Try again.</label>
-        <label id="room_delete_error" lang="fr">Un erreur est survenue lors de la suppression de l'auditoire.</label>
+        <label id="room_delete_error" lang="fr">Une erreur est survenue lors de la suppression de l'auditoire.</label>
         <label id="room_delete_error" lang="en">An error has occured during the classroom deletion.</label>
+        <label id="renderer_enable_error" lang="fr">Impossible de changer l'état de ce renderer.</label>
+        <label id="renderer_enable_error" lang="en">Impossible to change the state of this renderer.</label>
+        <label id="renderer_delete_error" lang="fr">Une erreur est survenue lors de la suppression du renderer.</label>
+        <label id="renderer_delete_error" lang="en">An error has occured during the renderer deletion.</label>
+        <label id="renderer_delete" lang="fr">Vous pouvez désormais supprimer les fichiers d'EZrenderer sur le serveur distant (renderer).</label>
+        <label id="renderer_delete" lang="en">You can now delete EZrenderer files on the remote server (renderer).</label>
         
         <!-- Install -->
         <label id="install_page_title" lang="fr">Installation EZcast</label>
         <label id="install_page_title" lang="en">Install EZcast</label>
         <label id="install_title" lang="fr">Installation EZcast</label>
         <label id="install_title" lang="en">Install EZcast</label>
+        <label id="install_success_title" lang="fr">Installation EZcast réussie</label>
+        <label id="install_success_title" lang="en">EZcast successfully installed</label>
         <label id="settings_panel_general" lang="fr">Options générales</label>
         <label id="settings_panel_general" lang="en">General settings</label>
         <label id="settings_appname" lang="fr">Nom d'application</label>
@@ -415,8 +457,8 @@
         <label id="settings_repository_basedir" lang="en">Repository root path</label>
         <label id="settings_ezcast_basedir" lang="fr">Chemin racine de l'application</label>
         <label id="settings_ezcast_basedir" lang="en">Application root path</label>
-        <label id="settings_php_path" lang="fr">Commande PHP</label>
-        <label id="settings_php_path" lang="en">PHP command</label>
+        <label id="settings_php_path" lang="fr">Commande cli PHP</label>
+        <label id="settings_php_path" lang="en">PHP cli command</label>
         <label id="settings_rsync_path" lang="fr">Commande rsync</label>
         <label id="settings_rsync_path" lang="en">Rsync command</label>
         <label id="settings_panel_db" lang="fr">Options de la base de données</label>
@@ -468,6 +510,30 @@
         <!-- Long texts -->
         <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, et à bientôt.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php">Revenir à la page de connexion&lt;/a&gt;</label>
         <label id="Logout_confirmation_message" lang="en">You are now logged out.&lt;br /&gt;Thanks for using our services, see you soon.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
+        <label id="create_renderer_step_2_message" lang="fr">Ajoutez la &lt;b&gt;clé publique&lt;/b&gt; affichée ci-dessous sur le serveur distant (renderer) dans &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt; et cliquez sur "Continuer" pour tester la connexion SSH.</label>
+        <label id="create_renderer_step_2_message" lang="en">Add the following &lt;b&gt;public key&lt;/b&gt; in &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt;on the remote server (renderer) and click "Continue" to test the SSH connection.</label>
+        <label id="create_renderer_step_2_loading" lang="fr">Vérification de la connexion SSH avec le serveur distant (renderer)</label>
+        <label id="create_renderer_step_2_loading" lang="en">Checking SSH connection to the remote server (renderer)</label>
+        <label id="create_renderer_step_2_wait" lang="fr">Ceci peut prendre jusqu'à &lt;?php echo $ssh_timeout;?&gt; secondes. Veuillez ne pas rafraichir la page.</label>
+        <label id="create_renderer_step_2_wait" lang="en">This may last up to &lt;?php echo $ssh_timeout;?&gt; seconds. Please, do not refresh the page.</label>
+        <label id="ssh_connection_success" lang="fr">Connexion SSH au serveur distant (renderer) réussie !</label>
+        <label id="ssh_connection_success" lang="en">Successfully connected via SSH to the remote server (renderer) !</label>
+        <label id="create_renderer_step_3_loading" lang="fr">Vérification de la configuration du serveur distant (renderer)</label>
+        <label id="create_renderer_step_3_loading" lang="en">Checking configuration of the remote server (renderer)</label>
+        <label id="create_renderer_step_3_wait" lang="fr">Ceci peut prendre jusqu'à &lt;?php echo $ssh_timeout;?&gt; secondes. Veuillez ne pas rafraichir la page.</label>
+        <label id="create_renderer_step_3_wait" lang="en">This may last up to &lt;?php echo $ssh_timeout;?&gt; seconds. Please, do not refresh the page.</label>
+        <label id="configuration_success" lang="fr">Les tests de configuration du serveur distant (renderer) ont réussi !</label>
+        <label id="configuration_success" lang="en">Configuration tests on the remote server (renderer) have been successful !</label>
+        <label id="create_renderer_step_4_message" lang="fr">Le programme va maintenant: </label>
+        <label id="create_renderer_step_4_message" lang="en">The program is now going to: </label>
+        <label id="create_renderer_step_4_copy" lang="fr">Copier les fichiers d'installation d'EZrenderer sur le serveur distant [&lt;?php echo $_SESSION['renderer_root_path'];?&gt;]</label>
+        <label id="create_renderer_step_4_copy" lang="en">Copy EZrenderer installation files on the remote server [&lt;?php echo $_SESSION['renderer_root_path'];?&gt;]</label>
+        <label id="create_renderer_step_4_install" lang="fr">Installer EZrenderer sur le serveur distant (renderer)</label>
+        <label id="create_renderer_step_4_install" lang="en">Install EZrenderer on the remote server (renderer) </label>
+        <label id="create_renderer_step_4_xml" lang="fr">Mettre à jour la liste des renderers pour EZadmin et EZmanager </label>
+        <label id="create_renderer_step_4_xml" lang="en">Update renderers list for EZadmin and EZmanager </label>
+        <label id="load_step_4_copy" lang="fr">Copie des fichiers d'installation d'EZrenderer en cours ...</label>
+        <label id="load_step_4_copy" lang="en">Copying EZrenderer installation files ...</label>
     </labels>
     
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->
@@ -540,10 +606,72 @@
         <message id="missing_user_ID" lang="en">The user ID cannot be blank</message>
         <message id="missing_recorder_passwd" lang="fr">Le mot de passe du recordeur ne peut pas être vide.</message>
         <message id="missing_recorder_passwd" lang="en">The recorder password cannot be blank.</message>
+        <message id="existing_renderer_name" lang="fr">Ce nom de renderer existe déjà.</message>
+        <message id="existing_renderer_name" lang="en">The renderer name already exists</message>
+        <message id="missing_renderer_name" lang="fr">Le nom du renderer ne peut pas être vide.</message>
+        <message id="missing_renderer_name" lang="en">The renderer name cannot be blank</message>
+        <message id="missing_renderer_address" lang="fr">L'adresse du renderer ne peut pas être vide.</message>
+        <message id="missing_renderer_address" lang="en">The renderer address cannot be blank</message>
+        <message id="missing_renderer_user" lang="fr">Le nom d'utilisateur du renderer ne peut pas être vide.</message>
+        <message id="missing_renderer_user" lang="en">The renderer username cannot be blank</message>
+        <message id="missing_renderer_root_path" lang="fr">La racine du renderer doit être renseignée.</message>
+        <message id="missing_renderer_root_path" lang="en">The renderer root path cannot be blank</message>
+        <message id="bad_renderer_root_path" lang="fr">La racine du renderer ne semble pas être un répertoire valide.</message>
+        <message id="bad_renderer_root_path" lang="en">The renderer root path seems not to be a valid directory</message>
+        <message id="missing_renderer_php" lang="fr">Le binaire PHP doit être renseigné.</message>
+        <message id="missing_renderer_php" lang="en">The PHP binary cannot be blank</message>
+        <message id="missing_renderer_ffmpeg" lang="fr">Le binaire FFMPEG doit être renseigné.</message>
+        <message id="missing_renderer_ffmpeg" lang="en">The FFMPEG binary cannot be blank</message>
+        <message id="missing_renderer_ffprobe" lang="fr">Le binaire FFPROBE doit être renseigné.</message>
+        <message id="missing_renderer_ffprobe" lang="en">The FFPROBE binary cannot be blank</message>
+        <message id="php_not_found" lang="fr">Le binaire PHP n'a pas été trouvé sur le serveur distant (renderer).</message>
+        <message id="php_not_found" lang="en">PHP binary could not be found on the remote server (renderer).</message>
+        <message id="php_deprecated" lang="fr">La version PHP installée sur le serveur distant (renderer) n'est pas supportée. (Minimum requis: 5.3)</message>
+        <message id="php_deprecated" lang="en">The PHP version installed on remote server (renderer) is deprecated. (Min required: 5.3)</message>
+        <message id="missing_module_xml" lang="fr">Le module SimpleXML pour PHP n'est pas activé sur le serveur distant (renderer).</message>
+        <message id="missing_module_xml" lang="en">SimpleXML module for PHP is not enabled on the remote server (renderer).</message>
+        <message id="missing_module_gd" lang="fr">Le module gd pour PHP n'est pas activé sur le serveur distant (renderer).</message>
+        <message id="missing_module_gd" lang="en">gd module for PHP is not enabled on the remote server (renderer).</message>
+        <message id="missing_freetype" lang="fr">FreeType n'est pas activé pour le module GD (PHP) sur le serveur distant (renderer).</message>
+        <message id="missing_freetype" lang="en">FreeType is not enabled for GD module (PHP) on the remote server (renderer).</message>
+        <message id="ffmpeg_not_found" lang="fr">Le binaire FFMPEG n'a pas été trouvé sur le serveur distant (renderer).</message>
+        <message id="ffmpeg_not_found" lang="en">FFMPEG binary could not be found on the remote server (renderer).</message>
+        <message id="missing_codec_aac" lang="fr">Le codec AAC (libfdk_aac) n'est pas installé pour FFMPEG</message>
+        <message id="missing_codec_aac" lang="en">AAC codec (libfdk_aac) is not installed for FFMPEG</message>
+        <message id="missing_codec_h264" lang="fr">Le codec H.264 (libx264) n'est pas installé pour FFMPEG</message>
+        <message id="missing_codec_h264" lang="en">H.264 codec (libx264) is not installed for FFMPEG</message>
+        <message id="ffprobe_not_found" lang="fr">Le binaire FFPROBE n'a pas été trouvé sur le serveur distant (renderer).</message>
+        <message id="ffprobe_not_found" lang="en">FFPROBE binary could not be found on the remote server (renderer).</message>
+        <message id="ssh_keyscan_error" lang="fr">Impossible de retrouver la clé publique SSH du serveur distant (renderer).</message>
+        <message id="ssh_keyscan_error" lang="en">Could not retrieve SSH public key from remote server (renderer).</message>
+        <message id="ssh_known_hosts_error" lang="fr">Impossible d'ajouter la clé publique SSH du serveur distant (renderer) au fichier 'known_hosts'.</message>
+        <message id="ssh_known_hosts_error" lang="en">Could not add SSH public key from remote server (renderer) to the 'known_hosts' file.</message>
+        <message id="ssh_connection_failed" lang="fr">Impossible d'établir une connection SSH avec le serveur distant (renderer) &lt;?php echo $_SESSION['renderer_address'];?&gt;. Vérifiez que l'adresse du renderer et le nom d'utilisateur sont corrects et que vous avez bien copié la clé SSH dans le fichier 'authorized_keys' du renderer.</message>
+        <message id="ssh_connection_failed" lang="en">Could not connect via SSH to the remote renderer &lt;?php echo $_SESSION['renderer_address'];?&gt;. Verify that the renderer address and username are correct and that you have correctly added SSH key in the 'authorized_keys' file of the remote renderer.</message>
         <message id="missing_forename" lang="fr">Le prénom ne peut pas être vide.</message>
         <message id="missing_forename" lang="en">The forename cannot be blank.</message>
         <message id="missing_surname" lang="fr">Le nom ne peut pas être vide.</message>
         <message id="missing_surname" lang="en">The surname cannot be blank.</message>
+        <message id="root_already_exists" lang="fr">Il y a déjà une version d'EZrenderer installée sur le serveur distant (renderer). Veuillez la désinstaller avant de réessayer.</message>
+        <message id="root_already_exists" lang="en">There is already a version of EZrenderer on the remote server (renderer). Please uninstall it before retrying.</message>
+        <message id="renderer_copy_failed" lang="fr">La copie des fichiers d'installation d'EZrenderer a échoué. Vérifiez les permissions du répertoire de destination et réessayez.</message>
+        <message id="renderer_copy_failed" lang="en">Failed to copy EZrenderer installation files. Verify file permissions on destination directory and retry</message>
+        <message id="load_step_4_copy_success" lang="fr">Fichiers d'installation d'EZrenderer copiés avec succès !</message>
+        <message id="load_step_4_copy_success" lang="en">EZrenderer installation files successfully copied !</message>
+        <message id="load_step_4_install" lang="fr">Installation d'EZrenderer en cours ...</message>
+        <message id="load_step_4_install" lang="en">Installing EZrenderer ...</message>
+        <message id="renderer_install_failed" lang="fr">L'installation de EZrenderer a échoué. Vérifiez les permissions sur le fichier 'renderer_install.php' et réessayez.</message>
+        <message id="renderer_install_failed" lang="en">Failed to install EZrenderer. Verify file permissions on 'renderer_install.php' and retry</message>
+        <message id="load_step_4_install_success" lang="fr">EZrenderer installé avec succès !</message>
+        <message id="load_step_4_install_success" lang="en">EZrenderer successfully installed !</message>
+        <message id="load_step_4_update" lang="fr">Mise a jour de la liste des renderers pour EZadmin et EZrenderer ...</message>
+        <message id="load_step_4_update" lang="en">Updating renderers list for EZadmin and EZmanager ...</message>
+        <message id="renderer_update_failed" lang="fr">Impossible d'ajouter le renderer à la liste des renderers. Vérifiez les permissions sur les fichiers 'renderers.inc' des dossiers EZadmin et EZmanager.</message>
+        <message id="renderer_update_failed" lang="en">Failed to add the renderer to renderers list. Verify permissions on 'renderers.inc' files in EZadmin and EZmanager directories.</message>
+        <message id="load_step_4_update_success" lang="fr">Liste des renderers mise à jour avec succès !</message>
+        <message id="load_step_4_update_success" lang="en">Renderers list successfully updated !</message>
+        <message id="load_step_4_update_failed" lang="fr">La copie du fichier 'renderers.inc' vers EZmanager a échoué.</message>
+        <message id="load_step_4_update_failed" lang="en">Failed to copy 'renderers.inc' file from EZadmin to EZmanager.</message>
         
         <!-- Success -->
         <message id="save_successful" lang="fr">Changements sauvegardés</message>

@@ -250,14 +250,13 @@ echo json_encode($valid_extensions);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
                         if (xhr.responseText != 'false') {
-
                             // Parsing info about file
                             var response = eval('(' + xhr.responseText + ')');
                             var progressRate = Math.round(response.current / response.total * 100);
 
                             document.getElementById('progressbar_container').style.display = 'block';
                             document.getElementById('progressbar').style.width = progressRate + '%';
-                            document.getElementById('submitButton').innerHTML = '®Upload_in_progress® (' + progressRate + '%)';
+                            document.getElementById('submitButton').innerHTML = '®Upload_in_progress® (' + (isNaN(progressRate)?'0':progressRate)  + '%)';
 
                             if (response.done == 1) {
                                 //document.getElementById('submitButton').innerHTML = '®Upload_finished®';

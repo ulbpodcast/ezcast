@@ -1,0 +1,32 @@
+vcodec=libx264
+
+# sets H.264 video profile. All valid options are baseline, main, high (main is widely supported)
+vprofile=main
+# ---------------------------------------
+# sets encoding preset for x264 – slower presets give more quality at same bitrate, but need more time to encode. “Slow” is a good balance between encoding time and quality.
+# Other valid options are: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, placebo 
+preset=slow
+# ---------------------------------------
+# sets video bitrate in bits/s
+b:v=1000k
+# ---------------------------------------
+# sets frame rate
+#r=25
+# ---------------------------------------
+# forces libx264 to build video in a way, that it could be streamed over 500kbit/s line considering device buffer of 1000kbits. Very useful for web – setting this to bitrate and 2x bitrate gives good results.
+maxrate=1000k
+bufsize=2000k
+# ---------------------------------------
+# DOES NOT WORK IN PRESET FILE
+# applies “scale” filter, which resizes video to desired resolution. (in this case: fixed width = 320 / height = 240)
+# applies "pad" filter, which add letterboxing for fixed output width.
+#filter:v="scale=iw*min(320/iw\,240/ih):ih*min(320/iw\,240/ih), pad=320:240:(320-iw*min(320/iw\,240/ih))/2:(240-ih*min(320/iw\,240/ih))/2"
+# ---------------------------------------
+# tells libx264 to choose optimal number of threads to encode, which will make sure all your processor cores in the computer are used
+threads=0
+# ---------------------------------------
+# tells FFmpeg to encode audio to AAC using libfdk-aac library
+acodec=libfdk_aac
+# ---------------------------------------
+# sets audio bitrate in bits/s
+#b:a=127k

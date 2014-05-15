@@ -32,7 +32,7 @@ return array(
     'name' => 'name of the renderer',
     'host' => 'localhost',
     'client' => 'user name',
-    'status' => 'activate',
+    'status' => 'enabled',
     'downloading_dir' => '/path/to/downloading', // typically ~/ezrenderer/queues/downloading
     'downloaded_dir' => '/path/to/downloaded', // typically ~/ezrenderer/queues/downloaded
     'processed_dir' => '/path/to/processed', // typically ~/ezrenderer/queues/processed

@@ -1349,6 +1349,8 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '') {
                 $viewcount_file = dirname(ezmam_media_getpath($album, $asset, $media, false)) . '/_default_count';
                 break;
         }
+    } else {
+        return;
     }
     
 /*    

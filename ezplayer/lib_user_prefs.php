@@ -700,7 +700,7 @@ function user_prefs_asset_bookmarks_selection_get($user, $album, $asset, $select
         $max_index = count($bookmarks_list) - 1;
         foreach ($selection as $index) {
             if ($index >= $min_index && $index <= $max_index) {
-                array_push($selected_bookmarks, &$bookmarks_list[$index]);
+                array_push($selected_bookmarks, $bookmarks_list[$index]);
             }
         }
         return $selected_bookmarks;

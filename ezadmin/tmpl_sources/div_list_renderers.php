@@ -41,7 +41,7 @@ require_once 'config.inc';
     </tr>
 
     <?php
-    include 'lib_scheduling.php';
+    include_once 'lib_scheduling.php';
     foreach ($renderers as $r) {
         $r = lib_scheduling_renderer_metadata($r);
         //var_dump($r2);

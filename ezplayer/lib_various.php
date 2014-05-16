@@ -30,7 +30,7 @@
 
 require_once 'config.inc';
 require_once 'lib_ezmam.php';
-require_once '../commons/lib_template.php';
+require_once dirname(__FILE__).'/../commons/lib_template.php';
 
 /**
  * Trims the '-priv' or '-pub' suffix from an album name
@@ -376,22 +376,22 @@ function file_get_extension($filename) {
  * Sets the current language to the one chosen in parameter
  * @param type $lang 
  */
-function set_lang($lang) {
-    $_SESSION['lang'] = $lang;
-}
+//function set_lang($lang) {
+//    $_SESSION['lang'] = $lang;
+//}
 
 /**
  * Returns current chosen language
  * @return string(fr|en) 
  */
-function get_lang() {
-    //if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
-    if (isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
-        return $_SESSION['lang'];
-    }
-    else
-        return 'en';
-}
+//function get_lang() {
+//    //if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
+//    if (isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
+//        return $_SESSION['lang'];
+//    }
+//    else
+//        return 'en';
+//}
 
 /**
  * Isolates keywords from a string 

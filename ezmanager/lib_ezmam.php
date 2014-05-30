@@ -1149,12 +1149,12 @@ if($repository_path===false){
       return false;
     }
   if(ezmam_media_exists($album_name,$asset_name,$media_name)){
-      ezmam_last_error('ezmam_media_new media already exists');
+      ezmam_last_error('ezmam_media_new media ' . $media_name . ' already exists');
       return false;
     }
   $res=mkdir($media_path);
   if(!$res){
-      ezmam_last_error('could not create $media_path');
+      ezmam_last_error('could not create '. $media_path);
       return false;
       }
   //create the metadata

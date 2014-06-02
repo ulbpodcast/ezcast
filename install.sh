@@ -558,7 +558,8 @@ else
                         echo "deny from all" >> `eval "echo ~$apache_username/.ssh/.htaccess" `;
                     fi;
                 fi;
-                echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/dsa.pub" `>> localpaths;
+                echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/id_dsa.pub" `>> localpaths;
+                chmod 600 `eval "echo ~$apache_username" `/.ssh/id_dsa;
             else 
                 echo -e "${R}Do not forget to create an SSH key for this server before adding a recorder and/or a renderer.${N}";
                 echo "Use 'ssh-keygen -t dsa' as $apache_username to generate an SSH key for Apache";

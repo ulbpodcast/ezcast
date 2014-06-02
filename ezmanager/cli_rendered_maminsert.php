@@ -117,7 +117,7 @@ function high_low_media_mam_insert($album,$asset,$high_low,$cam_slide,$processin
      //use copy option to have the right owner
     print "insert media $album $asset $media\n";
      $res=ezmam_media_new($album,$asset,$media,$media_meta,$render_dir.'/'.$movie_filename,true);
-     if(!$res)myerror ("could not add media to repository: " . ezmam_last_error()");
+     if(!$res)myerror ("could not add media to repository: " . ezmam_last_error());
     // remove processed video (owned by remote user but we are owner of upper dir)
     //unlink($media_file_path);
   return true;

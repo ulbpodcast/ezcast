@@ -18,3 +18,8 @@
 /nbproject/**
 **/nbproject
 **/localpaths
+**/_log
+**/.DS_Store
+**/first_user
+./first_user
+./log

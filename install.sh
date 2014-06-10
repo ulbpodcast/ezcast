@@ -540,7 +540,7 @@ else
     if [ "$choice" == "y" ]; then
         if [ -e `eval "echo ~$apache_username/.ssh/id_dsa.pub" ` ]; then
             echo -e "${G}You have a valid SSH public key in Apache user's home dir.${N}";
-            echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/dsa.pub" `>> localpaths;
+            echo 'ssh_key_path='`eval "echo ~$apache_username/.ssh/id_dsa.pub" `>> localpaths;
         else 
             echo "";
             echo "You don't have an SSH public key yet. It is required for communications with EZrenderer and EZrecorder."

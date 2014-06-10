@@ -122,6 +122,7 @@ $config['paths']['logs'] = "$repository_basedir/queues/scheduling/logs.log";
 $config['paths']['var'] = "$ezmanager_basedir/var/";
 $config['keys']['sem'] = 82397779218067476;
 $config['scheduler']['priority'] = 10;
+$config['ssh']['timeout'] = 15;
 
 
 ?>

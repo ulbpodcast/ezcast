@@ -229,6 +229,8 @@
         <label id="room_alive" lang="en">Online</label>
         <label id="no_ping" lang="fr">Ne répond pas aux requêtes ping</label>
         <label id="no_ping" lang="en">No answer to ping requests</label>
+        <label id="ssh_error" lang="fr">Ne répond pas aux requêtes ssh</label>
+        <label id="ssh_error" lang="en">No answer to ssh requests</label>
         <label id="classrooms_recording_enabled" lang="fr">Activer la gestion des auditoires</label>
         <label id="classrooms_recording_enabled" lang="en">Enable classroom management</label>
         <label id="add_users_enabled" lang="fr">Autoriser l'ajout d'utilisateurs</label>

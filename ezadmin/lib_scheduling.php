@@ -644,18 +644,20 @@ function lib_scheduling_renderer_metadata($renderer) {
     
     $out = lib_scheduling_renderer_ssh($renderer, "$php_cli_cmd " . $renderer['statistics']);
 
-    $xml = new SimpleXMLElement($out);
-    foreach ($xml as $tag => $value) {
-        if($tag == 'jobs') {
-            $jobs = array();
-            foreach ($value->children() as $job) {
-                $j = array();
-                foreach($job as $key => $value) $job[$key] = (string) $value;
-                $jobs[] = $j;
+    if ($out !== false){
+        $xml = new SimpleXMLElement($out);
+        foreach ($xml as $tag => $value) {
+            if($tag == 'jobs') {
+                $jobs = array();
+                foreach ($value->children() as $job) {
+                    $j = array();
+                    foreach($job as $key => $value) $job[$key] = (string) $value;
+                    $jobs[] = $j;
+                }
+                $renderer['jobs'] = $jobs;
+            } else {
+                $renderer[$tag] = (string) $value;
             }
-            $renderer['jobs'] = $jobs;
-        } else {
-            $renderer[$tag] = (string) $value;
         }
     }
 
@@ -698,9 +700,13 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
  * @param string $cmd The command
  * @return string The output
  */
-function lib_scheduling_renderer_ssh($renderer, $cmd) {
-    exec('ssh ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
-    if($ret) lib_scheduling_alert('Scheduler::renderer_ssh[fail] |::>' . $output . '<::|');
+function lib_scheduling_renderer_ssh(&$renderer, $cmd) {
+    exec('ssh -o ConnectTimeout='. lib_scheduling_config('ssh-timeout'). ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
+    if($ret){
+        $renderer['ssh_error'] = true;
+        lib_scheduling_alert('Scheduler::renderer_ssh[fail] |::>' . $output . '<::|');
+        return false;
+    }
     return implode("\n", $output);
 }
 
@@ -800,6 +806,8 @@ function lib_scheduling_config($name) {
             return $config['keys']['sem'];
         case 'default-priority':
             return $config['scheduler']['priority'];
+        case 'ssh-timeout':
+            return $config['ssh']['timeout'];
     }
 
     return false;

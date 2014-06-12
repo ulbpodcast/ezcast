@@ -659,7 +659,7 @@ function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
     }
 }
 
-function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg) {
+function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg, $aac_experimental = false) {
 
     if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " . $remote_ffmpeg . " ]; then echo 'exists'; fi;\"") != 'exists') {
         // FFMPEG binary doesn't exist on remote renderer
@@ -671,7 +671,8 @@ function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg
             return "ffmpeg_not_found";
         } else {
             // Test FFMPEG codecs
-            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffmpeg -codecs | grep 'libfdk_aac'\"");
+            $aac_codec = ($aac_experimental) ? 'aac' : 'libfdk_aac';
+            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffmpeg -codecs | grep '$aac_codec'\"");
             if (strpos(strtoupper($output), 'AAC') === false) {
                 return "missing_codec_aac";
             }

@@ -359,6 +359,8 @@
         <label id="renderer_hostname" lang="en">Hostname</label>
         <label id="renderer_php" lang="fr">PHP (cli)</label>
         <label id="renderer_php" lang="en">PHP (cli)</label>
+        <label id="renderer_pgm" lang="fr">Encoder program</label>
+        <label id="renderer_pgm" lang="en">Encoder program</label>
         <label id="renderer_ffmpeg" lang="fr">FFMPEG path</label>
         <label id="renderer_ffmpeg" lang="en">FFMPEG path</label>
         <label id="renderer_ffprobe" lang="fr">FFPROBE path</label>
@@ -638,8 +640,8 @@
         <message id="missing_freetype" lang="en">FreeType is not enabled for GD module (PHP) on the remote server (renderer).</message>
         <message id="ffmpeg_not_found" lang="fr">Le binaire FFMPEG n'a pas été trouvé sur le serveur distant (renderer).</message>
         <message id="ffmpeg_not_found" lang="en">FFMPEG binary could not be found on the remote server (renderer).</message>
-        <message id="missing_codec_aac" lang="fr">Le codec AAC (libfdk_aac) n'est pas installé pour FFMPEG</message>
-        <message id="missing_codec_aac" lang="en">AAC codec (libfdk_aac) is not installed for FFMPEG</message>
+        <message id="missing_codec_aac" lang="fr">Le codec AAC (libfdk_aac) n'est pas installé pour FFMPEG (sélectionnez 'FFMPEG experimental mode (AAC)' pour continuer sans le codec libfdk_aac)</message>
+        <message id="missing_codec_aac" lang="en">AAC codec (libfdk_aac) is not installed for FFMPEG. Select 'FFMPEG experimental mode (AAC)' to continue without libfdk_aac codec.</message>
         <message id="missing_codec_h264" lang="fr">Le codec H.264 (libx264) n'est pas installé pour FFMPEG</message>
         <message id="missing_codec_h264" lang="en">H.264 codec (libx264) is not installed for FFMPEG</message>
         <message id="ffprobe_not_found" lang="fr">Le binaire FFPROBE n'a pas été trouvé sur le serveur distant (renderer).</message>

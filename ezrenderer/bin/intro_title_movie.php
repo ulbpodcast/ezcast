@@ -38,7 +38,7 @@ if (trim($path) != "")
     $path.='/';
 
 include_once "$path" . "config.inc";
-include_once "$path" . "lib_ffmpeg.php";
+include_once "$path" . $encoding_pgm['file'];
 include_once "$path" . "lib_metadata.php";
 include_once "$path" . "lib_gd.php";
 
@@ -281,6 +281,8 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         if ($quality != 'low') {
             // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded
             $res = movie_moov_atom($annotated_movie, $high_movieout);
+            if ($res)
+                myerror("couldn't relocate MOOV atom for movie $high_movieout");
             //get qtinfo for high movie and save them
             $res = movie_qtinfo($high_movieout, $high_qtinfo);
             if ($res)
@@ -289,6 +291,8 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         } else {
             // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded
             $res = movie_moov_atom($annotated_movie, $low_movieout);
+            if ($res)
+                myerror("couldn't relocate MOOV atom for movie $low_movieout");
             //get qtinfo for high movie and save them
             $res = movie_qtinfo($low_movieout, $low_qtinfo);
             if ($res)

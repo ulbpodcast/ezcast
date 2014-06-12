@@ -36,6 +36,8 @@ echo '  <max_num_threads>' . get_max_num_threads() . '</max_num_threads>' . PHP_
 echo '  <max_num_jobs>' . get_max_num_jobs() . '</max_num_jobs>' . PHP_EOL;
 echo '  <num_jobs>' . get_num_jobs() . '</num_jobs>' . PHP_EOL;
 echo '  <load>'.get_load() . '</load>' . PHP_EOL;
+echo '  <encoding_pgm>'.$encoding_pgm['name'] . '</encoding_pgm>' . PHP_EOL;
+echo '  <encoding_desc>'.$encoding_pgm['description'] . '</encoding_desc>' . PHP_EOL;
 echo '  <jobs>'.PHP_EOL;
 foreach($jobs as $job) {
 echo '      <job>'.PHP_EOL;

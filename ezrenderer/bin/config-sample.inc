@@ -40,9 +40,10 @@ $num_jobs = 4; // Number of jobs allowed to run simultaneously. Ideally <= (num_
 $default_add_title = "FlyingTitle";
 
 $php_cli_cmd = "/usr/bin/php";
-$ffmpegpath = "/usr/local/bin/ffmpeg";
+$ffmpegpath = "/usr/local/bin/ffmpeg"; 
 $ffprobepath = "/usr/local/bin/ffprobe";
 $encoders_path = "$basedir/bin/encoders/";
+$encoding_pgm = array("name" => 'ffmpeg', "description" => 'ffmpeg command line', "file" => 'lib_ffmpeg.php');
 
 $accepted_video_sizes = array(320, 640, 720, 800, 1024); //sizes of videos supported by the renderer (for user submited videos, they will be downsized to one of these sizes)
 $video_high_transcoders = array(

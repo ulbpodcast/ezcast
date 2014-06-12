@@ -33,6 +33,7 @@ require_once 'config.inc';
         <th>®renderer_performance_idx®</th>
         <th>®renderer_name®</th>
         <th>®renderer_hostname®</th>
+        <th>®renderer_pgm®</th>
         <th>®renderer_jobs®</th>
         <th>®renderer_load®</th>
         <th>®renderer_threads®</th>
@@ -58,6 +59,7 @@ require_once 'config.inc';
             <td><?php echo $r['performance_idx']; ?></td>
             <td class="renderer_name"><?php echo $r['name']; ?></td>
             <td><?php echo $r['host']; ?></td>
+            <td><span title="<?php echo $r['encoding_desc'] ?>"><?php echo $r['encoding_pgm']; ?></span></td>
             <td><?php echo $r['num_jobs'] . '/' . $r['max_num_jobs']; ?></td>
             <td><?php echo $r['load']; ?></td>
             <td><?php echo $r['max_num_threads']; ?></td>

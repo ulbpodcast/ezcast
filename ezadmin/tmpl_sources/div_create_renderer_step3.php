@@ -27,7 +27,17 @@ function swap(div_a, div_b) {
     document.getElementById(div_a).style.display = 'block';
     document.getElementById(div_b).style.display = 'none';
 }
-swap('main_step_2', 'load_step_2')
+swap('main_step_2', 'load_step_2');
+
+function select_option(){
+   var options_list = document.getElementById('options'); 
+   var SelIndex = options_list.selectedIndex; 
+   var SelValue = options_list.options[SelIndex].value; 
+   
+   $('.renderer_option').hide();
+   $('.' + SelValue).show();
+}
+
 </script>
 
 <h4>®create_renderer_step_3®</h4>
@@ -56,6 +66,24 @@ swap('main_step_2', 'load_step_2')
     </div>
     
     <div class="control-group">
+        <label for="renderer_options" class="control-label">®renderer_pgm®</label>
+        <div class="controls">
+            <select class="selectpicker" id="options" name="renderer_options" onchange="select_option();">
+            <?php foreach ($renderers_options as $option_name => $option){
+                if ($option_name != 'ffmpeg_exp' || $display_ffmpeg_exp)
+                    if ($option_name == $input['renderer_options']){
+                echo '<option value="' . $option_name . '" selected>' . $option['description'] . '</option>';                        
+                    } else {
+                echo '<option value="' . $option_name . '">' . $option['description'] . '</option>';
+                    }
+            }
+        ?>
+        </select>
+        </div>
+    </div>
+    
+    <div class="renderer_option ffmpeg ffmpeg_exp">
+    <div class="control-group">
         <label for="renderer_ffmpeg" class="control-label">®renderer_ffmpeg®</label>
         <div class="controls">
             <input type="text" name="renderer_ffmpeg" value="<?php echo $input['renderer_ffmpeg']?>"/>
@@ -67,6 +95,16 @@ swap('main_step_2', 'load_step_2')
         <div class="controls">
             <input type="text" name="renderer_ffprobe" value="<?php echo $input['renderer_ffprobe']?>"/>
         </div>
+    </div>
+    </div>
+    
+    <div class="renderer_option avconv" style="display:none">
+    <div class="control-group">
+        <label for="renderer_avconv" class="control-label">AVCONV path</label>
+        <div class="controls">
+            <input type="text" name="renderer_avconv" value="<?php echo $input['renderer_avconv']?>"/>
+        </div>
+    </div>
     </div>
     
     <div class="control-group">
@@ -97,3 +135,4 @@ swap('main_step_2', 'load_step_2')
 <br/><br/><br/>
 <img src="img/loading_white.gif"/>
 </div>
+<script>select_option();</script>

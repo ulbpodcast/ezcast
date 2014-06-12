@@ -47,5 +47,11 @@ $use_user_name = false; // Set to true to use user's full name instead of user I
 // Technical stuff
 $template_folder = 'tmpl/';
 
+// Renderers settings
+$renderers_options = array(
+        'ffmpeg' => array('name' => 'ffmpeg', 'description' => 'FFMPEG command line', 'file' => 'lib_ffmpeg.php'),
+        'ffmpeg_exp' => array('name' => 'ffmpeg_exp', 'description' => 'FFMPEG command line experimental mode (AAC)', 'file' => 'lib_ffmpeg.php'),
+);
+
 
 ?>

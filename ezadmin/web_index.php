@@ -968,7 +968,7 @@ function disable_enable_renderer($enable) {
         db_log("renderers", 'Disabled renderer ' . $input['name'], $_SESSION['user_login']);
     }
     push_renderers_to_ezmanager();
- //   notify_changes();
+    //   notify_changes();
 }
 
 function create_renderer() {
@@ -978,6 +978,7 @@ function create_renderer() {
     global $ssh_pub_key_location;
     global $ssh_timeout;
     global $basedir;
+    global $renderers_options;
 
     $ssh_timeout = 30;
 
@@ -997,7 +998,7 @@ function create_renderer() {
 
             if (empty($renderer_name)) {
                 $error = template_get_message('missing_renderer_name', get_lang());
-            } else if (renderer_exists($renderer_name) !== false){
+            } else if (renderer_exists($renderer_name) !== false) {
                 $error = template_get_message('existing_renderer_name', get_lang());
             } else if (empty($renderer_address)) {
                 $error = template_get_message('missing_renderer_address', get_lang());
@@ -1105,6 +1106,7 @@ function create_renderer() {
             } else {
                 // Go to next step
                 $renderer_root_path = $input['renderer_root_path'];
+                $renderer_option = $input['renderer_options'];
                 $renderer_php = $input['renderer_php'];
                 $renderer_ffmpeg = $input['renderer_ffmpeg'];
                 $renderer_ffprobe = $input['renderer_ffprobe'];
@@ -1159,18 +1161,21 @@ function create_renderer() {
                     }
 
                     // verification for FFMPEG
-                    $res = test_ffmpeg_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_ffmpeg);
-                    switch ($res) {
-                        case "ffmpeg_not_found" :
-                            $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
-                            break;
-                        case "missing_codec_aac" :
-                            $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
-                            break;
-                        case "missing_codec_h264":
-                            $error .= "- " . template_get_message('missing_codec_h264', get_lang()) . "<br/>";
-                            break;
-                        default: $error .= "";
+                    if ($renderer_option == 'ffmpeg' || $renderer_option == 'ffmpeg_exp') {
+                        $res = test_ffmpeg_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_ffmpeg, $renderer_option == 'ffmpeg_exp');
+                        switch ($res) {
+                            case "ffmpeg_not_found" :
+                                $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
+                                break;
+                            case "missing_codec_aac" :
+                                $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
+                                $display_ffmpeg_exp = true; // used in div_create_renderer_step3.php
+                                break;
+                            case "missing_codec_h264":
+                                $error .= "- " . template_get_message('missing_codec_h264', get_lang()) . "<br/>";
+                                break;
+                            default: $error .= "";
+                        }
                     }
 
                     // verification for FFPROBE
@@ -1195,6 +1200,7 @@ function create_renderer() {
                 }
                 $_SESSION['renderer_root_path'] = $renderer_root_path;
                 $_SESSION['renderer_php'] = $renderer_php;
+                $_SESSION['renderer_option'] = $renderers_options[$renderer_option];
                 $_SESSION['renderer_ffmpeg'] = $renderer_ffmpeg;
                 $_SESSION['renderer_ffprobe'] = $renderer_ffprobe;
                 $_SESSION['renderer_num_jobs'] = (empty($renderer_num_jobs) || is_nan($renderer_num_jobs)) ? 4 : $renderer_num_jobs;
@@ -1220,6 +1226,8 @@ function create_renderer() {
             $input['renderer_ffprobe'] = $_SESSION['renderer_ffprobe'];
             $input['renderer_num_jobs'] = $_SESSION['renderer_num_jobs'];
             $input['renderer_num_threads'] = $_SESSION['renderer_num_threads'];
+            $input['renderer_options'] = $_SESSION['renderer_option']['name'];
+            if ($input['renderer_options'] == 'ffmpeg_exp') $display_ffmpeg_exp = true;
 
             if ($input['submit_step_4_prev']) {
                 // back to step 3
@@ -1229,6 +1237,7 @@ function create_renderer() {
                 include template_getpath('div_main_footer.php');
                 die;
             } else {
+                
                 if ($input['installation_step'] == 1) {
                     // 4.1. Copies EZrenderer installation files on the remote renderer
                     // tests if ezrenderer is already installed
@@ -1260,7 +1269,12 @@ function create_renderer() {
                     exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " .
                             $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] .
                             " \"" . $_SESSION['renderer_php'] . " " . $_SESSION['renderer_root_path'] . "/renderer_install.php " .
-                            $_SESSION['renderer_php'] . " " . $_SESSION['renderer_ffmpeg'] . " " . $_SESSION['renderer_ffprobe'] . " " . $_SESSION['renderer_num_threads'] . " " . $_SESSION['renderer_num_jobs'] . "\"", $output, $returncode);
+                            $_SESSION['renderer_php'] . " '" . 
+                            str_replace('"', '\"', serialize($_SESSION['renderer_option'])) . "' " .
+                            $_SESSION['renderer_ffmpeg'] . " " . 
+                            $_SESSION['renderer_ffprobe'] . " " . 
+                            $_SESSION['renderer_num_threads'] . " " . 
+                            $_SESSION['renderer_num_jobs'] . "\"", $output, $returncode);
 
                     if ($returncode || strpos($output[0], "renderer installed") === false) {
                         // an error occured while installing EZrenderer
@@ -1318,14 +1332,14 @@ function create_renderer() {
             unset($_SESSION['renderer_php']);
             unset($_SESSION['renderer_ffmpeg']);
             unset($_SESSION['renderer_ffprobe']);
-            
+
             include template_getpath('div_main_header.php');
             include template_getpath('div_create_renderer_step1.php');
             include template_getpath('div_main_footer.php');
     }
 
 
-       db_log('renderers', 'Created renderer ' . $_SESSION['renderer_name'], $_SESSION['user_login']);
+    db_log('renderers', 'Created renderer ' . $_SESSION['renderer_name'], $_SESSION['user_login']);
     //   notify_changes();
 }
 
@@ -1338,7 +1352,7 @@ function remove_renderer() {
         echo json_encode(array('success' => '1'));
         db_log("renderers", 'Deleted renderer ' . $input['name'], $_SESSION['user_login']);
         push_renderers_to_ezmanager();
-    //    notify_changes();
+        //    notify_changes();
     }
 }
 

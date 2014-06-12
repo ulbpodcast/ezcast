@@ -586,7 +586,7 @@ function lib_scheduling_renderer_find($renderers, $hostname) {
  * @return boolean Whether the renderer is available or not
  */
 function lib_scheduling_renderer_is_available($renderer) {
-    if(!$renderer['status'] == 'activate') return false;
+    if($renderer['status'] != 'enabled') return false;
 
     $renderer = lib_scheduling_renderer_metadata($renderer);
 

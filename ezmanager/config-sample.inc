@@ -40,8 +40,8 @@ $submit_upload_dir="$repository_basedir/queues/submit_uploads";
 $submit_upload_ok_dir="$repository_basedir/queues/submit_uploads_ok";
 $submit_upload_failed_dir="$repository_basedir/queues/submit_uploads_failed";
 
-$recorder_upload_to_server="$recorder_recorddir/Movies/upload_to_server/";//path of folder containing recordings on the recorder (mac mini)
-$recorder_upload_ok="$recorder_recorddir/Movies/upload_ok/";//same but for recordings sucessfully downloaded (they will be deleted later by a cron)
+$recorder_upload_to_server="$recorder_recorddir/upload_to_server/";//path of folder containing recordings on the recorder (mac mini)
+$recorder_upload_ok="$recorder_recorddir/upload_ok/";//same but for recordings sucessfully downloaded (they will be deleted later by a cron)
 $max_download_retries=500;//number of rsync retries
 //what program to call when downloading from classroom or uploading from user
 $recorder_mam_insert_pgm="$ezmanager_basedir/cli_mam_insert.php";

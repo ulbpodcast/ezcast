@@ -114,6 +114,14 @@ lib_scheduling_job_metadata_set($job, 'done', date('Y-m-d H:i:s'), lib_schedulin
 lib_scheduling_file_move(lib_scheduling_config('processing-path') . '/' . $job['basename'], lib_scheduling_config('processed-path') . '/' . $job['basename']);
 lib_scheduling_file_move($job['location'], $render_finished_upload_dir . '/' . $job_dir);
 
+// Now that the files have been copied on EZcast server, we delete them from EZrenderer
+if ($renderer['processed_dir'] . '/' . $job_dir != '' 
+        && $renderer['processed_dir'] . '/' . $job_dir != '/'){
+            $cmd= $ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' " rm -rf  ' . $renderer['processed_dir'] . '/' . $job_dir . ' 2>&1"';
+            exec($cmd, $out, $err);
+        }
+
+
 // Now run cli_render_maminsert
 $cmd="$php_cli_cmd cli_rendered_maminsert.php  $album $asset $render_finished_upload_dir/$job_dir >> $render_finished_upload_dir/$job_dir/rendered_maminsert.log 2>&1";
 exec($cmd, $cmdoutput, $returncode);

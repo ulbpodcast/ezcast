@@ -1,5 +1,6 @@
 
-<!--
+<?php
+/*
 * EZCAST EZadmin 
 * Copyright (C) 2014 Université libre de Bruxelles
 *
@@ -21,7 +22,8 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
+*/
+?>
 
 <?php
 require_once 'config.inc';
@@ -42,7 +44,7 @@ require_once 'config.inc';
         <th>®job_actions®</th>
     </tr>
     
-    <?php include 'lib_scheduling.php';
+    <?php include_once 'lib_scheduling.php';
     
     foreach($jobs as $job) {
         if(empty($job['done'])) {
@@ -63,6 +65,7 @@ require_once 'config.inc';
             }
             
             if(!empty($date)) {
+                date_default_timezone_set('Europe/Brussels');
                 $dt = new DateTime();
 
                 $dt = $dt->createFromFormat('Y-m-d H:i:s', $date);

@@ -1,5 +1,6 @@
 
-<!--
+<?php
+/*
 * EZCAST EZadmin 
 * Copyright (C) 2014 Université libre de Bruxelles
 *
@@ -21,7 +22,8 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
+*/
+?>
 
 <form class="form-horizontal" method="post" action="index.php?action=edit_config">
     <legend>®ezadmin_edit_config_title®</legend>

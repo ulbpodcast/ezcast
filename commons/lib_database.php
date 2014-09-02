@@ -61,8 +61,8 @@ function db_prepare() {
     global $db_passwd;
     global $db_name;
     global $db_prepared;
-    
-    $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name", $db_login, $db_passwd);
+                
+    $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
     
     db_statement_prepare('update_courses_hasalbums', 'UPDATE '.  db_gettable('courses').' SET has_albums = 1 WHERE course_code = :course_code');
     

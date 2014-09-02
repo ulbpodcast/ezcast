@@ -195,7 +195,33 @@ body {
     height:50px;
 }
 
+.logo a{
+    margin-right: 15px;
+}
+
 /* ---------------- HOME PAGE ------------------- */
+#tuto{
+    width: 100%; 
+    text-align: center; 
+    margin-bottom: 30px;
+}
+
+#tuto_label {
+    display: block; 
+    width:100; 
+    background: rgba(123,179,182,0.5); 
+    text-align: left; 
+    padding: 20px 35px; 
+    text-transform: uppercase; 
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+#tuto_video {
+    margin: 0 auto;
+}
+
 .albums{
     padding-top: 70px;
     padding-left: 10px;

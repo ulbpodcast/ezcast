@@ -26,11 +26,10 @@
 <div class="footer">
     <div class="footer_content">
         <div class="logos"> 
-            <a href="http://www.ulb.ac.be"><img src="./images/Generale/logo-ulb.png"/></a>
-            <a href="http://www.podcast.ulb.ac.be"><img src="./images/Generale/logo-podcast.png"/></a>
+            <a href="http://podcast.ulb.ac.be"><img src="./images/Generale/logo-podcast.png"/></a>
         </div>
         <div class="copyright">
-            <a href="mailto:podcast.tech@ulb.ac.be">ULB PODCAST</a> | Copyright © 2014
+            Copyright © 2014
         </div>
     </div>
 </div>

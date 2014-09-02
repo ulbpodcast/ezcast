@@ -352,7 +352,6 @@ function ezmam_rss_generate($album,$type) {
         ezmam_last_error('ezmam_rss_generate: unable to open XML');
         return false;
     }
-    
     $xmlh = new SimpleXMLElement($xml);
     $token = ezmam_album_token_get($album);
     

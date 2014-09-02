@@ -391,9 +391,9 @@ function push_users_courses_to_recorder() {
 
     // Upload all this on server
     foreach ($classrooms as $c) {
-        $cmd = 'scp ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+        $cmd = 'scp -o ConnectTimeout=15 ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
         exec($cmd, $output, $return_var);
-        $cmd = 'scp ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+        $cmd = 'scp -o ConnectTimeout=15 ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
         exec($cmd, $output, $return_var);
 
         if ($return_var != 0) {

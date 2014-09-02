@@ -26,6 +26,7 @@
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
+            <a href="http://www.ulb.ac.be"><img src="./images/Generale/logo-ulb-bis.png"/></a>
             <a href="index.php"><img src="./images/Generale/EZmanager.png" alt="" /></a>
         </div>
     </div>

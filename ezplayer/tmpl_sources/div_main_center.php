@@ -1,4 +1,5 @@
-<!-- 
+<?php
+/*
  * EZCAST EZplayer
  *
  * Copyright (C) 2014 Université libre de Bruxelles
@@ -21,7 +22,8 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
+ */
+?>
 
 <script>
 lvl = 1;
@@ -37,6 +39,10 @@ include_once 'lib_print.php';
 
 
 <div class="albums">
+    <div id="tuto">
+        <a href="#" onclick="$('#tuto_video').toggle();" id="tuto_label">®tuto®</a>
+        <video id='tuto_video' width="720" controls src="./videos/tuto.mp4" style="display: <?php echo (!isset($albums) || sizeof($albums) == 0) ? 'block' : 'none'; ?>;">
+            Démonstration EZplayer</video></div>
     <?php
     if (!isset($albums) || sizeof($albums) == 0) {
         ?>

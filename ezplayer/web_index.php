@@ -56,10 +56,14 @@ if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['actio
 if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) || !isset($_SESSION['user_os'])) {
 
     Autoloader::register();
-    $_SESSION['browser_name'] = Browser::getBrowser();
-    $_SESSION['browser_version'] = Browser::getVersion();
-    $_SESSION['user_os'] = OS::getOS();
-    $_SESSION['browser_full'] = Browser::getUserAgent();
+    $browser = new Browser;
+    $os = new Os;
+    $_SESSION['browser_name'] = $browser->getName();
+    $_SESSION['browser_version'] = $browser->getVersion();
+    $user_agent = $browser->getUserAgent();
+    $_SESSION['browser_full'] = $user_agent->getUserAgentString();
+    $_SESSION['user_os'] = $os->getName();
+    
 }
 
 
@@ -955,6 +959,10 @@ function bookmarks_upload() {
 
         // Validates XML structure
         $xml_dom = new DOMDocument();
+        // trim heading and trailing white spaces 
+        // because blank lines in top and end of XML file lead to
+        // validation error
+        file_put_contents($_FILES['XMLbookmarks']['tmp_name'], trim(file_get_contents($_FILES['XMLbookmarks']['tmp_name'])));
         $xml_dom->load($_FILES['XMLbookmarks']['tmp_name']);
 
         if (!$xml_dom->schemaValidate($bookmarks_validation_file)) {
@@ -1079,6 +1087,8 @@ function bookmarks_export() {
     $dom->preserveWhiteSpace = FALSE;
     $dom->loadXML($xml_txt);
     $dom->formatOutput = TRUE;
+    ob_clean();
+    flush();
     echo $dom->saveXml();
 
     log_append('export_bookmarks: bookmarks exported from the album ' . $album);
@@ -1133,6 +1143,8 @@ function bookmarks_export_all($export_asset = false) {
     $dom->preserveWhiteSpace = FALSE;
     $dom->loadXML($xml_txt);
     $dom->formatOutput = TRUE;
+    ob_clean();
+    flush();
     echo $dom->saveXml();
 
     log_append('export_asset_bookmarks: bookmarks exported from the album ' . $album);

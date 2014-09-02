@@ -56,15 +56,19 @@ function courses_list($netid) {
         // retrieves all courses in the database
         $course_list = db_courses_all_list();
         $result = array();
-        foreach ($course_list as $value)
-            $result[$value['mnemonic']] = utf8_decode($value['mnemonic'] . '|' . $value['label']);
+        foreach ($course_list as $value){
+            $result[$value['mnemonic']] = $value['mnemonic'] . '|' . $value['label'];
+        }
     } else {
         // retrieves all courses for a given netid
         $course_list = db_user_get_courses($netid);
         
         $result = array();
-        foreach ($course_list as $value)
-            $result[$value['course_code']] = utf8_decode($value['course_code'] . '|' . $value['course_name']);
+        foreach ($course_list as $value){
+            $result[$value['course_code']] = $value['course_code'] . '|' . $value['course_name'];
+
+        }
+      //      $result[$value['course_code']] = utf8_decode($value['course_code'] . '|' . $value['course_name']);
     }
     db_close();
     return $result;

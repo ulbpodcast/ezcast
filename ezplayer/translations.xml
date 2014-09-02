@@ -401,6 +401,8 @@
         <label id="no_result" lang="en">No result</label>
         <label id="connect" lang="fr">Se connecter</label>
         <label id="connect" lang="en">Connect</label>
+        <label id="tuto" lang="fr">Fonctionnalités d'EZplayer</label>
+        <label id="tuto" lang="en">EZplayer's features</label>
         
    
         <!-- Long texts -->

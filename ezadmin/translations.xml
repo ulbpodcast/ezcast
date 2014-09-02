@@ -39,8 +39,8 @@
         <label id="service_logo" lang="en"><strong>ULB</strong>podcast</label> -->
         <label id="service_name" lang="fr">EZadmin - ULB Podcast</label>
         <label id="service_name" lang="en">EZadmin - ULB Podcast</label>
-        <label id="ezmanager_page_title" lang="fr">EZadmin - ULB Podcast</label>
-        <label id="ezmanager_page_title" lang="en">EZadmin - ULB Podcast</label>
+        <label id="ezadmin_page_title" lang="fr">EZadmin - ULB Podcast</label>
+        <label id="ezadmin_page_title" lang="en">EZadmin - ULB Podcast</label>
         <label id="service_description" lang="fr">Interface de gestion d'EZcast</label>
         <label id="service_description" lang="en">EZcast management interface</label>
         <label id="install_description" lang="fr">Interface d'installation d'EZcast</label>
@@ -296,7 +296,9 @@
         <label id="delete" lang="fr">Supprimer</label>   
         <label id="delete" lang="en">Delete</label>        
         <label id="push_changes" lang="fr">Sauvegarder</label>   
-        <label id="push_changes" lang="en">Save changes</label>        
+        <label id="push_changes" lang="en">Save changes</label> 
+        <label id="sync_externals" lang="fr">Synchro externes</label>   
+        <label id="sync_externals" lang="en">Sync externals</label>        
         <label id="unsaved_changes" lang="fr">non-sauvegardé</label>   
         <label id="unsaved_changes" lang="en">unsaved changes</label>  
         <label id="teacher_assign" lang="fr">Avec prof</label>  
@@ -441,6 +443,8 @@
         <label id="install_page_title" lang="en">Install EZcast</label>
         <label id="install_title" lang="fr">Installation EZcast</label>
         <label id="install_title" lang="en">Install EZcast</label>
+        <label id="install_db_choice" lang="fr">Installation EZcast - Base de données </label>
+        <label id="install_db_choice" lang="en">Install EZcast - Database</label>
         <label id="install_success_title" lang="fr">Installation EZcast réussie</label>
         <label id="install_success_title" lang="en">EZcast successfully installed</label>
         <label id="settings_panel_general" lang="fr">Options générales</label>
@@ -576,8 +580,6 @@
         <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a movie</message>
         <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
         <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
-        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une erreur, contactez podcast@ulb.ac.be</message>
-        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact podcast@ulb.ac.be</message>
         <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
         <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
         <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
@@ -586,8 +588,6 @@
         <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
         <message id="File_not_found" lang="fr">Fichier introuvable</message>
         <message id="File_not_found" lang="en">Could not find your file, sorry</message>
-        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast@ulb.ac.be</message>
-        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast@ulb.ac.be</message>
         <message id="Invalid_token" lang="fr">Accès refusé</message>
         <message id="Invalid_token" lang="en">Access denied</message>
         <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>

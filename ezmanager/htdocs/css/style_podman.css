@@ -154,6 +154,10 @@ body{
     display: block;
 }
 
+.logo a{
+    margin-right: 15px;
+}
+
 /*----------------------------------------------------------- Generale [fin] -------------------------------------------------------------------------------------*/
 
 
@@ -435,7 +439,7 @@ body{
 	display:block;
 	background-image:url(../images/page4/BUp.png);
 	background-repeat:no-repeat;
-	color:#8FC04D; 
+	color:#004C93; 
 }
 
 .BoutonRSS a{
@@ -526,14 +530,14 @@ body{
 
 .BoutonTriangleProcessing a:hover{
 	display:block;
-	background-image:url(../images/page4/TriangleVertBas.png);
+	background-image:url(../images/page4/TriangleVert.png);
 	background-repeat:no-repeat;
 	color:#75940a;
 }
 
 .BoutonTriangleError a:hover{
 	display:block;
-	background-image:url(../images/page4/TriangleRougeBas.png);
+	background-image:url(../images/page4/TriangleRouge.png);
 	background-repeat:no-repeat;
 	color:#ff0000;
 }
@@ -541,8 +545,8 @@ body{
 
 .BoutonTriangleClic a{
 	display:block;
-	background-image:url(../images/page4/BTriangleBackg.png);
-        background-color:#444444;
+	background-image:url(../images/page4/CTriangleBackg.png);
+        background-color:#004C93;
 	background-repeat:no-repeat;
         border-bottom-width: thin;
 	border-bottom-style: dotted;
@@ -559,7 +563,7 @@ body{
 .BoutonTriangleClicProcessing a{
 	display:block;
 	background-image:url(../images/page4/TriangleVertBas.png);
-        background-color:#444444;
+        background-color:#004C93;
 	background-repeat:no-repeat;
         border-bottom-width: thin;
 	border-bottom-style: dotted;
@@ -576,7 +580,7 @@ body{
 .BoutonTriangleClicError a{
 	display:block;
 	background-image:url(../images/page4/TriangleRougeBas.png);
-        background-color:#444444;
+        background-color:#004C93;
 	background-repeat:no-repeat;
         border-bottom-width: thin;
 	border-bottom-style: dotted;
@@ -590,12 +594,6 @@ body{
 	padding-top:3px;
 }
 
-.BoutonTriangleClic a:hover{
-	display:block;
-	background-image:url(../images/page4/ATriangleBackg.png);
-	background-repeat:no-repeat;
-	color:#FFFFFF;
-}
 
 /*--Bouton triangle [fin]--*/
 
@@ -1079,7 +1077,7 @@ body{
 }
 
 .BoutonMoreOptions a:hover{
-	background-image:url(../images/page4/ATriangleBackg_hover.png);
+	background-image:url(../images/page4/BTriangleBackg.png);
 	color:#004b93;
 }
 
@@ -1121,13 +1119,28 @@ body{
 
 #form input, 
 #form textarea, 
-#form select{
+#form select,
+#form button{
     float:left;
     font-size:11px;
     padding:4px 2px;
     border:solid 1px #999999;
     width:192px;
     margin:2px 0 20px 10px;
+    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+}
+
+#form input[type="submit"],
+#form button{
+    float: none;
+    width:120px;
+    cursor: pointer;
+    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+}
+
+#form input[type="submit"]:hover,
+#form button:hover{
+    background: rgb(153, 204, 255);
     /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
 }
 
@@ -1254,7 +1267,7 @@ a.info:hover span{
 	margin-bottom: 0px;
 	margin-left: 20px;
 }
-#popup_submit_media button, .button {
+.button {
 	/*font-family: Geneva, Arial, Helvetica, sans-serif;*/
 	font-size: 12px;
 	font-weight: bold;
@@ -1394,6 +1407,11 @@ a.greyLink {
 a.greyLink:hover {    
         border-color:#004B93;
 	color:#FF6600;
+	text-decoration:none;
+}
+
+a.greyLink.ezplayer:hover {    
+	color:#74afb0;
 	text-decoration:none;
 }
 

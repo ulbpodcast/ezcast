@@ -248,7 +248,9 @@ else {
         case 'job_kill':
             job_kill();
             break;
-
+        case 'sync_externals':
+            sync_externals();
+            break;
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
@@ -488,7 +490,8 @@ function view_users() {
         $limit = (intval($page) - 1) * $size;
 
         $users = db_users_list($user_ID, $surname, $forename, ($intern == $extern) ? -1 : (($extern == 1) ? 'external' : 'internal'), ($is_admin == $is_not_admin) ? -1 : $is_admin, $col . ' ' . $order, '' . $limit . ', ' . $size);
-
+$dump="";
+    
         $rows = db_found_rows();
         $max = intval($rows / 20) + 1;
     } else {
@@ -1540,4 +1543,7 @@ function remove_changes_alert() {
     unset($_SESSION['changes_to_push']);
 }
 
+function sync_externals(){
+    
+}
 ?>

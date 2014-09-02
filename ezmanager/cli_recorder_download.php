@@ -58,6 +58,7 @@ $record_date = $download_meta['record_date'];
 $download_complete = $download_meta['download_complete'];
 $record_type = $download_meta['record_type'];
 $recorder_version = $download_meta['recorder_version'];
+$recorder_php_cli = $download_meta['recorder_php_cli'];
 
 $caller_ip = $download_meta['caller_ip']; // Caller contains the metadata
 $meta_file = $download_meta['metadata_file'];
@@ -184,7 +185,7 @@ if (!$meta_ok || !$cam_ok || !$slide_ok) {
 else {
     // the download went well. We then finalize recording on the remote recorder
     $asset = $record_date . '_' . $course_name;
-    $cmd = "$ssh_pgm $recorder_user@$caller_ip \"$php_cli_cmd $recorder_basedir/cli_upload_finished.php $asset\"";
+    $cmd = "$ssh_pgm $recorder_user@$caller_ip \"$recorder_php_cli $recorder_basedir/cli_upload_finished.php $asset\"";
     exec($cmd, $cmdoutput, $returncode);
 
     //Move server's recording directory to the downloaded folder

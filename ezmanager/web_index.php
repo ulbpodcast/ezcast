@@ -1,4 +1,5 @@
 <?php
+
 /*
  * EZCAST EZmanager 
  *
@@ -158,6 +159,22 @@ else {
         // Called by APC plugin to get info on current upload
         case 'get_upload_progress':
             get_upload_progress();
+            break;
+
+        case 'upload_init':
+            upload_init();
+            break;
+
+        case 'upload_chunk':
+            upload_chunk();
+            break;
+
+        case 'upload_finished':
+            upload_finished();
+            break;
+
+        case 'upload_error':
+            upload_error();
             break;
 
         case 'edit_asset':
@@ -503,8 +520,14 @@ function view_asset_details() {
     }
 
     $file_name = '';
-    if ($origin == 'SUBMIT')
-        $file_name = $asset_metadata['submitted_filename'];
+    if ($origin == 'SUBMIT') {
+        if ($asset_metadata['submitted_cam'] != '' && $asset_metadata['submitted_slide'] != '')
+            $file_name = $asset_metadata['submitted_cam'] . ' & ' . $asset_metadata['submitted_slide'];
+        else if ($asset_metadata['submitted_cam'] != '')
+            $file_name = $asset_metadata['submitted_cam'];
+        else
+            $file_name = $asset_metadata['submitted_slide'];
+    }
 
     //
     // 3) We save the current state in session vars
@@ -708,7 +731,6 @@ function album_create() {
     // Finally, we show a confirmation popup to the user
     //
     $public_album_url = $distribute_url . '?action=rss&amp;album=' . $input['album'] . '-pub' . '&amp;quality=high&amp;token=' . ezmam_album_token_get($input['album'] . '-pub');
-    ;
     require_once template_getpath('popup_album_successfully_created.php');
 }
 
@@ -881,6 +903,306 @@ function submit_media_progress_bar() {
     redraw_page();
 }
 
+// used by web worker from js/uploadfile.js to submit metadata over the file
+function upload_init() {
+    global $input;
+    global $submit_upload_dir;
+    global $dir_date_format;
+    global $accepted_media_types;
+    global $upload_slice_size;
+
+    $array = array();
+    // 1) Sanity checks
+    $title = trim($input['title']);
+    if (!isset($title) || empty($title)) {
+        log_append('warning', 'upload_init: no title');
+        $array["error"] = template_get_message('Missing_title', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+    if ($input['type'] != 'camslide' && !in_array($input['type'], $accepted_media_types)) {
+        log_append('warning', 'upload_init: ' . $input['type'] . ' is not a valid media type');
+        $array["error"] = template_get_message('Invalid_type', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+    // 2) Creating the folder in the queue, and the metadata for the media
+    $record_date = date($dir_date_format);
+    $tmp_name = $record_date . '_' . $input['album'];
+
+    if ($input['moderation'] == 'false')
+        $moderation = "false";
+    else
+        $moderation = "true";
+
+    $metadata = array(
+        'course_name' => $input['album'],
+        'origin' => 'SUBMIT',
+        'title' => $input['title'],
+        'description' => $input['description'],
+        'record_type' => $input['type'],
+        'submitted_cam' => $input['cam_filename'],
+        'submitted_slide' => $input['slide_filename'],
+        'moderation' => $moderation,
+        'author' => $_SESSION['user_full_name'],
+        'netid' => $_SESSION['user_login'],
+        'record_date' => $record_date,
+        'super_highres' => $input['keepQuality'],
+        'intro' => $input['intro'],
+        'add_title' => $input['add_title']
+    );
+
+    $res = media_submit_create_metadata($tmp_name, $metadata);
+    if (!$res) {
+        log_append('warning', 'upload_init: ' . ezmam_last_error());
+        $array["error"] = ezmam_last_error();
+        echo json_encode($array);
+        die;
+    }
+
+    // 3) saves informations for coming upload
+
+    $path = $submit_upload_dir . '/' . $tmp_name . '/';
+
+    $_SESSION[$tmp_name] = array(
+        'path' => $path,
+        'type' => $input['type'],
+        'album' => $input['album'],
+        'record_date' => $record_date,
+        'cam' => array('index' => 0, 'finished' => false, 'concat' => -1),
+        'slide' => array('index' => 0, 'finished' => false, 'concat' => -1));
+
+    $array['values'] = array("id" => $tmp_name, "chunk_size" => $upload_slice_size);
+    echo json_encode($array);
+}
+
+// used by web worker from js/uploadfile.js to upload chunk of file
+// The upload is serial which means that each slice of file is the sequel of 
+// the previous one. We can then append each slice to the previous one to
+// create the movie file.
+function upload_chunk() {
+    global $accepted_media_types;
+    global $upload_slice_size;
+
+    $array = array();
+
+    $index = $_SERVER['HTTP_X_INDEX'];
+    $id = $_SERVER['HTTP_X_ID'];
+    $type = $_SERVER['HTTP_X_TYPE'];
+
+    if (!isset($id) || empty($id) || !isset($_SESSION[$id])) {
+        log_append('warning', 'upload_chunk: ' . ' current upload id is not set or not valid');
+        $array["error"] = template_get_message('Invalid_id', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+    $path = $_SESSION[$id]['path'];
+
+// path must be in proper format
+    if (!isset($path)) {
+        log_append('warning', 'upload_chunk: ' . ' cannot find file upload path');
+        $array["error"] = template_get_message('Invalid_path', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+// type must be in proper format
+    if (!isset($type) || !in_array($type, $accepted_media_types)) {
+        log_append('warning', 'upload_chunk: ' . $input['type'] . ' is not a valid media type');
+        $array["error"] = template_get_message('Invalid_type', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+// index must be set, and number
+    if (!isset($index) || !preg_match('/^[0-9]+$/', $index)) {
+        log_append('warning', 'upload_chunk: ' . $index . ' is not a valid index');
+        $array["error"] = template_get_message('Invalid_index', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+    // index must be as expected (previous + 1)
+    $current_index = $_SESSION[$id][$type]['index'];
+    if ($index == $current_index) {
+        $_SESSION[$id][$type]['index'] += 1;
+    } else {
+        log_append('warning', 'upload_chunk: expected index [' . $current_index . '] found index [' . $index . ']');
+        $array["error"] = template_get_message('bad_sequence', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+// we store chunks in directory named after filename
+    /*    if (!file_exists("$path/" . $type . '/')) {
+      mkdir("$path/" . $type . '/');
+      }
+
+      $target = "$path/" . $type . '/' . $type . '-' . $index;
+     */
+
+    /*
+      // alternative way
+      $putdata = fopen("php://input", "r");
+      $fp = fopen($target, "w");
+      while ($data = fread($putdata, 1024))
+      fwrite($fp, $data);
+      fclose($fp);
+      fclose($putdata);
+     */
+
+    //  $input = fopen("php://input", "r");
+    //  file_put_contents($target, $input);
+
+    $target = "$path/" . $type . '.mov';
+
+    // the incoming stream is put at the end of the file
+    $input = fopen("php://input", "r");
+
+    if (filesize($target) <= 2048000000) {
+        /*  $fp = fopen($target, "a");
+          while ($data = fread($input, $upload_slice_size)) {
+          fwrite($fp, $data);
+          }
+          fclose($fp);
+          fclose($index);
+         */
+        $res = file_put_contents($target, $input, FILE_APPEND | LOCK_EX);
+    } else {
+        // if the file is bigger than 2Go, PHP 32bit cannot handle it.
+        // We then save each chunk in a separate file and concatenate
+        // the final file in command line (see upload_finished())
+        if (!file_exists("$path/" . $type . '/')) {
+            // creates the directory for files to be concat
+            mkdir("$path/" . $type . '/');
+            // saves index of the first file to be concat
+            $_SESSION[$id][$type]['concat'] = $index;
+        }
+        $target = "$path/" . $type . '/' . $type . '-' . $index;
+        $input = fopen("php://input", "r");
+        file_put_contents($target, $input);
+    }
+
+    if ($res === false) {
+        log_append('warning', 'upload_chunk: ' . "error while writting chunk $index");
+        $array["error"] = template_get_message('write_error', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+    // required by js/fileupload.js
+    $array['value'] = "OK";
+    echo json_encode($array);
+}
+
+// used by web worker from js/uploadfile.js to launch the mam_insert
+function upload_finished() {
+    global $php_cli_cmd;
+    global $recorder_mam_insert_pgm;
+    global $input;
+    global $accepted_media_types;
+
+    $array = array();
+
+    $index = $input['index'];
+    $id = $input['id'];
+    $type = $input['type'];
+    $path = $_SESSION[$id]['path'];
+
+    if (!isset($_SESSION[$id])) {
+        log_append('warning', 'upload_finished: ' . ' current upload id is not set or not valid');
+        $array["error"] = template_get_message('Invalid_id', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+    if ($index != $_SESSION[$id][$type]['index']) {
+        log_append('warning', 'upload_finished: ' . ' missing file chunks [' . $_SESSION[$id][$type]['index'] . '/' . $index . ']');
+        $array["error"] = template_get_message('missing_chunks', get_lang());
+        echo json_encode($array);
+        die;
+    }
+
+    if ($_SESSION[$id][$type]['concat'] > -1) {
+        // file is bigger than 2Go
+        // Everything that exceeds 2Go has been saved 
+        // as separated files in path/type/. and
+        // must be concatenated now 
+        $dest = $path . "/" . $type . ".mov";
+        for ($i = $_SESSION[$id][$type]['concat']; $i <= $index; $i++) {
+            $src = $path . "/" . $type . "/" . $type . "-" . $i;
+            $cmd = "cat $src >> $dest";
+            exec($cmd);
+            unlink($src);
+        }
+        rmdir($path . '/' . $type);
+    }
+
+    $finished = true;
+    if ($_SESSION[$id]['type'] == 'camslide') {
+        $_SESSION[$id][$type]['finished'] = true;
+        foreach ($accepted_media_types as $type) {
+            $finished = $finished && $_SESSION[$id][$type]['finished'];
+        }
+    }
+
+    if ($finished) {
+
+        // recreates full file
+        /* $target = "$path/$type.mov";
+          $dst = fopen($target, 'wb');
+
+          for ($i = 0; $i < $index; $i++) {
+          $slice = $path . '/' . $type . '/' . $type . '-' . $i;
+          $src = fopen($slice, 'rb');
+          stream_copy_to_stream($src, $dst);
+          fclose($src);
+          unlink($slice);
+          }
+
+          fclose($dst);
+          rmdir($path . '/' . $type);
+         */
+        // Calling cli_mam_insert.php so that it adds the file into ezmam
+        $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . $path . ' >>' . $path . '/mam_insert.log 2>&1"|at now';
+
+        exec($cmd, $output, $ret);
+
+        if ($ret != 0) {
+
+            log_append('warning', 'upload_finished: ' . ' Error while trying to use cli_mam_insert: error code ' . $ret);
+            $array["error"] = ' Error while trying to use cli_mam_insert: error code ' . $ret;
+            echo json_encode($array);
+            die;
+            error_print_message(' Error while trying to use cli_mam_insert: error code ' . $ret);
+            die;
+        }
+    } else {
+        $array["wait"] = 'Wait until all files are submitted';
+        echo json_encode($array);
+        die;
+    }
+
+
+    $array['value'] = "OK";
+    echo json_encode($array);
+}
+
+function upload_error() {
+    global $input;
+
+    $res = media_submit_error($input['id']);
+    if (!$res) {
+        log_append('warning', 'upload_error: ' . ezmam_last_error());
+        $array["error"] = ezmam_last_error();
+        echo json_encode($array);
+        die;
+    }
+}
+
 /**
  * Processes media submission
  * @global type $input 
@@ -903,16 +1225,17 @@ function submit_media() {
 
 
     if ($_FILES['media']['error'] > 0) {
-        log_append('error', 'submit_media: an error occurred during file upload (code ' . $_FILES['media']['error']);
+        log_append('error', 'submit_media: an error occurred during file upload (code ' . $_FILES['media']['error'] . ')');
         error_print_message(template_get_message('upload_error', get_lang()));
         die;
     }
-    list($type, $subtype) = explode('/', $_FILES['media']['type']);
-    if ($type != 'video') {
-        log_append('warning', 'submit_media: ' . $_FILES['media']['type'] . ' is not a valid media type');
-        error_print_message(template_get_message('error_mimetype', get_lang()));
-        die;
-    }
+    /*   list($type, $subtype) = explode('/', $_FILES['media']['type']);
+
+      if ($type != 'video') {
+      log_append('warning', 'submit_media: ' . $_FILES['media']['type'] . ' is not a valid media type');
+      error_print_message(template_get_message('error_mimetype', get_lang()));
+      die;
+      } */
 
     if (!in_array($input['type'], $accepted_media_types)) {
         log_append('warning', 'submit_media: ' . $input['type'] . ' is not a valid media type');
@@ -932,7 +1255,7 @@ function submit_media() {
         'title' => $input['title'],
         'description' => $input['description'],
         'record_type' => $input['type'],
-        'submitted_filename' => $_FILES['media']['name'],
+        'submitted_cam' => $_FILES['media']['name'],
         'submitted_mimetype' => $_FILES['media']['type'],
         'moderation' => $moderation,
         'author' => $_SESSION['user_full_name'],
@@ -960,9 +1283,6 @@ function submit_media() {
         die;
     }
 
-
-
-
     // 4) Calling cli_mam_insert.php so that it adds the file into ezmam
     $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . dirname($path) . ' >>' . dirname($path) . '/mam_insert.log 2>&1"|at now';
 
@@ -972,14 +1292,16 @@ function submit_media() {
         error_print_message(' Error while trying to use cli_mam_insert: error code ' . $ret);
         die;
     }
-
+    echo "success";
+    return true;
     // 5) Displaying a confirmation alert.
-    //$head_code = '<script type="text/javascript">$(document).ready(function() {window.alert(\'Fichier envoyé et en cours de traitement.\');});</script>';
+    $head_code = '<script type="text/javascript">$(document).ready(function() {window.alert(\'Fichier envoyé et en cours de traitement.\');});</script>';
     redraw_page();
 }
 
 /**
  * Returns an array with information about the current upload(s)
+ * DEPRECATED - NOT USED ANYMORE
  */
 function get_upload_progress() {
     header('Content-type:text/plain;charset=utf-8');

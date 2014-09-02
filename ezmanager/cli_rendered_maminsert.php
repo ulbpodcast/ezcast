@@ -90,7 +90,7 @@ rename($render_dir, $render_root_path . '/processed/' . basename($render_dir));
 
 // delete video files that are already in the repository (original cam and slide)
 foreach (glob($render_root_path . '/processed/' . basename($render_dir) . '/*') as $f) {
-    if ((strpos($f, "cam") !== false || strpos($f, "slide") !== false) && !strpos($f, "xml"))true;
+    if ((strpos($f, "cam") !== false || strpos($f, "slide") !== false) && !strpos($f, "xml"))
         unlink($f);
 }
 

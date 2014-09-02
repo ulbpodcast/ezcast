@@ -1,5 +1,6 @@
 
-<!--
+<?php
+/*
 * EZCAST EZadmin 
 * Copyright (C) 2014 Université libre de Bruxelles
 *
@@ -21,7 +22,8 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
+*/
+?>
 
 <script type="text/javascript">
     function showHiddenCategory(cat) {
@@ -155,6 +157,7 @@ $category_names = array(
     <?php } // end foreach ?>
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>
     <li><a style="<?php echo ($_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
+    <li><a href="index.php?action=sync_externals">®sync_externals®</a></li>
     <li><a href="?<?php echo SID."&action=logout"?>">®logout®</a></li>
 </ul>
 <!-- <a class="btn" style="margin-top: 10px; width: 80%;" href="?<?php echo SID."&action=logout"?>">®logout®</a> -->

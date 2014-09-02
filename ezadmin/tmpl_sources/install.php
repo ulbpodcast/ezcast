@@ -88,7 +88,7 @@
         <script src="bootstrap/js/bootstrap-dropdown.js"></script>
     </head>
 
-    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if ($GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
+    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && $GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
         <div class="container">
             <h1>®install_title®</h1>
             <?php foreach ($errors as $e) {
@@ -120,7 +120,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                <input type="checkbox" name="https_ready" <?php echo $input['https_ready'] ? 'checked' : '' ?> />
+                                                <input type="checkbox" name="https_ready" <?php echo (isset($input['https_ready']) && !empty($input['https_ready'])) ? 'checked' : '' ?> />
                                                 ®https_ready®
                                             </label>
                                             <span class="help-block">Check this box if your website is ready for https connections.</span>
@@ -332,7 +332,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                <input type="checkbox" name="classrooms_category_enabled" <?php echo $input['classrooms_category_enabled'] ? 'checked' : '' ?> />
+                                                <input type="checkbox" name="classrooms_category_enabled" <?php echo (isset($input['classrooms_category_enabled']) && !empty($input['classrooms_category_enabled'])) ? 'checked' : '' ?> />
                                                 ®classrooms_recording_enabled®
                                             </label>
                                             <span class="help-block">If checked, EZadmin will include a category to manage the recorders in the classrooms. This setting can be changed later on.</span>
@@ -342,7 +342,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                <input type="checkbox" name="add_users_enabled" <?php echo $input['add_users_enabled'] ? 'checked' : '' ?> />
+                                                <input type="checkbox" name="add_users_enabled" <?php echo (isset($input['add_users_enabled']) && !empty($input['add_users_enabled'])) ? 'checked' : '' ?> />
                                                 ®add_users_enabled®
                                             </label>
                                             <span class="help-block">If unchecked, only the users coming from an external source (e.g. university's registry) will have access to the recorders. If checked, admins can manually add users along with the "official" ones. This setting can be changed later on.</span>
@@ -352,7 +352,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                <input type="checkbox" name="recorder_password_storage_enabled" <?php echo $input['recorder_password_storage_enabled'] ? 'checked' : '' ?> />
+                                                <input type="checkbox" name="recorder_password_storage_enabled" <?php echo (isset($input['recorder_password_storage_enabled']) && !empty($input['recorder_password_storage_enabled'])) ? 'checked' : '' ?> />
                                                 ®password_storage_enabled®
                                             </label>
                                             <span class="help-block">If checked, the same password will be used both for EZmanager and EZrecorder. If unchecked, EZmanager will use an "external" password (e.g. using the university's identification system), if available. This setting can be changed later on.</span>
@@ -362,7 +362,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                <input type="checkbox" name="use_course_name" <?php echo $input['use_course_name'] ? 'checked' : '' ?> />
+                                                <input type="checkbox" name="use_course_name" <?php echo (isset($input['use_course_name']) && !empty($input['use_course_name'])) ? 'checked' : '' ?> />
                                                 ®settings_use_course_name®
                                             </label>
                                             <span class="help-block">If checked, courses will be identified by their name. If unchecked, courses will be identified by their course code. This setting only influences the way data is displayed in EZadmin, it does not influence other products. This setting can be changed later on.</span>
@@ -372,7 +372,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                <input type="checkbox" name="use_user_name" <?php echo $input['use_user_name'] ? 'checked' : '' ?> />
+                                                <input type="checkbox" name="use_user_name" <?php echo (isset($input['use_user_name']) && !empty($input['use_user_name'])) ? 'checked' : '' ?> />
                                                 ®settings_use_user_name®
                                             </label>
                                             <span class="help-block">If checked, users will be referenced by their full name. If unchecked, users will be referred to by their ID. This setting only influences the way EZadmin displays data, it does not influence any other product. This setting can be changed later on.</span>

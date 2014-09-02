@@ -93,8 +93,8 @@ function ldap_getinfo($login) {
 
     //try go get user's full name
     $index = 0;
-    do {
-        $result = false;
+    $result = false;
+    do { 
         $link_identifier = private_ldap_connect($ldap_servers_cred, $index);
         // bind to ldap failed
         if ($link_identifier === false) {
@@ -161,8 +161,9 @@ function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password
         @ $res = ldap_bind($link_identifier, $rdn, $password); //check ldap branch
         if ($res)
             return $link_identifier;
-        else
+        else{
             ldap_close($link_identifier);
+        }
         $index++;
     }
     //if not sucessfull show reason:

@@ -44,7 +44,12 @@ function media_submit_create_metadata($tmp_name, $metadata) {
     // 1) create directory
     $folder_path = $submit_upload_dir.'/'.$tmp_name;
     
-    echo mkdir($folder_path);
+    if(file_exists($folder_path)){
+        ezmam_last_error('Asset already exists. Wait one minute before retrying.');
+        return false;
+    }
+    
+    mkdir($folder_path);
     
     // 2) put metadata into xml file
     $res = assoc_array2metadata_file($metadata, $folder_path.'/metadata.xml');
@@ -54,6 +59,32 @@ function media_submit_create_metadata($tmp_name, $metadata) {
         return false;
     }
     
+    return true;
+}
+
+function media_submit_error($tmp_name){
+    global $submit_upload_dir;
+    global $submit_upload_failed_dir;
+    
+    // Sanity checks
+    if(!is_dir($submit_upload_dir)) {
+        ezmam_last_error($submit_upload_dir.' is not a directory');
+        return false;
+    }
+    
+    if(!is_dir($submit_upload_failed_dir)) {
+        ezmam_last_error($submit_upload_failed_dir.' is not a directory');
+        return false;
+    }
+    
+     $folder_path = $submit_upload_dir.'/'.$tmp_name;
+    
+    if(file_exists($folder_path)){
+        rename($folder_path, $submit_upload_failed_dir.'/'.$tmp_name);
+    } else {        
+        ezmam_last_error('Asset does not exist.');
+        return false;
+    }
     return true;
 }
 ?>

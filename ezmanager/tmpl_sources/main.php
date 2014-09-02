@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
         <!-- 
         * EZCAST EZmanager 
@@ -32,7 +32,7 @@
         WARNING: Please call template_repository_path() BEFORE including this template
         -->
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>®podman_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
@@ -158,123 +158,7 @@ echo $title_max_length;
                 document.getElementById('asset_' + asset + '_title_clic').innerHTML = ' | ' + decodeURIComponent(title);
             }
 
-            function submit_upload_form() {
-                //document.getElementById('title').disabled = true;
-                //document.getElementById('type').disabled = true;
-                //document.getElementById('keepQuality').disabled = true;
-                //document.getElementById('description').disabled = true;
-                document.getElementById('fileinputs_container').style.display = 'none';
-                document.getElementById('loadingfile_label').style.display = 'none';
-                document.getElementById('more_options_div').style.display = 'none';
-                document.forms["submit_form"].submit();
 
-                progressRate = 0;
-                document.getElementById('progressbar_container').style.display = 'block';
-                document.getElementById('progressbar').style.width = progressRate + '%';
-                document.getElementById('submitButton').innerHTML = '®Upload_in_progress® (' + progressRate + '%)';
-
-                check_upload_progress();
-            }
-
-            function check_form() {
-
-                if (document.getElementById('title').value == '') {
-                    window.alert('®No_title®');
-                    return false;
-                }
-                var file = document.getElementById('loadingfile').value;
-                if (file == '') {
-                    window.alert('®No_file®');
-                    return false;
-                } else {
-                    //        Regex doesn't work in IE
-                    //        var ext = file.match(/^.+\.([^.]+)$/)[1];
-                    var ext = file.split('.').pop();
-                    var extensions = <?php
-global $valid_extensions;
-echo json_encode($valid_extensions);
-?>;
-
-                    // check if extension is accepted
-                    var found = false;
-                    for (var i = 0; i < extensions.length; i++) {
-                        if (found = (extensions[i] == ext.toLowerCase()))
-                            break;
-                    }
-                    if (!found) {
-                        window.alert('®bad_extension®');
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-
-            /**
-             * This function is called by the uploader popup to update the progress bar
-             */
-            function check_upload_progress() {
-                // Getting XHR instance
-                xhr = false;
-
-                if (window.XMLHttpRequest) { // Mozilla, Safari, ...
-                    xhr = new XMLHttpRequest();
-                }
-                else if (window.ActiveXObject) { // IE
-                    try {
-                        xhr = new ActiveXObject("Msxml2.XMLHTTP");
-                    } catch (e) {
-                        try {
-                            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-                        } catch (e) {
-                            // Who cares
-                        }
-                    }
-                }
-
-                if (!xhr) {
-                    alert('Cannot create XHR instance');
-                    return false;
-                }
-
-                if (xhr && xhr.readyState != 0) {
-                    xhr.abort();
-                }
-
-                // Getting info about file
-                var keyFile = document.getElementById('keyFile').value;
-                console.log(keyFile);
-                xhr.open('POST', 'index.php?action=get_upload_progress', true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.send('keyFile=' + keyFile);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4) {
-                        if (xhr.responseText != 'false') {
-                            // Parsing info about file
-                            var response = eval('(' + xhr.responseText + ')');
-                            var progressRate = Math.round(response.current / response.total * 100);
-
-                            document.getElementById('progressbar_container').style.display = 'block';
-                            document.getElementById('progressbar').style.width = progressRate + '%';
-                            document.getElementById('submitButton').innerHTML = '®Upload_in_progress® (' + (isNaN(progressRate)?'0':progressRate)  + '%)';
-
-                            if (response.done == 1) {
-                                //document.getElementById('submitButton').innerHTML = '®Upload_finished®';
-                                document.getElementById('submit_media').innerHTML = '<h2>®Upload_finished_title®</h2>®Upload_finished®<br/><br/><br/><span class="Bouton"><a href="#" onclick="close_popup();"><span>®Close_and_return_to_index®</span></a></span>';
-                                //document.getElementById('submit_media').style.height = 200+'px';
-                                //$.colorbox.resize({height: document.getElementById('submit_media').height()});
-                                //close_popup();
-                            }
-                            else {
-                                setTimeout(check_upload_progress, 2000);
-                            }
-                        }
-                        else {
-                            setTimeout(check_upload_progress, 2000);
-                        }
-                    }
-                };
-            }
         </script>
         <script type="text/javascript" src="js/popup_general.js"></script>
         <script type="text/javascript" src="js/popup_callback.js"></script>
@@ -293,13 +177,13 @@ echo json_encode($valid_extensions);
 
 
 
-<?php if (isset($head_code)) echo $head_code; ?>
+        <?php if (isset($head_code)) echo $head_code; ?>
     </head>
     <body>
         <div id="test"></div>
 
         <div class="container">
-<?php include_once template_getpath('div_main_header.php'); ?>
+            <?php include_once template_getpath('div_main_header.php'); ?>
             <div id="global">
                 <!-- "New album" button -->
                 <span class="CreerAlbum"><a href="javascript:show_popup_from_inner_div('#popup_new_album');">®Create_album®</a></span>
@@ -311,7 +195,7 @@ echo json_encode($valid_extensions);
                     <!-- Left column: album list -->
                     <div id="div_album_list">
                         <!-- Album list goes here -->
-<?php include_once template_getpath('div_album_list.php'); ?>
+                        <?php include_once template_getpath('div_album_list.php'); ?>
                     </div>
                     <!-- Left column: album list END -->
 
@@ -338,12 +222,12 @@ echo json_encode($valid_extensions);
                 </div><!-- center div END -->
             </div><!-- global -->
             <!-- FOOTER - INFOS COPYRIGHT -->
-<?php include_once template_getpath('div_main_footer.php'); ?>
+            <?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
 
             <!-- Popups -->
             <div style="display: none;">
-<?php include_once 'popup_new_album.php'; ?>
+                <?php include_once 'popup_new_album.php'; ?>
 
                 <!-- This popup gets automatically filled with messages, depending on the situation -->
                 <div class="popup" id="popup_messages"></div>

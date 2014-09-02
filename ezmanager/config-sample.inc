@@ -73,10 +73,13 @@ $ezmanager_logs="$ezmanager_basedir/ezmanager.log";
 $title_max_length = 70; // Maximum number of characters for the title
 
 // used by ezmanager for asset submit
-$valid_extensions = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpeg4', 'avi', 'mpeg', 'flv', 'wmv', 'mka', 'mks', 'rmvb', 'divx', 'xvid', 'vob', 'mkv');
+$valid_extensions = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpeg4', 'avi', 'mpeg', 'flv', 'wmv', 'mka', 'mks', 'rmvb', 'divx', 'xvid', 'vob', 'mkv', 'f4v');
 
 // used by web_distribute.php
 $flash_only_browsers = array('Firefox');
+
+// used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
+$upload_slice_size = 1024 * 1024;
 
 
 ?>

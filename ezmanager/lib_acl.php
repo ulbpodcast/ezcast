@@ -103,7 +103,6 @@ function acl_update_permissions_list() {
     $_SESSION['acl_not_created_albums_descriptions']=$albums_not_created_array_descriptions; // Associative array listing all album names (key) and description (value)
     $_SESSION['acl_permitted_albums']=array_merge($albums_created_array, $albums_not_created_array);
     $_SESSION['acl_permitted_albums_descriptions']=array_merge($albums_created_array_descriptions, $albums_not_created_array_descriptions);
-    
 }
 
 /**

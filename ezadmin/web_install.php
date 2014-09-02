@@ -35,10 +35,11 @@ require_once 'lib_various.php';
 require_once 'lib_error.php';
 
 $template_folder = 'tmpl/';
+date_default_timezone_set("Europe/Brussels");
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
-if (file_exists('config.inc')){
+if (file_exists('config.inc')) {
     echo "Nothing to do here ;-)";
     die;
 }
@@ -52,6 +53,7 @@ $input = array_merge($_GET, $_POST);
 
 
 if (!isset($_SESSION['user_logged'])) {
+//if (false) {
     if (isset($input['action']) && $input['action'] == 'login') {
         if (!isset($input['login']) || !isset($input['passwd'])) {
             error_print_message(template_get_message('empty_username_password', get_lang()));
@@ -89,112 +91,38 @@ if (!isset($_SESSION['user_logged'])) {
 }
 
 if (isset($input['install']) && !empty($input['install'])) {
+    // installation form has been submitted and we verify the db to create the tables
+    validate_form();
+    create_config_files();
+    require_once 'config.inc';
+    add_first_user();
+} else if (isset($input['db_choice_submit']) && !empty($input['db_choice_submit'])) {
+    // db already contains EZcast tables. The user has choosen whether he wants to
+    // replace the existing tables, change the tables prefix or use the existing tables
+    $db_choice = $input['db_choice'];
+    $new_prefix = $input['new_prefix'];
+    $input = $_SESSION['user_inputs'];
 
-    // Test connection to DB
-    $res = db_ping($input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name']);
-    if (!$res) {
-        $errors['db_error'] = 'Could not connect to database ' . $input['db_host'];
+    switch ($db_choice) {
+        case 'replace' :
+            // user wants to replace the existing tables with new ones
+            create_tables();
+            break;
+        case 'use' :
+            // user wants to use the existing tables
+            // noting to do
+            break;
+        default :
+            // user wants to use another table prefix
+            $input['db_prefix'] = $new_prefix;
+            validate_form();
+            break;
     }
-
-    if (count($errors) > 0)
-        require template_getpath('install.php');
-
-    // Create tables in DB
-    try {
-        $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], $input['db_login'], $input['db_passwd']);
-        $db->beginTransaction();
-
-        $db->exec('SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO"');
-        $db->exec('SET time_zone = "+00:00"');
-
-        $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'classrooms`');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'classrooms` (' .
-                '`room_ID` varchar(20) NOT NULL COMMENT \'Room nr (e.g. at ULB: R42-5-503)\',' .
-                '`name` varchar(255) DEFAULT NULL COMMENT \'Room name (e.g. "Auditoire K")\',' .
-                '`IP` varchar(100) NOT NULL COMMENT \'IP to recorder in classroom\',' .
-                '`enabled` tinyint(1) NOT NULL,' .
-                'PRIMARY KEY (`room_ID`)' .
-                ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
-
-        $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'courses`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'courses` (' .
-                '`course_code` varchar(50) NOT NULL COMMENT \'At ULB: mnémonique\',' .
-                '`course_name` varchar(255) DEFAULT NULL,' .
-                '`shortname` varchar(100) DEFAULT NULL COMMENT \'Optional, shorter name displayed in recorders\',' .
-                '`in_recorders` tinyint(1) NOT NULL DEFAULT \'1\' COMMENT \'Set to FALSE to disable classroom recording\',' .
-                '`has_albums` int(11) NOT NULL DEFAULT \'0\' COMMENT \'Number of assets in the album (or 0/1 value for now)\',' .
-                '`date_created` date NOT NULL,' .
-                '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'"external" or "internal"\',' .
-                'PRIMARY KEY (`course_code`)' .
-                ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
-
-        $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'logs`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'logs` (   ' .
-                '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
-                '`time` datetime NOT NULL,' .
-                '`table` varchar(100) NOT NULL,' .
-                '`message` varchar(255) DEFAULT NULL,' .
-                '`author` varchar(20) NOT NULL,' .
-                'PRIMARY KEY (`ID`)' .
-                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;');
-
-        $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users` (' .
-                '`user_ID` varchar(50) NOT NULL COMMENT \'For ULB: netid\',' .
-                '`surname` varchar(255) DEFAULT NULL,' .
-                '`forename` varchar(255) DEFAULT NULL,' .
-                '`passwd` varchar(255) NOT NULL DEFAULT \'\',' .
-                '`recorder_passwd` varchar(255) DEFAULT NULL COMMENT \'Password as saved in the recorders, if different from global passwd\',' .
-                '`permissions` int(11) NOT NULL DEFAULT \'0\' COMMENT \'1 for admin, 0 for non-admin\',' .
-                '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'"external" or "internal"\',' .
-                'PRIMARY KEY (`user_ID`)' .
-                ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
-
-        $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users_courses`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users_courses` (' .
-                '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
-                '`course_code` varchar(50) NOT NULL COMMENT \'Course code as referenced in ezcast_courses\',' .
-                '`user_ID` varchar(50) NOT NULL COMMENT \'user ID as referred in ezcast_users\',' .
-                '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'Either "external" or "internal"\',' .
-                'PRIMARY KEY (`ID`)' .
-                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=\'Joint of Courses and Users\' AUTO_INCREMENT=45013 ;');
-        $db->commit();
-    } catch (PDOException $e) {
-        $errors['db_error'] = $e->getMessage();
-        require template_getpath('install.php');
-        die;
-    }
-
-    // Write config file
-    edit_config_file(
-            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], $input['organization_name'], $input['copyright'], $input['mailto_alert'], $input['ezcast_basedir'], $input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], $input['ezmanager_host'], $input['ezmanager_user'], !empty($input['classrooms_category_enabled']) ? true : false, !empty($input['add_users_enabled']) ? true : false, !empty($input['recorder_password_storage_enabled']) ? true : false, !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, !empty($input['https_ready']) ? true : false
-    );
-
-    // Add the first user in database 
-    $first_user = file_get_contents("../first_user");
-    $first_user = explode(" , ", $first_user);
-
-    $user_ID = $first_user[0];
-    $surname = $first_user[3];
-    $forename = $first_user[2];
-    $passwd = $first_user[1];
-    $permissions = 1;
-
-    include 'config.inc';
-    if (!db_ready())
-        db_prepare();
-    db_user_create($user_ID, $surname, $forename, $passwd, $permissions);
-    add_admin_to_file($user_ID);
-    push_users_to_ezmanager();
-    db_log(db_gettable('users'), 'Created user ' . $user_ID, $_SESSION['user_login']);
-    db_close();
-
-    session_destroy();
-    unlink("../first_user");
-
-    require template_getpath('install_success.php');
-    
+    create_config_files();
+    require_once 'config.inc';
+    add_first_user();
 } else {
+    // display the installation form
     if (file_exists("../commons/config.inc")) {
         include_once '../commons/config.inc';
     } else {
@@ -267,7 +195,7 @@ function check_php_extensions() {
         } else {
             $display .= "<div class=\"red\">$extension extension NOT loaded ...</div>";
             $all_dependences = $all_dependences && false;
-        } 
+        }
     }
     $display .=
             "<br/>Load the missing PHP extensions for Apache, restart the web server and reconnect to this web installer.
@@ -298,7 +226,7 @@ function check_server_config() {
      <body>";
 
     $all_good = true;
-    
+
     if (convert_size($upload_max_filesize) < 2000000000) {
         $display .= "<div><span class=\"red\">upload_max_filesize = $upload_max_filesize</span> <-- Determines the max size of the files that a user can upload in EZmanager. We recommend <b>2G</b></div>";
         $all_good = $all_good & false;
@@ -331,12 +259,12 @@ function check_server_config() {
         $all_good = $all_good & true;
     }
     $display .=
-            "<br/>Edit the '<b>". php_ini_loaded_file() ."</b>' file to match your own needs.
+            "<br/>Edit the '<b>" . php_ini_loaded_file() . "</b>' file to match your own needs.
          <br/><br/>If you want to continue anyway, click on the following button.
          <br/><br/><br/><a class='button' href='install.php?skip_srv=true'>Continue</a>
     </body>
     </html>";
- 
+
     if (!$all_good) {
         print $display;
         die;
@@ -365,6 +293,208 @@ function convert_size($string) {
                 $int = 0;
     }
     return $int;
+}
+
+function validate_form() {
+    global $input;
+
+    // Test connection to DB
+    $errors = array();
+    $res = db_ping($input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name']);
+    if (!$res) {
+        $errors['db_error'] = 'Could not connect to database ' . $input['db_host'];
+    }
+
+    if (count($errors) > 0) {
+        require template_getpath('install.php');
+        die;
+    }
+
+    try {
+        // used for the verification of existing tables and columns 
+        $tables = array(
+            escapeshellarg($input['db_prefix'] . 'classrooms') => array(escapeshellarg('room_id'), escapeshellarg('name'), escapeshellarg('IP'), escapeshellarg('enabled')),
+            escapeshellarg($input['db_prefix'] . 'courses') => array(escapeshellarg('course_code'), escapeshellarg('course_name'), escapeshellarg('shortname'), escapeshellarg('in_recorders'), escapeshellarg('has_albums'), escapeshellarg('date_created'), escapeshellarg('origin')),
+            escapeshellarg($input['db_prefix'] . 'logs') => array(escapeshellarg('ID'), escapeshellarg('time'), escapeshellarg('table'), escapeshellarg('message'), escapeshellarg('author')),
+            escapeshellarg($input['db_prefix'] . 'users') => array(escapeshellarg('user_ID'), escapeshellarg('surname'), escapeshellarg('forename'), escapeshellarg('passwd'), escapeshellarg('recorder_passwd'), escapeshellarg('permissions'), escapeshellarg('origin')),
+            escapeshellarg($input['db_prefix'] . 'users_courses') => array(escapeshellarg('ID'), escapeshellarg('course_code'), escapeshellarg('user_ID'), escapeshellarg('origin')),
+        );
+
+        $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], $input['db_login'], $input['db_passwd']);
+
+        // checks if tables already exist
+        $data = $db->query(
+                'SELECT table_name FROM information_schema.tables ' .
+                'WHERE table_schema = ' . escapeshellarg($input['db_name']) . ' ' .
+                'AND table_name IN (' . implode(', ', array_keys($tables)) . ')');
+        $result = $data->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($result) <= 0) {
+            // tables don't exist yet, we can create them
+            create_tables();
+        } else {
+            // saves values from user
+            $_SESSION['user_inputs'] = $input;
+            // prepare radio buttons for next view
+            $radio_buttons = array(
+                'replace' => '<b>Replace</b> the existing tables. <b style="color:red">All contents of the existing tables will be erased.</b>',
+                'prefix' => 'Choose another prefix for the tables of EZcast. This will create new tables for EZcast. <br/><input type="text" name="new_prefix"/>',
+            );
+            if (count($result) >= count(array_keys($tables))) {
+                // all tables already exist
+                $all_columns = true;
+                foreach ($tables as $table => $columns) {
+                    // checks if table contains all required columns
+                    $data = $db->query(
+                            'SELECT * FROM information_schema.columns ' .
+                            'WHERE table_schema = ' . escapeshellarg($input['db_name']) . ' ' .
+                            'AND table_name = ' . $table . ' ' .
+                            'AND column_name IN (' . implode(', ', array_keys($columns)) . ')');
+                    $result = $data->fetchAll(PDO::FETCH_ASSOC);
+                    if (count($result) < count($columns)) {
+                        $all_columns = false;
+                        break;
+                    }
+                }
+                if ($all_columns) {
+                    $radio_buttons['use'] = 'Use the existing tables for EZcast. None table will be created.';
+                }
+            }
+
+            require template_getpath('install_db_choice.php');
+            die;
+        }
+    } catch (PDOException $e) {
+        $errors['db_error'] = $e->getMessage();
+        require template_getpath('install.php');
+        die;
+    }
+}
+
+function create_tables($drop = true) {
+    global $input;
+
+    // Create tables in DB
+    try {
+        $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], $input['db_login'], $input['db_passwd']);
+        $db->beginTransaction();
+
+        $db->exec('SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO"');
+        $db->exec('SET time_zone = "+00:00"');
+
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'classrooms`');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'classrooms` (' .
+                '`room_ID` varchar(20) NOT NULL COMMENT \'Room nr (e.g. at ULB: R42-5-503)\',' .
+                '`name` varchar(255) DEFAULT NULL COMMENT \'Room name (e.g. "Auditoire K")\',' .
+                '`IP` varchar(100) NOT NULL COMMENT \'IP to recorder in classroom\',' .
+                '`enabled` tinyint(1) NOT NULL,' .
+                'PRIMARY KEY (`room_ID`)' .
+                ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'courses`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'courses` (' .
+                '`course_code` varchar(50) NOT NULL COMMENT \'At ULB: mnémonique\',' .
+                '`course_name` varchar(255) DEFAULT NULL,' .
+                '`shortname` varchar(100) DEFAULT NULL COMMENT \'Optional, shorter name displayed in recorders\',' .
+                '`in_recorders` tinyint(1) NOT NULL DEFAULT \'1\' COMMENT \'Set to FALSE to disable classroom recording\',' .
+                '`has_albums` int(11) NOT NULL DEFAULT \'0\' COMMENT \'Number of assets in the album (or 0/1 value for now)\',' .
+                '`date_created` date NOT NULL,' .
+                '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'"external" or "internal"\',' .
+                'PRIMARY KEY (`course_code`)' .
+                ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'logs`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'logs` (   ' .
+                '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
+                '`time` datetime NOT NULL,' .
+                '`table` varchar(100) NOT NULL,' .
+                '`message` varchar(255) DEFAULT NULL,' .
+                '`author` varchar(20) NOT NULL,' .
+                'PRIMARY KEY (`ID`)' .
+                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users` (' .
+                '`user_ID` varchar(50) NOT NULL COMMENT \'For ULB: netid\',' .
+                '`surname` varchar(255) DEFAULT NULL,' .
+                '`forename` varchar(255) DEFAULT NULL,' .
+                '`passwd` varchar(255) NOT NULL DEFAULT \'\',' .
+                '`recorder_passwd` varchar(255) DEFAULT NULL COMMENT \'Password as saved in the recorders, if different from global passwd\',' .
+                '`permissions` int(11) NOT NULL DEFAULT \'0\' COMMENT \'1 for admin, 0 for non-admin\',' .
+                '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'"external" or "internal"\',' .
+                'PRIMARY KEY (`user_ID`)' .
+                ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users_courses`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users_courses` (' .
+                '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
+                '`course_code` varchar(50) NOT NULL COMMENT \'Course code as referenced in ezcast_courses\',' .
+                '`user_ID` varchar(50) NOT NULL COMMENT \'user ID as referred in ezcast_users\',' .
+                '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'Either "external" or "internal"\',' .
+                'PRIMARY KEY (`ID`)' .
+                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=\'Joint of Courses and Users\' AUTO_INCREMENT=45013 ;');
+        $db->commit();
+    } catch (PDOException $e) {
+        $errors['db_error'] = $e->getMessage();
+        require template_getpath('install.php');
+        die;
+    }
+}
+
+function create_config_files() {
+    global $input;
+
+    // Write config file
+    edit_config_file(
+            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], $input['organization_name'], $input['copyright'], $input['mailto_alert'], $input['ezcast_basedir'], $input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], $input['ezmanager_host'], $input['ezmanager_user'], !empty($input['classrooms_category_enabled']) ? true : false, !empty($input['add_users_enabled']) ? true : false, !empty($input['recorder_password_storage_enabled']) ? true : false, !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, !empty($input['https_ready']) ? true : false
+    );
+}
+
+function add_first_user() {
+    global $input;
+
+    // Add the first user in database 
+    $first_user = file_get_contents("../first_user");
+    $first_user = explode(" , ", $first_user);
+
+    $user_ID = $first_user[0];
+    $surname = $first_user[3];
+    $forename = $first_user[2];
+    $passwd = $first_user[1];
+    $permissions = 1;
+
+    file_put_contents('/usr/local/ezcast_new/debug.killme', $user_ID . PHP_EOL, FILE_APPEND);
+    file_put_contents('/usr/local/ezcast_new/debug.killme', $surname . PHP_EOL, FILE_APPEND);
+    file_put_contents('/usr/local/ezcast_new/debug.killme', $forename . PHP_EOL, FILE_APPEND);
+    file_put_contents('/usr/local/ezcast_new/debug.killme', $passwd . PHP_EOL, FILE_APPEND);
+    //   try {
+    if (!db_ready()) {
+        file_put_contents('/usr/local/ezcast_new/debug.killme', "DB NOT READY" . PHP_EOL, FILE_APPEND);
+        db_prepare();
+        file_put_contents('/usr/local/ezcast_new/debug.killme', "DB PREPARED", FILE_APPEND);
+    }
+    db_user_create($user_ID, $surname, $forename, $passwd, $permissions);
+    add_admin_to_file($user_ID);
+    push_users_to_ezmanager();
+    db_log(db_gettable('users'), 'Created user ' . $user_ID, $_SESSION['user_login']);
+    db_close();
+    //  } catch (PDOException $e) {
+    //      $errors['db_error'] = $e->getMessage();
+    //      require template_getpath('install.php');
+    //      die;
+    //  }
+
+
+    session_destroy();
+    unlink("../first_user");
+
+    require template_getpath('install_success.php');
 }
 
 ?>

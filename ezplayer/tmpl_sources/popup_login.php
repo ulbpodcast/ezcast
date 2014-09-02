@@ -1,4 +1,5 @@
-<!-- 
+<?php
+/*
  * EZCAST EZplayer
  *
  * Copyright (C) 2014 Université libre de Bruxelles
@@ -21,7 +22,8 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
+ */
+?>
 
 <div id="popup_login" class="reveal-modal down">
     <h2>®connect®</h2>

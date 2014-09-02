@@ -685,8 +685,8 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
  * @return string The output
  */
 function lib_scheduling_renderer_ssh($renderer, $cmd) {
-    global $ssh_pgm;
-    $ssh_pgm='/usr/bin/ssh';
+    $ssh_pgm=lib_scheduling_config('ssh-path');
+
     exec($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
     if($ret) {
         lib_scheduling_alert($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"');
@@ -822,6 +822,8 @@ function lib_scheduling_config($name) {
             return $config['paths']['var'];
         case 'php-path':
             return $php_cli_cmd;
+        case 'ssh-path':
+            return $ssh_pgm;
         case 'sem-key':
             return $config['keys']['sem'];
         case 'default-priority':

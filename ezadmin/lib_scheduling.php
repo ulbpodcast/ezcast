@@ -642,7 +642,7 @@ function lib_scheduling_renderer_is_better_than($first, $second, $job) {
 function lib_scheduling_renderer_metadata($renderer) {
     global $php_cli_cmd;
     
-    $out = lib_scheduling_renderer_ssh($renderer, "$php_cli_cmd " . $renderer['statistics']);
+    $out = lib_scheduling_renderer_ssh($renderer, $renderer["php"] . " " . $renderer['statistics']);
 
     if ($out !== false){
         $xml = new SimpleXMLElement($out);
@@ -701,7 +701,9 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
  * @return string The output
  */
 function lib_scheduling_renderer_ssh(&$renderer, $cmd) {
-    exec('ssh -o ConnectTimeout='. lib_scheduling_config('ssh-timeout'). ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
+    $str_cmd = 'ssh -o ConnectTimeout='. lib_scheduling_config('ssh-timeout'). ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"';
+    exec($str_cmd, $output, $ret);
+
     if($ret){
         $renderer['ssh_error'] = true;
         lib_scheduling_alert('Scheduler::renderer_ssh[fail] |::>' . $output . '<::|');

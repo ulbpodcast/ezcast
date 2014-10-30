@@ -321,7 +321,7 @@ function movie_annotate($moviein, $movieout, $title, $comment, $description, $au
      * -c copy : copy codecs (no re-encoding)
      * -y : overwrite existing movie
      */
-    $cmd = "$ffmpegpath -i $movie_esc -metadata title=$title_esc -metadata author=$author_esc -metadata keywords=$keywords_esc -metadata copyright=$copyright_esc -c copy -y $movieout";
+    $cmd = "$ffmpegpath -i $movie_esc -metadata title=$title_esc -metadata author=$author_esc -metadata keywords=$keywords_esc -metadata copyright=$copyright_esc -c copy -f mp4 -y $movieout";
     exec($cmd, $cmdoutput, $returncode);
     print "\n$cmd\n";
     //check returncode
@@ -532,7 +532,7 @@ function movie_moov_atom($moviein, $movieout) {
 
     print "\n$cmd\n";
     if ($returncode) {
-        $cmd = $ffmpegpath . ' -i ' . dirname($moviein) . '/output_ref_movie.mov' . ' -movflags faststart -c copy -y ' . $movieout;
+        $cmd = $ffmpegpath . ' -i ' . dirname($moviein) . '/output_ref_movie.mov' . ' -movflags faststart -c copy -f mp4 -y ' . $movieout;
         exec($cmd, $cmdoutput, $returncode);
 
         if ($returncode) {

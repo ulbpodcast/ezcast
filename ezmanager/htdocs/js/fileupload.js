@@ -106,7 +106,7 @@ function uploadFile(file, index, start, end) {
     }, false);
 
     xhr.addEventListener("error", function(e) {
-        msg("error", "Error while uploading chunk " + index + "of " + slicesTotal[type]);
+        msg("error", "Error while uploading chunk " + index + " of " + slicesTotal[type]);
     }, false);
 
     // passes here each time a chunch of file is being uploaded

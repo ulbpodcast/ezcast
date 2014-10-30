@@ -43,7 +43,6 @@ if (file_exists('config.inc')) {
     echo "Nothing to do here ;-)";
     die;
 }
-
 session_name("ezcast_installer");
 session_start();
 
@@ -91,6 +90,8 @@ if (!isset($_SESSION['user_logged'])) {
 }
 
 if (isset($input['install']) && !empty($input['install'])) {
+    // saves organization logo if it exists
+    save_logo();
     // installation form has been submitted and we verify the db to create the tables
     validate_form();
     create_config_files();
@@ -140,6 +141,7 @@ if (isset($input['install']) && !empty($input['install'])) {
     $input['https_ready'] = $_SERVER['SERVER_PORT'] == '443' ? true : false;
     $input['application_url'] = "http://" . $_SERVER['SERVER_NAME'];
     $input['organization_name'] = $organization_name;
+    $input['organization_url'] = $organization_url;
     $input['copyright'] = $copyright;
     $input['mailto_alert'] = $mailto_alert;
     $input['repository_basedir'] = $repository_basedir;
@@ -154,7 +156,7 @@ if (isset($input['install']) && !empty($input['install'])) {
     $input['recorder_basedir'] = $recorder_basedir;
 
     include_once './config-sample.inc';
-
+        
     $input['ezmanager_host'] = $ezmanager_host;
     $input['ezmanager_user'] = $ezmanager_user;
 
@@ -176,17 +178,10 @@ function view_login_form() {
 }
 
 function check_php_extensions() {
-    $php_extensions = array('ldap', 'curl', "PDO", "pdo_mysql", "mysql", "json", "apc");
+    $php_extensions = array('ldap', 'curl', "PDO", "pdo_mysql", "mysql", "json"); // , "apc");
 
     $all_dependences = true;
-    $display = "<!DOCTYPE html>
-    <html>
-    <head>
-        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
-        <title>Check PHP modules</title>
-        <link href=\"css/style.css\" rel=\"stylesheet\">
-     </head>
-     <body>";
+
 
     foreach ($php_extensions as $extension) {
         if (extension_loaded($extension)) {
@@ -197,14 +192,22 @@ function check_php_extensions() {
             $all_dependences = $all_dependences && false;
         }
     }
-    $display .=
-            "<br/>Load the missing PHP extensions for Apache, restart the web server and reconnect to this web installer.
-         <br/><br/>If you want to continue anyway, click on the following button.
-         <br/><br/><br/><a class='button' href='install.php?skip_ext=true'>Continue</a>
-    </body>
-    </html>";
+
     if (!$all_dependences) {
-        print $display;
+        print "<!DOCTYPE html>
+                <html><head>
+        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+        <title>Check PHP modules</title>
+        <link href=\"css/style.css\" rel=\"stylesheet\">
+     </head>
+     <body>";
+        template_display("div_header.php");
+        print "<div id='login_form'>" . $display;
+        print "</div><div style='width: 400px; margin: auto;'><br/>Load the missing PHP extensions for Apache, restart the web server and reconnect to this web installer.
+         <br/><br/>If you want to continue anyway, click on the following button.
+         <br/><br/><br/><a class='button' style='float: right;' href='install.php?skip_ext=true'>Continue</a></div>";
+        template_display("div_footer.php");
+        print "</body></html>";
         die;
     }
 }
@@ -216,19 +219,11 @@ function check_server_config() {
     $max_execution_time = ini_get("max_execution_time");
     $max_input_time = ini_get("max_input_time");
 
-    $display = "<!DOCTYPE html>
-    <html>
-    <head>
-        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
-        <title>Check server config</title>
-        <link href=\"css/style.css\" rel=\"stylesheet\">
-     </head>
-     <body>";
 
     $all_good = true;
 
     if (convert_size($upload_max_filesize) < 2000000000) {
-        $display .= "<div><span class=\"red\">upload_max_filesize = $upload_max_filesize</span> <-- Determines the max size of the files that a user can upload in EZmanager. We recommend <b>2G</b></div>";
+        $display .= "<div style='line-height: 14px;'><span class=\"red\">upload_max_filesize = $upload_max_filesize</span> <-- Determines the max size of the files that a user can upload in EZmanager. We recommend <b>2G</b><br/><br/></div>";
         $all_good = $all_good & false;
     } else {
         $display .= "<div class=\"green\">upload_max_filesize = $upload_max_filesize</div>";
@@ -236,7 +231,7 @@ function check_server_config() {
     }
 
     if (convert_size($post_max_size) < 2000000000) {
-        $display .= "<div><span class=\"red\">post_max_size = $post_max_size</span> <-- Determines the max size of post data allowed. This should be at least the value of 'upload_max_filesize'. We recommend <b>2G</b></div>";
+        $display .= "<div style='line-height: 14px;'><span class=\"red\">post_max_size = $post_max_size</span> <-- Determines the max size of post data allowed. This should be at least the value of 'upload_max_filesize'. We recommend <b>2G</b><br/><br/></div>";
         $all_good = $all_good & false;
     } else {
         $display .= "<div class=\"green\">post_max_size = $post_max_size</div>";
@@ -244,7 +239,7 @@ function check_server_config() {
     }
 
     if ((int) $max_execution_time < 300) {
-        $display .= "<div><span class=\"red\">max_execution_time = $max_execution_time</span> <-- Determines the maximum time in seconds a script is allowed to run before it is terminated by the parser. We recommend <b>300</b></div>";
+        $display .= "<div style='line-height: 14px;'><span class=\"red\">max_execution_time = $max_execution_time</span> <-- Determines the maximum time in seconds a script is allowed to run before it is terminated by the parser. We recommend <b>300</b><br/><br/></div>";
         $all_good = $all_good & false;
     } else {
         $display .= "<div class=\"green\">max_execution_time = $max_execution_time </div>";
@@ -252,21 +247,28 @@ function check_server_config() {
     }
 
     if ((int) $max_input_time < 300) {
-        $display .= "<div><span class=\"red\">max_input_time = $max_input_time</span> <-- Determines the maximum time in seconds a script is allowed to parse input data, like POST and GET. We recommend <b>300</b></div>";
+        $display .= "<div style='line-height: 14px;'><span class=\"red\">max_input_time = $max_input_time</span> <-- Determines the maximum time in seconds a script is allowed to parse input data, like POST and GET. We recommend <b>300</b><br/><br/></div>";
         $all_good = $all_good & false;
     } else {
         $display .= "<div class=\"green\">max_input_time = $max_input_time </div>";
         $all_good = $all_good & true;
     }
-    $display .=
-            "<br/>Edit the '<b>" . php_ini_loaded_file() . "</b>' file to match your own needs.
-         <br/><br/>If you want to continue anyway, click on the following button.
-         <br/><br/><br/><a class='button' href='install.php?skip_srv=true'>Continue</a>
-    </body>
-    </html>";
 
     if (!$all_good) {
-        print $display;
+        print "<!DOCTYPE html>
+                <html><head>
+        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+        <title>Check PHP modules</title>
+        <link href=\"css/style.css\" rel=\"stylesheet\">
+     </head>
+     <body>";
+        template_display("div_header.php");
+        print "<div id='login_form'>" . $display;
+        print "</div><div style='width: 400px; margin: auto;'><br/>Edit the '<b>" . php_ini_loaded_file() . "</b>' file to match your own needs.
+         <br/><br/>If you want to continue anyway, click on the following button.
+         <br/><br/><br/><a class='button' style='float: right;' href='install.php?skip_srv=true'>Continue</a></div>";
+        template_display("div_footer.php");
+        print "</body></html>";
         die;
     }
 }
@@ -293,6 +295,70 @@ function convert_size($string) {
                 $int = 0;
     }
     return $int;
+}
+
+function save_logo() {
+    global $input;
+    
+    if (file_exists("../commons/config.inc")) {
+        include_once '../commons/config.inc';
+    } else {
+        include_once '../commons/config-sample.inc';
+    }
+    
+    $target_dir = "./htdocs/img/organization-logo.png";
+    $errors = array();
+
+    if (!isset($_FILES['organization_logo']) || $_FILES['organization_logo']['name'] == "") {
+        return true;
+    }
+    
+    if ($_FILES['organization_logo']['error'] > 0) {
+        $errors['file_error'] = "Error while uploading logo file";
+        require template_getpath('install.php');
+        die;
+    }
+    
+    if ($_FILES['organization_logo']['size'] > 1048576){
+        $errors['file_error'] = "Logo file bigger than 1Mo";
+    }
+
+    $filename_info = file_get_extension(basename($_FILES['organization_logo']['name']));
+    if (strtolower($filename_info['ext']) != 'png'){
+        $errors['file_error'] = "Bad extension for logo file (expected 'png' found '". $filename_info['ext'] ."')";
+    }
+    
+    if (count($errors) > 0) {
+        require template_getpath('install.php');
+        die;
+    }
+    
+    $res = move_uploaded_file($_FILES['organization_logo']['tmp_name'],$target_dir);
+    if (!$res){ 
+        $errors['file_error'] = "Error while saving logo file";
+        require template_getpath('install.php');
+        die;
+    }
+    
+    copy($target_dir, "../ezmanager/htdocs/images/Header/organization-logo.png");
+    copy($target_dir, "../ezplayer/htdocs/images/Header/organization-logo.png");
+    copy($target_dir, $apache_documentroot . "/ezmanager/images/Header/organization-logo.png");
+    copy($target_dir, $apache_documentroot . "/ezplayer/images/Header/organization-logo.png");
+    copy($target_dir, $apache_documentroot . "/ezadmin/img/organization-logo.png");
+    
+    return true;
+}
+
+function file_get_extension($filename){
+ //search last dot in filename
+ $pos_dot=strrpos($filename, '.');
+ if($pos_dot===false)return array('name'=>$filename,'ext'=>"");
+
+ $ext_part=substr($filename, $pos_dot+1);
+ $name_part=substr($filename,0,$pos_dot);
+ $result_assoc['name']=$name_part;
+ $result_assoc['ext']=$ext_part;
+ return $result_assoc;
 }
 
 function validate_form() {
@@ -452,7 +518,7 @@ function create_config_files() {
 
     // Write config file
     edit_config_file(
-            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], $input['organization_name'], $input['copyright'], $input['mailto_alert'], $input['ezcast_basedir'], $input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], $input['ezmanager_host'], $input['ezmanager_user'], !empty($input['classrooms_category_enabled']) ? true : false, !empty($input['add_users_enabled']) ? true : false, !empty($input['recorder_password_storage_enabled']) ? true : false, !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, !empty($input['https_ready']) ? true : false
+            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], $input['organization_name'], $input['organization_url'], $input['copyright'], $input['mailto_alert'], $input['ezcast_basedir'], $input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], $input['ezmanager_host'], $input['ezmanager_user'], !empty($input['classrooms_category_enabled']) ? true : false, !empty($input['add_users_enabled']) ? true : false, !empty($input['recorder_password_storage_enabled']) ? true : false, !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, !empty($input['https_ready']) ? true : false
     );
 }
 

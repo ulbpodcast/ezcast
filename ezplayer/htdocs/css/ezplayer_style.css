@@ -63,6 +63,7 @@ body {
 }
 
 .container{
+    position: absolute;
     min-height: 100%;
     margin:auto;
     background-color:#F1F1F1;
@@ -74,10 +75,61 @@ body {
 #global{
     position:relative;
     /*   min-height:600px; */
-    min-height: 100%;
+    min-height: 540px;
     margin: 0 auto;
-    padding-bottom:30px;
+    padding-bottom:120px;
     background-color:#F1F1F1;
+}
+
+
+#login_form{
+    font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;	
+    font-size:12px; 
+  /*  color:#000000;  */
+    color: #444444;
+    background-color: #F9F8F8;
+ /*   margin-left:30px; */
+ /*   line-height:40px; */
+    
+    width: 250px; 
+ /*   height: 280px; */
+ /*   padding-left: 15px; */
+  /*  padding-right: 15px; */
+    padding:10px 25px 25px 25px;
+    margin:auto;
+
+    border-radius: 25px;
+    border: 1px dotted #BEBEBE;
+    margin-top:50px;
+    
+  /*  text-align: center; */
+}
+
+#login_form label {
+    min-width: 70px;
+    text-align: right;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+#login_form h2{
+    font-size: 22px;
+    padding: 8px 0px;
+    margin: 0px 0px 15px 0px;
+    font-weight: normal;
+}
+
+#login_form h4{
+    font-size: 14px;
+    padding-bottom: 4px;
+}
+
+#login_fields{
+    margin: 15px 0px 0px 0px;
+}
+
+#login_fields input{
+    width: 160px;
 }
 
 #div_center{
@@ -199,6 +251,35 @@ body {
     margin-right: 15px;
 }
 
+#warning {
+    position: fixed; 
+    width: 100%; 
+    background: #FFD7D7; 
+    color: #7C0505; 
+    text-align: center
+}
+#warning div{
+    width: 934px; 
+    margin: 0 auto; 
+    position: relative; 
+    padding: 16px; 
+}
+#warning ul li{
+    display: inline;
+}
+#warning a{
+    display: block;
+    padding: 0px 3px;
+    background: #7C0505;
+    text-align: center;
+    color: #FFD7D7; 
+    position: absolute;
+    right: 0px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    text-decoration:  none;
+}
 /* ---------------- HOME PAGE ------------------- */
 #tuto{
     width: 100%; 
@@ -553,12 +634,16 @@ body {
     width: 35px;
     height: 28px;
     background: url(../images/Generale/shortcuts-a.png) no-repeat center; 
-  /*  bottom: 22px;*/
+    /*  bottom: 22px;*/
 }
 
 .shortcuts_tab a.active,
 .shortcuts_tab a:hover{
     background: url(../images/Generale/shortcuts-b.png) no-repeat center; 
+}
+
+#main_player{
+    padding-bottom: 50px;
 }
 
 #main_video,
@@ -1331,7 +1416,7 @@ body {
     display: block;
     height: 323px;
     width: 298px;
-   /* max-height: 323px; */
+    /* max-height: 323px; */
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -1836,12 +1921,14 @@ a.tooltip:hover div.tip{
 
 
 .footer {
-    position: relative;
+    position: absolute;
     clear: both;
     /*    margin-top: -100px; */
     background-image: url("../images/Generale/backgroundFooter.png");
     background-repeat: repeat-x;
-    height: 100px;
+    height: 35px;
+    width: 100%;
+    bottom: 0px;
 }
 
 .footer_content {
@@ -1849,21 +1936,25 @@ a.tooltip:hover div.tip{
     width: 934px;
 }
 
-.logos{
+.footer_mention{
+    font-size: 10px; 
+    color: #7BB3B6; 
+    margin: 13px 0px; 
     float: left;
 }
-
-.logos a{
-    display: inline-block;
-    height: 42px;
-    min-width: 90px;
-    margin: 29px 0px;
-    margin-right: 15px;
+.footer_mention a {
+    text-decoration: none; 
+    color: #BBBBBB; 
+    padding: 0px; 
+    margin: 0px;
+}
+.footer_mention a:hover {
+    color: #7BB3B6; 
 }
 
 
 .copyright {
-    margin: 43px 0px;
+    margin: 13px 0px;
     font-size: 10px;
     color: #7bb3b6;
     float: right;

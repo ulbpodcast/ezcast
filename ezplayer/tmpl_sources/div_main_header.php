@@ -28,8 +28,10 @@
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
-            <a href="http://www.ulb.ac.be"><img src="./images/Generale/logo-ulb-bis.png"/></a>
-            <a href="index.php" title="®Back_to_home®"><img src="./images/Generale/LogoEZplayer.png" alt="" /></a>
+            <?php if (file_exists('./htdocs/images/Header/organization-logo.png')){ ?>
+            <a href="<?php global $organization_url; echo $organization_url; ?>"><img src="./images/Header/organization-logo.png"/></a>
+            <?php } ?>
+            <a href="index.php" title="®Back_to_home®"><img src="./images/Header/LogoEZplayer.png" alt="" /></a>
         </div>
         <?php if (acl_user_is_logged()){ ?>
         <a href="index.php?action=logout" title="®Logout_title®"><span class="logout">®Logout®</span></a>

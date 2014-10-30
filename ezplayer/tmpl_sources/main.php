@@ -59,7 +59,6 @@ WARNING: Please call template_repository_path() BEFORE including this template
             ZeroClipboard.setMoviePath( './swf/ZeroClipboard10.swf' );  
                               
             $(document).ready(function(){
-                $(".container").css("min-height", ($(window).height() - 100) + "px");
             
                 $('#assets_button, .bookmarks_button, .toc_button').localScroll({
                     target:'#side_pane',
@@ -545,11 +544,11 @@ echo json_encode($valid_extensions);
                     $('#popup_message_of_day').reveal($(this).data());        
                 </script>           
             <?php } ?>
-        </div><!-- Container fin -->
-        
-        
             <!-- FOOTER - INFOS COPYRIGHT -->
             <?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
+        </div><!-- Container fin -->
+        
+        
     </body>
 </html>

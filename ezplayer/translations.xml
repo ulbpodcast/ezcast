@@ -37,14 +37,18 @@
          Note: please use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff -->
-        <label id="service_name" lang="fr">EZplayer - ULB Podcast</label>
-        <label id="service_name" lang="en">EZplayer - ULB Podcast</label>
+        <label id="service_name" lang="fr">EZplayer</label>
+        <label id="service_name" lang="en">EZplayer</label>
         <label id="service_description" lang="fr">Interface de consultation des vidéos</label>
         <label id="service_description" lang="en">Video player interface</label>
-        <label id="ezplayer_page_title" lang="fr">ULB Podcast</label>
-        <label id="ezplayer_page_title" lang="en">ULB Podcast</label>
+        <label id="ezplayer_page_title" lang="fr">EZplayer</label>
+        <label id="ezplayer_page_title" lang="en">EZplayer</label>
         
         <!-- Useful keywords -->
+        <label id="Netid" lang="fr">Netid</label>
+        <label id="Netid" lang="en">Netid</label>
+        <label id="Password" lang="fr">Mot de passe</label>
+        <label id="Password" lang="en">Password</label>
         <label id="All" lang="fr">Tout</label>
         <label id="All" lang="en">All</label>
         <label id="Yes" lang="fr">Oui</label>
@@ -214,8 +218,8 @@
          <label id="Copy_to_clipboard" lang="en">Copy to clipboard</label>
          <label id="Content_in_clipboard" lang="fr">Contenu copié dans le presse-papier</label>
          <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
-         <label id="To_podcast" lang="fr">Accéder à ULB Podcast</label>
-         <label id="To_podcast" lang="en">Navigate to ULB Podcast</label>
+         <label id="To_podcast" lang="fr">Accéder à EZplayer</label>
+         <label id="To_podcast" lang="en">Navigate to EZplayer</label>
          <label id="Back_to_album" lang="fr">Retour à l'album</label>
          <label id="Back_to_album" lang="en">Back to the album</label>
          <label id="Back_to_home" lang="fr">Retour à l'accueil</label>
@@ -522,6 +526,8 @@
         <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
         <label id="Load_for_switch" lang="fr">Les deux vidéos doivent être chargées une première fois pour disposer de la fonction de switch. Appuyez sur "Play" et le switch sera fonctionnel.</label>
         <label id="Load_for_switch" lang="en">Both videos must be loaded to enable the switch function. Press "Play" to load this video.</label>
+        <label id="developed_by" lang="fr"> est une solution propulsée par </label>
+        <label id="developed_by" lang="en"> is a solution powered by </label>
 
     </labels>
     
@@ -575,8 +581,8 @@
         <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
         <message id="File_not_found" lang="fr">Fichier introuvable</message>
         <message id="File_not_found" lang="en">Could not find your file, sorry</message>
-        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast.tech@ulb.ac.be</message>
-        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast.tech@ulb.ac.be</message>
+        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou consulter l'aide en ligne</message>
+        <message id="Upload_error" lang="en">Upload error. Please try again or consult the help page</message>
         <message id="Invalid_token" lang="fr">Accès refusé</message>
         <message id="Invalid_token" lang="en">Access denied</message>
         <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>

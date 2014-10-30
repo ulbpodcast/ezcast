@@ -97,6 +97,7 @@ $config = preg_replace('/\$basedir = (.+);/', '\$basedir = "' . $basedir . '";',
 $config = preg_replace('/\$php_cli_cmd = (.+);/', '\$php_cli_cmd = "' . $php_cli_cmd . '";', $config);
 $config = preg_replace('/\$rsync_pgm = (.+);/', '\$rsync_pgm = "' . $rsync_pgm . '";', $config);
 $config = preg_replace('/\$apache_username = (.+);/', '\$apache_username = "' . $apache_username . '";', $config);
+$config = preg_replace('/\$apache_documentroot = (.+);/', '\$apache_documentroot = "' . $apache_documentroot . '";', $config);
 file_put_contents($basedir . "/commons/config.inc", $config);
 
 /*

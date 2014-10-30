@@ -35,12 +35,10 @@
     Note: please use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff -->
-        <!-- <label id="service_logo" lang="fr"><strong>ULB</strong>podcast</label>
-        <label id="service_logo" lang="en"><strong>ULB</strong>podcast</label> -->
-        <label id="service_name" lang="fr">EZadmin - ULB Podcast</label>
-        <label id="service_name" lang="en">EZadmin - ULB Podcast</label>
-        <label id="ezadmin_page_title" lang="fr">EZadmin - ULB Podcast</label>
-        <label id="ezadmin_page_title" lang="en">EZadmin - ULB Podcast</label>
+        <label id="service_name" lang="fr">EZadmin</label>
+        <label id="service_name" lang="en">EZadmin</label>
+        <label id="ezadmin_page_title" lang="fr">EZadmin</label>
+        <label id="ezadmin_page_title" lang="en">EZadmin</label>
         <label id="service_description" lang="fr">Interface de gestion d'EZcast</label>
         <label id="service_description" lang="en">EZcast management interface</label>
         <label id="install_description" lang="fr">Interface d'installation d'EZcast</label>
@@ -53,6 +51,10 @@
         <label id="Unsafe_connection" lang="en">Unsafe connection</label>
         <label id="Unencrypted_connection" lang="fr">Connexion non cryptée</label>
         <label id="Unencrypted_connection" lang="en">Unencrypted connection</label>
+        <label id="Login" lang="fr">Netid</label>
+        <label id="Login" lang="en">Netid</label>
+        <label id="Password" lang="fr">Mot de passe</label>
+        <label id="Password" lang="en">Password</label>
         
         <!-- Menu options -->
         <label id="list_official_courses" lang="fr">Liste cours officiels</label>
@@ -457,6 +459,10 @@
         <label id="https_ready" lang="en">Using https protocol</label>
         <label id="settings_organization_name" lang="fr">Nom de l'organisation</label>
         <label id="settings_organization_name" lang="en">Organization name</label>
+        <label id="settings_organization_url" lang="fr">URL de l'organisation</label>
+        <label id="settings_organization_url" lang="en">Organization URL</label>
+        <label id="settings_organization_logo" lang="fr">Logo de l'organisation</label>
+        <label id="settings_organization_logo" lang="en">Organization logo</label>
         <label id="settings_copyright" lang="fr">Copyright</label>
         <label id="settings_copyright" lang="en">Copyright</label>
         <label id="settings_email" lang="fr">Adresse email</label>
@@ -541,7 +547,9 @@
         <label id="create_renderer_step_4_xml" lang="fr">Mettre à jour la liste des renderers pour EZadmin et EZmanager </label>
         <label id="create_renderer_step_4_xml" lang="en">Update renderers list for EZadmin and EZmanager </label>
         <label id="load_step_4_copy" lang="fr">Copie des fichiers d'installation d'EZrenderer en cours ...</label>
-        <label id="load_step_4_copy" lang="en">Copying EZrenderer installation files ...</label>
+        <label id="load_step_4_copy" lang="en">Copying EZrenderer installation files ...</label>        
+        <label id="developed_by" lang="fr"> est une solution propulsée par </label>
+        <label id="developed_by" lang="en"> is a solution powered by </label>
     </labels>
     
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->

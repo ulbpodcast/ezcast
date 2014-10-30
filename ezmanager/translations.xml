@@ -35,14 +35,12 @@
     Note: please use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff -->
-        <!-- <label id="service_logo" lang="fr"><strong>ULB</strong>podcast</label>
-        <label id="service_logo" lang="en"><strong>ULB</strong>podcast</label> -->
-        <label id="service_name" lang="fr">EZmanager - ULB Podcast</label>
-        <label id="service_name" lang="en">EZmanager - ULB Podcast</label>
+        <label id="service_name" lang="fr">EZmanager</label>
+        <label id="service_name" lang="en">EZmanager</label>
         <label id="service_description" lang="fr">Interface de gestion des enregistrements</label>
         <label id="service_description" lang="en">Recordings management interface</label>
-        <label id="podman_page_title" lang="fr">ULB Podcast</label>
-        <label id="podman_page_title" lang="en">ULB Podcast</label>
+        <label id="podman_page_title" lang="fr">EZmanager</label>
+        <label id="podman_page_title" lang="en">EZmanager</label>
         
         <!-- Useful keywords -->
         <label id="Yes" lang="fr">Oui</label>
@@ -197,7 +195,9 @@
         <label id="Copy_to_clipboard" lang="fr">Copier dans le presse-papier</label>
         <label id="Copy_to_clipboard" lang="en">Copy to clipboard</label>
         <label id="Content_in_clipboard" lang="fr">Contenu copié dans le presse-papier</label>
-        <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
+        <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label> 
+        <label id="developed_by" lang="fr"> est une solution propulsée par </label>
+        <label id="developed_by" lang="en"> is a solution powered by </label>
         
 
 
@@ -275,6 +275,10 @@
         <label id="Unsafe_connection" lang="en">Unsafe connection</label>
         <label id="Unencrypted_connection" lang="fr">Se connecter en mode non encrypté</label>
         <label id="Unencrypted_connection" lang="en">Connect in unencrypted mode</label>
+        <label id="Login" lang="fr">Netid</label>
+        <label id="Login" lang="en">Netid</label>
+        <label id="Password" lang="fr">Mot de passe</label>
+        <label id="Password" lang="en">Password</label>
         
         <!-- Long texts -->
         <label id="Destructive_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération destructive non-réversible.</label>
@@ -386,8 +390,8 @@
         <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a movie</message>
         <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
         <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
-        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une erreur, contactez podcast@ulb.ac.be</message>
-        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact podcast@ulb.ac.be</message>
+        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une erreur, contactez le responsable du système</message>
+        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact the system administrator</message>
         <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
         <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
         <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
@@ -396,8 +400,8 @@
         <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
         <message id="File_not_found" lang="fr">Fichier introuvable</message>
         <message id="File_not_found" lang="en">Could not find your file, sorry</message>
-        <message id="upload_error" lang="fr">Erreur lors de l'envoi. Veuillez réessayer ou contactez podcast@ulb.ac.be</message>
-        <message id="upload_error" lang="en">Upload error. Please try again or contact podcast@ulb.ac.be</message>
+        <message id="upload_error" lang="fr">Erreur lors de l'envoi. Veuillez réessayer ou consultez l\'aide en ligne.</message>
+        <message id="upload_error" lang="en">Upload error. Please try again or check the help page.</message>
         <message id="Invalid_token" lang="fr">Accès refusé</message>
         <message id="Invalid_token" lang="en">Access denied</message>
         <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>

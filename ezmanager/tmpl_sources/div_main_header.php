@@ -26,8 +26,10 @@
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
-            <a href="http://www.ulb.ac.be"><img src="./images/Generale/logo-ulb-bis.png"/></a>
-            <a href="index.php"><img src="./images/Generale/EZmanager.png" alt="" /></a>
+            <?php if (file_exists("./htdocs/images/Header/organization-logo.png")){ ?>
+            <a href="<?php global $organization_url; echo $organization_url;?>"><img src="./images/Header/organization-logo.png" height="42px;"/></a>
+            <?php } ?>
+            <a href="index.php"><img src="./images/Header/EZmanager.png" alt="" /></a>
         </div>
         <a href="index.php?action=logout" title="®Logout®"><span class="logout">®Logout®</span></a>
         <span style="float: right; margin: 1px 3px; margin-top: -11px; font-size: 15px;">|</span>

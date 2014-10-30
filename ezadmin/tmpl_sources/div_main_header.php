@@ -109,8 +109,11 @@
     </head>
     <body link="#000088" vlink="#000044" alink="#0000ff" <?php if ($GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
 
-        <h3 style="border-bottom: 1px solid black; text-align: center;">®service_name® <?php if ($_SESSION['changes_to_push']) echo '<small class="badge badge-important" style="bottom: 10px;" title="®unsaved_changes®">!</small>'; ?></h3>
+        <div class="container">
+        <?php include template_getpath('div_header.php'); ?>
+            <div id="global">
+
         <div class="container-fluid">
             <div class="row-fluid">
-<?php include template_getpath('div_main_menu.php'); ?>
+                <?php include template_getpath('div_main_menu.php'); ?>
                 <div class="span9">

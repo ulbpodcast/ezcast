@@ -72,8 +72,8 @@ include_once 'lib_print.php';
                 </li>
                 <?php if (acl_user_is_logged()){ ?>
                 <div class="album_options left">
-                    <a class="up-arrow" <?php if ($index == 0) { ?>style="visibility:hidden"<?php } ?> href="javascript:move_album_token(<?php echo $index; ?>, 'up');" title="®Move_up®"></a>
-                    <?php if ($index != count($albums) - 1) { ?><a class="down-arrow" href="javascript:move_album_token(<?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php } ?>
+                    <a class="up-arrow" <?php if ($index == 0) { ?>style="visibility:hidden"<?php } ?> href="javascript:move_album_token('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up');" title="®Move_up®"></a>
+                    <?php if ($index != count($albums) - 1) { ?><a class="down-arrow" href="javascript:move_album_token('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php } ?>
                 </div>
                 <?php if (suffix_get($album['album']) == '-priv' || !acl_has_album_moderation($album['album'])) { ?>
                 <div class="album_options right">

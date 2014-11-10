@@ -24,10 +24,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 ?>
-
 <script>
     // variable describing which components are displayed on the page
-    fullscreen = false; 
+    fullscreen = false;
     show_panel = false;
     bookmark_form = false;
     shortcuts = false;
@@ -92,22 +91,22 @@ switch (strtolower($_SESSION['browser_name'])) {
         <div id="video_shortcuts">
             <div class="shortcuts">
                 <ul>
-                    <li><span class="key space"></span><span>Play / Pause</span></li>
-                    <li><span class="key back-next"></span><span>Retour / Avance</span></li>
-                    <li><span class="key speed"></span><span>Vitesse de lecture</span></li>
-                    <li><span class="key volume"></span><span>Volume</span></li>
-                    <li><span class="key m"></span><span>Muet</span></li>
-                    <li><span class="key shift"></span><span>Afficher les signets</span></li>
-                    <li><span class="key l"></span><span>Partager un lien</span></li>
-                    <li><span class="key f"></span><span>Plein écran</span></li>
-                    <li><span class="key n"></span><span>Nouveau signet</span></li>
-                    <li><span class="key s"></span><span>Basculer cam / slide</span></li>
-                    <li><span class="key r"></span><span>Raccourcis clavier</span></li>
+                    <li><span class="key space"></span><span>®key_space®</span></li>
+                    <li><span class="key back-next"></span><span>®key_back®</span></li>
+                    <li><span class="key speed"></span><span>®key_speed®</span></li>
+                    <li><span class="key volume"></span><span>®key_volume®</span></li>
+                    <li><span class="key m"></span><span>®key_m®</span></li>
+                    <li><span class="key shift"></span><span>®key_shift®</span></li>
+                    <li><span class="key l"></span><span>®key_l®</span></li>
+                    <li><span class="key f"></span><span>®key_f®</span></li>
+                    <li><span class="key n"></span><span>®key_n®</span></li>
+                    <li><span class="key s"></span><span>®key_s®</span></li>
+                    <li><span class="key r"></span><span>®key_r®</span></li>
                 </ul>
             </div>
             <div class="shortcuts_tab"><a href="javascript:toggle_shortcuts();"></a></div>
         </div>
-        
+
         <video id="main_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['src']; ?>" type="video/mp4">
             <source id="main_video_source"
                     high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
@@ -130,10 +129,16 @@ switch (strtolower($_SESSION['browser_name'])) {
             time = 0;
             slide_loaded = false;
             cam_loaded = false;
+            duration = 0;
+
+            document.getElementById('main_video').addEventListener("timeupdate", function() {
+                duration = Math.round(this.duration);
+            });
 
             var videos = document.getElementsByTagName('video');
             for (var i = 0, max = videos.length; i < max; i++) {
                 videos[i].addEventListener("timeupdate", function() {
+                    step++;
                     if (step % 4 == 0) {
                         time = Math.round(this.currentTime);
 
@@ -181,7 +186,10 @@ if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') {
                 var videos = document.getElementsByTagName('video');
                 for (var i = 0, max = videos.length; i < max; i++) {
                     videos[i].addEventListener("seeked", function() {
-                        document.getElementById('bookmark_timecode').value = Math.round(this.currentTime);
+                        previous_time = time;
+                        time = Math.round(this.currentTime);
+                        document.getElementById('bookmark_timecode').value = time;
+                        server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
                     }, false);
                 }
     <?php
@@ -257,13 +265,14 @@ if ($_SESSION['load_video'] == true) {
         <script>
             $('#bookmark_form input').keydown(function(e) {
                 if (e.keyCode == 13) {
-                    if(check_bookmark_form()) submit_bookmark_form();
+                    if (check_bookmark_form())
+                        submit_bookmark_form();
                 }
             });
         </script>
         <div class="video_controls">
             <ul>
-                <?php if ($playbackRate) { ?>
+<?php if ($playbackRate) { ?>
                     <li>
                         <!--<a class="slow-button" title="®Rewind®" href="javascript:video_playbackspeed('down');"></a><!--
                         <div id="speedRate">x1.0</div><!--
@@ -279,23 +288,25 @@ if ($_SESSION['load_video'] == true) {
                         <a class="movie-button active" title="®Watch_video®" href="javascript:switch_video('cam');"></a>
                         <a class="slide-button" title="®Watch_slide®" href="javascript:switch_video('slide');"></a>
                     </li>
-                <?php } ?>
+<?php } ?>
                 <li>
                     <a class="high-button" title="®Watch_high®" href="javascript:toggle_video_quality('high');"></a>
                     <a class="low-button active" title="®Watch_low®" href="javascript:toggle_video_quality('low');"></a>
                 </li>
-                <?php if (acl_user_is_logged() && acl_has_album_permissions($album)) { ?>
+<?php if (acl_user_is_logged() && acl_has_album_permissions($album)) { ?>
                     <li>
                         <a class="add-bookmark-button" title="®Add_bookmark®" href="javascript:toggle_bookmark_form('custom');"></a>
                         <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
                             <a class="add-toc-button" title="®Add_toc®" href="javascript:toggle_bookmark_form('official');"></a>
-                        <?php } ?>
+                    <?php } ?>
                     </li>
-                <?php } ?>                
+<?php } ?>                
                 <li>
-                    <a class="share-button" href="#" data-reveal-id="popup_share_time" title="®Share_time®" onclick="getElementById('main_video').pause();
-                if (getElementById('secondary_video'))
-                    getElementById('secondary_video').pause();"></a>
+                    <a class="share-button" href="#" data-reveal-id="popup_share_time" title="®Share_time®" 
+                       onclick="getElementById('main_video').pause();
+                                if (getElementById('secondary_video'))
+                                getElementById('secondary_video').pause();
+                                server_trace(new Array('4', 'link_open', current_album, current_asset, duration, time, type, quality));"></a>
                 </li>      
                 <li>
                     <a class="fullscreen-button" href="javascript:video_fullscreen(!fullscreen);" title="®Toggle_fullscreen®" ></a>
@@ -310,27 +321,27 @@ if ($_SESSION['load_video'] == true) {
         <div class="asset_title">
             <b><?php print_info(substr(get_user_friendly_date($asset_meta['record_date'], '/', false, get_lang(), false), 0, 10)); ?></b>
             <div class="right-arrow"></div>
-            <?php print_info($asset_meta['title']); ?>
+<?php print_info($asset_meta['title']); ?>
         </div>
         <div class="asset_author">{ <?php print_info($asset_meta['author']); ?> }</div>
         <div class="asset_details">
             <b class="green-title">®Description®:</b>
-            <?php print_info($asset_meta['description']); ?>
+<?php print_info($asset_meta['description']); ?>
         </div>
         <div>
             <?php if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') { ?>
-                <a class="button" href="#" data-reveal-id="popup_slide_link">®Download_slide®</a>
+            <a class="button" href="#" data-reveal-id="popup_slide_link" onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));">®Download_slide®</a>
                 <?php
             }
             if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {
                 ?>
-                <a class="button" href="#" data-reveal-id="popup_movie_link">®Download_movie®</a>
+            <a class="button" href="#" data-reveal-id="popup_movie_link" onclick="server_trace(new Array('3', 'cam_download_open', current_album, current_asset, duration, time, type, quality));">®Download_movie®</a>
                 <?php
             }
             if (acl_user_is_logged() && acl_has_album_moderation($album)) {
                 ?>
-                <a class="button" href="#" data-reveal-id="popup_asset_link">®Share_asset®</a>
-            <?php } ?>
+            <a class="button" href="#" data-reveal-id="asset_share_open" onclick="server_trace(new Array('3', 'asset_share_open', current_album, current_asset, duration, time, type, quality));">®Share_asset®</a>
+<?php } ?>
         </div>
     </div>
 </div>

@@ -31,6 +31,6 @@
     <br/><p>®Download_slide_message®</p>
     <a class="close-reveal-modal">&#215;</a>
     <br/>
-    <a href="<?php echo $asset_meta['low_slide_src'] . '&origin=link'; ?>" class="simple-button purple">®low_res®</a>
-    <a href="<?php echo $asset_meta['high_slide_src'] . '&origin=link'; ?>" class="simple-button purple">®high_res®</a>
+    <a onclick="if(server_trace(new Array('3', 'slide_download', current_album, current_asset, duration, 'low')));" href="<?php echo $asset_meta['low_slide_src'] . '&origin=link'; ?>" class="simple-button purple">®low_res®</a>
+    <a onclick="if(server_trace(new Array('3', 'slide_download', current_album, current_asset, duration, 'high')));" href="<?php echo $asset_meta['high_slide_src'] . '&origin=link'; ?>" class="simple-button purple">®high_res®</a>
 </div>

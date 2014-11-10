@@ -231,6 +231,10 @@ function load_page() {
         case 'delete_album_token':
             album_token_delete();
             break;
+
+        case 'client_trace':
+            client_trace();
+            break;
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
@@ -278,6 +282,7 @@ function view_main($refresh_page = true) {
     global $albums;  // used in 'div_main_center.php'
     global $message_of_the_day;
     global $login_error;
+    global $trace_on;
 
     $_SESSION['show_message'] = false;
     if (!isset($_SESSION['day_message'])) {
@@ -315,6 +320,7 @@ function view_main($refresh_page = true) {
 
     if ($refresh_page) {
         log_append('View home page from link');
+        trace_append(array('1', 'view_albums')); // lvl, action
         include_once template_getpath('main.php');
     } else {
         log_append('View home page after album token action');
@@ -347,22 +353,6 @@ function redraw_page() {
 
     $action = $_SESSION['ezplayer_mode'];
     $redraw = true;
-    if (isset($_SESSION['podman_album'])) {
-        $current_album = $_SESSION['podman_album'];
-        $current_album_is_public = album_is_public($_SESSION['podman_album']);
-
-        $album_name = suffix_remove($_SESSION['podman_album']);
-        ;
-        $album_name_full = $_SESSION['podman_album'];
-        $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
-        $description = $metadata['description'];
-        $public_album = $current_album_is_public;
-        $assets = ezmam_asset_list_metadata($_SESSION['podman_album']);
-        $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album_name_full);
-        $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . ezmam_album_token_get($album_name_full);
-        $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=high&token=' . ezmam_album_token_get($album_name_full);
-        $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=low&token=' . ezmam_album_token_get($album_name_full);
-    }
 
     // Whatever happens, the first thing to do is display the whole page.
     view_main();
@@ -377,6 +367,7 @@ function refresh_page() {
     $_SESSION['reloaded'] = true;
     // reload the page
     echo '<script>window.location.reload();</script>';
+        trace_append(array('0', 'refresh_page')); // lvl, action
     die;
 }
 
@@ -483,6 +474,7 @@ function view_album_assets($refresh_center = true) {
             // logged user : consulted albums are stored in file
             user_prefs_token_add($_SESSION['user_login'], $album, $album_name, $token);
             log_append('view_album_assets: album token added - ' . $album);
+            trace_append(array('2', 'album_token_add', $album)); // lvl, action, album
         } else {
             // anonymous user : consulted albums are stored in session var
             $_SESSION['acl_album_tokens'][] = $album_token;
@@ -509,10 +501,15 @@ function view_album_assets($refresh_center = true) {
     }
 
     if ($refresh_center) {
-        if ($input['click']) // called by a local link
+        if ($input['click']){ // called by a local link
+            // lvl, action, album, origin
+            trace_append(array('2', 'view_album_assets', $album, 'from_ezplayer'));
             include_once template_getpath('div_assets_center.php');
-        else // accessed by the UV or shared link
+        } else {// accessed by the UV or shared link
+            // lvl, action, album, origin
+            trace_append(array('2', 'view_album_assets', $album, 'from_external'));
             include_once template_getpath('main.php');
+        }
     } else { // refresh only the side panel (after import / export / deletion / ...)
         include_once template_getpath('div_side_assets.php');
     }
@@ -662,10 +659,14 @@ function view_asset_details($refresh_center = true) {
     $_SESSION['asset_token'] = $asset_token;
 
     if ($refresh_center) {
-        if ($input['click']) // called from a local link
+        if ($input['click']){ // called from a local link
+            // lvl, action, album, asset, record type (cam|slide|camslide), permissions (view official | add personal), origin
+            trace_append(array('3', 'view_asset_details', $album, $asset, $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_ezplayer'));
             include_once template_getpath('div_assets_center.php');
-        else // called from the UV or a shared link
+        } else {// called from the UV or a shared link
+            trace_append(array('3', 'view_asset_details', $album, $asset, $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_external'));
             include_once template_getpath('main.php');
+        }
     } else {
         $_SESSION['load_video'] = false;
         include_once template_getpath('div_side_details.php');
@@ -830,10 +831,14 @@ function view_asset_bookmark($refresh_center = true) {
     $_SESSION['loaded_type'] = $input['type'];
 
     if ($refresh_center) {
-        if ($input['click']) // refresh the center of the page (local link)
+        if ($input['click']){ // refresh the center of the page (local link)
+            // lvl, action, album, asset, timecode, targeted type (cam|slide), record type (cam|slide|camslide), permissions (view official | add personal), origin
+            trace_append(array('3', 'view_asset_timecode', $album, $asset, $timecode, $_SESSION['loaded_type'], $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_ezplayer'));
             include_once template_getpath('div_assets_center.php');
-        else // refresh the whole page (shared link)
+        } else {// refresh the whole page (shared link)
+            trace_append(array('3', 'view_asset_timecode', $album, $asset, $timecode, $_SESSION['loaded_type'], $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_external'));
             include_once template_getpath('main.php');
+        }
     } else { // refresh the right panel (import / export / edition / deletion / ...)
         include_once template_getpath('div_side_details.php');
     }
@@ -890,6 +895,9 @@ function bookmarks_search() {
     if (in_array('custom', $tab)) {
         $bookmarks = user_prefs_bookmarks_search($_SESSION['user_login'], $search, $target, $albums, $fields, $level);
     }
+    // lvl, action, album, asset, searched words, target (all albums|selected albums|current album), fields (in title|descr|keywords), tab (official|personal), number of official bookmarks found, number of personal bookmarks found
+    $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+    trace_append(array($lvl, $input['origin'] == 'bookmark' ? 'keyword_search' : 'bookmarks_search', $_SESSION['album'] == '' ? '-' : $_SESSION['album'], $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'], $search, $target, implode(", ", $fields), implode(", ", $tab), count($bookmarks_toc), count($bookmarks)));
 
     include_once template_getpath('div_search_result.php');
 }
@@ -987,6 +995,8 @@ function bookmarks_upload() {
     }
     //  $lapin = file_get_contents(template_getpath('div_import_bookmarks.php'));
     log_append('upload_bookmarks: file imported');
+    // lvl, action, album, asset, target (in official|personal bookmarks), number of bookmarks uploaded
+    trace_append(array($asset != '' ? '3' : '2', 'bookmarks_upload', $album, $asset != '' ? $asset : '-', $target, count($imported_bookmarks)));
     echo '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>';
     //   echo  "<script language='javascript' type='text/javascript'>window.top.window.document.getElementById('popup_import_bookmarks').innerHTML='$lapin';</script>";
     include_once template_getpath('div_import_bookmarks.php');
@@ -1027,6 +1037,8 @@ function bookmarks_import() {
     }
 
     log_append('import_bookmarks: bookmarks added to the album ' . $album);
+    // lvl, action, album, asset, target (in official|personal), number of selected bookmarks, number of uploaded bookmarks
+    trace_append(array($input['source'] == 'assets' ? '2' : '3', 'bookmarks_import', $album, $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target, count($selection), count($imported_bookmarks)));
     // determines the page to display
     if ($input['source'] == 'assets') {
         // the token is needed to display the album assets
@@ -1092,6 +1104,8 @@ function bookmarks_export() {
     echo $dom->saveXml();
 
     log_append('export_bookmarks: bookmarks exported from the album ' . $album);
+    // lvl, action, album, asset, target (from official|personal), number of exported bookmarks 
+    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_export', $album, $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target == '' ? 'personal' : $target, count($selection)));
 }
 
 /**
@@ -1186,6 +1200,8 @@ function bookmarks_delete() {
     }
 
     log_append('delete_bookmarks: ' . count($selection) . ' bookmarks deleted from the album ' . $album);
+    // lvl, action, album, asset, target (from official|personal), number of deleted bookmarks 
+    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_delete', $album, $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target == '' ? 'custom' : $target, count($selection)));
     if ($input['source'] == 'assets') {
         // album token needed to display the album assets
         $input['token'] = ezmam_album_token_get($album);
@@ -1241,6 +1257,8 @@ function bookmark_add() {
     log_append('add_asset_bookmark', 'bookmark added : album -' . $bookmark_album . PHP_EOL .
             'asset - ' . $bookmark_asset . PHP_EOL .
             'timecode - ' . $bookmark_timecode);
+    // lvl, action, album, asset, timecode, target (personal|official), type (cam|slide), title, descr, keywords, bookmark_lvl
+    trace_append(array('3', $input['edit'] ? 'asset_bookmark_edit' : 'asset_bookmark_add', $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_source, $bookmark_type, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
 
     view_asset_details(false);
 }
@@ -1273,6 +1291,8 @@ function bookmark_copy() {
     if ($input['tab'] == 'official') { // copies from table of contents to personal bookmarks
         user_prefs_asset_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
 
+        // lvl, action, album, asset, timecode, target (to official|personal), title, description keywords, bookmark_lvl
+        trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'custom', $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
         log_append('copy_bookmark', 'bookmark copied from official to personal : album -' . $bookmark_album .
                 ' asset - ' . $bookmark_asset .
                 ' timecode - ' . $bookmark_timecode);
@@ -1280,6 +1300,7 @@ function bookmark_copy() {
         if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
             toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
 
+            trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'official', $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
             log_append('copy_bookmark', 'bookmark copied from personal to official : album -' . $bookmark_album .
                     ' asset - ' . $bookmark_asset .
                     ' timecode - ' . $bookmark_timecode);
@@ -1313,6 +1334,9 @@ function bookmarks_delete_all() {
 
     $bookmarks = user_prefs_asset_bookmarks_delete($_SESSION['user_login'], $album, $asset);
 
+    // lvl, action, album, asset
+    $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+    trace_append(array($lvl, 'asset_bookmarks_delete', $album, $asset));
     log_append('remove_asset_bookmarks: all bookmarks deleted from the asset ' . $asset . ' in the album ' . $album);
 
     // album token needed to display the album assets
@@ -1347,7 +1371,8 @@ function bookmark_delete() {
             toc_asset_bookmark_delete($bookmark_album, $bookmark_asset, $bookmark_timecode);
         }
     }
-
+    // lvl, action, album, asset, timecode
+    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmark_delete', $bookmark_album, $bookmark_asset, $bookmark_timecode));
     log_append('remove_asset_bookmark', 'bookmark removed : album -' . $bookmark_album .
             ' asset - ' . $bookmark_asset .
             ' timecode - ' . $bookmark_timecode);
@@ -1387,6 +1412,8 @@ function bookmarks_sort() {
             $_SESSION["acl_user_settings"]["${panel}_order"] = $new_order;
         }
     }
+    // lvl, action, album, panel (official|personal), new_order (chron|reverse_chron)
+    trace_append(array($input['source'] == 'assets' ? '2': '3', 'bookmarks_sort', $album, $panel, $new_order));
     // determines the page to display
     if ($input['source'] == 'assets') {
         // the token is needed to display the album assets
@@ -1418,6 +1445,8 @@ function album_token_delete() {
     user_prefs_album_bookmarks_delete_all($_SESSION['user_login'], $album);
     acl_update_permissions_list();
     log_append('delete_album_token', 'album token removed : album -' . $album);
+    // lvl, action, album
+    trace_append(array('1', 'album_token_delete', $album));
 
     view_main(false);
 }
@@ -1434,6 +1463,7 @@ function album_token_move() {
     global $user_files_path;
 
 
+    $album = $input['album'];
     $index = (int) $input['index'];
     $upDown = $input['up_down'];
 
@@ -1444,6 +1474,8 @@ function album_token_move() {
 
     user_prefs_token_swap($_SESSION['user_login'], $index, $new_index);
     log_append('moved_album_token', 'album token moved from ' . $index . ' to ' . $new_index);
+    // lvl, action, album, index_src, index_dest
+    trace_append(array('1', 'album_token_move', $album, $index, $new_index));
 
     view_main(false);
 }
@@ -1452,6 +1484,8 @@ function album_token_move() {
  * Displays the help page
  */
 function view_help() {
+    $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+    trace_append(array($lvl, 'view_help'));
     require_once template_getpath('help.php');
     //include_once "tmpl/fr/help.php";
 }
@@ -1494,6 +1528,8 @@ function user_anonymous_session() {
     // 4) Logging the entering operation
     log_append("Anonymous_session");
     log_append("user's browser : " . $_SESSION['browser_full']);
+    // lvl, action, browser_name, browser_version, user_os, browser_full_info
+    trace_append(array("1", "login_as_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
 
     // 5) Displaying the page
 //    view_main();
@@ -1551,6 +1587,10 @@ function anonymous_login() {
     acl_init($login);
     // 3) Logging the login operation
     log_append("anonymous user logged in");
+    // lvl, action, browser_name, browser_version, user_os, browser_full_info
+    $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+    trace_append(array($lvl, "login_from_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
+
 
     if (count($input) > 0)
         $ezplayer_url .= '/index.php?';
@@ -1633,6 +1673,8 @@ function user_login($login, $passwd) {
     // 5) Logging the login operation
     log_append("login");
     log_append("user's browser : " . $_SESSION['browser_full']);
+    // lvl, action, browser_name, browser_version, user_os, browser_full_info
+    trace_append(array("1", "login", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
 
     // 6) Displaying the page
 //    view_main();
@@ -1651,6 +1693,9 @@ function user_login($login, $passwd) {
 function user_logout() {
     global $ezplayer_url;
     // 1) Deleting the ACLs from the session var
+    log_append("logout");
+    $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+    trace_append(array($lvl, 'logout'));
     acl_exit();
 
     // 2) Unsetting session vars
@@ -1669,4 +1714,58 @@ function user_logout() {
     unset($_SESSION['lang']);
 }
 
+/**
+ * Called by client to save a use trace
+ */
+function client_trace(){
+    global $input;
+    
+    trace_append($input['info']);    
+}
+
+function trace_append($array){
+    global $ezplayer_trace;
+    global $trace_on;
+
+    if (!$trace_on) return false;
+
+    // 1) Date/time at which the event occurred
+    $data = date('Y-m-d-H:i:s');
+    $data .= ' | ';
+    
+    // 2) IP address of the user that provoked the event
+    $data .= (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : 'noip';
+    $data .= ' | ';
+    
+    // 3) Username and realname of the user that provoked the event
+    // There can be no login if the operation was performed by a CLI tool for instance.
+    // In that case, we display "nologin" instead.
+    if(!isset($_SESSION['user_login']) || empty($_SESSION['user_login'])) {
+        $data .= 'nologin';
+    }
+    // General case, where there is a login and (possibly) a real login
+    else if(isset($_SESSION['real_login'])) {
+        $data .= $_SESSION['real_login'].'/'.$_SESSION['user_login'];
+    }
+    else {
+        $data .= $_SESSION['user_login'];
+    }
+    $data .= ' | ';
+    
+    $idx = 0;
+    $max_idx = count($array);
+    foreach ($array as $value){
+        $idx++;
+        $data .= $value;
+        if ($idx != $max_idx) $data .= ' | ';
+    }
+    // 6) And we add a carriage return for readability
+    $data .= PHP_EOL;
+    
+    // Then we save the new entry
+    if (file_exists($ezplayer_trace) && filesize($ezplayer_trace) >= 2000000000){
+        rename($ezplayer_trace, $ezplayer_trace . date("Ymd_His"));
+    }
+    file_put_contents($ezplayer_trace, $data, FILE_APPEND | LOCK_EX);
+}
 ?>

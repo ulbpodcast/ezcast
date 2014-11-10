@@ -38,7 +38,8 @@
              title="®Share_time®"
              onmouseout="getElementById('share_time').style.background='#333333'" 
              onmouseover="getElementById('share_time').style.background='#11acea'" 
-             style="position:absolute; left:160px; top:0px; width:200px; height:30px; z-index:105; cursor: pointer;">
+             style="position:absolute; left:160px; top:0px; width:200px; height:30px; z-index:105; cursor: pointer;"
+             onclick="server_trace(new Array('4', 'link_copy', current_album, current_asset, duration, time, type, quality));">
         </div>
     </div>
     <script> 

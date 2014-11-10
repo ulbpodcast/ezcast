@@ -376,6 +376,30 @@
         <label id="Display_tab" lang="fr">Afficher les signets</label>
         <label id="Display_tab" lang="en">Show bookmarks</label>
         
+        <!-- Video shortcuts -->
+        <label id="key_space" lang="fr">Play / Pause</label>
+        <label id="key_space" lang="en">Play / Pause</label>
+        <label id="key_back" lang="fr">Retour / Avance</label>
+        <label id="key_back" lang="en">Back / Next</label>
+        <label id="key_speed" lang="fr">Vitesse de lecture</label>
+        <label id="key_speed" lang="en">Fast forward</label>
+        <label id="key_volume" lang="fr">Volume</label>
+        <label id="key_volume" lang="en">Audio volume</label>
+        <label id="key_m" lang="fr">Muet</label>
+        <label id="key_m" lang="en">Mute</label>
+        <label id="key_shift" lang="fr">Afficher les signets</label>
+        <label id="key_shift" lang="en">Display bookmarks</label>
+        <label id="key_l" lang="fr">Partager un lien</label>
+        <label id="key_l" lang="en">Share a link</label>
+        <label id="key_f" lang="fr">Plein écran</label>
+        <label id="key_f" lang="en">Fullscreen</label>
+        <label id="key_n" lang="fr">Nouveau signet</label>
+        <label id="key_n" lang="en">New bookmark</label>
+        <label id="key_s" lang="fr">Basculer cam / slide</label>
+        <label id="key_s" lang="en">Switch cam / slide</label>
+        <label id="key_r" lang="fr">Raccourcis clavier</label>
+        <label id="key_r" lang="en">Keyboard shortcuts</label>
+        
         <!-- Titles -->
         <label id="Album_creation_succeeded_title" lang="fr">Création d'album terminée</label>
         <label id="Album_creation_succeeded_title" lang="en">Album successfully created</label>

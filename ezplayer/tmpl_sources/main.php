@@ -39,6 +39,14 @@ WARNING: Please call template_repository_path() BEFORE including this template
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style.css" />
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />
 
+        <script>
+            <?php global $trace_on;
+            if ($trace_on){ ?>
+                var trace_on = true;
+            <?php } else { ?>
+                var trace_on = false;
+            <?php } ?>
+        </script>
         <script type="text/javascript" src="js/httpRequest.js"></script>      
         <script type="text/javascript" src="js/jQuery/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery.scrollTo-1.4.3.1-min.js"></script>
@@ -212,7 +220,7 @@ WARNING: Please call template_repository_path() BEFORE including this template
             function submit_edit_bookmark_form(index, tab){ 
                 $.ajax({
                     type:'POST', 
-                    url: 'index.php?action=add_asset_bookmark&click=true', 
+                    url: 'index.php?action=add_asset_bookmark&click=true&edit=true', 
                     data:$('#submit_' + tab + '_form_' + index).serialize(), 
                     success: function(response) {    
                         $('#div_right').html(response);
@@ -241,7 +249,7 @@ WARNING: Please call template_repository_path() BEFORE including this template
             function search_keyword(keyword){ 
                 $.ajax({
                     type:'POST', 
-                    url: 'index.php?action=search_bookmark&click=true', 
+                    url: 'index.php?action=search_bookmark&click=true&origin=bookmark', 
                     data:'search=' + keyword + '&target=global&albums%5B%5D=&fields%5B%5D=keywords&tab%5B%5D=official&tab%5B%5D=custom&level=0', 
                     success: function(response) {    
                         $('#popup_search_result').html(response);
@@ -355,15 +363,17 @@ WARNING: Please call template_repository_path() BEFORE including this template
                     '&click=true', 'div_center');                
             }
             
-            function move_album_token(index, upDown){
+            function move_album_token(album, index, upDown){
                 makeRequest('index.php', '?action=move_album_token'+ 
-                    '&index=' + index + '&up_down=' + upDown + "&click=true", 'div_center');                
+                    '&album=' + album + '&index=' + index + '&up_down=' + upDown + "&click=true", 'div_center');                
             }
             
             function toggle_detail(index, pane, elem){
                 $('#' + pane + '_detail_' + index).slideToggle();
                 $('#' + pane + '_' + index).toggleClass('active');
                 elem.toggleClass('active');
+                
+                server_trace(new Array('3', elem.hasClass('active') ? 'bookmark_show' : 'bookmark_hide', current_album, current_asset, current_tab));
                 var millisecondsToWait = 350;
                 setTimeout(function() {
                     $('.' + pane + '_scroll').scrollTo('#' + pane + '_' + index);

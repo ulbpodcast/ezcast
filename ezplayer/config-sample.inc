@@ -41,7 +41,10 @@ $accepted_media_types = array('cam', 'slide');    // Media types accepted by the
 
 $template_folder = 'tmpl/';
 $ezplayer_logs = $basedir . '/ezplayer/ezplayer.log';
+$ezplayer_trace = $repository_basedir . '/ezplayer/ezplayer.trace';
+
 
 $valid_extensions = array('xml'); // accepted extensions for imported bookmarks
+$trace_on = false; // determines whether we want to enable traces on actions or not
 
 ?>

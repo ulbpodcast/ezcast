@@ -58,11 +58,11 @@
 <div id="side_menu">
 
     <?php if (acl_user_is_logged()) { ?>
-        <div class="bookmarks_button active dir"><a onclick="setActivePane('.bookmarks_button')" href="#album_bookmarks" title="®Display_bookmarks®"></a></div>
+        <div class="bookmarks_button active dir"><a onclick="setActivePane('.bookmarks_button'); server_trace(new Array('2', 'bookmarks_swap', current_album, current_asset, current_tab));" href="#album_bookmarks" title="®Display_bookmarks®"></a></div>
         <?php
     }
     ?>
-    <div class="toc_button dir"><a onclick="setActivePane('.toc_button');" href="#album_toc" title="®Display_toc®"></a></div>
+    <div class="toc_button dir"><a onclick="setActivePane('.toc_button'); server_trace(new Array('2', 'bookmarks_swap', current_album, current_asset, current_tab));" href="#album_toc" title="®Display_toc®"></a></div>
     <div class="settings bookmarks"> 
         <a class="menu-button" title="®Bookmarks_actions®" onclick="$(this).toggleClass('active')" href="javascript:toggle('#bookmarks_actions');"></a>
         <a class="sort-button <?php echo acl_value_get("bookmarks_order"); ?>" title="®Reverse_bookmarks_order®" href="javascript:sort_bookmarks('bookmarks', '<?php echo (acl_value_get("bookmarks_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets');"></a>

@@ -340,7 +340,7 @@ if ($_SESSION['load_video'] == true) {
             }
             if (acl_user_is_logged() && acl_has_album_moderation($album)) {
                 ?>
-            <a class="button" href="#" data-reveal-id="asset_share_open" onclick="server_trace(new Array('3', 'asset_share_open', current_album, current_asset, duration, time, type, quality));">®Share_asset®</a>
+            <a class="button" href="#" data-reveal-id="popup_asset_link" onclick="server_trace(new Array('3', 'asset_share_open', current_album, current_asset, duration, time, type, quality));">®Share_asset®</a>
 <?php } ?>
         </div>
     </div>

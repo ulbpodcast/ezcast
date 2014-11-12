@@ -767,7 +767,7 @@ function view_asset_bookmark($refresh_center = true) {
 
     // only users who have album authorization can access a specific bookmark
     // anonymous users cannot access a shared bookmark
-    if (acl_user_is_logged() && acl_has_album_permissions($album)) {
+    if (acl_has_album_permissions($album)) {
         $is_bookmark = true;
     } else {
         if ($input['click'])

@@ -43,6 +43,8 @@
      toggle_play();
      });
      }); */
+    current_album = '<?php echo $_SESSION['album']; ?>'
+    current_asset = '<?php echo $_SESSION['asset']; ?>'
 
 <?php if (!acl_user_is_logged()) { ?>
         current_tab = 'toc';
@@ -112,9 +114,9 @@ $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
     <?php if ($is_bookmark) { ?>
         <div class="bookmarks_button active"><a href="#asset_bookmarks" onclick="setActivePane('.bookmarks_button');
             server_trace(new Array('3', 'bookmarks_swap', current_album, current_asset, current_tab));" title="®Display_asset_bookmarks®"></a></div>
-        <?php
-    }
-    ?>
+            <?php
+        }
+        ?>
     <div class='toc_button'><a href="#album_toc" onclick="setActivePane('.toc_button');
         server_trace(new Array('3', 'bookmarks_swap', current_album, current_asset, current_tab));" title="®Display_toc®"></a></div>
     <div class="settings bookmarks">
@@ -134,7 +136,7 @@ $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
             <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
                 <li><a href="#" data-reveal-id="popup_import_bookmarks" onclick="makeRequest('index.php', '?action=view_import', 'popup_import_bookmarks');" title="®Import_asset_bookmarks®">®Import_bookmarks®</a></li>
                 <li><a href="#" data-reveal-id="popup_delete_tocs" title="®Delete_asset_bookmarks®">®Delete_bookmarks®</a></li>                          
-<?php } ?>
+            <?php } ?>
         </ul>
     </div>
 </div>
@@ -157,7 +159,7 @@ the pane displays information about that asset
         require_once template_getpath('popup_asset_link.php');
         ?>
 
-            <?php if ($is_bookmark) { ?>
+        <?php if ($is_bookmark) { ?>
             <div class="side_pane_content" id="asset_bookmarks">
                 <div class="side_pane_up"><a href="javascript:scroll('down','.bookmark_scroll');"></a></div>
                 <?php
@@ -185,7 +187,7 @@ the pane displays information about that asset
                                             <b class="blue-title">®Description® :</b>
                                             <?php print_info($bookmark['description']); ?>
                                             <b class="blue-title" style="margin-top: 6px;">®Keywords® : </b>
-            <?php print_search($bookmark['keywords']); ?>
+                                            <?php print_search($bookmark['keywords']); ?>
                                         </div>
                                         <div class="edit_bookmark_form" id="edit_bookmark_<?php echo $index; ?>">            
                                             <input type="hidden" name="album" id="bookmark_album_<?php echo $index; ?>" value="<?php echo $bookmark['album']; ?>"/>
@@ -222,7 +224,7 @@ the pane displays information about that asset
 
                                 </form>
                             </li>
-                                <?php if ($timecode == $bookmark['timecode']) { ?>
+                            <?php if ($timecode == $bookmark['timecode']) { ?>
                                 <script>
                     toggle_detail('<?php echo $index; ?>', 'bookmark', $("#bookmark_<?php echo $index; ?> .more a"));</script>
                                 <?php
@@ -238,7 +240,7 @@ the pane displays information about that asset
                 ?>
                 <div class="side_pane_down"><a href="javascript:scroll('up','.bookmark_scroll');"></a></div>
             </div>
-            <?php } ?>
+        <?php } ?>
         <div class="side_pane_content" id="album_toc">
             <div class="side_pane_up"><a href="javascript:scroll('down','.toc_scroll');"></a></div>
             <?php if (!isset($toc_bookmarks) || sizeof($toc_bookmarks) == 0) {
@@ -254,11 +256,11 @@ the pane displays information about that asset
                         <li id="toc_<?php echo $index; ?>" class="orange level_<?php echo $bookmark['level']; ?>">
                             <form action="index.php" method="post" id="submit_toc_form_<?php echo $index; ?>" onsubmit="return false">
 
-                                    <?php if ($bookmark['asset'] == $asset) { ?>
+                                <?php if ($bookmark['asset'] == $asset) { ?>
                                     <a class="item orange" href="javascript:seek_video(<?php echo $bookmark['timecode'] ?>, '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>');">
-                                        <?php } else { ?>
+                                    <?php } else { ?>
                                         <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">
-        <?php } ?>
+                                        <?php } ?>
                                         <span class="timecode orange">(<?php print_time($bookmark['timecode']); ?>) </span>
                                         <span id="toc<?php echo $index; ?>"><b><?php print_bookmark_title($bookmark['title']); ?></b></span>                                      
                                         <input name="title" id="toc_title_<?php echo $index; ?>" type="text" maxlength="70"/>
@@ -269,7 +271,7 @@ the pane displays information about that asset
                                             <b class="orange-title">®Description® :</b>
                                             <?php print_info($bookmark['description']); ?>
                                             <b class="orange-title" style="margin-top: 6px;">®Keywords® : </b>
-        <?php print_search($bookmark['keywords']); ?>
+                                            <?php print_search($bookmark['keywords']); ?>
                                         </div>
 
                                         <div class="edit_bookmark_form" id="edit_toc_<?php echo $index; ?>">            
@@ -292,13 +294,13 @@ the pane displays information about that asset
                                             </div>
                                             <br />
                                         </div>
-                                            <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
+                                        <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
                                             <div class="bookmark_options">
-            <?php $call = 'details'; ?>
+                                                <?php $call = 'details'; ?>
                                                 <a class="delete-button" title="®Delete_bookmark®" href="#" data-reveal-id="popup_delete_toc_<?php echo $index ?>"></a>
                                                 <a class="edit-button orange" title="®Edit_bookmark®" href="javascript:edit_bookmark('<?php echo $index; ?>', 'toc', '<?php echo htmlspecialchars(str_replace("'", "\'", $bookmark['title'])) ?>', '<?php echo htmlspecialchars(str_replace(array('"', "'"), array("", "\'"), $bookmark['description'])) ?>', '<?php echo htmlspecialchars(str_replace("'", "\'", $bookmark['keywords'])) ?>', '<?php echo $bookmark['level'] ?>', '<?php echo $bookmark['timecode'] ?>', 'custom');"></a>
                                             </div>
-        <?php } ?>
+                                        <?php } ?>
                                     </div>
                             </form>
                         </li>
@@ -310,8 +312,8 @@ the pane displays information about that asset
                     }
                     ?>
                 </ul>
-<?php }
-?>
+            <?php }
+            ?>
             <div class="side_pane_down"><a href="javascript:scroll('up','.toc_scroll');"></a></div>
         </div>
     </div>

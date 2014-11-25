@@ -1733,6 +1733,9 @@ function trace_append($array){
     $data = date('Y-m-d-H:i:s');
     $data .= ' | ';
     
+    $data .= session_id();
+    $data .= ' | ';
+    
     // 2) IP address of the user that provoked the event
     $data .= (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : 'noip';
     $data .= ' | ';

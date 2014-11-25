@@ -22,14 +22,24 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
+<?php
+
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443){
+    global $ezmanager_safe_url;
+    $domain_name = $ezmanager_safe_url;
+} else {
+    global $ezmanager_url;
+    $domain_name = $ezmanager_url;
+}
+
+?>
 
 <div class="popup" id="submit_media" style="width: 415px;height: 515px;">
     <h2 style="display:inline;">®Submit_record®</h2>
 
     <div id="form">
         <form action="<?php
-        global $ezmanager_url;
-        echo $ezmanager_url;
+        echo $domain_name;
         ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" onsubmit="return false" target="uploadFrame">
           <!-- <input type="hidden" name="action" value="submit_media"/> -->
             <input type="hidden" id="action" name="action" value="submit_media"/>
@@ -386,7 +396,7 @@
 
                             // sends parameters and action to js/fileupload.js 
                             worker.postMessage({'fct': 'pushValue', 'args': {'key': 'id', 'value': id}});
-                            worker.postMessage({'fct': 'pushValue', 'args': {'key': 'url', 'value': '<?php echo $ezmanager_url; ?>'}});
+                            worker.postMessage({'fct': 'pushValue', 'args': {'key': 'url', 'value': '<?php echo $domain_name; ?>'}});
                             worker.postMessage({'fct': 'pushValue', 'args': {'key': 'chunkSize', 'value': chunkSize}});
                             if (type === 'camslide') {
                                 worker.postMessage({'fct': 'process', 'args': {'blob': file.files[0], 'type': 'cam'}});

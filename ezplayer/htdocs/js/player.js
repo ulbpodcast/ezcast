@@ -605,8 +605,12 @@ function toggle_shortcuts() {
     var action;
     origin = get_origin();
     shortcuts = !shortcuts;
+    if (shortcuts)
+        $('#video_shortcuts').css('height', '92.4%');
     $('.shortcuts').animate({'width': (shortcuts) ? 'show' : 'hide'}, function() {
         $('.shortcuts_tab a').toggleClass('active');
+        if (!shortcuts)
+            $('#video_shortcuts').css('height', '10%');
     });
     action = (shortcuts) ? 'show' : 'hide';
     server_trace(new Array('4', 'shortcuts_' + action, current_album, current_asset, duration, time, type, quality, origin));

@@ -23,11 +23,52 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+/**
+* @package ezcast.ezplayer.lib.toc
+*/
      
 include_once 'config.inc';
 include_once 'lib_error.php';
 include_once 'lib_various.php';
 include_once 'lib_ezmam.php';
+
+
+/**
+ * Searches a specific pattern in one or more albums / assets / fields 
+ * @param type $search the pattern to search (array containing a selection of words to find)
+ * @param type $fields the bookmark fields where to search : 
+ * it can be the title, the description and/or the keywords
+ * @param type $level the level where to search
+ * @param type $albums an array containing the albums where to search
+ * @param type $asset a string containing a specific asset
+ * @return the list of matching bookmarks; false if an error occurs; null 
+ * no bookmark matches the pattern
+ */
+function toc_bookmarks_search($search, $fields, $level, $albums, $asset = '') {
+
+    if (!isset($level) || $level < 0 || $level > 4)
+        $level = 0;
+
+    $bookmarks = array();
+
+    if (isset($asset) && $asset != '') {
+        if (isset($albums[0]) && $albums[0] != '') {
+            $bookmarks = toc_asset_bookmark_list_get($albums[0], $asset);
+        }
+    } else {
+        if (isset($albums) && count($albums) > 0) {
+            foreach ($albums as $album) {
+                $bookmarks = array_merge($bookmarks, toc_album_bookmarks_list_get($album));
+            }
+        }
+    }
+
+    if ((!isset($search) || count($search) == 0) && $level == 0)
+        return $bookmarks;
+
+    return search_in_array($search, $bookmarks, $fields, $level);
+}
 
 /**
  * Returns the list of (official) bookmarks for a given album
@@ -480,91 +521,5 @@ function toc_album_bookmarks_delete_all($album) {
     return true;
 }
 
-/**
- * converts a SimpleXMLElement in an associative array
- * @param SimpleXMLElement $xml
- * @anonymous_key the name of root tag we don't want to get for each item
- * @return type
- */
-function xml_file2assoc_array($xml, $anonymous_key = 'anon') {
-    if (is_string($xml))
-        $xml = new SimpleXMLElement($xml);
-    $children = $xml->children();
-    if (!$children)
-        return (string) $xml;
-    $arr = array();
-    foreach ($children as $key => $node) {
-        $node = xml_file2assoc_array($node);
-        // support for 'anon' non-associative arrays
-        if ($key == $anonymous_key)
-            $key = count($arr);
-
-        // if the node is already set, put it into an array
-        if (isset($arr[$key])) {
-            if (!is_array($arr[$key]) || $arr[$key][0] == null)
-                $arr[$key] = array($arr[$key]);
-            $arr[$key][] = $node;
-        } else {
-            $arr[$key] = $node;
-        }
-    }
-    return $arr;
-}
-
-function simple_assoc_array2xml_file($assoc_array, $file_path, $global) {
-    $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
-    $xml = new SimpleXMLElement($xmlstr);
-    foreach ($assoc_array as $key => $value) {
-        $xml->addChild($key, $value);
-    }
-    $xml_txt = $xml->asXML();
-    file_put_contents($file_path, $xml_txt);
-    chmod($file_path, 0644);
-}
-
-/**
- * converts an array of associative array in xml file
- * @param type $array the array to convert
- * @param type $file_path the path for the xml file
- * @param type $global the root element of the xml file
- * @param type $each each item of the xml file
- * @return boolean
- */
-function assoc_array2xml_file($array, $file_path, $global = 'bookmarks', $each = 'bookmark') {
-    $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
-    $xml = new SimpleXMLElement($xmlstr);
-    foreach ($array as $assoc_array) {
-        $node = $xml->addChild($each);
-        foreach ($assoc_array as $key => $value) {
-            $node->addChild($key, htmlspecialchars($value));
-        }
-    }
-    $xml_txt = $xml->asXML();
-    $res = file_put_contents($file_path, $xml_txt, LOCK_EX);
-    //did we write all the characters
-    if ($res != strlen($xml_txt))
-        return false; //no
-
-    return true;
-}
-
-/**
- * converts an associative array in xml string
- * @param type $array the list of album tokens
- * @return boolean
- */
-function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark') {
-    $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
-    $xml = new SimpleXMLElement($xmlstr);
-    foreach ($array as $assoc_array) {
-        $node = $xml->addChild($each);
-        foreach ($assoc_array as $key => $value) {
-            $node->addChild($key, htmlspecialchars($value));
-        }
-    }
-
-    $xml_txt = $xml->asXML();
-    return trim($xml_txt);
-}
 
 ?>

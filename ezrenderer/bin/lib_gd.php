@@ -24,7 +24,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 include_once 'config.inc';
 
 // Generates an image using title_array for text to display
@@ -46,8 +45,8 @@ function gd_image_create($title_array, $width, $height, $file) {
     if (isset($title_array['album'])) {
         // font size relative to the global height of the image
         $fontsize = $height / (32 * $fontratio);
-        //   gd_push_text($img, $fontsize, $txt_color['blue'], wordwrap($title_array['album'], 45,"\n"), ($height * 0.25));
-        $dimensions = imagettfbbox($fontsize, 0, $fontfile, $title_array['album']);
+     //   gd_push_text($img, $fontsize, $txt_color['blue'], wordwrap($title_array['album'], 45,"\n"), ($height * 0.25));
+                $dimensions = imagettfbbox($fontsize, 0, $fontfile, $title_array['album']);
         $txt_height = $dimensions[1] - $dimensions[7];
 
         // splits the string in multiple strings if its size is too long

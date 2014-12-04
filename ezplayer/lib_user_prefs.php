@@ -1,11 +1,12 @@
 <?php
+
 /*
  * EZCAST EZplayer
  *
  * Copyright (C) 2014 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	      Arnaud Wijns <awijns@ulb.ac.be>
+ *            Arnaud Wijns <awijns@ulb.ac.be>
  *            Carlos Avidmadjessi
  * UI Design by Julien Di Pietrantonio
  *
@@ -23,14 +24,14 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-     
+
 include_once 'config.inc';
 include_once 'lib_error.php';
 include_once 'lib_various.php';
 include_once 'lib_ezmam.php';
-include_once 'lib_toc.php';
-/*
+/**
  * This library contains functions that allow to get user's preferences
+ * @package ezcast.ezplayer.lib.userPreferences
  */
 
 /**
@@ -122,7 +123,7 @@ function user_prefs_tokens_delete($user) {
 function user_prefs_token_get($user, $album) {
 
     // Get the list that contains all album tokens
-    $token_list = user_prefs_tokens_get($user);
+    $token_list = acl_album_tokens_get();
 
     // if no result, the user and/or album are not correct
     if (!isset($token_list) || $token_list == false)
@@ -147,7 +148,7 @@ function user_prefs_token_get($user, $album) {
 function user_prefs_token_index($user, $album) {
 
     // Get the list that contains all album tokens
-    $token_list = user_prefs_tokens_get($user);
+    $token_list = acl_album_tokens_get();
 
     // if no result, the user and/or album are not correct
     if (!isset($token_list) || $token_list == false)
@@ -192,15 +193,16 @@ function user_prefs_tokens_add($user, $tokens_array) {
     }
 
     // Get the albums list
-    $token_list = user_prefs_tokens_get($user);
+    $token_list = acl_album_tokens_get();
 
     foreach ($tokens_array as &$token) {
         if (ezmam_album_exists($token['album']) && !token_array_contains($token_list, $token)) {
             array_unshift($token_list, $token);
         }
     }
-    
-    if (count($token_list) == 0) return false;
+
+    if (count($token_list) == 0)
+        return false;
     // converts the array in xml file
     return assoc_array2xml_file($token_list, $user_path . "/_album_tokens.xml", "album_tokens", "album_token");
 }
@@ -210,11 +212,11 @@ function token_array_contains(&$array, $token) {
     if (count($array) == 0)
         return false;
     foreach ($array as $index => $array_token) {
-        if ($array_token['album'] == $token['album']
-                && $array_token['token'] != $token['token']) {
-            $array[$index]['token'] = $token['token'];
+        if ($array_token['album'] == $token['album'] && $array_token['token'] == $token['token'] && $array_token['title'] == $token['title']) {
             return true;
         } else if ($array_token['album'] == $token['album']) {
+            $array[$index]['token'] = $token['token'];
+            $array[$index]['title'] = $token['title'];
             return true;
         }
     }
@@ -252,7 +254,7 @@ function user_prefs_token_add($user, $album, $title, $token, $index = 0) {
         mkdir($user_path, 0755, true);
     }
     // Get the albums list
-    $token_list = user_prefs_tokens_get($user);
+    $token_list = acl_album_tokens_get();
     $album_token = array('title' => $title, 'album' => $album, 'token' => $token);
     if (!in_array($album_token, $token_list)) {
         // add a token at the specified index in the albums list
@@ -317,7 +319,7 @@ function user_prefs_token_remove($user, $album) {
     }
 
     // 2) loop on the albums list and removes the token if it exists
-    $token_list = user_prefs_tokens_get($user);
+    $token_list = acl_album_tokens_get();
     $removed = false;
     foreach ($token_list as $index => $album_token) {
         if ($album_token['album'] == $album) {
@@ -356,7 +358,7 @@ function user_prefs_token_remove_at($user, $index) {
     }
 
     // 2) loop on the albums list and removes the token if it exists
-    $token_list = user_prefs_tokens_get($user);
+    $token_list = acl_album_tokens_get();
     if ($index > count($token_list))
         return false;
 
@@ -389,10 +391,9 @@ function user_prefs_token_swap($user, $index, $new_index) {
         return false;
     }
 
-    $token_list = user_prefs_tokens_get($user);
+    $token_list = acl_album_tokens_get();
     $max_index = count($token_list);
-    if ($index >= $max_index
-            || $new_index >= $max_index)
+    if ($index >= $max_index || $new_index >= $max_index)
         return false;
 
     $token = $token_list[$index];
@@ -490,20 +491,17 @@ function user_prefs_watchedlist_get($user) {
 
 /**
  * Searches a specific pattern in one or more albums / assets / fields 
- * @param type $user the user
- * @param type $search the pattern to search
- * @param type $target where to search : it can be all albums / 
- * some albums / the current album or asset
- * @param type $albums the list of albums where to search
+ * @param type $user the user who owns the personal bookmarks
+ * @param type $search the pattern to search (array containing a selection of words to find)
  * @param type $fields the bookmark fields where to search : 
  * it can be the title, the description and/or the keywords
  * @param type $level the level where to search
- * @param type $source determines whether the search is on the personal bookmarks
- * or on the table of contents
+ * @param type $albums an array containing the albums where to search
+ * @param type $asset a string containing a specific asset
  * @return the list of matching bookmarks; false if an error occurs; null 
  * no bookmark matches the pattern
  */
-function user_prefs_bookmarks_search($user, $search, $target, $albums, $fields, $level, $source = 'custom') {
+function user_prefs_bookmarks_search($user, $search, $fields, $level, $albums, $asset = '') {
     // Sanity check
     if (!isset($user) || $user == '')
         return null;
@@ -511,108 +509,26 @@ function user_prefs_bookmarks_search($user, $search, $target, $albums, $fields, 
     if (!isset($level) || $level < 0 || $level > 4)
         $level = 0;
 
-    if (!isset($target) || $target == '')
-        $target = 'global';
-
     $bookmarks = array();
-    $album = $_SESSION['album'];
-    $asset = $_SESSION['asset'];
 
-    if ($target == 'current' // we search in the current album / asset
-            && (!isset($album) || $album == ''))
-        $target = 'global';
-
-    switch ($target) {
-        // search in a selection of albums
-        case 'album':
-            if (isset($albums) && count($albums) > 0) {
-                foreach ($albums as $album) {
-                    if ($source == 'custom') // personal bookmarks
-                        $temp = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
-                    else  // table of contents
-                        $temp = toc_album_bookmarks_list_get($album);
-                    $bookmarks = array_merge($bookmarks, $temp);
-                }
-            } else {
-                return false;
-            }
-            break;
-        case 'current': // search in the current album / asset
-            if (isset($album) && $album != '') {
-                if ($source == 'custom') { // personal bookmarks
-                    if (isset($asset) && $asset != '') {
-                        $bookmarks = user_prefs_asset_bookmarks_list_get($_SESSION['user_login'], $album, $asset);
-                    } else {
-                        $bookmarks = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
-                    }
-                } else { // table of contents
-                    if (isset($asset) && $asset != '') {
-                        $bookmarks = toc_asset_bookmark_list_get($album, $asset);
-                    } else {
-                        $bookmarks = toc_album_bookmarks_list_get($album);
-                    }
-                }
-            }
-            break;
-        case 'global': // search in all albums
-        default:
-            $albums = acl_authorized_albums_list();
+    if (isset($asset) && $asset != '') {
+        if (isset($albums[0]) && $albums[0] != '') {
+            $bookmarks = user_prefs_asset_bookmarks_list_get($user, $albums[0], $asset);
+        }
+    } else {
+        if (isset($albums) && count($albums) > 0) {
             foreach ($albums as $album) {
-                if ($source == 'custom') // personal bookmarks
-                    $temp = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
-                else  // table of contents
-                    $temp = toc_album_bookmarks_list_get($album);
-                $bookmarks = array_merge($bookmarks, $temp);
+                $bookmarks = array_merge($bookmarks, user_prefs_album_bookmarks_list_get($user, $album));
             }
-            break;
+        }
     }
 
-    if ((!isset($search) || $search == '') && $level == 0)
+    if ((!isset($search) || count($search) == 0) && $level == 0)
         return $bookmarks;
 
     return search_in_array($search, $bookmarks, $fields, $level);
 }
 
-/**
- * Searches a specific pattern in a bookmarks list
- * @param type $search the pattern to search
- * @param type $bookmarks the eligible bookmarks list
- * @param type $fields the bookmark fields where to search : 
- * it can be the title, the description and/or the keywords
- * @return the matching bookmarks list
- */
-function search_in_array($search, $bookmarks, $fields, $level) {
-    // split the words to search
-    $words = str_getcsv($search, ' ', '"');
-    $contains = false;
-
-    foreach ($bookmarks as $index => $bookmark) {
-        if ($level == 0 || $bookmark['level'] == $level) {
-            foreach ($words as $word) {
-                if ($word != '' && $word != '+') { // no search for '+'
-                    foreach ($fields as $field) {
-                        $contains = $contains || (stripos($bookmark[$field], $word) !== false);
-                        if ($contains)
-                            break;
-                    }
-                    if (!$contains) {
-                        // if one of the words has not been found, we remove 
-                        // the bookmark from the list
-                        unset($bookmarks[$index]);
-                        break;
-                    } else {
-                        // reinit
-                        $contains = false;
-                    }
-                }
-            }
-        } else {
-            unset($bookmarks[$index]);
-        }
-    }
-
-    return (is_array($bookmarks)) ? array_values($bookmarks) : null;
-}
 
 /**
  * Returns all bookmarks of the given album
@@ -805,9 +721,7 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
         }
         // if the asset already contains bookmarks, loop while 
         // timecode is bigger than reference timecode
-        while ($index < $count
-        && $asset == $asset_ref
-        && $timecode > $timecode_ref) {
+        while ($index < $count && $asset == $asset_ref && $timecode > $timecode_ref) {
             ++$index;
             $timecode_ref = $bookmarks_list[$index]['timecode'];
             $asset_ref = $bookmarks_list[$index]['asset'];
@@ -818,17 +732,18 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
         if ($index > $count) // add in last index
             --$index;
     }
-    
+
     // extract keywords from the description
     $keywords_array = get_keywords($description);
     // and save them as keywords
-    foreach ($keywords_array as $keyword){
-        if (strlen($keywords) > 0) $keywords .= ', ';
+    foreach ($keywords_array as $keyword) {
+        if (strlen($keywords) > 0)
+            $keywords .= ', ';
         $keywords .= $keyword;
     }
     // surround every url by '*' for url recognition in EZplayer
     $description = surround_url($description);
-    
+
     // add a bookmark at the specified index in the albums list
     array_splice($bookmarks_list, $index, 0, array(null));
     $bookmarks_list[$index] = array('album' => $album, 'asset' => $asset, 'timecode' => $timecode,
@@ -877,9 +792,7 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
         $bookmarks_list = array();
 
     foreach ($bookmarks as $bookmark) {
-        if ($bookmark['album'] == $album
-                && ezmam_asset_exists($album, $bookmark['asset'])
-                && $bookmark['timecode'] >= 0) {
+        if ($bookmark['album'] == $album && ezmam_asset_exists($album, $bookmark['asset']) && $bookmark['timecode'] >= 0) {
 
             $count = count($bookmarks_list);
             $index = 0;
@@ -896,9 +809,7 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
                 }
                 // if the asset already contains bookmarks, loop while 
                 // timecode is bigger than reference timecode
-                while ($index < $count
-                && $bookmark['asset'] == $asset_ref
-                && $bookmark['timecode'] >= $timecode_ref) {
+                while ($index < $count && $bookmark['asset'] == $asset_ref && $bookmark['timecode'] >= $timecode_ref) {
                     ++$index;
                     $timecode_ref = $bookmarks_list[$index]['timecode'];
                     $asset_ref = $bookmarks_list[$index]['asset'];
@@ -908,8 +819,7 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
                     $index = 0;
                 if ($index > $count) // add in last index
                     --$index;
-                if ($bookmark['asset'] == $bookmarks_list[$index - 1]['asset']
-                        && $bookmark['timecode'] == $bookmarks_list[$index - 1]['timecode']) {
+                if ($bookmark['asset'] == $bookmarks_list[$index - 1]['asset'] && $bookmark['timecode'] == $bookmarks_list[$index - 1]['timecode']) {
                     $bookmarks_list[$index - 1] = $bookmark;
                 } else {
                     // add a bookmark at the specified index in the albums list
@@ -962,8 +872,7 @@ function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode) {
             return user_prefs_album_bookmarks_delete_all($user, $album);
         }
         foreach ($bookmarks_list as $index => $bookmark) {
-            if ($bookmark['asset'] == $asset
-                    && $bookmark['timecode'] == $timecode) {
+            if ($bookmark['asset'] == $asset && $bookmark['timecode'] == $timecode) {
                 unset($bookmarks_list[$index]);
             }
         }
@@ -1003,12 +912,9 @@ function user_prefs_album_bookmarks_delete($user, $bookmarks) {
     $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
 
     foreach ($bookmarks as $bookmark) {
-        if ($bookmark['album'] == $album
-                && $bookmark['timecode'] >= 0) {
+        if ($bookmark['album'] == $album && $bookmark['timecode'] >= 0) {
             foreach ($bookmarks_list as $index => $ref_bookmark) {
-                if ($bookmark['album'] == $ref_bookmark['album']
-                        && $bookmark['asset'] == $ref_bookmark['asset']
-                        && $bookmark['timecode'] == $ref_bookmark['timecode']) {
+                if ($bookmark['album'] == $ref_bookmark['album'] && $bookmark['asset'] == $ref_bookmark['asset'] && $bookmark['timecode'] == $ref_bookmark['timecode']) {
                     unset($bookmarks_list[$index]);
                     break;
                 }
@@ -1093,13 +999,13 @@ function user_prefs_album_bookmarks_delete_all($user, $album) {
  * @param type $value
  * @return boolean
  */
-function user_prefs_settings_edit($user, $key, $value){
+function user_prefs_settings_edit($user, $key, $value) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
 
     // 1) set the repository path
-    $user_files_path = user_prefs_repository_path();
+    $user_files_path = user_prefs_repository_path($user_files_path);
     if ($user_files_path === false) {
         return false;
     }
@@ -1111,7 +1017,7 @@ function user_prefs_settings_edit($user, $key, $value){
     if (!file_exists($user_path)) {
         mkdir($user_path, 0755, true);
     }
-    
+
     $settings = user_prefs_settings_get($user);
     $settings[$key] = $value;
 
@@ -1119,8 +1025,8 @@ function user_prefs_settings_edit($user, $key, $value){
     return simple_assoc_array2xml_file($settings, $user_path . "/_settings.xml", "settings");
 }
 
-function user_prefs_settings_get($user){
-        // Sanity check
+function user_prefs_settings_get($user) {
+    // Sanity check
     if (!isset($user) || $user == '')
         return false;
 
@@ -1158,6 +1064,52 @@ function user_prefs_last_error($msg = "") {
         $last_error = $msg;
         return true;
     }
+}
+
+/**
+ * Change the value of a user preference
+ * @global type $user_files_path
+ * @param type $user
+ * @param type $key
+ * @param type $value
+ * @return boolean
+ */
+function user_prefs_settings_update($user, $key, $value) {
+    global $user_files_path;
+    if (!isset($user) || $user == '')
+        return false;
+
+    if ($user_files_path === false) {
+        return false;
+    }
+
+    $user_path = $user_files_path . '/' . $user;
+    $setting_path = $user_path . "/_settings.xml";
+
+    if (!file_exists($user_path)) {
+        mkdir($user_path, 0755, true);
+    }
+    if (!file_exists($setting_path)) {
+        file_put_contents($setting_path, '<settings></settings>');
+    }
+
+    $settings = simplexml_load_file($setting_path);
+    switch ($key) {
+        case 'bookmarks_order':
+            $settings->bookmarks_order = $value;
+            break;
+        case 'display_new_video_notification':
+            $settings->display_new_video_notification = $value;
+            break;
+        case 'display_threads':
+            $settings->display_threads = $value;
+            break;
+        case 'display_thread_notification':
+            $settings->display_thread_notification = $value;
+            break;
+    }
+
+    return $settings->asXML($setting_path);
 }
 
 ?>

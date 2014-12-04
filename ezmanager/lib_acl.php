@@ -25,6 +25,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/**
+ * @package ezcast.ezmanager.lib.acl
+ */
 
 /**
  * This file contains all methods related to access control.
@@ -103,6 +106,7 @@ function acl_update_permissions_list() {
     $_SESSION['acl_not_created_albums_descriptions']=$albums_not_created_array_descriptions; // Associative array listing all album names (key) and description (value)
     $_SESSION['acl_permitted_albums']=array_merge($albums_created_array, $albums_not_created_array);
     $_SESSION['acl_permitted_albums_descriptions']=array_merge($albums_created_array_descriptions, $albums_not_created_array_descriptions);
+    
 }
 
 /**

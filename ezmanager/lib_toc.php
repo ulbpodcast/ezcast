@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package ezcast.ezmanager.lib.toc
+ */
+
 /*
  * EZCAST EZplayer
  *

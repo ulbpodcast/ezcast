@@ -1,5 +1,4 @@
 <?php
-
 /*
  * EZCAST EZrenderer
  *
@@ -26,15 +25,11 @@
  *
  */
 
-
 /*
  * interfaces ffmpeg commandline tool 
  * All path should be absolute
  */
 include_once 'config.inc';
-
-if ($encoding_pgm['name'] == 'ffmpeg_exp')
-    $aac_experimental = true;
 
 /**
  * concatenates multiple video files without re-encoding (as a reference movie)
@@ -47,7 +42,7 @@ function movie_join_array($movie_array, $output) {
     global $ffmpegpath;
 
     // creates a string containing all video files to join
-    $filename_list = '';
+    $filename_list;
     for ($i = 0; $i < count($movie_array); $i++) {
         if (!is_file($movie_array[$i])) {
             return false;
@@ -88,11 +83,11 @@ function movie_join_array($movie_array, $output) {
  */
 function movie_extract_audiotrack($moviein, $audiomovieout) {
     global $ffmpegpath;
-
+    
     // sanity check
     if (!is_file($moviein))
         return "input movie not found $moviein";
-
+    
     // safe path
     $moviein = escape_path($moviein);
     $audiomovieout = escape_path($audiomovieout);
@@ -154,7 +149,7 @@ function movie_add_audiotrack($moviein, $audiomovie, $movieout) {
         return "input movie1 not found $moviein";
     if (!is_file($audiomovie))
         return "input audiotrack not found $audiomovie";
-
+    
     $movie = escape_path($movie);
     $audiomovie = escape_path($audiomovie);
     // -i : input sources
@@ -191,16 +186,15 @@ function movie_qtinfo($moviein, &$qtinfo) {
     // -show_streams : gives information about each media stream contained in the input multimedia stream
     $cmd = "$ffprobepath -v quiet -print_format json -show_format -show_streams $moviein";
     exec($cmd, $cmdoutput, $returncode);
-
+    
     print $cmd . PHP_EOL;
     //check returncode
     if ($returncode)
         return join("\n", $cmdoutput); //error
-
         
-//ffprobe cmd went ok
+    //ffprobe cmd went ok
     //analyses output and saves some specific information we'll need later
-    $qtinfo = json_decode(preg_replace("/[^[:alnum:][:punct:] ]/", "", implode($cmdoutput)), true);
+    $qtinfo = json_decode(preg_replace("/[^[:alnum:][:punct:] ]/","",implode($cmdoutput)), true);
     for ($i = 0; $i < count($qtinfo["streams"]); $i++) {
         if ($qtinfo["streams"][$i]["codec_type"] == "video") {
             $qtinfo["height"] = $qtinfo["streams"][$i]["height"];
@@ -228,8 +222,8 @@ function movie_qtinfo($moviein, &$qtinfo) {
  * @return false|error_string
  * @desc encodes a (ref) movie to a self-contained movie using a specified codec
  */
-function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = true) {
-    global $ffmpegpath, $encoders_path, $aac_experimental;
+function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing=true) {
+    global $ffmpegpath, $encoders_path;
     // sanity check
     if (!is_file($moviein))
         return "input movie not found $moviein";
@@ -243,43 +237,38 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
     $encoder_values = explode('_', $encoder);
     $codec = $encoder_values[0];
     $quality = $encoder_values[1];
-
+    
     $resolution_values = explode('x', $encoder_values[2]);
     $width = $resolution_values[0];
     $height = $resolution_values[1];
-
-    $pixel_correction = (!isset($qtinfo["pixRatio"])) ? array(1, 1) : explode(':', $qtinfo["pixRatio"]);
+    
+    $pixel_correction = (!isset($qtinfo["pixRatio"])) ? array(1,1) : explode(':', $qtinfo["pixRatio"]);
     $pixw = ($pixel_correction[0] == 0) ? 1 : $pixel_correction[0];
     $pixh = ($pixel_correction[1] == 0) ? 1 : $pixel_correction[1];
-
+    
     $encoder = $encoders_path . '/' . $codec . '_' . $quality . '.ffpreset';
-
-    if ($letterboxing) {
+    
+    if ($letterboxing){
         // iw : image width
         // ih : image height
         // pad : letterboxing filter
-        //  $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
+      //  $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
         $video_filter = "scale=iw*min($width/iw\,$height/(ih/$pixw*$pixh)):(ih/$pixw*$pixh)*min($width/iw\,$height/(ih/$pixw*$pixh)), pad=$width:$height:($width-iw)/2:($height-ih)/2";
     } else {
         $video_filter = "scale=$width:$height";
     }
-
+    
     // checks if the encoder file exists
     if (!is_file($encoder))
         return "encoder not found $encoder";
-
-    if ($aac_experimental) {
-        $aac_codec = ' -acodec aac -strict experimental ';
-        // overwrites audio codec from encoders file
-    }
     /**
      * -i : input
      * -r : frame rate
-     * -fpre : preset file (contains encoding settings such as video codec, audio codec, ...)
+     * -fpre : preset file (contains encoding settings)
      * -vf : video filters
      * -y : overwrites movie if existing yet
      */
-    $cmd = "$ffmpegpath -i $moviein -r 25 -fpre $encoder -vf \"$video_filter\" -ar 44100 -ac 2 -y -pix_fmt yuv420p $aac_codec $movieout";
+    $cmd = "$ffmpegpath -i $moviein -r 25 -fpre $encoder -vf \"$video_filter\" -ar 44100 -ac 2 -y -pix_fmt yuv420p $movieout";
     exec($cmd, $cmdoutput, $returncode);
     print $cmd;
     //check returncode
@@ -287,6 +276,8 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
 // if($returncode)return join ("\n", $cmdoutput);
 // return false;
 }
+
+
 
 /**
  * stores author, copyright,... in the movie file
@@ -305,7 +296,7 @@ function movie_annotate($moviein, $movieout, $title, $comment, $description, $au
     global $ffmpegpath;
     // Sanity check
     if (!is_file($moviein))
-        return "movie not found '$moviein'";
+        return "movie  not found '$moviein'";
     //escape parameters
     $title_esc = escape_path($title);
     $comment_esc = escape_path($comment);
@@ -321,7 +312,7 @@ function movie_annotate($moviein, $movieout, $title, $comment, $description, $au
      * -c copy : copy codecs (no re-encoding)
      * -y : overwrite existing movie
      */
-    $cmd = "$ffmpegpath -i $movie_esc -metadata title=$title_esc -metadata author=$author_esc -metadata keywords=$keywords_esc -metadata copyright=$copyright_esc -c copy -f mp4 -y $movieout";
+    $cmd = "$ffmpegpath -i $movie_esc -metadata title=$title_esc -metadata author=$author_esc -metadata keywords=$keywords_esc -metadata copyright=$copyright_esc -c copy -y $movieout";
     exec($cmd, $cmdoutput, $returncode);
     print "\n$cmd\n";
     //check returncode
@@ -341,28 +332,28 @@ function movie_annotate($moviein, $movieout, $title, $comment, $description, $au
  * @param absolute_path $overlay_movie
  * @return false|error_string
  */
-function movie_title($movieout, $title_elements, $encoder, $duration = 8) {
-    global $ffmpegpath, $fontfile, $encoders_path, $aac_experimental;
+function movie_title($movieout, $title_elements, $encoder, $duration=8) {
+    global $ffmpegpath, $fontfile, $encoders_path;
 
     $movieout = escape_path($movieout);
-
+    
     $encoder_values = explode('_', $encoder);
     $codec = $encoder_values[0];
     $quality = $encoder_values[1];
-
+    
     $resolution_values = explode('x', $encoder_values[2]);
     $width = $resolution_values[0];
     $height = $resolution_values[1];
-
+    
     $encoder = $encoders_path . '/' . $codec . '_' . $quality . '.ffpreset';
-
+    
     // checks if the encoder file exists
     if (!is_file($encoder))
         return "encoder not found $encoder";
-
+    
     $drawtext_filter = '';
     // draw album name
-    if (isset($title_elements['album'])) {
+    if (isset($title_elements['album'])){
         // drawtext filter cannot handle ':'
         $album = str_replace(":", "\:", escape_path($title_elements['album'], false));
         /**
@@ -376,43 +367,39 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8) {
         $drawtext_filter .= "drawtext=fontfile=$fontfile: text='$album':fontsize=($height/19): x=(w-text_w)/2: y=(h)/2-(6.5*text_h):fontcolor=white, ";
     }
     // draw title - if title is longer than 35 char, it is split in several lines
-    if (isset($title_elements['title'])) {
+    if (isset($title_elements['title'])){
         include_once 'lib_gd.php';
         $title = split_title(str_replace(":", "\:", escape_path($title_elements['title'], false)));
-        foreach ($title as $index => $title_line) {
+        foreach($title as $index => $title_line){            
             $drawtext_filter .= "drawtext=fontfile=$fontfile: text='$title_line':fontsize=($height/11.5): x=(w-text_w)/2: y=(h)/2-((3-$index)*($height/18.5)):fontcolor=white, ";
         }
     }
     // draw the author
-    if (isset($title_elements['author'])) {
+    if (isset($title_elements['author'])){
         $author = str_replace(":", "\:", escape_path($title_elements['author'], false));
         $drawtext_filter .= "drawtext=fontfile=$fontfile: text='$author': x=(w-text_w)/2: fontsize=($height/13): y=(h-text_h)/2+(2*text_h):fontcolor=white, ";
     }
     // draw the date - except if it is not required
-    if (isset($title_elements['date']) && $title_elements['hide_date'] != true) {
+    if (isset($title_elements['date']) && $title_elements['hide_date'] != true){
         $date = str_replace(":", "\:", escape_path($title_elements['date'], false));
         $drawtext_filter .= "drawtext=fontfile=$fontfile: text='$date': x=(w-text_w)/2: fontsize=($height/19): y=(h-text_h)/2+(6.5*text_h):fontcolor=white, ";
     }
     // draw copyrights
-    if (isset($title_elements['copyright'])) {
+    if (isset($title_elements['copyright'])){
         $copyright = str_replace(":", "\:", escape_path($title_elements['copyright'], false));
         $drawtext_filter .= "drawtext=fontfile=$fontfile: text='$copyright': fontsize=($height/28.8): x=(w-text_w)/2: y=(h)-(4.5*text_h):fontcolor=white, ";
     }
     // draw organization name
-    if (isset($title_elements['organization'])) {
+    if (isset($title_elements['organization'])){
         $organization = str_replace(":", "\:", escape_path($title_elements['organization'], false));
         $drawtext_filter .= "drawtext=fontfile=$fontfile: text='$organization': fontsize=($height/28.8): x=(w-text_w)/2: y=(h)-(4*text_h):fontcolor=white, ";
     }
-
+    
     // removes trailing ', ' from the last line
-    if (strlen($drawtext_filter) > 2) {
+    if (strlen($drawtext_filter) > 2){
         $drawtext_filter = substr($drawtext_filter, 0, -2);
     }
-
-    if ($aac_experimental) {
-        $aac_codec = ' -acodec aac -strict experimental ';
-        // overwrites audio codec from encoders file
-    }
+    
     /*
      * generates input silent audio stream for titling:
      *      -ar : audio sample rate
@@ -427,11 +414,11 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8) {
      * applies filters for output file
      *      -vf : video filters to apply
      *      -vpre : video preset file (settings used to encode the video)
-     */
-    $cmd = $ffmpegpath . ' -ar 44100 -ac 2 -f s16le -t ' . $duration . ' -i /dev/zero ' .
-            '-f lavfi -t ' . $duration . ' -i color=c=0x2578B6:s=' . $width . 'x' . $height . ':r=25 ' .
-            '-vf "' . $drawtext_filter . '" -fpre ' . $encoder . ' ' . $aac_codec . ' -y ' . $movieout;
-
+     */    
+    $cmd = $ffmpegpath . ' -ar 44100 -ac 2 -f s16le -t ' . $duration . ' -i /dev/zero ' . 
+            '-f lavfi -t ' . $duration . ' -i color=c=0x2578B6:s=' . $width .'x' . $height . ':r=25 '.
+            '-vf "' . $drawtext_filter .'" -fpre ' . $encoder . ' -y ' . $movieout;
+            
     exec($cmd, $cmdoutput, $returncode);
     print "\n$cmd\n";
     //check returncode
@@ -450,32 +437,26 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8) {
  * @param type $duration
  * @return boolean
  */
-function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
-    global $ffmpegpath, $encoders_path, $aac_experimental;
+function movie_title_from_image($movieout, $imagein, $encoder, $duration=8) {
+    global $ffmpegpath, $encoders_path;
 
     $movieout = escape_path($movieout);
-
+    
     $encoder_values = explode('_', $encoder);
     $codec = $encoder_values[0];
     $quality = $encoder_values[1];
-
+        
     $resolution_values = explode('x', $encoder_values[2]);
     $width = $resolution_values[0];
     $height = $resolution_values[1];
-
+    
     $encoder = $encoders_path . '/' . $codec . '_' . $quality . '.ffpreset';
-
+    
     // checks if the encoder file exists
     if (!is_file($encoder))
         return "encoder not found $encoder";
-
+    
     $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
-
-    if ($aac_experimental) {
-        $aac_codec = ' -acodec aac -strict experimental ';
-        // overwrites audio codec from encoders file
-    }
-
     /*
      * generates input silent audio stream for titling:
      *      -ar : audio sample rate
@@ -489,10 +470,10 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
      *      -i  : input file (image) for title 
      *      -t  : duration in secondes
      *      -fpre : video preset file (settings used to encode the video)
-     */
-    $cmd = $ffmpegpath . ' -ar 44100 -ac 2 -f s16le -t ' . $duration . ' -i /dev/zero ' .
-            '-loop 1 -r 25 -i ' . $imagein . ' -t ' . $duration . ' -vf "' . $video_filter . '" -fpre ' . $encoder . ' ' . $aac_codec . ' -y ' . $movieout;
-
+     */    
+    $cmd = $ffmpegpath . ' -ar 44100 -ac 2 -f s16le -t ' . $duration . ' -i /dev/zero ' . 
+            '-loop 1 -r 25 -i ' . $imagein . ' -t ' . $duration . ' -vf "' . $video_filter .'" -fpre ' . $encoder . ' -y ' . $movieout;
+            
     exec($cmd, $cmdoutput, $returncode);
     print "\n$cmd\n";
     //check returncode
@@ -507,10 +488,11 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
  * @param type $escapeshellarg
  * @return type
  */
-function escape_path($path, $escapeshellarg = true) {
+function escape_path($path, $escapeshellarg=true) {
     $newpath = str_replace("//", "/", $path); //removes multiple / 
     return ($escapeshellarg) ? escapeshellarg($newpath) : $newpath;
 }
+
 
 /**
  * moves the moov atom of the video at the beginning of the video
@@ -519,7 +501,7 @@ function escape_path($path, $escapeshellarg = true) {
  * @param type $movieout
  * @return boolean
  */
-function movie_moov_atom($moviein, $movieout) {
+function movie_moov_atom($moviein, $movieout){
     global $ffmpegpath;
     /**
      * -i : input file
@@ -529,17 +511,10 @@ function movie_moov_atom($moviein, $movieout) {
      */
     $cmd = $ffmpegpath . ' -i ' . $moviein . ' -movflags faststart -c copy -y ' . $movieout;
     exec($cmd, $cmdoutput, $returncode);
-
+    
     print "\n$cmd\n";
-    if ($returncode) {
-        $cmd = $ffmpegpath . ' -i ' . dirname($moviein) . '/output_ref_movie.mov' . ' -movflags faststart -c copy -f mp4 -y ' . $movieout;
-        exec($cmd, $cmdoutput, $returncode);
-
-        if ($returncode) {
-            return join("\n", $cmdoutput);
-        }
-    }
+    if ($returncode)
+        return join("\n", $cmdoutput);
     return false;
 }
-
 ?>

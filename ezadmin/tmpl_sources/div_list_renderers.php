@@ -31,11 +31,9 @@ require_once 'config.inc';
 
 <table class="table table-striped table-hover table-condensed renderers">
     <tr>
-        <th></th>
         <th>®renderer_performance_idx®</th>
         <th>®renderer_name®</th>
         <th>®renderer_hostname®</th>
-        <th>®renderer_pgm®</th>
         <th>®renderer_jobs®</th>
         <th>®renderer_load®</th>
         <th>®renderer_threads®</th>
@@ -47,21 +45,13 @@ require_once 'config.inc';
     <?php
     include_once 'lib_scheduling.php';
     foreach ($renderers as $r) {
-        exec('ping -c 1 '.$r['host'], $output, $return_val); 
-        if($return_val != 0){
-            $r['no_ping'] = true;
-        } else {
-            $r = lib_scheduling_renderer_metadata($r);
-        }
+        $r = lib_scheduling_renderer_metadata($r);
         //var_dump($r2);
         ?>
         <tr class="<?php echo $class; ?>">
-            <td><?php if($r['no_ping'] === true) echo '<span title="®no_ping®"><i class="icon-warning-sign"></i></span>';
-                      if($r['ssh_error'] === true) echo '<span title="®ssh_error®"><i class="icon-warning-sign"></i></span>';?></td>
             <td><?php echo $r['performance_idx']; ?></td>
             <td class="renderer_name"><?php echo $r['name']; ?></td>
             <td><?php echo $r['host']; ?></td>
-            <td><span title="<?php echo $r['encoding_desc'] ?>"><?php echo $r['encoding_pgm']; ?></span></td>
             <td><?php echo $r['num_jobs'] . '/' . $r['max_num_jobs']; ?></td>
             <td><?php echo $r['load']; ?></td>
             <td><?php echo $r['max_num_threads']; ?></td>

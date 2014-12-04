@@ -40,8 +40,8 @@ $submit_upload_dir="$repository_basedir/queues/submit_uploads";
 $submit_upload_ok_dir="$repository_basedir/queues/submit_uploads_ok";
 $submit_upload_failed_dir="$repository_basedir/queues/submit_uploads_failed";
 
-$recorder_upload_to_server="$recorder_recorddir/upload_to_server/";//path of folder containing recordings on the recorder (mac mini)
-$recorder_upload_ok="$recorder_recorddir/upload_ok/";//same but for recordings sucessfully downloaded (they will be deleted later by a cron)
+$recorder_upload_to_server="$recorder_recorddir/Movies/upload_to_server/";//path of folder containing recordings on the recorder (mac mini)
+$recorder_upload_ok="$recorder_recorddir/Movies/upload_ok/";//same but for recordings sucessfully downloaded (they will be deleted later by a cron)
 $max_download_retries=500;//number of rsync retries
 //what program to call when downloading from classroom or uploading from user
 $recorder_mam_insert_pgm="$ezmanager_basedir/cli_mam_insert.php";
@@ -63,7 +63,7 @@ $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (def
 
 
 // used by lib_ezmam (ezmanager)
-$accepted_media_qualities = array('high', 'low'); // Media quality prefixes accepted by the distribution script
+$accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)
 
 $template_folder = 'tmpl/';
@@ -73,13 +73,10 @@ $ezmanager_logs="$ezmanager_basedir/ezmanager.log";
 $title_max_length = 70; // Maximum number of characters for the title
 
 // used by ezmanager for asset submit
-$valid_extensions = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpeg4', 'avi', 'mpeg', 'flv', 'wmv', 'mka', 'mks', 'rmvb', 'divx', 'xvid', 'vob', 'mkv', 'f4v');
+$valid_extensions = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpeg4', 'avi', 'mpeg', 'flv', 'wmv', 'mka', 'mks', 'rmvb', 'divx', 'xvid', 'vob', 'mkv');
 
 // used by web_distribute.php
 $flash_only_browsers = array('Firefox');
-
-// used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
-$upload_slice_size = 1024 * 1024;
 
 
 ?>

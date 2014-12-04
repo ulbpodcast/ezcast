@@ -1,4 +1,5 @@
-<!-- 
+<?php 
+/*
 * EZCAST EZmanager 
 *
 * Copyright (C) 2014 Université libre de Bruxelles
@@ -21,14 +22,15 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
+*/
+?>
 
 <div id="Bloc-ensemble">
 
      <div class="Helpnew">
 
 
-      <h1>Aide - Utilisation &quot;EZmanager&quot;</h1>
+      <h1>Aide - Utilisation &quot;EZcast EZmanager&quot;</h1>
       <p>&nbsp;</p>
 
       <p>Ce tutoriel a pour objectif de vous permettre d’utiliser les fonctionnalités essentielles de l’interface de gestion des podcasts, de pouvoir publier vos productions ainsi que de répondre à vos questions. Si vous ne trouvez pas la réponse, contactez : <a href="mailto:<?php global $mailto_alert; echo $mailto_alert; ?>"><?php echo $mailto_alert; ?></a></p>

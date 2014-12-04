@@ -1,4 +1,6 @@
-<!-- 
+<!--
+<?php 
+/*
 * EZCAST EZmanager 
 *
 * Copyright (C) 2014 Université libre de Bruxelles
@@ -21,6 +23,8 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+?>
 
 
 This popup displays a confirmation message when we create a new album.
@@ -31,6 +35,6 @@ However, if you do, please make sure that $public_album_url is declared and set 
 <div class="popup" id="popup_album_successfully_created">
     <h2>®Album_creation_succeeded_title®</h2>
     ®Album_creation_succeeded_message®<br/><br/>
-
+    
     <span class="Bouton"> <a href="index.php"><span>®Close_and_return_to_index®</span></a></span>
 </div>

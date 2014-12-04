@@ -30,6 +30,10 @@
  * @param action rss|media
  */
 
+/**
+ * @package ezcast.ezmanager.distribute
+ */
+
 require_once 'config.inc';
 require_once 'lib_ezmam.php';
 require_once 'lib_error.php';
@@ -109,6 +113,12 @@ function view_rss() {
 
     // 1) Retrieving the feed path
     $feed_handle = ezmam_rss_getpath($input['album'], $input['quality'], false);
+    if(!file_exists($feed_handle)){
+        $album = $input['album'];
+        ezmam_rss_generate($album, "high");
+        ezmam_rss_generate($album, "low");
+        ezmam_rss_generate($album, "ezplayer");
+    }
 
     // 2) Providing feed content to client
     header('Content-Type: text/xml');
@@ -228,11 +238,11 @@ function view_media() {
     }
 
     // 2) Then we save some statistics on it
-    /*if (!isset($input['origin']) || 
-            ($input['origin'] != 'podman' && $input['origin'] != 'ezplayerdev')){*/
+    if (!isset($input['origin']) || 
+            ($input['origin'] != 'podman' && $input['origin'] != 'ezplayerdev')){
         ezmam_media_viewcount_increment($input['album'], $input['asset'], $media_name, $input['origin']);
         
-   // }
+    }
 
     // 3) And finally, we deliver it!
     $filename = suffix_remove($input['album']);

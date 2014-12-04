@@ -25,6 +25,10 @@
  */
 
 /**
+ * @package ezcast.ezmanager.lib.scheduling
+ */
+
+/**
  * DEBUG
  *
  *  0 : Disabled
@@ -586,7 +590,7 @@ function lib_scheduling_renderer_find($renderers, $hostname) {
  * @return boolean Whether the renderer is available or not
  */
 function lib_scheduling_renderer_is_available($renderer) {
-    if($renderer['status'] != 'enabled') return false;
+    if(!$renderer['status'] == 'activate') return false;
 
     $renderer = lib_scheduling_renderer_metadata($renderer);
 
@@ -685,8 +689,8 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
  * @return string The output
  */
 function lib_scheduling_renderer_ssh($renderer, $cmd) {
-    $ssh_pgm=lib_scheduling_config('ssh-path');
-
+    global $ssh_pgm;
+    $ssh_pgm='/usr/bin/ssh';
     exec($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
     if($ret) {
         lib_scheduling_alert($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"');
@@ -822,8 +826,6 @@ function lib_scheduling_config($name) {
             return $config['paths']['var'];
         case 'php-path':
             return $php_cli_cmd;
-        case 'ssh-path':
-            return $ssh_pgm;
         case 'sem-key':
             return $config['keys']['sem'];
         case 'default-priority':

@@ -1,3 +1,8 @@
+<script>
+    displayForum = false;
+    displayThread = false;
+    thread = null;
+</script>
 <?php
 /*
  * EZCAST EZplayer
@@ -30,15 +35,14 @@ include_once 'lib_print.php';
 <!-- Left column: player and comments -->
 <div id="div_left">
     <!-- Player goes here -->
-    <?php 
-    if ($_SESSION['ezplayer_mode'] == 'view_album_assets'){
-    include_once template_getpath('div_left_assets.php');
+    <?php
+    if ($_SESSION['ezplayer_mode'] == 'view_album_assets') {
+        include_once template_getpath('div_left_assets.php');
     } else {
-    include_once template_getpath('div_left_details.php'); 
-    // comments go here
-    include_once template_getpath('div_main_bottom.php');
-    }?>
-</div>
+        include_once template_getpath('div_left_details.php');
+    }
+    ?>
+</div><!-- div_left END -->
 <!-- Left column: player and comments END -->
 
 <!-- Right column: assets list -->
@@ -46,12 +50,10 @@ include_once 'lib_print.php';
     <!-- Side part goes here : assets list, asset details and ToC -->                        
     <?php
     if ($_SESSION['ezplayer_mode'] == 'view_album_assets') {
-
-            require template_getpath('div_side_assets.php');
+        require template_getpath('div_side_assets.php');
     } else {
-            require template_getpath('div_side_details.php');
+        require template_getpath('div_side_details.php');
     }
     ?>
 
 </div><!-- div_right END -->
-

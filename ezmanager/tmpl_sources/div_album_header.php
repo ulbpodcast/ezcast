@@ -1,4 +1,5 @@
-<!-- 
+<?php 
+/*
 * EZCAST EZmanager 
 *
 * Copyright (C) 2014 Université libre de Bruxelles
@@ -21,7 +22,8 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
+*/
+?>
 
 <!--
 Before calling this template, please define the following variables:
@@ -54,7 +56,7 @@ Before calling this template, please define the following variables:
                     <li><span class="BoutonSoumettreAlbum"><a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');">®Submit_record®</a></span></li>
                 </ul>
             </div>
-            <a class="greyLink" style="padding-left: 15px; border: none; font-size: 0.75em" href="javascript:show_popup_from_inner_div('#HD_RSS_box'); copyToClipboard('#zero_clipboard_hd_rss','<?php echo $hd_rss_url_web; ?>');"><img src="images/page4/PictoRss.png" style="display:inline"/> ®HD_RSS_feed®</a> <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#SD_RSS_box'); copyToClipboard('#zero_clipboard_sd_rss','<?php echo $sd_rss_url_web; ?>');"><img src="images/page4/PictoRss.png" style="display:inline"/> ®SD_RSS_feed®</a> <a class="greyLink ezplayer" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#player_url_box'); copyToClipboard('#zero_clipboard_player_url','<?php echo $player_full_url; ?>');"><img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®</a>
+            <a class="greyLink" style="padding-left: 15px; border: none; font-size: 0.75em" href="javascript:show_popup_from_inner_div('#HD_RSS_box'); copyToClipboard('#zero_clipboard_hd_rss','<?php echo $hd_rss_url_web; ?>');"><img src="images/page4/PictoRss.png" style="display:inline"/> ®HD_RSS_feed®</a> <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#SD_RSS_box'); copyToClipboard('#zero_clipboard_sd_rss','<?php echo $sd_rss_url_web; ?>');"><img src="images/page4/PictoRss.png" style="display:inline"/> ®SD_RSS_feed®</a> <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#player_url_box'); copyToClipboard('#zero_clipboard_player_url','<?php echo $player_full_url; ?>');"><img src="images/page4/PictoRss.png" style="display:inline"/> ®Player_url®</a>
 
     </div>
 

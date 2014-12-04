@@ -38,7 +38,7 @@
         }
         
 	.reveal-modal p {
-            color: #AAAAAA;
+            /*color: #AAAAAA;*/
         }
 		
 	.reveal-modal p a {
@@ -109,6 +109,13 @@
         .reveal-modal .close-reveal-modal-button:hover {
                 background: #7bb3b6;
                 color: #ffffff;
+        }
+        .reveal-modal .close-reveal-modal-button.orange:hover {
+                background: #e05f24;
+        }
+        
+        .reveal-modal .close-reveal-modal-button.green2:hover {
+                background: #25b8a5;
         }
         
         .reveal-modal .delete-button-confirm:hover {

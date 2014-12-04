@@ -21,22 +21,30 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+*/
 
 var quality;
 var type;
 var cam_loaded;
 var slide_loaded;
 var panel_width = 295;
-var from_shortcut = false;
-var trace_pause = false;
+var save_currentTime = null;
+/**
+ * Duration of the notification (sec)
+ * @type Number
+ */
+var notif_display_delay = 10;
+/**
+ * Number of threads to display at once
+ * @type Number
+ */
+var notif_display_number = 3;
 
 window.addEventListener("keyup", function(e) {
     var el = document.activeElement;
 
     if (lvl == 3 && (!el || (el.tagName.toLowerCase() != 'input' &&
             el.tagName.toLowerCase() != 'textarea'))) {
-        from_shortcut = true;
         // focused element is not an input or textarea
         switch (e.keyCode) {
             case 32:  // space 
@@ -66,7 +74,7 @@ window.addEventListener("keyup", function(e) {
                         switch_video('cam');
                 break;
             case 37:  // 'left arrow'
-                video_navigate('rewind');
+                video_navigate('backward');
                 break;
             case 39:  // 'right arrow'
                 video_navigate('forward');
@@ -93,6 +101,8 @@ window.addEventListener("keyup", function(e) {
             case 76:  // 'l'
                 video_link();
                 break;
+            case 8:  // 'backspace'
+                break;
         }
     } else if (lvl == 3) {
         if (e.keyCode == 27) {
@@ -108,7 +118,7 @@ window.addEventListener("keydown", function(e) {
     if (lvl == 3 && (!el || (el.tagName.toLowerCase() != 'input' &&
             el.tagName.toLowerCase() != 'textarea'))) {
         // space and arrow keys
-        if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        if ([32, 37, 38, 39, 40, 8].indexOf(e.keyCode) > -1) {
             e.preventDefault();
         }
     }
@@ -138,19 +148,55 @@ $(window).bind('resize', function(e)
 });
 
 function load_player(media) {
+    // Notification panel starts hidden
+    $('#video_notifications').hide();
     var videos = document.getElementsByTagName('video');
     for (var i = 0, max = videos.length; i < max; i++) {
         videos[i].addEventListener("seeked", function() {
-            previous_time = time;
-            time = Math.round(this.currentTime);
-            document.getElementById('bookmark_timecode').value = time;
-            server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
+            document.getElementById('bookmark_timecode').value = Math.round(this.currentTime);
+            document.getElementById('thread_timecode').value = Math.round(this.currentTime);
         }, false);
+
+        // Listener on video time change
+        // In order to match threads timecode to video timecode
+        videos[i].addEventListener("timeupdate", function() {
+            currentTime = Math.round(this.currentTime);
+
+            if (currentTime == save_currentTime)
+                return;
+
+            save_currentTime = currentTime;
+            html_value = "<ul>";
+            i = 0;
+            for (var key in timecode_array) {
+                if (!(timecode_array[key] > currentTime)
+                        && !(timecode_array[key] < currentTime - notif_display_delay)
+                        && !(timecode_array[key] === null)) {
+                    i++;
+                    // Affiche max 5 threads
+                    if (i > notif_display_number)
+                        break;
+                    html_value += "<li id='notif_"+key+"' class ='notification_item'><span class='span-link red' onclick='javascript:remove_notification_item(" + key + ")' >[x]</span><span class='notification-item-title' onclick='javascript:show_thread(null, null, null, " + key + ")'> " + title_array[key] + "</span></li>";
+                }
+            }
+            html_value += "</ul>";
+            $('#notifications').html(html_value);
+            if (i > 0)
+                $('#video_notifications').slideDown();
+            else
+                $('#video_notifications').slideUp();
+        });
+
     }
+
     var elem = media.split('_');
     quality = elem[0];
     type = elem[1];
 
+}
+
+function video_addlisterners(){
+    
 }
 
 function switch_video(media_type) {
@@ -176,7 +222,6 @@ function switch_video(media_type) {
      type = elem[1];
      $('.movie-button, .slide-button').toggleClass('active');
      */
-    origin = get_origin();
 
     if (media_type != "cam" && media_type != "slide")
         return;
@@ -195,26 +240,21 @@ function switch_video(media_type) {
     var oldCurrentTime = to_hide.currentTime;
 
     if (/webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
-        trace_pause = true; // disables trace to make sure play/pause actions are not written in the logs
         to_hide.pause();
         if ((media_type == 'cam' && cam_loaded) || (media_type == 'slide' && slide_loaded)) {
             to_show.currentTime = oldCurrentTime;
-            trace_pause = true; // disables trace to make sure play/pause actions are not written in the logs
             to_show.play();
             document.getElementById("load_warn").style.display = 'none';
         } else {
             document.getElementById("load_warn").style.display = 'block';
         }
     } else if (/Android/i.test(navigator.userAgent)) {
-        trace_pause = true; // disables trace to make sure play/pause actions are not written in the logs
         to_hide.pause();
         to_show.currentTime = oldCurrentTime;
     } else {
         to_show.currentTime = oldCurrentTime;
         if (!to_hide.paused) {
-            trace_pause = true; // disables trace to make sure play/pause actions are not written in the logs
             to_hide.pause();
-            trace_pause = true; // disables trace to make sure play/pause actions are not written in the logs
             to_show.play();
         }
     }
@@ -222,14 +262,11 @@ function switch_video(media_type) {
     to_show.style.display = 'block';
     var elem = media.split('_');
     quality = elem[0];
-    from = type;
     type = elem[1];
-    server_trace(new Array('4', 'video_switch', current_album, current_asset, duration, time, from, type, quality, origin));
     $('.movie-button, .slide-button').toggleClass('active');
 }
 
 function toggle_video_quality(media_quality) {
-
 
     if (media_quality != "high" && media_quality != "low")
         return;
@@ -261,19 +298,15 @@ function toggle_video_quality(media_quality) {
     video.addEventListener('loadedmetadata', function() {
         this.currentTime = oldCurrentTime;
     }, false);
-    trace_pause = true;
     paused ? video.pause() : video.play();
     var elem = media.split('_');
     quality = elem[0];
     type = elem[1];
     $('.high-button, .low-button').toggleClass('active');
-    server_trace(new Array('4', 'video_quality', current_album, current_asset, duration, time, type, media_quality, quality));
 
 }
 
-function seek_video(bookmark_time, bookmark_type) {
-    server_trace(new Array('4', 'video_bookmark_click', current_album, current_asset, duration, time, bookmark_time, type, bookmark_type, current_tab, quality));
-
+function seek_video(time, bookmark_type) {
     if (bookmark_type != '' && type != bookmark_type) {
         switch_video(bookmark_type);
     }
@@ -293,12 +326,11 @@ function seek_video(bookmark_time, bookmark_type) {
     //  video.addEventListener('loadedmetadata', function() {        
     //      this.currentTime = time;
     //  }, false);      
-    video.currentTime = bookmark_time;
+    video.currentTime = time;
     paused ? video.pause() : video.play();
 }
 
 function video_playbackspeed(rate) {
-    origin = get_origin();
     var video = document.getElementById('main_video');
     var playbackSpeed = video.playbackRate;
     if (playbackSpeed == 0.5 && rate == 'up') {
@@ -310,7 +342,6 @@ function video_playbackspeed(rate) {
     } else if (playbackSpeed <= 1 && playbackSpeed > 0.5 && rate == "down") {
         playbackSpeed = playbackSpeed - 0.5;
     }
-    server_trace(new Array('4', 'playback_speed_' + rate, current_album, current_asset, duration, time, type, quality, playbackSpeed, origin));
 
     if (document.getElementById('secondary_video')) {
         document.getElementById('secondary_video').playbackRate = playbackSpeed;
@@ -320,22 +351,16 @@ function video_playbackspeed(rate) {
 }
 
 function toggle_playbackspeed() {
-    origin = get_origin();
     var video = document.getElementById('main_video');
     var playbackSpeed = video.playbackRate;
-    var rate;
 
     if (playbackSpeed == 0.5) {
         playbackSpeed = 1;
-        rate = 'up';
     } else if (playbackSpeed < 2) {
         playbackSpeed = playbackSpeed + 0.2;
-        rate = 'up';
     } else {
         playbackSpeed = 0.5;
-        rate = 'down';
     }
-    server_trace(new Array('4', 'playback_speed_' + rate, current_album, current_asset, duration, time, type, quality, playbackSpeed, origin));
 
     if (document.getElementById('secondary_video')) {
         document.getElementById('secondary_video').playbackRate = playbackSpeed;
@@ -362,20 +387,33 @@ function show_bookmark_form(source) {
     } else {
         var video = document.getElementById('main_video');
     }
-
+    // Hide thread form if it's visible
+    if (thread_form) {
+        hide_thread_form();
+//        $('#thread_form').hide();
+    }
     video.pause();
     document.getElementById('bookmark_timecode').value = Math.round(video.currentTime);
     document.getElementById('bookmark_source').value = source;
     document.getElementById('bookmark_type').value = type;
     if (source == 'official') {
+        $('.bookmark-color').hide();
+        $('.toc-color').show();
         $('.add-bookmark-button').removeClass("active");
         $('.add-toc-button').addClass("active");
+        $('#subBtn').removeClass("blue");
+        $('#subBtn').addClass("orange");
+        $('#bookmark_form').addClass("toc");
     } else {
+        $('.bookmark-color').show();
+        $('.toc-color').hide();
         $('.add-toc-button').removeClass("active");
         $('.add-bookmark-button').addClass("active");
+        $('#subBtn').removeClass("orange")
+        $('#subBtn').addClass("blue");
+        $('#bookmark_form').addClass("bookmark");
     }
-    //  $('video').css('height', (fullscreen) ? '70%' : '50%');
-    video_resize();
+    video_resize_bookmark();
     $('#bookmark_form').slideDown();
     bookmark_form = true;
 
@@ -385,7 +423,7 @@ function show_bookmark_form(source) {
 function hide_bookmark_form() {
     bookmark_form = false;
     $("#video_shortcuts").css("display", "block");
-    $('video').animate({'height': '92.12%'});
+    $('video').animate({'height': '93%'});
     if (fullscreen && show_panel) {
         $('#div_right').animate({'height': '92.6%'}, function() {
             panel_resize()
@@ -398,23 +436,203 @@ function hide_bookmark_form() {
     document.getElementById('bookmark_level').value = '1';
     $('.add-bookmark-button').removeClass("active");
     $('.add-toc-button').removeClass("active");
+    $('#bookmark_form').removeClass("bookmark");
+    $('#bookmark_form').removeClass("toc");
 
 }
 
 function toggle_bookmark_form(source) {
-
-    origin = get_origin();
-
-    from_shortcut = false;
     if (bookmark_form) {
-        hide_bookmark_form();
-        server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, source, quality, origin));
+        if (source == 'official') {
+            if ($('#bookmark_form').hasClass("toc")) {
+                hide_bookmark_form();
+            } else {
+                hide_bookmark_form();
+                toggle_bookmark_form('official');
+            }
+        } else {
+            if ($('#bookmark_form').hasClass("bookmark")) {
+                hide_bookmark_form();
+            } else {
+                hide_bookmark_form();
+                toggle_bookmark_form('custom');
+            }
+        }
     } else {
         show_bookmark_form(source);
         $("#bookmark_title").focus();
-        server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, time, type, source, quality, origin));
     }
 }
+
+//===== THREAD =================================================================
+
+/*
+ * Hide or show thread form depending on his current state.
+ */
+function toggle_thread_form() {
+    if (thread_form) {
+        hide_thread_form();
+        return;
+    } else if (bookmark_form) {
+//        $('#bookmark_form').hide();
+        hide_bookmark_form();
+    }
+    show_thread_form();
+    $("#thread_title").focus();
+}
+
+/*
+ * Hide or show comment form depending on his current state.
+ */
+function toggle_comment_form() {
+    if (comment_form) {
+        hide_comment_form();
+    } else {
+        show_comment_form();
+        $("#comment_message").focus();
+    }
+}
+
+// displays comment form (for reply) and create editor if it doesn't exist yet
+function show_answer_comment_form(id) {
+    // checks whether the editor already exists or not.
+    // if it doesn't exist, it creates it.
+    if (!$('#answer_comment_message_' + id + '_tinyeditor').hasClass('editor-created')) {
+        comment_desc_reply_editor = new TINY.editor.edit('editor', {
+            id: 'answer_comment_message_' + id + '_tinyeditor',
+            width: 444,
+            height: 100,
+            cssclass: 'tinyeditor normal',
+            controlclass: 'tinyeditor-control',
+            rowclass: 'tinyeditor-header',
+            dividerclass: 'tinyeditor-divider',
+            controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript',
+                '|', 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
+            xhtml: true
+        });
+    }
+    $('.comment-options').hide();
+
+    $('#answer_comment_form_' + id).slideDown();
+    $("#answer_comment_message_" + id).focus();
+}
+
+function toggle_settings_form() {
+    if (settings_form) {
+        hide_settings_form();
+    } else {
+        show_settings_form();
+    }
+}
+
+// displays thread form 
+function show_thread_form() {
+    // Creates the editor only if it's not yet otherwise it will display 2 editors (or more)
+    if (!$('#thread_description_tinyeditor').hasClass('editor-created')) {
+        thread_desc_editor = new TINY.editor.edit('editor', {
+            id: 'thread_description_tinyeditor',
+            width: 502,
+            height: 100,
+            cssclass: 'tinyeditor',
+            controlclass: 'tinyeditor-control',
+            rowclass: 'tinyeditor-header',
+            dividerclass: 'tinyeditor-divider',
+            controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript',
+                '|', 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
+            xhtml: true
+        });
+    }
+    $("#video_shortcuts").css("display", "none");
+    if (document.getElementById('secondary_video')) {
+        if (type == 'slide') {
+
+            var video = document.getElementById('secondary_video');
+        } else {
+
+            var video = document.getElementById('main_video');
+        }
+    } else {
+        var video = document.getElementById('main_video');
+    }
+
+    video.pause();
+    document.getElementById('thread_timecode').value = Math.round(video.currentTime);
+
+    $('.add-thread-button').removeClass("active");
+    $('.add-thread-button').addClass("active");
+
+    video_resize();
+    $('#thread_form').slideDown();
+    thread_form = true;
+}
+
+function show_comment_form() {
+    if (!$('#comment_message_tinyeditor').hasClass('editor-created')) {
+        comment_desc_editor = new TINY.editor.edit('editor', {
+            id: 'comment_message_tinyeditor',
+            width: 560,
+            height: 100,
+            cssclass: 'tinyeditor margin-left',
+            controlclass: 'tinyeditor-control',
+            rowclass: 'tinyeditor-header',
+            dividerclass: 'tinyeditor-divider',
+            controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript',
+                '|', 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
+            xhtml: true
+        });
+        $('#comment_message_tinyeditor').addClass('editor-created');
+    }
+    $('#comment_form').slideDown();
+    $("html, body").animate({scrollTop: $(document).height()}, 1000);
+    comment_form = true;
+}
+
+function hide_thread_form() {
+    $("#video_shortcuts").css("display", "block");
+    $('video').animate({'height': '92.12%'});
+    if (fullscreen && show_panel) {
+        $('#div_right').animate({'height': '92.6%'}, function() {
+            panel_resize()
+        });
+    }
+    $('#thread_form').slideUp();
+    document.getElementById('thread_title').value = '';
+    document.getElementById('thread_description_tinyeditor').value = '';
+    $('.add-thread-button').removeClass("active");
+
+    $('#thread_description_tinyeditor').addClass('editor-created');
+    thread_form = false;
+}
+
+function hide_comment_form() {
+    comment_form = false;
+    $('#comment_form').slideUp();
+    document.getElementById('comment_message_tinyeditor').value = '';
+}
+
+function hide_answer_comment_form(id) {
+    $('.comment-options').show();
+    $('#answer_comment_form_' + id).slideUp();
+    document.getElementById('answer_comment_message_' + id + '_tinyeditor').value = '';
+    $('#answer_comment_message_' + id + '_tinyeditor').addClass('editor-created');
+}
+
+
+//=== END - THREAD =============================================================
+//
+//===== BEGIN - SETTINGS =======================================================
+function show_settings_form() {
+    $('#settings_form').slideDown();
+    $('#user-settings').addClass('active');
+    settings_form = true;
+}
+
+function hide_settings_form() {
+    $('#settings_form').slideUp();
+    $('#user-settings').removeClass('active');
+    settings_form = false;
+}
+//=== END - SETTINGS ===========================================================
 
 function toggle_play() {
     if (type != "cam" && type != "slide")
@@ -430,8 +648,7 @@ function toggle_play() {
     }
 }
 
-function video_navigate(forwardRewind) {
-    origin = get_origin();
+function video_navigate(forwardBackward) {
     if (document.getElementById('secondary_video')) {
         if (type == 'slide') {
 
@@ -448,13 +665,11 @@ function video_navigate(forwardRewind) {
     //  video.addEventListener('loadedmetadata', function() {        
     //      this.currentTime = time;
     //  }, false);      
-    video.currentTime = (forwardRewind == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
+    video.currentTime = (forwardBackward == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
     paused ? video.pause() : video.play();
-    server_trace(new Array('4', 'video_' + forwardRewind, current_album, current_asset, duration, time, type, quality, origin));
 }
 
 function video_volume(upDown) {
-    origin = get_origin();
     var video = document.getElementById('main_video');
     var volume = video.volume;
     if (volume < 1 && upDown == 'up') {
@@ -467,27 +682,21 @@ function video_volume(upDown) {
         document.getElementById('secondary_video').volume = volume;
     }
     video.volume = volume;
-    server_trace(new Array('4', 'video_volume_' + upDown, current_album, current_asset, duration, time, type, quality, origin));
-
 }
 
 function toggle_mute() {
-    origin = get_origin();
     var video = document.getElementById('main_video');
     video.muted = !video.muted;
     if (document.getElementById('secondary_video')) {
         document.getElementById('secondary_video').muted = !video.muted;
     }
-    server_trace(new Array('4', 'video_mute', current_album, current_asset, duration, time, type, quality, video.muted, origin));
 }
 
 function video_link() {
-    from_shortcut = false;
     $(".share-button").click();
 }
 
 function video_fullscreen(on) {
-    origin = get_origin();
     if (on) {
         fullscreen = true;
         $('#video_player').css('width', '100%');
@@ -502,8 +711,8 @@ function video_fullscreen(on) {
         }
         // bookmarks panel
         $('.panel-button').css('display', 'inline-block');
+        $('#video_notifications').addClass('panel-active');
         panel_fullscreen();
-        server_trace(new Array('4', 'video_fullscreen_enter', current_album, current_asset, duration, time, type, quality, origin));
     } else {
         fullscreen = false;
         $('#video_player').css('width', '640px');
@@ -516,23 +725,32 @@ function video_fullscreen(on) {
         }
         // bookmarks panel
         $('.panel-button').css('display', 'none');
+        $('#video_notifications').removeClass('panel-active');
         panel_exit_fullscreen();
-        server_trace(new Array('4', 'video_fullscreen_exit', current_album, current_asset, duration, time, type, quality, origin));
     }
 }
 
 function video_resize() {
-    pct = (100 - (5.51 + (225 * 100 / $(window).height())));
-    $('video').animate({'height': (fullscreen) ? pct + '%' : '51%'});
+    pct = (100 - (5.51 + (300 * 100 / $(window).height())));
+    $('video').animate({'height': (fullscreen) ? pct + '%' : '34%'});
     if (fullscreen) {
         $('#div_right').animate({'height': (pct + 1) + '%'}, function() {
-            panel_resize()
+            panel_resize();
+        });
+    }
+}
+
+function video_resize_bookmark() {
+    pct = (100 - (5.51 + (253 * 100 / $(window).height())));
+    $('video').animate({'height': (fullscreen) ? pct + '%' : '43%'});
+    if (fullscreen) {
+        $('#div_right').animate({'height': (pct + 1) + '%'}, function() {
+            panel_resize();
         });
     }
 }
 
 function panel_resize() {
-
     pct = (100 - (130 * 100 / $("#div_right").height())) + '%';
     $('#side_pane').css('height', pct);
     pct = (100 - ((2 * 55) * 100 / $(".side_pane_content").height())) + '%';
@@ -566,15 +784,13 @@ function panel_hide() {
 }
 
 function toggle_panel() {
-    origin = get_origin();
     if (show_panel) {
         panel_hide();
-        server_trace(new Array('3', 'panel_hide', current_album, current_asset, duration, time, type, quality, origin));
     } else {
         panel_show();
-        server_trace(new Array('3', 'panel_show', current_album, current_asset, duration, time, type, quality, origin));
     }
     $('.panel-button').toggleClass('active');
+    $('#video_notifications').toggleClass('panel-active');
 }
 
 function panel_fullscreen() {
@@ -586,6 +802,9 @@ function panel_fullscreen() {
     $('#side-pane-scroll-area').css('height', '100%');
     $('.side_pane_content').css('height', '100%');
     panel_resize();
+    if (!show_panel) {
+        $('#video_notifications').removeClass('panel-active');
+    }
 }
 
 function panel_exit_fullscreen() {
@@ -602,38 +821,21 @@ function panel_exit_fullscreen() {
 }
 
 function toggle_shortcuts() {
-    var action;
-    origin = get_origin();
     shortcuts = !shortcuts;
-    if (shortcuts)
-        $('#video_shortcuts').css('height', '92.4%');
     $('.shortcuts').animate({'width': (shortcuts) ? 'show' : 'hide'}, function() {
         $('.shortcuts_tab a').toggleClass('active');
-        if (!shortcuts)
-            $('#video_shortcuts').css('height', '10%');
     });
-    action = (shortcuts) ? 'show' : 'hide';
-    server_trace(new Array('4', 'shortcuts_' + action, current_album, current_asset, duration, time, type, quality, origin));
-
 }
 
-function server_trace(array) {
-
-    if (trace_on) { // from main.php
-        $.ajax({
-            type: 'POST',
-            url: 'index.php?action=client_trace',
-            data: {info: array}
-        });
-    }
-    return true;
+function remove_notification_item(key) {
+    timecode_array[key] = null;
+    title_array[key] = null;
+    $('#notif_'+key).hide();
 }
 
-function get_origin() {
-    if (from_shortcut) { // a key has been pressed to run the action
-        from_shortcut = false;
-        return "from_shortcut";
-    } else {
-        return "from_button";
-    }
+function scrollTo(component) {
+//    while(typeof $('#' + component)[0] == 'undefined')
+//        $('#' + component)[0].scrollIntoView(true);
+    if( typeof $('#' + component)[0] != 'undefined' )
+        $('#' + component)[0].scrollIntoView(true);
 }

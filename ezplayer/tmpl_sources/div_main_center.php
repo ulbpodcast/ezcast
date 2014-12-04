@@ -26,10 +26,12 @@
 ?>
 
 <script>
-lvl = 1;
+    lvl = 1;
 </script>
 <?php
 include_once 'lib_print.php';
+global $ezplayer_url;
+global $ezmanager_url;
 ?> 
 <div class="search_wrapper">
     <div id="search">
@@ -37,12 +39,7 @@ include_once 'lib_print.php';
     </div>
 </div>
 
-
 <div class="albums">
-    <div id="tuto">
-        <a href="#" onclick="$('#tuto_video').toggle();" id="tuto_label">®tuto®</a>
-        <video id='tuto_video' width="720" controls src="./videos/tuto.mp4" style="display: <?php echo (!isset($albums) || sizeof($albums) == 0) ? 'block' : 'none'; ?>;">
-            Démonstration EZplayer</video></div>
     <?php
     if (!isset($albums) || sizeof($albums) == 0) {
         ?>
@@ -54,35 +51,51 @@ include_once 'lib_print.php';
         <ul>
             <?php
             foreach ($albums as $index => $album) {
+                $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album['album'] . "&token=" . $album['token'];
+                $ezplayer_rss_url = $ezmanager_url . "/distribute.php?action=rss&album=" . $album['album'] . "&quality=ezplayer&token=" . $album['token'];
+                include template_getpath('popup_player_url.php');
+                include template_getpath('popup_rss_feed.php');
                 $private = false;
-                if (suffix_get($album['album']) == '-priv') $private = true; 
+                if (suffix_get($album['album']) == '-priv')
+                    $private = true;
                 ?>
-                <li>
+                <li>    
                     <a class="item <?php if ($private) echo 'private' ?>" href="javascript:show_album_assets('<?php echo $album['album']; ?>', '<?php echo $album['token']; ?>');">
-                        <b style="text-transform:uppercase;"><?php echo suffix_remove($album['album']); ?></b> <?php if ($private) echo '(®Private_album®)' ?>
+                        <b style="text-transform:uppercase;"><?php echo suffix_remove($album['album']); ?></b> 
+                        <?php if ($private) echo '(®Private_album®)' ?>
                         <br/><?php print_info($album['title']); ?>
-                        <?php 
-                        if (acl_user_is_logged()){
-                        $count = acl_global_count($album['album']);
-                        if (($count - acl_watched_count($album['album'])) > 0){?>
-                        <div class="album_count green" title="<?php print_new_video($count - acl_watched_count($album['album'])); ?>"><?php echo ($count - acl_watched_count($album['album'])) ; ?></div>
-                        <?php }                        
-                        } ?>
+
                     </a>
                 </li>
-                <?php if (acl_user_is_logged()){ ?>
-                <div class="album_options left">
-                    <a class="up-arrow" <?php if ($index == 0) { ?>style="visibility:hidden"<?php } ?> href="javascript:move_album_token('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up');" title="®Move_up®"></a>
-                    <?php if ($index != count($albums) - 1) { ?><a class="down-arrow" href="javascript:move_album_token('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php } ?>
-                </div>
-                <?php if (suffix_get($album['album']) == '-priv' || !acl_has_album_moderation($album['album'])) { ?>
-                <div class="album_options right">
-                    <a class="delete-album" title="®Delete_album®" href="#" data-reveal-id="popup_delete_album_<?php echo $index ?>"></a>
-                </div>
-                <?php } ?>
-                <!--span class="delete_album" onclick="delete_album_token('<?php echo $album['album']; ?>');">x</span-->
-                <?php
-                include template_getpath('popup_delete_album.php');
+                <?php if (acl_user_is_logged()) { ?>
+                    <div class="album_options left">
+                        <a class="up-arrow" <?php if ($index == 0) { ?>style="visibility:hidden"<?php } ?> href="javascript:move_album_token(<?php echo $index; ?>, 'up');" title="®Move_up®"></a>
+                        <?php if ($index != count($albums) - 1) { ?><a class="down-arrow" href="javascript:move_album_token(<?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php } ?>
+                    </div>
+                    <?php
+                    if (acl_user_is_logged() && acl_show_notifications()) {
+                        $count = acl_global_count($album['album']);
+                        if (($count - acl_watched_count($album['album'])) > 0) {
+                            ?>
+                            <div class="album_count green" title="<?php print_new_video($count - acl_watched_count($album['album'])); ?>"><?php echo ($count - acl_watched_count($album['album'])); ?></div>
+                            <?php
+                        }
+                    }
+                    ?> 
+
+                    <div class="album_options pull-right inline-block">
+                        <?php if (acl_has_album_moderation($album['album']) || acl_is_admin()) { ?>
+                            <a  href="#" class="button-rect green pull-right inline-block share-album" data-reveal-id="popup_share_album_<?php echo $album['album'] ?>">®share_album®</a>
+                        <?php } ?>
+                        <a  href="#" class="button-rect green pull-right inline-block share-rss" data-reveal-id="popup_share_rss_<?php echo $album['album'] ?>">®subscribe_rss®</a>
+                        <?php if (suffix_get($album['album']) == '-priv' || !acl_has_album_moderation($album['album'])) { ?> 
+                            <a class="delete-album" title="®Delete_album®" href="#" data-reveal-id="popup_delete_album_<?php echo $index ?>"></a>
+                        <?php } ?>
+                    </div>
+
+                                    <!--span class="delete_album" onclick="delete_album_token('<?php echo $album['album']; ?>');">x</span-->
+                    <?php
+                    include template_getpath('popup_delete_album.php');
                 }
             }
             ?>

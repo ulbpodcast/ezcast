@@ -1,7 +1,5 @@
 <?php
 
-use InvalidArgumentException;
-
 /**
  * Language Detection
  *
@@ -9,85 +7,117 @@ use InvalidArgumentException;
  */
 class Language
 {
-    /**
-     * @var AcceptLanguage
-     */
-    private $acceptLanguage;
+    private static $acceptLanguage;
+    private static $languages;
 
     /**
-     * @var array
+     * Detect a user's languages and order them by priority
+     *
+     * @return  void
      */
-    private $languages;
-
-    /**
-     * @param null|string|AcceptLanguage $acceptLanguage
-     * @throws InvalidArgumentException
-     */
-    public function __construct($acceptLanguage = null)
+    private static function checkLanguages()
     {
-        if ($acceptLanguage instanceof AcceptLanguage) {
-            $this->setAcceptLanguage($acceptLanguage);
-        } elseif (null === $acceptLanguage || is_string($acceptLanguage)) {
-            $this->setAcceptLanguage(new AcceptLanguage($acceptLanguage));
-        } else {
-            throw new InvalidArgumentException;
+        $acceptLanguage = self::getAcceptLanguage();
+        self::$languages = array();
+
+        if (!empty($acceptLanguage)) {
+            $httpLanguages = preg_split('/q=([\d\.]*)/', $acceptLanguage, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+            $languages = array();
+            $key = 0;
+            foreach (array_reverse($httpLanguages) as $value) {
+                $value = trim($value, ',; .');
+                if (is_numeric($value)) {
+                    $key = $value;
+                } else {
+                    $languages[$key] = explode(',', $value);
+                }
+            }
+            krsort($languages);
+
+            foreach ($languages as $value) {
+                self::$languages = array_merge(self::$languages, $value);
+            }
         }
+    }
+
+    /**
+     * Get the accept language value in use to determine the language.
+     *
+     * @return   string
+     */
+    public static function getAcceptLanguage()
+    {
+        if (!isset(self::$acceptLanguage)) {
+            self::setAcceptLanguage(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : "");
+        }
+
+        return self::$acceptLanguage;
+    }
+
+    /**
+     * Set the accept language value in use to determine the browser.
+     *
+     * @param    string $acceptLanguage
+     * @return   void
+     */
+    public static function setAcceptLanguage($acceptLanguage)
+    {
+        self::$acceptLanguage = $acceptLanguage;
     }
 
     /**
      * Get all user's languages
      *
-     * @return array
+     * @return   array
      */
-    public function getLanguages()
+    public static function getLanguages()
     {
-        if (!is_array($this->languages)) {
-            LanguageDetector::detect($this, $this->getAcceptLanguage());
+        if (!is_array(self::$languages)) {
+            self::checkLanguages();
         }
 
-        return $this->languages;
+        return self::$languages;
     }
 
     /**
      * Set languages.
      *
-     * @param string $languages
-     * @return $this
+     * @param   string $value
+     * @return  void
      */
-    public function setLanguages($languages)
+    public static function setLanguages($value)
     {
-        $this->languages = $languages;
-        return $this;
+        self::$languages = $value;
     }
 
     /**
      * Get a user's language
      *
-     * @return string
+     * @return  string
      */
-    public function getLanguage()
+    public static function getLanguage()
     {
-        if (!is_array($this->languages)) {
-            LanguageDetector::detect($this, $this->getAcceptLanguage());
+        if (!is_array(self::$languages)) {
+            self::checkLanguages();
         }
 
-        return strtolower(substr(reset($this->languages), 0, 2));
+        return strtolower(substr(reset(self::$languages), 0, 2));
     }
 
     /**
      * Get a user's language and locale
      *
-     * @param string $separator
-     * @return string
+     * @return  string
      */
-    public function getLanguageLocale($separator = '-')
+    public static function getLanguageLocale()
     {
-        if (!is_array($this->languages)) {
-            LanguageDetector::detect($this, $this->getAcceptLanguage());
+        if (!is_array(self::$languages)) {
+            self::checkLanguages();
         }
 
-        $userLanguage = $this->getLanguage();
-        foreach ($this->languages as $language) {
+        $userLanguage = self::getLanguage();
+        foreach (self::$languages as $language) {
             if (strlen($language) === 5 && strpos($language, $userLanguage) === 0) {
                 $locale = substr($language, -2);
                 break;
@@ -95,27 +125,9 @@ class Language
         }
 
         if (!empty($locale)) {
-            return $userLanguage . $separator . strtoupper($locale);
+            return $userLanguage . "-" . strtoupper($locale);
         } else {
             return $userLanguage;
         }
-    }
-
-    /**
-     * @param AcceptLanguage $acceptLanguage
-     * @return $this
-     */
-    public function setAcceptLanguage(AcceptLanguage $acceptLanguage)
-    {
-        $this->acceptLanguage = $acceptLanguage;
-        return $this;
-    }
-
-    /**
-     * @return AcceptLanguage
-     */
-    public function getAcceptLanguage()
-    {
-        return $this->acceptLanguage;
     }
 }

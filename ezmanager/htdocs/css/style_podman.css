@@ -22,106 +22,55 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
+	
 /*------------------------------------------------------------- Generale -------------------------------------------------------------------------------------*/
 
 img, a, fieldset, ul, li, p, h1, h2, h3, h4, h5, h6, div{
-    border:0pt none;
-    margin:0pt;
-    padding:0pt;
+	border:0pt none;
+	margin:0pt;
+	padding:0pt;
 }
 
 *{
     margin:0;
-    padding:0;
+	padding:0;
 }
 
 html{
-    min-height:100%;
+	min-height:100%;
 }
 
 body{
-    min-height:100%;
-    font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;
-
+	min-height:100%;
+	font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;
+        
 }
 
 .container{
-    position:absolute;
-    min-height:100%;
-    width:100%;
-    background-color:#ffffff;
+	position:absolute;
+	min-height:100%;
+	width:100%;
+	background-color:#ffffff;
 }
 
 #global{
-    position:relative;
-    min-height:540px;
-    margin: 0 auto;
-    margin-top: 15px;
-    width:1024px;
-    background-color:#ffffff;
+	position:relative;
+	min-height:800px;
+	margin: 0 auto;
+        margin-top: 15px;
+	padding-bottom:30px;
+	width:1024px;
+	background-color:#ffffff;
 }
-
-
-#login_form{
-    font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;	
-    font-size:12px; 
-  /*  color:#000000;  */
-    color: #444444;
-    background-color: #F9F8F8;
- /*   margin-left:30px; */
- /*   line-height:40px; */
-    
-    width: 252px; 
- /*   height: 280px; */
- /*   padding-left: 15px; */
-  /*  padding-right: 15px; */
-    padding:10px 25px 25px 25px;
-    margin:auto;
-
-    border-radius: 25px;
-    border: 1px dotted #BEBEBE;
-    margin-top:50px;
-    
-  /*  text-align: center; */
-}
-
-#login_form label {
-    min-width: 70px;
-    text-align: right;
-    display: inline-block;
-    margin-bottom: 15px;
-}
-
-#login_form h2{
-    font-size: 22px;
-    padding: 8px 0px;
-    margin: 0px 0px 15px 0px;
-    font-weight: normal;
-}
-
-#login_form h4{
-    font-size: 14px;
-    padding-bottom: 4px;
-}
-
-#login_fields{
-    margin: 15px 0px 0px 0px;
-}
-
-#login_fields input{
-    width: 160px;
-}
-
 
 .popup {
-    background-color: white;
-    text-align: center;
-    padding: 10px;
-    color:#666666;
-    font-size:12px;
-    max-width: 800px;
-    z-index: 9999;
+	background-color: white;
+	text-align: center;
+	padding: 10px;
+	color:#666666;
+	font-size:12px;
+	max-width: 800px;
+        z-index: 9999;
 }
 
 .popup a {
@@ -130,35 +79,35 @@ body{
 }
 
 .popup h2 {
-    /* color:#004B93; */
-    color: #444444;
-    font-weight:bold;
-    font-size:14px;
-    margin: 10px;
+	/* color:#004B93; */
+        color: #444444;
+	font-weight:bold;
+	font-size:14px;
+        margin: 10px;
 }
 
 .popup table {
-    width: 100%;
-    margin-top: 10px;
+	width: 100%;
+	margin-top: 10px;
 }
 
 .popup table td.album_name {
-    text-align: right;
-    width: 50%;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    font-weight: bold;
+	text-align: right;
+	width: 50%;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	font-weight: bold;
 }
 
 .popup table td.album_name a, .popup table td.album_description a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 .popup table td.album_description {
-    text-align: left;
-    width: 50%;
-    padding-left: 5px;
-    padding-bottom: 5px;
+	text-align: left;
+	width: 50%;
+	padding-left: 5px;
+	padding-bottom: 5px;
 }
 
 .popup .warning {
@@ -205,10 +154,6 @@ body{
     display: block;
 }
 
-.logo a{
-    margin-right: 15px;
-}
-
 /*----------------------------------------------------------- Generale [fin] -------------------------------------------------------------------------------------*/
 
 
@@ -217,138 +162,138 @@ body{
 
 /*--bouton album --*/
 .button_private_album{
-    height:33px;
-    width:280px;
+	height:33px;
+	width:280px;
 }
 
 .button_private_album a{
-    background-image:url(../images/page4/AalbumPriv.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#444444;
-    text-decoration:none;
+	background-image:url(../images/page4/AalbumPriv.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#444444;
+	text-decoration:none;
 }
 
 .button_private_album a:hover{
-    background-image:url(../images/page4/BalbumPriv.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#FFFFFF;
-    text-decoration:none;
+	background-image:url(../images/page4/BalbumPriv.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#FFFFFF;
+	text-decoration:none;
 }
 
 .button_private_album_selected{
-    height:33px;
-    width:280px;
+	height:33px;
+	width:280px;
 }
 
 .button_private_album_selected a{
-    background-image:url(../images/page4/BalbumPriv.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#FFFFFF;
-    text-decoration:none;
+	background-image:url(../images/page4/BalbumPriv.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#FFFFFF;
+	text-decoration:none;
 }
 
 .button_private_album_selected a:hover{
-    background-image:url(../images/page4/BalbumPriv.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#FCFCFC;
-    text-decoration:none;
+	background-image:url(../images/page4/BalbumPriv.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#FCFCFC;
+	text-decoration:none;
 }
 
 
 .button_public_album{
-    height:33px;
-    width:280px;
+	height:33px;
+	width:280px;
 }
 
 .button_public_album a{
-    background-image:url(../images/page4/AalbumPublic.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#444444;
-    text-decoration:none;
-    border-bottom: 1px dotted #CFCFCF;
+	background-image:url(../images/page4/AalbumPublic.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#444444;
+	text-decoration:none;
+        border-bottom: 1px dotted #CFCFCF;
 }
 
 .button_public_album a:hover{
-    background-image:url(../images/page4/BalbumPublic.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#FFFFFF;
-    text-decoration:none;
+	background-image:url(../images/page4/BalbumPublic.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#FFFFFF;
+	text-decoration:none;
 }
 
 .button_public_album_selected {
-    height:33px;
-    width:280px;
+	height:33px;
+	width:280px;
 }
 
 .button_public_album_selected a{
-    background-image:url(../images/page4/BalbumPublic.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#FFFFFF;
-    text-decoration:none;
-    border-bottom: 1px dotted #CFCFCF;
+	background-image:url(../images/page4/BalbumPublic.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#FFFFFF;
+	text-decoration:none;
+        border-bottom: 1px dotted #CFCFCF;
 }
 
 .button_public_album_selected a:hover{
-    background-image:url(../images/page4/BalbumPublic.png);
-    background-repeat:no-repeat;
-    height:25px;
-    width:240px;
-    padding-left:40px;
-    padding-top:8px;
-    font-weight:bold;
-    display:block;
-    font-size:14px;
-    color:#FCFCFC;
-    text-decoration:none;
+	background-image:url(../images/page4/BalbumPublic.png);
+	background-repeat:no-repeat;
+	height:25px;
+	width:240px;
+	padding-left:40px;
+	padding-top:8px;
+	font-weight:bold;
+	display:block;
+	font-size:14px;
+	color:#FCFCFC;
+	text-decoration:none;
 }
 /*--bouton album [fin] --*/
 
@@ -361,162 +306,162 @@ body{
 }
 
 .BlocInfoAlbum{
-    background-color:#ffffff;
-    /*height:90px;*/
-    padding-bottom: 10px;
+	background-color:#ffffff;
+	/*height:90px;*/
+        padding-bottom: 10px;
 }
 
 .BlocInfoAlbum p{
-    color:#666666;
-    font-size:11px;
-    margin-left:15px;
-    /*margin-bottom:px;*/
+	color:#666666;
+	font-size:11px;
+	margin-left:15px;
+	/*margin-bottom:px;*/
 }
 
 .BoutonInfoAlbum{
-    margin-left:12px;
-    margin-top:5px;
-    margin-bottom:5px;
+	margin-left:12px;
+	margin-top:5px;
+	margin-bottom:5px;
 
 }
 
 .BoutonInfoAlbum ul{
-    margin-top:10px;
+	margin-top:10px;
 }
 
 .BoutonInfoAlbum li{
-    display:inline-block;
+	display:inline-block;
 }
 
 .BoutonSuppAlbum a{
-    display:block;
-    background-image:url(../images/page4/ASuppBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/ASuppBackg.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
 }
 
 .BoutonSuppAlbum a:hover{
-    display:block;
-    background-image:url(../images/page4/BSuppBackg.png);
-    background-repeat:no-repeat;
-    color:#ED6A56;
+	display:block;
+	background-image:url(../images/page4/BSuppBackg.png);
+	background-repeat:no-repeat;
+	color:#ED6A56;
 }
 
 .BoutonEditAlbum a{
-    display:block;
-    background-image:url(../images/page4/AEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px; 
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/AEditerBackg.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px; 
+	padding-top:5px;
 }
 
 .BoutonEditAlbum a:hover{
-    display:block;
-    background-image:url(../images/page4/BEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
+	display:block;
+	background-image:url(../images/page4/BEditerBackg.png);
+	background-repeat:no-repeat;
+	color:#004C93;
 }
 
 .BoutonDeplacerAlbumPublic a{
-    display:block;
-    background-image:url(../images/page4/ADeplacerAlbumPublic.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/ADeplacerAlbumPublic.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
 }
 
 .BoutonDeplacerAlbumPublic a:hover{
-    display:block;
-    background-image:url(../images/page4/BDeplacerAlbumPublic.png);
-    background-repeat:no-repeat;
-    color:#004C93;
+	display:block;
+	background-image:url(../images/page4/BDeplacerAlbumPublic.png);
+	background-repeat:no-repeat;
+	color:#004C93;
 }
 
 .BoutonDeplacerAlbumPrive a{
-    display:block;
-    background-image:url(../images/page4/ADeplacerAlbumPriver.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/ADeplacerAlbumPriver.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
 }
 
 .BoutonDeplacerAlbumPrive a:hover{
-    display:block;
-    background-image:url(../images/page4/BDeplacerAlbumPriver.png);
-    background-repeat:no-repeat;
-    color:#004C93;
+	display:block;
+	background-image:url(../images/page4/BDeplacerAlbumPriver.png);
+	background-repeat:no-repeat;
+	color:#004C93;
 }
 
 .BoutonSoumettreAlbum a{
-    display:block;
-    background-image:url(../images/page4/AUp.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:regular;
-    padding-left:30px;
-    padding-top:5px;
-    text-transform: uppercase;
+	display:block;
+	background-image:url(../images/page4/AUp.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:regular;
+	padding-left:30px;
+	padding-top:5px;
+        text-transform: uppercase;
 }
 
 .BoutonSoumettreAlbum a:hover{
-    display:block;
-    background-image:url(../images/page4/BUp.png);
-    background-repeat:no-repeat;
-    color:#004C93; 
+	display:block;
+	background-image:url(../images/page4/BUp.png);
+	background-repeat:no-repeat;
+	color:#8FC04D; 
 }
 
 .BoutonRSS a{
-    display:block;
-    background-image:url(../images/page4/ARssBackg.png);
-    background-repeat:no-repeat;
-    color:#656464;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/ARssBackg.png);
+	background-repeat:no-repeat;
+	color:#656464;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:5px;
 }
 
 .BoutonRSS a:hover{
-    display:block;
-    background-image:url(../images/page4/BRssBackg.png);
-    background-repeat:no-repeat;
-    color:#F7B234;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/BRssBackg.png);
+	background-repeat:no-repeat;
+	color:#F7B234;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:5px;
 }
 /*-- bouton info album [Fin]--*/
 
@@ -525,180 +470,186 @@ body{
 
 
 .BoutonTriangle a{
-    display:block;
-    background-image:url(../images/page4/ATriangleBackg.png);
-    background-repeat:no-repeat;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:3px;
+	display:block;
+	background-image:url(../images/page4/ATriangleBackg.png);
+	background-repeat:no-repeat;
+        border-bottom-width: thin;
+	border-bottom-style: dotted;
+	border-bottom-color: #CFCFCF;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:3px;
 }
 
 .BoutonTriangleProcessing a{
-    display:block;
-    background-image:url(../images/page4/TriangleVert.png);
-    background-repeat:no-repeat;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:3px;
+	display:block;
+	background-image:url(../images/page4/TriangleVert.png);
+	background-repeat:no-repeat;
+        border-bottom-width: thin;
+	border-bottom-style: dotted;
+	border-bottom-color: #CFCFCF;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:3px;
 }
 
 .BoutonTriangleError a{
-    display:block;
-    background-image:url(../images/page4/TriangleRouge.png);
-    background-repeat:no-repeat;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:3px;
+	display:block;
+	background-image:url(../images/page4/TriangleRouge.png);
+	background-repeat:no-repeat;
+        border-bottom-width: thin;
+	border-bottom-style: dotted;
+	border-bottom-color: #CFCFCF;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:3px;
 }
 
 .BoutonTriangle a:hover{
-    display:block;
-    background-image:url(../images/page4/BTriangleBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
+	display:block;
+	background-image:url(../images/page4/BTriangleBackg.png);
+	background-repeat:no-repeat;
+	color:#004C93;
 }
 
 .BoutonTriangleProcessing a:hover{
-    display:block;
-    background-image:url(../images/page4/TriangleVert.png);
-    background-repeat:no-repeat;
-    color:#75940a;
+	display:block;
+	background-image:url(../images/page4/TriangleVertBas.png);
+	background-repeat:no-repeat;
+	color:#75940a;
 }
 
 .BoutonTriangleError a:hover{
-    display:block;
-    background-image:url(../images/page4/TriangleRouge.png);
-    background-repeat:no-repeat;
-    color:#ff0000;
+	display:block;
+	background-image:url(../images/page4/TriangleRougeBas.png);
+	background-repeat:no-repeat;
+	color:#ff0000;
 }
 
 
 .BoutonTriangleClic a{
-    display:block;
-    background-image:url(../images/page4/CTriangleBackg.png);
-    background-color:#004C93;
-    background-repeat:no-repeat;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
-    color:#FFFFFF;
-    height:20px;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:3px;
+	display:block;
+	background-image:url(../images/page4/BTriangleBackg.png);
+        background-color:#444444;
+	background-repeat:no-repeat;
+        border-bottom-width: thin;
+	border-bottom-style: dotted;
+	border-bottom-color: #CFCFCF;
+	color:#FFFFFF;
+	height:20px;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:3px;
 }
 
 .BoutonTriangleClicProcessing a{
-    display:block;
-    background-image:url(../images/page4/TriangleVertBas.png);
-    background-color:#004C93;
-    background-repeat:no-repeat;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
-    color:#75940a;
-    height:20px;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:3px;
+	display:block;
+	background-image:url(../images/page4/TriangleVertBas.png);
+        background-color:#444444;
+	background-repeat:no-repeat;
+        border-bottom-width: thin;
+	border-bottom-style: dotted;
+	border-bottom-color: #CFCFCF;
+	color:#75940a;
+	height:20px;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:3px;
 }
 
 .BoutonTriangleClicError a{
-    display:block;
-    background-image:url(../images/page4/TriangleRougeBas.png);
-    background-color:#004C93;
-    background-repeat:no-repeat;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
-    color:#ff0000;
-    height:20px;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:3px;
+	display:block;
+	background-image:url(../images/page4/TriangleRougeBas.png);
+        background-color:#444444;
+	background-repeat:no-repeat;
+        border-bottom-width: thin;
+	border-bottom-style: dotted;
+	border-bottom-color: #CFCFCF;
+	color:#ff0000;
+	height:20px;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:3px;
 }
 
+.BoutonTriangleClic a:hover{
+	display:block;
+	background-image:url(../images/page4/ATriangleBackg.png);
+	background-repeat:no-repeat;
+	color:#FFFFFF;
+}
 
 /*--Bouton triangle [fin]--*/
 
 /*--bouton media--*/
 .LigneBouton{
-    margin-left:10px;
-    margin-bottom:10px;
-    margin-top:10px;
+	margin-left:10px;
+	margin-bottom:10px;
+	margin-top:10px;
 }
 
 .LigneBouton li{
-    display:inline-block;
+	display:inline-block;
 }
 
 .BoutonEditer a{
-    display:block;
-    background-image:url(../images/page4/AEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/AEditerBackg.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
 }
 
 .BoutonEditer a:hover{
-    display:block;
-    background-image:url(../images/page4/BEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
+	display:block;
+	background-image:url(../images/page4/BEditerBackg.png);
+	background-repeat:no-repeat;
+	color:#004C93;
 }
 
 .BoutonDeplacer a{
-    display:block;
-    background-image:url(../images/page4/ADeplacerBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
+	display:block;
+	background-image:url(../images/page4/ADeplacerBackg.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
 }
 
 .BoutonDeplacer a:hover{
-    display:block;
-    background-image:url(../images/page4/BDeplacerBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
+	display:block;
+	background-image:url(../images/page4/BDeplacerBackg.png);
+	background-repeat:no-repeat;
+	color:#004C93;
 }
 
 /*--bouton media [fin]--*/
@@ -706,37 +657,37 @@ body{
 /*-- bouton : infos+ // publication // embed --*/
 
 .Download a, .Embed a, .ULBcode a{
-    font-size:11px;
-    color:#004c93;
-    text-decoration:underline;
+	font-size:11px;
+	color:#004c93;
+	text-decoration:underline;
 }
 
 .Download a:hover, .Embed a:hover, .ULBcode a:hover{
-    font-size:11px;
-    color:#004c93;
-    text-decoration:none;
+	font-size:11px;
+	color:#004c93;
+	text-decoration:none;
 }
 
 .Download, .Embed, .ULBcode {
-    padding-left: 45px;
+        padding-left: 45px;
 }
 
 .Publication {
-    padding-left: 25px;
+        padding-left: 25px;
 }
 
 .Publication a{
-    font-size:11px;
-    color:#004c93;
-    text-decoration:underline;
+	font-size:11px;
+	color:#004c93;
+	text-decoration:underline;
 }
 
 
 
 .Publication a:hover{
-    font-size:11px;
-    color:#004c93;
-    text-decoration:none;
+	font-size:11px;
+	color:#004c93;
+	text-decoration:none;
 }
 
 .BoutonPlus a, 
@@ -744,16 +695,16 @@ body{
 .BoutonPublication a, 
 .BoutonDownload a, 
 .BoutonULBCode a{
-    display:block;
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:5px;
-    margin-left:15px;
+	display:block;
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:5px;
+	margin-left:15px;
 }
 
 .BoutonPlus a:hover, 
@@ -761,94 +712,94 @@ body{
 .BoutonPublication a:hover, 
 .BoutonDownload a:hover, 
 .BoutonULBCode a:hover{
-    color:#004C93;
-    font-size:12px;
+	color:#004C93;
+	font-size:12px;
 }
 
 
 .BoutonPlus a{    
-    background-image:url(../images/page4/AInfos.png);
-    margin-top:5px;
+	background-image:url(../images/page4/AInfos.png);
+	margin-top:5px;
 }
 
 
 .BoutonPlus a:hover {
-    background-image:url(../images/page4/BInfos.png); 
-    margin-top:5px;   
+	background-image:url(../images/page4/BInfos.png); 
+	margin-top:5px;   
 }
 
 .BoutonEmbed a{
-    background-image:url(../images/page4/AEmbedBackg.png);
+	background-image:url(../images/page4/AEmbedBackg.png);
 }
 
 .BoutonEmbed a:hover{
-    background-image:url(../images/page4/BEmbedBackg.png);
+	background-image:url(../images/page4/BEmbedBackg.png);
 }
 
 .BoutonPublication a{
-    background-image:url(../images/page4/AMap.png);
+	background-image:url(../images/page4/AMap.png);
 }
 
 .BoutonPublication a:hover{
-    background-image:url(../images/page4/BMap.png);
+	background-image:url(../images/page4/BMap.png);
 }
 
 .BoutonDownload a{
-    background-image:url(../images/page4/AFlecheBackg.png);    
+	background-image:url(../images/page4/AFlecheBackg.png);    
 }
 
 .BoutonDownload a:hover{
-    background-image:url(../images/page4/BFlecheBackg.png);    
+	background-image:url(../images/page4/BFlecheBackg.png);    
 }
 
 .BoutonULBCode a{    
-    background-image:url(../images/page4/ASlash.png);  
+	background-image:url(../images/page4/ASlash.png);  
 }
 
 .BoutonULBCode a:hover{
-    background-image:url(../images/page4/BSlash.png);      
+	background-image:url(../images/page4/BSlash.png);      
 }
 
 .BoutonHD a, .BoutonSD a{
-    display:inline-block;
-    background-repeat:no-repeat;
-    background-position: top;
-    height:20px;
-    width:20px; 
-    padding-left:8px;
-    padding-right:8px;
-    padding-top:5px; 
-    /* margin-top:-6px; */
-    /* padding-bottom: 10px; */
+	display:inline-block;
+	background-repeat:no-repeat;
+        background-position: top;
+	height:20px;
+        width:20px; 
+	padding-left:8px;
+	padding-right:8px;
+	padding-top:5px; 
+       /* margin-top:-6px; */
+       /* padding-bottom: 10px; */
 }
 
 .BoutonHD a {
-    background-image:url(../images/AHD.png);    
+	background-image:url(../images/AHD.png);    
 }
 
 .BoutonSD a {
-    background-image:url(../images/ASD.png);    
+	background-image:url(../images/ASD.png);    
 }
 
 .BoutonHD a:hover, .BoutonSD a:hover{
-    display:inline-block;
-    background-repeat:no-repeat;
-    background-position: top;
-    height:20px;
-    width:20px; 
-    padding-left:8px;
-    padding-right:8px;
+	display:inline-block;
+	background-repeat:no-repeat;
+        background-position: top;
+	height:20px;
+        width:20px; 
+	padding-left:8px;
+	padding-right:8px;
     /*    margin-top:-6px; */
-    /*   padding-bottom: 10px; */
+     /*   padding-bottom: 10px; */
 
 }
 
 .BoutonHD a:hover{
-    background-image:url(../images/BHD.png);
+	background-image:url(../images/BHD.png);
 }
 
 .BoutonSD a:hover{
-    background-image:url(../images/BSD.png);
+	background-image:url(../images/BSD.png);
 }
 
 .FluxRss a {
@@ -860,19 +811,19 @@ body{
 /*--- bouton creer--*/
 
 .button_new_album {
-    margin-left:50px;
+	margin-left:50px;
 }
 /*--bouton creer fin --*/
 
-
+ 
 #div_center {
-    width:924px;
-    min-height:600px;
-    margin-left:50px;
-    margin-bottom: 120px;
-    border: 1px solid #CFCFCF;
-    background: #FCFCFC;
-    position: relative;
+	width:924px;
+	min-height:600px;
+	margin-left:50px;
+        margin-bottom: 120px;
+	border: 1px solid #CFCFCF;
+        background: #FCFCFC;
+        position: relative;
 }
 
 #spacer{
@@ -880,75 +831,75 @@ body{
 }
 
 #div_album_list {
-    float:left;
-    width:279px;
-    position: relative;
-    border-right: 1px solid #CFCFCF;
+	float:left;
+	width:279px;
+        position: relative;
+        border-right: 1px solid #CFCFCF;
 }
 
 .TitreCour{
-    /*     color:#004B93; */
-    color: #004C93;
-    font-weight:bold;
-    font-size:14px;
-    margin-left:4px;
-    text-transform: uppercase;
+   /*     color:#004B93; */
+        color: #004C93;
+        font-weight:bold;
+        font-size:14px;
+        margin-left:4px;
+        text-transform: uppercase;
 }
 
 
 #divid1{
-    position:relative;
+	position:relative;
 }
 
 .BlocPodcastMenu{
-    /*position:absolute;*/
-    border-top-width: thin;
-    border-top-style: dotted;
-    border-top-color: #CFCFCF;
-    width:643px;
-    margin-left:1px;
+	/*position:absolute;*/
+	border-top-width: thin;
+	border-top-style: dotted;
+	border-top-color: #CFCFCF;
+	width:643px;
+	margin-left:1px;
 }
 
 .BlocPodcastMenu h1{
-    font-size:14px;
-    color:#444444;
-    margin-left:10px;
-    line-height:20px;
-    padding-top:5px;
-    margin-bottom:10px;
+	font-size:14px;
+	color:#444444;
+	margin-left:10px;
+	line-height:20px;
+	padding-top:5px;
+	margin-bottom:10px;
 }
 
 .BlocPodcastMenu p{
-    font-size:11px;
-    color:#000000;
-    margin-left:10px;
-    line-height:15px;
+	font-size:11px;
+	color:#000000;
+	margin-left:10px;
+	line-height:15px;
 }
 
 #div_content {
-    width:644px;
-    margin-left:279px;
-    min-height: 600px;
-    border-left: 1px solid #CFCFCF;
+	width:644px;
+	margin-left:279px;
+        min-height: 600px;
+        border-left: 1px solid #CFCFCF;
 }
 
 /*--- Colonne 1 infos podcast---*/
 
 .Colonne-Un-Information{
-    width:214px;
-    min-height:300px;
-    float:left;
+	width:214px;
+	min-height:300px;
+	float:left;
 }
 
 .infospodast{
-    color:#004c93;
-    font-weight:bold;
+	color:#004c93;
+	font-weight:bold;
 }
 
 .infosAvance{
-    color:#004c93;
-    font-weight:bold;
-    padding-left: 25px;
+	color:#004c93;
+	font-weight:bold;
+        padding-left: 25px;
 }
 
 
@@ -959,36 +910,36 @@ body{
 /*--- Colonne 2 Regarder video ---*/
 
 .Colonne-Deux-Video{
-    width:214px;
-    float:left;
-    border-left-width: thin;
-    border-left-style: dotted;
-    border-left-color: #565252;
-    min-height:300px;
+	width:214px;
+	float:left;
+	border-left-width: thin;
+	border-left-style: dotted;
+	border-left-color: #565252;
+	min-height:300px;
 }
 
 #InfoAvance1{
-    margin-left:10px;
+	margin-left:10px;
 }
 
 #InfoAvance2{
-    margin-left:10px;
+	margin-left:10px;
 }
 
 #Embed1{
-    margin-left:10px;
+	margin-left:10px;
 }
 
 #Embed2{
-    margin-left:10px;
+	margin-left:10px;
 }
 
 #Publication1{
-    margin-left:10px;
+	margin-left:10px;
 }
 
 #Publication2{
-    margin-left:10px;
+	margin-left:10px;
 }
 
 /*--- Colonne 2 Regarder video [FIN] ---*/
@@ -998,19 +949,19 @@ body{
 /*--- Colonne 3 Regarder slide ---*/
 
 .Colonne-Trois-Diaporama{
-    width:214px;
-    min-height:300px;
-    margin-left:428px;
-    border-left-width: thin;
-    border-left-style: dotted;
-    border-left-color: #565252;
+	width:214px;
+	min-height:300px;
+	margin-left:428px;
+	border-left-width: thin;
+	border-left-style: dotted;
+	border-left-color: #565252;
 }
 
 
 
 .Video-slide-Bouton{
-    margin-left:15px;
-    margin-bottom:2px;
+	margin-left:15px;
+	margin-bottom:2px;
 }
 
 /*--- Colonne 3 Regarder slide [FIN] ---*/
@@ -1031,7 +982,7 @@ body{
     clear: both;
     width: 100%;
     background: #222222;
-    height: 35px;
+    height: 120px;
     bottom: 0px;
 }
 
@@ -1040,25 +991,21 @@ body{
     width: 934px;
 }
 
-.footer_mention{
-    font-size: 10px; 
-    color: #7BB3B6; 
-    margin: 13px 0px; 
+.logos{
     float: left;
 }
-.footer_mention a {
-    text-decoration: none; 
-    color: #BBBBBB; 
-    padding: 0px; 
-    margin: 0px;
-}
-.footer_mention a:hover {
-    color: #7BB3B6; 
+
+.logos a{
+    display: inline-block;
+    height: 42px;
+    min-width: 90px;
+    margin: 29px 0px;
+    margin-right: 15px;
 }
 
 
 .copyright {
-    margin: 13px 0px;
+    margin: 43px 0px;
     font-size: 10px;
     color: #7bb3b6;
     float: right;
@@ -1074,10 +1021,10 @@ body{
 }
 
 
-
-/* --- [//] dans le footer*/
+ 
+ /* --- [//] dans le footer*/
 .bleuPod{ 
-    color:#999999;
+	color:#999999;
 }
 /*--Footer [FIN]--*/
 
@@ -1102,43 +1049,43 @@ body{
 
 .BoutonMoreOptions a,
 .BoutonMoreOptionsClic a{
-    display:block;
-    background-color:#e9e9e9;
-    background-repeat:no-repeat;
-    background-position: 10px;
-    border: 1px;
-    border-style: solid;
-    border-color: #999999;
-    color:#656464;
-    height:18px;
-    width: 196px;
-    text-decoration:none;
-    text-align: center;
-    font-size:10px;
-    font-weight:bold;
-    margin-left: 110px;
-    padding-top: 5px;
-    /*	padding-left:20px;
-            padding-right:10px; */
+	display:block;
+        background-color:#e9e9e9;
+	background-repeat:no-repeat;
+        background-position: 10px;
+        border: 1px;
+	border-style: solid;
+	border-color: #999999;
+	color:#656464;
+	height:18px;
+        width: 196px;
+	text-decoration:none;
+        text-align: center;
+	font-size:10px;
+	font-weight:bold;
+        margin-left: 110px;
+        padding-top: 5px;
+/*	padding-left:20px;
+        padding-right:10px; */
 }
 
 .BoutonMoreOptions a {    
-    background-image:url(../images/page4/ATriangleBackg.png);
+	background-image:url(../images/page4/ATriangleBackg.png);
 }
 
 .BoutonMoreOptionsClic a{
-    background-image:url(../images/page4/BTriangleBackg.png);
-    color:#004b93;
+	background-image:url(../images/page4/BTriangleBackg.png);
+	color:#004b93;
 }
 
 .BoutonMoreOptions a:hover{
-    background-image:url(../images/page4/BTriangleBackg.png);
-    color:#004b93;
+	background-image:url(../images/page4/ATriangleBackg_hover.png);
+	color:#004b93;
 }
 
 .BoutonMoreOptionsClic a:hover{
-    background-image:url(../images/page4/BTriangleBackg.png);
-    color:#004b93;
+	background-image:url(../images/page4/BTriangleBackg.png);
+	color:#004b93;
 }
 
 
@@ -1174,8 +1121,7 @@ body{
 
 #form input, 
 #form textarea, 
-#form select,
-#form button{
+#form select{
     float:left;
     font-size:11px;
     padding:4px 2px;
@@ -1185,34 +1131,20 @@ body{
     /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
 }
 
-#form input[type="submit"],
-#form button{
-    float: none;
-    width:120px;
-    cursor: pointer;
-    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
-}
-
-#form input[type="submit"]:hover,
-#form button:hover{
-    background: rgb(153, 204, 255);
-    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
-}
-
 #form input.file {
     width: 200px;
 }
 
 /* file browse */
 div.fileinputs {
-    position: relative;
+	position: relative;
 }
 
 div.fakefile {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 1;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
 }
 
 div.fakefile span {
@@ -1236,13 +1168,13 @@ div.fakefile input {
 }
 
 input.file {
-    position: relative;
-    text-align: right;
-    -moz-opacity:0 ;
-    filter:alpha(opacity: 0);
-    opacity: 0;
-    z-index: 2;
-    cursor: pointer;
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+        cursor: pointer;
 }
 
 #form #submitButton, #form #more_options_a {
@@ -1263,16 +1195,16 @@ a.info{
     text-decoration:none;
     cursor: help;
 }
-
+ 
 a.info:hover{
     z-index:25;
     background-color:#FFF
 }
-
+ 
 a.info span{
     display: none           
 }
-
+ 
 a.info:hover span{
     display:block;
     position:absolute;
@@ -1289,185 +1221,180 @@ a.info:hover span{
 /* form */
 
 #popup_submit_media {
-    margin: auto;
-    width: 400px;
-    border-top-width: 0px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
-    border-top-style: solid;
-    border-right-style: solid;
-    border-bottom-style: solid;
-    border-left-style: solid;
-    border-top-color: #000033;
-    border-right-color: #000033;
-    border-bottom-color: #000033;
-    border-left-color: #000033;
-    background-color: #FFFFFF;
+	margin: auto;
+	width: 400px;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #000033;
+	border-right-color: #000033;
+	border-bottom-color: #000033;
+	border-left-color: #000033;
+	background-color: #FFFFFF;
 }
 
 #popup_submit_media .sbtn {
-    background-image: url(../images/button.gif);
-    border: 1px solid #000033;
-    height: 22px;
-    width: 82px;
-    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
-    font-size: 12px;
-    color: #FFFFFF;
-    font-weight: bold;
-    background-position: center;
-    padding: 0px;
-    margin-top: 20px;
-    margin-right: 20px;
-    margin-bottom: 0px;
-    margin-left: 20px;
+	background-image: url(../images/button.gif);
+	border: 1px solid #000033;
+	height: 22px;
+	width: 82px;
+	/*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+	font-size: 12px;
+	color: #FFFFFF;
+	font-weight: bold;
+	background-position: center;
+	padding: 0px;
+	margin-top: 20px;
+	margin-right: 20px;
+	margin-bottom: 0px;
+	margin-left: 20px;
 }
-.button {
-    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
-    font-size: 12px;
-    font-weight: bold;
-    color: #FFFFFF;
-    height: 22px;
-    width: 82px;
-    background-image: url(images/button.gif);
+#popup_submit_media button, .button {
+	/*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	height: 22px;
+	width: 82px;
+	background-image: url(images/button.gif);
 }
 
 #popup_submit_media form {
-    margin: 10px 5px 0px 5px;
+	margin: 10px 5px 0px 5px;
 }
 
 
 /*#popup_submit_media label {
-        padding: 0px;
-        text-align: center;
+	padding: 0px;
+	text-align: center;
 }*/
 
 #popup_submit_media #loader{
-    visibility:hidden;
+   visibility:hidden;
 }
 
 #f1_upload_form{
-    height:100px;
+   height:100px;
 }
 
 #f1_error{
-    /* font-family: Geneva, Arial, Helvetica, sans-serif; */
-    font-size: 12px;
-    font-weight:bold;
-    color:#FF0000;
+  /* font-family: Geneva, Arial, Helvetica, sans-serif; */
+	font-size: 12px;
+   font-weight:bold;
+   color:#FF0000;
 }
 
 #f1_ok{
-    /* font-family: Geneva, Arial, Helvetica, sans-serif; */
-    font-size: 12px;
-    font-weight:bold;
-    color:#00FF00;
+   /* font-family: Geneva, Arial, Helvetica, sans-serif; */
+	font-size: 12px;
+   font-weight:bold;
+   color:#00FF00;
 
 }
 
 #f1_upload_form {
-    /* font-family: Geneva, Arial, Helvetica, sans-serif; */
-    font-size: 12px;
-    font-weight: normal;
-    color: #666666;
+	 /* font-family: Geneva, Arial, Helvetica, sans-serif; */
+	font-size: 12px;
+	font-weight: normal;
+	color: #666666;
 }
 
 #f1_upload_process{
-    z-index:100;
-    visibility:hidden;
-    position:absolute;
-    text-align:center;
-    width:400px;
+   z-index:100;
+   visibility:hidden;
+   position:absolute;
+   text-align:center;
+   width:400px;
 }
 
 /* Submit form FIN */
 
 .CreerAlbum a{
-    display:block;
-    background-image:url(../images/page4/ACreerAlbum2.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    width:100px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:5px;
-    margin-left:2px;
-    margin-top:2px;
-    margin-bottom:5px;
-    margin-left: 52px;
+	display:block;
+	background-image:url(../images/page4/ACreerAlbum2.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+        width:100px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:5px;
+	margin-left:2px;
+	margin-top:2px;
+	margin-bottom:5px;
+        margin-left: 52px;
 }
 
 .CreerAlbum a:hover{
-    display:block;
-    background-image:url(../images/page4/BCreerAlbum2.png);
-    background-repeat:no-repeat;
-    color:#004C93;
-    height:20px;
-    width:100px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:5px;
-    margin-left:2px;
-    margin-top:2px;
-    margin-bottom:5px;
-    margin-left: 52px;
+	display:block;
+	background-image:url(../images/page4/BCreerAlbum2.png);
+	background-repeat:no-repeat;
+	color:#004C93;
+	height:20px;
+        width:100px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:30px;
+	padding-top:5px;
+	margin-left:2px;
+	margin-top:2px;
+	margin-bottom:5px;
+        margin-left: 52px;
 }
 
 .Bouton{
-    background:transparent url(../images/page4/BoutonRight.png) no-repeat scroll top right;
-    line-height:25px;
-    padding-top: 3px;
-    padding-bottom: 7px;
-    padding-right:11px;
-    font-size:14px;
-    /*	font-family:Arial, Helvetica, sans-serif; */
+	background:transparent url(../images/page4/BoutonRight.png) no-repeat scroll top right;
+	line-height:25px;
+        padding-top: 3px;
+	padding-bottom: 7px;
+	padding-right:11px;
+	font-size:14px;
+/*	font-family:Arial, Helvetica, sans-serif; */
 }
 
 .Bouton span{
-    background:transparent url(../images/page4/BoutonLeft.png) no-repeat; 
-    line-height:25px; 
-    padding-left:11px;
-    padding-top: 5px;
-    padding-bottom: 7px;
+	background:transparent url(../images/page4/BoutonLeft.png) no-repeat; 
+	line-height:25px; 
+	padding-left:11px;
+        padding-top: 5px;
+        padding-bottom: 7px;
 }
 
 .Bouton a {
-    color:#797676;
-    text-decoration:none;
-    font-weight:bold;
+	color:#797676;
+	text-decoration:none;
+	font-weight:bold;
 }
 
 .Bouton a:hover {
-    color:#004B93;
-    text-decoration:none;
-    font-weight:bold;
+	color:#004B93;
+	text-decoration:none;
+	font-weight:bold;
 }
 
 a.greyLink {
-    color:#797676;
-    text-decoration:none;
-    /*	font-family:Arial, Helvetica, sans-serif;  */
-    line-height: 1.8em;
-    border-style: dotted;
-    border-color: #797676;
-    border-left-width: 1px;
-    padding-left: 4px;
+	color:#797676;
+	text-decoration:none;
+/*	font-family:Arial, Helvetica, sans-serif;  */
+        line-height: 1.8em;
+        border-style: dotted;
+        border-color: #797676;
+        border-left-width: 1px;
+        padding-left: 4px;
 }
 
 a.greyLink:hover {    
-    border-color:#004B93;
-    color:#FF6600;
-    text-decoration:none;
-}
-
-a.greyLink.ezplayer:hover {    
-    color:#74afb0;
-    text-decoration:none;
+        border-color:#004B93;
+	color:#FF6600;
+	text-decoration:none;
 }
 
 /* Menu déroulant - album header */

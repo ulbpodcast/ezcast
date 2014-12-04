@@ -36,15 +36,14 @@ $message_of_the_day = "$repository_basedir/ezplayer/message_of_day.html";
 $default_bookmarks_order = "reverse_chron"; // may be [reverse_chron | chron]
 $default_toc_order = "chron"; // may be [reverse_chron | chron]
 
-$accepted_media_qualities = array('high', 'low'); // Media quality prefixes accepted by the distribution script
+$accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)
 
 $template_folder = 'tmpl/';
 $ezplayer_logs = $basedir . '/ezplayer/ezplayer.log';
-$ezplayer_trace = $repository_basedir . '/ezplayer/ezplayer.trace';
-
 
 $valid_extensions = array('xml'); // accepted extensions for imported bookmarks
-$trace_on = false; // determines whether we want to enable traces on actions or not
+
+$cache_limit = 5; // number of trending threads that are displayed on level 2 
 
 ?>

@@ -33,7 +33,6 @@
 
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name";
-$organization_url = "http://ulb.ac.be";
 $copyright = 'Your copyright';
 
 // URL's to EZcast applications
@@ -52,7 +51,7 @@ $ezplayer_safe_url = "$application_safe_url/ezplayer";
 $distribute_url = "$ezmanager_url/distribute.php";
 
 // Absolute paths 
-$repository_basedir = "/var/lib/ezcast"; 
+$repository_basedir = "/var/lib/ezcast";
 $repository_path="$repository_basedir/repository";
 $basedir = "/usr/local/ezcast";
 
@@ -77,7 +76,6 @@ $php_cli_cmd = "/opt/csw/bin/php";//locate php cli to use
 $rsync_pgm = "/opt/sfw/bin/rsync";
 $ssh_pgm = "/usr/bin/ssh";
 $apache_username = "www-data"; // used by ezadmin to retrieve public SSH key for renderer creation
-$apache_documentroot = "/www/htdocs/"; // used by ezadmin to copy organization logo in the webspace
 $ssh_pub_key_location = ""; // leave empty for default location or enter absolute path to Apache user's ssh public key 
 
 $mailto_alert = "mail@your.organization"; //who to call in case of problem in the processing chain
@@ -124,7 +122,6 @@ $config['paths']['logs'] = "$repository_basedir/queues/scheduling/logs.log";
 $config['paths']['var'] = "$ezmanager_basedir/var/";
 $config['keys']['sem'] = 82397779218067476;
 $config['scheduler']['priority'] = 10;
-$config['ssh']['timeout'] = 15;
 
 
 ?>

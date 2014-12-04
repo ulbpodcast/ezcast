@@ -25,6 +25,10 @@
  */
 
 /**
+ * @package ezcast.ezadmin.lib.various
+ */
+
+/**
  * Parses the config file and returns the settings that can be changed in it.
  */
 function parse_config_file() {
@@ -41,6 +45,14 @@ function parse_config_file() {
     return $res;
 }
 
+/**
+ * Updates ezadmin config file
+ * @param type $recorder_option
+ * @param type $add_users_option
+ * @param type $recorder_password_storage_option
+ * @param type $use_course_name_option
+ * @param type $use_user_name_option
+ */
 function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_course_name_option, $use_user_name_option) {
     $config = file_get_contents('config.inc');
 
@@ -58,7 +70,34 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
     file_put_contents('config.inc', $config);
 }
 
-function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repository_basedir, $organization_name, $organization_url, $copyright, $mailto_alert, $basedir, $db_type, $db_host, $db_login, $db_passwd, $db_name, $db_prefix, $recorder_user, $recorder_basedir, $ezmanager_host, $ezmanager_url, $classrooms_category_enabled, $add_users_enable, $recorder_password_storage_enabled, $use_course_name, $use_user_name, $https_ready) {
+/**
+ * Edit commons's config file
+ * @param type $php_cli_cmd
+ * @param type $rsync_pgm
+ * @param type $application_url
+ * @param type $repository_basedir
+ * @param type $organization_name
+ * @param type $copyright
+ * @param type $mailto_alert
+ * @param type $basedir
+ * @param type $db_type
+ * @param type $db_host
+ * @param type $db_login
+ * @param type $db_passwd
+ * @param type $db_name
+ * @param type $db_prefix
+ * @param type $recorder_user
+ * @param type $recorder_basedir
+ * @param type $ezmanager_host
+ * @param type $ezmanager_url
+ * @param type $classrooms_category_enabled
+ * @param type $add_users_enable
+ * @param type $recorder_password_storage_enabled
+ * @param type $use_course_name
+ * @param type $use_user_name
+ * @param type $https_ready
+ */
+function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repository_basedir, $organization_name, $copyright, $mailto_alert, $basedir, $db_type, $db_host, $db_login, $db_passwd, $db_name, $db_prefix, $recorder_user, $recorder_basedir, $ezmanager_host, $ezmanager_url, $classrooms_category_enabled, $add_users_enable, $recorder_password_storage_enabled, $use_course_name, $use_user_name, $https_ready) {
     $global_config = (file_exists('../commons/config.inc')) ? file_get_contents('../commons/config.inc') : file_get_contents('../commons/config-sample.inc');
 
     $conf = ($https_ready) ? 'true' : 'false';
@@ -67,7 +106,6 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
     $global_config = preg_replace('/\$rsync_pgm = (.+);/', '\$rsync_pgm = "' . $rsync_pgm . '";', $global_config);
     $global_config = preg_replace('/\$https_ready = (.+);/', '\$https_ready = ' . $conf . ';', $global_config);
     $global_config = preg_replace('/\$organization_name = (.+);/', '\$organization_name = "' . $organization_name . '";', $global_config);
-    $global_config = preg_replace('/\$organization_url = (.+);/', '\$organization_url = "' . $organization_url . '";', $global_config);
     $global_config = preg_replace('/\$copyright = (.+);/', '\$copyright = "' . $copyright . '";', $global_config);
     $global_config = preg_replace('/\$mailto_alert = (.+);/', '\$mailto_alert = "' . $mailto_alert . '";', $global_config);
     $global_config = preg_replace('/\$application_url = (.+);/', '\$application_url = "' . $application_url . '";', $global_config);
@@ -103,6 +141,10 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
     copy("../ezplayer/config-sample.inc", "../ezplayer/config.inc");
 }
 
+/**
+ * Returns the list of admins
+ * @return array
+ */
 function parse_admin_file() {
     include 'admin.inc';
 
@@ -251,6 +293,11 @@ function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_
     return true;
 }
 
+/**
+ * Save a new admin
+ * @param type $netid
+ * @return boolean
+ */
 function add_admin_to_file($netid) {
     if (!file_exists('admin.inc')) {
         file_put_contents('admin.inc', "<?php" . PHP_EOL);
@@ -274,6 +321,11 @@ function add_admin_to_file($netid) {
     rename('./admin_tmp.inc', './admin.inc');
 }
 
+/**
+ * Remove an admin from the list
+ * @param type $netid
+ * @return boolean
+ */
 function remove_admin_from_file($netid) {
     if (!file_exists('admin.inc'))
         return false;
@@ -392,9 +444,9 @@ function push_users_courses_to_recorder() {
 
     // Upload all this on server
     foreach ($classrooms as $c) {
-        $cmd = 'scp -o ConnectTimeout=15 ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+        $cmd = 'scp ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
         exec($cmd, $output, $return_var);
-        $cmd = 'scp -o ConnectTimeout=15 ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+        $cmd = 'scp ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
         exec($cmd, $output, $return_var);
 
         if ($return_var != 0) {
@@ -484,6 +536,15 @@ function push_renderers_to_ezmanager() {
     return true;
 }
 
+/**
+ * Push users to ezmager
+ * @global type $ezmanager_host
+ * @global type $ezmanager_user
+ * @global type $ezmanager_basedir
+ * @global type $ezmanager_subdir
+ * @global type $basedir
+ * @return boolean
+ */
 function push_users_to_ezmanager() {
     global $ezmanager_host;
     global $ezmanager_user;
@@ -533,6 +594,7 @@ function check_val($var, $error) {
 }
 
 /**
+ * Checks either the ip adress syntax is correct or not
  * @return error_string
  * @param string $ipstr
  * @desc ckeck ip syntax
@@ -546,6 +608,7 @@ function checkipsyntax($ipstr) {
 }
 
 /**
+ * Converts ip as string to numbers
  * @return if>0error
  * @param $ipstr string ip
  * @param $net1 int ip1
@@ -574,6 +637,11 @@ function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node) {
     return $returncode;
 }
 
+/**
+ * Boolean to string
+ * @param type $bool
+ * @return type
+ */
 function bool2str($bool) {
     return ($bool) ? 'true' : 'false';
 }
@@ -660,7 +728,7 @@ function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
     }
 }
 
-function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg, $aac_experimental = false) {
+function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg) {
 
     if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " . $remote_ffmpeg . " ]; then echo 'exists'; fi;\"") != 'exists') {
         // FFMPEG binary doesn't exist on remote renderer
@@ -672,8 +740,7 @@ function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg
             return "ffmpeg_not_found";
         } else {
             // Test FFMPEG codecs
-            $aac_codec = ($aac_experimental) ? 'aac' : 'libfdk_aac';
-            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffmpeg -codecs | grep '$aac_codec'\"");
+            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_ffmpeg -codecs | grep 'libfdk_aac'\"");
             if (strpos(strtoupper($output), 'AAC') === false) {
                 return "missing_codec_aac";
             }

@@ -25,6 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/**
+ * @package ezcast.ezmanager.cli
+ */
+
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';
@@ -102,8 +106,7 @@ $asset_meta['status']='processing';
 $asset_meta['tags']="";
 $asset_meta['language']="français";
 $asset_meta['super_highres'] = $recording_metadata['super_highres'];
-if(isset($recording_metadata['submitted_cam']))$asset_meta['submitted_cam']=$recording_metadata['submitted_cam'];
-if(isset($recording_metadata['submitted_slide']))$asset_meta['submitted_slide']=$recording_metadata['submitted_slide'];
+if(isset($recording_metadata['submitted_filename']))$asset_meta['submitted_filename']=$recording_metadata['submitted_filename'];
 if(isset($recording_metadata['intro']))$asset_meta['intro']=$recording_metadata['intro'];
 if(isset($recording_metadata['add_title']))$asset_meta['add_title']=$recording_metadata['add_title'];
 
@@ -166,8 +169,8 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
   $media_meta['audio_codec']="N/A";
   $media_meta['disposition']='file';
   //check the name of submited file to keep the extension (pcastaction is quite sensitive to extension type)
-  if(isset($recording_metadata['submitted_' . $camslide])){
-    $res=file_get_extension($recording_metadata['submitted_' . $camslide]);
+  if(isset($recording_metadata['submitted_filename'])){
+    $res=file_get_extension($recording_metadata['submitted_filename']);
     $ext=$res['ext'];
     if($ext==''){
         //if there wasn't an extension, then check mimetype

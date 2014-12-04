@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+*/
 ?>
 
 <?php
@@ -46,8 +46,7 @@ $asset_link = $ezplayer_url . '/index.php?action=view_asset_details'
         <div id="zero_clipboard_asset_<?php echo $index ?>" 
              onmouseout="getElementById('copy_asset_button_<?php echo $index ?>').style.background='#333333'" 
              onmouseover="getElementById('copy_asset_button_<?php echo $index ?>').style.background='#11acea'" 
-             style="position:absolute; left:160px; top:0px; width:200px; height:30px; z-index:105; cursor: pointer;"
-             onclick="server_trace(new Array('3', 'asset_share', current_album, current_asset, duration));">
+             style="position:absolute; left:160px; top:0px; width:200px; height:30px; z-index:105; cursor: pointer;">
         </div>
     </div>
     <script>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <!-- Note: for details about the layout and Boostrap framwork, see http://twitter.github.com/bootstrap/ -->
 
         <!--
@@ -27,16 +26,28 @@
         * License along with this software; if not, write to the Free Software
         * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
         -->
+
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <title><?php
             global $appname;
             echo $appname;
             if ($_SESSION['changes_to_push'])
                 echo ' (®unsaved_changes®)';
             ?></title>
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.23345.js"></script>
+        <script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
+        <script type="text/javascript" src="js/plugins/jqplot.pieRenderer.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/stats.js"></script>
+        
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/datepicker.css" rel="stylesheet"/>
+        <link href="css/jquery.jqplot.min.css" rel="stylesheet"/>
+        <link href="css/ezplayerStats.css" rel="stylesheet"/>
+
         <script>
             /**
              * HTML5 Placeholder Text, jQuery Fallback with Modernizr
@@ -109,11 +120,8 @@
     </head>
     <body link="#000088" vlink="#000044" alink="#0000ff" <?php if ($GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
 
-        <div class="container">
-        <?php include template_getpath('div_header.php'); ?>
-            <div id="global">
-
+        <h3 style="border-bottom: 1px solid black; text-align: center;">®service_name® <?php if ($_SESSION['changes_to_push']) echo '<small class="badge badge-important" style="bottom: 10px;" title="®unsaved_changes®">!</small>'; ?></h3>
         <div class="container-fluid">
             <div class="row-fluid">
-                <?php include template_getpath('div_main_menu.php'); ?>
+<?php include template_getpath('div_main_menu.php'); ?>
                 <div class="span9">

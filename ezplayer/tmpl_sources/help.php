@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 
-
 <!--
  This page is meant to contain a FAQ/tutorial on how to use the service
 -->
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <!-- 
+        <!--
         * EZCAST EZplayer
         *
         * Copyright (C) 2014 Université libre de Bruxelles
@@ -32,6 +30,7 @@
         * License along with this software; if not, write to the Free Software
         * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
         -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>®ezplayer_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 

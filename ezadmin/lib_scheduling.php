@@ -21,8 +21,11 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 
+/**
+ * @package ezcast.ezadmin.lib.scheduling
+ */
 require_once "config.inc";
 /**
  * DEBUG
@@ -520,6 +523,7 @@ function lib_scheduling_queue_down($job) {
  *  'name' => the renderer name
  *  'host' => the renderer host name
  *  'client' => the ssh client
+ *  'password' => the ssh password
  *  'status' => the renderer status (up, down, busy)
  *  'downloading_dir' => the incoming video dir
  *  'downloaded_dir' => the downloaded video dir
@@ -594,7 +598,7 @@ function lib_scheduling_renderer_find($renderers, $hostname) {
  * @return boolean Whether the renderer is available or not
  */
 function lib_scheduling_renderer_is_available($renderer) {
-    if($renderer['status'] != 'enabled') return false;
+    if(!$renderer['status'] == 'enabled') return false;
 
     $renderer = lib_scheduling_renderer_metadata($renderer);
 
@@ -642,22 +646,20 @@ function lib_scheduling_renderer_is_better_than($first, $second, $job) {
 function lib_scheduling_renderer_metadata($renderer) {
     global $php_cli_cmd;
     
-    $out = lib_scheduling_renderer_ssh($renderer, $renderer["php"] . " " . $renderer['statistics']);
+    $out = lib_scheduling_renderer_ssh($renderer, "$php_cli_cmd " . $renderer['statistics']);
 
-    if ($out !== false){
-        $xml = new SimpleXMLElement($out);
-        foreach ($xml as $tag => $value) {
-            if($tag == 'jobs') {
-                $jobs = array();
-                foreach ($value->children() as $job) {
-                    $j = array();
-                    foreach($job as $key => $value) $job[$key] = (string) $value;
-                    $jobs[] = $j;
-                }
-                $renderer['jobs'] = $jobs;
-            } else {
-                $renderer[$tag] = (string) $value;
+    $xml = new SimpleXMLElement($out);
+    foreach ($xml as $tag => $value) {
+        if($tag == 'jobs') {
+            $jobs = array();
+            foreach ($value->children() as $job) {
+                $j = array();
+                foreach($job as $key => $value) $job[$key] = (string) $value;
+                $jobs[] = $j;
             }
+            $renderer['jobs'] = $jobs;
+        } else {
+            $renderer[$tag] = (string) $value;
         }
     }
 
@@ -700,15 +702,9 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
  * @param string $cmd The command
  * @return string The output
  */
-function lib_scheduling_renderer_ssh(&$renderer, $cmd) {
-    $str_cmd = 'ssh -o ConnectTimeout='. lib_scheduling_config('ssh-timeout'). ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"';
-    exec($str_cmd, $output, $ret);
-
-    if($ret){
-        $renderer['ssh_error'] = true;
-        lib_scheduling_alert('Scheduler::renderer_ssh[fail] |::>' . $output . '<::|');
-        return false;
-    }
+function lib_scheduling_renderer_ssh($renderer, $cmd) {
+    exec('ssh ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
+    if($ret) lib_scheduling_alert('Scheduler::renderer_ssh[fail] |::>' . $output . '<::|');
     return implode("\n", $output);
 }
 
@@ -808,8 +804,6 @@ function lib_scheduling_config($name) {
             return $config['keys']['sem'];
         case 'default-priority':
             return $config['scheduler']['priority'];
-        case 'ssh-timeout':
-            return $config['ssh']['timeout'];
     }
 
     return false;

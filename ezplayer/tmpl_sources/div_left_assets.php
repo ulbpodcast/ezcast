@@ -24,6 +24,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 ?>
+<div id="site_map">
+    <a class="home-link" href="index.php" title="®Back_to_home®">®Home®</a>
+    <div class="right-arrow"></div>
+    (<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?>
+</div>
+
 
 <div id="main_player">
 
@@ -31,15 +37,13 @@
         If the current view is the home page, the header is empty
         If the current view is the album page, the header contains album title only
         If the current view is the asset page, the header contains album title and asset title -->
-    <div id="site_map">
-        <a href="index.php" title="®Back_to_home®">®Home®</a>
-        <div class="right-arrow"></div>
-        (<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?>
-    </div>
-
 
     <div id="assets">
-        <div class="title">®Date® <span style="padding-left: 48px;">®Title®</span></div>
+        <div class="title">®Date® <span style="padding-left: 48px;">®Title®</span> 
+            <?php if (acl_has_album_moderation($album) || acl_is_admin()) { ?>
+                <span class="pull-right">®Downloadable®</span>
+            <?php } ?>
+        </div>
         <?php
         if (!isset($assets_list) || sizeof($assets_list) == 0) {
             ?>
@@ -53,14 +57,23 @@
                     if ($asset['metadata']['status'] == 'processed') {
                         ?>
                         <li>
-                            <a class="item" href="javascript:show_asset_details('<?php echo $album; ?>','<?php echo $asset['name']; ?>', '<?php echo $asset['token']; ?>');">
+                            <a class="item" id="asset-<?php echo $asset['name']; ?>" onclick="javascript:show_asset_details(event, '<?php echo $album; ?>', '<?php echo $asset['name']; ?>', '<?php echo $asset['token']; ?>')">
                                 <b><?php print_info(substr(get_user_friendly_date($asset['metadata']['record_date'], '/', false, get_lang(), false), 0, 10)); ?></b> 
                                 <div style="display:inline-block; width: 16px; height:1px;"></div>
                                 <?php echo $asset['metadata']['title']; ?>
                                 <span class="<?php if (!acl_is_watched($album, $asset['metadata']['record_date'])) echo 'new'; ?>" title="®New_video®"></span>
-                            </a>
+                                <?php if (acl_has_album_moderation($album) || acl_is_admin()) { ?>
+
+                                    <input class="custom-checkbox" name="custom-checkbox" id="is_downloadable_<?php echo $index; ?>" title="®Allow_download®" type="checkbox" 
+                                           onchange='javascript:set_asset_download_option(<?php echo json_encode($album); ?>, <?php echo json_encode($asset['metadata']['record_date']); ?>, <?php echo json_encode($index); ?>);' 
+                                           <?php echo (acl_is_downloadable($album, $asset['metadata']['record_date'])) ? 'checked' : '' ?>
+                                           >
+                                    <label onclick="javascript:invert_download_checkbox(event,<?php echo $index; ?>)">
+                                    </label>
+                                <?php } ?>
+                            </a>       
                         </li>
-                    <?php
+                        <?php
                     }
                 }
                 ?>
@@ -70,4 +83,5 @@
         ?>
     </div>
 
+    <?php include 'div_trending_threads.php' ?>
 </div>

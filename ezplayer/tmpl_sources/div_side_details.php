@@ -22,10 +22,9 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-?>
+*/
 
-<?php include_once 'lib_print.php'; ?>
+include_once 'lib_print.php'; ?>
 <!-- #side_menu
     Contains the buttons used to navigate through the pages.
     #back_button : displayed on asset page and used to return to the current album
@@ -43,8 +42,6 @@
      toggle_play();
      });
      }); */
-    current_album = '<?php echo $_SESSION['album']; ?>'
-    current_asset = '<?php echo $_SESSION['asset']; ?>'
 
 <?php if (!acl_user_is_logged()) { ?>
         current_tab = 'toc';
@@ -57,53 +54,25 @@
             setActivePane('.bookmarks_button');
             $('#side_pane').scrollTo('#album_bookmarks');
         }
-        if (fullscreen && show_panel)
-            panel_fullscreen();
+        if (fullscreen && show_panel) panel_fullscreen();
     });
     lvl = 3;
     is_lecturer = false;
 <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>;
         is_lecturer = true;
 <?php } ?>
-    $("video").bind("pause", function(e) {
-        paused = ($('video')[1]) ? $('video')[1].paused : true;
-        if (($('video')[0].paused && paused) || shortcuts)
-            $(".shortcuts_tab").css('display', 'block');
-        if (!trace_pause) {
-            origin = get_origin();
-            server_trace(new Array('4', 'video_pause', current_album, current_asset, duration, time, type, quality, origin));
-        } else {
-            trace_pause = false;
-        }
-    });
-    $("video").bind("play", function(e) {
-        if (!shortcuts)
-            $(".shortcuts_tab").css('display', 'none');
-        if (!trace_pause) {
-            origin = get_origin();
-            server_trace(new Array('4', 'video_play', current_album, current_asset, duration, time, type, quality, origin));
-        } else {
-            trace_pause = false;
-        }
-    });
-    $('video').bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
-        var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-        var fullscreen = state ? true : false;
-        if (fullscreen) {
-            server_trace(new Array('4', 'browser_fullscreen_enter', current_album, current_asset, duration, time, type, quality));
-
-        } else {
-            server_trace(new Array('4', 'browser_fullscreen_exit', current_album, current_asset, duration, time, type, quality));
-        }
-    });
-
+    $("video").bind("pause", function (e) {
+        paused =  ($('video')[1]) ? $('video')[1].paused : true;
+        if(($('video')[0].paused && paused) || shortcuts) $(".shortcuts_tab").css('display', 'block');
+});
+    $("video").bind("play", function (e) {
+        if(!shortcuts) $(".shortcuts_tab").css('display', 'none');
+});
 </script>
-<?php
-$share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
+<?php $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
         . '&album=' . $album
         . '&asset=' . $asset_meta['record_date']
-        . '&t=';
-?>
+        . '&t='; ?>
 
 <div id="search">
     <?php include_once template_getpath('div_search.php'); ?>
@@ -112,13 +81,11 @@ $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
 <div id="side_menu">
 
     <?php if ($is_bookmark) { ?>
-        <div class="bookmarks_button active"><a href="#asset_bookmarks" onclick="setActivePane('.bookmarks_button');
-            server_trace(new Array('3', 'bookmarks_swap', current_album, current_asset, current_tab));" title="®Display_asset_bookmarks®"></a></div>
-            <?php
-        }
-        ?>
-    <div class='toc_button'><a href="#album_toc" onclick="setActivePane('.toc_button');
-        server_trace(new Array('3', 'bookmarks_swap', current_album, current_asset, current_tab));" title="®Display_toc®"></a></div>
+        <div class="bookmarks_button active"><a href="#asset_bookmarks" onclick="setActivePane('.bookmarks_button')" title="®Display_asset_bookmarks®"></a></div>
+        <?php
+    }
+    ?>
+    <div class='toc_button'><a href="#album_toc" onclick="setActivePane('.toc_button')" title="®Display_toc®"></a></div>
     <div class="settings bookmarks">
         <a class="menu-button" title="®Bookmarks_actions®" onclick="$(this).toggleClass('active')" href="javascript:toggle('#bookmarks_actions');"></a>
         <a class="sort-button <?php echo acl_value_get("bookmarks_order"); ?>" title="®Reverse_bookmarks_order®" href="javascript:sort_bookmarks('bookmarks', '<?php echo (acl_value_get("bookmarks_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'details');"></a>
@@ -145,7 +112,7 @@ $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
 <?php require_once template_getpath('popup_delete_bookmarks.php'); ?>
 <?php require_once template_getpath('popup_delete_tocs.php'); ?>
 <?php require_once template_getpath('popup_export_toc.php'); ?>
-<?php require_once template_getpath('popup_share_time.php'); ?>
+        <?php require_once template_getpath('popup_share_time.php'); ?>
 
 <!-- #side_pane
     Contains different panes adapted for each view

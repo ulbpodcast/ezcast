@@ -36,7 +36,7 @@ $dircontent = scandir($repository_path);
 foreach($dircontent as $album) {
     if($album == '.' || $album == '..')
         continue;
- 
+
     if($course_code_str = strstr($album, '-pub', true)) {
         $course_code = $course_code_str;
         $updated_courses[] = $course_code;

@@ -1,5 +1,5 @@
 <?php
-// https://github.com/gabrielbull/php-browser
+// https://github.com/gavroche/php-browser
 /**
  * Autoloads Browser classes
  *

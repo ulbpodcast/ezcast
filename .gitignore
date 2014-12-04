@@ -10,9 +10,7 @@
 **/*.old
 **/*.orig
 **/**/*.old
-**/**/*_old
 **/**/*.orig
-**/**/*_orig
 **/renderers.inc
 **/var/**
 **/**/var/**
@@ -25,3 +23,5 @@
 **/first_user
 ./first_user
 ./log
+**/documentation
+/documentation/**

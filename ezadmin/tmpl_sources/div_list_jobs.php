@@ -44,7 +44,7 @@ require_once 'config.inc';
         <th>®job_actions®</th>
     </tr>
     
-    <?php include_once 'lib_scheduling.php';
+    <?php include 'lib_scheduling.php';
     
     foreach($jobs as $job) {
         if(empty($job['done'])) {
@@ -65,7 +65,6 @@ require_once 'config.inc';
             }
             
             if(!empty($date)) {
-                date_default_timezone_set('Europe/Brussels');
                 $dt = new DateTime();
 
                 $dt = $dt->createFromFormat('Y-m-d H:i:s', $date);

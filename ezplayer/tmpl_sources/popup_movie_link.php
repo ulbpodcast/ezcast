@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+*/
 ?>
 
 <div id="popup_movie_link" class="reveal-modal left">
@@ -31,6 +31,6 @@
     <br/><p>®Download_movie_message®</p>
     <a class="close-reveal-modal">&#215;</a>
     <br/>
-    <a href="<?php echo $asset_meta['low_cam_src'] . '&origin=link'; ?>" onclick="server_trace(new Array('3', 'cam_download', current_album, current_asset, duration, 'low'));" class="simple-button purple">®low_res®</a>
-    <a href="<?php echo $asset_meta['high_cam_src'] . '&origin=link'; ?>" onclick="server_trace(new Array('3', 'cam_download', current_album, current_asset, duration, 'high'));" class="simple-button purple">®high_res®</a>
+    <a href="<?php echo $asset_meta['low_cam_src'] . '&origin=link'; ?>" class="simple-button purple">®low_res®</a>
+    <a href="<?php echo $asset_meta['high_cam_src'] . '&origin=link'; ?>" class="simple-button purple">®high_res®</a>
 </div>

@@ -123,6 +123,17 @@ $options['Renderers'] = array(
    )
 );
 
+$options['Stats'] = array(
+   'stats_ezplayer_threads' => array(
+       'name' => '®stats_ezplayer_threads®',
+       'action' => 'view_stats_ezplayer_threads'
+   ),
+   'stats_ezplayer_bookmarks' => array(
+       'name' => '®stats_ezplayer_bookmarks®',
+       'action' => 'view_stats_ezplayer_bookmarks'
+   )
+);
+
 // Each element is the translation in the destination language of the keyword used to reference the category in the above array.
 // Used for display purposes only.
 $category_names = array(
@@ -157,7 +168,6 @@ $category_names = array(
     <?php } // end foreach ?>
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>
     <li><a style="<?php echo ($_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
-    <li><a href="index.php?action=sync_externals">®sync_externals®</a></li>
     <li><a href="?<?php echo SID."&action=logout"?>">®logout®</a></li>
 </ul>
 <!-- <a class="btn" style="margin-top: 10px; width: 80%;" href="?<?php echo SID."&action=logout"?>">®logout®</a> -->

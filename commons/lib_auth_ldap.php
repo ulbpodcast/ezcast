@@ -7,7 +7,6 @@
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
 *                   Antoine Dewilde
-*                   Thibaut Roskam
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +23,10 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+/**
+ * @package ezcast.commons.lib.auth
+ */
+
 include dirname(__FILE__).'/lib_various.php';
 /**
  * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login'] (['real_login']) of the user. failure returns false. Error message can be received via checkauth_last_error()
@@ -34,6 +37,7 @@ include dirname(__FILE__).'/lib_various.php';
  */
 function ldap_checkauth($login, $password) {
     global $ldap_servers_auth_json_file;
+    
     $ldap_servers_auth = json_to_array($ldap_servers_auth_json_file);
 
     if (count($ldap_servers_auth) == 0)
@@ -87,14 +91,15 @@ function ldap_checkauth($login, $password) {
  */
 function ldap_getinfo($login) {
     global $ldap_servers_cred_json_file;
+    
     $ldap_servers_cred = json_to_array($ldap_servers_cred_json_file);
     if (count($ldap_servers_cred) == 0)
         return false;
 
     //try go get user's full name
     $index = 0;
-    $result = false;
-    do { 
+    do {
+        $result = false;
         $link_identifier = private_ldap_connect($ldap_servers_cred, $index);
         // bind to ldap failed
         if ($link_identifier === false) {
@@ -161,9 +166,8 @@ function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password
         @ $res = ldap_bind($link_identifier, $rdn, $password); //check ldap branch
         if ($res)
             return $link_identifier;
-        else{
+        else
             ldap_close($link_identifier);
-        }
         $index++;
     }
     //if not sucessfull show reason:

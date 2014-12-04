@@ -25,6 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/**
+ * @package ezcast.ezmanager.download
+ */
+
 //This program receives queries from classroom recording agents to tell that a new recorging is ready for download
 //IP adresses of machines allowed to submit is store in a file
 include_once "config.inc";
@@ -43,14 +47,6 @@ if ($key === false) {
 $record_type = $input['record_type']; // cam|slide|camslide
 $record_date = $input['record_date'];
 $course_name = $input['course_name'];
-$recorder_php_cli = $input['php_cli'];
-if (!isset($recorder_php_cli) || $recorder_php_cli == ''){
-    $cmd = "$ssh_pgm -o BatchMode=yes $recorder_user@$caller_ip \"which php\"";
-    $recorder_php_cli = exec($command);
-    if ($recorder_php_cli == ''){
-        $recorder_php_cli = "php";
-    }
-}
 $recorder_version = (isset($input['recorder_version']) && !empty($input['recorder_version'])) ? $input['recorder_version'] : "1.0";
 
 // get the file that contains metadata relative to the recording
@@ -108,7 +104,6 @@ $downloadxml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone='yes'?>
 <record_type>$record_type</record_type>
 <caller_ip>$caller_ip</caller_ip>
 <recorder_version>$recorder_version</recorder_version>
-<recorder_php_cli>$recorder_php_cli</recorder_php_cli>
 $download_info_xml
 $additional_tags
 </download_metadata>

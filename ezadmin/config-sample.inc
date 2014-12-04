@@ -47,14 +47,5 @@ $use_user_name = false; // Set to true to use user's full name instead of user I
 // Technical stuff
 $template_folder = 'tmpl/';
 
-// Renderers settings
-$renderers_options = array(
-    // <name> the name of the library to use (used in tmpl_sources/div_create_renderer_step3.php as class name to display input fields)
-    // <description> the description shown in a combo list in tmpl_sources/div_create_renderer_step3.php
-    // <file> file name of the library
-        'ffmpeg' => array('name' => 'ffmpeg', 'description' => 'FFMPEG command line', 'file' => 'lib_ffmpeg.php'),
-        'ffmpeg_exp' => array('name' => 'ffmpeg_exp', 'description' => 'FFMPEG command line experimental mode (AAC)', 'file' => 'lib_ffmpeg.php'),
-);
-
 
 ?>

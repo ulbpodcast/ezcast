@@ -107,7 +107,7 @@ switch (strtolower($_SESSION['browser_name'])) {
             <div class="shortcuts_tab"><a href="javascript:toggle_shortcuts();"></a></div>
         </div>
 
-        <video id="main_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['src']; ?>" type="video/mp4">
+        <video id="main_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
             <source id="main_video_source"
                     high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
                     high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>"
@@ -117,7 +117,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 
         <?php if ($asset_meta['record_type'] == 'camslide') { ?>
 
-            <video id="secondary_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" type="video/mp4">
+            <video id="secondary_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" preload="auto" type="video/mp4">
             </video>
         <?php } ?>
 
@@ -131,10 +131,6 @@ switch (strtolower($_SESSION['browser_name'])) {
             cam_loaded = false;
             duration = 0;
 
-            document.getElementById('main_video').addEventListener("timeupdate", function() {
-                duration = Math.round(this.duration);
-            });
-
             var videos = document.getElementsByTagName('video');
             for (var i = 0, max = videos.length; i < max; i++) {
                 videos[i].addEventListener("timeupdate", function() {
@@ -147,7 +143,18 @@ switch (strtolower($_SESSION['browser_name'])) {
 <?php } ?>
                         document.getElementById('share_time_link').innerHTML = '<?php echo $share_time; ?>' + time + '&type=' + type;
                     }
+                    duration = Math.round(this.duration);
                 }, false);
+                // handles buffer errors that occur in Chrome after the following process:
+                // 1) play the video
+                // 2) pause the video
+                // 3) wait for ~5 min
+                // 4) play the video >> ERR_CONTENT_LENGTH_MISMATCH
+                videos[i].addEventListener("error", function(e){
+                    this.load();
+                    this.currentTime = time;
+                    this.play();
+                }, true);
             }
 <?php
 if (isset($asset_meta['record_type']) && $asset_meta['record_type'] == 'camslide' && ($_SESSION['user_os'] == 'iOS' || $_SESSION['user_os'] == 'Android')) {
@@ -272,13 +279,13 @@ if ($_SESSION['load_video'] == true) {
         </script>
         <div class="video_controls">
             <ul>
-<?php if ($playbackRate) { ?>
+                <?php if ($playbackRate) { ?>
                     <li>
                         <!--<a class="slow-button" title="®Rewind®" href="javascript:video_playbackspeed('down');"></a><!--
                         <div id="speedRate">x1.0</div><!--
                         <a class="fast-button" title="®Forward®" href="javascript:video_playbackspeed('up');"></a>
                         -->
-                        <a id="toggleRate" href="javascript:toggle_playbackspeed();" title="®Change_speedrate®">1.0x</a>
+                        <a id="toggleRate" href="javascript:toggle_playbackspeed();" title="®Change_speedrate®">1.0x</a> 
                     </li>
                     <?php
                 }
@@ -288,25 +295,25 @@ if ($_SESSION['load_video'] == true) {
                         <a class="movie-button active" title="®Watch_video®" href="javascript:switch_video('cam');"></a>
                         <a class="slide-button" title="®Watch_slide®" href="javascript:switch_video('slide');"></a>
                     </li>
-<?php } ?>
+                <?php } ?>
                 <li>
                     <a class="high-button" title="®Watch_high®" href="javascript:toggle_video_quality('high');"></a>
                     <a class="low-button active" title="®Watch_low®" href="javascript:toggle_video_quality('low');"></a>
                 </li>
-<?php if (acl_user_is_logged() && acl_has_album_permissions($album)) { ?>
+                <?php if (acl_user_is_logged() && acl_has_album_permissions($album)) { ?>
                     <li>
                         <a class="add-bookmark-button" title="®Add_bookmark®" href="javascript:toggle_bookmark_form('custom');"></a>
                         <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
                             <a class="add-toc-button" title="®Add_toc®" href="javascript:toggle_bookmark_form('official');"></a>
-                    <?php } ?>
+                        <?php } ?>
                     </li>
-<?php } ?>                
+                <?php } ?>                
                 <li>
                     <a class="share-button" href="#" data-reveal-id="popup_share_time" title="®Share_time®" 
                        onclick="getElementById('main_video').pause();
-                                if (getElementById('secondary_video'))
-                                getElementById('secondary_video').pause();
-                                server_trace(new Array('4', 'link_open', current_album, current_asset, duration, time, type, quality));"></a>
+                if (getElementById('secondary_video'))
+                    getElementById('secondary_video').pause();
+                server_trace(new Array('4', 'link_open', current_album, current_asset, duration, time, type, quality));"></a>
                 </li>      
                 <li>
                     <a class="fullscreen-button" href="javascript:video_fullscreen(!fullscreen);" title="®Toggle_fullscreen®" ></a>
@@ -321,27 +328,27 @@ if ($_SESSION['load_video'] == true) {
         <div class="asset_title">
             <b><?php print_info(substr(get_user_friendly_date($asset_meta['record_date'], '/', false, get_lang(), false), 0, 10)); ?></b>
             <div class="right-arrow"></div>
-<?php print_info($asset_meta['title']); ?>
+            <?php print_info($asset_meta['title']); ?>
         </div>
         <div class="asset_author">{ <?php print_info($asset_meta['author']); ?> }</div>
         <div class="asset_details">
             <b class="green-title">®Description®:</b>
-<?php print_info($asset_meta['description']); ?>
+            <?php print_info($asset_meta['description']); ?>
         </div>
         <div>
             <?php if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') { ?>
-            <a class="button" href="#" data-reveal-id="popup_slide_link" onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));">®Download_slide®</a>
+                <a class="button" href="#" data-reveal-id="popup_slide_link" onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));">®Download_slide®</a>
                 <?php
             }
             if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {
                 ?>
-            <a class="button" href="#" data-reveal-id="popup_movie_link" onclick="server_trace(new Array('3', 'cam_download_open', current_album, current_asset, duration, time, type, quality));">®Download_movie®</a>
+                <a class="button" href="#" data-reveal-id="popup_movie_link" onclick="server_trace(new Array('3', 'cam_download_open', current_album, current_asset, duration, time, type, quality));">®Download_movie®</a>
                 <?php
             }
             if (acl_user_is_logged() && acl_has_album_moderation($album)) {
                 ?>
-            <a class="button" href="#" data-reveal-id="popup_asset_link" onclick="server_trace(new Array('3', 'asset_share_open', current_album, current_asset, duration, time, type, quality));">®Share_asset®</a>
-<?php } ?>
+                <a class="button" href="#" data-reveal-id="popup_asset_link" onclick="server_trace(new Array('3', 'asset_share_open', current_album, current_asset, duration, time, type, quality));">®Share_asset®</a>
+            <?php } ?>
         </div>
     </div>
 </div>

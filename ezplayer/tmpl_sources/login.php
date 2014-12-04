@@ -104,8 +104,7 @@
                             <option value="fr" selected="selected">Français</option>
                         </select>
                         <br/>
-                        <input type="submit" name="logged_session" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" tabindex="3"/>
-                        <input type="submit" name="anonymous_session" value="®No_authentication®" tabindex="4" style="float: left; margin-right: 5px;"/>
+                        <input type="submit" name="logged_session" style="margin-left: 190px;;" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" tabindex="3"/>
 
                     </form>
                 </p>

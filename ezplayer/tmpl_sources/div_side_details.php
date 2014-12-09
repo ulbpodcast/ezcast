@@ -22,10 +22,9 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-?>
+*/
 
-<?php include_once 'lib_print.php'; ?>
+include_once 'lib_print.php'; ?>
 <!-- #side_menu
     Contains the buttons used to navigate through the pages.
     #back_button : displayed on asset page and used to return to the current album
@@ -57,8 +56,7 @@
             setActivePane('.bookmarks_button');
             $('#side_pane').scrollTo('#album_bookmarks');
         }
-        if (fullscreen && show_panel)
-            panel_fullscreen();
+        if (fullscreen && show_panel) panel_fullscreen();
     });
     lvl = 3;
     is_lecturer = false;
@@ -75,7 +73,7 @@
         } else {
             trace_pause = false;
         }
-    });
+});
     $("video").bind("play", function(e) {
         if (!shortcuts)
             $(".shortcuts_tab").css('display', 'none');
@@ -85,7 +83,7 @@
         } else {
             trace_pause = false;
         }
-    });
+});
     $('video').bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
         var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
         var fullscreen = state ? true : false;
@@ -98,12 +96,10 @@
     });
 
 </script>
-<?php
-$share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
+<?php $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
         . '&album=' . $album
         . '&asset=' . $asset_meta['record_date']
-        . '&t=';
-?>
+        . '&t='; ?>
 
 <div id="search">
     <?php include_once template_getpath('div_search.php'); ?>
@@ -114,9 +110,9 @@ $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
     <?php if ($is_bookmark) { ?>
         <div class="bookmarks_button active"><a href="#asset_bookmarks" onclick="setActivePane('.bookmarks_button');
             server_trace(new Array('3', 'bookmarks_swap', current_album, current_asset, current_tab));" title="®Display_asset_bookmarks®"></a></div>
-            <?php
-        }
-        ?>
+        <?php
+    }
+    ?>
     <div class='toc_button'><a href="#album_toc" onclick="setActivePane('.toc_button');
         server_trace(new Array('3', 'bookmarks_swap', current_album, current_asset, current_tab));" title="®Display_toc®"></a></div>
     <div class="settings bookmarks">
@@ -145,7 +141,7 @@ $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
 <?php require_once template_getpath('popup_delete_bookmarks.php'); ?>
 <?php require_once template_getpath('popup_delete_tocs.php'); ?>
 <?php require_once template_getpath('popup_export_toc.php'); ?>
-<?php require_once template_getpath('popup_share_time.php'); ?>
+        <?php require_once template_getpath('popup_share_time.php'); ?>
 
 <!-- #side_pane
     Contains different panes adapted for each view

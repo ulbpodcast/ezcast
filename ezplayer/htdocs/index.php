@@ -5,7 +5,7 @@
  * Copyright (C) 2014 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	      Arnaud Wijns <awijns@ulb.ac.be>
+ *            Arnaud Wijns <awijns@ulb.ac.be>
  *            Carlos Avidmadjessi
  * UI Design by Julien Di Pietrantonio
  *

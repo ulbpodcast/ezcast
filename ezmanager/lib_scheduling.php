@@ -25,6 +25,10 @@
  */
 
 /**
+ * @package ezcast.ezmanager.lib.scheduling
+ */
+
+/**
  * DEBUG
  *
  *  0 : Disabled

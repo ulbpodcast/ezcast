@@ -50,7 +50,7 @@ echo $ezmanager_url;
             }
         </script>
     </head>
-    <body>        
+    <body>
         <div class="container">
 <?php include 'div_help_header.php'; ?>
             <div id="global">
@@ -62,8 +62,8 @@ echo $ezmanager_url;
                           echo $ezmanager_safe_url;
                           ?>/index.php" onsubmit="detect_flash();">
                         <div style="color: red; font-weight: bold;"><?php echo $error; ?></div>
-                        <input type="hidden" name="action" value="login" />
-                        <input type="hidden" name="has_flash" value=""/>
+                    <input type="hidden" name="action" value="login" />
+                    <input type="hidden" name="has_flash" value=""/>
                         <div id="login_fields">
                             <label>®Login®:&nbsp;&nbsp;</label><input type="text" name="login" autocapitalize="off" autocorrect="off" tabindex="1" style="margin-right: 15px;" />
                             <br/>
@@ -78,7 +78,7 @@ echo $ezmanager_url;
                         <a style="font-size: 0.8em;" href="javascript:unsafe_connection();" title="®Unsafe_connection®">®Unencrypted_connection®</a>
                         <input type="submit" style="width: 100px;" tabindex="4" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" />
 
-                    </form>
+                </form>
                 </p>
 
             </div>
@@ -86,6 +86,5 @@ echo $ezmanager_url;
 <?php include 'div_main_footer.php'; ?>
 
         </div>
-
     </body>
 </html>

@@ -32,7 +32,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
         <title>®podman_page_title®</title>
-        <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
+        <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
         <link rel="stylesheet" type="text/css" href="css/styleHelp.css" />
         <script type="text/javascript" src="js/AppearDissapear.js"></script>

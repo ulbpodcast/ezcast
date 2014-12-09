@@ -26,11 +26,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  
     Document   : translations.xml
-    Created on : 28 juillet 2011, 17:19
-    Author     : antoinedewilde
     Description:
         Message translations for all the user interface.
--->
+--> 
 
 <data>
     <!-- Labels are keywords that appear in templates 
@@ -55,6 +53,8 @@
         <label id="Yes" lang="en">Yes</label>
         <label id="No" lang="fr">Non</label>
         <label id="No" lang="en">No</label>
+        <label id="By" lang="fr">par</label>
+        <label id="By" lang="en">by</label>
         <label id="Current" lang="fr">Courant</label>
         <label id="Current" lang="en">Current</label>
         <label id="Cancel" lang="fr">Annuler</label>
@@ -76,6 +76,8 @@
         <label id="Help_title" lang="fr">Aide à l'utilisation d'EZplayer</label>
         <label id="Help_title" lang="en">Help for EZplayer</label>
         <label id="Home" lang="fr">Accueil</label>
+        <label id="General" lang="en">General</label>
+        <label id="General" lang="fr">Général</label>
         <label id="Home" lang="en">Home</label>
         <label id="Toc" lang="fr">Signets officiels</label>
         <label id="Toc" lang="en">Official bookmarks</label>
@@ -91,14 +93,67 @@
         <label id="Logout" lang="en">Log out</label>
         <label id="Logout_title" lang="fr">Déconnexion de EZplayer</label>
         <label id="Logout_title" lang="en">Log out from EZplayer</label>
+        <label id="Preferences" lang="fr">Préférences</label>
+        <label id="Preferences" lang="en">Preferences</label>
+        <label id="Preferences_title" lang="fr">Afficher les préférences</label>
+        <label id="Preferences_title" lang="en">Display preferences</label>
         <label id="Update" lang="fr">Sauvegarder</label>
         <label id="Update" lang="en">Update</label>
+        <label id="subscribe_rss" lang="fr">S'abonner au flux RSS</label>
+        <label id="subscribe_rss" lang="en">Subscribe to RSS feed</label>
+        <label id="share_album" lang="fr">Partager l'album</label>
+        <label id="share_album" lang="en">Share the album</label>
+        <label id="Downloadable" lang="fr">Téléchargeable</label>
+        <label id="Downloadable" lang="en">Downloadable</label>
+        <label id="Discussions" lang="fr">Discussions</label>
+        <label id="Discussions" lang="en">Discussions</label>
+        <label id="Current_discussions" lang="fr">Discussions en cours</label>
+        <label id="Current_discussions" lang="en">Current discussions</label>
+        <label id="Discussion_title_placeholder" lang="fr">Sujet de la discussion</label>
+        <label id="Discussion_title_placeholder" lang="en">Subject of the discussion</label>
+        <label id="Post_discussion" lang="fr">Publier</label>
+        <label id="Post_discussion" lang="en">Post</label>
+        <label id="submit_bookmark" lang="fr">Ajouter le signet</label>
+        <label id="submit_bookmark" lang="en">Add bookmark</label>
+        <label id="Add_discussion" lang="fr">Créer une discussion</label>
+        <label id="Add_discussion" lang="en">Create a discussion</label>
+        <label id="Reply_discussion" lang="fr">Répondre à la discussion</label>
+        <label id="Reply_discussion" lang="en">Reply to discussion</label>
+        <label id="Reply" lang="fr">Répondre</label>
+        <label id="Reply" lang="en">Reply</label>
+        <label id="Best_answer" lang="fr">Meilleure réponse</label>
+        <label id="Best_answer" lang="en">Best answer</label>
+        <label id="Other_answers" lang="fr">Autres réponses</label>
+        <label id="Other_answers" lang="en">Other answers</label>
+        <label id="Professor_approved" lang="en">Answer approved by professor</label>
+        <label id="Professor_approved" lang="fr">Réponse approuvée par le professeur</label>
+        <label id="Answer_approval" lang="fr">Approuver la réponse</label>
+        <label id="Answer_approval" lang="en">Approve the answer</label>
+        <label id="Withdraw_approval" lang="fr">Retirer l\'approbation</label>
+        <label id="Withdraw_approval" lang="en">Withdraw approval</label>
+        <label id="Delete_discussion" lang="fr">Supprimer la discussion</label>
+        <label id="Delete_discussion" lang="en">Delete discussion</label>
+        <label id="Edit_discussion" lang="fr">Modifier la discussion</label>
+        <label id="Edit_discussion" lang="en">Edit discussion</label>
+        <label id="Delete_comment" lang="fr">Supprimer le commentaire</label>
+        <label id="Delete_comment" lang="en">Delete comment</label>
+        <label id="Edit_comment" lang="fr">Modifier le commentaire</label>
+        <label id="Edit_comment" lang="en">Edit comment</label>
+        <label id="Visibility_students" lang="en">Visible to students only</label>
+        <label id="Visibility_students" lang="fr">Visible uniquement par les étudiants</label>
+        <label id="Visibility_all" lang="en">Visible to everyone</label>
+        <label id="Visibility_all" lang="fr">Visible par tous</label>
+        <label id="connected_as" lang="fr">Connecté en tant que </label>
+        <label id="connected_as" lang="en">Connected as </label>
+
         <label id="Deleted" lang="fr">Supprimé</label>
         <label id="Deleted" lang="en">Deleted</label>
         <label id="Album" lang="fr">Cours</label>
         <label id="Album" lang="en">Course</label>
         <label id="Albums" lang="fr">Cours</label>
         <label id="Albums" lang="en">Courses</label>
+        <label id="Required" lang="en">Required</label>
+        <label id="Required" lang="fr">Obligatoire</label>
         <label id="Private_album" lang="fr">Album privé</label>
         <label id="Private_album" lang="en">Private album</label>
         <label id="Public_album" lang="fr">Album public</label>
@@ -123,6 +178,12 @@
         <label id="Timecode_info" lang="en">Position in seconds</label>
         <label id="Bad_timecode" lang="fr">Le code temps est incorrect</label>
         <label id="Bad_timecode" lang="en">Incorrect timecode</label>
+        <label id="Visibility" lang="fr">Etudiant uniquement</label>
+        <label id="Visibility" lang="en">Student only</label>
+        <label id="Visibility_info" lang="fr">Visible uniquement par les étudiants</label>
+        <label id="Visibility_info" lang="en">Visible to students only</label>
+        <label id="Message" lang="fr">Message</label>
+        <label id="Message" lang="en">Message</label>
         <label id="Title" lang="fr">Titre</label>
         <label id="Title" lang="en">Title</label>
         <label id="No_title" lang="fr">Sans titre</label>
@@ -187,6 +248,8 @@
         <label id="Download_slide" lang="en">Download slide</label>   
         <label id="Embed" lang="fr">Embed</label>
         <label id="Embed" lang="en">Embed</label>
+        <label id="Allow_download" lang="fr">Autoriser le téléchargement</label>
+        <label id="Allow_download" lang="en">Allow download</label>
         <label id="high_res" lang="fr">Haute résolution</label>
         <label id="high_res" lang="en">High resolution</label>
         <label id="low_res" lang="fr">Basse résolution</label>
@@ -218,16 +281,20 @@
          <label id="Copy_to_clipboard" lang="en">Copy to clipboard</label>
          <label id="Content_in_clipboard" lang="fr">Contenu copié dans le presse-papier</label>
          <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
-         <label id="To_podcast" lang="fr">Accéder à EZplayer</label>
-         <label id="To_podcast" lang="en">Navigate to EZplayer</label>
+         <label id="To_podcast" lang="fr">Accéder à ULB Podcast</label>
+         <label id="To_podcast" lang="en">Navigate to ULB Podcast</label>
          <label id="Back_to_album" lang="fr">Retour à l'album</label>
          <label id="Back_to_album" lang="en">Back to the album</label>
          <label id="Back_to_home" lang="fr">Retour à l'accueil</label>
          <label id="Back_to_home" lang="en">Back home</label>
+         <label id="Back_to_discussions" lang="fr">Retour à la liste des discussions</label>
+         <label id="Back_to_discussions" lang="en">Back to discussions</label>
          <label id="Display_bookmarks" lang="fr">Afficher les signets de l'album</label>
          <label id="Display_bookmarks" lang="en">Display the album bookmarks</label>
          <label id="Display_asset_bookmarks" lang="fr">Afficher les signets de l'enregistrement</label>
          <label id="Display_asset_bookmarks" lang="en">Display the asset bookmarks</label>
+         <label id="Display_asset_threads" lang="fr">Afficher les discussions de l'enregistrement</label>
+         <label id="Display_asset_threads" lang="en">Display the asset discussions</label>
          <label id="Display_assets" lang="fr">Afficher les assets de l'album</label>
          <label id="Display_assets" lang="en">Display the album assets</label>
          <label id="Display_asset" lang="fr">Afficher les informations de l'asset</label>
@@ -258,6 +325,10 @@
          <label id="No_toc" lang="en">There is no official bookmark for this course.</label>
          <label id="No_authentication" lang="fr">Poursuivre sans s'identifier</label>
          <label id="No_authentication" lang="en">Continue without authentication.</label>
+         <label id="No_thread" lang="fr">Il n'y a aucune discussion pour cette vidéo.</label>
+         <label id="No_thread" lang="en">There is no discussion yet on this video.</label>
+         <label id="Thread_nbComments" lang="fr">Nombre de commentaires sur cette discussion</label>
+         <label id="Thread_nbComments" lang="en">Number of comments on this discussion</label>
         
 
 
@@ -271,6 +342,10 @@
         <label id="Copy" lang="en">Copy</label>
         <label id="Edit" lang="fr">Editer</label>
         <label id="Edit" lang="en">Edit</label>
+        <label id="Created_by" lang="fr">Créé par</label>
+        <label id="Created_by" lang="en">Created by</label>
+        <label id="Edited_on" lang="fr">Modifié le</label>
+        <label id="Edited_on" lang="en">Edited on</label>
         <label id="Edit_bookmark" lang="fr">Editer le signet</label>
         <label id="Edit_bookmark" lang="en">Edit the bookmark</label>
         <label id="Share_bookmark" lang="fr">Partager le signet</label>
@@ -365,7 +440,7 @@
         <label id="Change_speedrate" lang="en">Modify the speed rate</label>
         <label id="Add_title_album" lang="fr">Ajouter un titre aux vidéos publiées dans cet album</label>
         <label id="Add_title_album" lang="en">Add a title to videos published in this album</label>
-        <label id="Add_bookmark" lang="fr">Ajouter un signet privé</label>
+        <label id="Add_bookmark" lang="fr">Ajouter un signet personnel</label>
         <label id="Add_bookmark" lang="en">Add a private bookmark</label>
         <label id="Add_toc" lang="fr">Ajouter un signet aux signets officiels</label>
         <label id="Add_toc" lang="en">Add a bookmark to officials bookmarks</label>
@@ -375,6 +450,8 @@
         <label id="Toggle_fullscreen" lang="en">Change the display</label>
         <label id="Display_tab" lang="fr">Afficher les signets</label>
         <label id="Display_tab" lang="en">Show bookmarks</label>
+        <label id="Comment" lang="fr">Commentaire</label>
+        <label id="Comment" lang="en">Comment</label>
         
         <!-- Video shortcuts -->
         <label id="key_space" lang="fr">Play / Pause</label>
@@ -421,6 +498,10 @@
         <label id="No_title" lang="en">Please input a title</label>
         <label id="No_file" lang="fr">Veuillez sélectionner un fichier</label>
         <label id="No_file" lang="en">Please select a file</label>
+        <label id="missing_message" lang="fr">Le message est obligatoire.</label>
+        <label id="missing_message" lang="en">The message is empty</label>
+        <label id="missing_title" lang="fr">Le titre est obligatoire.</label>
+        <label id="missing_title" lang="en">The title is empty</label>
         <label id="bad_extension" lang="fr">Type de fichier non reconnu</label>
         <label id="bad_extension" lang="en">Bad extension</label>
         <label id="search_results" lang="fr">Résultats de la recherche</label>
@@ -429,15 +510,28 @@
         <label id="no_result" lang="en">No result</label>
         <label id="connect" lang="fr">Se connecter</label>
         <label id="connect" lang="en">Connect</label>
+        <label id="Player_url" lang="fr">Lien EZplayer</label>
+        <label id="Player_url" lang="en">EZplayer link</label>
+        <label id="RSS_url" lang="fr">Lien flux RSS</label>
+        <label id="RSS_url" lang="en">RSS feed link</label>
+        <label id="Last_discussions" lang="fr">Les dernières discussions</label>
+        <label id="Last_discussions" lang="en">Last discussions</label>
+        <label id="album_discussions" lang="fr">Discussions de l'album</label>
+        <label id="album_discussions" lang="en">Album discussions</label>
+        <label id="Display_discussions" lang="fr">Afficher la liste des discussions</label>
+        <label id="Display_discussions" lang="en">Display the list of discussions</label>
+        <label id="Refresh_discussion_details" lang="fr">Rafraîchir la discussion</label>
+        <label id="Refresh_discussion_details" lang="en">Refresh the discussion</label>
+        <label id="Refresh_discussions" lang="fr">Rafraîchir la liste</label>
+        <label id="Refresh_discussions" lang="en">Refresh discussions</label>
         <label id="tuto" lang="fr">Fonctionnalités d'EZplayer</label>
         <label id="tuto" lang="en">EZplayer's features</label>
         
-   
         <!-- Long texts -->
         <label id="Warning_browser" lang="fr">Ce site n'est pas optimisé pour votre navigateur. Certaines fonctionnalités risquent de ne pas fonctionner.
                     &lt;br /&gt;Seuls les navigateurs suivants sont pleinement compatibles</label>
         <label id="Warning_browser" lang="en">This site is not optimized for your web browser. Some functionalities might not properly work.
-                    &lt;br /&gt;Only the following browsers are fully compatible</label>        
+                    &lt;br /&gt;Only the following browsers are fully compatible</label>
         <label id="connect_message" lang="fr">En vous identifiant, vous aurez accès à plus de possibilités, telles que l’ajout de signets sur les vidéos, le partage d’un moment précis d’une vidéo, l’import/export de signets, la gestion de vos cours favoris, etc.</label>
         <label id="connect_message" lang="en">By authenticating, you have access to more features, such as adding bookmarks on the videos, sharing a specific moment in the video, importing/exporting bookmarks, handling your favorite courses, etc.</label>
         <label id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</label>
@@ -464,6 +558,8 @@
         <label id="HD_RSS_feed_URL_message" lang="en">You can watch or broadcast this course in high definition by using the following link:</label>
         <label id="SD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer ce cours en basse définition, veuillez utiliser le lien suivant :</label>
         <label id="SD_RSS_feed_URL_message" lang="en">You can watch or broadcast this course in low definition by using the following link:</label>
+        <label id="EZPLAYER_RSS_feed_URL_message" lang="fr">Pour vous abonner à ce cours, veuillez utiliser le lien suivant :</label>
+        <label id="EZPLAYER_RSS_feed_URL_message" lang="en">You can subscribe to this course by using the following link:</label>
         <label id="media_URL_message" lang="fr">Pour regarder ou distribuer cette vidéo, veuillez utiliser le lien suivant :</label>
         <label id="media_URL_message" lang="en">You can watch or distribute this video by using the following link:</label>
         <label id="Bookmark_link_message" lang="fr">Pour regarder ou partager ce signet, veuillez utiliser le lien suivant :</label>
@@ -498,8 +594,14 @@
         <label id="Select_bookmarks_message" lang="en">Select the bookmarks to be exported.</label>
         <label id="Delete_asset_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un enregistrement. Cette opération est irréversible.</label>
         <label id="Delete_asset_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;You are about to delete a record. This operation can't be reverted</label>
+        <label id="Delete_comment_title" lang="fr">Supprimer le message</label>
+        <label id="Delete_comment_title" lang="en">Delete a comment</label>
+        <label id="Delete_comment_message" lang="fr">Attention, vous vous apprêtez à supprimer un message. Cette opération est irréversible.</label>
+        <label id="Delete_comment_message" lang="en">Caution, you are about to delete a comment. This operation can't be reverted.</label>
         <label id="Delete_bookmark_message" lang="fr">Attention, vous vous apprêtez à supprimer un signet. Cette opération est irréversible.</label>
         <label id="Delete_bookmark_message" lang="en">Caution, you are about to delete a bookmark. This operation can't be reverted.</label>
+        <label id="Delete_discussion_message" lang="fr">Attention, vous vous apprêtez à supprimer une discussion ainsi que tous les messages qu'elle contient. Cette opération est irréversible.</label>
+        <label id="Delete_discussion_message" lang="en">Warning, you are about to delete a discussion and the comments related to it. This operation can't be reverted.</label>
         <label id="Copy_bookmark_message" lang="fr">Souhaitez-vous copier ce signet vers les signets officiels ? Si les signets officiels contiennent déjà un signet à ce moment de la vidéo, celui-ci sera remplacé par le nouveau.</label>
         <label id="Copy_bookmark_message" lang="en">Do you want to copy this bookmark in the official bookmarks ? If the official bookmarks already contain a bookmark at this time of the video, it will be replaced by the new one.</label>
         <label id="Delete_bookmarks_message" lang="fr">Sélectionnez les signets que vous souhaitez supprimer. Cette opération est irréversible.</label>
@@ -552,7 +654,21 @@
         <label id="Load_for_switch" lang="en">Both videos must be loaded to enable the switch function. Press "Play" to load this video.</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
-
+        <label id="Player_url_message" lang="fr">Pour consulter ou distribuer cet album via le lecteur enrichi "EZplayer", veuillez utiliser le lien suivant :</label>
+        <label id="Player_url_message" lang="en">You can watch or broadcast this album via EZplayer, the rich media player, by using the following link:</label>
+        <label id="Notification_new_video" lang="fr">Afficher la notification de nouvelles vidéos</label>
+        <label id="Notification_new_video" lang="en">Show notification of new videos</label>
+        <label id="Notification_during_video_playback" lang="fr">Afficher la notification des discussions durant les vidéos</label>
+        <label id="Notification_during_video_playback" lang="en">Show notification discussions during video playback</label>
+        <label id="Show_discussions" lang="fr">Afficher les discussions</label>
+        <label id="Show_discussions" lang="en">Show discussions</label>
+        <label id="discussion_visibility" lang="fr">Visibilité de la discussion</label>
+        <label id="discussion_visibility" lang="en">Discussion visibility</label>
+        <label id="discussion_student_teacher" lang="fr">Etudiants + professeurs</label>
+        <label id="discussion_student_teacher" lang="en">Students + teachers</label>
+        <label id="discussion_student" lang="fr">Etudiants</label>
+        <label id="discussion_student" lang="en">Students only</label>
+        
     </labels>
     
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->
@@ -614,6 +730,8 @@
         <message id="Invalid_type" lang="fr">Accès refusé: type de média non-valide</message>
         <message id="Invalid_type" lang="en">Access denied: invalid media type</message>        
         <message id="Inexistant" lang="fr">Enregistrement non disponible</message>
-        <message id="Inexistant" lang="en">Recording not available</message>
+        <message id="Inexistant" lang="en">Recording not available</message>    
+        <message id="Last_edit" lang="fr">Dernière modification le </message>
+        <message id="Last_edit" lang="en">Last edited on </message>
     </messages>
 </data>

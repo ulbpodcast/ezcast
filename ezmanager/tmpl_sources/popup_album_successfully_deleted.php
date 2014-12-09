@@ -1,4 +1,5 @@
-<!-- 
+<?php 
+/*
 * EZCAST EZmanager 
 *
 * Copyright (C) 2014 Université libre de Bruxelles
@@ -21,8 +22,10 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+?>
 
-
+<!--
 This popup displays a confirmation message when we delete an album.
 
 You should not have to use it by itself (it is called by web_index.php::create_album())

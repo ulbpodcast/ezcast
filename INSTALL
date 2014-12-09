@@ -21,7 +21,7 @@ In order to use EZcast, you need to install / enable several components:
 1. Download the latest available version of EZcast from our Git repository https://github.com/ulbpodcast/ezcast.git
 2. Create a MySQL database for EZcast on your server (grant all privileges on the database).
 3. Put the EZcast directory wherever you want on your server (we recommend to place it under « /usr/local/ezcast»)
-4. Edit the php.ini file to increase upload_max_filesize (to 2G), post_max_size (to 2G), max_execution_time (to 300) and max_input_time (to 300).
+4. Edit the php.ini file to increase upload_max_filesize, post_max_size, max_execution_time and max_input_time.
 5. Launch the « install.sh » script as root from the EZcast directory and follow the instructions.
 6. Open the EZadmin page in your web browser for the configuration of EZcast and all of its components. This is a one-time operation
 `i.e :   http://my.server.address/ezadmin`

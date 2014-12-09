@@ -63,7 +63,7 @@ $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (def
 
 
 // used by lib_ezmam (ezmanager)
-$accepted_media_qualities = array('high', 'low'); // Media quality prefixes accepted by the distribution script
+$accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)
 
 $template_folder = 'tmpl/';
@@ -80,6 +80,5 @@ $flash_only_browsers = array('Firefox');
 
 // used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
 $upload_slice_size = 1024 * 1024;
-
 
 ?>

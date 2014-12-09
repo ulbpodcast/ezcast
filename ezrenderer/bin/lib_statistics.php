@@ -133,5 +133,4 @@ function get_load() {
     
     return substr($infos[count($infos) - 3], 0, -1);
 }
-
 ?>

@@ -22,9 +22,10 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+*/
 ?>
 
+<script>settings_form = false;</script>
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
@@ -33,17 +34,36 @@
             <?php } ?>
             <a href="index.php" title="®Back_to_home®"><img src="./images/Header/LogoEZplayer.png" alt="" /></a>
         </div>
-        <?php if (acl_user_is_logged()){ ?>
-        <a href="index.php?action=logout" title="®Logout_title®"><span class="logout">®Logout®</span></a>
-        <?php } else { 
-            require_once template_getpath('popup_login.php');?>
-        <a href="#" data-reveal-id="popup_login" title="®Login_title®"><span class="logout">®Login®</span></a>
-        <?php } ?>
+        <!-- S E T T I N G S -->
+        <div class="form" id="settings_form">
+            <div id='settings_form_wrapper'>
+                <?php include_once template_getpath('div_settings.php'); ?>
+            </div>
+        </div>
+
+
+        <?php if (acl_user_is_logged()) { ?>
+            <a href="index.php?action=logout" title="®Logout_title®"><span class="logout">®Logout®</span></a>
+            <?php
+        } else {
+            require_once template_getpath('popup_login.php');
+            ?>
+            <a href="#" data-reveal-id="popup_login" title="®Login_title®"><span class="logout">®Login®</span></a>
+        <?php } ?>       
         <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
-        <a href="index.php?action=view_help" target="_blank" title="®Help_title®"><span class="logout">®Help®</span></a> 
+        <a href="index.php?action=view_help" target="_blank" title="®Help_title®"><span class="logout">®Help®</span></a>
+        <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
+        <?php if (acl_user_is_logged()) { ?>
+            <a id="user-settings" class="pull-right" onclick="javascript:toggle_settings_form()" title="®Preferences_title®">
+                <span>®Preferences®</span> 
+            </a>    
+        <?php } ?>
+        <?php if (acl_is_admin()) { ?>
+            <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
+            <span class="logout">®connected_as® <b><?php echo $_SESSION['user_full_name']; ?></b></span>
+        <?php } ?>
     </div>
 </div>
-<?php 
-if (!acl_user_is_logged() && isset($login_error) && !empty($login_error)){ ?>
-<script>              $('#popup_login').reveal($(this).data()); </script> 
+<?php if (!acl_user_is_logged() && isset($login_error) && !empty($login_error)) { ?>
+    <script>              $('#popup_login').reveal($(this).data());</script> 
 <?php } ?>

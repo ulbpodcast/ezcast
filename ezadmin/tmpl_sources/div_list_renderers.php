@@ -51,7 +51,7 @@ require_once 'config.inc';
         if($return_val != 0){
             $r['no_ping'] = true;
         } else {
-            $r = lib_scheduling_renderer_metadata($r);
+        $r = lib_scheduling_renderer_metadata($r);
         }
         //var_dump($r2);
         ?>

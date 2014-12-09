@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!-- 
         * EZCAST EZmanager 
         *
@@ -31,10 +33,9 @@
 
         WARNING: Please call template_repository_path() BEFORE including this template
         -->
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
         <title>®podman_page_title®</title>
-        <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
+        <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
         <link rel="stylesheet" type="text/css" href="css/colorbox.css" />
@@ -177,13 +178,13 @@ echo $title_max_length;
 
 
 
-        <?php if (isset($head_code)) echo $head_code; ?>
+<?php if (isset($head_code)) echo $head_code; ?>
     </head>
     <body>
         <div id="test"></div>
 
         <div class="container">
-            <?php include_once template_getpath('div_main_header.php'); ?>
+<?php include_once template_getpath('div_main_header.php'); ?>
             <div id="global">
                 <!-- "New album" button -->
                 <span class="CreerAlbum"><a href="javascript:show_popup_from_inner_div('#popup_new_album');">®Create_album®</a></span>
@@ -195,7 +196,7 @@ echo $title_max_length;
                     <!-- Left column: album list -->
                     <div id="div_album_list">
                         <!-- Album list goes here -->
-                        <?php include_once template_getpath('div_album_list.php'); ?>
+<?php include_once template_getpath('div_album_list.php'); ?>
                     </div>
                     <!-- Left column: album list END -->
 
@@ -222,12 +223,12 @@ echo $title_max_length;
                 </div><!-- center div END -->
             </div><!-- global -->
             <!-- FOOTER - INFOS COPYRIGHT -->
-            <?php include_once template_getpath('div_main_footer.php'); ?>
+<?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
 
             <!-- Popups -->
             <div style="display: none;">
-                <?php include_once 'popup_new_album.php'; ?>
+<?php include_once 'popup_new_album.php'; ?>
 
                 <!-- This popup gets automatically filled with messages, depending on the situation -->
                 <div class="popup" id="popup_messages"></div>

@@ -22,14 +22,14 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+*/
 ?>
 
 <div class="footer">
     <div class="footer_content">
          <div class="footer_mention">
              <a href='http://ezcast.ulb.ac.be' >EZcast</a> ®developed_by® <a href="http://podcast.ulb.ac.be">ULB Podcast</a>
-         </div>
+        </div>
         <div class="copyright">
             Copyright © 2014
         </div>

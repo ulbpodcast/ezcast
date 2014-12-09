@@ -1,4 +1,5 @@
-<!-- 
+<?php 
+/*
 * EZCAST EZmanager 
 *
 * Copyright (C) 2014 Université libre de Bruxelles
@@ -21,8 +22,11 @@
 * You should have received a copy of the GNU Lesser General Public
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+?>
 
 
+<!-- 
 This is the popup displaying the URL to the media.
 You should not have to use this file on your own; if you do, make sure the variable $media_url and $media_url_web are defined
 -->

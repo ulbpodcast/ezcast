@@ -51,7 +51,7 @@ echo $ezadmin_url;
             }
         </script>
     </head>
-    <body>        
+    <body>
         <div class="container">
             <?php include 'div_header.php'; ?>
             <div id="global">
@@ -68,7 +68,7 @@ echo $ezadmin_url;
                             echo $ezadmin_safe_url;
                             ?>/index.php" method="post" onsubmit="detect_flash();">
                                   <?php } ?>
-                            <?php if (isset($_SESSION['install'])) { ?>
+                                  <?php if (isset($_SESSION['install'])) { ?>
                                 <h4>®install_description®</h4>
                             <?php } ?>
                             <div style="color: red; font-weight: bold;"><?php echo $error; ?></div>

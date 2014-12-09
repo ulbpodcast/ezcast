@@ -25,6 +25,9 @@
  */
 
 /**
+ * @package ezcast.ezadmin.installer
+ */
+/**
  * This file is aimed to install EZcast and its components.
  * It creates the tables of the database and sets up the configuration files 
  * according to the user's preferences
@@ -43,6 +46,7 @@ if (file_exists('config.inc')) {
     echo "Nothing to do here ;-)";
     die;
 }
+
 session_name("ezcast_installer");
 session_start();
 
@@ -52,7 +56,6 @@ $input = array_merge($_GET, $_POST);
 
 
 if (!isset($_SESSION['user_logged'])) {
-//if (false) {
     if (isset($input['action']) && $input['action'] == 'login') {
         if (!isset($input['login']) || !isset($input['passwd'])) {
             error_print_message(template_get_message('empty_username_password', get_lang()));
@@ -156,7 +159,7 @@ if (isset($input['install']) && !empty($input['install'])) {
     $input['recorder_basedir'] = $recorder_basedir;
 
     include_once './config-sample.inc';
-        
+
     $input['ezmanager_host'] = $ezmanager_host;
     $input['ezmanager_user'] = $ezmanager_user;
 
@@ -181,7 +184,6 @@ function check_php_extensions() {
     $php_extensions = array('ldap', 'curl', "PDO", "pdo_mysql", "mysql", "json"); // , "apc");
 
     $all_dependences = true;
-
 
     foreach ($php_extensions as $extension) {
         if (extension_loaded($extension)) {
@@ -299,66 +301,67 @@ function convert_size($string) {
 
 function save_logo() {
     global $input;
-    
+
     if (file_exists("../commons/config.inc")) {
         include_once '../commons/config.inc';
     } else {
         include_once '../commons/config-sample.inc';
     }
-    
+
     $target_dir = "./htdocs/img/organization-logo.png";
     $errors = array();
 
     if (!isset($_FILES['organization_logo']) || $_FILES['organization_logo']['name'] == "") {
         return true;
     }
-    
+
     if ($_FILES['organization_logo']['error'] > 0) {
         $errors['file_error'] = "Error while uploading logo file";
         require template_getpath('install.php');
         die;
     }
-    
-    if ($_FILES['organization_logo']['size'] > 1048576){
+
+    if ($_FILES['organization_logo']['size'] > 1048576) {
         $errors['file_error'] = "Logo file bigger than 1Mo";
     }
 
     $filename_info = file_get_extension(basename($_FILES['organization_logo']['name']));
-    if (strtolower($filename_info['ext']) != 'png'){
-        $errors['file_error'] = "Bad extension for logo file (expected 'png' found '". $filename_info['ext'] ."')";
+    if (strtolower($filename_info['ext']) != 'png') {
+        $errors['file_error'] = "Bad extension for logo file (expected 'png' found '" . $filename_info['ext'] . "')";
     }
-    
+
     if (count($errors) > 0) {
         require template_getpath('install.php');
         die;
     }
-    
-    $res = move_uploaded_file($_FILES['organization_logo']['tmp_name'],$target_dir);
-    if (!$res){ 
+
+    $res = move_uploaded_file($_FILES['organization_logo']['tmp_name'], $target_dir);
+    if (!$res) {
         $errors['file_error'] = "Error while saving logo file";
         require template_getpath('install.php');
         die;
     }
-    
+
     copy($target_dir, "../ezmanager/htdocs/images/Header/organization-logo.png");
     copy($target_dir, "../ezplayer/htdocs/images/Header/organization-logo.png");
     copy($target_dir, $apache_documentroot . "/ezmanager/images/Header/organization-logo.png");
     copy($target_dir, $apache_documentroot . "/ezplayer/images/Header/organization-logo.png");
     copy($target_dir, $apache_documentroot . "/ezadmin/img/organization-logo.png");
-    
+
     return true;
 }
 
-function file_get_extension($filename){
- //search last dot in filename
- $pos_dot=strrpos($filename, '.');
- if($pos_dot===false)return array('name'=>$filename,'ext'=>"");
+function file_get_extension($filename) {
+    //search last dot in filename
+    $pos_dot = strrpos($filename, '.');
+    if ($pos_dot === false)
+        return array('name' => $filename, 'ext' => "");
 
- $ext_part=substr($filename, $pos_dot+1);
- $name_part=substr($filename,0,$pos_dot);
- $result_assoc['name']=$name_part;
- $result_assoc['ext']=$ext_part;
- return $result_assoc;
+    $ext_part = substr($filename, $pos_dot + 1);
+    $name_part = substr($filename, 0, $pos_dot);
+    $result_assoc['name'] = $name_part;
+    $result_assoc['ext'] = $ext_part;
+    return $result_assoc;
 }
 
 function validate_form() {

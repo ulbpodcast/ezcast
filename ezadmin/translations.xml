@@ -32,7 +32,7 @@
 
 <data>
     <!-- Labels are keywords that appear in templates 
-    Note: please use the same label name as the keyword between ®'s that appears in the template -->
+         Note: please use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff -->
         <label id="service_name" lang="fr">EZadmin</label>
@@ -135,6 +135,10 @@
         <label id="reset" lang="en">Reset</label>
         <label id="logs" lang="fr">Historique des opérations</label>
         <label id="logs" lang="en">Logs</label>
+        <label id="stats_ezplayer_threads" lang="fr">Discussions</label>
+        <label id="stats_ezplayer_threads" lang="en">Discussions</label>
+        <label id="stats_ezplayer_bookmarks" lang="fr">Signets</label>
+        <label id="stats_ezplayer_bookmarks" lang="en">Bookmarks and TOC</label>
         
         <!-- Titles -->
         <label id="list_courses_title" lang="fr">Liste des cours</label>
@@ -298,7 +302,7 @@
         <label id="delete" lang="fr">Supprimer</label>   
         <label id="delete" lang="en">Delete</label>        
         <label id="push_changes" lang="fr">Sauvegarder</label>   
-        <label id="push_changes" lang="en">Save changes</label> 
+        <label id="push_changes" lang="en">Save changes</label>        
         <label id="sync_externals" lang="fr">Synchro externes</label>   
         <label id="sync_externals" lang="en">Sync externals</label>        
         <label id="unsaved_changes" lang="fr">non-sauvegardé</label>   
@@ -439,6 +443,8 @@
         <label id="renderer_delete_error" lang="en">An error has occured during the renderer deletion.</label>
         <label id="renderer_delete" lang="fr">Vous pouvez désormais supprimer les fichiers d'EZrenderer sur le serveur distant (renderer).</label>
         <label id="renderer_delete" lang="en">You can now delete EZrenderer files on the remote server (renderer).</label>
+        <label id="leave_empty_field" lang="fr">Laisser le champs vide pour conserver le mot de passe</label>
+        <label id="leave_empty_field" lang="fr">Leave empty field to keep the previous password</label>
         
         <!-- Install -->
         <label id="install_page_title" lang="fr">Installation EZcast</label>
@@ -519,6 +525,20 @@
         <label id="settings_use_user_name" lang="en">Show users name</label>
         <label id="install" lang="fr">Installer</label>
         <label id="install" lang="en">Install</label>
+        <label id="stats_album_name" lang="fr">Nom de l'album</label>
+        <label id="stats_album_name" lang="en">Album name</label>
+        <label id="stats_discussions_count" lang="fr">Nombre de discussions</label>
+        <label id="stats_discussions_count" lang="en">Number of discussions</label>
+        <label id="stats_comments_count" lang="fr">Nombre de commentaires</label>
+        <label id="stats_comments_count" lang="en">Number of comments</label>
+        <label id="stats_comments_by_discussion" lang="fr">Nombre de commentaires par discussion</label>
+        <label id="stats_comments_by_discussion" lang="en">Number of comments by discussion</label>
+        <label id="stats_total" lang="fr">Total</label>
+        <label id="stats_total" lang="en">Total</label>
+        <label id="stats_average" lang="fr">Moyenne</label>
+        <label id="stats_average" lang="en">Average</label>
+        <label id="search" lang="fr">Rechercher</label>
+        <label id="search" lang="en">Search</label>
         
         
         <!-- Long texts -->
@@ -547,7 +567,35 @@
         <label id="create_renderer_step_4_xml" lang="fr">Mettre à jour la liste des renderers pour EZadmin et EZmanager </label>
         <label id="create_renderer_step_4_xml" lang="en">Update renderers list for EZadmin and EZmanager </label>
         <label id="load_step_4_copy" lang="fr">Copie des fichiers d'installation d'EZrenderer en cours ...</label>
-        <label id="load_step_4_copy" lang="en">Copying EZrenderer installation files ...</label>        
+        <label id="load_step_4_copy" lang="en">Copying EZrenderer installation files ...</label>
+        <label id="stats_main_title" lang="fr">Statistiques générales</label>
+        <label id="stats_main_title" lang="en">Global statistics</label>
+        <label id="stats_sub_title" lang="fr">Statistiques sur discussions et commentaires</label>
+        <label id="stats_sub_title" lang="en">Statistics over discussions and comments</label>
+        <label id="stats_since" lang="fr">Depuis le début du système </label>
+        <label id="stats_since" lang="en">Since the beginning </label>
+        <label id="stats_discussions_created" lang="fr">discussions ont été créées</label>
+        <label id="stats_discussions_created" lang="en">discussions have been created</label>
+        <label id="stats_comments_created" lang="fr">commentaires ont été postés</label>
+        <label id="stats_comments_created" lang="en">comments have been published</label>
+        <label id="discussions_comments_by_album" lang="fr">Répartition des discussions et commentaires par album</label>
+        <label id="discussions_comments_by_album" lang="en">Repartition of discussions and comments by album</label>
+        <label id="stats_at_least_one" lang="fr">Seuls les albums dont au moins une vidéo possède une discussion sont affichés.</label>
+        <label id="stats_at_least_one" lang="en">The album has to contains at least one discussion to be displayed.</label>
+        <label id="stats_discussions_by_album" lang="fr">Nombre de discussions par album</label>
+        <label id="stats_discussions_by_album" lang="en">Number of discussions by album</label>
+        <label id="stats_month" lang="fr">Statistiques par mois</label>
+        <label id="stats_month" lang="en">Monthly statistics</label>
+        <label id="stats_month_error" lang="fr">La date recherchée est ultérieure à la date actuelle.</label>
+        <label id="stats_month_error" lang="en">The date you entered is later than the current date.</label>
+        <label id="stats_nan_error" lang="fr">Introduisez une valeur numérique dans le champ de saisie.</label>
+        <label id="stats_nan_error" lang="en">Numeric value expected. Found NaN value.</label>
+        <label id="stats_n_days" lang="fr">Statistiques des n derniers jours</label>
+        <label id="stats_n_days" lang="en">Statistics for the N last days</label>
+        <label id="stats_other" lang="fr">Autres ...</label>
+        <label id="stats_other" lang="en">Others ...</label>
+        <label id="stats_discussions_by_asset" lang="fr">Nombre de discussions par asset</label>
+        <label id="stats_discussions_by_asset" lang="en">Number of discussions by asset</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
     </labels>
@@ -588,6 +636,8 @@
         <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a movie</message>
         <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
         <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
+        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une erreur, contactez podcast@ulb.ac.be</message>
+        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact podcast@ulb.ac.be</message>
         <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
         <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
         <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
@@ -596,6 +646,8 @@
         <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
         <message id="File_not_found" lang="fr">Fichier introuvable</message>
         <message id="File_not_found" lang="en">Could not find your file, sorry</message>
+        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast@ulb.ac.be</message>
+        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast@ulb.ac.be</message>
         <message id="Invalid_token" lang="fr">Accès refusé</message>
         <message id="Invalid_token" lang="en">Access denied</message>
         <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>

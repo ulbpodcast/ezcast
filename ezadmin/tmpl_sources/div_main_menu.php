@@ -123,6 +123,17 @@ $options['Renderers'] = array(
    )
 );
 
+$options['Stats'] = array(
+   'stats_ezplayer_threads' => array(
+       'name' => '®stats_ezplayer_threads®',
+       'action' => 'view_stats_ezplayer_threads'
+   ),
+   'stats_ezplayer_bookmarks' => array(
+       'name' => '®stats_ezplayer_bookmarks®',
+       'action' => 'view_stats_ezplayer_bookmarks'
+   )
+);
+
 // Each element is the translation in the destination language of the keyword used to reference the category in the above array.
 // Used for display purposes only.
 $category_names = array(

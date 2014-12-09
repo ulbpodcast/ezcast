@@ -27,6 +27,7 @@
 /**
  * This file contains all methods related to access control.
  * NOTE: This library needs session vars, so please call session_start() first
+ *  @package ezcast.ezplayer.lib.acl
  */
 require_once 'config.inc';
 require_once 'lib_ezmam.php';
@@ -74,7 +75,6 @@ function acl_update_permissions_list() {
     $courses_list_for_author = array();
     $consulted_albums = array();
     $watched_assets = array();
-
     if (acl_user_is_logged()) {
         $courses_list_for_author = courses_list($_SESSION['user_login']);
         foreach ($courses_list_for_author as $key => $title){
@@ -101,6 +101,19 @@ function acl_update_permissions_list() {
     $_SESSION['acl_watched_assets'] = $watched_assets;
 }
 
+/**
+ * Determines if the current user is a professor or not
+ * @return boolean
+ */
+function acl_has_moderated_album(){
+    if(!acl_user_is_logged())
+        return false;
+    return (count($_SESSION['acl_moderated_albums']) != 0);
+}
+
+/**
+ * Retrieve the new settings values
+ */
 function acl_update_settings(){
     if (acl_user_is_logged()){
         $_SESSION['acl_user_settings'] = user_prefs_settings_get($_SESSION['user_login']);
@@ -125,6 +138,11 @@ function acl_is_watched($album, $asset) {
     return false;
 }
 
+/**
+ * Returns the number of watched assets
+ * @param string $album
+ * @return int
+ */
 function acl_watched_count($album) {
         
     if (!acl_user_is_logged()) {
@@ -145,10 +163,20 @@ function acl_watched_count($album) {
     return $count;
 }
 
+/**
+ * Returns the number of videos contained in the given album
+ * @param string $album
+ * @return int
+ */
 function acl_global_count($album){
     return $_SESSION['acl_global_count'][$album];
 }
 
+/**
+ * Returns the value of a setting
+ * @param string $setting
+ * @return boolean
+ */
 function acl_value_get($setting){
     $settings = $_SESSION["acl_user_settings"];
     return $settings[$setting];
@@ -172,7 +200,7 @@ function acl_has_album_permissions($album) {
  */
 function acl_has_album_moderation($album) {
     if (!acl_user_is_logged()) {
-        error_print_message('Error: acl_has_album_permissions: You are not logged in');
+     //   error_print_message('Error: acl_has_album_permissions: You are not logged in');
         return false;
     }
     $album = suffix_remove($album);
@@ -190,11 +218,20 @@ function acl_authorized_albums_list() {
     return (isset($_SESSION['acl_consulted_albums'])) ? $_SESSION['acl_consulted_albums'] : array() ;
 }
 
+/**
+ * Returns the tokens list of an album 
+ * @return array
+ */
 function acl_authorized_album_tokens_list() {
 
     return (isset($_SESSION['acl_album_tokens'])) ? $_SESSION['acl_album_tokens'] : array() ;
 }
 
+/**
+ * Returns an album token
+ * @param string $album
+ * @return type
+ */
 function acl_token_get($album){
         // Get the list that contains all album tokens
     $token_list = $_SESSION['acl_album_tokens'];
@@ -211,6 +248,21 @@ function acl_token_get($album){
 
     // no match found
     return false;
+}
+
+/**
+ * Returns the list of all album user has access to
+ * @return the list of all album user has access to
+ */
+function acl_album_tokens_get(){
+            // Get the list that contains all album tokens
+    $token_list = $_SESSION['acl_album_tokens'];
+
+    // if no result, the user and/or album are not correct
+    if (!isset($token_list) || $token_list == false)
+        return array();
+    
+    return $token_list;
 }
 
 /**
@@ -235,4 +287,66 @@ function acl_user_is_logged() {
     return (isset($_SESSION['ezplayer_logged']) && !empty($_SESSION['ezplayer_logged']));
 }
 
+/**
+ * Checks if the user wants to see new video notifications
+ * @return boolean
+ */
+function acl_show_notifications(){
+    $display_new_video_notification = acl_value_get('display_new_video_notification');
+    
+    return $display_new_video_notification != 'false';
+}
+
+/**
+ * Checks if the user wants the threads to be displayed.
+ * @return boolean
+ */
+function acl_display_threads(){
+    $display_threads = acl_value_get('display_threads');
+    
+    return $display_threads !='false';
+}
+
+/**
+ * Checks if the user wants the threads to be displayed during video playback.
+ * @return boolean
+ */
+function acl_display_thread_notification(){
+    $display_thread_notification = acl_value_get('display_thread_notification');
+    return $display_thread_notification != 'false';
+}
+
+/**
+ * Checks if an asset is downloadable.
+ * @return boolean
+ */
+function acl_is_downloadable($album, $asset){
+    
+    $meta = asset_meta_get($album, $asset);
+    $display_download_link = $meta['display_download_link'];
+
+    return $display_download_link=='true';
+}
+
+/**
+ * Checks if the current user is an admin or not.
+ * @return boolean
+ */
+function acl_is_admin(){
+    if(!acl_user_is_logged())
+        return false;
+    return isset($_SESSION['user_is_admin']);
+}
+
+/**
+ * 
+ * @param type $album
+ * @param type $asset
+ */
+function acl_is_archived($album, $asset){
+    $album_exists = ezmam_album_exists($album);
+    if($album_exists)
+        return !ezmam_asset_exists($album, $asset);
+    return true;
+}
 ?>

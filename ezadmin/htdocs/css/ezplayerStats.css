@@ -1,0 +1,60 @@
+/* 
+    Created on : 11-avr.-2014, 8:38:47
+    Author     : podcastdev
+*/
+
+html,body
+{
+    min-width: 640px;
+    height: 100%;
+    margin-bottom: 0px;
+}
+
+section
+{
+    padding: 48px 24px;
+    margin: 0px;
+}
+
+.pie
+{
+    min-width: 500px;
+    width: 500px;
+    min-height: 400px;
+}
+
+.table td, .table th
+{
+    text-align: right;
+}
+
+.table th.left, .table td.left
+{
+    text-align: left;
+}
+
+.jqplot-table-legend
+{
+    text-align: left;
+}
+
+.jqplot-data-label
+{
+    color: whitesmoke;
+}
+
+.label-important
+{
+    display: none; 
+    font-size: 1em;
+}
+
+.color-white
+{
+    color: white;
+}
+
+.btn-search
+{
+    margin-bottom: 8px;
+}

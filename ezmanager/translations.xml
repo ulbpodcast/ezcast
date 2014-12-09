@@ -32,7 +32,7 @@
 
 <data>
     <!-- Labels are keywords that appear in templates 
-    Note: please use the same label name as the keyword between ®'s that appears in the template -->
+         Note: please use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff -->
         <label id="service_name" lang="fr">EZmanager</label>
@@ -177,25 +177,25 @@
         <label id="select" lang="fr">Choisir</label>
         <label id="select" lang="en">Select</label>
         <label id="submit" lang="fr">Soumettre l'enregistrement</label>
-        <label id="submit" lang="en">Submit</label>
-        <label id="Upload_in_progress" lang="fr">Fichier en cours d\'envoi ...</label>
-        <label id="Upload_in_progress" lang="en">Upload in progress ...</label>
+         <label id="submit" lang="en">Submit</label>
+         <label id="Upload_in_progress" lang="fr">Fichier en cours d\'envoi ...</label>
+         <label id="Upload_in_progress" lang="en">Upload in progress ...</label>
         <label id="Upload_pending" lang="fr">Le fichier est en cours d\'envoi. Veuillez patienter jusqu\'à la fin du téléchargement pour fermer la fenêtre. Un message apparaitra à la fin du téléchargement.</label>
         <label id="Upload_pending" lang="en">File is being uploaded. Please wait till the end of the upload to close this window. A message will appear when the file upload is finished.</label>
         <label id="Upload_pending" lang="fr">Le fichier est en cours d\'envoi. Fermez cette fenêtre quand le chargement est terminé.</label>
         <label id="Upload_pending" lang="en">File is being uploaded. Close this window when the upload is finished.</label>
-        <label id="Upload_finished_title" lang="fr">Envoi terminé</label>
-        <label id="Upload_finished_title" lang="en">File submitted</label>
+         <label id="Upload_finished_title" lang="fr">Envoi terminé</label>
+         <label id="Upload_finished_title" lang="en">File submitted</label>
         <label id="Upload_failed_title" lang="fr">Envoi en erreur</label>
         <label id="Upload_failed_title" lang="en">Submit failed</label>
-        <label id="Upload_finished" lang="fr">Fichier envoyé et en cours de traitement</label>
-        <label id="Upload_finished" lang="en">File uploaded and ready for processing</label>
+         <label id="Upload_finished" lang="fr">Fichier envoyé et en cours de traitement</label>
+         <label id="Upload_finished" lang="en">File uploaded and ready for processing</label>
         <label id="Upload_failed" lang="fr">Une erreur est survenue lors de l\'envoi du fichier. Veuillez réessayer.</label>
         <label id="Upload_failed" lang="en">An error occured during the file upload. Try again.</label>
-        <label id="Copy_to_clipboard" lang="fr">Copier dans le presse-papier</label>
-        <label id="Copy_to_clipboard" lang="en">Copy to clipboard</label>
-        <label id="Content_in_clipboard" lang="fr">Contenu copié dans le presse-papier</label>
-        <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label> 
+         <label id="Copy_to_clipboard" lang="fr">Copier dans le presse-papier</label>
+         <label id="Copy_to_clipboard" lang="en">Copy to clipboard</label>
+         <label id="Content_in_clipboard" lang="fr">Contenu copié dans le presse-papier</label>
+         <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
         

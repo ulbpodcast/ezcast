@@ -31,7 +31,7 @@
 
 if ($argc != 7) {
     echo "usage: " . $argv[0] . " <php_path> <encoding_pgm> <ffmpeg_path> <ffprobe_path> <threads_number> <jobs_number>" .
-    "\n <php_path> the path to the php binary." . 
+    "\n <php_path> the path to the php binary." .
     "\n <encoding_pgm> string containing information about encoder such as : ". 
     "\n         array('name' => 'ffmpeg', 'description' => 'ffmpeg desc.', 'file' => 'lib_ffmpeg.php')" .
     "\n <ffmpeg_path> the path to FFMPEG binary." .

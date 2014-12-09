@@ -1,5 +1,4 @@
 <?php
-
 /*
  * EZCAST EZmanager 
  *
@@ -25,10 +24,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
-/* ezcast EZmanager main program (MVC Controller)
- *
+/** 
+ * ezcast EZmanager main program (MVC Controller)
+ * @package ezcast.ezmanager.main
  */
+
 require_once 'config.inc';
 session_name($appname);
 session_start();
@@ -1229,13 +1229,6 @@ function submit_media() {
         error_print_message(template_get_message('upload_error', get_lang()));
         die;
     }
-    /*   list($type, $subtype) = explode('/', $_FILES['media']['type']);
-
-      if ($type != 'video') {
-      log_append('warning', 'submit_media: ' . $_FILES['media']['type'] . ' is not a valid media type');
-      error_print_message(template_get_message('error_mimetype', get_lang()));
-      die;
-      } */
 
     if (!in_array($input['type'], $accepted_media_types)) {
         log_append('warning', 'submit_media: ' . $input['type'] . ' is not a valid media type');
@@ -1299,21 +1292,6 @@ function submit_media() {
     redraw_page();
 }
 
-/**
- * Returns an array with information about the current upload(s)
- * DEPRECATED - NOT USED ANYMORE
- */
-function get_upload_progress() {
-    header('Content-type:text/plain;charset=utf-8');
-    file_put_contents('HELLO', $_POST['keyFile'] . PHP_EOL, FILE_APPEND);
-    if (isset($_POST['keyFile'])) {
-        file_put_contents('HELLO', 'In if: ' . $_POST['keyFile'] . PHP_EOL, FILE_APPEND);
-        $fileInformation = apc_fetch('upload_' . $_POST['keyFile']);
-        echo json_encode($fileInformation);
-        file_put_contents('HELLO', 'In if: ' . json_encode($fileInformation) . PHP_EOL, FILE_APPEND);
-    }
-    exit;
-}
 
 function album_edit() {
     global $input;

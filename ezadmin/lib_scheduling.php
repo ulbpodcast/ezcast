@@ -1,28 +1,32 @@
 <?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
 
+/*
+ * EZCAST EZadmin 
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 		    Arnaud Wijns <awijns@ulb.ac.be>
+ *                   Antoine Dewilde
+ *                   Thibaut Roskam
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/**
+ * @package ezcast.ezadmin.lib.scheduling
+ */
 require_once "config.inc";
 /**
  * DEBUG
@@ -42,22 +46,26 @@ define('DEBUG', 5);
  * Fall back functions in case the system V library are not installed
  */
 if (!function_exists('sem_get')) {
+
     function sem_get($key) {
         return fopen(lib_scheduling_config('var-path') . 'sem.' . $key, 'w+');
     }
+
     function sem_acquire($sem_id) {
         return flock($sem_id, LOCK_EX);
     }
+
     function sem_release($sem_id) {
         return flock($sem_id, LOCK_UN);
     }
+
 }
 
 $semaphore = sem_get(lib_scheduling_config('sem-key'));
 
-/*******************************/
-/****** S C H E D U L E R ******/
-/*******************************/
+/* * **************************** */
+/* * **** S C H E D U L E R ***** */
+/* * **************************** */
 
 /**
  * Schedule a video
@@ -73,7 +81,7 @@ function scheduler_schedule() {
     $saturate = false;
 
     // loop on every job until there is no more job to schedule or all renderer are busy
-    while(count($queue) && !$saturate) {
+    while (count($queue) && !$saturate) {
         // next job
         $job = lib_scheduling_queue_top($queue);
 
@@ -82,28 +90,29 @@ function scheduler_schedule() {
 
         $choice = false;
         // iterate over render and attribuate the job to the optimal one
-        foreach($renderers as $renderer) {
+        foreach ($renderers as $renderer) {
             // check the renderer availibility
-            if(!lib_scheduling_renderer_is_available($renderer)) continue;
+            if (!lib_scheduling_renderer_is_available($renderer))
+                continue;
 
             // if no choice, pick the first fit otherwhise find the optimal
-            if(!$choice) {
+            if (!$choice) {
                 $choice = $renderer;
                 continue;
-            } else if(lib_scheduling_renderer_is_better_than($renderer, $choice, $job)) {
+            } else if (lib_scheduling_renderer_is_better_than($renderer, $choice, $job)) {
                 $choice = $renderer;
             }
         }
 
         // no renderer were available for a job which means the system is saturated
-        if(!$choice) {
+        if (!$choice) {
             $saturate = true;
             lib_scheduling_warning('Scheduler::schedule[saturate]');
             continue;
         }
 
         // assign the job to the renderer
-        if(lib_scheduling_renderer_assign($choice, $job)) {
+        if (lib_scheduling_renderer_assign($choice, $job)) {
             lib_scheduling_job_remove($queue, $job);
             lib_scheduling_notice('Scheduler::schedule[scheduled]{' . $job['uid'] . ' to ' . $choice['host'] . '}');
         }
@@ -122,15 +131,19 @@ function scheduler_schedule() {
  * @return Whehter the job has been successfully added
  */
 function scheduler_append($job) {
-    if(!$job['created']) $job['created'] = date('Y-m-d H:i:s');
-    if(!$job['priority']) $job['priority'] = lib_scheduling_config('default-priority');
+    if (!$job['created'])
+        $job['created'] = date('Y-m-d H:i:s');
+    if (!$job['priority'])
+        $job['priority'] = lib_scheduling_config('default-priority');
 
     $job['uid'] = sha1($job['sender'] . $job['file'] . strtotime($job['created']));
 
     $status = lib_scheduling_job_write($job, lib_scheduling_config('queue-path'));
 
-    if($status) lib_scheduling_notice('Scheduler::append[success]{' . $job['uid'] . '}');
-    else lib_scheduling_warning('Scheduler::append[fail]{' . $job['uid'] . '}');
+    if ($status)
+        lib_scheduling_notice('Scheduler::append[success]{' . $job['uid'] . '}');
+    else
+        lib_scheduling_warning('Scheduler::append[fail]{' . $job['uid'] . '}');
 
     return $status;
 }
@@ -145,8 +158,10 @@ function scheduler_remove($uid) {
     $status = lib_scheduling_queue_delete(lib_scheduling_job_find(lib_scheduling_queue_init(), $uid));
     lib_scheduling_queue_close();
 
-    if($status) lib_scheduling_notice('Scheduler::remove[success]{' . $uid . '}');
-    else lib_scheduling_warning('Scheduler::remove[fail]{' . $uid . '}');
+    if ($status)
+        lib_scheduling_notice('Scheduler::remove[success]{' . $uid . '}');
+    else
+        lib_scheduling_warning('Scheduler::remove[fail]{' . $uid . '}');
 
     return $status;
 }
@@ -162,8 +177,10 @@ function scheduler_freeze($uid) {
     $status = lib_scheduling_file_move(lib_scheduling_config('queue-path') . '/' . $job['basename'], lib_scheduling_config('frozen-path') . '/' . $job['basename']);
     lib_scheduling_queue_close();
 
-    if($status) lib_scheduling_notice('Scheduler::freeze[success]{' . $uid . '}');
-    else lib_scheduling_warning('Scheduler::freeze[fail]{' . $uid . '}');
+    if ($status)
+        lib_scheduling_notice('Scheduler::freeze[success]{' . $uid . '}');
+    else
+        lib_scheduling_warning('Scheduler::freeze[fail]{' . $uid . '}');
 
     return $status;
 }
@@ -180,8 +197,10 @@ function scheduler_unfreeze($uid) {
     $status = lib_scheduling_file_move(lib_scheduling_config('frozen-path') . '/' . $job['basename'], lib_scheduling_config('queue-path') . '/' . $job['basename']);
     lib_scheduling_queue_close();
 
-    if($status) lib_scheduling_notice('Scheduler::unfreeze[success]{' . $uid . '}');
-    else lib_scheduling_warning('Scheduler::unfreeze[fail]{' . $uid . '}');
+    if ($status)
+        lib_scheduling_notice('Scheduler::unfreeze[success]{' . $uid . '}');
+    else
+        lib_scheduling_warning('Scheduler::unfreeze[fail]{' . $uid . '}');
 
     return $status;
 }
@@ -242,21 +261,22 @@ function scheduler_failed_get() {
 function scheduler_job_info_get($uid) {
     $job = null;
 
-    if($job = lib_scheduling_job_find(scheduler_queue_get(), $uid)) {
+    if ($job = lib_scheduling_job_find(scheduler_queue_get(), $uid)) {
         $job['status'] = 'queue';
-    } else if($job = lib_scheduling_job_find(scheduler_processing_get(), $uid)) {
+    } else if ($job = lib_scheduling_job_find(scheduler_processing_get(), $uid)) {
         $job['status'] = 'processing';
         $renderer = lib_scheduling_renderer_find(lib_scheduling_renderer_list(), $job['renderer']);
         $status = lib_scheduling_renderer_job_info($renderer, $job);
-        if(!$status) lib_scheduling_warning('Scheduler::renderer_job_info_get[fail]{' . $uid . ' on ' . $renderer['host'] . '}' );
-    } else if($job = lib_scheduling_job_find(scheduler_processed_get(), $uid)) {
+        if (!$status)
+            lib_scheduling_warning('Scheduler::renderer_job_info_get[fail]{' . $uid . ' on ' . $renderer['host'] . '}');
+    } else if ($job = lib_scheduling_job_find(scheduler_processed_get(), $uid)) {
         $job['status'] = 'processed';
-    } else if($job = lib_scheduling_job_find(scheduler_frozen_get(), $uid)) {
+    } else if ($job = lib_scheduling_job_find(scheduler_frozen_get(), $uid)) {
         $job['status'] = 'frozen';
-    } else if($job = lib_scheduling_job_find(scheduler_failed_get(), $uid)) {
+    } else if ($job = lib_scheduling_job_find(scheduler_failed_get(), $uid)) {
         $job['status'] = 'failed';
     } else {
-        lib_scheduling_warning('Scheduler::renderer_job_info_get[not found]{' . $uid . '}' );
+        lib_scheduling_warning('Scheduler::renderer_job_info_get[not found]{' . $uid . '}');
     }
 
     return $job;
@@ -274,8 +294,10 @@ function scheduler_job_kill($uid) {
 
     $status = lib_scheduling_renderer_job_kill($renderer, $job);
 
-    if($status) lib_scheduling_notice('Scheduler::renderer_job_kill[success]{' . $job['uid'] . '(' . $job['file'] . ') on ' . $renderer['host'] .'}' );
-    else lib_scheduling_alert('Scheduler::renderer_job_kill[fail]{' . $job['uid'] . '(' . $job['file'] . ') on ' . $renderer['host'] .'}' );
+    if ($status)
+        lib_scheduling_notice('Scheduler::renderer_job_kill[success]{' . $job['uid'] . '(' . $job['file'] . ') on ' . $renderer['host'] . '}');
+    else
+        lib_scheduling_alert('Scheduler::renderer_job_kill[fail]{' . $job['uid'] . '(' . $job['file'] . ') on ' . $renderer['host'] . '}');
 
     return $status;
 }
@@ -290,8 +312,10 @@ function scheduler_job_priority_up($uid) {
     $status = lib_scheduling_queue_up(lib_scheduling_job_find(lib_scheduling_queue_init(), $uid));
     lib_scheduling_queue_close();
 
-    if($status) lib_scheduling_notice('Scheduler::job_priority_up[success]{' . $uid .'}');
-    else lib_scheduling_warning('Scheduler::job_priority_up[fail]{' . $uid .'}');
+    if ($status)
+        lib_scheduling_notice('Scheduler::job_priority_up[success]{' . $uid . '}');
+    else
+        lib_scheduling_warning('Scheduler::job_priority_up[fail]{' . $uid . '}');
 
     return $status;
 }
@@ -306,15 +330,17 @@ function scheduler_job_priority_down($uid) {
     $status = lib_scheduling_queue_down(lib_scheduling_job_find(lib_scheduling_queue_init(), $uid));
     lib_scheduling_queue_close();
 
-    if($status) lib_scheduling_notice('Scheduler::job_priority_down[success]{' . $uid .'}');
-    else lib_scheduling_warning('Scheduler::job_priority_down[fail]{' . $uid .'}');
+    if ($status)
+        lib_scheduling_notice('Scheduler::job_priority_down[success]{' . $uid . '}');
+    else
+        lib_scheduling_warning('Scheduler::job_priority_down[fail]{' . $uid . '}');
 
     return $status;
 }
 
-/*******************************/
-/*********** J O B *************/
-/*******************************/
+/* * **************************** */
+/* * ********* J O B ************ */
+/* * **************************** */
 
 /**
  * Read a job meta data and return the corresponding array
@@ -338,7 +364,8 @@ function scheduler_job_priority_down($uid) {
 function lib_scheduling_job_read($file) {
     $job = array();
 
-    foreach (simplexml_load_file($file) as $tag => $value) $job[$tag] = (string) $value;
+    foreach (simplexml_load_file($file) as $tag => $value)
+        $job[$tag] = (string) $value;
 
     $job['basename'] = basename($file);
 
@@ -367,10 +394,12 @@ function lib_scheduling_job_read($file) {
  */
 function lib_scheduling_job_write($job, $dir) {
     // default name
-    if(!$job['name']) $job['name'] = 'no_name';
+    if (!$job['name'])
+        $job['name'] = 'no_name';
 
     // file name
-    if(!$job['basename']) $job['basename'] = lib_scheduling_file_safe($job['created'] . '_' . $job['sender']  . '_' . $job['name']) . '.xml';
+    if (!$job['basename'])
+        $job['basename'] = lib_scheduling_file_safe($job['created'] . '_' . $job['sender'] . '_' . $job['name']) . '.xml';
 
     // do not write the basename neither the status(redondant)
     $basename = $job['basename'];
@@ -379,7 +408,8 @@ function lib_scheduling_job_write($job, $dir) {
 
     $xml = new SimpleXMLElement("<job></job>");
 
-    foreach($job as $key => $value) $xml->addChild($key, $value);
+    foreach ($job as $key => $value)
+        $xml->addChild($key, $value);
 
     return $xml->asXML($dir . '/' . $basename);
 }
@@ -394,10 +424,10 @@ function lib_scheduling_job_read_all($dir) {
     $files = lib_scheduling_file_ls($dir);
 
     $jobs = array();
-    foreach($files as $file) $jobs[] = lib_scheduling_job_read($file);
+    foreach ($files as $file)
+        $jobs[] = lib_scheduling_job_read($file);
 
     return $jobs;
-
 }
 
 /**
@@ -407,7 +437,9 @@ function lib_scheduling_job_read_all($dir) {
  * @param array $uid The job uid
  */
 function lib_scheduling_job_find($jobs, $uid) {
-    for($i = 0; $i < count($jobs); ++$i) if($jobs[$i]['uid'] == $uid) return $jobs[$i];
+    for ($i = 0; $i < count($jobs); ++$i)
+        if ($jobs[$i]['uid'] == $uid)
+            return $jobs[$i];
 
     lib_scheduling_warning('Scheduler::job_find[not found]{' . $uid . '}');
 
@@ -422,14 +454,16 @@ function lib_scheduling_job_find($jobs, $uid) {
  */
 function lib_scheduling_job_remove(&$jobs, $job) {
     $index = -1;
-    for($i = 0; $i < count($jobs); ++$i) if($jobs[$i]['uid'] == $job['uid']) $index = $i;
-    if($index > -1) array_splice($jobs, $index ,1);
+    for ($i = 0; $i < count($jobs); ++$i)
+        if ($jobs[$i]['uid'] == $job['uid'])
+            $index = $i;
+    if ($index > -1)
+        array_splice($jobs, $index, 1);
 }
 
-/*******************************/
-/********* Q U E U E ***********/
-/*******************************/
-
+/* * **************************** */
+/* * ******* Q U E U E ********** */
+/* * **************************** */
 
 /**
  * Initialize the queue
@@ -461,7 +495,9 @@ function lib_scheduling_queue_close() {
 function lib_scheduling_queue_top($queue) {
     $top = $queue[0];
 
-    foreach($queue as $job) if(lib_scheduling_queue_has_higher_priority_than($job, $top) < 0) $top = $job;
+    foreach ($queue as $job)
+        if (lib_scheduling_queue_has_higher_priority_than($job, $top) < 0)
+            $top = $job;
 
     return $top;
 }
@@ -485,7 +521,8 @@ function lib_scheduling_queue_delete(&$queue, $job) {
  * @return boolean Whether the first job has a higher priority than the second
  */
 function lib_scheduling_queue_has_higher_priority_than($first, $second) {
-    if($first['priority'] == $second['priority']) return strtotime($first['created']) - strtotime($second['created']);
+    if ($first['priority'] == $second['priority'])
+        return strtotime($first['created']) - strtotime($second['created']);
     return $first['priority'] - $second['priority'];
 }
 
@@ -495,7 +532,7 @@ function lib_scheduling_queue_has_higher_priority_than($first, $second) {
  * @param array $job The job
  */
 function lib_scheduling_queue_up($job) {
-    $job['priority'] = intval($job['priority']) -1;
+    $job['priority'] = intval($job['priority']) - 1;
     return lib_scheduling_job_write($job, lib_scheduling_config('queue-path'));
 }
 
@@ -505,13 +542,13 @@ function lib_scheduling_queue_up($job) {
  * @param array $job The job
  */
 function lib_scheduling_queue_down($job) {
-    $job['priority'] = intval($job['priority']) +1;
+    $job['priority'] = intval($job['priority']) + 1;
     return lib_scheduling_job_write($job, lib_scheduling_config('queue-path'));
 }
 
-/*******************************/
-/****** R E N D E R E R S ******/
-/*******************************/
+/* * **************************** */
+/* * **** R E N D E R E R S ***** */
+/* * **************************** */
 
 /**
  * Return the list of renderers and their configs
@@ -562,9 +599,11 @@ function lib_scheduling_renderer_generate($renderers) {
     $res = "<?php\n// Renderer.inc\n// Configuration file\n\n";
     $res .= "return array(\n";
 
-    foreach($renderers as $renderer) {
+    foreach ($renderers as $renderer) {
         $res .= "  array(\n";
-        foreach($renderer as $key => $value) if(in_array($key, $data)) $res .= "    '$key' => '$value',\n";
+        foreach ($renderer as $key => $value)
+            if (in_array($key, $data))
+                $res .= "    '$key' => '$value',\n";
         $res .= "  ),\n";
     }
 
@@ -580,7 +619,9 @@ function lib_scheduling_renderer_generate($renderers) {
  * @return array The associated renderer or null
  */
 function lib_scheduling_renderer_find($renderers, $hostname) {
-    foreach($renderers as $renderer) if($renderer['host'] == $hostname) return $renderer;
+    foreach ($renderers as $renderer)
+        if ($renderer['host'] == $hostname)
+            return $renderer;
 
     lib_scheduling_warning('Scheduler::renderer_find[not found]{' . $hostname . '}');
 
@@ -594,11 +635,13 @@ function lib_scheduling_renderer_find($renderers, $hostname) {
  * @return boolean Whether the renderer is available or not
  */
 function lib_scheduling_renderer_is_available($renderer) {
-    if($renderer['status'] != 'enabled') return false;
+    if ($renderer['status'] != 'enabled')
+        return false;
 
     $renderer = lib_scheduling_renderer_metadata($renderer);
 
-    if(intval($renderer['max_num_jobs']) - intval($renderer['num_jobs']) <= 0) return false;
+    if (intval($renderer['max_num_jobs']) - intval($renderer['num_jobs']) <= 0)
+        return false;
 
     return true;
 }
@@ -641,17 +684,18 @@ function lib_scheduling_renderer_is_better_than($first, $second, $job) {
  */
 function lib_scheduling_renderer_metadata($renderer) {
     global $php_cli_cmd;
-    
+
     $out = lib_scheduling_renderer_ssh($renderer, $renderer["php"] . " " . $renderer['statistics']);
 
-    if ($out !== false){
+    if ($out !== false) {
         $xml = new SimpleXMLElement($out);
         foreach ($xml as $tag => $value) {
-            if($tag == 'jobs') {
+            if ($tag == 'jobs') {
                 $jobs = array();
                 foreach ($value->children() as $job) {
                     $j = array();
-                    foreach($job as $key => $value) $job[$key] = (string) $value;
+                    foreach ($job as $key => $value)
+                        $job[$key] = (string) $value;
                     $jobs[] = $j;
                 }
                 $renderer['jobs'] = $jobs;
@@ -686,12 +730,11 @@ function lib_scheduling_renderer_job_info($renderer, &$job) {
  */
 function lib_scheduling_renderer_job_kill($renderer, $job) {
     global $php_cli_cmd;
-    
+
     $res = lib_scheduling_renderer_ssh($renderer, "$php_cli_cmd " . $renderer['kill'] . ' ' . $job['asset']);
     lib_scheduling_trace($res);
     return lib_scheduling_file_move(lib_scheduling_config('processing-path') . '/' . $job['basename'], lib_scheduling_config('failed-path') . '/' . $job['basename']);
 }
-
 
 /**
  * SSH with the renderer
@@ -701,10 +744,10 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
  * @return string The output
  */
 function lib_scheduling_renderer_ssh(&$renderer, $cmd) {
-    $str_cmd = 'ssh -o ConnectTimeout='. lib_scheduling_config('ssh-timeout'). ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"';
+    $str_cmd = 'ssh -o ConnectTimeout=' . lib_scheduling_config('ssh-timeout') . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"';
     exec($str_cmd, $output, $ret);
 
-    if($ret){
+    if ($ret) {
         $renderer['ssh_error'] = true;
         lib_scheduling_alert('Scheduler::renderer_ssh[fail] |::>' . $output . '<::|');
         return false;
@@ -720,20 +763,22 @@ function lib_scheduling_renderer_ssh(&$renderer, $cmd) {
  */
 function lib_scheduling_renderer_assign($renderer, $job) {
     global $php_cli_cmd;
-    
+
     $job['sent'] = date('Y-m-d H:i:s');
     $job['renderer'] = $renderer['host'];
-    if(!lib_scheduling_job_write($job, lib_scheduling_config('queue-path'))) return false;
-    if(!lib_scheduling_file_move(lib_scheduling_config('queue-path') . '/' . $job['basename'], lib_scheduling_config('processing-path') . '/' . $job['basename'])) return false;
+    if (!lib_scheduling_job_write($job, lib_scheduling_config('queue-path')))
+        return false;
+    if (!lib_scheduling_file_move(lib_scheduling_config('queue-path') . '/' . $job['basename'], lib_scheduling_config('processing-path') . '/' . $job['basename']))
+        return false;
 
-    system('echo "'. $php_cli_cmd .' cli_scheduler_job_perform.php ' . $job['uid'] . '" | at now');
+    system('echo "' . $php_cli_cmd . ' cli_scheduler_job_perform.php ' . $job['uid'] . '" | at now');
 
     return true;
 }
 
-/*******************************/
-/****** S E M A P H O R E ******/
-/*******************************/
+/* * **************************** */
+/* * **** S E M A P H O R E ***** */
+/* * **************************** */
 
 /**
  * Take the semaphore
@@ -751,12 +796,13 @@ function lib_scheduling_sema_release() {
     sem_release($semaphore);
 }
 
-/*******************************/
-/********** F I L E ************/
-/*******************************/
+/* * **************************** */
+/* * ******** F I L E *********** */
+/* * **************************** */
 
 function lib_scheduling_file_move($from, $to) {
-    if(copy($from, $to)) return lib_scheduling_file_rm($from);
+    if (copy($from, $to))
+        return lib_scheduling_file_rm($from);
     return false;
 }
 
@@ -764,7 +810,9 @@ function lib_scheduling_file_ls($dir) {
     $handler = opendir($dir);
 
     $files = array();
-    while(($file = readdir($handler)) !== false) if($file != '.' && $file != '..' && $file[0] != '.') $files[] = $dir . '/' . $file;
+    while (($file = readdir($handler)) !== false)
+        if ($file != '.' && $file != '..' && $file[0] != '.')
+            $files[] = $dir . '/' . $file;
 
     closedir($handler);
 
@@ -815,14 +863,35 @@ function lib_scheduling_config($name) {
     return false;
 }
 
-/*******************************/
-/********** L O G S ************/
-/*******************************/
+/* * **************************** */
+/* * ******** L O G S *********** */
+/* * **************************** */
 
-function lib_scheduling_notice($msg) { if(DEBUG > 4) lib_scheduling_log(' NOTICE', $msg); }
-function lib_scheduling_warning($msg) { if(DEBUG > 3) lib_scheduling_log('WARNING', $msg); }
-function lib_scheduling_alert($msg) { if(DEBUG > 2) lib_scheduling_log('  ALERT', $msg); }
-function lib_scheduling_trace($msg) { if(DEBUG > 1) lib_scheduling_log('  TRACE', $msg); }
-function lib_scheduling_error($msg) { if(DEBUG > 0) lib_scheduling_log('  ERROR', $msg); }
+function lib_scheduling_notice($msg) {
+    if (DEBUG > 4)
+        lib_scheduling_log(' NOTICE', $msg);
+}
 
-function lib_scheduling_log($cat, $msg) { file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND); }
+function lib_scheduling_warning($msg) {
+    if (DEBUG > 3)
+        lib_scheduling_log('WARNING', $msg);
+}
+
+function lib_scheduling_alert($msg) {
+    if (DEBUG > 2)
+        lib_scheduling_log('  ALERT', $msg);
+}
+
+function lib_scheduling_trace($msg) {
+    if (DEBUG > 1)
+        lib_scheduling_log('  TRACE', $msg);
+}
+
+function lib_scheduling_error($msg) {
+    if (DEBUG > 0)
+        lib_scheduling_log('  ERROR', $msg);
+}
+
+function lib_scheduling_log($cat, $msg) {
+    file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND);
+}

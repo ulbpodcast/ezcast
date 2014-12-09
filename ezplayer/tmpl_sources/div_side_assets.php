@@ -22,15 +22,15 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-?>
+*/
 
-<?php include_once 'lib_print.php'; ?>
+include_once 'lib_print.php'; ?>
 <!-- #side_menu
     Contains the buttons used to navigate through the pages.
     #back_button : displayed on asset page and used to return to the current album
     #home_button : used to return to the home page
 -->
+
 <script>
     $('#assets_button, .bookmarks_button, .toc_button').localScroll({
         target:'#side_pane',

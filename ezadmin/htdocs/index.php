@@ -1,12 +1,12 @@
 <?php
-
 /*
-* EZCAST EZadmin 
+* EZCAST EZadmin
 * Copyright (C) 2014 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
+*                   Arnaud Wijns <awijns@ulb.ac.be>
 *                   Antoine Dewilde
+*                   Thibaut Roskam
 *
 * This software is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public

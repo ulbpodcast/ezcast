@@ -56,5 +56,4 @@ $renderers_options = array(
         'ffmpeg_exp' => array('name' => 'ffmpeg_exp', 'description' => 'FFMPEG command line experimental mode (AAC)', 'file' => 'lib_ffmpeg.php'),
 );
 
-
 ?>

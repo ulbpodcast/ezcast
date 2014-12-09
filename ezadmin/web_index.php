@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ezcast podcast manager main program (MVC Controller)
+ *
+ * @package ezcast.ezadmin.main
+ */
+
 /*
  * EZCAST EZadmin 
  * Copyright (C) 2014 Université libre de Bruxelles
@@ -34,10 +40,12 @@ if (!file_exists('config.inc')) {
 require 'config.inc';
 session_name($appname);
 session_start();
-require_once '../commons/lib_database.php';
+require_once 'lib_statistics.php';
+require_once 'lib_sql_management.php';
 require_once 'lib_error.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
+require_once '../commons/lib_various.php';
 require_once 'lib_various.php';
 require_once 'lib_scheduling.php';
 
@@ -93,7 +101,6 @@ else {
     $action = $input['action'];
     $redraw = false;
 
-    db_prepare();
     //
     // Actions
     //
@@ -248,9 +255,27 @@ else {
         case 'job_kill':
             job_kill();
             break;
+        
         case 'sync_externals':
             sync_externals();
             break;
+        
+        case 'view_stats_ezplayer_threads':
+            view_stats_threads();
+            break;
+        
+        case 'get_month_stats':
+            stat_get_by_month();
+            break;
+        
+        case 'get_nDays_stats':
+            stat_get_by_nDays();
+            break;
+        
+        case 'get_csv_assets':
+            stat_csv_by_asset();
+            break;
+
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
@@ -490,8 +515,7 @@ function view_users() {
         $limit = (intval($page) - 1) * $size;
 
         $users = db_users_list($user_ID, $surname, $forename, ($intern == $extern) ? -1 : (($extern == 1) ? 'external' : 'internal'), ($is_admin == $is_not_admin) ? -1 : $is_admin, $col . ' ' . $order, '' . $limit . ', ' . $size);
-$dump="";
-    
+
         $rows = db_found_rows();
         $max = intval($rows / 20) + 1;
     } else {
@@ -550,7 +574,7 @@ function view_user_details() {
         $is_ezadmin = $input['is_ezadmin'] ? 1 : 0;
         $is_admin = $input['permissions'] ? 1 : 0;
         $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
-        $recorder_passwd = (trim(($input['recorder_passwd'])) == '') ? "" : crypt($input['recorder_passwd'], $des_seed);
+        $recorder_passwd = (trim($input['recorder_passwd']) == '') ? '' : crypt($input['recorder_passwd'], $des_seed);
 
         if (empty($forename)) {
             $error = template_get_message('missing_forename', get_lang());
@@ -567,9 +591,9 @@ function view_user_details() {
     }
 
     include 'admin.inc';
-
+    
     $userinfo = db_user_read($input['user_ID']);
-
+    
     if ($userinfo) {
         $courses = db_user_get_courses($input['user_ID']);
 
@@ -829,6 +853,14 @@ function create_user() {
     include template_getpath('div_main_footer.php');
 }
 
+function view_stats_threads() {
+
+    // Display page
+    include template_getpath('div_main_header.php');
+    include template_getpath('div_stats_threads.php');
+    include template_getpath('div_main_footer.php');
+}
+
 function remove_user() {
     global $input;
 
@@ -944,7 +976,7 @@ function view_renderers() {
     } else {
         $renderers = require_once 'renderers.inc';
     }
-
+    
     require_once template_getpath('div_main_header.php');
     require_once template_getpath('div_list_renderers.php');
     require_once template_getpath('div_main_footer.php');
@@ -971,7 +1003,7 @@ function disable_enable_renderer($enable) {
         db_log("renderers", 'Disabled renderer ' . $input['name'], $_SESSION['user_login']);
     }
     push_renderers_to_ezmanager();
-    //   notify_changes();
+ //   notify_changes();
 }
 
 function create_renderer() {
@@ -1001,7 +1033,7 @@ function create_renderer() {
 
             if (empty($renderer_name)) {
                 $error = template_get_message('missing_renderer_name', get_lang());
-            } else if (renderer_exists($renderer_name) !== false) {
+            } else if (renderer_exists($renderer_name) !== false){
                 $error = template_get_message('existing_renderer_name', get_lang());
             } else if (empty($renderer_address)) {
                 $error = template_get_message('missing_renderer_address', get_lang());
@@ -1166,19 +1198,19 @@ function create_renderer() {
                     // verification for FFMPEG
                     if ($renderer_option == 'ffmpeg' || $renderer_option == 'ffmpeg_exp') {
                         $res = test_ffmpeg_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_ffmpeg, $renderer_option == 'ffmpeg_exp');
-                        switch ($res) {
-                            case "ffmpeg_not_found" :
-                                $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
-                                break;
-                            case "missing_codec_aac" :
-                                $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
+                    switch ($res) {
+                        case "ffmpeg_not_found" :
+                            $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
+                            break;
+                        case "missing_codec_aac" :
+                            $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
                                 $display_ffmpeg_exp = true; // used in div_create_renderer_step3.php
-                                break;
-                            case "missing_codec_h264":
-                                $error .= "- " . template_get_message('missing_codec_h264', get_lang()) . "<br/>";
-                                break;
-                            default: $error .= "";
-                        }
+                            break;
+                        case "missing_codec_h264":
+                            $error .= "- " . template_get_message('missing_codec_h264', get_lang()) . "<br/>";
+                            break;
+                        default: $error .= "";
+                    }
                     }
 
                     // verification for FFPROBE
@@ -1240,7 +1272,6 @@ function create_renderer() {
                 include template_getpath('div_main_footer.php');
                 die;
             } else {
-                
                 if ($input['installation_step'] == 1) {
                     // 4.1. Copies EZrenderer installation files on the remote renderer
                     // tests if ezrenderer is already installed
@@ -1335,14 +1366,14 @@ function create_renderer() {
             unset($_SESSION['renderer_php']);
             unset($_SESSION['renderer_ffmpeg']);
             unset($_SESSION['renderer_ffprobe']);
-
+            
             include template_getpath('div_main_header.php');
             include template_getpath('div_create_renderer_step1.php');
             include template_getpath('div_main_footer.php');
     }
 
 
-    db_log('renderers', 'Created renderer ' . $_SESSION['renderer_name'], $_SESSION['user_login']);
+       db_log('renderers', 'Created renderer ' . $_SESSION['renderer_name'], $_SESSION['user_login']);
     //   notify_changes();
 }
 
@@ -1355,7 +1386,7 @@ function remove_renderer() {
         echo json_encode(array('success' => '1'));
         db_log("renderers", 'Deleted renderer ' . $input['name'], $_SESSION['user_login']);
         push_renderers_to_ezmanager();
-        //    notify_changes();
+    //    notify_changes();
     }
 }
 

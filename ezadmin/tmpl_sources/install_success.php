@@ -38,17 +38,17 @@
         <div class="container">
             <?php include_once template_getpath("div_header.php"); ?>
             <div id="global">
-                <h2 style="text-align: center; padding: 10px 0px;">®install_success_title®</h2>
-                <div class="alert alert-success">Install successful. For improved security, we advise you to delete or rename the "install.php".</div>
-                <br/>
-                Before using EZcast and its components, create - at least - one renderer.<br/><br/>
-                <ol>
+            <h2 style="text-align: center; padding: 10px 0px;">®install_success_title®</h2>
+            <div class="alert alert-success">Install successful. For improved security, we advise you to delete or rename the "install.php".</div>
+            <br/>
+            Before using EZcast and its components, create - at least - one renderer.<br/><br/>
+            <ol>
                     <li>Connect as administrator in <a target="_blank" href="<?php global $ezadmin_url;
             echo $ezadmin_url; ?>">EZadmin</a></li>
-                    <li>Select "create renderer" in the menu, on the left</li>
-                    <li>Follow instruction on the screen</li>
-                </ol>
-
+                <li>Select "create renderer" in the menu, on the left</li>
+                <li>Follow instruction on the screen</li>
+            </ol>
+            
             </div>
         <?php include_once template_getpath('div_footer.php'); ?>
         </div>

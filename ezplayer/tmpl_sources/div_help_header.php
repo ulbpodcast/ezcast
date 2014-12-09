@@ -28,9 +28,10 @@
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
-            <?php if (file_exists('./htdocs/images/Header/organization-logo.png')){ ?>
-            <a href="<?php global $organization_url; echo $organization_url; ?>"><img src="./images/Header/organization-logo.png"/></a>
-            <?php } ?>
+            <?php if (file_exists('./htdocs/images/Header/organization-logo.png')) { ?>
+                <a href="<?php global $organization_url;
+            echo $organization_url; ?>"><img src="./images/Header/organization-logo.png"/></a>
+<?php } ?>
             <a href="index.php" title="®Back_to_home®"><img src="./images/Header/LogoEZplayer.png" alt="" /></a>
         </div>      
     </div>

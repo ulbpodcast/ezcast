@@ -25,6 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/**
+ * @package ezcast.ezmanager.cli
+ */
+
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';

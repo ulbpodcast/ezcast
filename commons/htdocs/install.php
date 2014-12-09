@@ -25,5 +25,5 @@
 */
 
 chdir('!PATH/ezadmin');
-include('web_install.php');
+include('web_install.php'); 
 ?>

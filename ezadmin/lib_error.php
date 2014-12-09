@@ -23,8 +23,9 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-/*
+/**
  * Error managing and logging library
+ * @package ezcast.ezadmin.lib.error
  */
 
 $ezadmin_logs = "./ezadmin.log";

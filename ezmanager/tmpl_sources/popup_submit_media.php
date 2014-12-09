@@ -1,37 +1,36 @@
-<!-- 
-* EZCAST EZmanager 
-*
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-* UI Design by Julien Di Pietrantonio
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--->
 <?php
+/*
+ * EZCAST EZmanager 
+ *
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 		    Arnaud Wijns <awijns@ulb.ac.be>
+ *                   Antoine Dewilde
+ * UI Design by Julien Di Pietrantonio
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
-if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443){
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) {
     global $ezmanager_safe_url;
     $domain_name = $ezmanager_safe_url;
 } else {
     global $ezmanager_url;
     $domain_name = $ezmanager_url;
 }
-
 ?>
 
 <div class="popup" id="submit_media" style="width: 415px;height: 515px;">
@@ -39,13 +38,12 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 
     <div id="form">
         <form action="<?php
-        echo $domain_name;
-        ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" onsubmit="return false" target="uploadFrame">
-          <!-- <input type="hidden" name="action" value="submit_media"/> -->
+echo $domain_name;
+?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" onsubmit="return false" target="uploadFrame">
             <input type="hidden" id="action" name="action" value="submit_media"/>
             <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
             <input type="hidden" id="moderation" name="moderation" value="<?php echo ($moderation) ? 'true' : 'false'; ?>"/>
-            <input type="hidden" name="MAX_FILE_SIZE" value="1999999999" />
+            <!--input type="hidden" name="MAX_FILE_SIZE" value="1999999999" /-->
 
             <script>
             // Render and style the file input 
@@ -185,10 +183,6 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
             <div id="submitButton">
                 <button onclick="if (check_form())
                     sendRequest()">®Submit®</button>
-                <!-- <input type="submit" value="®Submit®" onclick="if (check_form())
-                    send_form(this.form)"/> -->
-                <!--span class="Bouton"><a href="javascript: if(document.getElementById('title').value == '') window.alert('®No_title®'); else submit_upload_form();"><span>®Submit®</span></a></span-->
-                <!-- <span class="Bouton"><a href="javascript: if(check_form()) submit_upload_form();"><span>®Submit®</span></a></span> -->
             </div>
             <br />
 

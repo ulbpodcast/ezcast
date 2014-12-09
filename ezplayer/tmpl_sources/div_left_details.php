@@ -24,11 +24,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 ?>
+
 <script>
     // variable describing which components are displayed on the page
     fullscreen = false;
     show_panel = false;
     bookmark_form = false;
+    thread_form = false;
+    comment_form = false;
     shortcuts = false;
 </script>
 <?php
@@ -58,8 +61,7 @@ switch (strtolower($_SESSION['browser_name'])) {
         break;
 }
 ?> 
-
-
+<?php require template_getpath('popup_thread_visibility_choice.php'); ?>
 <div id="main_player">
 
 
@@ -68,7 +70,7 @@ switch (strtolower($_SESSION['browser_name'])) {
         If the current view is the album page, the header contains album title only
         If the current view is the asset page, the header contains album title and asset title -->
     <div id="site_map">
-        <a href="index.php" title="®Back_to_home®">®Home®</a>    
+        <a class="home-link" href="index.php" title="®Back_to_home®">®Home®</a>    
         <?php
         if (acl_has_album_permissions($album)) {
             $token = acl_token_get($album);
@@ -106,6 +108,13 @@ switch (strtolower($_SESSION['browser_name'])) {
             </div>
             <div class="shortcuts_tab"><a href="javascript:toggle_shortcuts();"></a></div>
         </div>
+
+        <?php if (acl_user_is_logged() && acl_has_album_permissions($album) && acl_display_thread_notification()) { ?>
+            <div id='video_notifications'>
+                <div class='notifications_title'><b>®Current_discussions®</b></div>
+                <div id='notifications'></div>
+            </div>
+        <?php } ?>
 
         <video id="main_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
             <source id="main_video_source"
@@ -180,6 +189,7 @@ if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') {
                         this.currentTime = <?php echo $timecode; ?>;
                         this.play();
                     }, false);
+                    load_player('low_slide');
     <?php } else { ?>
                     type = 'cam';
         <?php if ($asset_meta['record_type'] != 'camslide') { ?>
@@ -189,7 +199,8 @@ if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') {
                         this.currentTime = <?php echo $timecode; ?>;
                         this.play();
                     }, false);
-    <?php } ?>
+                    load_player('low_cam');
+        <?php } ?>
                 var videos = document.getElementsByTagName('video');
                 for (var i = 0, max = videos.length; i < max; i++) {
                     videos[i].addEventListener("seeked", function() {
@@ -214,6 +225,14 @@ if ($_SESSION['load_video'] == true) {
 <?php } ?>
         </script>
         <div class="form" id="bookmark_form">
+            <div id="bookmark_form_header" class="bookmark-color">
+                <span id="bookmark_form_header_logo" class="bookmark-logo"></span>
+                <span class="form_header_label" ><?php echo mb_strtoupper('®Add_bookmark®', 'UTF-8'); ?></span>
+            </div>
+            <div id="bookmark_form_header" class="toc-color">
+                <span id="bookmark_form_header_logo" class="toc-logo"></span>
+                <span class="form_header_label" ><?php echo mb_strtoupper('®Add_toc®', 'UTF-8'); ?></span>
+            </div>
             <div id='bookmark_form_wrapper'>
                 <form action="index.php" method="post" id="submit_bookmark_form" onsubmit="return false">
                     <input type="hidden" name="album" id="bookmark_album" value="<?php echo $album; ?>"/>
@@ -263,7 +282,7 @@ if ($_SESSION['load_video'] == true) {
                         <a class="button" tabindex='16' href="javascript: hide_bookmark_form();">®Cancel®</a>
                     </div>
                     <div class="submitButton">
-                        <a class="button blue" tabindex='17' href="javascript: if(check_bookmark_form()) submit_bookmark_form();">®Submit®</a>
+                        <a id="subBtn" class="button" tabindex='17' href="javascript: if(check_bookmark_form()) submit_bookmark_form();">®submit_bookmark®</a>
                     </div>
                     <br />
                 </form>
@@ -277,6 +296,61 @@ if ($_SESSION['load_video'] == true) {
                 }
             });
         </script>
+
+        <div class="form" id="thread_form">
+
+            <div id="thread_form_header">
+                <span class="thread-logo" style="padding-bottom: 8px;"></span>
+                <span class="form_header_label"><?php echo mb_strtoupper('®Add_discussion®', 'UTF-8'); ?></span>
+            </div>
+            <div id='thread_form_wrapper'>
+
+                <form action="index.php" method="post" id="submit_thread_form" onsubmit="return false">
+                    <input type="hidden" name="album" id="thread_album" value="<?php echo $album; ?>"/>
+                    <input type="hidden" name="asset" id="thread_asset" value="<?php echo $asset; ?>"/>
+                    <input type="hidden" name="assetTitle" id="thread_asset_title" value="<?php echo get_asset_title($album, $asset); ?>" />
+
+                    <br/>
+
+                    <!-- Title field -->           
+                    <label>®Title®&nbsp;:
+                        <span class="small">®Title_info®</span>
+                    </label>
+                    <input name="title" tabindex='11' id="thread_title" type="text" placeholder="®Discussion_title_placeholder®" maxlength="140"/>
+
+                    <!-- Timecode field -->           
+                    <label>®Timecode®&nbsp;:
+                        <span class="small">®Timecode_info®</span>
+                    </label>
+                    <input name="timecode" tabindex='15' id="thread_timecode" type="text" value="0"/>
+
+                    <!-- Description field -->
+                    <label>®Message®&nbsp;:
+                        <span class="small">®Required®</span>
+                    </label>
+                    <textarea name="description" id="thread_description_tinyeditor" style="width: 490px; height: 100px;" required></textarea>
+
+                    <!-- Visibility field --> 
+                    <input name="visibility" id="thread_visibility" type="checkbox" hidden/>
+                    <br/>
+                    <!-- Submit button -->
+                    <div class="cancelButton" style="margin-left: 480px;">
+                        <a class="button" tabindex='16' href="javascript: hide_thread_form();">®Cancel®</a>
+                    </div>
+                    <div class="submitButton">
+                        <a class="button green2" tabindex='17' 
+                        <?php
+                        if (!acl_has_moderated_album() || acl_is_admin()) {
+                            echo "data-reveal-id='modal_thread_visibility_choice'";
+                        } else {
+                            echo "href='javascript:if(check_thread_form()) submit_thread_form()' ";
+                        }
+                        ?>
+                           >®Post_discussion®</a>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="video_controls">
             <ul>
                 <?php if ($playbackRate) { ?>
@@ -303,9 +377,10 @@ if ($_SESSION['load_video'] == true) {
                 <?php if (acl_user_is_logged() && acl_has_album_permissions($album)) { ?>
                     <li>
                         <a class="add-bookmark-button" title="®Add_bookmark®" href="javascript:toggle_bookmark_form('custom');"></a>
-                        <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
+                        <?php if (acl_has_album_moderation($album) || acl_is_admin()) { ?>
                             <a class="add-toc-button" title="®Add_toc®" href="javascript:toggle_bookmark_form('official');"></a>
                         <?php } ?>
+                        <a class="add-thread-button" title="®Add_discussion®" href="javascript:toggle_thread_form();"></a>
                     </li>
                 <?php } ?>                
                 <li>
@@ -324,6 +399,7 @@ if ($_SESSION['load_video'] == true) {
             </ul>
         </div>
     </div> <!-- END VIDEO PLAYER -->
+
     <div class="asset_info">
         <div class="asset_title">
             <b><?php print_info(substr(get_user_friendly_date($asset_meta['record_date'], '/', false, get_lang(), false), 0, 10)); ?></b>
@@ -336,19 +412,32 @@ if ($_SESSION['load_video'] == true) {
             <?php print_info($asset_meta['description']); ?>
         </div>
         <div>
-            <?php if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') { ?>
-                <a class="button" href="#" data-reveal-id="popup_slide_link" onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));">®Download_slide®</a>
-                <?php
-            }
-            if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {
-                ?>
+            <?php 
+            if (acl_is_downloadable($album, $asset_meta['record_date'])) {
+                if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') {
+                    ?>
+                    <a class="button" href="#" data-reveal-id="popup_slide_link" onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));">®Download_slide®</a>
+                    <?php
+                }
+                if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {
+                    ?>
                 <a class="button" href="#" data-reveal-id="popup_movie_link" onclick="server_trace(new Array('3', 'cam_download_open', current_album, current_asset, duration, time, type, quality));">®Download_movie®</a>
-                <?php
+                    <?php
+                }
             }
-            if (acl_user_is_logged() && acl_has_album_moderation($album)) {
+            if (acl_has_album_moderation($album) || acl_is_admin()) {
                 ?>
                 <a class="button" href="#" data-reveal-id="popup_asset_link" onclick="server_trace(new Array('3', 'asset_share_open', current_album, current_asset, duration, time, type, quality));">®Share_asset®</a>
             <?php } ?>
         </div>
     </div>
-</div>
+
+
+</div><!-- END of #main_player -->
+
+<?php if (acl_display_threads() && acl_user_is_logged()) { ?>
+    <div id="threads" class="threads_info">
+        <?php include_once template_getpath('div_threads_list.php'); ?>
+    </div><!-- END of #threads_info -->
+<?php }
+?>

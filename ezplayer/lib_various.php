@@ -1,4 +1,5 @@
 <?php
+
 /*
  * EZCAST EZplayer
  *
@@ -23,14 +24,14 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-     
-/*
- * Various useful functions
- */
 
+/**
+ * Various useful functions
+ * @package ezcast.ezplayer.lib.various
+ */
 require_once 'config.inc';
 require_once 'lib_ezmam.php';
-require_once dirname(__FILE__).'/../commons/lib_template.php';
+require_once dirname(__FILE__) . '/../commons/lib_template.php';
 
 /**
  * Trims the '-priv' or '-pub' suffix from an album name
@@ -434,6 +435,11 @@ function get_keywords(&$string) {
     return $keywords;
 }
 
+/**
+ * ...
+ * @param string $string
+ * @return string
+ */
 function surround_url($string) {
     // checks for http url
     $pos = 0;
@@ -476,4 +482,247 @@ function surround_url($string) {
     return $string;
 }
 
-?>
+/**
+ * Updates an asset metadata
+ * @global type $repository_basedir
+ * @param type $album
+ * @param type $asset
+ * @param type $key
+ * @param type $value
+ * @return type
+ */
+function asset_meta_update($album, $asset, $key, $value) {
+    global $repository_basedir;
+    $path_to_metadata = $repository_basedir . "/repository/" . $album . "/" . $asset . "/_metadata.xml";
+    $metadata = simplexml_load_file($path_to_metadata);
+    if ($key == "display_download_link") {
+        $metadata->display_download_link = $value;
+    }
+
+    return $metadata->asXML($path_to_metadata);
+}
+
+/**
+ * Returns an asset metadata as array
+ * @global type $repository_basedir
+ * @param type $album
+ * @param type $asset
+ * @return type
+ */
+function asset_meta_get($album, $asset) {
+    global $repository_basedir;
+    $path_to_metadata = $repository_basedir . "/repository/" . $album . "/" . $asset . "/_metadata.xml";
+    $metadata = simplexml_load_file($path_to_metadata);
+
+    return xml_file2assoc_array($metadata);
+}
+
+/**
+ * converts a SimpleXMLElement in an associative array
+ * @param SimpleXMLElement $xml
+ * @anonymous_key the name of root tag we don't want to get for each item
+ * @return type
+ */
+function xml_file2assoc_array($xml, $anonymous_key = 'anon') {
+    if (is_string($xml))
+        $xml = new SimpleXMLElement($xml);
+    $children = $xml->children();
+    if (!$children)
+        return (string) $xml;
+    $arr = array();
+    foreach ($children as $key => $node) {
+        $node = xml_file2assoc_array($node);
+        // support for 'anon' non-associative arrays
+        if ($key == $anonymous_key)
+            $key = count($arr);
+
+        // if the node is already set, put it into an array
+        if (isset($arr[$key])) {
+            if (!is_array($arr[$key]) || $arr[$key][0] == null)
+                $arr[$key] = array($arr[$key]);
+            $arr[$key][] = $node;
+        } else {
+            $arr[$key] = $node;
+        }
+    }
+    return $arr;
+}
+
+function simple_assoc_array2xml_file($assoc_array, $file_path, $global) {
+    $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
+    $xml = new SimpleXMLElement($xmlstr);
+    foreach ($assoc_array as $key => $value) {
+        $xml->addChild($key, $value);
+    }
+    $xml_txt = $xml->asXML();
+    file_put_contents($file_path, $xml_txt);
+    chmod($file_path, 0644);
+}
+
+/**
+ * converts an array of associative array in xml file
+ * @param type $array the array to convert
+ * @param type $file_path the path for the xml file
+ * @param type $global the root element of the xml file
+ * @param type $each each item of the xml file
+ * @return boolean
+ */
+function assoc_array2xml_file($array, $file_path, $global = 'bookmarks', $each = 'bookmark') {
+    $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
+    $xml = new SimpleXMLElement($xmlstr);
+    foreach ($array as $assoc_array) {
+        $node = $xml->addChild($each);
+        foreach ($assoc_array as $key => $value) {
+            $node->addChild($key, htmlspecialchars($value));
+        }
+    }
+    $xml_txt = $xml->asXML();
+    $res = file_put_contents($file_path, $xml_txt, LOCK_EX);
+    //did we write all the characters
+    if ($res != strlen($xml_txt))
+        return false; //no
+
+    return true;
+}
+
+/**
+ * converts an associative array in xml string
+ * @param type $array the list of album tokens
+ * @return boolean
+ */
+function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark') {
+    $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
+    $xml = new SimpleXMLElement($xmlstr);
+    foreach ($array as $assoc_array) {
+        $node = $xml->addChild($each);
+        foreach ($assoc_array as $key => $value) {
+            $node->addChild($key, htmlspecialchars($value));
+        }
+    }
+
+    $xml_txt = $xml->asXML();
+    return trim($xml_txt);
+}
+
+/**
+ * Searches a specific pattern in a bookmarks list
+ * @param type $search the pattern to search (array containing a selection of words to find)
+ * @param type $bookmarks the eligible bookmarks list
+ * @param type $fields the bookmark fields where to search : 
+ * it can be the title, the description and/or the keywords
+ * @return the matching bookmarks list
+ */
+function search_in_array($search, $bookmarks, $fields, $level) {
+
+    $contains = false;
+
+    foreach ($bookmarks as $index => $bookmark) {
+        if ($level == 0 || $bookmark['level'] == $level) {
+            foreach ($search as $word) {
+                foreach ($fields as $field) {
+                    $contains = $contains || (stripos($bookmark[$field], $word) !== false);
+                    if ($contains)
+                        break;
+                }
+                if (!$contains) {
+                    // if one of the words has not been found, we remove 
+                    // the bookmark from the list
+                    unset($bookmarks[$index]);
+                    break;
+                } else {
+                    // reinit
+                    $contains = false;
+                }
+            }
+        } else {
+            unset($bookmarks[$index]);
+        }
+    }
+
+    return (is_array($bookmarks)) ? array_values($bookmarks) : null;
+}
+
+//===== V A R I O U S - THREADS ================================================
+//==============================================================================
+
+/**
+ * Returns the childens of a comment
+ * @param type $fullList
+ * @param type $parent
+ * @return array
+ */
+function get_comment_childs($fullList, $parent) {
+    $childs = array();
+    foreach ($fullList as $child) {
+        if ($child['parent'] == $parent['id']) {
+            $child['level'] = 'level-1';
+            $childs[] = $child;
+            if ($child['nbChilds'] > 0) {
+                $sub_childs = get_comment_childs($fullList, $child);
+                foreach ($sub_childs as $value) {
+                    $value['level'] = 'level-2';
+                    $childs[] = $value;
+                }
+            }
+        }
+    }
+
+    return $childs;
+}
+
+/**
+ * Returns the list of comments without parent
+ * @param type $fullList
+ * @return array
+ */
+function get_main_comments($fullList) {
+    $without_parents = array();
+    foreach ($fullList as $comment) {
+        if ($comment['parent'] == NULL) {
+            $comment['level'] = 'level-0';
+            $without_parents[] = $comment;
+        }
+    }
+
+    return $without_parents;
+}
+
+/**
+ * Returns an array with threds from the same asset
+ * @param type $all
+ * @param type $asset
+ */
+function threads_sort_get_by_asset($all, $asset) {
+    $ret = array();
+    foreach ($all as $thread) {
+        if ($thread['assetName'] == $asset)
+            $ret[] = $thread;
+    }
+    return $ret;
+}
+
+function thread_is_archive($album, $asset) {
+    return !ezmam_asset_exists($album, $asset);
+}
+
+//=== END - V A R I O U S THREAD ===============================================
+
+/**
+ * Returns true if the haystack starts with the needle
+ * @param string $haystack
+ * @param string $needle
+ * @return boolean
+ */
+function startsWith($haystack, $needle) {
+    return $needle === "" || strpos($haystack, $needle) === 0;
+}
+
+/**
+ * Returns true if the haystack ends with the needle
+ * @param string $haystack
+ * @param string $needle
+ * @return boolean
+ */
+function endsWith($haystack, $needle) {
+    return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+}

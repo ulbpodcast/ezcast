@@ -25,6 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/**
+ * @package ezcast.ezmanager.download
+ */
+
 //This program receives queries from classroom recording agents to tell that a new recorging is ready for download
 //IP adresses of machines allowed to submit is store in a file
 include_once "config.inc";

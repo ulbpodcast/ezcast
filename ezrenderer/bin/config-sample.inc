@@ -40,7 +40,7 @@ $num_jobs = 4; // Number of jobs allowed to run simultaneously. Ideally <= (num_
 $default_add_title = "FlyingTitle";
 
 $php_cli_cmd = "/usr/bin/php";
-$ffmpegpath = "/usr/local/bin/ffmpeg"; 
+$ffmpegpath = "/usr/local/bin/ffmpeg";
 $ffprobepath = "/usr/local/bin/ffprobe";
 $encoders_path = "$basedir/bin/encoders/";
 $encoding_pgm = array("name" => 'ffmpeg', "description" => 'ffmpeg command line', "file" => 'lib_ffmpeg.php');

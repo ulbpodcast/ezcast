@@ -24,6 +24,10 @@
 */
 
 /**
+ * @package ezcast.commons.lib.template
+ */
+
+/**
  * These functions relate to template parsing
  */
 // WARNING: you need to call template_load_dictionnary() to load the dictionnary  *before* trying to parse anything

@@ -69,6 +69,4 @@
         }
         ?>
     </div>
-
-    <?php include 'div_trending_threads.php' ?>
 </div>

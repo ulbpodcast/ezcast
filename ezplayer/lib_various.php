@@ -614,31 +614,56 @@ function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark
  */
 function search_in_array($search, $bookmarks, $fields, $level) {
 
-    $contains = false;
+    // set $relevancy to true if the result is aimed to be sorted by relevancy.
+    // With $relevancy = false, as soon as a word is found in any of the fields,
+    // we stop the search and check for the next bookmark.
+    // With $relevancy = true, we search for every words in every fields and 
+    // give a score to each bookmark, according to certain rules.
+    $relevancy = false;
+    $score = 0;
 
-    foreach ($bookmarks as $index => $bookmark) {
+    foreach ($bookmarks as $index => &$bookmark) {
         if ($level == 0 || $bookmark['level'] == $level) {
             foreach ($search as $word) {
                 foreach ($fields as $field) {
-                    $contains = $contains || (stripos($bookmark[$field], $word) !== false);
-                    if ($contains)
-                        break;
-                }
-                if (!$contains) {
-                    // if one of the words has not been found, we remove 
-                    // the bookmark from the list
-                    unset($bookmarks[$index]);
-                    break;
-                } else {
-                    // reinit
-                    $contains = false;
+                    // Does the field contain the word ? 
+                    $offset = stripos($bookmark[$field], $word);
+                    if ($offset !== false) {
+                        if ($relevancy) {
+                            // the word has been found, we increment the score
+                            $last_index = $offset + strlen($word);
+                            $score++;
+
+                            // there is nothing before and/or after the word, we increment the score
+                            if ($offset == 0)
+                                $score++;
+                            if ($last_index == strlen($bookmark[$field]))
+                                $score++;
+                            if ($offset > 0 && $bookmark[$field][$offset - 1] == ' ')
+                                $score++;
+                            if ($last_index < strlen($bookmark[$field]) && $bookmark[$field][$last_index] == ' ')
+                                $score++;
+
+                            // There are multiple occurences of the word, we increment the score
+                            $count = substr_count(strtoupper($bookmark[$field]), strtoupper($word));
+                            if ($count > 1) {
+                                $score += ($count - 1) * 2;
+                            }
+                        } else {
+                            $score++;
+                            break 2;
+                        }
+                    }
                 }
             }
-        } else {
-            unset($bookmarks[$index]);
         }
+        if ($score == 0) {
+            unset($bookmarks[$index]);
+        } else {
+            $bookmark['score'] = $score;
+        }
+        $score = 0;
     }
-
     return (is_array($bookmarks)) ? array_values($bookmarks) : null;
 }
 

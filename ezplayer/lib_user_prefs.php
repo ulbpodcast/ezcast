@@ -523,6 +523,7 @@ function user_prefs_bookmarks_search($user, $search, $fields, $level, $albums, $
         }
     }
 
+    // we have now the list of all eligible bookmarks to search in
     if ((!isset($search) || count($search) == 0) && $level == 0)
         return $bookmarks;
 

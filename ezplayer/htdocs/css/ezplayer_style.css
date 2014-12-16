@@ -121,24 +121,24 @@ body {
 #login_form{
     font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;	
     font-size:12px; 
-  /*  color:#000000;  */
+    /*  color:#000000;  */
     color: #444444;
     background-color: #F9F8F8;
- /*   margin-left:30px; */
- /*   line-height:40px; */
-    
+    /*   margin-left:30px; */
+    /*   line-height:40px; */
+
     width: 252px; 
- /*   height: 280px; */
- /*   padding-left: 15px; */
-  /*  padding-right: 15px; */
+    /*   height: 280px; */
+    /*   padding-left: 15px; */
+    /*  padding-right: 15px; */
     padding:10px 25px 25px 25px;
     margin:auto;
 
     border-radius: 25px;
     border: 1px dotted #BEBEBE;
     margin-top:50px;
-    
-  /*  text-align: center; */
+
+    /*  text-align: center; */
 }
 
 #login_form label {
@@ -562,11 +562,11 @@ body {
     color: #7bb3b6;
 }
 
-#assets, #threads{
+#assets {
     width: 638px;
-    min-height: 471px;
+    min-height: 508px;
     background: #ffffff;  
-    margin-bottom: 60px;
+    margin-bottom: 15px;
 }
 
 #threads{
@@ -635,6 +635,7 @@ body {
     top: 0px;
     left: 0px;
     background: #000000;
+    margin-bottom: 15px;
 }
 
 #video_shortcuts{
@@ -746,10 +747,6 @@ body {
 .shortcuts_tab a.active,
 .shortcuts_tab a:hover{
     background: url(../images/Generale/shortcuts-b.png) no-repeat center; 
-}
-
-#main_player{
-    padding-bottom: 50px;
 }
 
 #main_video,
@@ -1108,9 +1105,14 @@ body {
 }
 
 /* ******** Asset infos ********** */
+
+#bottom{
+    clear: both;
+    width: 930px;
+}
+
 .asset_info{
     display: block;
-    width: 616px;
     min-height: 60px;
     padding: 12px;
     margin: 12px 0px;
@@ -1331,9 +1333,11 @@ body {
     display: none;
     margin-right: 24px;
     margin-bottom: 4px;
+    margin-top: 5px;
     padding: 12px;
     text-align: justify;
     border-radius: 3px;
+    border-top:1px dotted #edb400;
 }
 
 .hidden-item-thread ul{
@@ -1349,9 +1353,10 @@ body {
 }
 
 .item-thread-title{
+    display: block;
     color: #edb400;
     font-size: 1.2em;
-    margin: 4px 0px;
+    margin: 4px 0px 6px 0px;
     cursor: pointer;
 }
 
@@ -1365,22 +1370,9 @@ body {
     padding: 0px 3px;
 }
 
-#threads .item-thread-title{
- /*   margin-left: 64px; */
-    width: 500px;
-}
-
-#main_player .item-thread-title{
-    color: #edb400;
-    font-size: 1.2em;
-    margin: 4px 0px;
-    cursor: pointer;
-}
-
 .thread_header{
     background-color: #edb400;
     color: white;
-    width: 638px;
     padding-top: 8px;
     padding-bottom: 8px;
     padding-left: 0px;
@@ -1388,7 +1380,6 @@ body {
 
 #thread_info{
     display: none;
-    width: 638px;
     min-height: 100px;
     margin-bottom: 24px;
     background: #ffffff;
@@ -1403,7 +1394,8 @@ body {
 #thread_author{
     padding-left: 48px;
     font-size: 11px;
-    max-width: 525px;
+    margin-top: 10px;
+    display: inline-block;
 }
 
 .date-sm{
@@ -1424,7 +1416,8 @@ body {
     font-size: 1.2em;
     padding-top: 0px;
     margin-top: 0px;
-    max-width: 525px;
+    max-width: 785px;
+    min-height: 32px;
 }
 
 .cat{
@@ -1488,6 +1481,11 @@ body {
 #comment_message_tinyeditor{
     margin-top: 0px;
 }
+
+.comment_author{
+    font-size: 11px;
+}
+
 .thread_options{
     display: inline-block;
     height: 17px;
@@ -1503,14 +1501,14 @@ body {
 
 .back-button{
     height: 22px;
-    width: 22px;
-    margin-right: 24px; 
+    width: 22px; 
+    margin-right: 14px; 
     margin-top: 4px;
-    background: transparent url('../images/Generale/A-retour.png') no-repeat center center;
+    background: transparent url('../images/Generale/A-back-threads.png') no-repeat center center;
 }
 
 .back-button:hover{
-    background: transparent url('../images/Generale/B-retour.png') no-repeat center center;
+    background: transparent url('../images/Generale/B-back-threads.png') no-repeat center center;
 }
 
 .refresh-button{
@@ -1523,11 +1521,6 @@ body {
 
 .refresh-button:hover{
     background: transparent url('../images/Generale/B-refresh.png') no-repeat center center;
-}
-
-.refresh-button.forum{
-    position: relative;
-    left: -28px;
 }
 
 .upvote-button{
@@ -1602,17 +1595,30 @@ body {
     background:transparent url(../images/Generale/add-thread-b.png) no-repeat center; 
 }
 
-.thread-logo{
+.thread-logo,
+.visibility-logo{
     height: 31px;
     width: 31px;
-    background: url(../images/Generale/thread-logo.png) no-repeat center center;
     padding-left: 48px;
     padding-top: 12px;
     padding-bottom: 12px;
     margin-left: 0px;
 }
 
-.thread-logo.details{
+.thread-logo{    
+    background: url(../images/Generale/thread-logo.png) no-repeat center center;
+}
+
+.visibility-logo.students{    
+    background: url(../images/Generale/visibility-students-logo.png) no-repeat center center;
+}
+
+.visibility-logo.all{    
+    background: url(../images/Generale/visibility-all-logo.png) no-repeat center center;
+}
+
+.thread-logo.details,
+.visibility-logo.details{
     padding-bottom: 28px;
     vertical-align: top;
 }
@@ -1789,14 +1795,14 @@ body {
 
 .search_result li.album_result{
     width: 480px;
-    padding: 9px 6px;
-    font-size: 13px;
+    padding: 8px;
     color: #333333;
+    font-weight: bold;
 }
 
 .search_result li.asset_result{
     width: 480px;
-    padding: 8px 6px;
+    padding: 6px;
     border-bottom: solid #CCCCCC 1px;
 }
 
@@ -1842,13 +1848,23 @@ body {
     padding: 6px 25px; 
 }
 
-.bookmark_info.thread{
+.bookmark_info.thread,
+.bookmark_info.comment{
     margin-left: 24px;
     text-align: justify;
+    margin-bottom: 5px;
+    cursor: pointer;
+    color: #000000;
 }
 
-.bookmark_info.thread.archived{
-    color: gray;
+
+.bookmark_info.comment{
+    background-color: whitesmoke;
+    border: 1px dotted #ccc;
+}
+
+.bookmark_info.comment:hover{
+    background-color: rgba(237,180,0, .1);
 }
 
 .result_detail .bookmark_info a{
@@ -2044,7 +2060,7 @@ body {
     clear: both;
     display: block;
     width: 283px;
-    height: 435px;
+    height: 472px;
     margin: 0px 5px;
     background-color: #FFFFFF;
     overflow: hidden;
@@ -2058,14 +2074,14 @@ body {
     display: block;
     float: left;
     width: 283px;
-    height: 435px;
+    height: 472px;
     overflow: hidden;
 }
 
 .no_content{
     padding: 8px 16px;
     display: block;
-    height: 307px;
+    height: 342px;
 }
 
 .side_pane_up,
@@ -2105,7 +2121,7 @@ body {
 
 .side_pane_content ul{
     display: block;
-    height: 323px;
+    height: 360px;
     width: 298px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -2371,7 +2387,11 @@ li.orange .bookmark_info a:hover{
 
 b.blue-title{
     display: block;
-    color: #11acea;   
+    background: #11acea;
+    color: #ffffff;
+    padding: 8px;
+    margin-top: 5px;
+    cursor: pointer;
 }
 
 .blue-title{
@@ -2380,16 +2400,19 @@ b.blue-title{
 
 b.green2-title{
     display: block;
-    color: #edb400;
-}
-
-.green2-title{
-    color: #edb400;
+    background: #edb400;
+    color: #ffffff;
+    padding: 8px;
+    cursor: pointer;
 }
 
 b.orange-title{
     display: block;
-    color: #e05f24;   
+    background: #e05f24; 
+    color: #ffffff;
+    padding: 8px;  
+    margin-top: 5px;
+    cursor: pointer;
 }
 
 .orange-title{
@@ -2852,16 +2875,48 @@ a.tooltip:hover div.tip{
 #video_notifications{
     display: block;
     position: absolute;
-    border: solid;
-    border-width: 8px 2px 1px 2px;
-    border-color: #edb400;
-    width: 24%;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    padding: 4px 8px;
+    width: 290px;
     background: rgba(255,255,255,0.85);
-    padding-left: 8px;
-    padding-right: 8px;
     right: 4px;
     top: 4px;
     z-index: 1000;
+}
+
+.notifications_title{
+    padding: 3px;
+    border-bottom: 1px #edb400 solid;
+}
+
+.span-link{
+    float: right;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    padding: 0px 4px 2px 4px;
+    border: 1px solid #777;
+    font-size: 10px;
+
+}
+
+.span-link.red:hover{
+    color: #ffffff;
+    background: #c23328;
+    cursor: pointer;
+    border: none;
+}
+
+.notification-item-title{
+    display: block;
+    width: 255px;
+}
+
+.notification-item-title:hover{
+    cursor:pointer;
+    color: #edb400;
 }
 
 #video_notifications.panel-active{
@@ -2870,17 +2925,16 @@ a.tooltip:hover div.tip{
 
 #notifications{
     width: 100%;
-    border-radius: 2px;
     height: 100%;
-
 }
+
 .notification_item{
     list-style: none;
     border-bottom: 1px dotted;
     position: relative;
     z-index: 1000;
     margin: 5px;
-    padding: 5px;
+    padding: 3px 5px 8px 5px;
 }
 
 .message-input{
@@ -2954,22 +3008,6 @@ a.tooltip:hover div.tip{
 .back-to-threads:hover{
     background-color: #edb400;
     color: white;
-}
-
-.notifications_title{
-    text-transform: uppercase;
-    margin-top: 4px;
-    border-bottom: 1px #edb400 solid;
-}
-
-.span-link:hover{
-    color: #edb400;
-    cursor: pointer;
-}
-
-.notification-item-title:hover{
-    cursor:pointer;
-    color: #edb400;
 }
 
 #threads_album{

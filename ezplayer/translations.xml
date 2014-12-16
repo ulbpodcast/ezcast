@@ -342,10 +342,12 @@
         <label id="Copy" lang="en">Copy</label>
         <label id="Edit" lang="fr">Editer</label>
         <label id="Edit" lang="en">Edit</label>
-        <label id="Created_by" lang="fr">Créé par</label>
+        <label id="Created_by" lang="fr">Créée par</label>
         <label id="Created_by" lang="en">Created by</label>
-        <label id="Edited_on" lang="fr">Modifié le</label>
+        <label id="Edited_on" lang="fr">Modifiée le</label>
         <label id="Edited_on" lang="en">Edited on</label>
+        <label id="On_date" lang="fr">le</label>
+        <label id="On_date" lang="en">on</label>        
         <label id="Edit_bookmark" lang="fr">Editer le signet</label>
         <label id="Edit_bookmark" lang="en">Edit the bookmark</label>
         <label id="Share_bookmark" lang="fr">Partager le signet</label>

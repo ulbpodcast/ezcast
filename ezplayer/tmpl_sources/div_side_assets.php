@@ -22,9 +22,10 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 
-include_once 'lib_print.php'; ?>
+include_once 'lib_print.php';
+?>
 <!-- #side_menu
     Contains the buttons used to navigate through the pages.
     #back_button : displayed on asset page and used to return to the current album
@@ -32,16 +33,18 @@ include_once 'lib_print.php'; ?>
 -->
 
 <script>
-    $('#assets_button, .bookmarks_button, .toc_button').localScroll({
-        target:'#side_pane',
+    $('.bookmarks_button, .toc_button').localScroll({
+        target: '#side_pane',
         axis: 'x'
     });
-        
-    <?php if (!acl_user_is_logged()){ ?>
+
+    history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + '<?php echo $_SESSION['token']; ?>'}, '', '');
+
+<?php if (!acl_user_is_logged()) { ?>
         current_tab = 'toc';
-    <?php } ?>
-        
-    if (current_tab == 'toc'){
+<?php } ?>
+
+    if (current_tab == 'toc') {
         setActivePane('.toc_button');
         $('#side_pane').scrollTo('#album_toc');
     } else {
@@ -58,11 +61,13 @@ include_once 'lib_print.php'; ?>
 <div id="side_menu">
 
     <?php if (acl_user_is_logged()) { ?>
-        <div class="bookmarks_button active dir"><a onclick="setActivePane('.bookmarks_button'); server_trace(new Array('2', 'bookmarks_swap', current_album, current_asset, current_tab));" href="#album_bookmarks" title="®Display_bookmarks®"></a></div>
-        <?php
-    }
-    ?>
-    <div class="toc_button dir"><a onclick="setActivePane('.toc_button'); server_trace(new Array('2', 'bookmarks_swap', current_album, current_asset, current_tab));" href="#album_toc" title="®Display_toc®"></a></div>
+        <div class="bookmarks_button active dir"><a onclick="setActivePane('.bookmarks_button');
+            server_trace(new Array('2', 'bookmarks_swap', current_album, current_asset, current_tab));" href="#album_bookmarks" title="®Display_bookmarks®"></a></div>
+            <?php
+        }
+        ?>
+    <div class="toc_button dir"><a onclick="setActivePane('.toc_button');
+        server_trace(new Array('2', 'bookmarks_swap', current_album, current_asset, current_tab));" href="#album_toc" title="®Display_toc®"></a></div>
     <div class="settings bookmarks"> 
         <a class="menu-button" title="®Bookmarks_actions®" onclick="$(this).toggleClass('active')" href="javascript:toggle('#bookmarks_actions');"></a>
         <a class="sort-button <?php echo acl_value_get("bookmarks_order"); ?>" title="®Reverse_bookmarks_order®" href="javascript:sort_bookmarks('bookmarks', '<?php echo (acl_value_get("bookmarks_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets');"></a>
@@ -109,7 +114,7 @@ the pane displays the list of all assets contained in the selected album
                         foreach ($album_bookmarks as $index => $bookmark) {
                             ?>
                             <li id="bookmark_<?php echo $index; ?>" class="blue level_<?php echo $bookmark['level']; ?>">
-                                
+
                                 <a class="item blue" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">                                    
                                     <?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?> <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
                                     <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
@@ -153,8 +158,8 @@ the pane displays the list of all assets contained in the selected album
                         <li id="toc_<?php echo $index; ?>" class="orange level_<?php echo $bookmark['level']; ?>">
 
                             <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">
-                                    <?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?> <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
-                                    <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
+                                <?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?> <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
+                                <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
                             </a>
                             <span class="more"><a class="more-button orange" onclick="toggle_detail('<?php echo $index; ?>', 'toc', $(this));"></a></span>
                             <div class="bookmark_detail" id="toc_detail_<?php echo $index; ?>">

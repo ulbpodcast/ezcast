@@ -1,6 +1,3 @@
-<script>
-    displayThread = false;
-</script>
 <?php
 /*
  * EZCAST EZplayer
@@ -25,7 +22,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 
 include_once 'lib_print.php';
 ?>
@@ -55,3 +52,26 @@ include_once 'lib_print.php';
     ?>
 
 </div><!-- div_right END -->
+
+<div id="bottom">
+    <!-- bottom part goes here : trending posts, discussions, ... -->                        
+    <?php
+    if ($_SESSION['ezplayer_mode'] == 'view_album_assets') {
+        require template_getpath('div_trending_threads.php');
+    } else {
+        require template_getpath('div_video_description.php');
+        if (acl_display_threads() && acl_user_is_logged()) {
+            ?>
+            <div id="threads" class="threads_info">
+            <?php if ($_SESSION['thread_display'] == 'details'){
+                include_once template_getpath('div_thread_details.php');
+            } else {                
+                include_once template_getpath('div_threads_list.php');
+            }
+?>
+            </div><!-- END of #threads_info -->
+        <?php
+        }
+    }
+    ?>
+</div>

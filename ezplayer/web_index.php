@@ -729,6 +729,7 @@ function view_asset_details($refresh_center = true) {
     if ($refresh_center) { // the whole page must be displayed
         if (acl_display_threads()) {
             $threads = threads_select_by_asset($album, $asset);
+            $_SESSION['thread_display'] = 'list';
         }
         if ($input['click']){ // called from a local link
             // lvl, action, album, asset, record type (cam|slide|camslide), permissions (view official | add personal), origin
@@ -806,6 +807,9 @@ function view_asset_bookmark($refresh_center = true) {
     else
         $timecode = $_SESSION['timecode'];
 
+    if (isset($input['thread_id']))
+        $thread_id = $input['thread_id'];
+    
     // init paths
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);
@@ -906,7 +910,15 @@ function view_asset_bookmark($refresh_center = true) {
 
     if ($refresh_center) {
         if (acl_display_threads()) {
-            $threads = threads_select_by_asset($album, $asset);
+            if (isset($thread_id)){
+                // click from lvl 2 on a discussion
+                $thread = thread_details_update(false);
+                $_SESSION['thread_display'] = 'details';
+            } else {
+                // click from lvl 2 on a bookmark
+                $threads = threads_select_by_asset($album, $asset);
+                $_SESSION['thread_display'] = 'list';
+            }
         }
         if ($input['click']){ // refresh the center of the page (local link)
             // lvl, action, album, asset, timecode, targeted type (cam|slide), record type (cam|slide|camslide), permissions (view official | add personal), origin
@@ -1019,7 +1031,7 @@ function bookmarks_search() {
     if (in_array('custom', $tab)) { // searches in personal bookmarks
         $bookmarks = user_prefs_bookmarks_search($_SESSION['user_login'], $search, $fields, $level, $albums, $asset);
     }
-    if (in_array('threads', $tab)) { // searches in threads
+    if (acl_user_is_logged() && acl_display_threads && in_array('threads', $tab)) { // searches in threads
         $search_result_threads = thread_search($search, $fields_thread, $albums, $asset);
     }
 
@@ -1549,7 +1561,7 @@ function edited_on(){
  * @global array $input
  * @return boolean
  */
-function thread_details_update() {
+function thread_details_update($display = true) {
     global $input;
 
     $id = $input['thread_id'];
@@ -1558,15 +1570,19 @@ function thread_details_update() {
     $thread['best_comment'] = comment_select_best($id);
     $thread['comments'] = comment_select_by_thread($id);
 
-    include template_getpath('div_thread_details.php');
-    return true;
+    if ($display){
+        include template_getpath('div_thread_details.php');
+        return true;
+    } else {
+        return $thread;
+    }
 }
 
 /**
  * Reloads the threads list
  * @global type $input
  */
-function threads_list_update() {
+function threads_list_update($display = true) {
     global $input;
 
     $album = $input['album'];
@@ -1584,8 +1600,12 @@ function threads_list_update() {
         $threads = threads_select_by_asset($album, $asset);
     }
 
-    include_once template_getpath('div_threads_list.php');
-    return true;
+    if ($display){
+        include_once template_getpath('div_threads_list.php');
+        return true;
+    } else {
+        return $threads;
+    }
 }
 
 /**

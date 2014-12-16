@@ -9,30 +9,30 @@ WARNING: Please call template_repository_path() BEFORE including this template
 <html lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-                <!-- 
-         * EZCAST EZplayer
-         *
-         * Copyright (C) 2014 Université libre de Bruxelles
-         *
-         * Written by Michel Jansens <mjansens@ulb.ac.be>
-         * 	      Arnaud Wijns <awijns@ulb.ac.be>
-         *            Carlos Avidmadjessi
-         * UI Design by Julien Di Pietrantonio
-         *
-         * This software is free software; you can redistribute it and/or
-         * modify it under the terms of the GNU Lesser General Public
-         * License as published by the Free Software Foundation; either
-         * version 3 of the License, or (at your option) any later version.
-         *
-         * This software is distributed in the hope that it will be useful,
-         * but WITHOUT ANY WARRANTY; without even the implied warranty of
-         * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-         * Lesser General Public License for more details.
-         *
-         * You should have received a copy of the GNU Lesser General Public
-         * License along with this software; if not, write to the Free Software
-         * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-                -->
+        <!-- 
+ * EZCAST EZplayer
+ *
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 	      Arnaud Wijns <awijns@ulb.ac.be>
+ *            Carlos Avidmadjessi
+ * UI Design by Julien Di Pietrantonio
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+        -->
         <title>®ezplayer_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
@@ -41,12 +41,14 @@ WARNING: Please call template_repository_path() BEFORE including this template
         <link rel="stylesheet" type="text/css" href="lib/tinyEditor/tinyeditor.css" />
 
         <script>
-            <?php global $trace_on;
-            if ($trace_on){ ?>
+<?php
+global $trace_on;
+if ($trace_on) {
+    ?>
                 var trace_on = true;
-            <?php } else { ?>
+<?php } else { ?>
                 var trace_on = false;
-            <?php } ?>
+<?php } ?>
         </script>
         <script type="text/javascript" src="lib/tinyEditor/tiny.editor.packed.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery-1.6.2.min.js"></script>
@@ -111,29 +113,9 @@ WARNING: Please call template_repository_path() BEFORE including this template
                 });
 
                 window.onpopstate = function(event) {
-                    var state = jQuery.parseJSON(JSON.stringify(event.state));
-                    if (event.state == null) {
-
-                    } else {
-                        if (state.key === 'show-asset-details') {
-                            location.reload();
-                            history.pushState({"key": "show-asset-details"}, 'asset-details', 'index.php?action=view_asset_details');
-                        } else if (state.key === 'show-album-assets') {
-                            location.reload();
-                            history.pushState({"key": "show-album-assets"}, 'album-details', 'index.php?action=view_album_assets');
-                        } else if (state.key === 'thread-details') {
-                            location.reload();
-                            history.pushState({"key": "thread-details"}, 'thread-details', 'index.php?action=show_thread_detail');
-                        } else if (state.key === 'show-album-forum') {
-                            location.reload();
-                            history.pushState({"key": "show-album-forum"}, 'album-forum', 'index.php?action=view_forum');
-                        } else if (state.key === 'home') {
-                            $('body').load('index.php');
-                            location.reload();
-                            history.pushState({"key": "home"}, 'album-details', 'index.php');
-                        } else {
-                            alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
-                        }
+                    if (event.state !== null) {
+                        var state = jQuery.parseJSON(JSON.stringify(event.state));
+                        window.location = state.url;
                     }
                 };
             });
@@ -170,7 +152,7 @@ WARNING: Please call template_repository_path() BEFORE including this template
                 // Getting the content from the server, and filling the div_album_header with it
                 document.getElementById('div_center').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
                 makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true', 'div_center');
-                history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 'index.php?action=view_album_assets');
+                // history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 'index.php?action=view_album_assets');
             }
 
             function show_asset_details(album, asset, asset_token) {
@@ -179,10 +161,10 @@ WARNING: Please call template_repository_path() BEFORE including this template
                 display_thread_details = false;
 
                 makeRequest('index.php', '?action=view_asset_details&album=' + album + '&asset=' + asset + '&asset_token=' + asset_token + '&click=true', 'div_center');
-                history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
+                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
             }
 
-            function show_thread(album, asset, token, threadId) {
+            function show_thread(album, asset, timecode, threadId, commentId) {
                 if (album != null && asset != null) {
                     current_album = album;
                     current_asset = asset;
@@ -191,17 +173,17 @@ WARNING: Please call template_repository_path() BEFORE including this template
                     video_fullscreen(false);
                 }
 
-                $('#asset-' + asset).click();
-
                 $.ajax({
                     type: 'POST',
-                    url: 'index.php?action=thread_details_view&click=true',
-                    data: {'thread_id': threadId},
+                    url: 'index.php?action=view_asset_bookmark',
+                    data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
                     success: function(response) {
-                        $('#threads').html(response);
-                    },
-                    complete: function(jqXHR, textStatus) {
-//                        scrollTo('thread_info');
+                        $('#div_center').html(response);
+                        if (commentId != '') {
+                            $.scrollTo('#comment_' + commentId);
+                        } else {
+                            $.scrollTo('#threads');
+                        }
                     }
                 });
             }
@@ -435,7 +417,7 @@ WARNING: Please call template_repository_path() BEFORE including this template
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=threads_list_view&click=true',
-                    data: {'album': current_album, 'asset' : current_asset},
+                    data: {'album': current_album, 'asset': current_asset},
                     success: function(response) {
                         $('#threads').html(response);
                     }
@@ -813,16 +795,16 @@ WARNING: Please call template_repository_path() BEFORE including this template
                         '&click=true', 'div_center');
             }
 
-            function move_album_token(album, index, upDown){
-                makeRequest('index.php', '?action=move_album_token'+ 
-                    '&album=' + album + '&index=' + index + '&up_down=' + upDown + "&click=true", 'div_center');                
+            function move_album_token(album, index, upDown) {
+                makeRequest('index.php', '?action=move_album_token' +
+                        '&album=' + album + '&index=' + index + '&up_down=' + upDown + "&click=true", 'div_center');
             }
 
             function toggle_detail(index, pane, elem) {
                 $('#' + pane + '_detail_' + index).slideToggle();
                 $('#' + pane + '_' + index).toggleClass('active');
                 elem.toggleClass('active');
-                
+
                 server_trace(new Array('3', elem.hasClass('active') ? 'bookmark_show' : 'bookmark_hide', current_album, current_asset, current_tab));
                 var millisecondsToWait = 350;
                 setTimeout(function() {
@@ -941,7 +923,7 @@ echo json_encode($valid_extensions);
 
         </script>
 
-        <?php if (isset($head_code)) echo $head_code; ?>
+<?php if (isset($head_code)) echo $head_code; ?>
     </head>
     <body>
         <?php
@@ -975,16 +957,16 @@ echo json_encode($valid_extensions);
                     <ul>
                         <li><b>Safari 5+</b> | </li>
                         <li><b>Google Chrome</b> | </li>
-                        <?php if ($_SESSION['user_os'] == "Windows") { ?>
+    <?php if ($_SESSION['user_os'] == "Windows") { ?>
                             <li><b>Internet Explorer 9+</b> | </li>
                             <li><b>Firefox 22+</b></li>
-                        <?php } ?>
+    <?php } ?>
                     </ul>
                 </div>       
             </div>
-        <?php } ?>
+            <?php } ?>
         <div class="container">
-            <?php include_once template_getpath('div_main_header.php'); ?>
+<?php include_once template_getpath('div_main_header.php'); ?>
             <div id="global">
                 <div id="div_center">
                     <?php
@@ -1004,11 +986,11 @@ echo json_encode($valid_extensions);
                 include_once template_getpath('popup_message_of_day.php');
                 ?>
                 <script>
-                $('#popup_message_of_day').reveal($(this).data());
+            $('#popup_message_of_day').reveal($(this).data());
                 </script>           
             <?php } ?>
             <!-- FOOTER - INFOS COPYRIGHT -->
-            <?php include_once template_getpath('div_main_footer.php'); ?>
+<?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
         </div><!-- Container fin -->
 

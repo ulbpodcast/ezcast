@@ -182,7 +182,7 @@ function load_player(media) {
                     // Display max N threads (with N = notif_display_number)
                     if (i > notif_display_number)
                         break;
-                    html_value += "<li id='notif_"+key+"' class ='notification_item'><span class='span-link red' onclick='javascript:remove_notification_item(" + key + ")' >[x]</span><span class='notification-item-title' onclick='javascript:show_thread(null, null, null, " + key + ")'> " + title_array[key] + "</span></li>";
+                    html_value += "<li id='notif_"+key+"' class ='notification_item'><span class='span-link red' onclick='javascript:remove_notification_item(" + key + ")' >x</span><span class='notification-item-title' onclick='javascript:thread_details_update(" + key + ")'> " + title_array[key] + "</span></li>";
                 }
             }
             html_value += "</ul>";

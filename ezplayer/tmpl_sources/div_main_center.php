@@ -27,6 +27,8 @@
 
 <script>
     lvl = 1;
+
+    history.replaceState({"url": 'index.php'}, '', '');
 </script>
 <?php
 include_once 'lib_print.php';

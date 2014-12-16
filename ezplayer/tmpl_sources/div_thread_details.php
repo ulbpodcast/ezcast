@@ -29,24 +29,22 @@ include_once 'lib_print.php';
 $DTZ = new DateTimeZone('Europe/Paris');
 require template_getpath('popup_delete_thread.php');
 ?>
-<a class="item_link right back-to-threads" href="javascript:threads_list_update()">®Display_discussions®</a>
 <div class="thread_header">
-    <span class="thread-logo details"></span>
+    <span class="visibility-logo <?php echo ($thread['studentOnly']) ? 'students' : 'all' ?> details" title="<?php echo ($thread['studentOnly']) ? '®Visibility_students®' : '®Visibility_all®' ?>"></span>
     <span class="thread-title inline-block"><?php echo $thread['title']; ?></span> 
     <a class="refresh-button pull-right" title="®Refresh_discussion_details®" href="javascript:thread_details_update(<?php echo $thread['id']; ?>)"></a>
+    <a class="back-button pull-right" title="®Display_discussions®" href="javascript:threads_list_update();"></a>
     <br/>
     <?php
-    $creationDateFr_msg = new DateTimeFrench($thread['creationDate'], $DTZ);
-    $creationDateFrVerbose_msg = $creationDateFr_msg->format('j F Y');
+    $creationDate = (get_lang() == 'fr') ? new DateTimeFrench($thread['creationDate'], $DTZ) : new DateTime($thread['creationDate'], $DTZ);
+    $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\hi') : $creationDate->format("F j, Y, g:i a");
     ?>
-    <span id="thread_author" class="darkgray-label">
-        <b><label><?php echo $thread['authorFullName']; ?></label></b> 
-        <i class="white"> // </i>
-        <label> <?php echo $creationDateFrVerbose_msg; ?></label>
-        <i class="white"> // </i>
-        <label><?php echo substr($thread['creationDate'], 11, 8); ?></label>
-    </span>
 </div>
+<span id="thread_author" class="darkgray-label">
+    <span style="font-style: italic; font-size: 11px;"><?php echo $thread['authorFullName']; ?></span> 
+    <i class="slash item-thread-slash">//</i>
+    ®On_date® <b><?php echo $creationDateVerbose; ?></b>
+</span>
 <div id="message-thread">
     <?php echo nl2br(html_entity_decode($thread['message'])); ?>
 </div>
@@ -101,7 +99,8 @@ require template_getpath('popup_delete_thread.php');
         <?php if (acl_is_admin()) {
             ?>     
             <a class="delete-button green2 pull-right inline-block" title="®Delete_discussion®" data-reveal-id="popup_delete_thread_<?php echo $thread['id']; ?>" ></a>
-        <?php }
+            <?php
+        }
     }
     ?>
 </div>
@@ -109,28 +108,16 @@ require template_getpath('popup_delete_thread.php');
 <br/><br/>
 
 <?php if (count($thread['comments']) != 0) { ?>
-    <?php if ($thread['best_comment'] != NULL) {
+    <?php
+    if ($thread['best_comment'] != NULL) {
         $best_comment = $thread['best_comment'];
         ?>
         <div class="cat">
             <label class="thread-cat-title"><?php echo mb_strtoupper('®Best_answer®', 'UTF-8'); ?></label>
         </div>
         <div class="best_reply">
-            <?php
-            $creationDateFr_msg = new DateTimeFrench($best_comment['creationDate'], $DTZ);
-            $creationDateFrVerbose_msg = $creationDateFr_msg->format('j F Y');
-            ?>
-            <span class="comment_author" class="darkgray-label">
-                <b><label><?php echo $best_comment['authorFullName']; ?></label></b> 
-                <i class="slash-sm"> // </i>
-                <span class="date-sm">
-                    <label> <?php echo $creationDateFrVerbose_msg; ?></label>
-                    <i class="slash-sm"> // </i>
-                    <label><?php echo substr($best_comment['creationDate'], 11, 8); ?></label>
-                </span>
-            </span>
             <div id="best-comment-message" onclick="javascript:scrollTo('comment_<?php echo $best_comment['id']; ?>');" style="cursor: pointer;">
-        <?php echo nl2br(html_entity_decode($best_comment['message'])); ?>
+                <?php echo nl2br(html_entity_decode($best_comment['message'])); ?>
             </div>
             <label class="pull-left badge-score"><?php echo sprintf("%02s", $best_comment['score']); ?></label>
             <div class="trophy-best-comment pull-left"></div>

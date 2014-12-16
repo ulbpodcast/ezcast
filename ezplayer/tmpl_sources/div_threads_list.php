@@ -59,8 +59,7 @@ include_once 'lib_print.php';
                         <?php if ($thread['nbComments'] > 0) { ?>
                             <div  class="item-thread-more item-thread-nbcomments" title="®Thread_nbComments®"><?php echo $thread['nbComments'] ?></div>
                         <?php } ?>
-                        <label class="item-thread-title inline-block" ><?php echo $thread['title']; ?></label>
-                        <br />
+                        <label class="item-thread-title" ><?php echo $thread['title']; ?></label>
                         <span class="item-thread-author">
                             ®Edited_on® <b><?php echo $editDateVerbose; ?></b>
                             ®By® <?php echo (isset($thread['lastEditAuthor']) && trim($thread['lastEditAuthor']) != '') ? $thread['lastEditAuthor'] : $thread['authorFullName']; ?>

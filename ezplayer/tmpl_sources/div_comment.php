@@ -24,9 +24,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-$creationDate_msg = $comment['creationDate'];
-$creationDateFr_msg = new DateTimeFrench($creationDate_msg, $DTZ);
-$creationDateFrVerbose_msg = $creationDateFr_msg->format('j F Y');
+
+$creationDate = (get_lang() == 'fr') ? new DateTimeFrench($comment['creationDate'], $DTZ) : new DateTime($comment['creationDate'], $DTZ);
+$creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\hi') : $creationDate->format("F j, Y, g:i a");
 require template_getpath('popup_delete_comment.php');
 ?>
 <span id="comment_<?php echo $comment['id']; ?>">
@@ -36,13 +36,9 @@ require template_getpath('popup_delete_comment.php');
             <div class="orange-title sm"><?php echo mb_strtoupper("®Professor_approved®", "UTF-8") ?><i class="slash-sm orange"> // </i></div>
         <?php } ?>
         <span class="comment_author" class="darkgray-label">
-            <b><label><?php echo $comment['authorFullName']; ?></label></b> 
-            <span class="date-sm">
-                <i class="slash-sm"> // </i>
-                <label> <?php echo $creationDateFrVerbose_msg; ?></label>
-                <i class="slash-sm"> // </i>
-                <label><?php echo substr($comment['creationDate'], 11, 8); ?></label>
-            </span>
+            <span style="font-style: italic; font-size: 11px;"><?php echo $comment['authorFullName']; ?></span> 
+            <i class="slash item-thread-slash">//</i>
+            ®On_date® <b><?php echo $creationDateVerbose; ?></b>
         </span>
         <br/>
         <br/>

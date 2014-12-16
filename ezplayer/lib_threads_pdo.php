@@ -121,6 +121,7 @@ function threads_statements_get() {
         'comment_select_best' =>
         'SELECT * FROM ' . db_gettable('comments') .
         ' WHERE thread = :thread '
+        . 'AND score > 0 '
         . 'AND deleted = "0" ORDER BY score DESC LIMIT 1',
         'comment_update_score_up' =>
         'UPDATE ' . db_gettable('comments') .
@@ -347,7 +348,261 @@ function thread_reinit_nbComments($id) {
 }
 
 function thread_search($words, $fields, $albums, $asset = '') {
-    global $db;
+    global $db_object;
+
+    // set $relevancy to true if the result is aimed to be sorted by relevancy.
+    // With $relevancy = false, as soon as a word is found in any of the fields,
+    // we stop the search and check for the next discussion.
+    // With $relevancy = true, we search for every words in every fields and 
+    // give a score to each discussion, according to certain rules.
+    $relevancy = true;
+
+    if (count($fields) <= 0)
+        return null;
+    if (count($albums) <= 0)
+        return null;
+
+    $albums_in_query = implode(',', array_fill(0, count($albums), '?'));
+
+
+    $where_base = 'WHERE ' .
+            'albumName IN (' . $albums_in_query . ') ' .
+            ((isset($asset) && $asset != '') ? ' AND assetName LIKE ' . $db_object->quote("%$asset%") . ' ' : ' ') .
+            ((acl_has_moderated_album() && !acl_is_admin()) ? ' AND studentOnly == 0 ' : ' ') .
+            'AND c.deleted != 1 ';
+
+    if (in_array('title', $fields)) {
+        // search in threads titles
+
+        if (count($words) > 0) {
+            $where = $where_base . 'AND ( ';
+            foreach ($words as $index => $word) {
+                if ($index > 0) {
+                    $where .= ' OR ';
+                }
+                $where .= 'title LIKE ' . $db_object->quote("%" . $word . "%") . ' ';
+            }
+            $where .= ') ';
+        }
+
+        /*
+         * SELECT DISTINCT ... FROM threads
+         * WHERE albumName IN ( ' ... ' )  <-- selection of albums
+         * AND assetName LIKE '%$asset%' <-- if $asset != ''
+         * AND studentOnly == 0 <-- if user is a teacher
+         * AND deleted != 1
+         * AND (title LIKE '%$word[i]%' OR title LIKE '%word[i+1]%' ...)
+         * GROUP BY albumName, assetName, id;
+         */
+
+        $stmt = 'SELECT DISTINCT id, title, message, timecode, albumName, assetName, assetTitle, studentOnly '
+                . 'FROM ' . db_gettable('threads') . ' c '
+                . $where
+                . 'GROUP BY albumName, assetName, id';
+
+        $prepared_stmt = $db_object->prepare($stmt);
+        $prepared_stmt->execute($albums);
+        $result_threads = $prepared_stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    if (in_array('message', $fields)) {
+        // search in threads messages and comments
+
+        if (count($words) > 0) {
+            $where = $where_base . 'AND ( ';
+            foreach ($words as $index => $word) {
+                if ($index > 0) {
+                    $where .= ' OR ';
+                }
+                $where .= 'c.message LIKE ' . $db_object->quote("%" . $word . "%") . ' ';
+            }
+            $where .= ') ';
+        }
+
+        /*
+         * SELECT DISTINCT ... FROM threads
+         * WHERE albumName IN ( ' ... ' )  <-- selection of albums
+         * AND assetName LIKE '%$asset%' <-- if $asset != ''
+         * AND studentOnly == 0 <-- if user is a teacher
+         * AND deleted != 1
+         * AND (message LIKE '%$word[i]%' OR message LIKE '%word[i+1]%' ...)
+         * GROUP BY albumName, assetName, id;
+         */
+
+        $stmt = 'SELECT DISTINCT id, title, message, timecode, albumName, assetName, assetTitle, studentOnly '
+                . 'FROM ' . db_gettable('threads') . ' c '
+                . $where
+                . 'GROUP BY albumName, assetName, id';
+
+        $prepared_stmt = $db_object->prepare($stmt);
+        $prepared_stmt->execute($albums);
+        $result_messages = $prepared_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /*
+         * SELECT DISTINCT ... FROM comments c
+         * JOIN threads t ON ...
+         * WHERE albumName IN ( ' ... ' )  <-- selection of albums
+         * AND assetName LIKE '%$asset%' <-- if $asset != ''
+         * AND studentOnly == 0 <-- if user is a teacher
+         * AND c.deleted != 1
+         * AND (c.message LIKE '%$word[i]%' OR c.message LIKE '%word[i+1]%' ...)
+         * AND t.deleted != 1
+         * GROUP BY albumName, assetName, id;
+         */
+
+        $stmt = 'SELECT DISTINCT thread, title, c.message, t.message as thread_message, timecode, albumName, assetName, assetTitle, c.id, studentOnly ' .
+                'FROM ' . db_gettable('comments') . ' c ' .
+                'JOIN ' . db_gettable('threads') . ' t on c.thread = t.id ' .
+                $where . ' AND t.deleted != 1 ' .
+                'GROUP BY albumName, assetName, t.id, c.id';
+
+        $prepared_stmt = $db_object->prepare($stmt);
+        $prepared_stmt->execute($albums);
+        $result_comments = $prepared_stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // we have now 1/2/3 arrays (depending on fields 'title' and 'message')
+    // $result_threads contains all threads where one of the words is in the title
+    // $result_messages contains all threads where one of the words is in the message
+    // $result_comments contains all the comments where one of the words is in the message
+
+    $threads_array = array();
+
+    // loop on threads that contain at least one word in the title
+    foreach ($result_threads as $thread) {
+        $score = 0;
+
+        if ($relevancy) {
+            foreach ($words as $word) {
+                // search the word in the title
+                $offset = stripos($thread['title'], $word);
+                if ($offset !== false) {
+                    // the word has been found, we increment the score
+                    $last_index = $offset + strlen($word);
+                    $score++;
+
+                    // there is nothing before and/or after the word, we increment the score
+                    if ($offset == 0)
+                        $score++;
+                    if ($last_index == strlen($thread['title']))
+                        $score++;
+                    if ($offset > 0 && $thread['title'][$offset - 1] == ' ')
+                        $score++;
+                    if ($last_index < strlen($thread['title']) && $thread['title'][$last_index] == ' ')
+                        $score++;
+
+                    // There are multiple occurences of the word, we increment the score
+                    $count = substr_count(strtoupper($thread['title']), strtoupper($word));
+                    if ($count > 1) {
+                        $score += ($count - 1) * 2;
+                    }
+                }
+            }
+            $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['score'] = $score;
+        }
+        $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['title'] = $thread['title'];
+        $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['message'] = $thread['message'];
+        $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['timecode'] = $thread['timecode'];
+        $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['comments'] = array();
+    }
+
+    // loop on thread that contain at least one word in message
+    foreach ($result_messages as $thread) {
+        $score = 0;
+        if ($relevancy) {
+            foreach ($words as $word) {
+                // search the word in the message
+                $offset = stripos($thread['message'], $word);
+                if ($offset !== false) {
+                    // the word has been found, we increment the score
+                    $last_index = $offset + strlen($word);
+                    $score++;
+
+                    // there is nothing before and/or after the word, we increment the score
+                    if ($offset == 0)
+                        $score++;
+                    if ($last_index == strlen($thread['message']))
+                        $score++;
+                    if ($offset > 0 && $thread['message'][$offset - 1] == ' ')
+                        $score++;
+                    if ($last_index < strlen($thread['message']) && $thread['message'][$last_index] == ' ')
+                        $score++;
+
+                    // There are multiple occurences of the word, we increment the score
+                    $count = substr_count(strtoupper($thread['message']), strtoupper($word));
+                    if ($count > 1) {
+                        $score += ($count - 1) * 2;
+                    }
+                }
+            }
+        }
+
+        if (isset($threads_array[$thread['albumName']][$thread['assetName']][$thread['id']])) {
+            // updates the score of the thread
+            if ($relevancy)
+                $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['score'] += $score;
+        } else {
+            if ($relevancy)
+                $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['score'] = $score;
+            $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['title'] = $thread['title'];
+            $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['message'] = $thread['message'];
+            $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['timecode'] = $thread['timecode'];
+            $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['comments'] = array();
+        }
+    }
+
+    // loop on comments that contain at least one word
+    foreach ($result_comments as $thread_comment) {
+        $score = 0;
+        if ($relevancy) {
+            foreach ($words as $word) {
+                // search the word in the message
+                $offset = stripos($thread_comment['message'], $word);
+                if ($offset !== false) {
+                    // the word has been found, we increment the score
+                    $last_index = $offset + strlen($word);
+                    $score++;
+
+                    // there is nothing before and/or after the word, we increment the score
+                    if ($offset == 0)
+                        $score++;
+                    if ($last_index == strlen($thread_comment['message']))
+                        $score++;
+                    if ($offset > 0 && $thread_comment['message'][$offset - 1] == ' ')
+                        $score++;
+                    if ($last_index < strlen($thread_comment['message']) && $thread_comment['message'][$last_index] == ' ')
+                        $score++;
+
+                    // There are multiple occurences of the word, we increment the score
+                    $count = substr_count(strtoupper($thread_comment['message']), strtoupper($word));
+                    if ($count > 1) {
+                        $score += ($count - 1) * 2;
+                    }
+                }
+            }
+        }
+
+        // the thread is already in the list
+        if (isset($threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']])) {
+            // updates the score of the thread
+            if ($relevancy)
+                $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['score'] += $score;
+            $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['comments'][$thread_comment['id']] = $thread_comment['message'];
+        } else {
+            if ($relevancy)
+                $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['score'] = $score;
+            $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['title'] = $thread_comment['title'];
+            $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['message'] = $thread_comment['thread_message'];
+            $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['timecode'] = $thread_comment['timecode'];
+            $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['comments'][$thread_comment['id']] = $thread_comment['message'];
+        }
+    }
+
+    return $threads_array;
+}
+
+function thread_search_old($words, $fields, $albums, $asset = '') {
+    global $db_object;
 
     if (count($fields) <= 0)
         return null;
@@ -384,7 +639,7 @@ function thread_search($words, $fields, $albums, $asset = '') {
             $where = '';
             foreach ($fields_in_query_thread as $field => $column) {
                 $where .= ($where == '') ? 'WHERE ' : ' OR ';
-                $where .= $column . ' LIKE ' . $db->quote("%" . $words[0] . "%");
+                $where .= $column . ' LIKE ' . $db_object->quote("%" . $words[0] . "%");
             }
             // stmt will be:
             // SELECT ... FROM threads
@@ -401,7 +656,7 @@ function thread_search($words, $fields, $albums, $asset = '') {
                 }
                 $or = '';
                 foreach ($fields_in_query_thread as $field => $column) {
-                    $where .= $or . $column . ' LIKE ' . $db->quote("%" . $word . "%");
+                    $where .= $or . $column . ' LIKE ' . $db_object->quote("%" . $word . "%");
                     $or = ' OR ';
                 }
                 $where .= ') ';
@@ -419,10 +674,10 @@ function thread_search($words, $fields, $albums, $asset = '') {
             . $where
             . (($where == '') ? ' WHERE ' : ' AND ')
             . 'albumName in(' . $albums_in_query . ') '
-            . ((isset($asset) && $asset != '') ? ' AND assetName LIKE ' . $db->quote("%$asset%") . ' ' : ' ')
+            . ((isset($asset) && $asset != '') ? ' AND assetName LIKE ' . $db_object->quote("%$asset%") . ' ' : ' ')
             . 'GROUP BY albumName, assetName, id';
 
-    $prepared_stmt = $db->prepare($stmt);
+    $prepared_stmt = $db_object->prepare($stmt);
     $prepared_stmt->execute($albums);
     $result_threads = $prepared_stmt->fetchAll();
 
@@ -432,7 +687,7 @@ function thread_search($words, $fields, $albums, $asset = '') {
             . 'WHERE MATCH(' . $fields_in_query_comment . ') '
             . 'AGAINST(' . $quoted_search . ' IN BOOLEAN MODE) '
             . 'AND t.albumName in(' . $albums_in_query . ') '
-            . ((isset($asset) && $asset != '') ? 'AND assetName LIKE ' . $db->quote("%$asset%") . ' ' : ' ')
+            . ((isset($asset) && $asset != '') ? 'AND assetName LIKE ' . $db_object->quote("%$asset%") . ' ' : ' ')
             . 'GROUP BY t.albumName, t.assetName, t.id, c.id';
     return $result_threads;
 
@@ -457,7 +712,7 @@ function thread_search($words, $fields, $albums, $asset = '') {
     }
 
     // pdo quotes the string to search, to avoid SQL injections
-    $quoted_search = $db->quote($search);
+    $quoted_search = $db_object->quote($search);
 
     // prepared stmt
     $stmt = 'SELECT DISTINCT id, title, message, timecode, albumName, assetName, assetTitle, studentOnly '
@@ -465,10 +720,10 @@ function thread_search($words, $fields, $albums, $asset = '') {
             . ' WHERE MATCH(' . $fields_in_query_thread . ') '
             . 'AGAINST(' . $quoted_search . ' IN BOOLEAN MODE) '
             . 'AND albumName in(' . $albums_in_query . ') '
-            . ((isset($asset) && $asset != '') ? 'AND assetName LIKE ' . $db->quote("%$asset%") . ' ' : ' ')
+            . ((isset($asset) && $asset != '') ? 'AND assetName LIKE ' . $db_object->quote("%$asset%") . ' ' : ' ')
             . 'GROUP BY albumName, assetName, id';
 
-    $prepared_stmt = $db->prepare($stmt);
+    $prepared_stmt = $db_object->prepare($stmt);
     $prepared_stmt->execute($albums);
     $result_threads = $prepared_stmt->fetchAll();
 
@@ -478,10 +733,10 @@ function thread_search($words, $fields, $albums, $asset = '') {
             . 'WHERE MATCH(' . $fields_in_query_comment . ') '
             . 'AGAINST(' . $quoted_search . ' IN BOOLEAN MODE) '
             . 'AND t.albumName in(' . $albums_in_query . ') '
-            . ((isset($asset) && $asset != '') ? 'AND assetName LIKE ' . $db->quote("%$asset%") . ' ' : ' ')
+            . ((isset($asset) && $asset != '') ? 'AND assetName LIKE ' . $db_object->quote("%$asset%") . ' ' : ' ')
             . 'GROUP BY t.albumName, t.assetName, t.id, c.id';
 
-    $prepared_stmt = $db->prepare($stmt);
+    $prepared_stmt = $db_object->prepare($stmt);
     $prepared_stmt->execute($albums);
     $result_comments = $prepared_stmt->fetchAll();
 
@@ -672,7 +927,7 @@ function comment_select_by_thread($thread_id = '') {
  * Returns an array containing all childs of the given comment
  * @param type $id
  */
-function comment_children_get($id){
+function comment_children_get($id) {
     global $statements;
 
     $statements['comment_children_get']->bindParam(':parent', $id);
@@ -695,9 +950,9 @@ function comment_delete_by_id($id) {
     $res = $statements['comment_delete_by_id']->execute();
     if ($res) {
         thread_update_nbComments($comment['thread'], FALSE);
-        if ($comment['nbChilds'] > 0){
+        if ($comment['nbChilds'] > 0) {
             $children = comment_children_get($id);
-            foreach ($children as $child){
+            foreach ($children as $child) {
                 comment_delete_by_id($child['id']);
             }
         }

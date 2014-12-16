@@ -36,6 +36,7 @@ include_once 'lib_print.php'; ?>
         target: '#side_pane',
         axis: 'x'
     });
+
     /*  $(document).ready(function() { // problem : catch click on video controls
      
      $("#main_video").click(function() {
@@ -44,6 +45,8 @@ include_once 'lib_print.php'; ?>
      }); */
     current_album = '<?php echo $_SESSION['album']; ?>'
     current_asset = '<?php echo $_SESSION['asset']; ?>'
+    
+    history.pushState({"url": 'index.php?action=view_asset_details&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');
 
 <?php if (!acl_user_is_logged()) { ?>
         current_tab = 'toc';

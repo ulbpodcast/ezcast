@@ -140,7 +140,7 @@
         <label id="Edit_comment" lang="fr">Modifier le commentaire</label>
         <label id="Edit_comment" lang="en">Edit comment</label>
         <label id="Warning_edit" lang="fr">Attention ! Lorsqu'un commentaire est modifié, les votes et approbation sont réinitialisés</label>
-        <label id="Warning_edit" lang="en">Warning ! When a comment is edited, the votes and approval are reinitiated</label>
+        <label id="Warning_edit" lang="en">Warning ! When a comment is edited, the votes and approval are reset</label>
         <label id="Visibility_students" lang="en">Visible to students only</label>
         <label id="Visibility_students" lang="fr">Visible uniquement par les étudiants</label>
         <label id="Visibility_all" lang="en">Visible to everyone</label>

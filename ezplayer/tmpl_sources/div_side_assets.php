@@ -122,9 +122,9 @@ the pane displays the list of all assets contained in the selected album
                                 <span class="more"><a class="more-button" onclick="toggle_detail('<?php echo $index; ?>', 'bookmark', $(this));"></a></span>
                                 <div class="bookmark_detail" id="bookmark_detail_<?php echo $index; ?>">
                                     <div class="bookmark_info">
-                                        <b class="blue-title">®Description® :</b>
+                                        <div class="blue-title">®Description® :</div>
                                         <?php print_info($bookmark['description']); ?>
-                                        <b class="blue-title" style="margin-top: 6px;">®Keywords® : </b>
+                                        <div class="blue-title" style="margin-top: 6px;">®Keywords® : </div>
                                         <?php print_search($bookmark['keywords']); ?>
                                     </div>
                                     <div class="bookmark_options">
@@ -164,9 +164,9 @@ the pane displays the list of all assets contained in the selected album
                             <span class="more"><a class="more-button orange" onclick="toggle_detail('<?php echo $index; ?>', 'toc', $(this));"></a></span>
                             <div class="bookmark_detail" id="toc_detail_<?php echo $index; ?>">
                                 <div class="bookmark_info">
-                                    <b class="orange-title">®Description® :</b>
+                                    <div class="orange-title">®Description® :</div>
                                     <?php print_info($bookmark['description']); ?>
-                                    <b class="orange-title" style="margin-top: 6px;">®Keywords® : </b>
+                                    <div class="orange-title" style="margin-top: 6px;">®Keywords® : </div>
                                     <?php print_search($bookmark['keywords']); ?>
                                 </div>
                                 <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>

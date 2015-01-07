@@ -63,15 +63,14 @@ if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['actio
 // Saves user's web browser information
 if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) || !isset($_SESSION['user_os'])) {
 
-    Autoloader::register();
+    Autoloader::register(); 
     $browser = new Browser;
-    $os = new Os;
+    $os = new Os; 
     $_SESSION['browser_name'] = $browser->getName();
     $_SESSION['browser_version'] = $browser->getVersion();
     $user_agent = $browser->getUserAgent();
     $_SESSION['browser_full'] = $user_agent->getUserAgentString();
     $_SESSION['user_os'] = $os->getName();
-    
 }
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
@@ -150,11 +149,11 @@ function load_page() {
         case 'view_help':
             view_help();
             break;
-        
+
         case 'view_settings':
             view_settings();
             break;
-        
+
         // In case we want to log out
         case 'logout':
             user_logout();
@@ -298,7 +297,7 @@ function load_page() {
         case 'client_trace':
             client_trace();
             break;
-        
+
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
@@ -424,7 +423,7 @@ function refresh_page() {
     $_SESSION['reloaded'] = true;
     // reload the page
     echo '<script>window.location.reload();</script>';
-        trace_append(array('0', 'refresh_page')); // lvl, action
+    trace_append(array('0', 'refresh_page')); // lvl, action
     die;
 }
 
@@ -569,7 +568,7 @@ function view_album_assets($refresh_center = true) {
             }
         }
 
-        if ($input['click']){ // called by a local link
+        if ($input['click']) { // called by a local link
             // lvl, action, album, origin
             trace_append(array('2', 'view_album_assets', $album, 'from_ezplayer'));
             include_once template_getpath('div_assets_center.php');
@@ -731,12 +730,12 @@ function view_asset_details($refresh_center = true) {
             $threads = threads_select_by_asset($album, $asset);
             $_SESSION['thread_display'] = 'list';
         }
-        if ($input['click']){ // called from a local link
+        if ($input['click']) { // called from a local link
             // lvl, action, album, asset, record type (cam|slide|camslide), permissions (view official | add personal), origin
-            trace_append(array('3', 'view_asset_details', $album, $asset, $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_ezplayer'));
+            trace_append(array('3', 'view_asset_details', $album, $asset, $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' : 'view_only', 'from_ezplayer'));
             include_once template_getpath('div_assets_center.php');
         } else {// called from the UV or a shared link
-            trace_append(array('3', 'view_asset_details', $album, $asset, $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_external'));
+            trace_append(array('3', 'view_asset_details', $album, $asset, $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' : 'view_only', 'from_external'));
             include_once template_getpath('main.php');
         }
     } else { // only the bookmarks on the right must be refreshed 
@@ -809,7 +808,7 @@ function view_asset_bookmark($refresh_center = true) {
 
     if (isset($input['thread_id']))
         $thread_id = $input['thread_id'];
-    
+
     // init paths
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);
@@ -906,11 +905,12 @@ function view_asset_bookmark($refresh_center = true) {
     $_SESSION['album'] = $album;
     $_SESSION['asset'] = $asset;
     $_SESSION['timecode'] = $timecode;
+    $_SESSION['current_thread'] = $thread_id;
     $_SESSION['loaded_type'] = $input['type'];
 
     if ($refresh_center) {
         if (acl_display_threads()) {
-            if (isset($thread_id)){
+            if (isset($thread_id)) {
                 // click from lvl 2 on a discussion
                 $thread = thread_details_update(false);
                 $_SESSION['thread_display'] = 'details';
@@ -920,15 +920,15 @@ function view_asset_bookmark($refresh_center = true) {
                 $_SESSION['thread_display'] = 'list';
             }
         }
-        if ($input['click']){ // refresh the center of the page (local link)
+        if ($input['click']) { // refresh the center of the page (local link)
             // lvl, action, album, asset, timecode, targeted type (cam|slide), record type (cam|slide|camslide), permissions (view official | add personal), origin
-            trace_append(array('3', 'view_asset_timecode', $album, $asset, $timecode, $_SESSION['loaded_type'], $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_ezplayer'));
+            trace_append(array('3', 'view_asset_timecode', $album, $asset, $timecode, $_SESSION['loaded_type'], $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' : 'view_only', 'from_ezplayer'));
             include_once template_getpath('div_assets_center.php');
         } else {// refresh the whole page (shared link)
-            trace_append(array('3', 'view_asset_timecode', $album, $asset, $timecode, $_SESSION['loaded_type'], $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' :  'view_only','from_external'));
+            trace_append(array('3', 'view_asset_timecode', $album, $asset, $timecode, $_SESSION['loaded_type'], $asset_meta['record_type'], ($is_bookmark) ? 'view_and_add' : 'view_only', 'from_external'));
             include_once template_getpath('main.php');
         }
-        } else { // refresh the right panel (import / export / edition / deletion / ...)
+    } else { // refresh the right panel (import / export / edition / deletion / ...)
         include_once template_getpath('div_side_details.php');
     }
 }
@@ -1410,7 +1410,7 @@ function thread_add() {
     $thread_asset_title = $input['assetTitle'];
     $thread_timecode = intval($input['timecode']);
     $thread_title = htmlspecialchars($input['title']);
-    $thread_description = htmlspecialchars($input['description']);
+    $thread_description = surround_url($input['description']);
     $thread_visibility = ($input['visibility'] == "on") ? '1' : '0';
 
     if (!acl_user_is_logged())
@@ -1418,6 +1418,10 @@ function thread_add() {
     if (is_nan($thread_timecode)) {
         $thread_timecode = 0;
     }
+
+    // remove php and javascript tags
+    $thread_description = safe_text($thread_description);
+
     $values = array(
         "title" => $thread_title,
         "message" => $thread_description,
@@ -1449,11 +1453,14 @@ function comment_add() {
     global $input;
     $album = $input['album'];
     $asset = $input['asset'];
-    $comment_message = htmlspecialchars($input['message']);
+    $comment_message = surround_url($input['message']);
     $comment_thread = $input['thread_id'];
 
     if (!acl_user_is_logged())
         return false;
+
+    // remove php and javascript tags
+    $comment_message = safe_text($comment_message);
 
     $values = array(
         "message" => $comment_message,
@@ -1482,12 +1489,15 @@ function comment_add_reply() {
 
     $album = $input['album'];
     $asset = $input['asset'];
-    $comment_message = htmlspecialchars($input['answer_message']);
+    $comment_message = surround_url($input['answer_message']);
     $comment_thread = $input['thread_id'];
     $comment_parent = intval($input['answer_parent']);
 
     if (!acl_user_is_logged())
         return false;
+
+    // remove php and javascript tags
+    $comment_message = safe_text($comment_message);
 
     $values = array(
         "message" => $comment_message,
@@ -1516,12 +1526,17 @@ function comment_add_reply() {
 function comment_edit() {
     global $input;
     $comment_id = $input['comment_id'];
-    $comment_message = htmlspecialchars($input['comment_message'] . edited_on());
+    $comment_message = surround_url($input['comment_message'] . edited_on());
     $album = $input['album'];
     $asset = $input['asset'];
     $thread = $input['thread_id'];
 
+    // remove php and javascript tags
+    $comment_message = safe_text($comment_message);
+
     comment_update($comment_id, $comment_message, $album, $asset, $thread, $_SESSION['user_full_name']);
+    comment_approval_remove($comment_id); 
+    vote_delete($comment_id);
 
     $_SESSION['current_thread'] = $thread;
 
@@ -1536,13 +1551,16 @@ function comment_edit() {
 function thread_edit() {
     global $input;
     $thread_id = $input['thread_id'];
-    $thread_message = htmlspecialchars($input['thread_message'] . edited_on());
+    $thread_message = surround_url($input['thread_message'] . edited_on());
     $thread_timecode = intval($input['thread_timecode']);
     $thread_title = htmlspecialchars($input['thread_title']);
     $album = $input['thread_album'];
     $asset = $input['thread_asset'];
 
     $_SESSION['current_thread '] = $thread_id;
+
+    // remove php and javascript tags
+    $thread_message = safe_text($thread_message);
 
     thread_update($thread_id, $thread_title, $thread_message, $thread_timecode, $album, $_SESSION['user_full_name']);
     cache_asset_threads_unset($album, $asset);
@@ -1551,11 +1569,12 @@ function thread_edit() {
     return thread_details_update();
 }
 
-function edited_on(){
-    $date = date('Y-m-d H:i:s');
+function edited_on() {
+    $date = date('d-m-Y H:i:s');
     $msg = PHP_EOL . PHP_EOL . '<i style="font-size: 10px;">' . template_get_message('Last_edit', get_lang()) . ' ' . $date . '</i>';
     return $msg;
 }
+
 /**
  * Reloads a thread details element 
  * @global array $input
@@ -1563,14 +1582,19 @@ function edited_on(){
  */
 function thread_details_update($display = true) {
     global $input;
-
-    $id = $input['thread_id'];
+    
+    if ($input['thread_id']){
+        $id = $input['thread_id'];
+        $_SESSION['current_thread'] = $id;
+    } else {
+        $id = $_SESSION['current_thread'];
+    }
 
     $thread = thread_select_by_id($id);
     $thread['best_comment'] = comment_select_best($id);
     $thread['comments'] = comment_select_by_thread($id);
 
-    if ($display){
+    if ($display) {
         include template_getpath('div_thread_details.php');
         return true;
     } else {
@@ -1600,7 +1624,9 @@ function threads_list_update($display = true) {
         $threads = threads_select_by_asset($album, $asset);
     }
 
-    if ($display){
+    $_SESSION['current_thread'] = '';
+    
+    if ($display) {
         include_once template_getpath('div_threads_list.php');
         return true;
     } else {
@@ -1800,7 +1826,7 @@ function bookmarks_sort() {
         }
     }
     // lvl, action, album, panel (official|personal), new_order (chron|reverse_chron)
-    trace_append(array($input['source'] == 'assets' ? '2': '3', 'bookmarks_sort', $album, $panel, $new_order));
+    trace_append(array($input['source'] == 'assets' ? '2' : '3', 'bookmarks_sort', $album, $panel, $new_order));
     // determines the page to display
     if ($input['source'] == 'assets') {
         // the token is needed to display the album assets
@@ -2137,7 +2163,6 @@ function preferences_update() {
     return true;
 }
 
-
 /**
  * Upvote or downvote a comment
  * @global type $input
@@ -2170,62 +2195,63 @@ function comment_edit_aproval() {
     return thread_details_update();
 }
 
-
 /**
  * Called by client to save a use trace
  */
-function client_trace(){
+function client_trace() {
     global $input;
-    
-    trace_append($input['info']);    
+
+    trace_append($input['info']);
 }
 
-function trace_append($array){
+function trace_append($array) {
     global $ezplayer_trace;
     global $trace_on;
 
-    if (!$trace_on) return false;
+    if (!$trace_on)
+        return false;
 
     // 1) Date/time at which the event occurred
     $data = date('Y-m-d-H:i:s');
     $data .= ' | ';
-    
+
     $data .= session_id();
     $data .= ' | ';
-    
+
     // 2) IP address of the user that provoked the event
     $data .= (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : 'noip';
     $data .= ' | ';
-    
+
     // 3) Username and realname of the user that provoked the event
     // There can be no login if the operation was performed by a CLI tool for instance.
     // In that case, we display "nologin" instead.
-    if(!isset($_SESSION['user_login']) || empty($_SESSION['user_login'])) {
+    if (!isset($_SESSION['user_login']) || empty($_SESSION['user_login'])) {
         $data .= 'nologin';
     }
     // General case, where there is a login and (possibly) a real login
-    else if(isset($_SESSION['real_login'])) {
-        $data .= $_SESSION['real_login'].'/'.$_SESSION['user_login'];
-    }
-    else {
+    else if (isset($_SESSION['real_login'])) {
+        $data .= $_SESSION['real_login'] . '/' . $_SESSION['user_login'];
+    } else {
         $data .= $_SESSION['user_login'];
     }
     $data .= ' | ';
-    
+
     $idx = 0;
     $max_idx = count($array);
-    foreach ($array as $value){
+    foreach ($array as $value) {
         $idx++;
         $data .= $value;
-        if ($idx != $max_idx) $data .= ' | ';
+        if ($idx != $max_idx)
+            $data .= ' | ';
     }
     // 6) And we add a carriage return for readability
     $data .= PHP_EOL;
-    
+
     // Then we save the new entry
-    if (file_exists($ezplayer_trace) && filesize($ezplayer_trace) >= 2000000000){
+    if (file_exists($ezplayer_trace) && filesize($ezplayer_trace) >= 2000000000) {
         rename($ezplayer_trace, $ezplayer_trace . date("Ymd_His"));
     }
     file_put_contents($ezplayer_trace, $data, FILE_APPEND | LOCK_EX);
 }
+
 ?>

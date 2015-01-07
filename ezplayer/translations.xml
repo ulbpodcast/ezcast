@@ -123,8 +123,8 @@
         <label id="Reply" lang="en">Reply</label>
         <label id="Best_answer" lang="fr">Meilleure réponse</label>
         <label id="Best_answer" lang="en">Best answer</label>
-        <label id="Other_answers" lang="fr">Autres réponses</label>
-        <label id="Other_answers" lang="en">Other answers</label>
+        <label id="Other_answers" lang="fr">Réponses</label>
+        <label id="Other_answers" lang="en">Replies</label>
         <label id="Professor_approved" lang="en">Answer approved by professor</label>
         <label id="Professor_approved" lang="fr">Réponse approuvée par le professeur</label>
         <label id="Answer_approval" lang="fr">Approuver la réponse</label>
@@ -139,6 +139,8 @@
         <label id="Delete_comment" lang="en">Delete comment</label>
         <label id="Edit_comment" lang="fr">Modifier le commentaire</label>
         <label id="Edit_comment" lang="en">Edit comment</label>
+        <label id="Warning_edit" lang="fr">Attention ! Lorsqu'un commentaire est modifié, les votes et approbation sont réinitialisés</label>
+        <label id="Warning_edit" lang="en">Warning ! When a comment is edited, the votes and approval are reinitiated</label>
         <label id="Visibility_students" lang="en">Visible to students only</label>
         <label id="Visibility_students" lang="fr">Visible uniquement par les étudiants</label>
         <label id="Visibility_all" lang="en">Visible to everyone</label>
@@ -356,8 +358,8 @@
         <label id="Share_asset" lang="en">Share the record</label>
         <label id="Share_time" lang="fr">Partager cette minute de la vidéo</label>
         <label id="Share_time" lang="en">Share this minute of the video</label>
-        <label id="Copy_bookmark" lang="fr">Ajouter le signet aux signets officiels</label>
-        <label id="Copy_bookmark" lang="en">Add the bookmark to official bookmarks</label>
+        <label id="Copy_bookmark" lang="fr">Ajouter aux signets officiels</label>
+        <label id="Copy_bookmark" lang="en">Add to official bookmarks</label>
         <label id="Move" lang="fr">Déplacer</label>
         <label id="Move" lang="en">Move</label>
         <label id="Move_up" lang="fr">Monter</label>
@@ -442,10 +444,10 @@
         <label id="Change_speedrate" lang="en">Modify the speed rate</label>
         <label id="Add_title_album" lang="fr">Ajouter un titre aux vidéos publiées dans cet album</label>
         <label id="Add_title_album" lang="en">Add a title to videos published in this album</label>
-        <label id="Add_bookmark" lang="fr">Ajouter un signet personnel</label>
-        <label id="Add_bookmark" lang="en">Add a private bookmark</label>
-        <label id="Add_toc" lang="fr">Ajouter un signet aux signets officiels</label>
-        <label id="Add_toc" lang="en">Add a bookmark to officials bookmarks</label>
+        <label id="Add_bookmark" lang="fr">Créer un signet personnel</label>
+        <label id="Add_bookmark" lang="en">Create a private bookmark</label>
+        <label id="Add_toc" lang="fr">Créer un signet officiel</label>
+        <label id="Add_toc" lang="en">Create an official bookmark</label>
         <label id="Add_comment" lang="fr">Ajouter un commentaire public</label>
         <label id="Add_comment" lang="en">Add a public comment</label>
         <label id="Toggle_fullscreen" lang="fr">Modifier l'affichage</label>
@@ -666,6 +668,12 @@
         <label id="Show_discussions" lang="en">Show discussions</label>
         <label id="discussion_visibility" lang="fr">Visibilité de la discussion</label>
         <label id="discussion_visibility" lang="en">Discussion visibility</label>
+        <label id="discussion_visibility_message" lang="fr">Vous pouvez choisir la visibilité pour votre discussion: </label>
+        <label id="discussion_visibility_message" lang="en">You can choose the visibility for your discussion: </label>
+        <label id="discussion_students_message" lang="fr">Seuls les étudiants pourront voir votre discussion</label>
+        <label id="discussion_students_message" lang="en">Only students can see your discussion.</label>
+        <label id="discussion_all_message" lang="fr">Tout le monde peut voir votre discussion. Votre professeur aura la possibilité de vous répondre.</label>
+        <label id="discussion_all_message" lang="en">Everybody can see your discusssion. Your teacher will be able to answer.</label>
         <label id="discussion_student_teacher" lang="fr">Etudiants + professeurs</label>
         <label id="discussion_student_teacher" lang="en">Students + teachers</label>
         <label id="discussion_student" lang="fr">Etudiants</label>
@@ -733,7 +741,7 @@
         <message id="Invalid_type" lang="en">Access denied: invalid media type</message>        
         <message id="Inexistant" lang="fr">Enregistrement non disponible</message>
         <message id="Inexistant" lang="en">Recording not available</message>    
-        <message id="Last_edit" lang="fr">Dernière modification le </message>
-        <message id="Last_edit" lang="en">Last edited on </message>
+        <message id="Last_edit" lang="fr">Modifiée le </message>
+        <message id="Last_edit" lang="en">Edited on </message>
     </messages>
 </data>

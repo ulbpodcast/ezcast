@@ -289,13 +289,13 @@ body {
 }
 
 .button.green2:hover{
-    background-color: #edb400;
+    background-color: #25b8a5;
 }
 .button-empty.green:hover{
     color: #7bb3b6;
 }
 .button-empty.green2:hover{
-    color: #edb400;
+    color: #25b8a5;
 }
 .button-rect.green:hover{
     color: #7bb3b6;
@@ -1007,17 +1007,24 @@ body {
     -moz-box-sizing:    border-box;
     -webkit-box-sizing: border-box;
     box-sizing:         border-box;
-    border: 1px #edb400 solid;
+    border: 1px #25b8a5 solid;
 }
 
 #thread_form_wrapper{
     max-width: 638px;
     margin: 0px auto;
 }
+
+#thread_description_wrapper{
+    clear: left;
+    display: inline-block;
+    margin: 0px 0px 14px 10px;
+}
+
 #thread_form_header{
     width: 100%;
     height: auto;
-    background-color: #edb400;
+    background-color: #25b8a5;
     padding-top: 12px;
     padding-bottom: 12px;
 }
@@ -1184,7 +1191,7 @@ body {
 }
 
 .label-green2{
-    color: #edb400;
+    color: #25b8a5;
 }
 
 .pull-right-margin{
@@ -1223,8 +1230,8 @@ body {
 }
 
 #message-thread{
-    background-color: #edb400;
-    background-color: rgba(237,180,0, .1);
+    background-color: #25b8a5;
+    background-color: #e0f5f2;
     border-radius: 3px;
     color: #333333;
     padding: 8px;
@@ -1233,20 +1240,87 @@ body {
     font-size: 1em;
 }
 
-#message-thread a{
-    color: #edb400;
+#message-thread a,
+.hidden-item-thread a,
+.comment-message a{
+    color: #25b8a5;
 }
 
-#message-thread a:hover{
-    font-size: 1.2em;
+#message-thread a:hover,
+.hidden-item-thread a:hover,
+.comment-message a:hover{
+    color: #333333;
 }
 
-#message-thread ul{
+#message-thread ul,
+.hidden-item-thread ul,
+.comment-message ul,
+#best-comment-message ul{
     margin-left: 24px;
 }
 
+/* Renders message like in tinyeditor*/
+#threads #message-thread p,
+#threads .hidden-item-thread p,
+#threads .comment-message p,
+#threads #best-comment-message p{
+    display: block;
+    margin: 5px 0px;
+}
+
+#threads #message-thread h1,
+#threads .hidden-item-thread h1,
+#threads .comment-message h1,
+#threads #best-comment-message h1{
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 12px 0px;
+}
+
+#threads #message-thread h2,
+#threads .hidden-item-thread h2,
+#threads .comment-message h2,
+#threads #best-comment-message h2{
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 8px 0px;
+}
+
+#threads #message-thread h3,
+#threads .hidden-item-thread h3,
+#threads .comment-message h3,
+#threads #best-comment-message h3{
+    display: block;
+    font-size: 1.17em;
+    font-weight: bold;
+    margin: 6px 0px;
+}
+
+#threads #message-thread ul,
+#threads .hidden-item-thread ul,
+#threads .comment-message ul,
+#threads #best-comment-message ul,
+#threads #message-thread ol,
+#threads .hidden-item-thread ol,
+#threads .comment-message ol,
+#threads #best-comment-message ol{
+    display: block;
+    margin: 16px;
+    list-style-position: inside;
+}
+
+#threads #message-thread ul li,
+#threads .hidden-item-thread ul li,
+#threads .comment-message ul li,
+#threads #best-comment-message ul li{
+    display: list-item;
+    border: none;
+}
+
 #best-comment-message {
-    background-color: #edb400;
+    background-color: #25b8a5;
     border-radius: 3px;
     color: white;
     padding: 8px;
@@ -1278,7 +1352,7 @@ body {
 }
 .threads_header{
     font-size: 18px;
-    background-color: #edb400;
+    background-color: #25b8a5;
     padding: 8px 12px;
     color: white;
 }
@@ -1320,7 +1394,7 @@ body {
 }
 
 .item-thread-content:hover{
-    background-color: rgba(237,180,0, .1);
+    background-color: #e0f5f2;
     /*color: white;*/
 }
 
@@ -1337,7 +1411,7 @@ body {
     padding: 12px;
     text-align: justify;
     border-radius: 3px;
-    border-top:1px dotted #edb400;
+    border-top:1px dotted #25b8a5;
 }
 
 .hidden-item-thread ul{
@@ -1354,16 +1428,16 @@ body {
 
 .item-thread-title{
     display: block;
-    color: #edb400;
+    color: #25b8a5;
     font-size: 1.2em;
     margin: 4px 0px 6px 0px;
     cursor: pointer;
 }
 
 .item-thread-nbcomments{
-    color: #edb400;
+    color: #25b8a5;
     font-size: 11px;
-    border: 1px dotted #edb400;
+    border: 1px dotted #25b8a5;
     -moz-border-radius: 12px;
     -webkit-border-radius: 12px;
     border-radius: 12px;
@@ -1371,7 +1445,7 @@ body {
 }
 
 .thread_header{
-    background-color: #edb400;
+    background-color: #25b8a5;
     color: white;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -1421,7 +1495,7 @@ body {
 }
 
 .cat{
-    border-bottom: 1px solid #edb400;
+    border-bottom: 1px solid #25b8a5;
     margin: 12px 24px 12px 48px;
 }
 
@@ -1431,23 +1505,23 @@ body {
 
 .thread-cat-title{
     font-size: 16px;
-    color: #edb400;  
+    color: #25b8a5;  
 }
 
 .slash-lg{
-    color: #edb400;
+    color: #25b8a5;
     font-size: 1.2em;
     padding-left: 2px;
     padding-right: 2px;
 }
 .slash{
-    color: #edb400;
+    color: #25b8a5;
     font-size: 1em;
     padding-left: 2px;
     padding-right: 2px;
 }
 .slash-sm{
-    color: #edb400;
+    color: #25b8a5;
     font-size: 0.7em;
     padding-left: 2px;
     padding-right: 2px;
@@ -1590,6 +1664,12 @@ body {
     background: transparent url('../images/Generale/B-editer.png') no-repeat center center;
 }
 
+.warning_edit{
+    color: red;
+    font-weight: bold;
+    padding-right: 12px;
+}
+
 .add-thread-button:hover,
 .add-thread-button.active{
     background:transparent url(../images/Generale/add-thread-b.png) no-repeat center; 
@@ -1626,7 +1706,7 @@ body {
 .eom{
     margin-bottom: 8px;
     margin-top: 8px;
-    border-bottom: 1px dotted #edb400;
+    border-bottom: 1px dotted #25b8a5;
 }
 .eom.margin-default{
     margin-left: 48px; 
@@ -1864,7 +1944,7 @@ body {
 }
 
 .bookmark_info.comment:hover{
-    background-color: rgba(237,180,0, .1);
+    background-color: #e0f5f2;
 }
 
 .result_detail .bookmark_info a{
@@ -2396,11 +2476,12 @@ b.blue-title{
 
 .blue-title{
     color: #11acea; 
+    font-weight: bold;
 }
 
 b.green2-title{
     display: block;
-    background: #edb400;
+    background: #25b8a5;
     color: #ffffff;
     padding: 8px;
     cursor: pointer;
@@ -2416,7 +2497,8 @@ b.orange-title{
 }
 
 .orange-title{
-    color: #e05f24;   
+    color: #e05f24;  
+    font-weight: bold;
 }
 
 .orange-title.sm{
@@ -2566,11 +2648,11 @@ span.timecode{
 }
 
 label.green2{
-    color: #edb400;
+    color: #25b8a5;
 }
 
 span.timecode.green2{
-    color: #edb400;
+    color: #25b8a5;
 }
 span.timecode.green2:hover{
     color: #333333;
@@ -2888,7 +2970,7 @@ a.tooltip:hover div.tip{
 
 .notifications_title{
     padding: 3px;
-    border-bottom: 1px #edb400 solid;
+    border-bottom: 1px #25b8a5 solid;
 }
 
 .span-link{
@@ -2916,7 +2998,7 @@ a.tooltip:hover div.tip{
 
 .notification-item-title:hover{
     cursor:pointer;
-    color: #edb400;
+    color: #25b8a5;
 }
 
 #video_notifications.panel-active{
@@ -2942,6 +3024,11 @@ a.tooltip:hover div.tip{
     margin-top: 12px; 
     margin-left: 0px; 
     display: inline-block;
+}
+
+.message-input.edit_msg{
+    width: auto;
+    margin: 8px 0px 12px 35px;
 }
 
 #user-settings{
@@ -2984,9 +3071,9 @@ a.tooltip:hover div.tip{
     margin: -28px 24px;
     position: relative;
     font-size: 1.2em;
-    color: #edb400;
+    color: #25b8a5;
     padding: 2px 24px;
-    border: 1px #edb400 solid;
+    border: 1px #25b8a5 solid;
     border-radius: 16px;
 }
 
@@ -3000,13 +3087,13 @@ a.tooltip:hover div.tip{
 }
 
 .button-thread:hover{
-    color: #edb400;
+    color: #25b8a5;
     background-color: white;
     cursor: pointer;
 }
 
 .back-to-threads:hover{
-    background-color: #edb400;
+    background-color: #25b8a5;
     color: white;
 }
 
@@ -3081,7 +3168,7 @@ a.tooltip:hover div.tip{
 }
 
 .asset-link:hover{
-    color: #edb400;
+    color: #25b8a5;
 }
 
 .btn-back{

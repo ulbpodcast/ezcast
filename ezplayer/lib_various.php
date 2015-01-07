@@ -445,7 +445,8 @@ function surround_url($string) {
     $pos = 0;
     // all prefixes we want to surround
     $patterns = array('http://', 'https://', 'www.', 'mailto:');
-
+    $end_of_line = array(' ', PHP_EOL, '<', '>', '(', ')', '[', ']', '{', '}', '"', '\'');
+    
     while ($pos >= 0) {
         // finds the first occurence of each pattern
         $pos_array = array();
@@ -460,25 +461,60 @@ function surround_url($string) {
         if ($pos != -1) { // ends if there is no pattern found 
             if ($pos == 0 || $string[$pos - 1] != '*') { // the url is not yet surrounded
                 // adds a '*' tag before the url
-                $string = substr($string, 0, $pos) . "*" . substr($string, $pos);
+                $string = substr($string, 0, $pos) . "**" . substr($string, $pos);
                 // moves to the end of the url
-                while ($pos < strlen($string) && $string[$pos] != ' ') {
+                while ($pos < strlen($string) && !in_array($string[$pos],$end_of_line)) {
                     $pos++;
                 }
                 // if the url ends with a '.', excludes it from the surrounding
                 if ($string[$pos - 1] == '.')
                     $pos--;
                 // adds a '*' at the end of the url
-                $string = substr($string, 0, $pos) . "*" . substr($string, $pos);
-                $pos++;
+                $string = substr($string, 0, $pos) . "**" . substr($string, $pos);
+                
+                $pos+=2;
             } else { // the url is already surrounded, just move to the next '*' tag
-                while ($pos < strlen($string) && $string[$pos] != '*') {
-                    $pos++;
+                $tmp_pos = stripos(substr($string, $pos), '**');
+                if ($tmp_pos !== false){
+                    $pos += $tmp_pos - 1;
+                } else {
+                    $pos = -1;
                 }
             }
         }
     }
 
+    return $string;
+}
+
+/**
+ * This function replaces or remove all threats such as
+ * php code, javascript, sql injections, ...
+ * @param type $string
+ * @return type
+ */
+function safe_text($string){
+    // remove php and javascript tags
+    $string = preg_replace('/(<\?{1}[pP\s]{1}.+\?>)/Us', "", $string);
+    $string = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $string);
+    
+    $string = str_replace('javascript', "-javascript-", $string);
+    $string = str_replace('onmouseover', "-onmouseover-", $string);
+    $string = str_replace('onclick', "-onclick-", $string);
+    $string = str_replace('onmouseup', "-onmouseup-", $string);
+    $string = str_replace('onmousedown', "-onmousedown-", $string);
+    $string = str_replace('onmousemove', "-onmousemove-", $string);
+    $string = str_replace('ondblclick', "-ondblclick-", $string);
+    $string = str_replace('onkeydown', "-onkeydown-", $string);
+    $string = str_replace('onkeypress', "-onkeypress-", $string);
+    $string = str_replace('onkeyup', "-onkeyup-", $string);
+    $string = str_replace('href', "-href-", $string);
+    $string = preg_replace('/<div\b[^>]*>/is', '&lt;div&gt;', $string);
+    $string = preg_replace('/<\/div>/is', '&lt;/div&gt;', $string);
+    // prevent mysql injections
+    $string = htmlspecialchars($string, ENT_QUOTES);
+    
+    file_put_contents("debug.killme", $string);
     return $string;
 }
 

@@ -46,7 +46,7 @@ require template_getpath('popup_delete_thread.php');
     ®On_date® <b><?php echo $creationDateVerbose; ?></b>
 </span>
 <div id="message-thread">
-    <?php echo nl2br(html_entity_decode($thread['message'])); ?>
+    <?php echo print_info(htmlspecialchars_decode($thread['message'], ENT_QUOTES), '', false); ?>
 </div>
 
 <div class="form" id="edit_thread_form_<?php echo $thread['id']; ?>" hidden>
@@ -64,7 +64,7 @@ require template_getpath('popup_delete_thread.php');
                        type="text" placeholder="®Discussion_title_placeholder®" style="width: 75%" 
                        maxlength="70" value="<?php echo $thread['title']; ?>"/>
             </div>
-            <div class="message-input">
+            <div class="message-input edit_msg">
                 <label>®Message®&nbsp;:
                     <span class="small">®Required®</span>
                 </label>
@@ -81,7 +81,7 @@ require template_getpath('popup_delete_thread.php');
 
             <!-- Submit button -->
             <div class="cancelButton" style="margin-left: 428px;">
-                <a class="button" tabindex='16' href="javascript: cancel_edit_thread(<?php echo $thread['id']; ?>,<?php echo '\'' . str_replace("'", "\'", $thread['title']) . '\''; ?>,<?php echo '\'' . str_replace("'", "\'", $thread['message']) . '\''; ?>, <?php echo $thread['timecode']; ?>);">®Cancel®</a>
+                <a class="button" tabindex='16' href="javascript: cancel_edit_thread(<?php echo $thread['id']; ?>);">®Cancel®</a>
             </div>
             <div class="submitButton">
                 <a class="button green2" tabindex='17' href="javascript: if(check_edit_thread_form(<?php echo $thread['id']; ?>)) submit_edit_thread_form(<?php echo $thread['id']; ?>,'<?php echo $thread['albumName']; ?>','<?php echo $thread['assetName']; ?>');">®Update®</a>
@@ -117,7 +117,7 @@ require template_getpath('popup_delete_thread.php');
         </div>
         <div class="best_reply">
             <div id="best-comment-message" onclick="javascript:scrollTo('comment_<?php echo $best_comment['id']; ?>');" style="cursor: pointer;">
-                <?php echo nl2br(html_entity_decode($best_comment['message'])); ?>
+                <?php echo print_info(htmlspecialchars_decode($best_comment['message'], ENT_QUOTES), '', false); ?>
             </div>
             <label class="pull-left badge-score"><?php echo sprintf("%02s", $best_comment['score']); ?></label>
             <div class="trophy-best-comment pull-left"></div>

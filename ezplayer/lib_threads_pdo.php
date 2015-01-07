@@ -123,6 +123,10 @@ function threads_statements_get() {
         ' WHERE thread = :thread '
         . 'AND score > 0 '
         . 'AND deleted = "0" ORDER BY score DESC LIMIT 1',
+        'comment_score_init' =>
+        'UPDATE ' . db_gettable('comments') .
+        ' SET score = 0 , upvoteScore = 0, downvoteScore = 0 '
+        . 'WHERE id = :id',
         'comment_update_score_up' =>
         'UPDATE ' . db_gettable('comments') .
         ' SET score = score+1 , upvoteScore = upvoteScore+1 '
@@ -136,6 +140,9 @@ function threads_statements_get() {
         'INSERT INTO ' . db_gettable('votes') .
         ' (login, comment, voteType) ' .
         'VALUES (:login, :comment, :voteType)',
+        'vote_delete' =>
+        'DELETE FROM ' . db_gettable('votes') .
+        ' WHERE comment = :comment',
     );
 }
 
@@ -148,6 +155,7 @@ function threads_statements_get() {
  */
 function thread_insert($values) {
     global $statements;
+    global $db_object;
 //    foreach ($values as $row => $value) {
 //        $statements['thread_insert']->bindParam(':'.$row, $value);
 //    }
@@ -244,7 +252,7 @@ function threads_select_by_asset($album, $asset) {
 function thread_select_by_id($id = '') {
     global $statements;
     if ($id == '') {
-        $id = $_SESSION['current_thread'];
+        return false;
     }
 
     $statements['thread_select_by_id']->bindParam(':id', $id);
@@ -368,8 +376,8 @@ function thread_search($words, $fields, $albums, $asset = '') {
     $where_base = 'WHERE ' .
             'albumName IN (' . $albums_in_query . ') ' .
             ((isset($asset) && $asset != '') ? ' AND assetName LIKE ' . $db_object->quote("%$asset%") . ' ' : ' ') .
-            ((acl_has_moderated_album() && !acl_is_admin()) ? ' AND studentOnly == 0 ' : ' ') .
-            'AND c.deleted != 1 ';
+            ((acl_has_moderated_album() && !acl_is_admin()) ? ' AND studentOnly = 0 ' : ' ') .
+            'AND c.deleted = 0 ';
 
     if (in_array('title', $fields)) {
         // search in threads titles
@@ -453,7 +461,7 @@ function thread_search($words, $fields, $albums, $asset = '') {
         $stmt = 'SELECT DISTINCT thread, title, c.message, t.message as thread_message, timecode, albumName, assetName, assetTitle, c.id, studentOnly ' .
                 'FROM ' . db_gettable('comments') . ' c ' .
                 'JOIN ' . db_gettable('threads') . ' t on c.thread = t.id ' .
-                $where . ' AND t.deleted != 1 ' .
+                $where . ' AND t.deleted = 0 ' .
                 'GROUP BY albumName, assetName, t.id, c.id';
 
         $prepared_stmt = $db_object->prepare($stmt);
@@ -999,6 +1007,16 @@ function comment_update_approval($_comId) {
     return $statements['comment_update_approval']->execute();
 }
 
+function comment_approval_remove($comment_id){
+    global $statements;
+        
+    $approval = '0';
+    $statements['comment_update_approval']->bindParam(':approval', $approval);
+    $statements['comment_update_approval']->bindParam(':id', $comment_id);
+
+    return $statements['comment_update_approval']->execute();
+}
+
 /**
  * Returns the best answer of the corrent thread
  * @global type $db
@@ -1041,6 +1059,38 @@ function vote_insert($values) {
     return $res;
 }
 
+/**
+ * Deletes all votes for a given comment
+ * @global type $statements
+ * @param type $comment_id
+ * @return type
+ */
+function vote_delete($comment_id) {
+    global $statements;
+
+    $statements['vote_delete']->bindParam(":comment", $comment_id);
+    $res = $statements['vote_delete']->execute();
+    if ($res) {
+        comment_score_init($comment_id);
+    }
+    return $res;
+}
+
+/**
+ * Reinit the score of a given comment
+ * @global type $statements
+ * @param type $comment_id
+ * @return type
+ */
+function comment_score_init($comment_id) {
+    global $statements;
+
+    $statements['comment_score_init']->bindParam(':id', $comment_id);
+    $res = $statements['comment_score_init']->execute();
+
+    return $res;
+}
+
 function comment_update_score($_id, $up) {
     global $statements;
     if ($up) {
@@ -1065,4 +1115,3 @@ function thread_set_current_thread($_id) {
     $current_thread = $_id;
     $_SESSION['current_thread'] = $_id;
 }
-

@@ -38,7 +38,6 @@ WARNING: Please call template_repository_path() BEFORE including this template
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style.css" />
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />
-        <link rel="stylesheet" type="text/css" href="lib/tinyEditor/tinyeditor.css" />
 
         <script>
 <?php
@@ -50,7 +49,7 @@ if ($trace_on) {
                 var trace_on = false;
 <?php } ?>
         </script>
-        <script type="text/javascript" src="lib/tinyEditor/tiny.editor.packed.js"></script>
+        <script type="text/javascript" src="lib/tinymce/tinymce.min.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="js/httpRequest.js"></script>            
         <script type="text/javascript" src="js/jQuery/jquery.scrollTo-1.4.3.1-min.js"></script>
@@ -67,11 +66,6 @@ if ($trace_on) {
             var current_tab;
             var clippy;
             var ie_browser = false;
-            var thread_desc_editor = null;
-            var thread_desc_edit_editor = null;
-            var comment_desc_editor = null;
-            var comment_desc_edit_editor = null;
-            var comment_desc_reply_editor = null;
             var timecode_array = new Array();
             var title_array = new Array();
             var display_thread_details = false;
@@ -275,7 +269,7 @@ if ($trace_on) {
                 });
                 // doesn't work in IE < 10
                 //   ajaxSubmitForm('submit_bookmark_form', 'index.php', '?action=add_asset_bookmark', 'div_right');  
-                hide_bookmark_form();
+                hide_bookmark_form(true);
 
             }
 
@@ -295,9 +289,10 @@ if ($trace_on) {
             //===== THREAD =====================================================
 
             function check_thread_form() {
-                thread_desc_editor.post();
+
+                document.getElementById('thread_desc_tinymce').value = tinymce.get('thread_desc_tinymce').getContent();
                 var timecode = document.getElementById('thread_timecode');
-                var message = document.getElementById('thread_description_tinyeditor').value;
+                var message = document.getElementById('thread_desc_tinymce').value;
                 var title = document.getElementById('thread_title').value;
 
                 if (isNaN(timecode.value)
@@ -318,7 +313,7 @@ if ($trace_on) {
             }
 
             function check_edit_thread_form(threadId) {
-                thread_desc_edit_editor.post();
+                $("#edit_thread_message_" + threadId + "_tinyeditor").html(tinymce.get("edit_thread_message_" + threadId + "_tinyeditor").getContent());
                 var message = document.getElementById("edit_thread_message_" + threadId + "_tinyeditor").value;
                 var title = document.getElementById('edit_thread_title_' + threadId).value;
                 if (message === '') {
@@ -332,8 +327,8 @@ if ($trace_on) {
                 return true;
             }
             function check_comment_form() {
-                // Divers vérifications
-                comment_desc_editor.post();
+
+                $('#comment_message_tinyeditor').html(tinymce.get('comment_message_tinyeditor').getContent());
                 var message = document.getElementById('comment_message_tinyeditor').value;
                 if (message == '') {
                     window.alert('®missing_message®');
@@ -343,7 +338,7 @@ if ($trace_on) {
             }
             function check_answer_comment_form(id) {
                 // Divers vérifications
-                comment_desc_reply_editor.post();
+                $('#answer_comment_message_' + id + '_tinyeditor').html(tinymce.get('answer_comment_message_' + id + '_tinyeditor').getContent());
                 var message = document.getElementById('answer_comment_message_' + id + '_tinyeditor').value;
 
                 if (message == '') {
@@ -369,10 +364,11 @@ if ($trace_on) {
                     data: $('#submit_thread_form').serialize(),
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
 
-                hide_thread_form();
+                hide_thread_form(true);
             }
 
             function submit_comment_form() {
@@ -383,6 +379,7 @@ if ($trace_on) {
                     success: function(response) {
                         hide_comment_form();
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
             }
@@ -395,6 +392,7 @@ if ($trace_on) {
                     success: function(response) {
                         hide_answer_comment_form(id);
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
             }
@@ -408,6 +406,7 @@ if ($trace_on) {
                     data: {'thread_id': thread_id},
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
 //                history.pushState({"key": "thread-details"}, 'thread-details', 'index.php?action=show_thread_detail');
@@ -420,6 +419,7 @@ if ($trace_on) {
                     data: {'album': current_album, 'asset': current_asset},
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
             }
@@ -431,6 +431,7 @@ if ($trace_on) {
                     data: {'thread_id': thread_id, 'thread_album': album, 'thread_asset': asset},
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
             }
@@ -441,27 +442,38 @@ if ($trace_on) {
                     data: {'thread_id': thread_id, 'comment_id': comment_id},
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
             }
 
             function edit_thread_comment(comId) {
+
                 if (!$("#edit_comment_message_" + comId + "_tinyeditor").hasClass('edited')) {
-                    comment_desc_edit_editor = new TINY.editor.edit('editor_edit', {
-                        id: 'edit_comment_message_' + comId + '_tinyeditor',
-                        width: 468,
+                    tinymce.init({
+                        selector: "textarea#edit_comment_message_" + comId + "_tinyeditor",
+                        theme: "modern",
                         height: 100,
-                        cssclass: 'tinyeditor normal',
-                        controlclass: 'tinyeditor-control',
-                        rowclass: 'tinyeditor-header',
-                        dividerclass: 'tinyeditor-divider',
-                        controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript', '|'
-                                    , 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
-                        xhtml: true,
-                        bodyid: 'editor_edit',
-                        resize: {cssclass: 'resize'}
+                        language: 'fr_FR',
+                        plugins: 'paste',
+                        paste_as_text: true,
+                        paste_merge_formats: false,
+                        menubar: false,
+                        statusbar: true,
+                        resize: true,
+                        toolbar: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignjustify | bullist numlist",
+                        style_formats: [
+                            {title: 'Titre 1', block: 'h1'},
+                            {title: 'Titre 2', block: 'h2'},
+                            {title: 'Titre 3', block: 'h3'},
+                            {title: 'Indice', inline: 'sub'},
+                            {title: 'Exposant', inline: 'sup'}
+                        ]
                     });
+                    $("#edit_comment_message_" + comId + "_tinyeditor").addClass('edited');
                 }
+                if (tinymce.get("edit_comment_message_" + comId + "_tinyeditor"))
+                    tinymce.get("edit_comment_message_" + comId + "_tinyeditor").focus();
                 $('.comment-options').hide();
                 $('#comment_message_id_' + comId).hide();
                 $('#edit-options-' + comId).show();
@@ -470,21 +482,31 @@ if ($trace_on) {
             }
             function edit_asset_thread(threadId) {
                 if (!$("#edit_thread_message_" + threadId + "_tinyeditor").hasClass('edited')) {
-                    thread_desc_edit_editor = new TINY.editor.edit('editor_edit', {
-                        id: 'edit_thread_message_' + threadId + '_tinyeditor',
-                        width: 480,
+                    tinymce.init({
+                        selector: "textarea#edit_thread_message_" + threadId + "_tinyeditor",
+                        theme: "modern",
+                        width: 555,
                         height: 100,
-                        cssclass: 'tinyeditor edit',
-                        controlclass: 'tinyeditor-control',
-                        rowclass: 'tinyeditor-header',
-                        dividerclass: 'tinyeditor-divider',
-                        controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript', '|'
-                                    , 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
-                        xhtml: true,
-                        bodyid: 'editor_edit',
-                        resize: {cssclass: 'resize'}
+                        language: 'fr_FR',
+                        plugins: 'paste',
+                        paste_as_text: true,
+                        paste_merge_formats: false,
+                        menubar: false,
+                        statusbar: true,
+                        resize: true,
+                        toolbar: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignjustify | bullist numlist",
+                        style_formats: [
+                            {title: 'Titre 1', block: 'h1'},
+                            {title: 'Titre 2', block: 'h2'},
+                            {title: 'Titre 3', block: 'h3'},
+                            {title: 'Indice', inline: 'sub'},
+                            {title: 'Exposant', inline: 'sup'}
+                        ]
                     });
+                    $("edit_thread_message_" + threadId + "_tinyeditor").addClass('edited')
                 }
+                if (tinymce.get("edit_thread_message_" + threadId + "_tinyeditor"))
+                    tinymce.get("edit_thread_message_" + threadId + "_tinyeditor").focus();
                 $('#message-thread').hide();
                 $('#thread-options').hide();
                 $('#edit_thread_form_' + threadId).show();
@@ -504,23 +526,19 @@ if ($trace_on) {
                 return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
             }
 
-            function cancel_edit_comment(comId, message) {
-                $("#edit_comment_message_" + comId + "_tinyeditor").addClass('edited');
-                $("#edit_comment_message_" + comId + "_tinyeditor").val($('#comment_message_id_' + comId).text());
+            function cancel_edit_comment(comId) {
+                tinymce.get("edit_comment_message_" + comId + "_tinyeditor").setContent($('#comment_message_id_' + comId).text());
                 hide_edit_comment(comId);
             }
 
-            function cancel_edit_thread(threadId, title, message, timecode) {
-                $("#edit_thread_message_" + threadId + "_tinyeditor").addClass('edited');
-                document.getElementById('edit_thread_title_' + threadId).value = title;
-                document.getElementById('edit_thread_timecode_' + threadId).value = timecode;
+            function cancel_edit_thread(threadId) {
                 $('#edit_thread_form_' + threadId).hide();
                 $('#message-thread').show();
                 $('#thread-options').show();
             }
 
             function submit_edit_comment_form(comment_id) {
-                comment_desc_edit_editor.post();
+                $('#edit_comment_message_' + comment_id + '_tinyeditor').html(tinymce.get('edit_comment_message_' + comment_id + '_tinyeditor').getContent());
                 var message = document.getElementById('edit_comment_message_' + comment_id + '_tinyeditor').value;
                 if (message == '') {
                     window.alert('®missing_message®');
@@ -534,8 +552,9 @@ if ($trace_on) {
                     url: 'index.php?action=update_thread_comment&click=true',
                     data: {'comment_id': comment_id, 'comment_message': message, 'thread_id': thread, 'album': album, 'asset': asset},
                     success: function(response) {
+                        hide_edit_comment(comment_id);
                         $('#threads').html(response);
-                        hide_edit_comment(commentId);
+                        tinymce.remove('textarea');
                     }
                 });
             }
@@ -555,6 +574,7 @@ if ($trace_on) {
                     success: function(response) {
                         $('#edit_thread_form_' + threadId).hide();
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
 
                     }
                 });
@@ -577,20 +597,12 @@ if ($trace_on) {
                     data: {'thread_id': thread_id},
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
+                        $.scrollTo('#threads');
                     }
                 });
             }
 
-            function refresh_asset_threads() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=show_asset_threads&click=true',
-                    data: {},
-                    success: function(response) {
-                        $('#threads_info').html(response);
-                    }
-                });
-            }
 
 
             //=== END - THREAD =================================================
@@ -622,6 +634,7 @@ if ($trace_on) {
                     data: {'login': user, 'comment': comment, 'vote_type': type},
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
             }
@@ -633,6 +646,7 @@ if ($trace_on) {
                     data: {'approved_comment': comment},
                     success: function(response) {
                         $('#threads').html(response);
+                        tinymce.remove('textarea');
                     }
                 });
             }
@@ -923,7 +937,7 @@ echo json_encode($valid_extensions);
 
         </script>
 
-<?php if (isset($head_code)) echo $head_code; ?>
+        <?php if (isset($head_code)) echo $head_code; ?>
     </head>
     <body>
         <?php
@@ -957,16 +971,16 @@ echo json_encode($valid_extensions);
                     <ul>
                         <li><b>Safari 5+</b> | </li>
                         <li><b>Google Chrome</b> | </li>
-    <?php if ($_SESSION['user_os'] == "Windows") { ?>
+                        <?php if ($_SESSION['user_os'] == "Windows") { ?>
                             <li><b>Internet Explorer 9+</b> | </li>
                             <li><b>Firefox 22+</b></li>
-    <?php } ?>
+                        <?php } ?>
                     </ul>
                 </div>       
             </div>
-            <?php } ?>
+        <?php } ?>
         <div class="container">
-<?php include_once template_getpath('div_main_header.php'); ?>
+            <?php include_once template_getpath('div_main_header.php'); ?>
             <div id="global">
                 <div id="div_center">
                     <?php
@@ -990,7 +1004,7 @@ echo json_encode($valid_extensions);
                 </script>           
             <?php } ?>
             <!-- FOOTER - INFOS COPYRIGHT -->
-<?php include_once template_getpath('div_main_footer.php'); ?>
+            <?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
         </div><!-- Container fin -->
 

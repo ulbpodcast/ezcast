@@ -23,9 +23,9 @@
             </a>
             <div class="result_detail" id="result_detail_<?php echo $index; ?>">
                 <div class="bookmark_info">
-                    <b class="blue-title">®Description® :</b>
+                    <div class="blue-title">®Description® :</div>
                     <?php print_info($bookmark['description']); ?>
-                    <b class="blue-title" style="margin-top: 6px;">®Keywords® : </b>
+                    <div class="blue-title" style="margin-top: 6px;">®Keywords® : </div>
                     <?php print_info($bookmark['keywords']); ?>
                 </div>
             </div>

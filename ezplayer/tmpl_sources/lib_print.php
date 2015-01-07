@@ -35,9 +35,9 @@ function bookmark_sort($bookmarks, $default_order = "chron"){
  * Helper function, used for pretty print.
  * @param type $info 
  */
-function print_info($info, $suffix = '') {
+function print_info($info, $suffix = '', $htmlspecialchars = true) {
     if (isset($info) && !empty($info))
-        echo replace_links(htmlspecialchars($info) . $suffix);
+        echo replace_links(($htmlspecialchars ? htmlspecialchars($info) : $info) . $suffix);
     else
         echo '®Not_available®';
 }
@@ -157,18 +157,18 @@ function replace_links($string) {
         $link = '';
         $alias = '';
         // if there is a link (starts by '*')
-        if ($string[$i] == "*") {
+        if ($string[$i] == "*" && $string[$i+1] == "*") {
             // saves the position
-            $j = $i + 1;
+            $j = $i + 2;
             // saves the url
-            while ($j < $str_length && $string[$j] != " " && $string[$j] != "*") {
+            while ($j < $str_length && $string[$j] != " " && ($string[$j] != "*" || ($string[$j] == "*" && $string[$j+1] != "*" ))) {
                 $link .= $string[$j];
                 $j++;
             }
             // if the next char is not '*' it means there is an alias
-            while ($j < $str_length && $string[$j] != "*") {
+            while ($j < $str_length && ($string[$j] != "*" || ($string[$j] == "*" && $string[$j+1] != "*" ))) {
                 $j++;
-                if ($string[$j] != "*")
+                if ($string[$j] != "*" || ($string[$j] == "*" && $string[$j+1] != "*" ))
                     $alias .= $string[$j];
             }
             // there is a url
@@ -184,10 +184,10 @@ function replace_links($string) {
 
                 // replaces the previous syntax with the adequate html tag (*url alias* ==> <a href="url">alias</a>)
                 // in the original text
-                $string = substr_replace($string, $full_link, $i, $j - $i + 1);
+                $string = substr_replace($string, $full_link, $i, $j - $i + 2);
                 $replace_length = strlen($full_link);
                 // moves the pointer at the end of the html tag
-                $i = $i + $replace_length;
+                $i = $i + $replace_length - 1;
                 // saves the new text length
                 $str_length = strlen($string);
             }

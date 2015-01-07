@@ -26,7 +26,7 @@
 ?>
 <div id="popup_delete_comment_<?php echo $comment['id']; ?>" class="reveal-modal">
     <h3>®Delete_comment_title®</h3>
-    <br/><p>®Delete_comment_message®</p>
+    <br/><span>®Delete_comment_message®</span><br/><br/>
     <a class="close-reveal-modal">&#215;</a>
     <br/>
     <a href="javascript:delete_thread_comment(<?php echo $comment['thread'] ?>, <?php echo $comment['id'] ?>);" class="delete-button-confirm">®Delete®</a>

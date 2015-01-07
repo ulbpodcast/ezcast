@@ -69,7 +69,7 @@ include_once 'lib_print.php';
                         </a>
                         <br/>
                         <div class="hidden-item-thread" id="hidden-item-thread-<?php echo $thread['id']; ?>">
-                            <?php echo nl2br(html_entity_decode($thread['message'])); ?>     
+                            <?php echo print_info(htmlspecialchars_decode($thread['message'], ENT_QUOTES), '', false); ?>     
                         </div>
                     </div>
                     <div class="eom"></div>

@@ -21,7 +21,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 
 var quality;
 var type;
@@ -58,7 +58,8 @@ window.addEventListener("keyup", function(e) {
                     toggle_panel();
                 break;
             case 78:  // 'n'
-                toggle_bookmark_form('custom');
+                if (is_logged)
+                    toggle_bookmark_form('custom');
                 break;
             case 107:
             case 187: // '+'
@@ -182,7 +183,7 @@ function load_player(media) {
                     // Display max N threads (with N = notif_display_number)
                     if (i > notif_display_number)
                         break;
-                    html_value += "<li id='notif_"+key+"' class ='notification_item'><span class='span-link red' onclick='javascript:remove_notification_item(" + key + ")' >x</span><span class='notification-item-title' onclick='javascript:thread_details_update(" + key + ")'> " + title_array[key] + "</span></li>";
+                    html_value += "<li id='notif_" + key + "' class ='notification_item'><span class='span-link red' onclick='javascript:remove_notification_item(" + key + ")' >x</span><span class='notification-item-title' onclick='javascript:thread_details_update(" + key + ")'> " + title_array[key] + "</span></li>";
                 }
             }
             html_value += "</ul>";
@@ -201,8 +202,8 @@ function load_player(media) {
 
 }
 
-function video_addlisterners(){
-    
+function video_addlisterners() {
+
 }
 
 function switch_video(media_type) {
@@ -415,7 +416,7 @@ function show_bookmark_form(source) {
     }
     // Hide thread form if it's visible
     if (thread_form) {
-        hide_thread_form();
+        hide_thread_form(false);
 //        $('#thread_form').hide();
     }
     video.pause();
@@ -446,7 +447,7 @@ function show_bookmark_form(source) {
 }
 
 
-function hide_bookmark_form() {
+function hide_bookmark_form(canceled) {
     bookmark_form = false;
     $("#video_shortcuts").css("display", "block");
     $('video').animate({'height': '93%'});
@@ -456,10 +457,12 @@ function hide_bookmark_form() {
         });
     }
     $('#bookmark_form').slideUp();
-    document.getElementById('bookmark_title').value = '';
-    document.getElementById('bookmark_description').value = '';
-    document.getElementById('bookmark_keywords').value = '';
-    document.getElementById('bookmark_level').value = '1';
+    if (canceled) {
+        document.getElementById('bookmark_title').value = '';
+        document.getElementById('bookmark_description').value = '';
+        document.getElementById('bookmark_keywords').value = '';
+        document.getElementById('bookmark_level').value = '1';
+    }
     $('.add-bookmark-button').removeClass("active");
     $('.add-toc-button').removeClass("active");
     $('#bookmark_form').removeClass("bookmark");
@@ -476,16 +479,16 @@ function toggle_bookmark_form(source) {
         server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, source, quality, origin));
         if (source == 'official') {
             if ($('#bookmark_form').hasClass("toc")) {
-                hide_bookmark_form();
+                hide_bookmark_form(false);
             } else {
-                hide_bookmark_form();
+                hide_bookmark_form(false);
                 toggle_bookmark_form('official');
             }
         } else {
             if ($('#bookmark_form').hasClass("bookmark")) {
-                hide_bookmark_form();
+                hide_bookmark_form(false);
             } else {
-                hide_bookmark_form();
+                hide_bookmark_form(false);
                 toggle_bookmark_form('custom');
             }
         }
@@ -503,11 +506,11 @@ function toggle_bookmark_form(source) {
  */
 function toggle_thread_form() {
     if (thread_form) {
-        hide_thread_form();
+        hide_thread_form(false);
         return;
     } else if (bookmark_form) {
 //        $('#bookmark_form').hide();
-        hide_bookmark_form();
+        hide_bookmark_form(false);
     }
     show_thread_form();
     $("#thread_title").focus();
@@ -530,19 +533,30 @@ function show_answer_comment_form(id) {
     // checks whether the editor already exists or not.
     // if it doesn't exist, it creates it.
     if (!$('#answer_comment_message_' + id + '_tinyeditor').hasClass('editor-created')) {
-        comment_desc_reply_editor = new TINY.editor.edit('editor', {
-            id: 'answer_comment_message_' + id + '_tinyeditor',
-            width: 444,
+        tinymce.init({
+            selector: 'textarea#' + 'answer_comment_message_' + id + '_tinyeditor',
+            theme: "modern",  
             height: 100,
-            cssclass: 'tinyeditor normal',
-            controlclass: 'tinyeditor-control',
-            rowclass: 'tinyeditor-header',
-            dividerclass: 'tinyeditor-divider',
-            controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript',
-                '|', 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
-            xhtml: true
+            language: 'fr_FR',
+            plugins: 'paste',
+            paste_as_text: true,
+            paste_merge_formats: false,
+            menubar: false,
+            statusbar: true,
+            resize: true,
+            toolbar: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignjustify | bullist numlist",
+            style_formats: [
+                {title: 'Titre 1', block: 'h1'},
+                {title: 'Titre 2', block: 'h2'},
+                {title: 'Titre 3', block: 'h3'},
+                {title: 'Indice', inline: 'sub'},
+                {title: 'Exposant', inline: 'sup'}
+            ]
         });
+
+        $('#answer_comment_message_' + id + '_tinyeditor').addClass('editor-created');
     }
+    tinymce.get('answer_comment_message_' + id + '_tinyeditor').focus();
     $('.comment-options').hide();
 
     $('#answer_comment_form_' + id).slideDown();
@@ -560,19 +574,29 @@ function toggle_settings_form() {
 // displays thread form 
 function show_thread_form() {
     // Creates the editor only if it's not yet otherwise it will display 2 editors (or more)
-    if (!$('#thread_description_tinyeditor').hasClass('editor-created')) {
-        thread_desc_editor = new TINY.editor.edit('editor', {
-            id: 'thread_description_tinyeditor',
-            width: 502,
+    if (!$('#thread_desc_tinymce').hasClass('editor-created')) {
+        tinymce.init({
+            selector: "#thread_desc_tinymce",
+            theme: "modern",
+            width: 500,
             height: 100,
-            cssclass: 'tinyeditor',
-            controlclass: 'tinyeditor-control',
-            rowclass: 'tinyeditor-header',
-            dividerclass: 'tinyeditor-divider',
-            controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript',
-                '|', 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
-            xhtml: true
+            language: 'fr_FR',
+            plugins: 'paste',
+            paste_as_text: true,
+            paste_merge_formats: false,
+            menubar: false,
+            statusbar: false,
+            toolbar: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignjustify | bullist numlist",
+            style_formats: [
+                {title: 'Titre 1', block: 'h1'},
+                {title: 'Titre 2', block: 'h2'},
+                {title: 'Titre 3', block: 'h3'},
+                {title: 'Indice', inline: 'sub'},
+                {title: 'Exposant', inline: 'sup'}
+            ]
         });
+
+        $('#thread_desc_tinymce').addClass('editor-created');
     }
     $("#video_shortcuts").css("display", "none");
     if (document.getElementById('secondary_video')) {
@@ -600,26 +624,35 @@ function show_thread_form() {
 
 function show_comment_form() {
     if (!$('#comment_message_tinyeditor').hasClass('editor-created')) {
-        comment_desc_editor = new TINY.editor.edit('editor', {
-            id: 'comment_message_tinyeditor',
-            width: 560,
+        tinymce.init({
+            selector: "textarea#comment_message_tinyeditor",
+            theme: "modern",
             height: 100,
-            cssclass: 'tinyeditor margin-left',
-            controlclass: 'tinyeditor-control',
-            rowclass: 'tinyeditor-header',
-            dividerclass: 'tinyeditor-divider',
-            controls: ['bold', 'italic', 'underline', '|', 'subscript', 'superscript',
-                '|', 'unorderedlist', '|', 'blockjustify', '|', 'undo', 'redo'],
-            xhtml: true
+            language: 'fr_FR',
+            plugins: 'paste',
+            paste_as_text: true,
+            paste_merge_formats: false,
+            menubar: false,
+            statusbar: true,
+            resize: true,
+            toolbar: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignjustify | bullist numlist",
+            style_formats: [
+                {title: 'Titre 1', block: 'h1'},
+                {title: 'Titre 2', block: 'h2'},
+                {title: 'Titre 3', block: 'h3'},
+                {title: 'Indice', inline: 'sub'},
+                {title: 'Exposant', inline: 'sup'}
+            ]
         });
         $('#comment_message_tinyeditor').addClass('editor-created');
     }
+    tinymce.get('comment_message_tinyeditor').focus();
     $('#comment_form').slideDown();
     $("html, body").animate({scrollTop: $(document).height()}, 1000);
     comment_form = true;
 }
 
-function hide_thread_form() {
+function hide_thread_form(canceled) {
     $("#video_shortcuts").css("display", "block");
     $('video').animate({'height': '92.12%'});
     if (fullscreen && show_panel) {
@@ -628,11 +661,12 @@ function hide_thread_form() {
         });
     }
     $('#thread_form').slideUp();
-    document.getElementById('thread_title').value = '';
-    document.getElementById('thread_description_tinyeditor').value = '';
+    if (canceled) {
+        document.getElementById('thread_title').value = '';
+        tinymce.get('thread_desc_tinymce').setContent('');
+    }
     $('.add-thread-button').removeClass("active");
 
-    $('#thread_description_tinyeditor').addClass('editor-created');
     thread_form = false;
 }
 
@@ -885,13 +919,13 @@ function toggle_shortcuts() {
 function remove_notification_item(key) {
     timecode_array[key] = null;
     title_array[key] = null;
-    $('#notif_'+key).hide();
+    $('#notif_' + key).hide();
 }
 
 function scrollTo(component) {
 //    while(typeof $('#' + component)[0] == 'undefined')
 //        $('#' + component)[0].scrollIntoView(true);
-    if( typeof $('#' + component)[0] != 'undefined' )
+    if (typeof $('#' + component)[0] != 'undefined')
         $('#' + component)[0].scrollIntoView(true);
 }
 

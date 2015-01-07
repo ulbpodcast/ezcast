@@ -43,7 +43,7 @@ require template_getpath('popup_delete_comment.php');
         <br/>
         <br/>
 
-        <div class="comment-message" id="comment_message_id_<?php echo $comment['id']; ?>"><?php echo nl2br(html_entity_decode($comment['message'])); ?></div>
+        <div class="comment-message" id="comment_message_id_<?php echo $comment['id']; ?>"><?php echo print_info(htmlspecialchars_decode($comment['message'], ENT_QUOTES), '', false); ?></div>
 
         <span id="edit_comment_<?php echo $comment['id']; ?>" hidden>
             <textarea name="message" id="edit_comment_message_<?php echo $comment['id']; ?>_tinyeditor"><?php echo $comment['message']; ?></textarea>
@@ -54,8 +54,9 @@ require template_getpath('popup_delete_comment.php');
 
         <br/>
         <!-- Submit button -->
-        <div id="edit-options-<?php echo $comment['id']; ?>" hidden>
-            <a class="button" href="javascript: cancel_edit_comment(<?php echo $comment['id'] ?>, <?php echo '\'' . str_replace("'", "\'", $comment['message']) . '\''; ?>);">®Cancel®</a>
+        <div id="edit-options-<?php echo $comment['id']; ?>" style="float: right;" hidden>
+            <span class="warning_edit">®Warning_edit®</span>
+            <a class="button" href="javascript: cancel_edit_comment(<?php echo $comment['id'] ?>);">®Cancel®</a>
             <a class="button green2" href="javascript: submit_edit_comment_form(<?php echo $comment['id']; ?>);">®Submit®</a>
         </div>
         <br />
@@ -74,11 +75,11 @@ require template_getpath('popup_delete_comment.php');
                     <br/>
 
                     <!-- Submit button -->
-                    <div class="cancelButton" style="margin-left: 300px;">
-                        <a class="button" href="javascript: hide_answer_comment_form(<?php echo $comment['id']; ?>);">®Cancel®</a>
-                    </div>
-                    <div class="submitButton">
+                    <div class="submitButton" style="float: right;">
                         <a class="button green2" href="javascript: if(check_answer_comment_form(<?php echo $comment['id']; ?>)) submit_answer_comment_form(<?php echo $comment['id']; ?>);">®Reply®</a>
+                    </div>
+                    <div class="cancelButton" style="float: right;">
+                        <a class="button" href="javascript: hide_answer_comment_form(<?php echo $comment['id']; ?>);">®Cancel®</a>
                     </div>
                     <br />
                 </form>

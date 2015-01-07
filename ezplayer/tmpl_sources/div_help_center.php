@@ -679,10 +679,10 @@
                     Certains liens sont automatiquement reconnus. C’est le cas des liens commençant par 
                     “<b>http://</b>”, “<b>https://</b>”, “<b>www</b>” et “<b>mailto</b>:”.<br/>
                     Si vous souhaitez définir vous-même un lien, il suffit d’insérer le lien entre 
-                    <b>deux astérisques</b>. Voici un exemple concret: <b>*google.com*</b><br/>
+                    <b>deux astérisques</b>. Voici un exemple concret: <b>**google.com**</b><br/>
                     Si vous voulez donner un <b>alias</b> (renommer) un lien dans votre description, 
-                    utilisez la syntaxe suivante: *<b>lien alias</b>*. <br/>
-                    Par exemple: *https://www.google.be/search?q=google&oq=go&aqs=chrome.0.0j69i57j69i60l4.2193j0&sourceid=chrome&ie=UTF-8#q=exemple Voici un exemple*
+                    utilisez la syntaxe suivante: <b>**lien alias**</b>. <br/>
+                    Par exemple: **https://www.google.be/search?q=google&oq=go&aqs=chrome.0.0j69i57j69i60l4.2193j0&sourceid=chrome&ie=UTF-8#q=exemple Voici un exemple**
                 </p> 
                 <p>Si vous consultez le site en mode anonyme et que vous y ajoutez des albums en favoris, 
                     connectez-vous avec votre identifiant pour que les albums s’ajoutent automatiquement 

@@ -227,11 +227,11 @@ if ($_SESSION['load_video'] == true) {
         <div class="form" id="bookmark_form">
             <div id="bookmark_form_header" class="bookmark-color">
                 <span id="bookmark_form_header_logo" class="bookmark-logo"></span>
-                <span class="form_header_label" ><?php echo mb_strtoupper('®Add_bookmark®', 'UTF-8'); ?></span>
+                <span class="form_header_label" >®Add_bookmark®</span>
             </div>
             <div id="bookmark_form_header" class="toc-color">
                 <span id="bookmark_form_header_logo" class="toc-logo"></span>
-                <span class="form_header_label" ><?php echo mb_strtoupper('®Add_toc®', 'UTF-8'); ?></span>
+                <span class="form_header_label" >®Add_toc®</span>
             </div>
             <div id='bookmark_form_wrapper'>
                 <form action="index.php" method="post" id="submit_bookmark_form" onsubmit="return false">
@@ -279,7 +279,7 @@ if ($_SESSION['load_video'] == true) {
                     <br/><br/>
                     <!-- Submit button -->
                     <div class="cancelButton">
-                        <a class="button" tabindex='16' href="javascript: hide_bookmark_form();">®Cancel®</a>
+                        <a class="button" tabindex='16' href="javascript: hide_bookmark_form(true);">®Cancel®</a>
                     </div>
                     <div class="submitButton">
                         <a id="subBtn" class="button" tabindex='17' href="javascript: if(check_bookmark_form()) submit_bookmark_form();">®submit_bookmark®</a>
@@ -301,7 +301,7 @@ if ($_SESSION['load_video'] == true) {
 
             <div id="thread_form_header">
                 <span class="thread-logo" style="padding-bottom: 8px;"></span>
-                <span class="form_header_label"><?php echo mb_strtoupper('®Add_discussion®', 'UTF-8'); ?></span>
+                <span class="form_header_label">®Add_discussion®</span>
             </div>
             <div id='thread_form_wrapper'>
 
@@ -316,29 +316,31 @@ if ($_SESSION['load_video'] == true) {
                     <label>®Title®&nbsp;:
                         <span class="small">®Title_info®</span>
                     </label>
-                    <input name="title" tabindex='11' id="thread_title" type="text" placeholder="®Discussion_title_placeholder®" maxlength="140"/>
+                    <input name="title" tabindex='18' id="thread_title" type="text" placeholder="®Discussion_title_placeholder®" maxlength="140"/>
 
                     <!-- Timecode field -->           
                     <label>®Timecode®&nbsp;:
                         <span class="small">®Timecode_info®</span>
                     </label>
-                    <input name="timecode" tabindex='15' id="thread_timecode" type="text" value="0"/>
+                    <input name="timecode" tabindex='19' id="thread_timecode" type="text" value="0" onblur="tinymce.get('thread_desc_tinymce').focus();;"/>
 
                     <!-- Description field -->
                     <label>®Message®&nbsp;:
                         <span class="small">®Required®</span>
                     </label>
-                    <textarea name="description" id="thread_description_tinyeditor" style="width: 490px; height: 100px;" required></textarea>
+                    <div id="thread_description_wrapper">
+                        <input type="text" name="description" tabindex='20' id="thread_desc_tinymce" required/>
+                    </div>
 
                     <!-- Visibility field --> 
                     <input name="visibility" id="thread_visibility" type="checkbox" hidden/>
                     <br/>
                     <!-- Submit button -->
                     <div class="cancelButton" style="margin-left: 480px;">
-                        <a class="button" tabindex='16' href="javascript: hide_thread_form();">®Cancel®</a>
+                        <a class="button" tabindex='21' href="javascript: hide_thread_form(true);">®Cancel®</a>
                     </div>
                     <div class="submitButton">
-                        <a class="button green2" tabindex='17' 
+                        <a class="button green2" tabindex='22' 
                         <?php
                         if (!acl_has_moderated_album() || acl_is_admin()) {
                             echo "data-reveal-id='modal_thread_visibility_choice'";

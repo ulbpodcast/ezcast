@@ -648,6 +648,27 @@ body{
 
 /*--Bouton triangle [fin]--*/
 
+.custom-checkbox{
+    display: none;
+}
+
+.custom-checkbox + label{
+    float: right; 
+    margin-right: 8px;
+    width: 32px;
+    height: 20px;
+    background: url('../images/page4/ACheck.png') no-repeat center center;
+}
+.custom-checkbox + label:hover{
+    cursor: pointer;
+}
+
+.custom-checkbox:checked + label{
+    width: 32px;
+    height: 20px;
+    background: url('../images/page4/BCheck.png') no-repeat center center;
+}
+
 /*--bouton media--*/
 .LigneBouton{
 	margin-left:10px;
@@ -741,6 +762,7 @@ body{
 
 .BoutonPlus a, 
 .BoutonEmbed a, 
+.BoutonEZplayer a, 
 .BoutonPublication a, 
 .BoutonDownload a, 
 .BoutonULBCode a{
@@ -758,6 +780,7 @@ body{
 
 .BoutonPlus a:hover, 
 .BoutonEmbed a:hover, 
+.BoutonEZplayer a:hover, 
 .BoutonPublication a:hover, 
 .BoutonDownload a:hover, 
 .BoutonULBCode a:hover{
@@ -783,6 +806,14 @@ body{
 
 .BoutonEmbed a:hover{
 	background-image:url(../images/page4/BEmbedBackg.png);
+}
+
+.BoutonEZplayer a{
+	background-image:url(../images/page4/AEZplayerBackg.png);
+}
+
+.BoutonEZplayer a:hover{
+	background-image:url(../images/page4/BEZplayerBackg.png);
 }
 
 .BoutonPublication a{
@@ -1156,6 +1187,7 @@ body{
 
 #form .labelcb{
     font-size:11px;
+    color: #666666;
     display:block;
     font-weight:bold;
     text-align:left;
@@ -1259,7 +1291,7 @@ input.file {
 a.info{
     position:relative;
     z-index:24;
-    color:#000;
+    color:#666666;
     text-decoration:none;
     cursor: help;
 }

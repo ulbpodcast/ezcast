@@ -46,7 +46,7 @@
 
         <script>
             // Render and style the file input 
-            initFileUploads()
+           initFileUploads()
         </script>
 
         <br />

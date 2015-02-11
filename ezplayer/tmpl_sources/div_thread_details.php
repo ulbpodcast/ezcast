@@ -31,9 +31,12 @@ require template_getpath('popup_delete_thread.php');
 ?>
 <div class="thread_header">
     <span class="visibility-logo <?php echo ($thread['studentOnly']) ? 'students' : 'all' ?> details" title="<?php echo ($thread['studentOnly']) ? '®Visibility_students®' : '®Visibility_all®' ?>"></span>
+    <a class="thread_timecode" href="javascript:seek_video(<?php echo $thread['timecode'] ?>, '');">  
+        <span class="timecode white inline-block">(<?php print_time($thread['timecode']); ?>) </span>
+    </a>
     <span class="thread-title inline-block"><?php echo $thread['title']; ?></span> 
-    <a class="refresh-button pull-right" title="®Refresh_discussion_details®" href="javascript:thread_details_update(<?php echo $thread['id']; ?>)"></a>
-    <a class="back-button pull-right" title="®Display_discussions®" href="javascript:threads_list_update();"></a>
+    <a class="refresh-button pull-right" title="®Refresh_discussion_details®" href="javascript:thread_details_update(<?php echo $thread['id']; ?>, false)"></a>
+    <a class="back-button pull-right" title="®Display_discussions®" href="javascript:threads_list_update(false);"></a>
     <br/>
     <?php
     $creationDate = (get_lang() == 'fr') ? new DateTimeFrench($thread['creationDate'], $DTZ) : new DateTime($thread['creationDate'], $DTZ);

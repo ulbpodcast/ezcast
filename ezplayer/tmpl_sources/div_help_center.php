@@ -27,7 +27,7 @@
 <div id="help-content">
     <h2>Aide à l'utilisation d'EZplayer</h2>
     <p>Ce tutoriel a pour objectif de vous permettre d’utiliser les fonctionnalités essentielles de l’interface 
-        de visualisation des podcasts “EZplayer” et de pouvoir créer et gérer une liste de signets pour chacune des vidéos.</p>
+        de visualisation des podcasts “EZplayer” et de pouvoir créer des discussions et gérer une liste de signets pour chacune des vidéos.</p>
     <p>Si vous ne trouvez pas l'aide que vous recherchez, contactez : <a href="mailto:<?php global $mailto_alert; echo $mailto_alert; ?>"><?php echo $mailto_alert; ?></a></p>
     <p>Ce tutoriel existe au format .pdf ; vous pouvez le télécharger dans l'espace étudiants du site 
         "<a href="http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf">ULB Podcast</a>"</p>
@@ -53,7 +53,7 @@
                 <p>Sachez aussi qu’il existe <b>deux modes de connexion</b> à “<b>EZplayer</b>”; la connexion en tant 
                     qu’utilisateur <b>anonyme</b>, qui vous permettra uniquement de consulter les vidéos et la liste 
                     des signets officiels, et la connexion en tant qu’utilisateur <b>identifié</b>, qui vous offrira 
-                    de nombreuses possibilités, telles que l’ajout de signets sur les vidéos, le partage d’un moment 
+                    de nombreuses possibilités, telles que l’ajout de signets et de discussions sur les vidéos, le partage d’un moment 
                     précis d’une vidéo, l’import/export de signets, la gestion de vos cours favoris, etc.</p>
             </div>
         </li>
@@ -68,33 +68,30 @@
 
                 <b class="title">Adresse</b>
                 <p>Entrez l’URL suivante dans la barre d’adresse de votre navigateur Internet : 
-                    <a href="https://podcast.ulb.ac.be/ezplayer/">https://podcast.ulb.ac.be/ezplayer/</a></p>
+                    <a href="https://podcast.ulb.ac.be/ezplayer/" style="text-transform: none;">https://podcast.ulb.ac.be/ezplayer/</a></p>
 
                 <b class="title">Login et mot de passe</b>
                 <p>
                     - Le "<b>NetID</b>" est votre NetID de l’Université libre de Bruxelles
                     <br/>- Le "<b>Password</b>" est le mot de passe associé à votre NetId 
                 </p>
-                <p>Si vous souhaitez poursuivre sans vous identifier, vous serez considéré comme un utilisateur anonyme. 
-                    Ce mode de connexion vous privera de la majorité des interactions que nous allons passer en revue dans 
-                    ce tutoriel. </p>
 
                 <b class="title">Ecran d'accueil de l'interface</b>
-                <p><img alt="Ecran d'accueil EZplayer" src="./images/Help/screen_001.png"/></p>
+                <p><img alt="Ecran d'accueil EZplayer" src="./images/Help_v2/screen_001.png"/></p>
 
                 <b class="title">Ecran une fois connecté à l'interface</b>
                 <p>Voici l’écran d’accueil de l’interface si vous vous connectez pour la première fois. Votre liste de cours 
                     favoris est vide et une vidéo tutoriel vous explique comment ajouter des cours sur votre page d’accueil. </p>
-                <p><img alt="Ecran d'accueil EZplayer" src="./images/Help/screen_002.png"/></p>
+                <p><img alt="Ecran d'accueil EZplayer" src="./images/Help_v2/screen_002.png"/></p>
 
                 <b class="title">Se déconnecter</b>
                 <p>Pour vous déconnecter, cliquez sur le bouton “<b>Déconnexion</b>” en haut à droite de l’interface.</p>
-                <p><img alt="se déconnecter d'EZplayer" src="./images/Help/screen_003.png"/></p>
+                <p><img alt="se déconnecter d'EZplayer" src="./images/Help_v2/screen_003.png"/></p>
 
                 <b class="title">Remarque</b>
                 <p>L’interface “EZplayer” est bilingue : vous pouvez opter pour le <b>français</b> ou l’<b>anglais</b> 
                     au moment de la connexion.</p>
-                <p><img alt="Choix de la langue" src="./images/Help/screen_004.png"/></p>
+                <p><img alt="Choix de la langue" src="./images/Help_v2/screen_004.png"/></p>
 
             </div>
         </li>
@@ -114,24 +111,24 @@
                 <p>Voici la marche à suivre pour ajouter un cours en favori :
                 </p>
                 <p><b>1.</b> Rendez vous dans l’espace dédié à votre cours podcasté sur l’<b>Université Virtuelle</b>. 
-                    Cliquez sur le lien “<b>Accéder à EZplayer (bêta)</b>”. 
+                    Cliquez sur le lien “<b>Accéder aux podcasts du cours</b>”. 
                 </p>
-                <p><img alt="Icônes de l'Université Virtuelle" src="./images/Help/screen_005.png"/></p>
+                <p><img alt="Icônes de l'Université Virtuelle" src="./images/Help_v2/screen_005.png"/></p>
                 <p><b>2.</b> Si vous n’êtes pas encore connecté à l’interface EZplayer, vous devez vous connecter 
                     (référez vous au point “<i>2. Se connecter</i>” de ce tutroriel). Vous arrivez alors sur la page 
                     qui vous permet de <b>sélectionner un enregistrement</b> parmi tous ceux disponibles pour le cours. </p>
-                <p><img alt="Sélectionner un enregistrement" src="./images/Help/screen_006.png"/></p>
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_006.png"/></p>
 
                 <b class="title">Résultat</b>
                 <p>Lorsque vous retournez sur la page d’accueil, via le lien “<b>Accueil</b>” en haut à gauche de la page, 
                     votre cours a été ajouté à la liste de vos favoris. 
                 </p>
-                <p><img alt="Cours ajouté sur la page d'accueils" src="./images/Help/screen_007.png"/></p>
+                <p><img alt="Cours ajouté sur la page d'accueils" src="./images/Help_v2/screen_007.png"/></p>
 
                 <b class="title">Remarque</b>
                 <p>Utilisez toujours les <b>liens de navigation</b> prévus dans l’application pour naviguer entre 
                     les différents niveaux du site. Si vous utilisez les flèches “Précédent” et “Suivant” de 
-                    votre navigateur, vous ne serez <b>pas redirigé</b> vers les bonnes pages.
+                    votre navigateur, vous ne serez <b>pas toujours redirigé</b> vers les bonnes pages.
                 </p>
 
             </div>
@@ -163,7 +160,7 @@
 
                 <b class="title">Attention</b>
                 <p>La navigation au sein du site doit se faire uniquement au moyen des <b>liens prévus</b> dans 
-                    l’application. Il n’est pas possible d’utiliser les boutons “Précédent” et “Suivant” du 
+                    l’application. Il est déconseillé d’utiliser les boutons “Précédent” et “Suivant” du 
                     navigateur pour naviguer entre les différents niveaux du site. 
                 </p>
 
@@ -173,28 +170,30 @@
                 <p><b>1.</b> Après vous être connecté , vous arrivez sur la page d’accueil, c’est-à-dire, 
                     le <b>niveau un</b> du site. Vous y trouvez la liste de vos <b>cours favoris</b>. 
                     En vis-à-vis des cours peut figurer une “<b>bulle</b>”, contenant un nombre (A). Il s’agit du nombre de 
-                    vidéos <b>non visionnées</b> contenues dans le cours. 
+                    vidéos <b>non visionnées</b> contenues dans le cours. (Cette option peut être activée en modifiant vos préférences. Référez vous au point “<i>21. Gérer ses préférences</i>” de ce tutroriel)
                 </p>
-                <p><img alt="Vidéos non visionnées" src="./images/Help/screen_008.png"/></p>
+                <p><img alt="Vidéos non visionnées" src="./images/Help_v2/screen_008.png"/></p>
                 <p><b>2.</b> Lorsque vous sélectionnez un de vos cours favoris, vous accédez au 
-                    <b>niveau deux</b> du site. Cet écran est divisé en <b>deux parties</b>; la partie de <b>gauche</b> (A), 
-                    qui contient la liste des <b>enregistrements</b> pour le cours sélectionné et celle de <b>droite</b> (B) 
-                    qui contient la liste des <b>signets</b> relatifs à tous les enregistrements liés au cours sélectionné. 
-                    Ce panneau de droite est lui-même subdivisé en <b>deux onglets</b>; l’onglet des signets <b>personnels</b> 
+                    <b>niveau deux</b> du site. Cet écran est divisé en <b>trois parties</b>; la partie de <b>gauche</b> (A), 
+                    qui contient la liste des <b>enregistrements</b> pour le cours sélectionné, celle de <b>droite</b> (B) 
+                    qui contient la liste des <b>signets</b> relatifs à tous les enregistrements liés au cours sélectionné et 
+                    celle du dessous (C) - pas toujours présente - qui affiche les <b>dernières discussions</b>. <br/>
+                    Le panneau de droite est lui-même subdivisé en <b>deux onglets</b>; l’onglet des signets <b>personnels</b> 
                     (I), qui est alimenté par vous-même et qui est propre à chaque utilisateur et l’onglet des signets 
                     <b>officiels</b> (II), qui est tenu à jour par un titulaire du cours et qui est visible par tous 
                     les utilisateurs du cours. Les signets apparaissant à ce niveau-ci de l’application sont tous relatifs 
-                    au cours sélectionné. 
+                    au cours sélectionné. <br/>
                     En vis-à-vis de certains enregistrements peut apparaître un <b>marqueur</b> (III). 
-                    Celui-ci désigne une vidéo qui n’a pas encore été visionnée. 
+                    Celui-ci désigne une vidéo qui n’a pas encore été visionnée. (Cette option peut être activée en modifiant vos préférences. Référez vous au point “<i>21. Gérer ses préférences</i>” de ce tutroriel).
+                    
                 </p>
-                <p><img alt="Structure du niveau deux" src="./images/Help/screen_009.png"/></p>
+                <p><img alt="Structure du niveau deux" src="./images/Help_v2/screen_009.png"/></p>
                 <p>3. Enfin, en sélectionnant un enregistrement parmi la liste, vous arrivez au <b>niveau trois</b> du site. 
-                    Ce dernier niveau est, lui aussi, divisé en <b>deux parties</b>: à gauche (A), le lecteur de vidéo (I) 
-                    et les actions (II) qui s’y réfèrent et à droite (B), la liste des signets relatifs à l’enregistrement 
+                    Ce dernier niveau est, lui aussi, divisé en <b>trois parties</b>: à gauche (A), le lecteur de vidéo (I) 
+                    et les actions (II) qui s’y réfèrent, à droite (B), la liste des signets relatifs à l’enregistrement 
                     sélectionné. Encore une fois, le panneau de droite est subdivisé en deux onglets; les signets 
-                    personnels (III) et les signets officiels (IV).</p>
-                <p><img alt="Structure du niveau trois" src="./images/Help/screen_010.png"/></p>
+                    personnels (III) et les signets officiels (IV). En-dessous (C), la description de la vidéo (V - Facultative) et les discussions (VI)</p>
+                <p><img alt="Structure du niveau trois" src="./images/Help_v2/screen_010.png"/></p>
             </div>
         </li>
 
@@ -207,20 +206,20 @@
                     <b>supprimer</b> les cours que vous ne souhaitez pas voir sur la page d’accueil. </p>
 
                 <b class="title">Marche à suivre</b>
-                <p>Voici la marche à suivre gérer les cours favoris :</p>
+                <p>Voici la marche à suivre pour gérer les cours favoris :</p>
                 <p><b>1.</b> Pour modifier l’<b>ordre d’affichage</b> des cours sur la page d’accueil, utilisez les 
                     flèches “<b>monter</b>” et “<b>descendre</b>” présentes devant le titre du cours à déplacer.</p>
-                <p><img alt="Organiser les cours favoris" src="./images/Help/screen_011.png"/></p>
+                <p><img alt="Organiser les cours favoris" src="./images/Help_v2/screen_011.png"/></p>
                 <p><b>2.</b> Pour retirer un cours de vos favoris, cliquez sur la petite croix du cours à supprimer. </p>
-                <p><img alt="Supprimer un cours favori" src="./images/Help/screen_012.png"/></p>
+                <p><img alt="Supprimer un cours favori" src="./images/Help_v2/screen_012.png"/></p>
                 <p><b>3.</b> Une boîte de dialogue s’ouvre. Cliquez sur le bouton “<b>Supprimer</b>” pour retirer le 
                     cours de vos favoris. </p>
-                <p><img alt="Supprimer un cours favori" src="./images/Help/screen_013.png"/></p>                
+                <p><img alt="Supprimer un cours favori" src="./images/Help_v2/screen_013.png"/></p>                
 
                 <b class="title">Attention</b>
                 <p>Lorsque vous retirez un cours de vos favoris, tous les <b>signets</b> que vous avez créés 
                     pour ce cours sont <b>supprimés</b> en même-temps. Si vous souhaitez, malgré tout, conserver 
-                    vos signets, exportez les comme expliqué dans la rubrique “<i>10. Exporter des signets</i>” de 
+                    vos signets, exportez les comme expliqué dans la rubrique “<i>16. Exporter des signets</i>” de 
                     ce tutoriel. </p>
 
                 <b class="title">Résultat</b>
@@ -236,15 +235,15 @@
 
                 <b class="title">Marche à suivre</b>
                 <p><b>1.</b> Sélectionnez le cours dans lequel se trouve l’enregistrement à visionner. </p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2.</b> Cliquez sur l’enregistrement que vous souhaitez visionner.</p>
-                <p><img alt="Sélectionner un enregistrement" src="./images/Help/screen_015.png"/></p> 
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_015.png"/></p> 
                 <p><b>3.</b> Lancez la lecture via le bouton “<b>Play</b>” dans le lecteur (ou utilisez le raccourci
                     clavier [ESPACE]). Par défaut, 
                     la vidéo est jouée en qualité <b>standard</b>. Vous pouvez sélectionner la haute résolution 
                     en cliquant sur le bouton <b>HD</b> et revenir à la résolution standard en cliquant sur 
-                    le bouton <b>SD</b> (A). </p>
-                <p><img alt="Controles du lecteur" src="./images/Help/screen_016.png"/></p>
+                    le bouton <b>SD</b> (C). </p>
+                <p><img alt="Controles du lecteur" src="./images/Help_v2/screen_016.png"/></p>
                 <p>Dans le cas où une vidéo est disponible en différentes versions, c’est-à-dire, s’il existe 
                     une vidéo <b>caméra</b> et une vidéo <b>diaporama</b> de la même leçon, vous pouvez passer 
                     de la vidéo caméra au diaporama en cliquant sur les boutons prévus à cet effet (B) 
@@ -273,26 +272,252 @@
                 <b class="title">Marche à suivre</b>
                 <p><b>1.</b> Lorsque vous êtes sur la page de consultation des vidéos, cliquez sur le <b>dernier
                         bouton</b> pour passer en mode plein écran ou utilisez la touche <b>[F]</b> de votre clavier.</p>
-                <p><img alt="Mode plein écran" src="./images/Help/screen_044.png"/></p> 
+                <p><img alt="Mode plein écran" src="./images/Help_v2/screen_044.png"/></p> 
                 <p><b>2.</b> La vidéo occupe alors toute la surface de la page dans votre navigateur web.</p>
-                <p><img alt="Vue plein écran" src="./images/Help/screen_045.png"/></p> 
+                <p><img alt="Vue plein écran" src="./images/Help_v2/screen_045.png"/></p> 
                 <p><b>3.</b> Lorsque le mode plein écran est activé, vous pouvez utiliser le <b>bouton des raccourcis</b> 
                     (A) pour afficher la liste des raccourcis disponibles (ou la touche <b>[R]</b> de votre clavier). 
                     Quittez le mode plein écran en cliquant sur le <b>bouton plein écran</b> (B) ou en appuyant 
                     sur la touche <b>[ESC]</b> de votre clavier. Vous pouvez aussi afficher la <b>liste des signets</b> 
                     en appuyant sur le dernier bouton (C) ou en utilisant le raccourci clavier <b>[B]</b>.
                 </p>
-                <p><img alt="Vue plein écran" src="./images/Help/screen_046.png"/></p> 
+                <p><img alt="Vue plein écran" src="./images/Help_v2/screen_046.png"/></p> 
 
                 <b class="title">Remarque</b>
                 <p>Pour accéder au mode plein écran, utilisez le bouton plein écran présent dans la 
                     <b>barre de controle</b> de la vidéo plutôt que celui par défaut du lecteur vidéo 
                     pour avoir accès aux différentes fonctionnalités enrichies du lecteur “EZplayer".</p>
             </div>
-        </li>
-
+        </li>        
+        
         <li>
-            <a>8.   AJOUTER UN SIGNET PERSONNEL</a>
+            <a>8.   CRÉER UNE DISCUSSION</a>
+            <div>
+                <b class="title">Introduction</b>
+                <p>Cette section décrit la marche à suivre pour une discussion dans une vidéo.</p>
+
+                <b class="title">Définitions</b>
+                <p><b>Discussion</b> : Une discussion est la base d'une <b>interaction</b> entre différents 
+                    utilisateurs (Etudiants / Enseignants). Elle permet de créer un <b>sujet</b> qui sera discuté 
+                    sous forme de commentaires par l'ensemble des utilisateurs identifiés ayant accès à la vidéo.
+                    A l'instar des signets, les discussions sont <b>liées temporellement</b> à un moment précis de la 
+                    vidéo. Une discussion peut être <b>ouverte</b> à tout les utilisateurs d'EZplayer, ou en <b>accès limité</b> 
+                    pour les étudiants uniquement. Cela signifie qu'une discussion en accès limité ne sera accessible par
+                    <b>aucun professeur</b> ayant accès à EZplayer, qu'il soit lié ou non au cours contenant la vidéo.<br/> 
+                    Une discussion est représentée par un titre et une description, et pointe vers une <b>seconde 
+                    précise</b> d'une vidéo.
+                </p>
+
+                <b class="title">Marche à suivre</b>
+                <p><b>1.</b> Sélectionnez le cours dans lequel se trouve l’enregistrement à discuter.</p>
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
+                <p><b>2.</b> Cliquez sur l’enregistrement pour lequel vous souhaitez créer une discussion.</p>
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_017.png"/></p> 
+                <p><b>3.</b> Lors de la lecture de la vidéo, dans les <b>contrôles</b>, en-dessous de la vidéo, 
+                    sélectionnez l’action “<b>Créer une discussion</b>” (A) (ou utilisez le raccourci clavier <b>[D]</b>). 
+                    La vidéo est mise en pause et un formulaire se déploie.<br/>
+                    Le code temps est complété automatiquement (mais peut être modifié), les autres champs 
+                    sont <b>obligatoires</b>. Vous avez certaines possibilités d'édition du texte dans le champ de saisie. <br/>
+                    Publiez (B) la discussion ou appuyez sur le bouton “Annuler” pour annuler la saisie de la discussion. 
+                </p>
+                <p><img alt="Créer une discussion" src="./images/Help_v2/screen_047.png"/></p> 
+                <p><b>4.</b> Si vous n'êtes pas titulaire d'un cours, une fenêtre s'ouvre pour vous permettre de 
+                    choisir la visibilité de la discussion.<br/>
+                    Sélectionnez 'Etudiants + professeurs' pour ouvrir la discussion à tout le monde, ou 'Etudiants' pour 
+                    limiter l'accès aux seuls étudiants.</p> 
+                <p><img alt="Choisir la visibilité de la discussion" src="./images/Help_v2/screen_048.png"/></p> 
+
+                <b class="title">Remarques</b>
+                <p>Votre discussion apparaitra sous forme de <b>notification</b> lors de la lecture de la vidéo par les
+                    autres utilisateurs.</p>
+                <p>En tant qu'enseignant, il n'est pas possible de créer une discussion en accès limité.</p>
+                <p>Votre nom et prénom sont affichés dans l'entête de votre discussion, il n'est pas possible de publier 
+                    une discussion anonyme.</p>
+
+                <b class="title">Résultat</b>
+                <p>La discussion apparaît dans la liste des discussions, en-dessous de la vidéo.</p>
+                <p><img alt="Discussions ajoutée" src="./images/Help_v2/screen_049.png"/></p> 
+
+            </div>
+        </li>
+        
+                <li>
+            <a>9.   PARCOURIR ET COMPRENDRE LES DISCUSSIONS</a>
+            <div>
+                <b class="title">Introduction</b>
+                <p>Cette section décrit la marche à suivre pour parcourir et comprendre les discussions.</p>
+
+                <b class="title">Marche à suivre</b>
+                <p><b>1.</b> Sélectionnez le cours dont vous souhaitez voir les discussions.</p>
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
+                <p><b>2.</b> A ce niveau, on observe en bas de page, les discussions qui ont été mises à jour 
+                    le plus récemment (A). Seules les 5 dernières discussions parmi tous les enregistrements de l'album 
+                    sont affichées à ce niveau-ci.</p>
+                <p>Chacune des discussions est isolée des autres par un trait pointillé (B) et affiche les informations suivantes:
+                    <br/> - Le <b>titre de l'enregistrement</b> dans lequel elle se trouve (I)
+                    <br/> - Le <b>titre de la discussion</b> (II)
+                    <br/> - La <b>date de modification</b> et le <b>nom</b> de la personne qui a, en dernier, <b>créé</b>, 
+                    <b>modifié</b> ou <b>répondu</b> à la discussion (III)                    
+                </p>
+                <p><img alt="Dernières discussions" src="./images/Help_v2/screen_050.png"/></p> 
+                <p>En cliquant sur une discussion, vous arrivez dans l'enregistrement concerné par la discussion, au moment 
+                de la vidéo ciblé par la discussion. L'affichage présente les details de la discussion (reportez-vous au point 5 ci-dessous).</p>
+                <p><b>3.</b> Sélectionnez un enregistrement pour consulter l'ensemble des discussions qui s'y rapportent. 
+                </p>
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_017.png"/></p> 
+                <p><b>4.</b> En bas de page, on retrouve l'ensemble des discussions liées à l'enregistrement sélectionné. Les discussions sont 
+                    isolées les unes des autres par un trait pointillé (A) et affichent les informations suivantes:
+                    <br/> - La <b>visibilité</b> de la discussion (I), elle peut être à accès limité (un seul personnage) ou ouverte à tous (deux personnages).
+                    <br/> - Le <b>moment</b> (II) de la vidéo ciblé par la discussion (en cliquand dessus, la vidéo se place au bon endroit)
+                    <br/> - Le <b>nom de la personne</b> qui a créé la discussion (III)
+                    <br/> - Le <b>titre</b> de la discussion (IV)
+                    <br/> - La <b>date</b> de modification</b> et le <b>nom</b> de la personne qui a, en dernier, <b>créé</b>, 
+                    <b>modifié</b> ou <b>répondu</b> à la discussion (V)  
+                    <br/> - Le nombre de réponses à la discussion (VI)
+                </p>
+                <p><img alt="Liste des discussions" src="./images/Help_v2/screen_051.png"/></p> 
+                
+                <b class="title">Remarques</b>
+                <p>Il est possible d'afficher la description d'une discussion en cliquant sur la petite flèche se trouvant à droite des 
+                    informations de la discussion.                    
+                </p>
+                <p><img alt="Déployer une discussion" src="./images/Help_v2/screen_052.png"/></p> 
+                <p>Vous pouvez rafraichir la liste des discussions en cliquant sur les flèches circulaires dans l'entête des discussions.</p>
+                <p><img alt="Choisir la visibilité de la discussion" src="./images/Help_v2/screen_053.png"/></p> 
+                
+                <p><b>5.</b> En cliquant sur une discussion, on affiche le <b>contenu</b> de celle-ci.<br/>
+                On compte trois parties distinctes:
+                <br/> - La discussion initiale (A)
+                <br/> - La meilleure réponse (B): Elle n'est pas toujours présente et dépend du vote de l'ensemble des utilisateurs
+                <br/> - Le flux des commentaires (C) pour la discussion.</p> 
+                <p><img alt="Décomposition d'une discussion" src="./images/Help_v2/screen_054.png"/></p> 
+                <p>Dans la partie réservée à la discussion initiale, on retrouve :
+                    <br/> - La <b>visibilité</b> (I) de la discussion (ouvert à tous ou accès limité) 
+                    <br/> - Le <b>moment</b> (II) de la vidéo ciblé par la discussion (en cliquand dessus, la vidéo se place au bon endroit)
+                    <br/> - Le <b>titre</b> de la discussion (III)
+                    <br/> - Le <b>nom de la personne</b> qui a créé la discussion et la date de création (IV)
+                    <br/> - La <b>description</b> de la discussion (V)</p>
+                <p><img alt="Discussion initiale" src="./images/Help_v2/screen_055.png"/></p> 
+                <p>Dans la partie réservée à la meilleure réponse, on retrouve simplement le commentaire et le nombre de votes obtenus.</p>
+                <p><img alt="Meilleure réponse" src="./images/Help_v2/screen_056.png"/></p> 
+                <p>Dans le flux des commentaires, on retrouve, pour chacun des commentaires: 
+                    <br/> - Le <b>nom de l'auteur</b> du commentaire (I)
+                    <br/> - La <b>date</b> de la réponse (II)
+                    <br/> - La <b>réponse</b> (III)
+                    <br/> - Le nombre de <b>votes</b> (IV) et la possibilité d'ajouter un vote positif ou négatif</p>
+                <p><img alt="Flux des commentaires" src="./images/Help_v2/screen_057.png"/></p> 
+                <p>Certains commentaires peuvent être <b>approuvés</b> par le titulaire du cours. Dans ce cas, ils arborent une entête 
+                marquant cette approbation.</p>
+                <p><img alt="Réponse approuvée" src="./images/Help_v2/screen_058.png"/></p> 
+
+                <p><b>6.</b> Vous pouvez retourner à la liste des discussions en cliquant sur l'icone de liste (A) ou 
+                rafraichir le contenu de la discussion en cliquant sur les flèches circulaires (B) dans l'entête de discussion. <br/><p>
+                <p><img alt="Notification de discussions" src="./images/Help_v2/screen_060.png"/></p> 
+                <b class="title">Remarques</b>
+                <p>En cliquant sur la meilleure réponse, la page défile jusqu'a son emplacement dans le flux des commentaires.</p>
+                <p>Au moment de la lecture de la vidéo, apparaissent des notifications de discussion qui indiquent qu'une discussion 
+                est disponible pour ce moment précis de la vidéo. En cliquant sur cette notification, l'affichage présente le 
+                contenu de la discussion.</p>
+                <p><img alt="Notification de discussions" src="./images/Help_v2/screen_059.png"/></p> 
+                <p>En tant qu'enseignant, il n'est pas possible d'afficher et de participer aux discussions en accès limité.</p>
+                <p style="color: #7C0505">Si les discussions ne s'affichent pas, vérifiez qu'elles sont bien activées dans vos préférences (reportez vous au 
+                    point "<i>21. Gérer ses préférences</i>" de ce tutoriel)</p>
+
+            </div>
+        </li>
+        
+        <li>
+            <a>10. PARTICIPER A UNE DISCUSSION</a>
+            <div>
+                <b class="title">Introduction</b>
+                <p>Cette section décrit la marche à suivre pour participer à une discussion. </p>
+
+                <b class="title">Marche à suivre</b>
+                <p><b>1.</b> Sélectionnez le cours dans lequel se trouve la discussion. </p>
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
+                <p><b>2.</b> Cliquez sur l’enregistrement ciblé par la discussion.</p>
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_015.png"/></p> 
+                <p><b>3.</b> Sélectionner la discussion à laquelle vous souhaitez participer.</p>
+                <p><img alt="Sélectionner une discussion" src="./images/Help_v2/screen_061.png"/></p> 
+                <p><b>4.</b> Dans la discussion, cliquez sur "Répondre à la discussion". </p>
+                <p><img alt="Répondre à la discussion" src="./images/Help_v2/screen_062.png"/></p>
+                <p>Un champ de saisie se déploie, vous permettant d'entrer votre commentaire. Placez votre curseur sur 
+                    chacune des icones de l'éditeur de texte pour savoir ce qu'elles permettent de faire. <br/>
+                    Insérez votre commentaire et validez le en cliquant sur "Répondre"</p>
+                <p><img alt="Répondre à la discussion" src="./images/Help_v2/screen_063.png"/></p>
+                
+                <b class="title">Résultat</b>
+                <p>Votre commentaire apparait en-dessous de la discussion.</p>
+                <p><img alt="Commentaire ajouté" src="./images/Help_v2/screen_064.png"/></p>       
+                
+                <b class="title">Remarque</b>
+                <p>S'il y a déjà des commentaires en-dessous de la discussion, vous avez la possibilité de 
+                    <b>répondre à la discussion initiale</b>, en cliquant sur "Répondre à la discussion" (A). Votre commentaire 
+                    apparaitra alors <b>tout en bas</b> du flux des commentaires. Mais vous avez aussi la possibilité de <b>répondre 
+                        à chacun des commentaires</b> en cliquant sur le bouton "Répondre" relatif au commentaire sur lequel vous
+                        souhaitez intervenir. A ce moment-là, votre réponse <b>s'intercalera</b> à la suite du commentaire auquel vous 
+                répondez.</p>
+                <p><img alt="Commentaire ajouté" src="./images/Help_v2/screen_065.png"/></p>     
+            </div>
+        </li>
+        
+        <li>
+            <a>11. VOTER POUR UN COMMENTAIRE</a>
+            <div>
+                <b class="title">Introduction</b>
+                <p>Cette section décrit la marche à suivre pour voter pour un commentaire. </p>
+
+                <b class="title">Marche à suivre</b>
+                <p><b>1.</b> Sélectionnez le cours dans lequel se trouve la discussion. </p>
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
+                <p><b>2.</b> Cliquez sur l’enregistrement ciblé par la discussion.</p>
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_015.png"/></p> 
+                <p><b>3.</b> Sélectionner la discussion contenant le commentaire.</p>
+                <p><img alt="Sélectionner une discussion" src="./images/Help_v2/screen_061.png"/></p> 
+                <p>En-dessous de chaque commentaire, vous avez la possibilité de voter pour le commentaire. 
+                Chaque utilisateur peut soumettre un seul vote positif ou négatif par commentaire. Il n'y a pas moyen de 
+                modifier son vote par la suite.</p>
+                <p><img alt="Voter pour un commentaire" src="./images/Help_v2/screen_066.png"/></p>
+                
+                <p><b>5.</b> Les titulaires de l'album contenant la vidéo à laquelle se rapporte le commentaire ont la 
+                    possibilité d'approuver un commentaire. Cela signifie qu'ils marquent leur accord avec le commentaire sans devoir
+                    l'expliciter davantage. Pour cela, il suffit de cliquer sur la petite étoile présente à droite des votes. </p>
+                <p><img alt="Répondre à la discussion" src="./images/Help_v2/screen_067.png"/></p>
+                <p>Un ruban clairement identifiable apparait alors sur le commentaire, marquant l'approbation du professeur.</p>
+                <p><img alt="Répondre à la discussion" src="./images/Help_v2/screen_068.png"/></p>
+                
+                <b class="title">Remarques</b>
+                <p>Le commentaire qui obtient le plus de votes positifs apparait en tête des commentaires dans la rubrique "Meilleure réponse"</p>
+                <p><img alt="Meilleure réponse" src="./images/Help_v2/screen_056.png"/></p>       
+                <p>Lorsqu'un commentaire est modifié par son auteur (voir "<i>12. Modifier un commentaire</i>"), les votes et approbation des professeurs 
+                sont réinitialisés.</p>
+                   
+            </div>
+        </li>
+        
+        <li>
+            <a>12.  MODIFIER UN COMMENTAIRE</a>
+            <div>
+                <b class="title">Introduction</b>
+                <p>Cette section décrit la marche à suivre pour modifier un commentaire.</p>
+
+                <b class="title">Marche à suivre</b>
+                <p><b>1.</b> Rendez vous dans le contenu d'une discussion. En-dessous de chaque commentaire dont vous 
+                    êtes l'auteur se trouve une icone représentant un crayon, à gauche du bouton "Répondre".</p>
+                <p><img alt="Editer un commentaire" src="./images/Help_v2/screen_069.png"/></p> 
+                <p>En cliquant sur cette icone, le formulaire de réponse se déploie, vous permettant de modifier votre commentaire. 
+                Modifiez votre commentaire et soumettez le en cliquant sur "Soumettre".</p>
+                <p><img alt="Editer un commentaire" src="./images/Help_v2/screen_070.png"/></p> 
+
+                <b class="title">Remarques</b>
+                <p>Lorsque vous éditez un commentaire, tous les votes et approbation des professeurs sont réinitialisés. Cela signifie que 
+                si votre commentaire avait été élu meilleure réponse par l'ensemble des votants, elle ne le sera plus suite à votre modification.</p>
+                <p>Il est aussi possible de modifier une discussion en respectant les mêmes étapes.</p>
+            </div>
+        </li>
+        
+        <li>
+            <a>13.   AJOUTER UN SIGNET PERSONNEL</a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit la marche à suivre pour ajouter un signet personnel à la liste des signets.</p>
@@ -311,9 +536,9 @@
 
                 <b class="title">Marche à suivre</b>
                 <p><b>1.</b> Sélectionnez le cours dans lequel se trouve l’enregistrement à annoter.</p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2.</b> Cliquez sur l’enregistrement sur lequel vous souhaitez placer un signet.</p>
-                <p><img alt="Sélectionner un enregistrement" src="./images/Help/screen_017.png"/></p> 
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_017.png"/></p> 
                 <p><b>3.</b> Lors de la lecture de la vidéo, dans les <b>contrôles</b>, en-dessous de la vidéo, 
                     sélectionnez l’action “<b>Ajouter un signet privé</b>” (A) (ou utilisez le raccourci clavier [N]). 
                     La vidéo est mise en pause et un formulaire se déploie.<br/>
@@ -322,7 +547,7 @@
                     Soumettez (B) le formulaire et le signet apparait instantanément dans la colonne de droite. 
                     Appuyez sur le bouton “Annuler” pour annuler la saisie du signet. 
                 </p>
-                <p><img alt="Ajouter un signet personnel" src="./images/Help/screen_018.png"/></p> 
+                <p><img alt="Ajouter un signet personnel" src="./images/Help_v2/screen_018.png"/></p> 
 
                 <b class="title">Remarques</b>
                 <p>Lorsque vous créez un signet sur un enregistrement dont plusieurs vidéos sont disponibles 
@@ -335,13 +560,13 @@
 
                 <b class="title">Résultat</b>
                 <p>Le signet personnel est ajouté à votre liste de signets.</p>
-                <p><img alt="Signet personnel ajouté" src="./images/Help/screen_019.png"/></p> 
+                <p><img alt="Signet personnel ajouté" src="./images/Help_v2/screen_019.png"/></p> 
 
             </div>
         </li>
 
         <li>
-            <a>9. MODIFIER UN SIGNET PERSONNEL</a>
+            <a>14. MODIFIER UN SIGNET PERSONNEL</a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit  la marche à suivre pour modifier un signet personnel. </p>
@@ -355,21 +580,21 @@
                 <b class="title">Marche à suivre</b>
                 <p>Voici la marche à suivre pour modifier un signet personnel :</p>
                 <p><b>1.</b>  Sélectionnez le cours dans lequel se trouve l’enregistrement contenant le signet à modifier.</p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2.</b>  Cliquez sur l’enregistrement dans lequel vous souhaitez modifier un signet.</p>
-                <p><img alt="Sélectionner un enregistrement" src="./images/Help/screen_017.png"/></p> 
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_017.png"/></p> 
                 <p><b>3.</b> Dans l’onglet contenant vos signets personnels, à droite de la vidéo, <b>déployez</b> 
                     le signet à modifier en cliquant sur la petite <b>flèche</b> visible à droite du titre du signet. </p>
-                <p><img alt="Déployer un signet" src="./images/Help/screen_020.png"/></p> 
+                <p><img alt="Déployer un signet" src="./images/Help_v2/screen_020.png"/></p> 
                 <p><b>4.</b> Cliquez sur la deuxième petite icône, représentant un <b>crayon</b>. </p>
-                <p><img alt="Editer un signet" src="./images/Help/screen_021.png"/></p> 
+                <p><img alt="Editer un signet" src="./images/Help_v2/screen_021.png"/></p> 
                 <p><b>5.</b> Les différents champs de votre signet sont maintenant <b>éditables</b>. 
                     Complétez ou modifiez les selon vos besoins. Seul le code temps ne peut être modifié 
                     car il est utilisé pour identifier les différents signets d’un enregistrement de manière unique.<br/> 
                     Validez les nouvelles valeurs en cliquant sur le bouton “<b>Soumettre</b>” ou 
                     annulez les en cliquant sur le bouton “Annuler”.
                 </p>
-                <p><img alt="Editer un signet" src="./images/Help/screen_022.png"/></p> 
+                <p><img alt="Editer un signet" src="./images/Help_v2/screen_022.png"/></p> 
 
                 <b class="title">Remarque</b>
                 <p>Pensez à toujours utiliser les mêmes mots clés pour annoter les mêmes concepts dans vos différents signets. 
@@ -378,7 +603,7 @@
         </li>
 
         <li>
-            <a>10. SUPPRIMER UN SIGNET PERSONNEL</a>
+            <a>15. SUPPRIMER UN SIGNET PERSONNEL</a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit  la marche à suivre pour supprimer un signet personnel. </p>
@@ -391,33 +616,33 @@
                 <p>Voici la marche à suivre pour supprimer un signet personnel :</p>
                 <p><b>1.</b> Sélectionnez le cours dans lequel se trouve l’enregistrement contenant 
                     le signet à supprimer. </p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2.</b>  Dans l’onglet de droite, contenant vos signets personnels, 
                     déployez le signet que vous souhaitez supprimer au moyen de la petite <b>flèche</b> 
                     située à droite du titre du signet.</p>
-                <p><img alt="Sélectionner un signet" src="./images/Help/screen_023.png"/></p> 
+                <p><img alt="Sélectionner un signet" src="./images/Help_v2/screen_023.png"/></p> 
                 <p><b>3.</b> Cliquez sur l’icône représentant une petite <b>croix</b>. </p>
-                <p><img alt="Supprimer un signet" src="./images/Help/screen_024.png"/></p> 
+                <p><img alt="Supprimer un signet" src="./images/Help_v2/screen_024.png"/></p> 
                 <p><b>4.</b> Une boite de dialogue apparait, vous demandant de confirmer la suppression du signet.<br/>
                     Cliquez sur “<b>Supprimer</b>” pour effectivement supprimer le signet, sur 
                     “Annuler” dans le cas contraire.
                 </p>
-                <p><img alt="Message de suppression" src="./images/Help/screen_025.png"/></p> 
+                <p><img alt="Message de suppression" src="./images/Help_v2/screen_025.png"/></p> 
 
                 <b class="title">Deuxième approche</b>
 
                 <p><b>1.</b> Une seconde approche vous permet de supprimer <b>plusieurs</b> signets en même temps. 
                     Pour cela, toujours au second niveau de l’application, déployez le <b>menu</b> qui se trouve au-dessus de 
                     l’onglet des signets personnels.  </p>
-                <p><img alt="Menu des signets personnels" src="./images/Help/screen_026.png"/></p> 
+                <p><img alt="Menu des signets personnels" src="./images/Help_v2/screen_026.png"/></p> 
                 <p><b>2.</b> Sélectionnez la troisième entrée du menu, “<b>Supprimer les signets</b>”. </p>
-                <p><img alt="Suppression de signets personnels" src="./images/Help/screen_027.png"/></p> 
+                <p><img alt="Suppression de signets personnels" src="./images/Help_v2/screen_027.png"/></p> 
                 <p><b>3.</b> Une boite de dialogue apparait, affichant la liste de tous les signets personnels relatifs 
                     au cours sélectionné. <br/>
                     Sélectionnez le(s) signet(s) que vous souhaitez supprimer et validez votre action en cliquant 
                     sur le bouton “<b>Supprimer</b>” ou “Annuler” dans le cas contraire. 
                 </p>
-                <p><img alt="Suppression de signets personnels" src="./images/Help/screen_028.png"/></p> 
+                <p><img alt="Suppression de signets personnels" src="./images/Help_v2/screen_028.png"/></p> 
                 <p>Attention, il n’y a <b>pas de confirmation</b> après avoir cliqué sur le bouton “Supprimer”. 
                     Les signets sont directement retirés de l’onglet des signets personnels</p>
 
@@ -428,7 +653,7 @@
         </li>
 
         <li>
-            <a>11. EXPORTER DES SIGNETS</a>
+            <a>16. EXPORTER DES SIGNETS</a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit  la marche à suivre pour exporter des signets.</p>
@@ -445,17 +670,17 @@
                 <b class="title">Marche à suivre</b>
                 <p>Voici la marche à suivre pour exporter des signets :</p>
                 <p><b>1.</b>  Sélectionnez le cours dans lequel se trouvent les signets à exporter.</p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2. Déployez</b> le menu qui se trouve au-dessus de l’onglet des signets personnels 
                     si vous souhaitez exporter vos signets personnels ou le menu des signets officiels 
                     si vous souhaitez récupérer les signets officiels et sélectionnez la première entrée du menu, 
                     “<b>Exporter les signets</b>”.</p>
-                <p><img alt="Menu des signets" src="./images/Help/screen_029.png"/></p> 
+                <p><img alt="Menu des signets" src="./images/Help_v2/screen_029.png"/></p> 
                 <p><b>3.</b> Une boite de dialogue apparait, affichant la liste de tous les signets 
                     (personnels ou officiels selon l’option choisie) relatifs au cours sélectionné. <br/>
                     Sélectionnez le(s) signet(s) que vous souhaitez exporter et validez votre action en 
                     cliquant sur le bouton “Exporter” ou “Annuler” dans le cas contraire.</p>
-                <p><img alt="Sélection des signets à exporter" src="./images/Help/screen_030.png"/></p> 
+                <p><img alt="Sélection des signets à exporter" src="./images/Help_v2/screen_030.png"/></p> 
 
                 <b class="title">Résultat</b>
                 <p>Un fichier xml contenant les signets sélectionnés est téléchargé sur votre ordinateur. </p>
@@ -467,7 +692,7 @@
         </li>
 
         <li>
-            <a>12. IMPORTER DES SIGNETS </a>
+            <a>17. IMPORTER DES SIGNETS </a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit  la marche à suivre pour importer des signets parmi ses signets personnels.</p>
@@ -482,18 +707,18 @@
                 <b class="title">Marche à suivre</b>
                 <p>Voici la marche à suivre pour importer des signets :</p>
                 <p><b>1.</b>  Sélectionnez le cours dans lequel vous souhaitez importer des signets.</p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2.</b> Déployez le <b>menu</b> qui se trouve au-dessus de l’onglet des signets personnels 
                     et sélectionnez la seconde entrée du menu, “<b>Importer les signets</b>”. </p>
-                <p><img alt="Importer des signets personnels" src="./images/Help/screen_031.png"/></p> 
+                <p><img alt="Importer des signets personnels" src="./images/Help_v2/screen_031.png"/></p> 
                 <p><b>3.</b> Une boite de dialogue apparait, vous offrant la possibilité de <b>soumettre un fichier</b> 
                     depuis votre ordinateur. </p>
                 <p><b style="color: #7C0505">Attention, ce fichier doit respecter plusieurs contraintes</b> : 
                     il doit être de type <b>xml</b>, ne peut être plus volumineux que <b>2Mo</b> et doit respecter 
                     une <b>structure</b>  spécifique (référez vous à un fichier exporté depuis l’interface 
-                    “EZplayer” – voir “<i>10. Exporter des signets</i>” - pour observer la structure imposée) 
+                    “EZplayer” – voir “<i>16. Exporter des signets</i>” - pour observer la structure imposée) 
                     pour être accepté par le système.</p>
-                <p><img alt="Importer des signets personnels" src="./images/Help/screen_032.png"/></p> 
+                <p><img alt="Importer des signets personnels" src="./images/Help_v2/screen_032.png"/></p> 
                 <p><b>5.</b> La boite de dialogue est rechargée et affiche maintenant la liste des <b>signets</b>, 
                     issus du fichier xml soumis, <b>disponibles pour le cours sélectionné</b>. 
                     Seuls les signets correspondants au cours sélectionné sont affichés. Tous les signets n’appartenant pas 
@@ -506,10 +731,10 @@
                     automatiquement le signet que vous aviez précédemment dans l’onglet des signets personnels. 
                     En <b>survolant</b> un signet apparaissant en rouge avec la souris, vous avez un aperçu de 
                     votre signet personnel qui sera remplacé (et donc supprimé). </p>
-                <p><img alt="Importer des signets personnels" src="./images/Help/screen_033.png"/></p> 
+                <p><img alt="Importer des signets personnels" src="./images/Help_v2/screen_033.png"/></p> 
                 <p>5. Sélectionnez le(s) signet(s) que vous souhaitez importer et validez votre action en 
                     cliquant sur le bouton “<b>Importer</b>” ou “Annuler” dans le cas contraire. </p>
-                <p><img alt="Importer des signets personnels" src="./images/Help/screen_034.png"/></p> 
+                <p><img alt="Importer des signets personnels" src="./images/Help_v2/screen_034.png"/></p> 
 
                 <b class="title">Résultat</b>
                 <p>L’onglet contenant vos signets personnels est mis à jour et affiche les signets qui viennent d’être 
@@ -525,7 +750,7 @@
         </li>
 
         <li>
-            <a>13. PARTAGER DES SIGNETS </a>
+            <a>18. PARTAGER DES SIGNETS </a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit  la marche à suivre pour partager des signets avec d’autres utilisateurs.</p>
@@ -542,19 +767,19 @@
                 <b class="title">Première approche</b>
                 <p><b>1.</b>  Sélectionnez le cours contenant l’enregistrement dont vous souhaitez 
                     partager un moment précis.</p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2.</b> Sélectionnez l’enregistrement dont vous souhaitez partager un moment précis.</p>
-                <p><img alt="Sélectionner un enregistrement" src="./images/Help/screen_035.png"/></p> 
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_035.png"/></p> 
                 <p><b>3.</b> Lorsque vous visionnez la vidéo, cliquez sur la dernière icône à droite, dans la 
                     barre de controle de la vidéo (elle représente une <b>chaine</b>).</p>
-                <p><img alt="Lecture de la vidéo" src="./images/Help/screen_036.png"/></p> 
+                <p><img alt="Lecture de la vidéo" src="./images/Help_v2/screen_036.png"/></p> 
                 <p><b>4.</b> Une boite de dialogue apparait. Celle-ci contient un <b>lien direct</b> 
                     vers un l’instant précis de la vidéo. Si l’enregistrement contient différentes versions 
                     de la vidéo (vidéo caméra et vidéo diaporama), c’est la vidéo <b>en cours</b> de visualisation 
                     qui sera pointée par le lien.</p>
                 <p>Sélectionnez le lien et copiez le dans votre presse-papier avec la combinaison de touches “<b>CTRL + V</b>” 
                     ou cliquez sur le bouton “<b>Copier dans le presse-papier</b>”.</p>
-                <p><img alt="Partage d'un moment précis" src="./images/Help/screen_037.png"/></p> 
+                <p><img alt="Partage d'un moment précis" src="./images/Help_v2/screen_037.png"/></p> 
                 <p><b>6.</b> Partagez ce lien avec un autre utilisateur pour qu’il le visionne dans son navigateur web. </p>
                 <p>Attention, <b>l’utilisateur</b> qui reçoit le lien <b>doit posséder le cours</b> contenant 
                     l’enregistrement parmi ses cours favoris (page d’accueil) pour pouvoir accéder à la vidéo. 
@@ -568,29 +793,29 @@
                     partager vos signets.</p>
                 <p><b>3.</b> L’utilisateur qui reçoit le fichier xml contenant les signets peut les sauver dans son 
                     cours en se connectant à la solution “EZplayer” et  en les important comme expliqué dans la section 
-                    “<i>11. Importer des signets</i>” de ce tutoriel. </p>                
+                    “<i>17. Importer des signets</i>” de ce tutoriel. </p>                
             </div>
         </li>
 
         <li>
-            <a>14. RECHERCHER PARMI LES SIGNETS</a>
+            <a>19. RECHERCHER PARMI LES SIGNETS ET DISCUSSIONS</a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit  la marche à suivre pour faire une recherche parmi les signets. </p>
 
                 <b class="title">Définition</b>
-                <p><b>Rechercher parmi les signets</b> : Une recherche sur les signets permettra de retrouver 
-                    facilement des signets parmi tous les cours disponibles selon des critères plus ou moins affinés.</p>
+                <p><b>Rechercher parmi les signets</b> : Une recherche permettra de retrouver 
+                    facilement des signets et discussions parmi tous les cours disponibles selon des critères plus ou moins affinés.</p>
 
                 <b class="title">Marche à suivre</b>
-                <p>Voici la marche à suivre pour rechercher parmi les signets :</p>
+                <p>Voici la marche à suivre pour rechercher parmi les signets et discussions :</p>
                 <p><b>1.</b>  Sur chacune des pages du site se trouve un <b>champ de saisie</b> pour effectuer une recherche.</p>
-                <p>Par défaut, la recherche de base est effectuée sur <b>tous les signets</b> – <b>officiels et personnels</b>
+                <p>Par défaut, la recherche de base est effectuée sur <b>tous les signets et discussions</b> – <b>officiels et personnels</b>
                     - de tous les cours favoris de l’utilisateur.  </p>
-                <p><img alt="Champ de recherche" src="./images/Help/screen_038.png"/></p> 
+                <p><img alt="Champ de recherche" src="./images/Help_v2/screen_038.png"/></p> 
                 <p><b>2.</b>  Il existe aussi une fonction de <b>recherche avancée</b>. Celle-ci est disponible 
                     en cliquant sur la petite <b>flèche</b> présente dans le champ de recherche de base.</p>
-                <p><img alt="Recherche avancée" src="./images/Help/screen_039.png"/></p>
+                <p><img alt="Recherche avancée" src="./images/Help_v2/screen_039.png"/></p>
                 <p><b>3.</b> La <b>recherche avancée</b> permet d’affiner ses critères de recherche. Elle permet de 
                     choisir le <b>niveau de recherche</b> par l’option “<b>Chercher dans</b>:” (A). Si vous sélectionnez 
                     “<b>Tout</b>”, la recherche s’effectuera parmi tous les signets de tous les cours favoris. 
@@ -599,60 +824,99 @@
                     du niveau dans lequel vous vous trouvez ; sur la page d’accueil, elle équivaut à l’option “Tout”, 
                     au niveau deux la recherche portera uniquement sur l’album sélectionné et au niveau trois, 
                     elle ne s’appliquera que sur l’enregistrement sélectionné. </p>
-                <p>L’option “<b>Chercher parmi</b>” (B) vous permet, quant à elle, de définir les champs des signets sur 
-                    lesquels vous souhaitez effectuer la recherche. En cochant ou décochant les options “Titre”, “Description” 
-                    et “Mots clés”, vous permettez ou non la recherche sur ces mêmes champs.</p>
-                <p>Les options “<b>Signets officiels</b>” et “<b>Signets personnels</b>” détermineront, pour leur part, 
-                    la portée de la recherche. Ainsi, si “Signets officiels” n’est pas coché, aucun signet officiel ne sera 
-                    retourné parmi les résultats de la recherche.</p>
+                <p>L’option “<b>Chercher parmi</b>” (B) vous permet, quant à elle, de définir les domaines de recherche 
+                    ainsi que les champs relatifs à chacun d'eux. <b>Les domaines de recherche</b> définissent la portée 
+                    de la recherche et correspondent aux signets officiels, personnels et/ou aux discussions. 
+                    En désélectionnant un des domaines de recherche, vous 
+                    enlevez la possibilité qu'un résultat soit trouvé parmi ce domaine (signet officiel, personnel ou discussion). 
+                    Les <b>champs</b> relatifs à chacun d'eux vous permettront 
+                    d'affiner encore la recherche pour ne la restraindre qu'aux champs ciblés. <br/></p>
+                <p>En cochant ou décochant les options “<b>Titre</b>”, “<b>Description</b>” 
+                    et “<b>Mots clés</b>” (I), vous permettez ou non la recherche sur ces mêmes champs dans les signets.<br/>
+                    En cochant ou décochant les options "<b>Titre</b>" et "<b>Commentaire</b>" (II), vous permettez ou non la recherche 
+                    sur ces mêmes champs dans les discussions.</p>
                 <p>Enfin, il est possible de faire une recherche sur le <b>niveau des signets</b>. 
                     Le niveau 0 indique que la recherche porte sur tous les signets, les niveaux 1, 2 et 3 restreindront, 
                     par contre, la recherche aux seuls signets du niveau correspondant. </p>
                 <p>Pour valider votre recherche, cliquez sur la petite loupe (C), à côté de la zone de saisie.  </p>
-                <p><img alt="Recherche avancée" src="./images/Help/screen_040.png"/></p>
-                <p><b>5.</b> Une boite de dialogue apparait, contenant la liste de tous les signets correspondants aux 
-                    critères de recherche soumis. Les mots recherchés apparaissent en <b>jaune</b>.</p>
-                <p><img alt="Recherche avancée" src="./images/Help/screen_041.png"/></p>
+                <p><img alt="Recherche avancée" src="./images/Help_v2/screen_040.png"/></p>
+                <p><b>5.</b> Une boite de dialogue apparait, contenant la liste de tous les résultats correspondants aux 
+                    critères de recherche soumis. Les mots recherchés apparaissent en <b>jaune</b>.<br/>
+                    En cliquant sur le titre d'une catégorie ('Discussions', 'Signets personnels', 'Signets officiels'), 
+                    vous en affichez ou masquez les résultats.</p>
+                <p><img alt="Recherche avancée" src="./images/Help_v2/screen_041.png"/></p>
                 <p>L’outil de recherche permet l’utilisation des <b>guillemets doubles</b> (“) pour différencier une
-                    <b>expression</b> d’un mot simple. En effet, par défaut, la recherche retournera tous les signets 
-                    contenant tous les mots à trouver, quel que soit leur ordre parmis les champs des signets. 
+                    <b>expression</b> d’un mot simple. En effet, par défaut, la recherche retournera tous les résultats 
+                    contenant un des mots à trouver, quel que soit leur ordre parmis les champs des signets. 
                     En utilisant des guillemets doubles, on s’assure que seules les expressions seront recherchées 
                     (on peut par exemple faire une recherche sur deux mots séparés par un espace). </p>
                 <p>L’outil de recherche tient compte des <b>accents</b> mais ne tient pas compte de la <b>casse</b>, 
                     c’est-à-dire que “Résultat” est différent de “Resultat” qui est lui-même équivalent à “ReSuLtAt”.</p>
 
                 <b class="title">Remarques</b>
-                <p>Une recherche “<b>à vide</b>” retournera la liste de tous les signets disponibles pour le niveau 
-                    sélectionné.</p>
                 <p>Tous les mots clés des signets renvoient eux-mêmes vers le résultat de la recherche correspondante.</p>
             </div>
         </li>
 
         <li>
-            <a>15. TÉLÉCHARGER UNE VIDÉO</a>
+            <a>20. TÉLÉCHARGER UNE VIDÉO</a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit  la marche à suivre pour télécharger une vidéo. </p>
+                
+                <b class="title">Remarque</b>
+                <p style='color: #7C0505'>Toutes les vidéos ne sont pas téléchargeables. Seul votre professeur a la possibilité de définir si la vidéo peut être 
+                téléchargée ou non par les utilisateurs d'EZplayer. Ainsi, les boutons de téléchargement ne seront pas forcément disponibles
+                sur toutes les vidéos auxquelles vous aurez accès.</p>
 
                 <b class="title">Marche à suivre</b>
                 <p>Voici la marche à suivre pour télécharger une vidéo :</p>
                 <p><b>1.</b>  Sélectionnez le cours dans lequel se trouve l’enregistrement à télécharger. </p>
-                <p><img alt="Sélectionner un cours" src="./images/Help/screen_014.png"/></p> 
+                <p><img alt="Sélectionner un cours" src="./images/Help_v2/screen_014.png"/></p> 
                 <p><b>2.</b>  Cliquez sur l’enregistrement que vous souhaitez télécharger.</p>
-                <p><img alt="Sélectionner un enregistrement" src="./images/Help/screen_035.png"/></p> 
-                <p><b>3.</b> Dans la partie de gauche, en-dessous de la vidéo, se trouve une zone contenant 
-                    la description de la vidéo ainsi qu’un bouton de téléchargement. <br/>
+                <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_035.png"/></p> 
+                <p><b>3.</b> En-dessous de la vidéo, à droite du titre, se trouve un bouton de téléchargement.
                     Cliquez sur “<b>Télécharger le diaporama</b>” ou “<b>Télécharger la vidéo</b>” selon 
                     leur présence respective. </p>
-                <p><img alt="Télécharger un enregistrement" src="./images/Help/screen_042.png"/></p> 
+                <p><img alt="Télécharger un enregistrement" src="./images/Help_v2/screen_042.png"/></p> 
                 <p><b>4.</b> Une boite de dialogue apparait, vous offrant la possibilité de télécharger
                     la vidéo en haute ou basse résolution selon votre choix.  </p>
-                <p><img alt="Télécharger un enregistrement" src="./images/Help/screen_043.png"/></p> 
+                <p><img alt="Télécharger un enregistrement" src="./images/Help_v2/screen_043.png"/></p> 
+            </div>
+        </li>  
+        
+        <li>
+            <a>21. GÉRER SES PRÉFÉRENCES</a>
+            <div>
+                <b class="title">Introduction</b>
+                <p>Cette section décrit comment gérer les préférences relatives à EZplayer. </p>
+
+                <b class="title">Définition</b>
+                <p><b>Préférences d'EZplayer</b> : Les préférences vont vous permettre de définir certaines fonctionnalités 
+                    que vous souhaitez activer ou non lors de votre navigation dans EZplayer. Ces préférences sont les suivantes: 
+                    <br/> - <b>Afficher la notification de nouvelles vidéos</b>: Cela agit sur l'affichage ou non du compteur d'enregistrements
+                    non visionnés se trouvant sur la page d'accueil, en vis-à-vis de chaque album favori.
+                    <br/> - <b>Afficher la notification des discussions durant les vidéos</b>: Cela définit si une notification de 
+                    discussion doit apparaitre lors de la lecture d'une vidéo.
+                    <br> - <b>Afficher les discussions</b>: Cela détermine si les discussions doivent être affichées ou non dans EZplayer.
+                </p>               
+                
+                <b class="title">Marche à suivre</b>
+                <p><b>1.</b>  Durant votre navigation au sein d'EZplayer, cliquez sur l'onglet des préférences se trouvant dans l'entête du site. </p>
+                <p><img alt="Gestion des préférences" src="./images/Help_v2/screen_071.png"/></p> 
+                <p><b>2.</b> L'onglet se déploie vous permettant d'activer ou désactiver certaines fonctionnalités. </p>
+                <p><img alt="Gestion des préférences" src="./images/Help_v2/screen_072.png"/></p> 
+                <p><b>Afficher la notification de nouvelles vidéos</b> (I) modifie l'affichage du compteur de vue. Cette option est désactivée par défaut.</p>                
+                <p><img alt="Affichage des nouvelles vidéos" src="./images/Help_v2/screen_073.png"/></p> 
+                <p><b>Afficher la notification des discussions durant les vidéos</b> (II) modifie l'affichage des notifications de discussion durant la lecture d'une vidéo. 
+                    Cette option est activée par défaut.</p>                
+                <p><img alt="Affichage des notifications de discussions" src="./images/Help_v2/screen_059.png"/></p> 
+                <p><b>Afficher les discussions</b> (III) affiche ou non l'ensemble des discussions. Cette option est activée par défaut.</p>               
+                  
             </div>
         </li>
-
         <li>
-            <a style="color:red">16. TRUCS ET ASTUCES</a>
+            <a style="color:red">22. TRUCS ET ASTUCES</a>
             <div>
                 <b class="title">Introduction</b>
                 <p>Cette section décrit certaines pratiques pour enrichir l’utilisation d’EZplayer. </p>
@@ -670,12 +934,14 @@
                     <b>[L]</b> >> Partager un lien vers ce moment précis de la vidéo <br/>
                     <b>[F]</b> >> Passer en mode plein écran <br/>
                     <b>[N]</b> >> Ajouter un nouveau signet personnel <br/>
+                    <b>[O]</b> >> Ajouter un nouveau signet officiel <br/>
+                    <b>[D]</b> >> Créer une nouvelle discussion <br/>
                     <b>[S]</b> >> Basculer de la vidéo caméra au diaporama et inversément <br/>
                     <b>[ESC]</b> >> Quitter le mode plein écran / Fermer les fenêtre pop-up / Libérer le 
                     focus dans les champs de saisie<br/>
                 </p>
                 <p>
-                    Il est possible d’intégrer des <b>liens</b> (url) dans la description des signets. 
+                    Il est possible d’intégrer des <b>liens</b> (url) dans la description des signets et dans les discussions. 
                     Certains liens sont automatiquement reconnus. C’est le cas des liens commençant par 
                     “<b>http://</b>”, “<b>https://</b>”, “<b>www</b>” et “<b>mailto</b>:”.<br/>
                     Si vous souhaitez définir vous-même un lien, il suffit d’insérer le lien entre 

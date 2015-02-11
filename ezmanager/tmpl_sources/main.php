@@ -59,11 +59,11 @@
             function copyToClipboard(album, tocopy) {
                 var clip = new ZeroClipboard.Client();
                 clip.setText('');
-                clip.addEventListener('mouseDown', function() {
+                clip.addEventListener('mouseDown', function () {
                     // window.alert("copy ok");        
                     clip.setText(tocopy);
                 });
-                clip.addEventListener('onComplete', function() {
+                clip.addEventListener('onComplete', function () {
                     alert("®Content_in_clipboard®");
                 });
 
@@ -96,7 +96,7 @@
                     var clone = fakeFileUpload.cloneNode(true);
                     x[i].parentNode.appendChild(clone);
                     x[i].relatedElement = clone.getElementsByTagName('input')[0];
-                    x[i].onchange = x[i].onmouseout = function() {
+                    x[i].onchange = x[i].onmouseout = function () {
                         this.relatedElement.value = this.value;
                     }
                 }
@@ -159,6 +159,18 @@ echo $title_max_length;
                 document.getElementById('asset_' + asset + '_title_clic').innerHTML = ' | ' + decodeURIComponent(title);
             }
 
+            function asset_downloadable_set(album, asset) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=asset_downloadable_set',
+                    data: {
+                        'downloadable': $('#is_downloadable_' + asset).is(':checked') ? true : false,
+                        'album': album,
+                        'asset': asset
+                    }
+                });
+            }
+
 
         </script>
         <script type="text/javascript" src="js/popup_general.js"></script>
@@ -178,13 +190,13 @@ echo $title_max_length;
 
 
 
-<?php if (isset($head_code)) echo $head_code; ?>
+        <?php if (isset($head_code)) echo $head_code; ?>
     </head>
     <body>
         <div id="test"></div>
 
         <div class="container">
-<?php include_once template_getpath('div_main_header.php'); ?>
+            <?php include_once template_getpath('div_main_header.php'); ?>
             <div id="global">
                 <!-- "New album" button -->
                 <span class="CreerAlbum"><a href="javascript:show_popup_from_inner_div('#popup_new_album');">®Create_album®</a></span>
@@ -196,7 +208,7 @@ echo $title_max_length;
                     <!-- Left column: album list -->
                     <div id="div_album_list">
                         <!-- Album list goes here -->
-<?php include_once template_getpath('div_album_list.php'); ?>
+                        <?php include_once template_getpath('div_album_list.php'); ?>
                     </div>
                     <!-- Left column: album list END -->
 
@@ -223,12 +235,12 @@ echo $title_max_length;
                 </div><!-- center div END -->
             </div><!-- global -->
             <!-- FOOTER - INFOS COPYRIGHT -->
-<?php include_once template_getpath('div_main_footer.php'); ?>
+            <?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
 
             <!-- Popups -->
             <div style="display: none;">
-<?php include_once 'popup_new_album.php'; ?>
+                <?php include_once 'popup_new_album.php'; ?>
 
                 <!-- This popup gets automatically filled with messages, depending on the situation -->
                 <div class="popup" id="popup_messages"></div>

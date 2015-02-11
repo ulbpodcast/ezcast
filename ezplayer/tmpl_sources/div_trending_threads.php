@@ -29,8 +29,8 @@ if (isset($threads_list) && sizeof($threads_list) > 0) {
                             <!--<i class="slash item-thread-slash">//</i>-->
                             <div class="item-thread-title" ><?php echo $thread['title']; ?></div> 
                             <span class="item-thread-author">
-                                ®Edited_on® <b><?php echo $editDateVerbose; ?></b>
-                                ®By® <?php echo (isset($thread['lastEditAuthor'])) ? $thread['lastEditAuthor'] : $thread['authorFullName']; ?>
+                                ®On_date® <b><?php echo $editDateVerbose; ?></b>
+                                ®By® <?php echo (isset($thread['lastEditAuthor']) && trim($thread['lastEditAuthor']) != '') ? $thread['lastEditAuthor'] : $thread['authorFullName']; ?>
                             </span>
                         </div>
                         <div class="eom"></div>

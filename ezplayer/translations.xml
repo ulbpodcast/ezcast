@@ -147,6 +147,12 @@
         <label id="Visibility_all" lang="fr">Visible par tous</label>
         <label id="connected_as" lang="fr">Connecté en tant que </label>
         <label id="connected_as" lang="en">Connected as </label>
+        <label id="Admin_mode_enabled" lang="fr">Mode admin activé </label>
+        <label id="Admin_mode_enabled" lang="en">Admin mode enabled </label>
+        <label id="Admin_mode_disabled" lang="fr">Mode admin désactivé </label>
+        <label id="Admin_mode_disabled" lang="en">Admin mode disabled </label>
+        <label id="Admin_mode_update" lang="fr">Activer/désactiver le mode Admin</label>
+        <label id="Admin_mode_update" lang="en">Enable/disable Admin mode</label>
 
         <label id="Deleted" lang="fr">Supprimé</label>
         <label id="Deleted" lang="en">Deleted</label>
@@ -162,8 +168,12 @@
         <label id="Public_album" lang="en">Public album</label>
         <label id="Video" lang="fr">Vidéo</label>
         <label id="Video" lang="en">Video</label>
+        <label id="The_video" lang="fr">la vidéo</label>
+        <label id="The_video" lang="en">the video</label>
         <label id="Slides" lang="fr">Diaporama</label>
         <label id="Slides" lang="en">Slides</label>
+        <label id="The_slides" lang="fr">le diaporama</label>
+        <label id="The_slides" lang="en">the slides</label>
         <label id="Bookmark" lang="fr">Signet</label>
         <label id="Bookmark" lang="en">Bookmark</label>
         <label id="Information" lang="fr">Informations</label>
@@ -476,6 +486,8 @@
         <label id="key_f" lang="en">Fullscreen</label>
         <label id="key_n" lang="fr">Nouveau signet</label>
         <label id="key_n" lang="en">New bookmark</label>
+        <label id="key_d" lang="fr">Nouvelle discussion</label>
+        <label id="key_d" lang="en">New discussion</label>
         <label id="key_s" lang="fr">Basculer cam / slide</label>
         <label id="key_s" lang="en">Switch cam / slide</label>
         <label id="key_r" lang="fr">Raccourcis clavier</label>
@@ -528,8 +540,8 @@
         <label id="Refresh_discussion_details" lang="en">Refresh the discussion</label>
         <label id="Refresh_discussions" lang="fr">Rafraîchir la liste</label>
         <label id="Refresh_discussions" lang="en">Refresh discussions</label>
-        <label id="tuto" lang="fr">Fonctionnalités d'EZplayer</label>
-        <label id="tuto" lang="en">EZplayer's features</label>
+        <label id="tuto" lang="fr">Tutoriel: Comment utiliser EZplayer ?</label>
+        <label id="tuto" lang="en">Tutorial: How to use EZplayer ?</label>
         
         <!-- Long texts -->
         <label id="Warning_browser" lang="fr">Ce site n'est pas optimisé pour votre navigateur. Certaines fonctionnalités risquent de ne pas fonctionner.

@@ -110,6 +110,12 @@ if(isset($recording_metadata['submitted_cam']))$asset_meta['submitted_cam']=$rec
 if(isset($recording_metadata['submitted_slide']))$asset_meta['submitted_slide']=$recording_metadata['submitted_slide'];
 if(isset($recording_metadata['intro']))$asset_meta['intro']=$recording_metadata['intro'];
 if(isset($recording_metadata['add_title']))$asset_meta['add_title']=$recording_metadata['add_title'];
+if(isset($recording_metadata['downloadable'])){ // if the recording has been submitted
+    $asset_meta['downloadable']=$recording_metadata['downloadable'];
+} else { // the recording comes from EZrecorder
+    $album_meta = ezmam_album_metadata_get($album_name);
+    $asset_meta['downloadable'] = (isset($album_meta['downloadable']) ? $album_meta['downloadable'] : $default_downloadable); 
+}
 
 
 //create asset if not exists!

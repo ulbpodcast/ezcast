@@ -203,12 +203,11 @@ function renderer_update_enabled($name, $enable, &$error) {
 
     if ($enable) {
         $remote_test = dirname($renderer['launch']) . "/cli_renderer_test.php";
-        if(test_over_ssh($renderer['client'], $renderer['host'], 30, $renderer['php'], $remote_test, $error)){
-            $renderers[$renderer_index]["status"] = "enabled";            
+        if (test_over_ssh($renderer['client'], $renderer['host'], 30, $renderer['php'], $remote_test, $error)) {
+            $renderers[$renderer_index]["status"] = "enabled";
         } else {
             return false;
         }
-        
     } else {
         $renderers[$renderer_index]["status"] = "disabled";
     }
@@ -230,7 +229,7 @@ function renderer_update_enabled($name, $enable, &$error) {
     return true;
 }
 
-function renderer_delete($name){
+function renderer_delete($name) {
     $renderer_index = renderer_exists($name);
 
     if ($renderer_index === false) {
@@ -240,7 +239,7 @@ function renderer_delete($name){
 
     $renderers = include 'renderers.inc';
     unset($renderers[$renderer_index]);
-    
+
 
     $string = "<?php" . PHP_EOL . "return ";
     $string .= var_export($renderers, true) . ';';
@@ -358,7 +357,7 @@ function push_admins_to_recorders_ezmanager() {
     global $ezplayer_subdir;
 
     if (!db_ready())
-        db_prepare();
+        db_prepare(statements_get());
 
     $classrooms = db_classrooms_list_enabled();
     $admins = db_admins_list();
@@ -373,11 +372,10 @@ function push_admins_to_recorders_ezmanager() {
 
     // Copying on recorders
     foreach ($classrooms as $c) {
-        $cmd = 'scp ./var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
-        exec($cmd, $output, $return_var);
-
-        if ($return_var != 0) {
-            return false;
+        exec('ping ' . $c['IP'] . ' 10', $output, $return_val);
+        if ($return_val == 0) {
+            $cmd = 'scp -o ConnectionTimeout=10 ./var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+            exec($cmd, $output, $return_var);
         }
     }
 
@@ -390,11 +388,13 @@ function push_admins_to_recorders_ezmanager() {
     }
     else {
         // Remote copy
-        $cmd = 'scp ./var/admin.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
-        exec($cmd, $output, $return_var);
-
-        if ($return_var != 0) {
-            return false;
+        exec('ping ' . $ezmanager_host . ' 10', $output, $return_val);
+        if ($return_val == 0) {
+            $cmd = 'scp -o ConnectionTimeout=10 ./var/admin.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+            exec($cmd, $output, $return_var);
+            if ($return_val == 0) {
+                return false;
+            }
         }
     }
 
@@ -416,7 +416,7 @@ function push_users_courses_to_recorder() {
     global $recorder_password_storage_enabled;
 
     if (!db_ready())
-        db_prepare();
+        db_prepare(statements_get());
 
     $users = db_users_in_recorder_get();
     $classrooms = db_classrooms_list_enabled();
@@ -445,13 +445,12 @@ function push_users_courses_to_recorder() {
 
     // Upload all this on server
     foreach ($classrooms as $c) {
-        $cmd = 'scp -o ConnectTimeout=15 ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
-        exec($cmd, $output, $return_var);
-        $cmd = 'scp -o ConnectTimeout=15 ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
-        exec($cmd, $output, $return_var);
-
-        if ($return_var != 0) {
-            return false;
+        exec('ping ' . $c['IP'] . ' 10', $output, $return_val);
+        if ($return_val == 0) {
+            $cmd = 'scp -o ConnectTimeout=10 ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+            exec($cmd, $output, $return_var);
+            $cmd = 'scp -o ConnectTimeout=10 ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+            exec($cmd, $output, $return_var);
         }
     }
 
@@ -496,8 +495,11 @@ function push_classrooms_to_ezmanager() {
     }
     else {
         // Remote copy
-        $cmd = 'scp ./var/classroom_recorder_ip.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
-        exec($cmd, $output, $return_var);
+        exec('ping ' . $ezmanager_host . ' 10', $output, $return_val);
+        if ($return_val == 0) {
+            $cmd = 'scp -o ConnectTimeout=10 ./var/classroom_recorder_ip.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+            exec($cmd, $output, $return_var);
+        }
 
         if ($return_var != 0) {
             return false;
@@ -526,8 +528,11 @@ function push_renderers_to_ezmanager() {
     }
     else {
         // Remote copy
-        $cmd = 'scp ./renderers.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
-        exec($cmd, $output, $return_var);
+        exec('ping ' . $ezmanager_host . ' 10', $output, $return_val);
+        if ($return_val == 0) {
+            $cmd = 'scp -o ConnectTimeout=10 ./renderers.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+            exec($cmd, $output, $return_var);
+        }
 
         if ($return_var != 0) {
             return false;
@@ -574,7 +579,7 @@ function push_users_to_ezmanager() {
     }
     else {
         // Remote copy
-        $cmd = 'scp ./var/pwfile.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+        $cmd = 'scp -o ConnectTimeout=10 ./var/pwfile.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
         exec($cmd, $output, $return_var);
 
         if ($return_var != 0) {
@@ -720,7 +725,7 @@ function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
                 unset($output);
                 exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes $ssh_user@$ssh_host \"$remote_php -r 'echo serialize(gd_info());'\"", $output, $returncode);
                 $gd_info = unserialize(implode($output));
-                if (!$gd_info['FreeType Support']){
+                if (!$gd_info['FreeType Support']) {
                     return "gd_missing_freetype";
                 }
             }
@@ -772,7 +777,7 @@ function test_ffprobe_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffpro
 function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_test_script, &$error) {
     if (ssh_connection_test($ssh_user, $ssh_host, $ssh_timeout)) {
         exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"$remote_php $remote_test_script\"", $output, $returncode);
-        if ($returncode || in_array("test ok", $output) === false){
+        if ($returncode || in_array("test ok", $output) === false) {
             $error = $output[0];
             return false;
         }
@@ -782,6 +787,5 @@ function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_
         return false;
     }
 }
-
 
 ?>

@@ -111,6 +111,16 @@
         <label id="Titling_info" lang="en">Information displayed after the jingle. The default titling contains the album name, the title, the author and the date of publication of the video.</label>
         <label id="None_titling" lang="fr">Aucun</label>
         <label id="None_titling" lang="en">None</label>
+        <label id="Downloadable" lang="fr">Vidéos téléchargeables</label>
+        <label id="Downloadable" lang="en">Allow download</label>
+        <label id="Download_info" lang="fr">Si cette case est cochée, les vidéos soumises dans l'album pourront être téléchargées via EZplayer. Cette modification ne s'applique que pour les futures vidéos. </label>
+        <label id="Download_info" lang="en">If this box is checked, the videos contained in this album will be downloadable via EZplayer. This change only applies to upcoming videos. </label>
+        <label id="Downloadable_submit" lang="fr">Vidéo téléchargeable</label>
+        <label id="Downloadable_submit" lang="en">Allow download</label>
+        <label id="Download_info_submit" lang="fr">Si cette case est cochée, la vidéo soumise pourra être téléchargée via EZplayer.</label>
+        <label id="Download_info_submit" lang="en">If this box is checked, the submitted video will be downloadable via EZplayer. </label>
+        <label id="Allow_download" lang="fr">Autoriser le téléchargement</label>
+        <label id="Allow_download" lang="en">Allow download</label>
         <label id="Description" lang="fr">Description</label>
         <label id="Description" lang="en">Description</label>
         <label id="Description_info" lang="fr">Facultatif</label>
@@ -299,6 +309,8 @@
         <label id="media_URL_message" lang="en">You can watch or distribute this video by using the following link:</label>
         <label id="embed_code_message" lang="fr">Vous pouvez inclure cette vidéo dans une autre page en copiant/collant le code suivant : </label>
         <label id="embed_code_message" lang="en">You may include this video in another page by copypasting the following code: </label>
+        <label id="EZplayer_link_message" lang="fr">Utilisez ce lien pour partager l'enregistrement via EZplayer:  </label>
+        <label id="EZplayer_link_message" lang="en">Use this link to share the recording through EZplayer: </label>
         <label id="ULBcode_message" lang="fr">Ce code contient les informations relatives à la vidéo: </label>
         <label id="ULBcode_message" lang="en">This code contains information about the video: </label>
         <label id="Create_album_message" lang="fr">Veuillez choisir dans la liste ci-dessous le cours correspondant à l'album que vous désirez créer :</label>

@@ -57,7 +57,7 @@
                                 <b><?php print_info(substr(get_user_friendly_date($asset['metadata']['record_date'], '/', false, get_lang(), false), 0, 10)); ?></b> 
                                 <div style="display:inline-block; width: 16px; height:1px;"></div>
                                 <?php echo $asset['metadata']['title']; ?>
-                                <span class="<?php if (!acl_is_watched($album, $asset['metadata']['record_date'])) echo 'new'; ?>" title="®New_video®"></span>
+                                <span class="<?php if (acl_show_notifications() && !acl_is_watched($album, $asset['metadata']['record_date'])) echo 'new'; ?>" title="®New_video®"></span>
                             </a>       
                         </li>
                         <?php

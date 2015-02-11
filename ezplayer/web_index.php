@@ -57,15 +57,15 @@ template_load_dictionnary('translations.xml');
 // Login/logout
 //
 // Saves the URL used to access the website
-if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['action'] != 'logout' && $input['action'] != 'login') {
+if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['action'] != 'logout' && $input['action'] != 'login' && $input['action'] != 'client_trace') {
     $_SESSION['first_input'] = array_merge($_GET, $_POST);
 }
 // Saves user's web browser information
 if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) || !isset($_SESSION['user_os'])) {
 
-    Autoloader::register(); 
+    Autoloader::register();
     $browser = new Browser;
-    $os = new Os; 
+    $os = new Os;
     $_SESSION['browser_name'] = $browser->getName();
     $_SESSION['browser_version'] = $browser->getVersion();
     $user_agent = $browser->getUserAgent();
@@ -94,6 +94,9 @@ if (!user_logged_in()) {
             }
             user_login(trim($input['login']), trim($input['passwd']));
         }
+    }
+    else if (isset($input['action']) && $input['action'] == 'client_trace') {
+        client_trace();
     }
 
     // This is a tricky case:
@@ -170,6 +173,10 @@ function load_page() {
             anonymous_login();
             break;
 
+        case 'admin_mode_update':
+            admin_mode_update();
+            break;
+
         case 'view_album_assets':
             view_album_assets();
             break;
@@ -239,7 +246,7 @@ function load_page() {
             break;
 
         case 'approve':
-            comment_edit_aproval();
+            comment_edit_approval();
             break;
 
         case 'threads_list_view':
@@ -678,8 +685,8 @@ function view_asset_details($refresh_center = true) {
     }
 
     if (acl_user_is_logged()) {
-        if (user_prefs_watched_add($_SESSION['user_login'], $album, $asset)) {
-            acl_update_permissions_list();
+        if (user_prefs_watched_add($_SESSION['user_login'], $album, $asset) && acl_show_notifications()) {
+            acl_update_watched_assets();
         }
     }
 
@@ -858,8 +865,8 @@ function view_asset_bookmark($refresh_center = true) {
     }
 
     if (acl_user_is_logged()) {
-        if (user_prefs_watched_add($_SESSION['user_login'], $album, $asset)) {
-            acl_update_permissions_list();
+        if (user_prefs_watched_add($_SESSION['user_login'], $album, $asset) && acl_show_notifications()) {
+            acl_update_watched_assets();
         }
     }
 
@@ -912,6 +919,7 @@ function view_asset_bookmark($refresh_center = true) {
         if (acl_display_threads()) {
             if (isset($thread_id)) {
                 // click from lvl 2 on a discussion
+                $threads = threads_select_by_asset($album, $asset);
                 $thread = thread_details_update(false);
                 $_SESSION['thread_display'] = 'details';
             } else {
@@ -965,6 +973,7 @@ function bookmarks_search() {
             'search - ' . $search . PHP_EOL .
             'target - ' . $target . PHP_EOL .
             'fields - ' . implode(", ", $fields) . PHP_EOL .
+            'fields thread - ' . implode(", ", $fields_thread) . PHP_EOL .
             'tab - ' . implode(", ", $tab));
 
     // defines target 
@@ -1034,7 +1043,20 @@ function bookmarks_search() {
     if (acl_user_is_logged() && acl_display_threads && in_array('threads', $tab)) { // searches in threads
         $search_result_threads = thread_search($search, $fields_thread, $albums, $asset);
     }
-
+    
+    $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+    trace_append(array($lvl, 
+        $input['origin'] == 'keyword' ? 'keyword_search' : 'bookmarks_search', 
+        $_SESSION['album'] == '' ? '-' : $_SESSION['album'], 
+        $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'], 
+        $search, $target, 
+        implode(", ", $fields), 
+        implode(", ", $fields_thread), 
+        implode(", ", $tab), 
+        count($bookmarks_toc), 
+        count($bookmarks), 
+        count($search_result_threads)));
+    
     include_once template_getpath('div_search_result.php');
 }
 
@@ -1441,6 +1463,7 @@ function thread_add() {
     cache_asset_threads_unset($thread_album, $thread_asset);
     cache_album_threads_unset($thread_album);
 
+    trace_append(array('3', 'thread_add', $thread_album, $thread_asset, $thread_timecode, $thread_title, $thread_visibility));
     return threads_list_update();
 }
 
@@ -1475,6 +1498,7 @@ function comment_add() {
     cache_album_threads_unset($album);
 
     $_SESSION['current_thread'] = $comment_thread;
+    trace_append(array('3', 'comment_add', $album, $asset, $comment_thread));
 
     return thread_details_update();
 }
@@ -1514,6 +1538,7 @@ function comment_add_reply() {
     cache_album_threads_unset($album);
 
     $_SESSION['current_thread'] = $comment_thread;
+    trace_append(array('3', 'comment_reply_add', $album, $asset, $comment_thread, $comment_parent));
 
     return thread_details_update();
 }
@@ -1535,10 +1560,11 @@ function comment_edit() {
     $comment_message = safe_text($comment_message);
 
     comment_update($comment_id, $comment_message, $album, $asset, $thread, $_SESSION['user_full_name']);
-    comment_approval_remove($comment_id); 
+    comment_approval_remove($comment_id);
     vote_delete($comment_id);
 
     $_SESSION['current_thread'] = $thread;
+    trace_append(array('3', 'comment_edit', $album, $asset, $thread, $comment_id));
 
     return thread_details_update();
 }
@@ -1565,6 +1591,8 @@ function thread_edit() {
     thread_update($thread_id, $thread_title, $thread_message, $thread_timecode, $album, $_SESSION['user_full_name']);
     cache_asset_threads_unset($album, $asset);
     cache_album_threads_unset($album);
+    
+    trace_append(array('3', 'thread_edit', $album, $asset, $thread_timecode, $thread_id));
 
     return thread_details_update();
 }
@@ -1582,8 +1610,8 @@ function edited_on() {
  */
 function thread_details_update($display = true) {
     global $input;
-    
-    if ($input['thread_id']){
+
+    if ($input['thread_id']) {
         $id = $input['thread_id'];
         $_SESSION['current_thread'] = $id;
     } else {
@@ -1625,7 +1653,7 @@ function threads_list_update($display = true) {
     }
 
     $_SESSION['current_thread'] = '';
-    
+
     if ($display) {
         include_once template_getpath('div_threads_list.php');
         return true;
@@ -1656,6 +1684,8 @@ function thread_delete() {
     thread_delete_by_id($id, $album, $asset);
     cache_asset_threads_unset($album, $asset);
     cache_album_threads_unset($album);
+    
+    trace_append(array('3', 'thread_delete', $album, $asset, $id));
 
     return threads_list_update();
 }
@@ -1672,6 +1702,7 @@ function comment_delete() {
     cache_asset_threads_unset($_SESSION['album'], $_SESSION['asset']);
 
     $_SESSION['current_thread'] = $input['thread_id'];
+    trace_append(array('3', 'comment_delete', $_SESSION['album'], $_SESSION['asset'], $input['thread_id'], $id));
 
     return thread_details_update();
 }
@@ -1987,6 +2018,30 @@ function anonymous_login() {
         die;
     }
 
+    // checks if runas 
+    if (count($login_parts) == 2) {
+        if (!file_exists('admin.inc')) {
+            $error = "Not admin. runas login failed";
+            view_login_form();
+            die;
+        }
+        include 'admin.inc'; //file containing an assoc array of admin users
+        if (!isset($admin[$login_parts[0]])) {
+            $error = "Not admin. runas login failed";
+            view_login_form();
+            die;
+        }
+        $_SESSION['user_is_admin'] = true;
+        $_SESSION['user_runas'] = true;
+    } else {
+        if (file_exists('admin.inc')) {
+            include 'admin.inc'; //file containing an assoc array of admin users
+            if (isset($admin[$login])) {
+                $_SESSION['user_is_admin'] = true;
+            }
+        }
+    }
+
     $res = checkauth($login, $passwd);
     if (!$res) {
         $login_error = checkauth_last_error();
@@ -2000,6 +2055,7 @@ function anonymous_login() {
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
+    $_SESSION['admin_enabled'] = false;
 
 
     if (isset($album_tokens)) {
@@ -2058,6 +2114,7 @@ function user_login($login, $passwd) {
             die;
         }
         $_SESSION['user_is_admin'] = true;
+        $_SESSION['user_runas'] = true;
     } else {
         if (file_exists('admin.inc')) {
             include 'admin.inc'; //file containing an assoc array of admin users
@@ -2081,6 +2138,7 @@ function user_login($login, $passwd) {
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
+    $_SESSION['admin_enabled'] = false;
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
@@ -2149,18 +2207,82 @@ function user_logout() {
  * @return boolean
  */
 function preferences_update() {
+    /*   global $input;
+      $display_new_video_notification = $input['display_new_video_notification'];
+      $display_threads = $input['display_threads'];
+      $display_thread_notification = $input['display_thread_notification'];
+
+      user_prefs_settings_update($_SESSION['user_login'], "display_new_video_notification", $display_new_video_notification);
+      user_prefs_settings_update($_SESSION['user_login'], "display_threads", $display_threads);
+      user_prefs_settings_update($_SESSION['user_login'], "display_thread_notification", $display_thread_notification);
+
+      acl_update_settings();
+      include_once template_getpath('div_main_center.php');
+      return true;
+     */
+
     global $input;
-    $display_new_video_notification = $input['display_new_video_notification'];
-    $display_threads = $input['display_threads'];
-    $display_thread_notification = $input['display_thread_notification'];
+    global $ezplayer_url;
+
+    $display_new_video_notification = ((isset($input['display_new_video_notification']) && $input['display_new_video_notification'] === 'on') ? '1' : '0');
+    $display_threads = ((isset($input['display_threads']) && $input['display_threads'] === 'on') ? '1' : '0');
+    $display_thread_notification = ((isset($input['display_thread_notification']) && $input['display_thread_notification'] === 'on') ? '1' : '0');
 
     user_prefs_settings_update($_SESSION['user_login'], "display_new_video_notification", $display_new_video_notification);
     user_prefs_settings_update($_SESSION['user_login'], "display_threads", $display_threads);
     user_prefs_settings_update($_SESSION['user_login'], "display_thread_notification", $display_thread_notification);
-
+    
     acl_update_settings();
-    include_once template_getpath('div_main_center.php');
-    return true;
+    
+    trace_append(array('0', 'preferences_update', $display_new_video_notification, $display_threads, $display_thread_notification));
+    
+    if ($display_new_video_notification){
+        acl_update_watched_assets();
+    } else {
+        unset($_SESSION['acl_watched_assets']);
+    }
+
+    $input['action'] = $_SESSION['ezplayer_mode'];
+
+    if (count($input) > 0) {
+        $ezplayer_url .= '/index.php?';
+        foreach ($input as $key => $value) {
+            $ezplayer_url .= "$key=$value&";
+        }
+    }
+    
+
+    // 4) Displaying the previous page
+    header("Location: " . $ezplayer_url);
+    load_page();
+}
+
+/**
+ * Enables/disables Admin mode
+ * @return boolean
+ */
+function admin_mode_update() {
+    global $input;
+    global $ezplayer_url;
+
+    if (acl_admin_user()) {
+        $_SESSION['admin_enabled'] = !$_SESSION['admin_enabled'];
+    }
+    
+    $input['action'] = $_SESSION['ezplayer_mode'];
+
+    if (count($input) > 0) {
+        $ezplayer_url .= '/index.php?';
+        foreach ($input as $key => $value) {
+            $ezplayer_url .= "$key=$value&";
+        }
+    }
+
+    trace_append(array('0', 'admin_mode_update', $_SESSION['admin_enabled']));
+    
+    // 4) Displaying the previous page
+    header("Location: " . $ezplayer_url);
+    load_page();
 }
 
 /**
@@ -2180,6 +2302,11 @@ function vote_add() {
     );
 
     vote_insert($values);
+    if ($vote_type == 0){
+        trace_append(array('3', 'vote_up', $_SESSION['album'], $_SESSION['asset'], $comment));
+    } else {        
+        trace_append(array('3', 'vote_down', $_SESSION['album'], $_SESSION['asset'], $comment));
+    }
     return thread_details_update();
 }
 
@@ -2187,11 +2314,12 @@ function vote_add() {
  * Updates a comments's aproval
  * @global type $input
  */
-function comment_edit_aproval() {
+function comment_edit_approval() {
     global $input;
     $commentId = intval($input['approved_comment']);
 
     comment_update_approval($commentId);
+    trace_append(array('3', 'comment_approval_edit', $_SESSION['album'], $_SESSION['asset'], $commentId));
     return thread_details_update();
 }
 

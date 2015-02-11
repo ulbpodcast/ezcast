@@ -86,6 +86,10 @@ $web_file = file_get_contents($apache_documentroot . "/ezplayer/index.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
 file_put_contents($apache_documentroot . "/ezplayer/index.php", $web_file);
 
+$web_file = file_get_contents($apache_documentroot . "/ezplayer/infos.php");
+$web_file = str_replace("!PATH", $basedir, $web_file);
+file_put_contents($apache_documentroot . "/ezplayer/infos.php", $web_file);
+
 /*
  * Then, we add user's configuration in commons/config.inc
  */

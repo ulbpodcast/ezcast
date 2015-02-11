@@ -36,7 +36,7 @@ WARNING: Please call template_repository_path() BEFORE including this template
         <title>®ezplayer_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
-        <link rel="stylesheet" type="text/css" href="css/ezplayer_style.css" />
+        <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />
 
         <script>
@@ -66,21 +66,21 @@ if ($trace_on) {
             var current_tab;
             var clippy;
             var ie_browser = false;
-            var timecode_array = new Array();
-            var title_array = new Array();
+            var threads_array = new Array();
             var display_thread_details = false;
+            var display_threads_notif = false;
             var thread_to_display = null;
 
             ZeroClipboard.setMoviePath('./swf/ZeroClipboard10.swf');
 
-            $(document).ready(function() {
+            $(document).ready(function () {
 
                 $('#assets_button, .bookmarks_button, .toc_button').localScroll({
                     target: '#side_pane',
                     axis: 'x'
                 });
                 // import/export menu closes when click outside
-                $("*", document.body).click(function(e) {
+                $("*", document.body).click(function (e) {
                     if ((e.target.id != "bookmarks_actions") && !$(e.target).hasClass("menu-button") && ($("#bookmarks_actions").css("display") != "none")) {
                         $("#bookmarks_actions").css("display", "none");
                         $(".settings.bookmarks a.menu-button").toggleClass('active')
@@ -95,7 +95,7 @@ if ($trace_on) {
                     $('#settings_notif_threads').removeAttr('checked');
                     $('#settings_notif_threads').attr("disabled", "disabled");
                 }
-                $("input[name='display_threads']").change(function() {
+                $("input[name='display_threads']").change(function () {
 
                     if ($(this).is(':checked')) {
                         $('#settings_notif_threads').removeAttr('disabled');
@@ -106,7 +106,7 @@ if ($trace_on) {
 
                 });
 
-                window.onpopstate = function(event) {
+                window.onpopstate = function (event) {
                     if (event.state !== null) {
                         var state = jQuery.parseJSON(JSON.stringify(event.state));
                         window.location = state.url;
@@ -125,11 +125,11 @@ if ($trace_on) {
                     clip = new ZeroClipboard.Client();
                 }
                 clip.setText('');
-                clip.addEventListener('mouseDown', function() {
+                clip.addEventListener('mouseDown', function () {
                     console.log('Copy done.');
                     clip.setText(tocopy);
                 });
-                clip.addEventListener('onComplete', function() {
+                clip.addEventListener('onComplete', function () {
                     alert("®Content_in_clipboard®");
                 });
 
@@ -145,6 +145,7 @@ if ($trace_on) {
 
                 // Getting the content from the server, and filling the div_album_header with it
                 document.getElementById('div_center').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
+                tinymce.remove();
                 makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true', 'div_center');
                 // history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 'index.php?action=view_album_assets');
             }
@@ -167,11 +168,12 @@ if ($trace_on) {
                     video_fullscreen(false);
                 }
 
+                server_trace(new Array('2', 'thread_detail_from_trending', current_album, current_asset, timecode, threadId));
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=view_asset_bookmark',
                     data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
-                    success: function(response) {
+                    success: function (response) {
                         $('#div_center').html(response);
                         if (commentId != '') {
                             $.scrollTo('#comment_' + commentId);
@@ -247,7 +249,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=sort_asset_bookmark',
                     data: 'panel=' + panel + '&order=' + order + "&source=" + source + "&click=true",
-                    success: function(response) {
+                    success: function (response) {
                         $('#div_right').html(response);
                     }
                 });
@@ -263,7 +265,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=add_asset_bookmark&click=true',
                     data: $('#submit_bookmark_form').serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#div_right').html(response);
                     }
                 });
@@ -278,7 +280,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=add_asset_bookmark&click=true',
                     data: $('#submit_' + tab + '_form_' + index).serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#div_right').html(response);
                     }
                 });
@@ -362,7 +364,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=add_asset_thread&click=true',
                     data: $('#submit_thread_form').serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                     }
@@ -376,7 +378,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=add_thread_comment&click=true',
                     data: $('#submit_comment_form').serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         hide_comment_form();
                         $('#threads').html(response);
                         tinymce.remove('textarea');
@@ -389,7 +391,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=add_thread_comment_answer&click=true',
                     data: {'answer_message': document.getElementById('answer_comment_message_' + id + '_tinyeditor').value, 'answer_parent': document.getElementById('answer_parent_' + id).value, 'thread_id': document.getElementById('answer_thread_' + id).value, 'answer_nbChilds': document.getElementById('answer_nbChilds_' + id).value, 'album': document.getElementById('answer_album').value, 'asset': document.getElementById('answer_asset').value},
-                    success: function(response) {
+                    success: function (response) {
                         hide_answer_comment_form(id);
                         $('#threads').html(response);
                         tinymce.remove('textarea');
@@ -400,11 +402,13 @@ if ($trace_on) {
             function show_thread_details(event, thread_id) {
                 if ($(event.target).is('a') || $(event.target).is('span.timecode'))
                     return;
+                
+                server_trace(new Array('3', 'thread_detail_show', current_album, current_asset, thread_id));
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=thread_details_view&click=true',
                     data: {'thread_id': thread_id},
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                     }
@@ -412,12 +416,17 @@ if ($trace_on) {
 //                history.pushState({"key": "thread-details"}, 'thread-details', 'index.php?action=show_thread_detail');
             }
 
-            function threads_list_update() {
+            function threads_list_update(refresh) {
+                if (refresh) {
+                    server_trace(new Array('3', 'thread_list_refresh', current_album, current_asset));
+                } else {
+                    server_trace(new Array('3', 'thread_list_back', current_album, current_asset));
+                }
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=threads_list_view&click=true',
                     data: {'album': current_album, 'asset': current_asset},
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                     }
@@ -429,7 +438,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=delete_asset_thread&click=true',
                     data: {'thread_id': thread_id, 'thread_album': album, 'thread_asset': asset},
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                     }
@@ -440,7 +449,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=delete_thread_comment&click=true',
                     data: {'thread_id': thread_id, 'comment_id': comment_id},
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                     }
@@ -551,7 +560,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=update_thread_comment&click=true',
                     data: {'comment_id': comment_id, 'comment_message': message, 'thread_id': thread, 'album': album, 'asset': asset},
-                    success: function(response) {
+                    success: function (response) {
                         hide_edit_comment(comment_id);
                         $('#threads').html(response);
                         tinymce.remove('textarea');
@@ -571,7 +580,7 @@ if ($trace_on) {
                         'thread_album': album,
                         'thread_asset': asset
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#edit_thread_form_' + threadId).hide();
                         $('#threads').html(response);
                         tinymce.remove('textarea');
@@ -590,12 +599,17 @@ if ($trace_on) {
                 }
             }
 
-            function thread_details_update(thread_id) {
+            function thread_details_update(thread_id, from_notif) {
+                if (from_notif){
+                    server_trace(new Array('3', 'thread_detail_from_notif', current_album, current_asset, thread_id));
+                } else {
+                    server_trace(new Array('3', 'thread_detail_refresh', current_album, current_asset, thread_id));
+                }
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=thread_details_view&click=true',
                     data: {'thread_id': thread_id},
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                         $.scrollTo('#threads');
@@ -607,24 +621,24 @@ if ($trace_on) {
 
             //=== END - THREAD =================================================
 
-            //===== BEGIN - SETTINGS ===========================================
-            function submit_settings_form() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=edit_settings&click=true',
-                    data: {
-                        'display_new_video_notification': $('#settings_notif_new_asset').attr('checked') == 'checked' ? true : false,
-                        'display_threads': $('#settings_display_threads').attr('checked') == 'checked' ? true : false,
-                        'display_thread_notification': $('#settings_notif_threads').attr('checked') == 'checked' ? true : false
-                    },
-                    success: function(response) {
-                        hide_settings_form();
-                        location.reload();
-                    }
-                });
-            }
+            function admin_mode_update() {
+                // creates a form 
+                var form = document.createElement("form");
+                form.setAttribute("method", 'post');
+                form.setAttribute("action", 'index.php');
 
-            //=== END - SETTINGS ===============================================
+                // adds a hidden field containing the action
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", 'action');
+                hiddenField.setAttribute("value", 'admin_mode_update');
+
+                form.appendChild(hiddenField);
+
+                // submits the form
+                document.body.appendChild(form);
+                form.submit();
+            }
 
             //===== BEGIN - VOTE ===============================================
             function vote(user, comment, type) {
@@ -632,7 +646,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=vote&click=true',
                     data: {'login': user, 'comment': comment, 'vote_type': type},
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                     }
@@ -644,7 +658,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=approve&click=true',
                     data: {'approved_comment': comment},
-                    success: function(response) {
+                    success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
                     }
@@ -682,7 +696,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=search_bookmark&click=true',
                     data: $('#search_form').serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#popup_search_result').html(response);
                     }
                 });
@@ -695,9 +709,9 @@ if ($trace_on) {
             function search_keyword(keyword) {
                 $.ajax({
                     type: 'POST',
-                    url: 'index.php?action=search_bookmark&click=true',
+                    url: 'index.php?action=search_bookmark&click=true&origin=keyword',
                     data: 'search=' + keyword + '&target=global&albums%5B%5D=&fields%5B%5D=keywords&tab%5B%5D=official&tab%5B%5D=custom&level=0',
-                    success: function(response) {
+                    success: function (response) {
                         $('#popup_search_result').html(response);
                     }
                 });
@@ -712,7 +726,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=import_bookmarks&click=true&source=' + source,
                     data: $('#select_import_bookmark_form').serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#div_right').html(response);
                     }
                 });
@@ -727,7 +741,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=delete_bookmarks&click=true&source=' + source,
                     data: $('#select_delete_bookmark_form').serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#div_right').html(response);
                     }
                 });
@@ -742,7 +756,7 @@ if ($trace_on) {
                     type: 'POST',
                     url: 'index.php?action=delete_bookmarks&click=true&source=' + source,
                     data: $('#select_delete_toc_form').serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#div_right').html(response);
                     }
                 });
@@ -821,7 +835,7 @@ if ($trace_on) {
 
                 server_trace(new Array('3', elem.hasClass('active') ? 'bookmark_show' : 'bookmark_hide', current_album, current_asset, current_tab));
                 var millisecondsToWait = 350;
-                setTimeout(function() {
+                setTimeout(function () {
                     $('.' + pane + '_scroll').scrollTo('#' + pane + '_' + index);
                     // Whatever you want to do after the wait
                 }, millisecondsToWait);
@@ -888,11 +902,12 @@ if ($trace_on) {
                     var clone = fakeFileUpload.cloneNode(true);
                     x[i].parentNode.appendChild(clone);
                     x[i].relatedElement = clone.getElementsByTagName('input')[0];
-                    x[i].onchange = x[i].onmouseout = function() {
+                    x[i].onchange = x[i].onmouseout = function () {
                         this.relatedElement.value = this.value;
                     }
                 }
             }
+            
 
             function check_upload_form() {
                 var file = document.getElementById('loadingfile').value;
@@ -924,7 +939,7 @@ echo json_encode($valid_extensions);
             function submit_upload_bookmarks() {
                 if (ie_browser) {
                     document.forms["upload_bookmarks"].submit();
-                    $('#upload_target').load(function() {
+                    $('#upload_target').load(function () {
                         document.getElementById('popup_import_bookmarks').innerHTML = $("#upload_target").contents().find("body").html();
                     });
                 } else {
@@ -980,7 +995,9 @@ echo json_encode($valid_extensions);
             </div>
         <?php } ?>
         <div class="container">
-            <?php include_once template_getpath('div_main_header.php'); ?>
+            <div id="header_wrapper">
+                <?php include_once template_getpath('div_main_header.php'); ?>
+            </div>
             <div id="global">
                 <div id="div_center">
                     <?php
@@ -1000,7 +1017,7 @@ echo json_encode($valid_extensions);
                 include_once template_getpath('popup_message_of_day.php');
                 ?>
                 <script>
-            $('#popup_message_of_day').reveal($(this).data());
+                    $('#popup_message_of_day').reveal($(this).data());
                 </script>           
             <?php } ?>
             <!-- FOOTER - INFOS COPYRIGHT -->

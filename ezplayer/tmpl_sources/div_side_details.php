@@ -163,7 +163,6 @@ the pane displays information about that asset
         <?php
         require_once template_getpath('popup_movie_link.php');
         require_once template_getpath('popup_slide_link.php');
-        require_once template_getpath('popup_asset_link.php');
         ?>
 
 <?php if ($is_bookmark) { ?>

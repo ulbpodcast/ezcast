@@ -34,7 +34,7 @@
         <title>®ezplayer_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
-        <link rel="stylesheet" type="text/css" href="css/ezplayer_style.css" />
+        <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
         <script type="text/javascript" src="js/jQuery/jquery-1.6.2.min.js"></script>
         <script>
             $(document).ready(function() {

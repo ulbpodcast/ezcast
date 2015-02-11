@@ -57,6 +57,10 @@ window.addEventListener("keyup", function(e) {
                 if (fullscreen)
                     toggle_panel();
                 break;
+            case 68:  // 'd'
+                if (is_logged)
+                    toggle_thread_form();
+                break;
             case 78:  // 'n'
                 if (is_logged)
                     toggle_bookmark_form('custom');
@@ -173,19 +177,28 @@ function load_player(media) {
                 return;
 
             save_currentTime = currentTime;
+            
+            if (!display_threads_notif) return;
             html_value = "<ul>";
-            i = 0;
-            for (var key in timecode_array) {
-                if (!(timecode_array[key] > currentTime)
-                        && !(timecode_array[key] < currentTime - notif_display_delay)
-                        && !(timecode_array[key] === null)) {
-                    i++;
-                    // Display max N threads (with N = notif_display_number)
-                    if (i > notif_display_number)
+            var i = 0;
+            var timecode = currentTime - notif_display_delay;
+            while (i < notif_display_number && timecode <= currentTime){
+                if (timecode >= 0 && typeof threads_array[timecode] !== 'undefined'){
+                    for (var id in threads_array[timecode]){
+
+                        i++;
+                        if (i > notif_display_number)
                         break;
-                    html_value += "<li id='notif_" + key + "' class ='notification_item'><span class='span-link red' onclick='javascript:remove_notification_item(" + key + ")' >x</span><span class='notification-item-title' onclick='javascript:thread_details_update(" + key + ")'> " + title_array[key] + "</span></li>";
+                    html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
+                            "<span class='span-link red' onclick='javascript:remove_notification_item(" + timecode + ", " + id + ")' >x</span>" + 
+                            "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " + 
+                            threads_array[timecode][id] + "</span>" + 
+                            "</li>"; 
+                    }
                 }
+                timecode++;
             }
+
             html_value += "</ul>";
             $('#notifications').html(html_value);
             if (i > 0)
@@ -402,23 +415,23 @@ function toggle_playbackspeed() {
 }
 
 function show_bookmark_form(source) {
+    // Hide thread form if it's visible
+    if (thread_form) {
+        hide_thread_form(false);
+        return;
+    }        
+
     $("#video_shortcuts").css("display", "none");
     if (document.getElementById('secondary_video')) {
         if (type == 'slide') {
-
             var video = document.getElementById('secondary_video');
         } else {
-
             var video = document.getElementById('main_video');
         }
     } else {
         var video = document.getElementById('main_video');
     }
-    // Hide thread form if it's visible
-    if (thread_form) {
-        hide_thread_form(false);
-//        $('#thread_form').hide();
-    }
+    
     video.pause();
     document.getElementById('bookmark_timecode').value = Math.round(video.currentTime);
     document.getElementById('bookmark_source').value = source;
@@ -450,9 +463,9 @@ function show_bookmark_form(source) {
 function hide_bookmark_form(canceled) {
     bookmark_form = false;
     $("#video_shortcuts").css("display", "block");
-    $('video').animate({'height': '93%'});
+    $('video').animate({'height': '92.4%'});
     if (fullscreen && show_panel) {
-        $('#div_right').animate({'height': '92.6%'}, function() {
+        $('#div_right').animate({'height': '92.4%'}, function() {
             panel_resize()
         });
     }
@@ -477,21 +490,8 @@ function toggle_bookmark_form(source) {
     from_shortcut = false;
     if (bookmark_form) {
         server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, source, quality, origin));
-        if (source == 'official') {
-            if ($('#bookmark_form').hasClass("toc")) {
                 hide_bookmark_form(false);
-            } else {
-                hide_bookmark_form(false);
-                toggle_bookmark_form('official');
-            }
-        } else {
-            if ($('#bookmark_form').hasClass("bookmark")) {
-                hide_bookmark_form(false);
-            } else {
-                hide_bookmark_form(false);
-                toggle_bookmark_form('custom');
-            }
-        }
+  
     } else {
         server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, time, type, source, quality, origin));
         show_bookmark_form(source);
@@ -505,13 +505,19 @@ function toggle_bookmark_form(source) {
  * Hide or show thread form depending on his current state.
  */
 function toggle_thread_form() {
+    origin = get_origin();
+
+    from_shortcut = false;
     if (thread_form) {
+        server_trace(new Array('4', 'thread_form_hide', current_album, current_asset, duration, time, type, quality, origin));
         hide_thread_form(false);
         return;
     } else if (bookmark_form) {
 //        $('#bookmark_form').hide();
         hide_bookmark_form(false);
+        return;
     }
+    server_trace(new Array('4', 'thread_form_show', current_album, current_asset, duration, time, type, quality, origin));
     show_thread_form();
     $("#thread_title").focus();
 }
@@ -521,8 +527,10 @@ function toggle_thread_form() {
  */
 function toggle_comment_form() {
     if (comment_form) {
+        server_trace(new Array('4', 'comment_form_hide', current_album, current_asset, duration, time, type));
         hide_comment_form();
     } else {
+        server_trace(new Array('4', 'comment_form_show', current_album, current_asset, duration, time, type));
         show_comment_form();
         $("#comment_message").focus();
     }
@@ -556,17 +564,22 @@ function show_answer_comment_form(id) {
 
         $('#answer_comment_message_' + id + '_tinyeditor').addClass('editor-created');
     }
-    tinymce.get('answer_comment_message_' + id + '_tinyeditor').focus();
+    if (tinymce.get('answer_comment_message_' + id + '_tinyeditor'))
+        tinymce.get('answer_comment_message_' + id + '_tinyeditor').focus();
     $('.comment-options').hide();
 
     $('#answer_comment_form_' + id).slideDown();
     $("#answer_comment_message_" + id).focus();
+    server_trace(new Array('4', 'answer_form_show', current_album, current_asset, duration, time, type, id));
+
 }
 
 function toggle_settings_form() {
     if (settings_form) {
+        server_trace(new Array('4', 'settings_hide', current_album, current_asset));
         hide_settings_form();
     } else {
+        server_trace(new Array('4', 'settings_show', current_album, current_asset));
         show_settings_form();
     }
 }
@@ -646,7 +659,9 @@ function show_comment_form() {
         });
         $('#comment_message_tinyeditor').addClass('editor-created');
     }
-    tinymce.get('comment_message_tinyeditor').focus();
+    
+    if (tinymce.get('comment_message_tinyeditor'))
+        tinymce.get('comment_message_tinyeditor').focus();
     $('#comment_form').slideDown();
     $("html, body").animate({scrollTop: $(document).height()}, 1000);
     comment_form = true;
@@ -654,9 +669,9 @@ function show_comment_form() {
 
 function hide_thread_form(canceled) {
     $("#video_shortcuts").css("display", "block");
-    $('video').animate({'height': '92.12%'});
+    $('video').animate({'height': '92.4%'});
     if (fullscreen && show_panel) {
-        $('#div_right').animate({'height': '92.6%'}, function() {
+        $('#div_right').animate({'height': '92.4%'}, function() {
             panel_resize()
         });
     }
@@ -681,6 +696,7 @@ function hide_answer_comment_form(id) {
     $('#answer_comment_form_' + id).slideUp();
     document.getElementById('answer_comment_message_' + id + '_tinyeditor').value = '';
     $('#answer_comment_message_' + id + '_tinyeditor').addClass('editor-created');
+    server_trace(new Array('4', 'answer_form_hide', current_album, current_asset, duration, time, type, id));
 }
 
 
@@ -780,7 +796,7 @@ function video_fullscreen(on) {
         pct = (100 - (panel_width * 100 / ($(window).width()))) + '%';
         $('video').css('width', (show_panel) ? pct : '100%');
         $('.fullscreen-button').addClass("active");
-        if (bookmark_form) {
+        if (bookmark_form || thread_form) {
             pct = (100 - (5.51 + (225 * 100 / $(window).height()))) + '%';
             $('video').css('height', pct);
         }
@@ -796,7 +812,7 @@ function video_fullscreen(on) {
         $('#video_player').css('position', 'relative');
         $('video').css('width', '99.5%');
         $('.fullscreen-button').removeClass("active");
-        if (bookmark_form) {
+        if (bookmark_form || thread_form) {
             $('video').css('height', '51%');
         }
         // bookmarks panel
@@ -877,7 +893,7 @@ function panel_fullscreen() {
     $('#div_right').css('right', (show_panel) ? '0px' : '-300px');
     $('#div_right').css('position', 'fixed');
     pct = (100 - (5.51 + (225 * 100 / $(window).height())));
-    $('#div_right').css('height', (bookmark_form) ? (pct + 1) + '%' : '92.6%');
+    $('#div_right').css('height', (bookmark_form || thread_form) ? (pct + 1) + '%' : '92.6%');
     $('#div_right').css('background-color', '#F1F1F1');
     $('#side-pane-scroll-area').css('height', '100%');
     $('.side_pane_content').css('height', '100%');
@@ -916,10 +932,9 @@ function toggle_shortcuts() {
 
 }
 
-function remove_notification_item(key) {
-    timecode_array[key] = null;
-    title_array[key] = null;
-    $('#notif_' + key).hide();
+function remove_notification_item(timecode, id) {
+    delete threads_array[timecode][id];
+    $('#notif_' + id).hide();
 }
 
 function scrollTo(component) {

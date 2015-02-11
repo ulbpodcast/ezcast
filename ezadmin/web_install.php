@@ -538,15 +538,9 @@ function add_first_user() {
     $passwd = $first_user[1];
     $permissions = 1;
 
-    file_put_contents('/usr/local/ezcast_new/debug.killme', $user_ID . PHP_EOL, FILE_APPEND);
-    file_put_contents('/usr/local/ezcast_new/debug.killme', $surname . PHP_EOL, FILE_APPEND);
-    file_put_contents('/usr/local/ezcast_new/debug.killme', $forename . PHP_EOL, FILE_APPEND);
-    file_put_contents('/usr/local/ezcast_new/debug.killme', $passwd . PHP_EOL, FILE_APPEND);
     //   try {
     if (!db_ready()) {
-        file_put_contents('/usr/local/ezcast_new/debug.killme', "DB NOT READY" . PHP_EOL, FILE_APPEND);
         db_prepare();
-        file_put_contents('/usr/local/ezcast_new/debug.killme', "DB PREPARED", FILE_APPEND);
     }
     db_user_create($user_ID, $surname, $forename, $passwd, $permissions);
     add_admin_to_file($user_ID);

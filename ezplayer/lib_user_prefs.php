@@ -460,7 +460,7 @@ function user_prefs_watched_add($user, $album, $asset) {
  * @param type $user
  * @return boolean false if an error occured; the list of watched assets otherwise.
  */
-function user_prefs_watchedlist_get($user) {
+function user_prefs_watchedlist_get($user, $from_acl = true) {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -472,10 +472,13 @@ function user_prefs_watchedlist_get($user) {
     if ($user_files_path === false) {
         return false;
     }
+    
+    if ($from_acl && isset($_SESSION['acl_watched_assets']) && !empty($_SESSION['acl_watched_assets'])){
+        return $_SESSION['acl_watched_assets'];
+    }
 
     // 2) set user's file path
     $user_path = $user_files_path . "/" . $user;
-
     // 3) if the xml file exists, it is converted in associative array
     if (file_exists($user_path . "/_watched_assets.xml")) {
         $xml = simplexml_load_file($user_path . "/_watched_assets.xml");

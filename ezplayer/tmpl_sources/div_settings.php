@@ -22,11 +22,14 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 
-acl_update_settings(); ?>
+acl_update_settings();
+?>
 
-<form id="submit_settings_form" method="post">
+<form name="submit_settings_form" action="<?php global $ezplayer_safe_url;
+echo $ezplayer_safe_url; ?>/index.php" method="post">
+    <input type="hidden" name="action" value="edit_settings" />
     <table>
         <th><span class="title left">Notifications</span></th><br/>
         <tr>
@@ -51,7 +54,7 @@ acl_update_settings(); ?>
                 <a class="button-empty green" href="javascript: hide_settings_form();">®Cancel®</a>
             </td>
             <td>
-                <a class="button green" href="javascript: submit_settings_form();">®Update®</a>
+                <a class="button green" href="#" onclick="document.submit_settings_form.submit();">®Update®</a>
             </td>
         </tr>
 

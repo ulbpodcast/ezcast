@@ -763,6 +763,7 @@ function push_changes() {
     //TODO: DO THIS FUNCTION
     // Save admins into ezmanager & recorders
     $res = push_admins_to_recorders_ezmanager();
+    
     if (!$res) {
         echo '<div class="alert alert-warning">' . template_get_message('push_to_recorders_unsuccessful', get_lang()) . '</div>';
     }

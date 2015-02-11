@@ -98,25 +98,28 @@ switch (strtolower($_SESSION['browser_name'])) {
                     <li><span class="key speed"></span><span>®key_speed®</span></li>
                     <li><span class="key volume"></span><span>®key_volume®</span></li>
                     <li><span class="key m"></span><span>®key_m®</span></li>
-                    <li><span class="key shift"></span><span>®key_shift®</span></li>
-                    <li><span class="key l"></span><span>®key_l®</span></li>
-                    <li><span class="key f"></span><span>®key_f®</span></li>
-                    <li><span class="key n"></span><span>®key_n®</span></li>
                     <li><span class="key s"></span><span>®key_s®</span></li>
-                    <li><span class="key r"></span><span>®key_r®</span></li>
+                    <li><span class="key n"></span><span>®key_n®</span></li>
+                    <li><span class="key d"></span><span>®key_d®</span></li>
+                    <li><span class="key l"></span><span>®key_l®</span></li>
+                    <li><span class="key shift"></span><span>®key_shift®</span></li>
+                    <li><span class="key f"></span><span>®key_f®</span></li>
                 </ul>
             </div>
             <div class="shortcuts_tab"><a href="javascript:toggle_shortcuts();"></a></div>
         </div>
 
         <?php if (acl_user_is_logged() && acl_has_album_permissions($album) && acl_display_thread_notification()) { ?>
+            <script>
+                display_threads_notif = true;
+            </script>
             <div id='video_notifications'>
                 <div class='notifications_title'><b>®Current_discussions®</b></div>
                 <div id='notifications'></div>
             </div>
         <?php } ?>
 
-        <video id="main_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
+        <video id="main_video" poster="./images/Generale/poster-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
             <source id="main_video_source"
                     high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
                     high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>"
@@ -126,7 +129,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 
         <?php if ($asset_meta['record_type'] == 'camslide') { ?>
 
-            <video id="secondary_video" poster="./images/Generale/poster.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" preload="auto" type="video/mp4">
+            <video id="secondary_video" poster="./images/Generale/poster-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" preload="auto" type="video/mp4">
             </video>
         <?php } ?>
 
@@ -142,7 +145,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 
             var videos = document.getElementsByTagName('video');
             for (var i = 0, max = videos.length; i < max; i++) {
-                videos[i].addEventListener("timeupdate", function() {
+                videos[i].addEventListener("timeupdate", function () {
                     step++;
                     if (step % 4 == 0) {
                         time = Math.round(this.currentTime);
@@ -159,7 +162,7 @@ switch (strtolower($_SESSION['browser_name'])) {
                 // 2) pause the video
                 // 3) wait for ~5 min
                 // 4) play the video >> ERR_CONTENT_LENGTH_MISMATCH
-                videos[i].addEventListener("error", function(e){
+                videos[i].addEventListener("error", function (e) {
                     this.load();
                     this.currentTime = time;
                     this.play();
@@ -168,26 +171,41 @@ switch (strtolower($_SESSION['browser_name'])) {
 <?php
 if (isset($asset_meta['record_type']) && $asset_meta['record_type'] == 'camslide' && ($_SESSION['user_os'] == 'iOS' || $_SESSION['user_os'] == 'Android')) {
     ?>
-                document.getElementById('main_video').addEventListener('loadeddata', function() {
+                document.getElementById('main_video').addEventListener('loadeddata', function () {
                     cam_loaded = true;
                     document.getElementById("load_warn").style.display = 'none';
                 }, false);
-                document.getElementById('secondary_video').addEventListener('loadeddata', function() {
+                document.getElementById('secondary_video').addEventListener('loadeddata', function () {
                     slide_loaded = true;
                     document.getElementById("load_warn").style.display = 'none';
                 }, false);
 <?php } ?>
-<?php
-if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') {
+<?php if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') { ?>
+
+                threads_array = new Array();
+    <?php
+    if (is_array($threads) && count($threads) > 0) {
+        foreach ($threads as $thread_meta) {
+            if (($thread_meta['studentOnly'] == '0') || ($thread_meta['studentOnly'] == '1' && !acl_has_moderated_album()) || acl_is_admin()) {
+                ?>
+                            if (typeof threads_array[<?php echo json_encode($thread_meta['timecode']); ?>] == "undefined")
+                                threads_array[<?php echo json_encode($thread_meta['timecode']); ?>] = new Array();
+                            threads_array[<?php echo $thread_meta['timecode']; ?>][<?php echo $thread_meta['id']; ?>] = "<?php echo $thread_meta['title']; ?>";
+                <?php
+            }
+        }
+    }
     if (isset($asset_meta['record_type']) && $asset_meta['record_type'] == 'camslide' && isset($_SESSION['loaded_type']) && $_SESSION['loaded_type'] == 'slide') {
         ?>
                     type = 'slide';
                     $('#main_video').hide();
                     $('#secondary_video').show();
                     $('.movie-button, .slide-button').toggleClass('active');
-                    document.getElementById('secondary_video').addEventListener('loadeddata', function() {
-                        this.currentTime = <?php echo $timecode; ?>;
-                        this.play();
+                    document.getElementById('secondary_video').addEventListener('loadeddata', function () {
+                        time = <?php echo $timecode; ?>;
+                        this.addEventListener('loadedmetadata', function () {
+                            this.currentTime = <?php echo $timecode; ?>;
+                        }, false);
                     }, false);
                     load_player('low_slide');
     <?php } else { ?>
@@ -195,21 +213,24 @@ if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') {
         <?php if ($asset_meta['record_type'] != 'camslide') { ?>
                         type = '<?php echo $asset_meta['record_type']; ?>';
         <?php } ?>
-                    document.getElementById('main_video').addEventListener('loadeddata', function() {
-                        this.currentTime = <?php echo $timecode; ?>;
-                        this.play();
+                    document.getElementById('main_video').addEventListener('loadeddata', function () {
+                        time = <?php echo $timecode; ?>;
+                        this.addEventListener('loadedmetadata', function () {
+                            this.currentTime = <?php echo $timecode; ?>;
+                        }, false);
                     }, false);
                     load_player('low_cam');
-        <?php } ?>
+    <?php } ?>
                 var videos = document.getElementsByTagName('video');
                 for (var i = 0, max = videos.length; i < max; i++) {
-                    videos[i].addEventListener("seeked", function() {
+                    videos[i].addEventListener("seeked", function () {
                         previous_time = time;
                         time = Math.round(this.currentTime);
                         document.getElementById('bookmark_timecode').value = time;
                         server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
                     }, false);
                 }
+
     <?php
 }
 
@@ -289,7 +310,7 @@ if ($_SESSION['load_video'] == true) {
             </div>
         </div>
         <script>
-            $('#bookmark_form input').keydown(function(e) {
+            $('#bookmark_form input').keydown(function (e) {
                 if (e.keyCode == 13) {
                     if (check_bookmark_form())
                         submit_bookmark_form();
@@ -322,7 +343,8 @@ if ($_SESSION['load_video'] == true) {
                     <label>®Timecode®&nbsp;:
                         <span class="small">®Timecode_info®</span>
                     </label>
-                    <input name="timecode" tabindex='19' id="thread_timecode" type="text" value="0" onblur="tinymce.get('thread_desc_tinymce').focus();;"/>
+                    <input name="timecode" tabindex='19' id="thread_timecode" type="text" value="0" onblur="tinymce.get('thread_desc_tinymce').focus();
+                            ;"/>
 
                     <!-- Description field -->
                     <label>®Message®&nbsp;:
@@ -381,16 +403,20 @@ if ($_SESSION['load_video'] == true) {
                         <a class="add-bookmark-button" title="®Add_bookmark®" href="javascript:toggle_bookmark_form('custom');"></a>
                         <?php if (acl_has_album_moderation($album) || acl_is_admin()) { ?>
                             <a class="add-toc-button" title="®Add_toc®" href="javascript:toggle_bookmark_form('official');"></a>
+                            <?php
+                        }
+                        if (acl_display_threads()) {
+                            ?>
+                            <a class="add-thread-button" title="®Add_discussion®" href="javascript:toggle_thread_form();"></a>
                         <?php } ?>
-                        <a class="add-thread-button" title="®Add_discussion®" href="javascript:toggle_thread_form();"></a>
                     </li>
                 <?php } ?>                
                 <li>
                     <a class="share-button" href="#" data-reveal-id="popup_share_time" title="®Share_time®" 
                        onclick="getElementById('main_video').pause();
-                if (getElementById('secondary_video'))
-                    getElementById('secondary_video').pause();
-                server_trace(new Array('4', 'link_open', current_album, current_asset, duration, time, type, quality));"></a>
+                               if (getElementById('secondary_video'))
+                                   getElementById('secondary_video').pause();
+                               server_trace(new Array('4', 'link_open', current_album, current_asset, duration, time, type, quality));"></a>
                 </li>      
                 <li>
                     <a class="fullscreen-button" href="javascript:video_fullscreen(!fullscreen);" title="®Toggle_fullscreen®" ></a>

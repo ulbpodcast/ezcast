@@ -323,25 +323,16 @@ function ezmam_album_delete($album_name) {
   //str_replace("/", "_", $album_new);
   }
 
+
   /**
- * Deprecated/
- * @param <type> $album
- * @param <type> $type High/Low quality
- * @param <type> $path_of_movie
- * @desc add an asset to the RSS feeds
- */
-/* function ezmam_rss_add($album,$type,$path_of_movie){
-
-  } */
-
-/**
  * @param string $album 
  * @param string $type
  * @desc regenerates the complete RSS
  */
 //TODO: Clean up!
-function ezmam_rss_generate($album,$type) {
+function ezmam_rss_generate($album, $type) {
     global $distribute_url;
+    global $ezplayer_safe_url;
     $url = $distribute_url;
 
     if ($type != 'high' && $type != 'low' && $type != 'ezplayer') {
@@ -372,14 +363,12 @@ function ezmam_rss_generate($album,$type) {
 
 
         if ($type == 'ezplayer') {
+            $ezplayer_link = $ezplayer_safe_url . '/index.php?action=view_asset_bookmark'
+                    . '&album=' . $album
+                    . '&asset=' . $metadata['record_date']
+                    . '&t=0';
             add_item_to_rss(
-                    $xmlh, 
-                    $metadata['title'], 
-                    $metadata['description'], 
-                    $metadata['author'], 
-                    get_RFC822_date($metadata['record_date']), 
-                    false, 
-                    false
+                    $xmlh, $metadata['title'], $metadata['description'], $metadata['author'], get_RFC822_date($metadata['record_date']), $ezplayer_link, false
             );
         } else {
             // Don't forget to add both videos if it was a camslide!
@@ -395,14 +384,9 @@ function ezmam_rss_generate($album,$type) {
                 // that at least one media is available
                 if (ezmam_media_exists($album, $asset['name'], 'high_cam') || ezmam_media_exists($album, $asset['name'], 'low_cam')) {
                     add_item_to_rss(
-                            $xmlh, 
-                            $title . ' (camera)', 
-                            $metadata['description'] . ' (prise de vue caméra)', 
-                            $metadata['author'],
+                            $xmlh, $title . ' (camera)', $metadata['description'] . ' (prise de vue caméra)', $metadata['author'],
                             //preg_replace('!([0-9]{4})\_([0-9]{2})\_([0-9]{2})\_([0-9]{2})h([0-9]{2})!', '$3/$2/$1 $4:$5', $metadata['record_date']), 
-                            get_RFC822_date($metadata['record_date']), 
-                            $url . $arguments, 
-                            $url . '/cam.m4v' . $arguments
+                            get_RFC822_date($metadata['record_date']), $url . $arguments, $url . '/cam.m4v' . $arguments
                     );
                 }
 
@@ -503,9 +487,11 @@ function ezmam_rss_new($album_name, $type) {
     $description = $metadata['description'];
 
     // Path to the thumbnail image
-    $thumbnail_url = $ezmanager_url . '/images/rss_logo_HD.jpg';
+    $thumbnail_url = $ezmanager_url . '/images/rss_logo_ezplayer.png';
+    if ($type == 'high')
+        $thumbnail_url = $ezmanager_url . '/images/rss_logo_HD.png';
     if ($type == 'low')
-        $thumbnail_url = $ezmanager_url . '/images/rss_logo_SD.jpg';
+        $thumbnail_url = $ezmanager_url . '/images/rss_logo_SD.png';
 
     // Path to the file
     //$distribution_url = $ezmanager_url.'/distribute.php';
@@ -602,9 +588,10 @@ function add_item_to_rss(&$xmlh, $title, $description, $author, $pubDate, $link 
     //$guid->addAttribute('isPermaLink','false');//we use a unique id so set ispermalink to false
     if ($link)
         $item->addChild('guid', htmlentities($link));
-    $item->addChild('enclosure', '');
-    if ($media_link)
+    if ($media_link) {
+        $item->addChild('enclosure', '');
         $item->enclosure->addAttribute('url', trim($media_link));
+    }
     //$item->enclosure->addAttribute('type', '');
     //$item->enclosure->addAttribute('length', '7292424');
 
@@ -798,6 +785,7 @@ function ezmam_asset_new($album_name, $asset_name, $metadata) {
     // Rebuild RSSes
     ezmam_rss_generate($album_name, 'high');
     ezmam_rss_generate($album_name, 'low');
+    ezmam_rss_generate($album_name, 'ezplayer');
 
     return $res;
 }
@@ -855,6 +843,7 @@ function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
     if ($rebuild_rss) {
         ezmam_rss_generate($album_name, "high");
         ezmam_rss_generate($album_name, "low");
+        ezmam_rss_generate($album_name, "ezplayer");
     }
 
     // And finally we log the operation
@@ -929,11 +918,19 @@ function ezmam_asset_move($asset_name, $album_src, $album_dst) {
     if (!$res)
         return false;
 
+    $res = ezmam_rss_generate($album_src, "ezplayer");
+    if (!$res)
+        return false;
+
     $res = ezmam_rss_generate($album_dst, "high");
     if (!$res)
         return false;
 
     $res = ezmam_rss_generate($album_dst, "low");
+    if (!$res)
+        return false;
+
+    $res = ezmam_rss_generate($album_dst, "ezplayer");
     if (!$res)
         return false;
 
@@ -1209,8 +1206,7 @@ function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $medi
             if ($return_code) {
                 ezmam_last_error("ezmam_media_new() error $return_code copying media directory $media_file_path for $album_name/$asset_name/$media_name");
                 return false;
-            }
-            else
+            } else
                 $res = true; //returncode==0 so recursive copy went well
         }else {
             $res = copy($media_file_path, $media_path . "/" . $filename);

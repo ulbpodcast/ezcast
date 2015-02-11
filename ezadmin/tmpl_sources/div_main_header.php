@@ -33,7 +33,6 @@
             if ($_SESSION['changes_to_push'])
                 echo ' (®unsaved_changes®)';
             ?></title>
-        <link href="css/style.css" rel="stylesheet">
         <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.23345.js"></script>
         <script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
@@ -43,6 +42,7 @@
         <script src="js/stats.js"></script>
         
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
         <link href="css/datepicker.css" rel="stylesheet"/>
         <link href="css/jquery.jqplot.min.css" rel="stylesheet"/>
         <link href="css/ezplayerStats.css" rel="stylesheet"/>

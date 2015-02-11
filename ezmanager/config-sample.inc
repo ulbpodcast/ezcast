@@ -60,6 +60,7 @@ $default_add_title = "FlyingTitle";
 // titlings value: false if no titling needed / name of the titling if value
 $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (default)'));
                 //   array('value' => 'RevealTitle', 'label' => 'Reveal'));
+$default_downloadable = true;
 
 
 // used by lib_ezmam (ezmanager)

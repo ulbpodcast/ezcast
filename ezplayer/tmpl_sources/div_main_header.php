@@ -51,14 +51,21 @@
             <a href="#" data-reveal-id="popup_login" title="®Login_title®"><span class="logout">®Login®</span></a>
         <?php } ?>       
         <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
-        <a href="index.php?action=view_help" target="_blank" title="®Help_title®"><span class="logout">®Help®</span></a>
+        <a href="index.php?action=view_help" target="_blank" title="®Help_title®"><span class="logout green">®Help®</span></a>
         <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
         <?php if (acl_user_is_logged()) { ?>
             <a id="user-settings" class="pull-right" onclick="javascript:toggle_settings_form()" title="®Preferences_title®">
                 <span>®Preferences®</span> 
             </a>    
         <?php } ?>
-        <?php if (acl_is_admin()) { ?>
+        <?php if (acl_admin_user()) { ?>
+            <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
+            <a href="javascript:admin_mode_update()" title="®Admin_mode_update®">
+                <span class="logout"><?php echo acl_is_admin() ? '®Admin_mode_enabled®' : '®Admin_mode_disabled®'; ?></span>
+            </a>
+            
+        <?php } ?>
+        <?php if (acl_runas()) { ?>
             <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
             <span class="logout">®connected_as® <b><?php echo $_SESSION['user_full_name']; ?></b></span>
         <?php } ?>

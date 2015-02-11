@@ -79,7 +79,7 @@
         ?>
         <tr>
             <td>
-                <?php exec('ping -c 1 '.$classroom['IP'] . ' 10', $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><i class="icon-warning-sign"></i></span>'; ?>
+                <?php exec('ping '.$classroom['IP'] . ' 10', $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><i class="icon-warning-sign"></i></span>'; ?>
             </td>
             <td class="room_id">
                 <div class="view"><?php echo $classroom['room_ID'] ?></div>

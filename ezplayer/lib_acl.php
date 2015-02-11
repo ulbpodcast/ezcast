@@ -48,8 +48,8 @@ function acl_init($netid) {
     user_prefs_repository_path($user_files_path);
 
     // Retrieving the permissions
-    acl_update_permissions_list();
     acl_update_settings();
+    acl_update_permissions_list();
 
     // All is set, we're good to go
     return true;
@@ -74,7 +74,6 @@ function acl_update_permissions_list() {
     ezmam_repository_path($repository_path);
     $courses_list_for_author = array();
     $consulted_albums = array();
-    $watched_assets = array();
     if (acl_user_is_logged()) {
         $courses_list_for_author = courses_list($_SESSION['user_login']);
         foreach ($courses_list_for_author as $key => $title){
@@ -83,11 +82,8 @@ function acl_update_permissions_list() {
         $album_tokens_list = user_prefs_tokens_get($_SESSION['user_login']);
         foreach ($album_tokens_list as $album_token) {
             $consulted_albums[] = $album_token['album'];
-            $global_count[$album_token['album']] = ezmam_asset_count($album_token['album']);
         }
-        $watched_assets = user_prefs_watchedlist_get($_SESSION['user_login']);
         $_SESSION['acl_album_tokens'] = $album_tokens_list;
-        $_SESSION['acl_global_count'] = $global_count;
     } else {
         // anonymous user : every consulted album is directly stored in $_SESSION['acl_album_tokens']
         // tokens stored during action "view_album_assets" in web_index.php
@@ -95,12 +91,34 @@ function acl_update_permissions_list() {
             $consulted_albums[] = $album_token['album'];
         }
     }
+    
+    if (acl_show_notifications()){
+        acl_update_watched_assets();
+    }
 
     $_SESSION['acl_consulted_albums'] = $consulted_albums;
     $_SESSION['acl_moderated_albums'] = $courses_list_for_author;
-    $_SESSION['acl_watched_assets'] = $watched_assets;
 }
 
+function acl_update_watched_assets(){
+    global $repository_path;
+    global $user_files_path;
+    
+    ezmam_repository_path($repository_path);
+    user_prefs_repository_path($user_files_path);
+    
+    $watched_assets = array();
+    if (acl_user_is_logged()){
+        $album_tokens_list = acl_album_tokens_get();
+        foreach ($album_tokens_list as $album_token){            
+            $global_count[$album_token['album']] = ezmam_asset_count($album_token['album']);
+        }
+        $watched_assets = user_prefs_watchedlist_get($_SESSION['user_login'], false);
+        $_SESSION['acl_global_count'] = $global_count;
+    }
+    $_SESSION['acl_watched_assets'] = $watched_assets;   
+    file_put_contents("debug.killme", var_export($watched_assets, true));
+}
 /**
  * Determines if the current user is a professor or not
  * @return boolean
@@ -292,9 +310,10 @@ function acl_user_is_logged() {
  * @return boolean
  */
 function acl_show_notifications(){
-    $display_new_video_notification = acl_value_get('display_new_video_notification');
+    global $default_display_count;
     
-    return $display_new_video_notification != 'false';
+    $display_count = acl_value_get('display_new_video_notification');
+    return (isset($display_count)) ? $display_count : $default_display_count ;
 }
 
 /**
@@ -304,9 +323,11 @@ function acl_show_notifications(){
 function acl_display_threads(){
     if (!acl_user_is_logged()) return false;
     
-    $display_threads = acl_value_get('display_threads');
+    global $default_display_thread;
     
-    return $display_threads !='false';
+    $display_thread = acl_value_get('display_threads');
+    return (isset($display_thread)) ? $display_thread : $default_display_thread;
+    
 }
 
 /**
@@ -314,32 +335,42 @@ function acl_display_threads(){
  * @return boolean
  */
 function acl_display_thread_notification(){
-    $display_thread_notification = acl_value_get('display_thread_notification');
-    return $display_thread_notification != 'false';
+    if (!acl_user_is_logged()) return false;
+    
+    global $default_display_thread_notif;
+    $display_thread_notif = acl_value_get('display_thread_notification');
+    return (isset($display_thread_notif)) ? $display_thread_notif : $default_display_thread_notif ;
 }
 
 /**
- * Checks if an asset is downloadable.
+ * Checks if the admin mode is enabled or not
  * @return boolean
  */
-function acl_is_downloadable($album, $asset){
-    
-    $meta = asset_meta_get($album, $asset);
-    $display_download_link = $meta['display_download_link'];
+function acl_is_admin(){
+    if(!acl_user_is_logged())
+        return false;
+    return isset($_SESSION['admin_enabled']) ? $_SESSION['admin_enabled'] : false;
+}
 
-    return $display_download_link=='true';
+/**
+ * Determines whether the user is run as another or not
+ */
+function acl_runas(){
+    if(!acl_user_is_logged())
+        return false;
+    return isset($_SESSION['user_runas']) ? $_SESSION['user_runas'] : false;
+    
 }
 
 /**
  * Checks if the current user is an admin or not.
  * @return boolean
  */
-function acl_is_admin(){
+function acl_admin_user(){
     if(!acl_user_is_logged())
         return false;
-    return isset($_SESSION['user_is_admin']);
+    return isset($_SESSION['user_is_admin']) ? $_SESSION['user_is_admin'] : false;
 }
-
 /**
  * 
  * @param type $album

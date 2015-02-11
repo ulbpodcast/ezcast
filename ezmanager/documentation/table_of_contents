@@ -13,7 +13,7 @@ classroom_recorder_ip.inc
     user-editable.
     Contains the IP addresses for both the video recorder (podcv_ip) and the slides recorder (podcs_ip)
     Edit to your own needs, each cell of the arrays represent one lecture room.
-
+ 
 pwfile.inc
     user-editable. Unsafe.
     Contains a list of login/encrypted passwords that can be used to access EZmanager.

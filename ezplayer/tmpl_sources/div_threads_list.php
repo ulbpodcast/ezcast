@@ -29,9 +29,12 @@ include_once 'lib_print.php';
 <div class="threads_header">
     <span class="thread-logo"></span>
     <span id="threads_header-label">®Discussions®</span>
-    <a class="refresh-button pull-right" style="margin-top: 0px; margin-right: 48px;" title="®Refresh_discussions®" href="javascript:threads_list_update()"></a>
+    <a class="refresh-button pull-right" style="margin-top: 0px; margin-right: 48px;" title="®Refresh_discussions®" href="javascript:threads_list_update(true)"></a>
 </div>
 <div class="threads_list">
+    <script>
+    threads_array = new Array();
+    </script>
     <?php
     if (is_array($threads) && count($threads) > 0) {
         $DTZ = new DateTimeZone('Europe/Paris');
@@ -41,8 +44,10 @@ include_once 'lib_print.php';
                 $editDateVerbose = (get_lang() == 'fr') ? $editDate->format('j F Y à H\hi') : $editDate->format("F j, Y, g:i a");
                 ?>
                 <script>
-                    timecode_array[<?php echo json_encode($thread['id']); ?>] = <?php echo json_encode($thread['timecode']); ?>;
-                    title_array["<?php echo $thread['id']; ?>"] = "<?php echo $thread['title']; ?>";
+                    if (typeof threads_array[<?php echo json_encode($thread['timecode']); ?>] == "undefined")
+                        threads_array[<?php echo json_encode($thread['timecode']); ?>] = new Array();
+                        
+                    threads_array[<?php echo $thread['timecode']; ?>][<?php echo $thread['id']; ?>] = "<?php echo $thread['title']; ?>";
                 </script>
                 <div class="item-thread" onclick="show_thread_details(event,<?php echo $thread['id'] ?>)">
                     <div class="item-thread-content">

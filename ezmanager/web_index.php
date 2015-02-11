@@ -1,4 +1,5 @@
 <?php
+
 /*
  * EZCAST EZmanager 
  *
@@ -24,11 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/** 
+/**
  * ezcast EZmanager main program (MVC Controller)
  * @package ezcast.ezmanager.main
  */
-
 require_once 'config.inc';
 session_name($appname);
 session_start();
@@ -179,6 +179,10 @@ else {
 
         case 'edit_asset':
             asset_edit();
+            break;
+
+        case 'asset_downloadable_set':
+            asset_downloadable_set();
             break;
 
         case 'delete_asset':
@@ -680,6 +684,7 @@ function album_create() {
     global $dir_date_format;
     global $default_intro;
     global $default_add_title;
+    global $default_downloadable;
 
     //
     // Sanity checks
@@ -702,7 +707,8 @@ function album_create() {
         'date' => date($dir_date_format),
         'anac' => $anac,
         'intro' => $default_intro,
-        'add_title' => $default_add_title
+        'add_title' => $default_add_title,
+        'downloadable' => $default_downloadable
     );
 
     //
@@ -951,7 +957,8 @@ function upload_init() {
         'record_date' => $record_date,
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
-        'add_title' => $input['add_title']
+        'add_title' => $input['add_title'],
+        'downloadable' => $input['downloadable']
     );
 
     $res = media_submit_create_metadata($tmp_name, $metadata);
@@ -1256,7 +1263,8 @@ function submit_media() {
         'record_date' => date($dir_date_format),
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
-        'add_title' => $input['add_title']
+        'add_title' => $input['add_title'],
+        'downloadable' => $input['downloadable']
     );
 //    assoc_array2metadata_file($metadata, './metadata_tmp.xml');
     $res = media_submit_create_metadata($tmp_name, $metadata);
@@ -1292,7 +1300,6 @@ function submit_media() {
     redraw_page();
 }
 
-
 function album_edit() {
     global $input;
     global $repository_path;
@@ -1321,10 +1328,11 @@ function album_edit() {
     //
     // Then we update the metadata
     //
-    $album_meta = ezmam_asset_metadata_get($album);
+    $album_meta = ezmam_album_metadata_get($album);
 
     $album_meta['intro'] = $input['intro'];
     $album_meta['add_title'] = $input['add_title'];
+    $album_meta['downloadable'] = $input['downloadable'];
 
     $res = ezmam_album_metadata_set($album, $album_meta);
 
@@ -1385,6 +1393,27 @@ function asset_edit() {
     // And we display the (new) asset details
     //
     view_asset_details();
+}
+
+function asset_downloadable_set() {
+    global $input;
+    global $repository_path;
+
+    if (!isset($input['album']) || !isset($input['asset']) || !isset($input['downloadable'])) {
+        die;
+    }
+       
+    ezmam_repository_path($repository_path);
+
+    $metadata = ezmam_asset_metadata_get($input['album'], $input['asset']);
+
+    $metadata['downloadable'] = $input['downloadable'];
+
+    $res = ezmam_asset_metadata_set($input['album'], $input['asset'], $metadata);
+    if (!$res) {
+        error_print_message(ezmam_last_error());
+        die;
+    }
 }
 
 /**
@@ -1542,6 +1571,7 @@ function view_submit_media() {
     global $repository_path;
     global $default_add_title;
     global $titlings;
+    global $default_downloadable;
 
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);
@@ -1558,6 +1588,9 @@ function view_submit_media() {
     } else {
         $add_title = $default_add_title;
     }
+
+    // for checkbox in the form
+    $downloadable = (isset($album_meta['downloadable']) ? $album_meta['downloadable'] : $default_downloadable);
 
     require_once template_getpath('popup_submit_media.php');
     die;
@@ -1566,8 +1599,10 @@ function view_submit_media() {
 function view_edit_album() {
     global $intros;
     global $titlings;
+    global $downloadable;
     global $repository_path;
     global $default_add_title;
+    global $default_downloadable;
 
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);
@@ -1584,6 +1619,9 @@ function view_edit_album() {
     } else {
         $add_title = $default_add_title;
     }
+
+    // for the checkbox in the form
+    $downloadable = (isset($album_meta['downloadable']) ? $album_meta['downloadable'] : $default_downloadable);
 
     require_once template_getpath('popup_edit_album.php');
 
@@ -1613,6 +1651,10 @@ function view_popup() {
 
         case 'embed_code':
             popup_embed_code();
+            break;
+        
+        case 'ezplayer_link':
+            popup_ezplayer_link();
             break;
 
         case 'ulb_code':
@@ -1694,7 +1736,46 @@ function popup_embed_code() {
 }
 
 /**
- * DIsplays the popup with the ulb code to copypaste
+ * Displays the popup with the EZplayer link to copypaste
+ * @global type $input
+ * @global type $repository_path
+ * @global type $url 
+ */
+function popup_ezplayer_link() {
+    global $input;
+    global $ezplayer_url;
+    global $repository_path;
+
+    $album = $input['album'];
+    $asset = $input['asset'];
+
+    ezmam_repository_path($repository_path);
+
+    //
+    // Sanity checks
+    //
+    if (!isset($input['album']) || !isset($input['asset'])) {
+        die;
+    }
+
+    if (!ezmam_album_exists($input['album']) || !ezmam_asset_exists($input['album'], $input['asset'])) {
+        error_print_message(ezmam_last_error());
+        die;
+    }
+
+    $token = ezmam_asset_token_get($input['album'], $input['asset']);
+    $ezplayer_link = $ezplayer_url . '/index.php?action=view_asset_details'
+        . '&album=' . $album
+        . '&asset=' . $asset
+        . '&asset_token=' . $token
+        . '&anon=true';
+
+    // Displaying the popup
+    require_once template_getpath('popup_ezplayer_link.php');
+}
+
+/**
+ * Displays the popup with the ulb code to copypaste
  * @global type $input
  * @global type $repository_path
  * @global type $url 

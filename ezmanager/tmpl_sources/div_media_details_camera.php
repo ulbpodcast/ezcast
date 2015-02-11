@@ -73,6 +73,9 @@ It is part of div_asset_details and has been split apart for readability.
         <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_cam');">®low_res®</a></p>
     </div>
     
+    <span class="BoutonEZplayer"> <a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>');">EZplayer</a> </span>
+
+    
     <span class="BoutonULBCode"> <a href="javascript:visibilite('ULBcode_<?php echo $asset; ?>_1');">®ULBcode®</a> </span>
     <div class="ULBcode" id="ULBcode_<?php echo $asset; ?>_1" style="display:none;">
         <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_cam');">®high_res®</a></p>

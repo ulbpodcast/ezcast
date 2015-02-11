@@ -35,6 +35,9 @@ $message_of_the_day = "$repository_basedir/ezplayer/message_of_day.html";
 
 $default_bookmarks_order = "reverse_chron"; // may be [reverse_chron | chron]
 $default_toc_order = "chron"; // may be [reverse_chron | chron]
+$default_display_thread = true;
+$default_display_thread_notif = true;
+$default_display_count = true;
 
 $accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)

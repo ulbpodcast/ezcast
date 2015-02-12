@@ -119,7 +119,7 @@
     </head>
     <body link="#000088" vlink="#000044" alink="#0000ff" <?php if ($GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
 
-        <div class="container">
+        <div class="container_ezplayer">
         <?php include template_getpath('div_header.php'); ?>
             <div id="global">
 

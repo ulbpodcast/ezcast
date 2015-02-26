@@ -27,7 +27,7 @@ var quality;
 var type;
 var cam_loaded;
 var slide_loaded;
-var panel_width = 295;
+var panel_width = 231;
 var save_currentTime = null;
 var from_shortcut = false;
 var trace_pause = false;
@@ -42,7 +42,7 @@ var notif_display_delay = 10;
  */
 var notif_display_number = 3;
 
-window.addEventListener("keyup", function(e) {
+window.addEventListener("keyup", function (e) {
     var el = document.activeElement;
 
     if (lvl == 3 && (!el || (el.tagName.toLowerCase() != 'input' &&
@@ -54,8 +54,7 @@ window.addEventListener("keyup", function(e) {
                 toggle_play();
                 break;
             case 66:  // 'b'
-                if (fullscreen)
-                    toggle_panel();
+                toggle_panel();
                 break;
             case 68:  // 'd'
                 if (is_logged)
@@ -120,7 +119,7 @@ window.addEventListener("keyup", function(e) {
     }
 }, false);
 
-window.addEventListener("keydown", function(e) {
+window.addEventListener("keydown", function (e) {
     var el = document.activeElement;
 
     if (lvl == 3 && (!el || (el.tagName.toLowerCase() != 'input' &&
@@ -132,23 +131,23 @@ window.addEventListener("keydown", function(e) {
     }
 }, false);
 
-// resizes the video when video is played fullscreen AND bookmark form is visible
-$(window).bind('resize', function(e)
+// resizes the video when video is played fullscreen 
+$(window).bind('resize', function (e)
 {
     window.resizeEvt;
-    $(window).resize(function()
+    $(window).resize(function ()
     {
         // wait for the window being resized
         clearTimeout(window.resizeEvt);
-        window.resizeEvt = setTimeout(function()
+        window.resizeEvt = setTimeout(function ()
         {
-            if (fullscreen && bookmark_form) {
+
+            if (fullscreen) {
                 video_resize();
-            }
-            if (fullscreen && show_panel) {
-                panel_resize();
-                pct = (100 - (panel_width * 100 / ($(window).width()))) + '%';
-                $('video').css('width', pct);
+                if (show_panel) {
+                    panel_resize();
+                    $('video').css('width', $(window).width() - panel_width + 'px');
+                }
 
             }
         }, 250);
@@ -160,7 +159,7 @@ function load_player(media) {
     $('#video_notifications').hide();
     var videos = document.getElementsByTagName('video');
     for (var i = 0, max = videos.length; i < max; i++) {
-        videos[i].addEventListener("seeked", function() {
+        videos[i].addEventListener("seeked", function () {
             previous_time = time;
             time = Math.round(this.currentTime);
             document.getElementById('bookmark_timecode').value = time;
@@ -170,30 +169,31 @@ function load_player(media) {
 
         // Listener on video time change
         // In order to match threads timecode to video timecode
-        videos[i].addEventListener("timeupdate", function() {
+        videos[i].addEventListener("timeupdate", function () {
             currentTime = Math.round(this.currentTime);
 
             if (currentTime == save_currentTime)
                 return;
 
             save_currentTime = currentTime;
-            
-            if (!display_threads_notif) return;
+
+            if (!display_threads_notif)
+                return;
             html_value = "<ul>";
             var i = 0;
             var timecode = currentTime - notif_display_delay;
-            while (i < notif_display_number && timecode <= currentTime){
-                if (timecode >= 0 && typeof threads_array[timecode] !== 'undefined'){
-                    for (var id in threads_array[timecode]){
+            while (i < notif_display_number && timecode <= currentTime) {
+                if (timecode >= 0 && typeof threads_array[timecode] !== 'undefined') {
+                    for (var id in threads_array[timecode]) {
 
                         i++;
                         if (i > notif_display_number)
-                        break;
-                    html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
-                            "<span class='span-link red' onclick='javascript:remove_notification_item(" + timecode + ", " + id + ")' >x</span>" + 
-                            "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " + 
-                            threads_array[timecode][id] + "</span>" + 
-                            "</li>"; 
+                            break;
+                        html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
+                                "<span class='span-link red' onclick='javascript:remove_notification_item(" + timecode + ", " + id + ")' >x</span>" +
+                                "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " +
+                                threads_array[timecode][id] + "</span>" +
+                                "</li>";
                     }
                 }
                 timecode++;
@@ -323,7 +323,7 @@ function toggle_video_quality(media_quality) {
         video.setAttribute('src', source.getAttribute(media + '_src'));
         video.load();
     }
-    video.addEventListener('loadedmetadata', function() {
+    video.addEventListener('loadedmetadata', function () {
         this.currentTime = oldCurrentTime;
     }, false);
     trace_pause = true;
@@ -419,7 +419,7 @@ function show_bookmark_form(source) {
     if (thread_form) {
         hide_thread_form(false);
         return;
-    }        
+    }
 
     $("#video_shortcuts").css("display", "none");
     if (document.getElementById('secondary_video')) {
@@ -431,7 +431,7 @@ function show_bookmark_form(source) {
     } else {
         var video = document.getElementById('main_video');
     }
-    
+
     video.pause();
     document.getElementById('bookmark_timecode').value = Math.round(video.currentTime);
     document.getElementById('bookmark_source').value = source;
@@ -452,8 +452,9 @@ function show_bookmark_form(source) {
         $('#subBtn').removeClass("orange")
         $('#subBtn').addClass("blue");
         $('#bookmark_form').addClass("bookmark");
-    }
-    video_resize_bookmark();
+    }    
+    var window_height = $(window).height() - 39;
+    $('video').animate({'height': (fullscreen) ? (window_height - 275) + 'px' : '250px'});
     $('#bookmark_form').slideDown();
     bookmark_form = true;
 
@@ -461,14 +462,11 @@ function show_bookmark_form(source) {
 
 
 function hide_bookmark_form(canceled) {
+    var window_height = $(window).height() - 39;
     bookmark_form = false;
     $("#video_shortcuts").css("display", "block");
-    $('video').animate({'height': '92.4%'});
-    if (fullscreen && show_panel) {
-        $('#div_right').animate({'height': '92.4%'}, function() {
-            panel_resize()
-        });
-    }
+    $('video').animate({'height': (fullscreen) ? window_height + 'px' : '525px'});
+
     $('#bookmark_form').slideUp();
     if (canceled) {
         document.getElementById('bookmark_title').value = '';
@@ -490,8 +488,8 @@ function toggle_bookmark_form(source) {
     from_shortcut = false;
     if (bookmark_form) {
         server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, source, quality, origin));
-                hide_bookmark_form(false);
-  
+        hide_bookmark_form(false);
+
     } else {
         server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, time, type, source, quality, origin));
         show_bookmark_form(source);
@@ -543,7 +541,7 @@ function show_answer_comment_form(id) {
     if (!$('#answer_comment_message_' + id + '_tinyeditor').hasClass('editor-created')) {
         tinymce.init({
             selector: 'textarea#' + 'answer_comment_message_' + id + '_tinyeditor',
-            theme: "modern",  
+            theme: "modern",
             height: 100,
             language: 'fr_FR',
             plugins: 'paste',
@@ -629,8 +627,9 @@ function show_thread_form() {
 
     $('.add-thread-button').removeClass("active");
     $('.add-thread-button').addClass("active");
-
-    video_resize();
+    
+    var window_height = $(window).height() - 39;
+    $('video').animate({'height': (fullscreen) ? (window_height - 275) + 'px' : '250px'});
     $('#thread_form').slideDown();
     thread_form = true;
 }
@@ -659,7 +658,7 @@ function show_comment_form() {
         });
         $('#comment_message_tinyeditor').addClass('editor-created');
     }
-    
+
     if (tinymce.get('comment_message_tinyeditor'))
         tinymce.get('comment_message_tinyeditor').focus();
     $('#comment_form').slideDown();
@@ -668,13 +667,12 @@ function show_comment_form() {
 }
 
 function hide_thread_form(canceled) {
+
+    var window_height = $(window).height() - 39;
+
     $("#video_shortcuts").css("display", "block");
-    $('video').animate({'height': '92.4%'});
-    if (fullscreen && show_panel) {
-        $('#div_right').animate({'height': '92.4%'}, function() {
-            panel_resize()
-        });
-    }
+    $('video').animate({'height': (fullscreen) ? window_height + 'px' : '525px'});
+
     $('#thread_form').slideUp();
     if (canceled) {
         document.getElementById('thread_title').value = '';
@@ -790,90 +788,137 @@ function video_fullscreen(on) {
     origin = get_origin();
     if (on) {
         fullscreen = true;
-        $('#video_player').css('width', '100%');
-        $('#video_player').css('height', '100%');
-        $('#video_player').css('position', 'fixed');
-        pct = (100 - (panel_width * 100 / ($(window).width()))) + '%';
-        $('video').css('width', (show_panel) ? pct : '100%');
+
         $('.fullscreen-button').addClass("active");
-        if (bookmark_form || thread_form) {
-            pct = (100 - (5.51 + (225 * 100 / $(window).height()))) + '%';
-            $('video').css('height', pct);
-        }
-        // bookmarks panel
-        $('.panel-button').css('display', 'inline-block');
-        $('#video_notifications').addClass('panel-active');
-        panel_fullscreen();
+
         server_trace(new Array('4', 'video_fullscreen_enter', current_album, current_asset, duration, time, type, quality, origin));
     } else {
         fullscreen = false;
-        $('#video_player').css('width', '640px');
-        $('#video_player').css('height', '508px');
-        $('#video_player').css('position', 'relative');
-        $('video').css('width', '99.5%');
+        
         $('.fullscreen-button').removeClass("active");
-        if (bookmark_form || thread_form) {
-            $('video').css('height', '51%');
-        }
-        // bookmarks panel
-        $('.panel-button').css('display', 'none');
-        $('#video_notifications').removeClass('panel-active');
-        panel_exit_fullscreen();
         server_trace(new Array('4', 'video_fullscreen_exit', current_album, current_asset, duration, time, type, quality, origin));
     }
+    video_resize();
 }
 
 function video_resize() {
-    pct = (100 - (5.51 + (300 * 100 / $(window).height())));
-    $('video').animate({'height': (fullscreen) ? pct + '%' : '34%'});
     if (fullscreen) {
-        $('#div_right').animate({'height': (pct + 1) + '%'}, function() {
-            panel_resize();
-        });
+        $('body').css('overflow', 'hidden');
+        $('#video_player').css('width', '100%');
+        $('#video_player').css('height', '100%');
+        $('#video_player').css('position', 'fixed');
+        var window_height = $(window).height();
+        var window_width = $(window).width();
+        var extra_height = 41; // .video_controls = 39px
+        var extra_width = 0;
+
+        if (bookmark_form || thread_form) {
+            extra_height += 275; // #bookmark_form & #thread_form = 275px
+        }
+
+        if (show_panel) {
+            extra_width += panel_width;
+            $('#video_notifications').addClass('panel-active');
+        }
+        $('.video_controls').css('width', '100%');
+
+        window_height -= extra_height;
+        window_width -= extra_width;
+
+        panel_fullscreen();
+        $('#bookmark_form, #thread_form').css('width', window_width + 'px');
+        
+        $('video').css('width', window_width + 'px');
+        $('video').css('height', window_height + 'px');
+
+    } else {
+        var width = 930;
+        var height = 566;
+        var extra_height = 41;
+        var extra_width = 0;
+
+        $('#video_player').css('height', height + 'px');
+        $('#video_notifications').removeClass('panel-active');
+
+        if (bookmark_form || thread_form) {
+            extra_height += 275; // #bookmark_form & #thread_form = 275px
+        }
+
+        if (show_panel) {
+            extra_width += panel_width;
+        }
+        height -= extra_height;
+        width -= extra_width;
+
+        $('.video_controls').css('width', width + 'px');
+
+        panel_exit_fullscreen();
+
+        $('#bookmark_form, #thread_form').css('width', width + 'px');
+        
+        $('video').css('width', width + 'px');
+        $('video').css('height', height + 'px');
+        $('#video_player').css('width', width + 'px');
+        $('#video_player').css('position', 'relative');
+        $('body').css('overflow', 'visible');
     }
 }
 
-function video_resize_bookmark() {
-    pct = (100 - (5.51 + (253 * 100 / $(window).height())));
-    $('video').animate({'height': (fullscreen) ? pct + '%' : '43%'});
-    if (fullscreen) {
-        $('#div_right').animate({'height': (pct + 1) + '%'}, function() {
-            panel_resize();
-        });
-    }
-}
 
 function panel_resize() {
-    pct = (100 - (130 * 100 / $("#div_right").height())) + '%';
-    $('#side_pane').css('height', pct);
-    pct = (100 - ((2 * 55) * 100 / $(".side_pane_content").height())) + '%';
-    $('.bookmark_scroll, .toc_scroll').css('height', pct);
-    pct = (100 - ((2 * 63) * 100 / $(".side_pane_content").height())) + '%';
-    $('.no_content').css('height', pct);
+    $('#side_pane').css('height', ($("#div_right").height() - 125) + 'px');
+    $('.bookmark_scroll, .toc_scroll').css('height', ($(".side_pane_content").height() - 110) + 'px');
+    $('.no_content').css('height', ($(".side_pane_content").height() - 126) + 'px');
 }
 
 function panel_show() {
-    panel_fullscreen();
+    if (fullscreen) {
+        $('video, #bookmark_form, #thread_form').animate({
+            width: ($(window).width() - panel_width) + 'px'
+        });
+        $('#div_right').animate({
+            right: '0px'
+        });
+        $('#video_notifications').addClass('panel-active');
+    } else {
+        $('#div_right').css('height', '652px');
+        $('video, .video_controls, #bookmark_form, #thread_form, #video_player').animate({
+            width: '699px'
+        });
+        $('#side_wrapper').animate({
+            right: '0px'
+        }, function () {
+            $('#div_right').css('overflow', 'visible');
+        });
+    }
+    $('.panel-button').addClass('active');
     show_panel = true;
-    pct = (100 - (panel_width * 100 / ($(window).width()))) + '%';
-    $('video').animate({
-        width: pct
-    });
-    $('#div_right').animate({
-        right: '0px'
-    });
 }
 
 function panel_hide() {
-    panel_fullscreen();
-    show_panel = false;
-    $('#div_right').animate({
-        right: '-300px'
-    });
+    if (fullscreen) {
+        $('#div_right').animate({
+            right: '-300px'
+        });
+        $('video, #bookmark_form, #thread_form').animate({
+            width: '100%'
+        });
+    } else {
+        $('#div_right').css('overflow', 'hidden');
+        $('video, .video_controls, #bookmark_form, #thread_form, #video_player').animate({
+            width: '930px'
+        });
+        $('#side_wrapper').animate({
+            right: '-232px'
+        }, function () {
+            $('#div_right').css('height', '80px');
+        });
 
-    $('video').animate({
-        width: '100%'
-    });
+    }
+    $('#video_notifications').removeClass('panel-active');
+    $('.panel-button').removeClass('active');
+    show_panel = false;
+
 }
 
 function toggle_panel() {
@@ -885,34 +930,33 @@ function toggle_panel() {
         panel_show();
         server_trace(new Array('3', 'panel_show', current_album, current_asset, duration, time, type, quality, origin));
     }
-    $('.panel-button').toggleClass('active');
-    $('#video_notifications').toggleClass('panel-active');
 }
 
 function panel_fullscreen() {
-    $('#div_right').css('right', (show_panel) ? '0px' : '-300px');
+    var window_height = $(window).height() - 39;
+    $('#div_right').css('right', (show_panel) ? '0px' : '-235px');
+    $('#side_wrapper').css('right', '0px');
     $('#div_right').css('position', 'fixed');
-    pct = (100 - (5.51 + (225 * 100 / $(window).height())));
-    $('#div_right').css('height', (bookmark_form || thread_form) ? (pct + 1) + '%' : '92.6%');
+    $('#div_right').css('height', window_height + 'px');
     $('#div_right').css('background-color', '#F1F1F1');
     $('#side-pane-scroll-area').css('height', '100%');
     $('.side_pane_content').css('height', '100%');
     panel_resize();
-    if (!show_panel) {
-        $('#video_notifications').removeClass('panel-active');
-    }
+
 }
 
 function panel_exit_fullscreen() {
     $('#div_right').css('position', 'relative');
     $('#div_right').css('right', '0px');
-    $('#div_right').css('height', '100%');
+    $('#div_right').css('overflow', (show_panel) ? 'visible' : 'hidden');
+    $('#side_wrapper').css('right', (show_panel) ? '0px' : '-235px');
+    $('#div_right').css('height', (show_panel) ? '652px' : '80px');
     $('#div_right').css('background-color', '');
-    $('#side_pane').css('height', '435px');
-    $('#side-pane-scroll-area').css('height', '435px');
-    $('.side_pane_content').css('height', '435px');
-    $('.bookmark_scroll, .toc_scroll').css('height', '323px');
-    $('.no_content').css('height', '307px');
+    $('#side_pane').css('height', '530px');
+    $('#side-pane-scroll-area').css('height', '530px');
+    $('.side_pane_content').css('height', '530px');
+    $('.bookmark_scroll, .toc_scroll').css('height', '418px');
+    $('.no_content').css('height', '402px');
     $('#div_right').css('display', 'block');
 }
 
@@ -922,7 +966,7 @@ function toggle_shortcuts() {
     shortcuts = !shortcuts;
     if (shortcuts)
         $('#video_shortcuts').css('height', '92.4%');
-    $('.shortcuts').animate({'width': (shortcuts) ? 'show' : 'hide'}, function() {
+    $('.shortcuts').animate({'width': (shortcuts) ? 'show' : 'hide'}, function () {
         $('.shortcuts_tab a').toggleClass('active');
         if (!shortcuts)
             $('#video_shortcuts').css('height', '10%');

@@ -513,8 +513,7 @@ function safe_text($string){
     $string = preg_replace('/<\/div>/is', '&lt;/div&gt;', $string);
     // prevent mysql injections
     $string = htmlspecialchars($string, ENT_QUOTES);
-    
-    file_put_contents("debug.killme", $string);
+     
     return $string;
 }
 

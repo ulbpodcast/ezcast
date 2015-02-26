@@ -22,15 +22,18 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 ?>
 
-<div id="popup_copy_bookmark_<?php echo $index ?>" class="reveal-modal left">
-    <h2><b style="text-transform:uppercase;"><?php echo print_bookmark_title($bookmark['title']); ?></b></h2>
-    <h3><?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?></h3>
-    <br/><p>®Copy_bookmark_message®</p>
-    <a class="close-reveal-modal">&#215;</a>
-    <br/>
-    <a href='javascript:copy_bookmark("<?php echo $bookmark['album'] ?>", "<?php echo $bookmark['asset'] ?>", "<?php echo $bookmark['timecode'] ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['title']), ENT_QUOTES); ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['description']), ENT_QUOTES) ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['keywords']), ENT_QUOTES) ?>", "<?php echo $bookmark['level'] ?>", "<?php echo $call ?>", "custom");' class="simple-button blue">®Copy®</a>
-    <a class="close-reveal-modal-button">®Cancel®</a>
-</div>
+<?php
+include_once 'lib_print.php';
+?> 
+
+<h2><b style="text-transform:uppercase;"><?php echo print_bookmark_title($bookmark['title']); ?></b></h2>
+<h3><?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?></h3>
+<br/><p>®Copy_bookmark_message®</p>
+<a class="close-reveal-modal">&#215;</a>
+<br/>
+<a href='javascript:copy_bookmark("<?php echo $bookmark['album'] ?>", "<?php echo $bookmark['asset'] ?>", "<?php echo $bookmark['timecode'] ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['title']), ENT_QUOTES); ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['description']), ENT_QUOTES) ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['keywords']), ENT_QUOTES) ?>", "<?php echo $bookmark['level'] ?>", "<?php echo $source ?>", "custom");' class="simple-button blue">®Copy®</a>
+<a class="close-reveal-modal-button">®Cancel®</a>
+

@@ -22,46 +22,44 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 ?>
 
-<div id="popup_export_bookmarks" class="reveal-modal left up">
-    <h2><b style="text-transform:uppercase;"><?php echo suffix_remove($album); ?></b> // <?php echo get_album_title($album); ?></h2>
-    <?php if (isset($asset_meta['title'])){ ?>
-        <h3><?php echo $asset_meta['title']; ?></h3>
-    <?php } ?>
-    <br/><p>®Select_bookmarks_message®</p>
-    <a class="close-reveal-modal">&#215;</a>
-    <br/>
-    <?php if (isset($album_bookmarks)){ 
-        // export album bookmarks
-        $bookmarks = $album_bookmarks; 
-    } else { 
-        // export asset bookmarks
-        $bookmarks = $asset_bookmarks;         
-    }?>
-    <?php if (isset($bookmarks) && count($bookmarks) > 0){ ?>
+<?php
+include_once 'lib_print.php';
+?> 
+
+<h2><b style="text-transform:uppercase;"><?php echo suffix_remove($album); ?></b> // <?php echo get_album_title($album); ?></h2>
+<?php if (isset($asset_meta['title'])) { ?>
+    <h3><?php echo $asset_meta['title']; ?></h3>
+<?php } ?>
+<br/><p>®Select_bookmarks_message®</p>
+<a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
+<br/>
+
+<?php if (isset($bookmarks) && count($bookmarks) > 0) { ?>
     <form action="index.php?action=export_bookmarks" method="post" id="select_export_bookmark_form" name="export_bookmark_form" onsubmit="return false">
         <input type="hidden" name="album" id="export_album" value="<?php echo $album; ?>"/>
-        <input type="hidden" name="asset" id="export_asset" value="<?php echo $asset_meta['record_date']; ?>"/><br/>
+        <input type="hidden" name="asset" id="export_asset" value="<?php echo $asset_meta['record_date']; ?>"/>
+        <input type="hidden" name="target" id="export_toc_target" value="<?php echo $tab; ?>"/><br/>
         <ul>
-            <li style="border-bottom: solid 1px #cccccc;"><input type="checkbox" onclick="toggle_checkboxes(this, 'export_selection[]')" name="check_all"/><span class="blue-title"><b>®Date®</b></span><span class="blue-title"><b>®Bookmark®</b></span></li>
-        <?php foreach ($bookmarks as $index => $bookmark){ ?>
-            <li>
-                <input style="float: left;" type="checkbox" name="export_selection[]" value="<?php echo $index ?>"/>
-                <div style="display: inline-block; width: 457px; padding-left: 8px;">
-                <span style="padding-left: 0px;"><b><?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?></b></span>
-                <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
-                <div class="right-arrow"></div>
-                <?php print_bookmark_title($bookmark['title']); ?> 
-                </div>
-            </li>
-        <?php } ?>
+            <li style="border-bottom: solid 1px #cccccc;"><input type="checkbox" onclick="toggle_checkboxes(this, 'export_selection[]')" name="check_all"/><span class="<?php echo (($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Date®</b></span><span class="<?php echo (($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Bookmark®</b></span></li>
+            <?php foreach ($bookmarks as $index => $bookmark) { ?>
+                <li>
+                    <input style="float: left;" type="checkbox" name="export_selection[]" value="<?php echo $index ?>"/>
+                    <div style="display: inline-block; width: 457px; padding-left: 8px;">
+                        <span style="padding-left: 0px;"><b><?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?></b></span>
+                        <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
+                        <div class="right-arrow"></div>
+                        <?php print_bookmark_title($bookmark['title']); ?> 
+                    </div>
+                </li>
+            <?php } ?>
         </ul><br/>
-        <a href="#" onclick="document.export_bookmark_form.submit(); return false;" id="export_button" class="simple-button blue" title="®Export_selected_bookmarks®">®Export®</a>
-        <a class="close-reveal-modal-button">®Cancel®</a>
+        <a href="#" onclick="document.export_bookmark_form.submit(); close_popup();
+                return false;" id="export_button" class="simple-button blue" title="®Export_selected_bookmarks®">®Export®</a>
+        <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>
     </form>
-    <?php } else { ?>
-        ®No_bookmarks®
-    <?php } ?>
-</div>
+<?php } else { ?>
+    ®No_bookmarks®
+<?php } ?>

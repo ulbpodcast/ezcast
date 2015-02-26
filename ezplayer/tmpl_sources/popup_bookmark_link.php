@@ -30,7 +30,7 @@ $bookmark_link = $ezplayer_url . '/index.php?action=view_asset_bookmark'
         . '&t=' . $bookmark['timecode'];
 ?>
 
-<div id="popup_bookmark_<?php echo $index ?>" class="reveal-modal left">
+<div id="popup_bookmark_<?php echo $index ?>" class="reveal-modal">
     <h2><?php print_bookmark_title($bookmark['title']); ?></h2>
     <br/><p>®Bookmark_link_message®</p>
     <br/><p style="text-align:center;"><a href="<?php echo $bookmark_link ?>"><?php echo $bookmark_link ?></a></p>

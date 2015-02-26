@@ -117,7 +117,6 @@ function acl_update_watched_assets(){
         $_SESSION['acl_global_count'] = $global_count;
     }
     $_SESSION['acl_watched_assets'] = $watched_assets;   
-    file_put_contents("debug.killme", var_export($watched_assets, true));
 }
 /**
  * Determines if the current user is a professor or not

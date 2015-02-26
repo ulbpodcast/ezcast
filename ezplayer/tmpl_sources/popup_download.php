@@ -22,15 +22,17 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 ?>
+<?php
+include_once 'lib_print.php';
+?> 
 
-<div id="popup_delete_toc_<?php echo $index ?>" class="reveal-modal left">
-    <h2><b style="text-transform:uppercase;"><?php echo print_bookmark_title($bookmark['title']); ?></b></h2>
-    <h3><?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?></h3>
-    <br/><p>®Delete_bookmark_message®</p>
-    <a class="close-reveal-modal">&#215;</a>
-    <br/>
-    <a href="javascript:remove_bookmark('<?php echo $bookmark['album'] ?>', '<?php echo $bookmark['asset'] ?>', '<?php echo $bookmark['timecode'] ?>', '<?php echo $call ?>', 'official');" class="delete-button-confirm">®Delete®</a>
-    <a class="close-reveal-modal-button">®Cancel®</a>
-</div>
+<h2><b><?php echo print_info($asset_meta['title']); ?></b> (<?php echo ($type == 'cam') ? '®Video®' : '®Slides®'; ?>)</h2>
+<h3><?php print_info(substr(get_user_friendly_date($asset_meta['record_date'], '/', false, get_lang(), false), 0, 10)); ?></h3>
+<br/><p><?php echo ($type == 'cam') ? '®Download_movie_message®' : '®Download_slide_message®'; ?></p>
+<a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
+<br/>
+<a href="<?php echo $asset_meta['low_src']; ?>" onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', current_album, current_asset, duration, 'low'));" class="simple-button">®low_res®</a>
+<a href="<?php echo $asset_meta['high_src']; ?>" onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', current_album, current_asset, duration, 'high'));" class="simple-button">®high_res®</a>
+

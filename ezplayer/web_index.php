@@ -94,8 +94,7 @@ if (!user_logged_in()) {
             }
             user_login(trim($input['login']), trim($input['passwd']));
         }
-    }
-    else if (isset($input['action']) && $input['action'] == 'client_trace') {
+    } else if (isset($input['action']) && $input['action'] == 'client_trace') {
         client_trace();
     }
 
@@ -255,6 +254,18 @@ function load_page() {
 
         case 'copy_bookmark':
             bookmark_copy();
+            break;
+
+        case 'share_popup':
+            share_popup();
+            break;
+
+        case 'bookmark_popup':
+            bookmark_popup();
+            break;
+
+        case 'bookmarks_popup':
+            bookmarks_popup();
             break;
 
         case 'remove_asset_bookmark':
@@ -1043,20 +1054,20 @@ function bookmarks_search() {
     if (acl_user_is_logged() && acl_display_threads && in_array('threads', $tab)) { // searches in threads
         $search_result_threads = thread_search($search, $fields_thread, $albums, $asset);
     }
-    
+
     $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
-    trace_append(array($lvl, 
-        $input['origin'] == 'keyword' ? 'keyword_search' : 'bookmarks_search', 
-        $_SESSION['album'] == '' ? '-' : $_SESSION['album'], 
-        $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'], 
-        $search, $target, 
-        implode(", ", $fields), 
-        implode(", ", $fields_thread), 
-        implode(", ", $tab), 
-        count($bookmarks_toc), 
-        count($bookmarks), 
+    trace_append(array($lvl,
+        $input['origin'] == 'keyword' ? 'keyword_search' : 'bookmarks_search',
+        $_SESSION['album'] == '' ? '-' : $_SESSION['album'],
+        $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'],
+        $search, $target,
+        implode(", ", $fields),
+        implode(", ", $fields_thread),
+        implode(", ", $tab),
+        count($bookmarks_toc),
+        count($bookmarks),
         count($search_result_threads)));
-    
+
     include_once template_getpath('div_search_result.php');
 }
 
@@ -1591,7 +1602,7 @@ function thread_edit() {
     thread_update($thread_id, $thread_title, $thread_message, $thread_timecode, $album, $_SESSION['user_full_name']);
     cache_asset_threads_unset($album, $asset);
     cache_album_threads_unset($album);
-    
+
     trace_append(array('3', 'thread_edit', $album, $asset, $thread_timecode, $thread_id));
 
     return thread_details_update();
@@ -1684,7 +1695,7 @@ function thread_delete() {
     thread_delete_by_id($id, $album, $asset);
     cache_asset_threads_unset($album, $asset);
     cache_album_threads_unset($album);
-    
+
     trace_append(array('3', 'thread_delete', $album, $asset, $id));
 
     return threads_list_update();
@@ -1787,6 +1798,130 @@ function bookmarks_delete_all() {
     $input['token'] = ezmam_album_token_get($album);
     $input['click'] = true;
     view_album_assets(true);
+}
+
+/**
+ * Returns the content to put in a share popup
+ * @global type $input
+ * @global type $repository_path
+ * @global type $user_files_path
+ */
+function share_popup() {
+    global $input;
+    global $repository_path;
+    global $ezplayer_url;
+
+    $album = $input['album'];
+    $asset = $input['asset'];
+    $current_time = $input['time'];
+    $type = $input['type'];
+    $display = $input['display'];
+
+    ezmam_repository_path($repository_path);
+
+    $asset_meta = ezmam_asset_metadata_get($album, $asset);
+
+    switch ($display) {
+        case 'share_time':
+            $share_time = $ezplayer_url . '/index.php?action=view_asset_bookmark'
+                    . '&album=' . $album
+                    . '&asset=' . $asset
+                    . '&t=' . $current_time
+                    . '&type=' . $type;
+            include_once template_getpath('popup_share_time.php');
+            break;
+        case 'share_link':
+            if ($type == 'cam') {
+                $asset_meta['high_src'] = get_link_to_media($album, $asset, 'high_cam') . '&origin=link';
+                $asset_meta['low_src'] = get_link_to_media($album, $asset, 'low_cam') . '&origin=link';
+            } else {
+                $asset_meta['high_src'] = get_link_to_media($album, $asset, 'high_slide') . '&origin=link';
+                $asset_meta['low_src'] = get_link_to_media($album, $asset, 'low_slide') . '&origin=link';
+            }
+            include_once template_getpath('popup_download.php');
+            break;
+    }
+
+}
+
+/**
+ * Return a specific bookmark to display in a popup (delete_bookmark / copy_bookmark)
+ * @global type $input
+ * @global type $repository_path
+ * @global type $user_files_path
+ */
+function bookmark_popup() {
+    global $input;
+    global $repository_path;
+    global $user_files_path;
+
+    $bookmark_album = $input['album'];
+    $bookmark_asset = $input['asset'];
+    $bookmark_timecode = $input['timecode'];
+    $tab = $input['tab'];
+    $source = $input['source'];
+
+    ezmam_repository_path($repository_path);
+    user_prefs_repository_path($user_files_path);
+
+    if ($tab == 'custom') {
+        $bookmark = user_prefs_asset_bookmark_get($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode);
+    } else { // removes from table of contents
+        $bookmark = toc_asset_bookmark_get($bookmark_album, $bookmark_asset, $bookmark_timecode);
+    }
+
+    switch ($input['display']) {
+        case 'remove' :
+            include_once template_getpath('popup_delete_bookmark.php');
+            break;
+        case 'copy' :
+            include_once template_getpath('popup_copy_bookmark.php');
+            break;
+    }
+}
+
+/**
+ * Returns a bookmarks list to display in a popup (export_bookmarks / delete_bookmarks)
+ * @global type $input
+ * @global type $repository_path
+ * @global type $user_files_path
+ */
+function bookmarks_popup() {
+    global $input;
+    global $repository_path;
+    global $user_files_path;
+
+    $album = $input['album'];
+    $asset = $input['asset'];
+    $tab = $input['tab'];
+    $source = $input['source'];
+
+    ezmam_repository_path($repository_path);
+    user_prefs_repository_path($user_files_path);
+
+    if (isset($asset) && $asset != '') {
+        $asset_meta = ezmam_asset_metadata_get($album, $asset);
+        if ($tab == 'custom') {
+            $bookmarks = user_prefs_asset_bookmarks_list_get($_SESSION['user_login'], $album, $asset);
+        } else {
+            $bookmarks = toc_asset_bookmark_list_get($album, $asset);
+        }
+    } else {
+        if ($tab == 'custom') {
+            $bookmarks = user_prefs_album_bookmarks_list_get($_SESSION['user_login'], $album);
+        } else {
+            $bookmarks = toc_album_bookmarks_list_get($album);
+        }
+    }
+
+    switch ($input['display']) {
+        case 'delete' :
+            include_once template_getpath('popup_delete_bookmarks.php');
+            break;
+        case 'export' :
+            include_once template_getpath('popup_export_bookmarks.php');
+            break;
+    }
 }
 
 /**
@@ -2231,12 +2366,12 @@ function preferences_update() {
     user_prefs_settings_update($_SESSION['user_login'], "display_new_video_notification", $display_new_video_notification);
     user_prefs_settings_update($_SESSION['user_login'], "display_threads", $display_threads);
     user_prefs_settings_update($_SESSION['user_login'], "display_thread_notification", $display_thread_notification);
-    
+
     acl_update_settings();
-    
+
     trace_append(array('0', 'preferences_update', $display_new_video_notification, $display_threads, $display_thread_notification));
-    
-    if ($display_new_video_notification){
+
+    if ($display_new_video_notification) {
         acl_update_watched_assets();
     } else {
         unset($_SESSION['acl_watched_assets']);
@@ -2250,7 +2385,7 @@ function preferences_update() {
             $ezplayer_url .= "$key=$value&";
         }
     }
-    
+
 
     // 4) Displaying the previous page
     header("Location: " . $ezplayer_url);
@@ -2268,7 +2403,7 @@ function admin_mode_update() {
     if (acl_admin_user()) {
         $_SESSION['admin_enabled'] = !$_SESSION['admin_enabled'];
     }
-    
+
     $input['action'] = $_SESSION['ezplayer_mode'];
 
     if (count($input) > 0) {
@@ -2279,7 +2414,7 @@ function admin_mode_update() {
     }
 
     trace_append(array('0', 'admin_mode_update', $_SESSION['admin_enabled']));
-    
+
     // 4) Displaying the previous page
     header("Location: " . $ezplayer_url);
     load_page();
@@ -2302,9 +2437,9 @@ function vote_add() {
     );
 
     vote_insert($values);
-    if ($vote_type == 0){
+    if ($vote_type == 0) {
         trace_append(array('3', 'vote_up', $_SESSION['album'], $_SESSION['asset'], $comment));
-    } else {        
+    } else {
         trace_append(array('3', 'vote_down', $_SESSION['album'], $_SESSION['asset'], $comment));
     }
     return thread_details_update();

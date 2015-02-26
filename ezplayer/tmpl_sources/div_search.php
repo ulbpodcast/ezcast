@@ -32,7 +32,7 @@
     <div id="advanced_search">
         <div class="search-label">®Search_in® : </div>
         <div id="target">
-            <label><input tabindex='1' onclick="show_search_albums();" type="radio" name="target" checked="checked" value="global"><span>®All®</span></label>
+            <label ><input tabindex='1' onclick="show_search_albums();" type="radio" name="target" checked="checked" value="global"><span>®All®</span></label>
             <label><input tabindex='2' id="album_radio" onclick="show_search_albums();" type="radio" name="target" value="album"><span>®Albums®</span></label>
             <label><input tabindex='3' id="current_radio" onclick="show_search_albums();" type="radio" name="target" value="current"><span>®Current®</span></label>
         </div>  
@@ -101,6 +101,4 @@
     });
 </script>
 
-<div class="reveal-modal-bg"></div>
-<div id="popup_search_result" class="reveal-modal left"></div>
 

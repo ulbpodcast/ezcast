@@ -110,6 +110,7 @@ if(isset($recording_metadata['submitted_cam']))$asset_meta['submitted_cam']=$rec
 if(isset($recording_metadata['submitted_slide']))$asset_meta['submitted_slide']=$recording_metadata['submitted_slide'];
 if(isset($recording_metadata['intro']))$asset_meta['intro']=$recording_metadata['intro'];
 if(isset($recording_metadata['add_title']))$asset_meta['add_title']=$recording_metadata['add_title'];
+$asset_meta['ratio']= (isset($recording_metadata['ratio'])) ? $recording_metadata['ratio'] : 'auto';
 if(isset($recording_metadata['downloadable'])){ // if the recording has been submitted
     $asset_meta['downloadable']=$recording_metadata['downloadable'];
 } else { // the recording comes from EZrecorder

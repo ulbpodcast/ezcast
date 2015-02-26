@@ -25,7 +25,7 @@
 */
 ?>
 
-<div id="popup_import_bookmarks" class="reveal-modal left up">
+<div id="popup_import_bookmarks" class="reveal-modal">
     <a class="close-reveal-modal">&#215;</a>
 <?php require_once template_getpath('div_upload_bookmarks.php'); ?>
 </div>

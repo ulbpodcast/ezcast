@@ -33,7 +33,7 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 }
 ?>
 
-<div class="popup" id="submit_media" style="width: 415px;height: 555px;">
+<div class="popup" id="submit_media" style="width: 415px;height: 575px;">
     <h2 style="display:inline;">®Submit_record®</h2>
 
     <div id="form">
@@ -129,10 +129,19 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
                     ?>
                 </select>
 
+                <br/><br/>  
+                <label>®Ratio®&nbsp;:                      
+                    <span class="small"><a class="info small">®More_info®<span>®Ratio_info®</span></a></span>
+                </label>    
+                <div id='ratio'>    
+                    <input type="radio" name="ratio" value="auto" checked> Auto
+                    <input type="radio" name="ratio" value="16:9"> 16:9
+                    <input type="radio" name="ratio" value="4:3" > 4:3
+                </div>
                 <br/><br/>
 
                 <!-- Super highres checkbox --> 
-                <input type="checkbox" id="keepQuality" name="keepQuality" onclick="visibilite('only_small_files_message');" style="width: 13px; clear:left; margin: 0px 10px 0px 82px; padding: 0px;"/>
+                <input type="checkbox" id="keepQuality" name="keepQuality" onclick="visibilite('only_small_files_message');" style="width: 13px; clear:left; margin: 0px 10px 0px 120px; padding: 0px;"/>
                 <label class="labelcb" for="keepQuality">&nbsp;®Keep_quality®</label>
                 <div class="spacer"></div>
                 <div style="display: none; color: red;" id="only_small_files_message">
@@ -140,12 +149,13 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
                 </div>
 
                 <br/>
-                
-                <input type="checkbox" id="downloadable" name="downloadable" <?php echo ($downloadable !== 'false') ? 'checked' : '' ?> style="width: 13px; clear:left; margin: 0px 10px 0px 82px; padding: 0px;"/>
-                <label class="labelcb" for="downloadable"><span><a class="info" style="font-size: 11px;">®Downloadable_submit®<span style="font-weight: normal; font-size: 10px;">®Download_info_submit®</span></a></span></label>
-                <div class="spacer"></div>
-                <br/>
 
+                <input type="checkbox" id="downloadable" name="downloadable" <?php echo ($downloadable !== 'false') ? 'checked' : '' ?> style="width: 13px; clear:left; margin: 0px 10px 0px 120px; padding: 0px;"/>
+                <label class="labelcb" for="downloadable"><span><a class="info" style="font-size: 11px;">®Downloadable_submit®<span style="font-weight: normal; font-size: 10px;">®Download_info_submit®</span></a></span></label>
+
+                <br/><br/>
+
+                <div class="spacer"></div>
             </div> <!-- END more options -->
 
 
@@ -349,6 +359,7 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
                 fd.append('add_title', document.getElementById('add_title').value);
                 fd.append('keepQuality', (document.getElementById('keepQuality').checked) ? document.getElementById('keepQuality').value : '');
                 fd.append('downloadable', (document.getElementById('downloadable').checked) ? true : false);
+                fd.append('ratio', ($('input[name="ratio"]:checked').val()));
 
                 // called when the form has been submitted to the server
                 xhr.addEventListener("load", function (evt) {

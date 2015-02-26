@@ -61,7 +61,6 @@ switch (strtolower($_SESSION['browser_name'])) {
         break;
 }
 ?> 
-<?php require template_getpath('popup_thread_visibility_choice.php'); ?>
 <div id="main_player">
 
 
@@ -412,7 +411,7 @@ if ($_SESSION['load_video'] == true) {
                     </li>
                 <?php } ?>                
                 <li>
-                    <a class="share-button" href="#" data-reveal-id="popup_share_time" title="®Share_time®" 
+                    <a class="share-button" href="javascript:share_popup(current_album, current_asset, time, type, 'share_time')" title="®Share_time®" 
                        onclick="getElementById('main_video').pause();
                                if (getElementById('secondary_video'))
                                    getElementById('secondary_video').pause();

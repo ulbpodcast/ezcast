@@ -958,7 +958,8 @@ function upload_init() {
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
         'add_title' => $input['add_title'],
-        'downloadable' => $input['downloadable']
+        'downloadable' => $input['downloadable'],
+        'ratio' => $input['ratio']
     );
 
     $res = media_submit_create_metadata($tmp_name, $metadata);
@@ -1211,7 +1212,8 @@ function upload_error() {
 }
 
 /**
- * Processes media submission
+ * Processes media submission 
+ * Used only by old web browsers (when xhr2 is not supported)
  * @global type $input 
  */
 function submit_media() {
@@ -1264,7 +1266,8 @@ function submit_media() {
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
         'add_title' => $input['add_title'],
-        'downloadable' => $input['downloadable']
+        'downloadable' => $input['downloadable'],
+        'ratio' => $input['ratio']
     );
 //    assoc_array2metadata_file($metadata, './metadata_tmp.xml');
     $res = media_submit_create_metadata($tmp_name, $metadata);

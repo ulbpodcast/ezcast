@@ -1231,6 +1231,22 @@ body{
     /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
 }
 
+#form input[type="radio"]{
+    float: none;
+    width:auto;
+    margin: 0px;
+    margin-left: 12px;
+    padding: 0px;
+    border:0px;
+    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+}
+
+#form #ratio{
+    display: inline-block;
+    width: 200px;
+    margin-left: -75px;
+}
+
 #form input.file {
     width: 200px;
 }

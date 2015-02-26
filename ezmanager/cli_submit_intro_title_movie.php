@@ -108,7 +108,8 @@ $processing_assoc=array('submit_date'=>date($dir_date_format),
      'server_pid'=>(string)getmypid(),
      'intro_movie'=>$intro,
      'super_highres' => $asset_meta['super_highres'],
-     'add_title' => $asset_meta['add_title']
+     'add_title' => $asset_meta['add_title'],
+     'ratio' => $asset_meta['ratio']
 );
 
 //check if this is a usersubmitted file and store its original name in asset meta

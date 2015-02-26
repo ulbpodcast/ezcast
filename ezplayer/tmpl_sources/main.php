@@ -402,7 +402,7 @@ if ($trace_on) {
             function show_thread_details(event, thread_id) {
                 if ($(event.target).is('a') || $(event.target).is('span.timecode'))
                     return;
-                
+
                 server_trace(new Array('3', 'thread_detail_show', current_album, current_asset, thread_id));
                 $.ajax({
                     type: 'POST',
@@ -600,7 +600,7 @@ if ($trace_on) {
             }
 
             function thread_details_update(thread_id, from_notif) {
-                if (from_notif){
+                if (from_notif) {
                     server_trace(new Array('3', 'thread_detail_from_notif', current_album, current_asset, thread_id));
                 } else {
                     server_trace(new Array('3', 'thread_detail_refresh', current_album, current_asset, thread_id));
@@ -736,6 +736,22 @@ if ($trace_on) {
                 close_popup();
             }
 
+            function bookmarks_popup(album, asset, tab, source, display){
+                $('#popup_bookmarks').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=bookmarks_popup&click=true',
+                    data: 'album=' + album + '&asset=' + asset + '&tab=' + tab + '&source=' + source + '&display=' + display,
+                    success: function (response) {
+                        $('#popup_bookmarks').html(response);
+                    }
+                });
+                // doesn't work in IE < 10
+                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
+
+                $('#popup_bookmarks').reveal($(this).data());
+            }
+
             function submit_delete_bookmarks_form(source) {
                 $.ajax({
                     type: 'POST',
@@ -751,20 +767,6 @@ if ($trace_on) {
                 close_popup();
             }
 
-            function submit_delete_tocs_form(source) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=delete_bookmarks&click=true&source=' + source,
-                    data: $('#select_delete_toc_form').serialize(),
-                    success: function (response) {
-                        $('#div_right').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //    ajaxSubmitForm('select_delete_toc_form', 'index.php', '?action=delete_bookmarks'+ 
-                //        '&source=' + source, 'div_right');    
-                close_popup();
-            }
 
             function close_popup() {
                 var e = jQuery.Event("click");
@@ -786,6 +788,38 @@ if ($trace_on) {
                 $('#' + tab + '_title_' + index).toggle();
             }
 
+            function share_popup(album, asset, currentTime, type, display){
+                $('#popup_bookmark').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=share_popup&click=true',
+                    data: 'album=' + album + '&asset=' + asset + '&time=' + currentTime + '&type=' + type + '&display=' + display,
+                    success: function (response) {
+                        $('#popup_bookmark').html(response);
+                    }
+                });
+                // doesn't work in IE < 10
+                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
+
+                $('#popup_bookmark').reveal($(this).data());
+            }
+            
+            function bookmark_popup(album, asset, timecode, tab, source, display){
+                $('#popup_bookmark').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=bookmark_popup&click=true',
+                    data: 'album=' + album + '&asset=' + asset + '&timecode=' + timecode + '&tab=' + tab + '&source=' + source + '&display=' + display,
+                    success: function (response) {
+                        $('#popup_bookmark').html(response);
+                    }
+                });
+                // doesn't work in IE < 10
+                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
+
+                $('#popup_bookmark').reveal($(this).data());
+            }
+
             function remove_bookmark(album, asset, timecode, source, tab) {
                 makeRequest('index.php', '?action=remove_asset_bookmark' +
                         '&album=' + album +
@@ -794,6 +828,7 @@ if ($trace_on) {
                         '&source=' + source +
                         '&tab=' + tab +
                         "&click=true", 'div_right');
+                close_popup();
             }
 
             function remove_bookmarks(album, asset) {
@@ -802,7 +837,7 @@ if ($trace_on) {
                         '&asset=' + asset +
                         "&click=true", 'div_center');
             }
-
+            
             function copy_bookmark(album, asset, timecode, title, description, keywords, level, source, tab) {
                 makeRequest('index.php', '?action=copy_bookmark' +
                         '&album=' + album +
@@ -815,6 +850,7 @@ if ($trace_on) {
                         '&source=' + source +
                         '&tab=' + tab +
                         "&click=true", 'div_right');
+                close_popup();
             }
 
             function delete_album_token(album) {
@@ -907,7 +943,7 @@ if ($trace_on) {
                     }
                 }
             }
-            
+
 
             function check_upload_form() {
                 var file = document.getElementById('loadingfile').value;
@@ -1025,6 +1061,13 @@ echo json_encode($valid_extensions);
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
         </div><!-- Container fin -->
 
+        <div class="reveal-modal-bg"></div>         
+        <?php require template_getpath('popup_thread_visibility_choice.php'); ?>
+        <?php require_once template_getpath('popup_import_bookmarks.php'); ?>
+
+        <div id="popup_search_result" class="reveal-modal"></div>
+        <div id="popup_bookmark" class="reveal-modal"></div>
+        <div id="popup_bookmarks" class="reveal-modal"></div>
 
     </body>
 </html>

@@ -447,7 +447,7 @@ body {
 
 .albums ul li a{
     display: block;
-    width: 100%;
+    width: 825px;
     padding: 12px 0px;
     margin-left: 96px;
     text-decoration: none;
@@ -568,7 +568,7 @@ body {
 #div_left{
     position: relative;
     float: left;
-    width: 640px;
+    width: 699px;
     min-height: 450px;
 }
 
@@ -602,8 +602,8 @@ body {
 }
 
 #assets {
-    width: 638px;
-    min-height: 508px;
+    width: 697px;
+    min-height: 566px;
     background: #ffffff;  
     margin-bottom: 15px;
 }
@@ -633,7 +633,7 @@ body {
 
 #assets ul li a.item, #threads ul li a.item{
     display: block;
-    width: 606px;
+    width: 665px;
     padding: 12px 16px;
     text-decoration: none;
     color: #333333;
@@ -668,8 +668,8 @@ body {
 
 #video_player{
     position: relative;
-    width: 640px;
-    height: 508px;
+    width: 699px;
+    height: 566px;
     z-index: 750;
     top: 0px;
     left: 0px;
@@ -682,9 +682,6 @@ body {
     position: absolute;
     width: 250px;
     height: 10%;
-    border: solid;
-    border-width: 2px 0px 0px 2px;
-    border-color: #5e8183;
 }
 
 .shortcuts{
@@ -795,11 +792,8 @@ body {
 #main_video,
 #secondary_video{
     display: block;
-    width: 99.5%;
-    height: 92.4%;
-    border: solid;
-    border-width: 2px;
-    border-color: #5e8183;
+    width: 699px;
+    height: 525px;
     background-color: #000000;
 }
 
@@ -821,15 +815,17 @@ body {
 .video_controls{
     display: block;
     position: absolute;
-    width: 96.6%;
-    height: 5.51%;
-    padding: 0.5% 1.8%;
+    width: 699px;
+    height: 33px;
+    padding: 3px 0px;
     background: #333333;
     text-align: center;
+    border-top: 2px solid #5e8183;
 }
 
 .video_controls ul{
     display: block;
+    margin-top: 2px;
 }
 
 .video_controls ul li{
@@ -1001,7 +997,7 @@ body {
 }
 
 .video_controls ul li a.panel-button{
-    display: none;
+    display: inline-block;
     height: 22px;
     width: 25px;
     background:transparent url(../images/Generale/panel-a.png) no-repeat center center; 
@@ -1016,7 +1012,7 @@ body {
 
 #bookmark_form{
     display: none;
-    padding-bottom: 15px;
+    height: 275px;
     z-index: 850;
     background-color: #F1F1F1;
     width: 100%;
@@ -1043,9 +1039,9 @@ body {
 
 #thread_form{
     display: none;
-    padding-bottom: 12px;
     z-index: 850;
     background-color: #F1F1F1;
+    height: 275px;
     width: 100%;
     -moz-box-sizing:    border-box;
     -webkit-box-sizing: border-box;
@@ -1061,21 +1057,19 @@ body {
 #thread_description_wrapper{
     clear: left;
     display: inline-block;
-    margin: 0px 0px 14px 10px;
+    margin: 0px 0px 4px 10px;
 }
 
 #thread_form_header{
     width: 100%;
-    height: auto;
     background-color: #25b8a5;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 9px;
+    padding-bottom: 8px;
 }
 #bookmark_form_header{
     width: 100%;
-    height: auto;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 8px;
+    padding-bottom: 11px;
 }
 .form_header_label{
     font-size: 16px;  
@@ -1191,12 +1185,12 @@ body {
 
 .asset_details_header{
     display: inline-block;
-    width: 530px;
+    width: 575px;
 }
 
 .download-button{
     display: inline-block;
-    width: 270px;
+    width: 225px;
     text-align: center;
 }
 
@@ -1813,19 +1807,19 @@ body {
     position: absolute;
     z-index: 95;
     right: 0px;
-    width: 283px;
-    padding: 5px;
+    width: 228px;
+    padding: 5px 3px;
     margin-top: 25px;
 }
 
 #main_search{
-    width: 240px;
+    width: 185px;
     float: left;
 }
 
 #advanced_search{
     display: none;
-    width: 242px;
+    width: 187px;
     min-height: 200px;
     float: left;
     border: solid;
@@ -1881,10 +1875,10 @@ body {
 }
 
 #target label {
-    float:left;
     margin-right: 6px;
     width: 68px;
-
+    padding: 2px 0px;
+    display: block;
 }
 
 #target label span {
@@ -1894,7 +1888,7 @@ body {
 .search_albums{
     display: none;
     padding: 0px 8px;
-    width: 226px;
+    width: 167px;
     overflow-y: auto;
     border-top: solid #CCCCCC 1px;
     border-bottom: solid #CCCCCC 1px;
@@ -2037,9 +2031,9 @@ body {
 #div_right{
     position: relative;
     float: right;
-    width: 293px;
-    height: 100%;
-    min-height: 265px;
+    width: 235px;
+    height: 652px;
+    min-height: 80px;
     top: 0px;
     right: 0px;
     z-index: 760;
@@ -2047,9 +2041,13 @@ body {
 
 #side_menu{    
     display: block;
-    max-width: 283px;
-    margin: 0px 5px;
+    max-width: 228px;
+    margin: 0px 3px;
     margin-top: 86px; 
+}
+
+#side_wrapper{
+    position: absolute;
 }
 
 .bookmarks_button,
@@ -2215,9 +2213,9 @@ body {
 #side_pane{
     clear: both;
     display: block;
-    width: 283px;
-    height: 472px;
-    margin: 0px 5px;
+    width: 228px;
+    height: 530px;
+    margin: 0px 3px;
     background-color: #FFFFFF;
     overflow: hidden;
 }
@@ -2229,21 +2227,21 @@ body {
 .side_pane_content{
     display: block;
     float: left;
-    width: 283px;
-    height: 472px;
+    width: 228px;
+    height: 530px;
     overflow: hidden;
 }
 
 .no_content{
     padding: 8px 16px;
     display: block;
-    height: 342px;
+    height: 402px;
 }
 
 .side_pane_up,
 .side_pane_down{
     display: block;
-    width: 283px;
+    width: 228px;
     height: 55px;
     background: #ffffff;
 }
@@ -2251,7 +2249,7 @@ body {
 .side_pane_up a,
 .side_pane_down a{
     display: block;
-    width: 283px;
+    width: 228px;
     height: 55px;   
 }
 
@@ -2277,8 +2275,8 @@ body {
 
 .side_pane_content ul{
     display: block;
-    height: 360px;
-    width: 298px;
+    height: 418px;
+    width: 243px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -2304,7 +2302,7 @@ body {
 .side_pane_content ul li a.item.orange{
     padding: 6px 0px;
     padding-right: 14px;
-    width: 230px;
+    width: 175px;
     display: inline-block;
     vertical-align:top;
 }
@@ -2369,7 +2367,7 @@ body {
 }
 
 .side_pane_content ul li.level_2 a.item{
-    width: 226px;
+    width: 171px;
 }
 
 .side_pane_content ul li.level_2{ 
@@ -2390,7 +2388,7 @@ body {
 }
 
 .side_pane_content ul li.level_3 a.item{
-    width: 222px;
+    width: 167px;
 }
 
 .side_pane_content ul li.level_3{ 
@@ -2523,7 +2521,7 @@ span.more{
 
 .bookmark_info{
     display: block;
-    width: 248px;
+    width: 190px;
 }
 
 li.blue .bookmark_info a,
@@ -2596,7 +2594,11 @@ b.green-title{
 
 .side_pane_content input{
     display: none;
-    width: 150px;
+    width: 175px;
+}
+
+.side_pane_content textarea{
+    width: 175px;
 }
 
 .edit_bookmark_form input{
@@ -2605,13 +2607,13 @@ b.green-title{
 
 .edit_bookmark_form{
     display: none;
-    width: 248px;
+    width: 215px;
 }
 
 .edit_bookmark_form .editButtons{
     display: block;
     margin-bottom: -45px;
-    margin-left: 80px;
+    margin-left: 60px;
 }
 
 /* Bookmark options (delete - edit - share) */
@@ -2748,20 +2750,14 @@ span.red:hover{
     color: #c23328;
 }
 /* ------------------ POPUP IMPORT/EXPORT BOOKMARKS -------------- */
-#popup_export_bookmarks ul,
-#popup_export_toc ul,
-#popup_import_bookmarks ul,
-#popup_delete_bookmarks ul,
-#popup_delete_tocs ul {
+#popup_bookmarks ul,
+#popup_import_bookmarks ul {
     max-height: 450px;
     overflow-y: auto;
 }
 
-#popup_export_bookmarks ul li,
-#popup_export_toc ul li,
-#popup_import_bookmarks ul li,
-#popup_delete_bookmarks ul li,
-#popup_delete_tocs ul li{
+#popup_bookmarks ul li,
+#popup_import_bookmarks ul li{
     display: block;
     list-style: none;
     width: 480px;
@@ -3064,6 +3060,7 @@ a.tooltip:hover div.tip{
     -webkit-border-radius: 8px;
     border-radius: 8px;
     padding: 4px 8px;
+    margin: 8px;
     width: 290px;
     background: rgba(255,255,255,0.85);
     right: 4px;
@@ -3105,7 +3102,7 @@ a.tooltip:hover div.tip{
 }
 
 #video_notifications.panel-active{
-    right: 297px;
+    right: 240px;
 }
 
 #notifications{
@@ -3117,7 +3114,7 @@ a.tooltip:hover div.tip{
     list-style: none;
     border-bottom: 1px dotted;
     position: relative;
-    z-index: 1000;
+    z-index: 700;
     margin: 5px;
     padding: 3px 5px 8px 5px;
 }

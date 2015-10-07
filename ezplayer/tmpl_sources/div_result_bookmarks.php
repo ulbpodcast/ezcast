@@ -16,7 +16,7 @@
         ?>
         <li id="result_<?php echo $index; ?>" class="result">
 
-            <span class="more"><a class="more-button blue" onclick="toggle_detail('<?php echo $index; ?>', 'result', $(this));"></a></span>
+            <span class="more"><a class="more-button blue" onclick="bookmark_more_toggle('<?php echo $index; ?>', 'result', $(this));"></a></span>
 
             <a class="result_item" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>')">
                 <span class="timecode">(<?php print_time($bookmark['timecode']); ?>) </span><?php print_bookmark_title($bookmark['title']); ?>

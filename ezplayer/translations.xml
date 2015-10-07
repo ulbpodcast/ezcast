@@ -97,8 +97,14 @@
         <label id="Preferences" lang="en">Preferences</label>
         <label id="Preferences_title" lang="fr">Afficher les préférences</label>
         <label id="Preferences_title" lang="en">Display preferences</label>
+        <label id="Contact" lang="fr">Contact</label>
+        <label id="Contact" lang="en">Contact us</label>
+        <label id="Contact_title" lang="fr">Nous signaler un problème</label>
+        <label id="Contact_title" lang="en">Report a problem</label>
         <label id="Update" lang="fr">Sauvegarder</label>
         <label id="Update" lang="en">Update</label>
+        <label id="Send" lang="fr">Envoyer</label>
+        <label id="Send" lang="en">Send</label>
         <label id="subscribe_rss" lang="fr">S'abonner au flux RSS</label>
         <label id="subscribe_rss" lang="en">Subscribe to RSS feed</label>
         <label id="share_album" lang="fr">Partager l'album</label>
@@ -139,6 +145,8 @@
         <label id="Delete_comment" lang="en">Delete comment</label>
         <label id="Edit_comment" lang="fr">Modifier le commentaire</label>
         <label id="Edit_comment" lang="en">Edit comment</label>
+        <label id="Warning" lang="fr">Avertissement</label>
+        <label id="Warning" lang="en">Warning</label>
         <label id="Warning_edit" lang="fr">Attention ! Lorsqu'un commentaire est modifié, les votes et approbation sont réinitialisés</label>
         <label id="Warning_edit" lang="en">Warning ! When a comment is edited, the votes and approval are reset</label>
         <label id="Visibility_students" lang="en">Visible to students only</label>
@@ -343,7 +351,78 @@
          <label id="Thread_nbComments" lang="en">Number of comments on this discussion</label>
         
 
+         <!-- Contact form -->         
+        <label id="Contact_h2" lang="fr">Un problème ? Une suggestion ?</label>
+        <label id="Contact_h2" lang="en">Problem ? Suggestion ? </label>
+        <label id="Contact_message" lang="fr">Utilisez le formulaire suivant pour entrer en contact avec nous. Pensez à renseigner votre adresse email si vous souhaitez une réponse de notre part.</label>
+        <label id="Contact_message" lang="en">Use the following form to contact us. Fill in your email address if you want us to reply.</label>
+        <label id="Email_address" lang="fr">Adresse email</label>
+        <label id="Email_address" lang="en">Email address</label>
+        <label id="Subject" lang="fr">Sujet</label>
+        <label id="Subject" lang="en">Subject</label>
+        <label id="Missing_album" lang="fr">Album manquant</label>
+        <label id="Missing_album" lang="en">Missing album</label>
+        <label id="Missing_recording" lang="fr">Enregistrement manquant</label>
+        <label id="Missing_recording" lang="en">Missing recording</label>
+        <label id="No_sound" lang="fr">Vidéo sans son</label>
+        <label id="No_sound" lang="en">No sound in the video</label>
+        <label id="Video_problem" lang="fr">Problème de lecture vidéo</label>
+        <label id="Video_problem" lang="en">Video problem</label>
+        <label id="Thread_problem" lang="fr">Problème lié aux discussions</label>
+        <label id="Thread_problem" lang="en">Discussions related problem</label>
+        <label id="Bookmark_problem" lang="fr">Problème lié aux signets</label>
+        <label id="Bookmark_problem" lang="en">Bookmarks related problem</label>
+        <label id="Bug" lang="fr">Signaler un bug</label>
+        <label id="Bug" lang="en">Report a bug</label>
+        <label id="Help_contact" lang="fr">Demander de l'aide</label>
+        <label id="Help_contact" lang="en">Ask for help</label>
+        <label id="Feature" lang="fr">Proposer une amélioration</label>
+        <label id="Feature" lang="en">Suggest an improvement</label>
+        <label id="Other" lang="fr">Autre</label>
+        <label id="Other" lang="en">Other</label>
 
+        <!-- Chat -->
+        <label id="Chat_header" lang="fr">Messagerie instantanée</label>
+        <label id="Chat_header" lang="en">Instant messaging</label>
+        <label id="Private_msg" lang="fr">Message privé</label>
+        <label id="Private_msg" lang="en">Private message</label>
+        <label id="Public_msg" lang="fr">Message public</label>
+        <label id="Public_msg" lang="en">Public message</label>
+        <label id="You" lang="fr">Vous</label>
+        <label id="You" lang="en">You</label>
+        <label id="Chat_text_ad" lang="fr">Utilisez le hashtag &lt;a href='javascript:chat_question_add();'&gt;#question&lt;/a&gt; pour poser votre question au professeur</label>
+        <label id="Chat_text_ad" lang="en">Use hashtag &lt;a href='javascript:chat_question_add();'&gt;#question&lt;/a&gt; to ask a question to your teacher</label>
+        <label id="Chat_qst_ad" lang="fr">Liste des questions posées par les utilisateurs du chat</label>
+        <label id="Chat_qst_ad" lang="en">List of questions asked by chat users</label>
+        <label id="Chat_help_ad" lang="fr">Voici les possibilités du chat</label>
+        <label id="Chat_help_ad" lang="en">Here are the features of the chat</label>
+        <label id="Chat_placeholder" lang="fr">Votre message</label>
+        <label id="Chat_placeholder" lang="en">Your message</label>
+        <label id="Chat_messages" lang="fr">Messagerie instantanée</label>
+        <label id="Chat_messages" lang="en">Instant messaging</label>
+        <label id="Chat_questions" lang="fr">Liste des questions</label>
+        <label id="Chat_questions" lang="en">Questions list</label>
+        <label id="Chat_help" lang="fr">Aide pour le chat</label>
+        <label id="Chat_help" lang="en">Help for the chat</label>
+        <label id="Chat_size" lang="fr">Réduire / agrandir le chat</label>
+        <label id="Chat_size" lang="en">Reduce / Enlarge the chat</label>
+        <label id="Chat_private_msg" lang="fr">Messages privés</label>
+        <label id="Chat_private_msg" lang="en">Private messages</label>
+        <label id="Chat_private_msg_desc" lang="fr">Commencez votre message par &lt;b&gt;@pseudo&lt;/b&gt; pour adresser un message privé qui ne pourra être lu que par l'utilisateur mentionné</label>
+        <label id="Chat_private_msg_desc" lang="en">Start your message with &lt;b&gt;@nickmname&lt;/b&gt; to write a private message that could be read by the tagged user only</label>
+        <label id="Chat_ref" lang="fr">Référencement</label>
+        <label id="Chat_ref" lang="en">Referencing</label>
+        <label id="Chat_ref_desc" lang="fr">Utilisez le hashtag &lt;b&gt;#question&lt;/b&gt; pour référencer votre question dans une liste qui pourra être rapidement consultée par votre professeur</label>
+        <label id="Chat_ref_desc" lang="en">Use hashtag &lt;b&gt;#question&lt;/b&gt; to reference your question in a list that could be quickly consulted by your teacher</label>
+        <label id="Chat_url" lang="fr">Liens web (URL)</label>
+        <label id="Chat_url" lang="en">Web links (URL)</label>
+        <label id="Chat_url_desc" lang="fr">Insérez des liens web dans vos messages Les URL sont automatiquement reconnues lorsqu'elles commencent par www ou http://. Pour créer d'autres liens ou alias, utilisez les astérisques:  &lt;b&gt;**www.monlien.be**&lt;/b&gt; ou &lt;b&gt;**www.monlien.be mon alias de lien**&lt;/b&gt;</label>    
+        <label id="Chat_url_desc" lang="en">Insert web links in your messages. URLs are automatically recognized when they start with www or http://. To create other links or aliases, use this syntax:  &lt;b&gt;**www.mylink.be**&lt;/b&gt; ou &lt;b&gt;**www.mylink.be my alias**&lt;/b&gt;</label>    
+        <label id="Chat_date" lang="fr">Date et heure</label>
+        <label id="Chat_date" lang="en">Date and hour</label>
+        <label id="Chat_date_desc" lang="fr">Cliquez sur un message pour afficher la date et l'heure de publication</label>    
+        <label id="Chat_date_desc" lang="en">Click on a message to display its time of publication</label>    
+        
         
         <!-- Actions and buttons -->
         <label id="Browse" lang="fr">Parcourir</label>
@@ -434,6 +513,8 @@
         <label id="Import" lang="en">Import</label>
         <label id="Reverse_bookmarks_order" lang="fr">Inverser l'ordre des signets</label>
         <label id="Reverse_bookmarks_order" lang="en">Reverse bookmarks order</label>
+        <label id="Live_stream" lang="fr">Streaming en direct</label>
+        <label id="Live_stream" lang="en">Live stream</label>
         <label id="New_video" lang="fr">vidéo non visionnée</label>
         <label id="New_video" lang="en">not yet watched video</label>
         <label id="New_videos" lang="fr">vidéos non visionnées</label>
@@ -668,6 +749,8 @@
         <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
         <label id="Load_for_switch" lang="fr">Les deux vidéos doivent être chargées une première fois pour disposer de la fonction de switch. Appuyez sur "Play" et le switch sera fonctionnel.</label>
         <label id="Load_for_switch" lang="en">Both videos must be loaded to enable the switch function. Press "Play" to load this video.</label>
+        <label id="Live_stream_switch" lang="fr">Vous avez mis la vidéo en pause. En changeant la source du lecteur, votre progression sera perdue et vous serez ramené au direct (si le streaming en direct est terminé, vous n'y aurez plus accès).</label>
+        <label id="Live_stream_switch" lang="en">You have paused the video. By switching the video source, your progression will be reset and you will be back to live (if the live stream is finished you could not access it anymore).</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
         <label id="Player_url_message" lang="fr">Pour consulter ou distribuer cet album via le lecteur enrichi "EZplayer", veuillez utiliser le lien suivant :</label>

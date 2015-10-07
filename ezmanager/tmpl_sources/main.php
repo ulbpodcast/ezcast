@@ -43,10 +43,13 @@
         <script type="text/javascript" src="js/AppearDissapear.js"></script>
         <script type="text/javascript" src="js/hover.js"></script>
         <script type="text/javascript" src="js/httpRequest.js"></script>
-        <script type="text/javascript" src="js/jQuery/jquery-1.3.2.min.js"></script>
+        <script type="text/javascript" src="js/jQuery/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="js/ZeroClipboard.js"></script>
         <script src="js/jquery.colorbox.js"></script>
         <script type="text/javascript" src="js/upload.js"></script>
+        
+        <script type="text/javascript" src="jQuery-DateTimePicker/jquery.simple-dtpicker.js"></script>
+        <link type="text/css" href="jQuery-DateTimePicker/jquery.simple-dtpicker.css" rel="stylesheet" />
         <script type="text/javascript">
             /**
              * Retrieves album header and displays it in div_album_header

@@ -50,13 +50,33 @@ if ($trace_on) {
 <?php } ?>
         </script>
         <script type="text/javascript" src="lib/tinymce/tinymce.min.js"></script>
-        <script type="text/javascript" src="js/jQuery/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="js/jQuery/jquery-2.1.3.min.js"></script>
+        <?php
+        global $streaming_video_player;
+        switch ($streaming_video_player) {
+            case 'momovi' :
+                ?>
+                <script src="momovi/static/js/video.js"></script>
+                <script src="momovi/static/js/jquery.ba-throttle-debounce.min.js"></script>
+                <?php
+                break;
+            case 'flowplayer' :
+                ?>
+                <link rel="stylesheet" href="flowplayer-6/skin/functional.css">
+                <script src="flowplayer-6/flowplayer.min.js"></script>
+                <?php
+                break;
+        }
+        ?>
         <script type="text/javascript" src="js/httpRequest.js"></script>            
         <script type="text/javascript" src="js/jQuery/jquery.scrollTo-1.4.3.1-min.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery.localscroll-1.2.7-min.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery.reveal.js"></script>
         <script type="text/javascript" src="js/jQuery/highlight-js.js"></script>
-        <script type="text/javascript" src="js/player.js"></script>
+        <script type="text/javascript" src="js/lib_player.js"></script>
+        <script type="text/javascript" src="js/lib_threads.js"></script>
+        <script type="text/javascript" src="js/lib_bookmarks.js"></script>
+        <script type="text/javascript" src="js/lib_chat.js"></script>
         <script type="text/javascript" src="js/ZeroClipboard.js"></script>
 
         <script>
@@ -70,6 +90,7 @@ if ($trace_on) {
             var display_thread_details = false;
             var display_threads_notif = false;
             var thread_to_display = null;
+            var ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
 
             ZeroClipboard.setMoviePath('./swf/ZeroClipboard10.swf');
 
@@ -90,7 +111,7 @@ if ($trace_on) {
                     }
                 });
 
-                //===== CHECKBOX ONCHANGE ======================================
+                // settings checkboxes 
                 if (!$("input[name='display_threads']").is(':checked')) {
                     $('#settings_notif_threads').removeAttr('checked');
                     $('#settings_notif_threads').attr("disabled", "disabled");
@@ -106,6 +127,7 @@ if ($trace_on) {
 
                 });
 
+                // history handler for back/next buttons of the browser
                 window.onpopstate = function (event) {
                     if (event.state !== null) {
                         var state = jQuery.parseJSON(JSON.stringify(event.state));
@@ -113,6 +135,519 @@ if ($trace_on) {
                     }
                 };
             });
+
+            // ============== N A V I G A T I O N ================ //
+
+            /**
+             * Navigates to assets list
+             * @param {type} album
+             * @param {type} asset
+             * @param {type} timecode
+             * @param {type} type
+             * @returns {undefined}
+             */
+            function show_album_assets(album, token) {
+                // the side pane changes to display the list of all assets contained in the selected album
+                current_album = album;
+                current_token = token;
+
+                // Getting the content from the server, and filling the div_album_header with it
+                document.getElementById('div_center').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
+                tinymce.remove();
+                makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true', 'div_center');
+                // history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 'index.php?action=view_album_assets');
+            }
+
+            /**
+             * Navigates to the given asset
+             * @param {type} album
+             * @param {type} asset
+             * @param {type} asset_token
+             * @returns {undefined}
+             */
+            function show_asset_details(album, asset, asset_token) {
+                current_album = album;
+                current_asset = asset;
+                display_thread_details = false;
+
+                makeRequest('index.php', '?action=view_asset_details&album=' + album + '&asset=' + asset + '&asset_token=' + asset_token + '&click=true', 'div_center');
+                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
+            }
+
+            /**
+             * Navigates to the given asset
+             * @param {type} album
+             * @param {type} asset
+             * @param {type} asset_token
+             * @returns {undefined}
+             */
+            function show_asset_streaming(album, asset, asset_token) {
+                current_album = album;
+                current_asset = asset;
+                display_thread_details = false;
+
+                makeRequest('index.php', '?action=view_asset_streaming&album=' + album + '&asset=' + asset + '&asset_token=' + asset_token + '&click=true', 'div_center');
+                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
+            }
+
+            /**
+             * Navigates to the given thread (from trending threads)
+             * @param {type} threadId
+             * @returns {Boolean}
+             */
+            function show_thread(album, asset, timecode, threadId, commentId) {
+                if (album != null && asset != null) {
+                    current_album = album;
+                    current_asset = asset;
+                }
+                if (typeof fullscreen != 'undefined' && fullscreen) {
+                    video_fullscreen(false);
+                }
+                if (ezplayer_mode == 'view_asset_streaming')
+                    player_kill();
+
+                server_trace(new Array('2', 'thread_detail_from_trending', current_album, current_asset, timecode, threadId));
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=view_asset_bookmark',
+                    data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
+                    success: function (response) {
+                        $('#div_center').html(response);
+                        if (commentId != '') {
+                            $.scrollTo('#comment_' + commentId);
+                        } else {
+                            $.scrollTo('#threads');
+                        }
+                    }
+                });
+                close_popup();
+            }
+
+            /**
+             * Displays the detail of a thread (from threads list)
+             * @returns {Boolean}
+             */
+            function show_thread_details(event, thread_id) {
+                if ($(event.target).is('a') || $(event.target).is('span.timecode'))
+                    return;
+
+                server_trace(new Array('3', 'thread_detail_show', current_album, current_asset, thread_id));
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=view_thread_details&click=true',
+                    data: {'thread_id': thread_id},
+                    success: function (response) {
+                        $('#threads').html(response);
+                        tinymce.remove('textarea');
+                    }
+                });
+            }
+
+            /**
+             * Navigates to the given bookmark
+             * @param {type} threadId
+             * @returns {Boolean}
+             */
+            function show_asset_bookmark(album, asset, timecode, type) {
+                current_album = album;
+                current_asset = asset;
+
+                if (ezplayer_mode == 'view_asset_streaming')
+                    player_kill();
+
+                makeRequest('index.php', '?action=view_asset_bookmark&album=' + album + '&asset=' + asset + '&t=' + timecode + '&type=' + type + '&click=true', 'div_center');
+                close_popup();
+            }
+
+
+            // ================ S E A R C H ================== //
+
+            /**
+             * Modifies the display of the search form
+             * @returns {Boolean}
+             */
+            function search_form_setup() {
+                if ($('#album_radio').is(':checked')) {
+                    $('.search_current').hide();
+                    $('.search_albums').show();
+                } else if ($('#current_radio').is(':checked')) {
+                    $('.search_albums').hide();
+                    $('.search_current').show();
+                } else {
+                    $('.search_albums').hide();
+                    $('.search_current').hide();
+                }
+            }
+
+            /**
+             * Verifies the search form before submitting it
+             * @returns {Boolean}
+             */
+            function search_form_check() {
+                var search_words = $('#main_search').val();
+                if (typeof search_words != 'undefined') {
+                    if (search_words.trim() == '') {
+                        return false;
+                    }
+                    search_form_submit();
+                }
+            }
+
+            /**
+             * Adjusts the search options according to the selected fields
+             * (bookmarks | threads)
+             * @returns {Boolean}
+             */
+            function search_options_adjust() {
+                if ($('#cb_toc').is(':checked') || $('#cb_bookmark').is(':checked')) {
+                    $('#search_bookmarks').removeClass('hidden');
+                } else {
+                    $('#search_bookmarks').addClass('hidden');
+                }
+                if ($('#cb_threads').is(':checked')) {
+                    $('#search_threads').removeClass('hidden');
+                } else {
+                    $('#search_threads').addClass('hidden');
+                }
+            }
+
+            /**
+             * Submits the search form to the server
+             * @param {type} index
+             * @param {type} tab
+             * @returns {Boolean}
+             */
+            function search_form_submit() {
+                $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=threads_bookmarks_search&click=true',
+                    data: $('#search_form').serialize(),
+                    success: function (response) {
+                        $('#div_popup').html(response);
+                    }
+                });
+                // doesn't work in IE < 10
+                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'div_popup');  
+
+                $('#div_popup').reveal($(this).data());
+            }
+
+            /**
+             * Submits the keyword to be searched to the server
+             * @returns {Boolean}
+             */
+            function keyword_search(keyword) {
+                $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=threads_bookmarks_search&click=true&origin=keyword',
+                    data: 'search=' + keyword + '&target=global&albums%5B%5D=&fields%5B%5D=keywords&tab%5B%5D=official&tab%5B%5D=custom&level=0',
+                    success: function (response) {
+                        $('#div_popup').html(response);
+                    }
+                });
+                // doesn't work in IE < 10
+                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'div_popup');  
+
+                $('#div_popup').reveal($(this).data());
+            }
+
+            // ============== A L B U M S ============== //
+
+            /**
+             * Deletes an album from the home page
+             * @param {type} album
+             * @returns {undefined}
+             */
+            function album_token_delete(album) {
+                makeRequest('index.php', '?action=album_token_delete' +
+                        '&album=' + album +
+                        '&click=true', 'div_center');
+                close_popup();
+            }
+
+            /**
+             * Sets the album position (up/down)
+             */
+            function album_token_move(album, index, upDown) {
+                makeRequest('index.php', '?action=album_token_move' +
+                        '&album=' + album + '&index=' + index + '&up_down=' + upDown + "&click=true", 'div_center');
+            }
+
+            // ============== F O R M   V A L I D A T I O N ============= //
+
+            // -------------- B O O K M A R K S ------------- //
+
+            /**
+             * checks the bookmark creation form before submitting it
+             * @returns {Boolean}
+             */
+            function bookmark_form_check() {
+                var timecode = document.getElementById('bookmark_timecode');
+                var level = document.getElementById('bookmark_level');
+
+                if (isNaN(timecode.value)
+                        || timecode.value == ''
+                        || timecode.value < 0) {
+                    window.alert('®Bad_timecode®');
+                    return false;
+                }
+
+                if (isNaN(level.value)
+                        || level.value < 1
+                        || level.value > 3) {
+                    window.alert('®Bad_level®');
+                    return false;
+                }
+                return true;
+            }
+
+            /**
+             * checks the bookmark edition form before submitting it
+             * @returns {Boolean}
+             */
+            function bookmark_edit_form_check(index, tab) {
+                var timecode = document.getElementById(tab + '_timecode_' + index);
+                var level = document.getElementById(tab + '_level_' + index);
+
+                if (timecode.value == ''
+                        || timecode.value < 0) {
+                    window.alert('®Bad_timecode®');
+                    return false;
+                }
+
+                if (isNaN(level.value)
+                        || level.value < 1
+                        || level.value > 3) {
+                    window.alert('®Bad_level®');
+                    return false;
+                }
+                return true;
+            }
+
+            /**
+             * Checks the xml file containing bookmarks
+             * @returns {Boolean}
+             */
+            function bookmarks_upload_form_check() {
+                var file = document.getElementById('loadingfile').value;
+                if (file == '') {
+                    window.alert('®No_file®');
+                    return false;
+                } else {
+                    var ext = file.split('.').pop();
+                    var extensions = <?php
+        global $valid_extensions;
+        echo json_encode($valid_extensions);
+        ?>;
+
+                    // check if extension is accepted
+                    var found = false;
+                    for (var i = 0; i < extensions.length; i++) {
+                        if (found = (extensions[i] == ext.toLowerCase()))
+                            break;
+                    }
+                    if (!found) {
+                        window.alert('®bad_extension®');
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // -------------- T H R E A D S ------------- //
+
+            /**
+             * Checks the thread creation form 
+             * @returns {undefined}             
+             */
+            function thread_form_check() {
+
+                document.getElementById('thread_desc_tinymce').value = tinymce.get('thread_desc_tinymce').getContent();
+                var timecode = document.getElementById('thread_timecode');
+                var message = document.getElementById('thread_desc_tinymce').value;
+                var title = document.getElementById('thread_title').value;
+
+                if (isNaN(timecode.value)
+                        || timecode.value == ''
+                        || timecode.value < 0) {
+                    window.alert('®Bad_timecode®');
+                    return false;
+                }
+                if (message === '') {
+                    window.alert('®missing_message®');
+                    return false;
+                }
+                if (title === '') {
+                    window.alert('®missing_title®');
+                    return false;
+                }
+                return true;
+            }
+
+            /**
+             * Checks the thread edition form
+             * @param {type} id
+             * @returns {undefined}             */
+            function thread_edit_form_check(threadId) {
+                $("#edit_thread_message_" + threadId + "_tinyeditor").html(tinymce.get("edit_thread_message_" + threadId + "_tinyeditor").getContent());
+                var message = document.getElementById("edit_thread_message_" + threadId + "_tinyeditor").value;
+                var title = document.getElementById('edit_thread_title_' + threadId).value;
+                if (message === '') {
+                    window.alert('®missing_message®');
+                    return false;
+                }
+                if (title === '') {
+                    window.alert('®missing_title®');
+                    return false;
+                }
+                return true;
+            }
+
+            /**
+             * Checks the comment creation form
+             * @param {type} id
+             * @returns {undefined}             */
+            function thread_comment_form_check() {
+
+                $('#comment_message_tinyeditor').html(tinymce.get('comment_message_tinyeditor').getContent());
+                var message = document.getElementById('comment_message_tinyeditor').value;
+                if (message == '') {
+                    window.alert('®missing_message®');
+                    return false;
+                }
+                return true;
+            }
+
+            /**
+             * Checks the comment reply form
+             * @param {type} event
+             * @param {type} thread_id
+             * @returns {undefined}             */
+            function comment_answer_form_check(id) {
+                $('#answer_comment_message_' + id + '_tinyeditor').html(tinymce.get('answer_comment_message_' + id + '_tinyeditor').getContent());
+                var message = document.getElementById('answer_comment_message_' + id + '_tinyeditor').value;
+
+                if (message == '') {
+                    window.alert('®missing_message®');
+                    return false;
+                }
+                return true;
+            }
+
+            // =============== A D M I N   M O D E  ,  C O N T A C T   &   P R E F E R E N C E S ============== //
+
+            /**
+             * Enables/Disables admin mode
+             * @type 
+             */
+            function admin_mode_update() {
+                // creates a form 
+                var form = document.createElement("form");
+                form.setAttribute("method", 'post');
+                form.setAttribute("action", 'index.php');
+
+                // adds a hidden field containing the action
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", 'action');
+                hiddenField.setAttribute("value", 'admin_mode_update');
+
+                form.appendChild(hiddenField);
+
+                // submits the form
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            // shows the settings / contact form
+            function header_form_show(src) {
+                switch (src) {
+                    case 'settings':
+                        $('#settings_form').slideDown();
+                        $('#user-settings').addClass('active');
+                        settings_form = true;
+                        break;
+                    case 'contact':
+                        $('#contact_form').slideDown();
+                        $('#contact').addClass('active');
+                        contact_form = true;
+                        break;
+                }
+            }
+
+            // hides the settings /contact form
+            function header_form_hide(src) {
+                switch (src) {
+                    case 'settings':
+                        $('#settings_form').slideUp();
+                        $('#user-settings').removeClass('active');
+                        settings_form = false;
+                        break;
+                    case 'contact':
+                        $('#contact_form').slideUp();
+                        $('#contact').removeClass('active');
+                        contact_form = false;
+                        break;
+                }
+            }
+            // shows/hides the settings / contact form
+            function header_form_toggle(src) {
+                if ((settings_form && src == "settings") || (contact_form && src == "contact")) {
+                    server_trace(new Array('4', src + '_hide', current_album, current_asset));
+                    header_form_hide(src);
+                } else {
+                    server_trace(new Array('4', src + '_show', current_album, current_asset));
+                    header_form_show(src);
+                }
+            }
+
+            // =============== P O P - U P  ================ //
+
+            /**
+             * Renders a modal window with a message related to an album
+             * @param {type} display the action to be shown in the modal window (delete | rss | ...)
+             * @returns {undefined}  
+             */
+            function popup_album(album, display) {
+                $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=album_popup&click=true',
+                    data: 'album=' + album + '&display=' + display,
+                    success: function (response) {
+                        $('#div_popup').html(response);
+                    }
+                });
+                $('#div_popup').reveal($(this).data());
+            }
+
+            /**
+             * Renders a modal window with a message related to an asset
+             * @param {type} display the action to be shown in the modal window (share_link | share_time | ...)
+             * @returns {undefined}             */
+            function popup_asset(album, asset, currentTime, type, display) {
+                $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: 'index.php?action=asset_popup&click=true',
+                    data: 'album=' + album + '&asset=' + asset + '&time=' + currentTime + '&type=' + type + '&display=' + display,
+                    success: function (response) {
+                        $('#div_popup').html(response);
+                    }
+                });
+                $('#div_popup').reveal($(this).data());
+            }
+
+            // Closes the modal window being displayed
+            function close_popup() {
+                var e = jQuery.Event("click");
+                $(".reveal-modal-bg").trigger(e); // trigger it on document
+            }
+
+            // =============== V A R I O U S ================= //
+
 
             // Links an instance of clipboard to its position 
             function copyToClipboard(id, tocopy, width) {
@@ -138,766 +673,52 @@ if ($trace_on) {
                 $(id).html(clip.getHTML(width, 30));
             }
 
-            function show_album_assets(album, token) {
-                // the side pane changes to display the list of all assets contained in the selected album
-                current_album = album;
-                current_token = token;
-
-                // Getting the content from the server, and filling the div_album_header with it
-                document.getElementById('div_center').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
-                tinymce.remove();
-                makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true', 'div_center');
-                // history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 'index.php?action=view_album_assets');
-            }
-
-            function show_asset_details(album, asset, asset_token) {
-                current_album = album;
-                current_asset = asset;
-                display_thread_details = false;
-
-                makeRequest('index.php', '?action=view_asset_details&album=' + album + '&asset=' + asset + '&asset_token=' + asset_token + '&click=true', 'div_center');
-                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
-            }
-
-            function show_thread(album, asset, timecode, threadId, commentId) {
-                if (album != null && asset != null) {
-                    current_album = album;
-                    current_asset = asset;
-                }
-                if (typeof fullscreen != 'undefined' && fullscreen) {
-                    video_fullscreen(false);
-                }
-
-                server_trace(new Array('2', 'thread_detail_from_trending', current_album, current_asset, timecode, threadId));
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=view_asset_bookmark',
-                    data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
-                    success: function (response) {
-                        $('#div_center').html(response);
-                        if (commentId != '') {
-                            $.scrollTo('#comment_' + commentId);
-                        } else {
-                            $.scrollTo('#threads');
-                        }
-                    }
-                });
-            }
-
-            function show_asset_bookmark(album, asset, timecode, type) {
-                current_album = album;
-                current_asset = asset;
-
-                makeRequest('index.php', '?action=view_asset_bookmark&album=' + album + '&asset=' + asset + '&t=' + timecode + '&type=' + type + '&click=true', 'div_center');
-            }
-
-
-            function show_search_albums() {
-                if ($('#album_radio').is(':checked')) {
-                    $('.search_current').hide();
-                    $('.search_albums').show();
-                } else if ($('#current_radio').is(':checked')) {
-                    $('.search_albums').hide();
-                    $('.search_current').show();
-                } else {
-                    $('.search_albums').hide();
-                    $('.search_current').hide();
-                }
-            }
-
-            function check_bookmark_form() {
-                var timecode = document.getElementById('bookmark_timecode');
-                var level = document.getElementById('bookmark_level');
-
-                if (isNaN(timecode.value)
-                        || timecode.value == ''
-                        || timecode.value < 0) {
-                    window.alert('®Bad_timecode®');
-                    return false;
-                }
-
-                if (isNaN(level.value)
-                        || level.value < 1
-                        || level.value > 3) {
-                    window.alert('®Bad_level®');
-                    return false;
-                }
-                return true;
-            }
-
-            function check_edit_bookmark_form(index, tab) {
-                var timecode = document.getElementById(tab + '_timecode_' + index);
-                var level = document.getElementById(tab + '_level_' + index);
-
-                if (timecode.value == ''
-                        || timecode.value < 0) {
-                    window.alert('®Bad_timecode®');
-                    return false;
-                }
-
-                if (isNaN(level.value)
-                        || level.value < 1
-                        || level.value > 3) {
-                    window.alert('®Bad_level®');
-                    return false;
-                }
-                return true;
-            }
-
-            function sort_bookmarks(panel, order, source) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=sort_asset_bookmark',
-                    data: 'panel=' + panel + '&order=' + order + "&source=" + source + "&click=true",
-                    success: function (response) {
-                        $('#div_right').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //     ajaxSubmitForm('submit_' + tab + '_form_' + index, 'index.php', '?action=add_asset_bookmark', 'div_right');  
-
-            }
-
-            function submit_bookmark_form() {
-                var tab = document.getElementById('bookmark_source').value;
-                (tab == 'custom') ? current_tab = 'main' : current_tab = 'toc';
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=add_asset_bookmark&click=true',
-                    data: $('#submit_bookmark_form').serialize(),
-                    success: function (response) {
-                        $('#div_right').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //   ajaxSubmitForm('submit_bookmark_form', 'index.php', '?action=add_asset_bookmark', 'div_right');  
-                hide_bookmark_form(true);
-
-            }
-
-            function submit_edit_bookmark_form(index, tab) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=add_asset_bookmark&click=true',
-                    data: $('#submit_' + tab + '_form_' + index).serialize(),
-                    success: function (response) {
-                        $('#div_right').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //     ajaxSubmitForm('submit_' + tab + '_form_' + index, 'index.php', '?action=add_asset_bookmark', 'div_right');  
-
-            }
-            //===== THREAD =====================================================
-
-            function check_thread_form() {
-
-                document.getElementById('thread_desc_tinymce').value = tinymce.get('thread_desc_tinymce').getContent();
-                var timecode = document.getElementById('thread_timecode');
-                var message = document.getElementById('thread_desc_tinymce').value;
-                var title = document.getElementById('thread_title').value;
-
-                if (isNaN(timecode.value)
-                        || timecode.value == ''
-                        || timecode.value < 0) {
-                    window.alert('®Bad_timecode®');
-                    return false;
-                }
-                if (message === '') {
-                    window.alert('®missing_message®');
-                    return false;
-                }
-                if (title === '') {
-                    window.alert('®missing_title®');
-                    return false;
-                }
-                return true;
-            }
-
-            function check_edit_thread_form(threadId) {
-                $("#edit_thread_message_" + threadId + "_tinyeditor").html(tinymce.get("edit_thread_message_" + threadId + "_tinyeditor").getContent());
-                var message = document.getElementById("edit_thread_message_" + threadId + "_tinyeditor").value;
-                var title = document.getElementById('edit_thread_title_' + threadId).value;
-                if (message === '') {
-                    window.alert('®missing_message®');
-                    return false;
-                }
-                if (title === '') {
-                    window.alert('®missing_title®');
-                    return false;
-                }
-                return true;
-            }
-            function check_comment_form() {
-
-                $('#comment_message_tinyeditor').html(tinymce.get('comment_message_tinyeditor').getContent());
-                var message = document.getElementById('comment_message_tinyeditor').value;
-                if (message == '') {
-                    window.alert('®missing_message®');
-                    return false;
-                }
-                return true;
-            }
-            function check_answer_comment_form(id) {
-                // Divers vérifications
-                $('#answer_comment_message_' + id + '_tinyeditor').html(tinymce.get('answer_comment_message_' + id + '_tinyeditor').getContent());
-                var message = document.getElementById('answer_comment_message_' + id + '_tinyeditor').value;
-
-                if (message == '') {
-                    window.alert('®missing_message®');
-                    return false;
-                }
-                return true;
-            }
-
-            function choose_thread_visibility(value) {
-                if (value == 1)
-                    $('#thread_visibility').attr("checked", "checked")
-                else
-                    $('#thread_visibility').removeAttr("checked");
-                if (check_thread_form())
-                    submit_thread_form();
-            }
-
-            function submit_thread_form() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=add_asset_thread&click=true',
-                    data: $('#submit_thread_form').serialize(),
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-
-                hide_thread_form(true);
-            }
-
-            function submit_comment_form() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=add_thread_comment&click=true',
-                    data: $('#submit_comment_form').serialize(),
-                    success: function (response) {
-                        hide_comment_form();
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-
-            function submit_answer_comment_form(id) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=add_thread_comment_answer&click=true',
-                    data: {'answer_message': document.getElementById('answer_comment_message_' + id + '_tinyeditor').value, 'answer_parent': document.getElementById('answer_parent_' + id).value, 'thread_id': document.getElementById('answer_thread_' + id).value, 'answer_nbChilds': document.getElementById('answer_nbChilds_' + id).value, 'album': document.getElementById('answer_album').value, 'asset': document.getElementById('answer_asset').value},
-                    success: function (response) {
-                        hide_answer_comment_form(id);
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-
-            function show_thread_details(event, thread_id) {
-                if ($(event.target).is('a') || $(event.target).is('span.timecode'))
-                    return;
-
-                server_trace(new Array('3', 'thread_detail_show', current_album, current_asset, thread_id));
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=thread_details_view&click=true',
-                    data: {'thread_id': thread_id},
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-//                history.pushState({"key": "thread-details"}, 'thread-details', 'index.php?action=show_thread_detail');
-            }
-
-            function threads_list_update(refresh) {
-                if (refresh) {
-                    server_trace(new Array('3', 'thread_list_refresh', current_album, current_asset));
-                } else {
-                    server_trace(new Array('3', 'thread_list_back', current_album, current_asset));
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=threads_list_view&click=true',
-                    data: {'album': current_album, 'asset': current_asset},
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-
-            function delete_asset_thread(thread_id, album, asset) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=delete_asset_thread&click=true',
-                    data: {'thread_id': thread_id, 'thread_album': album, 'thread_asset': asset},
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-            function delete_thread_comment(thread_id, comment_id) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=delete_thread_comment&click=true',
-                    data: {'thread_id': thread_id, 'comment_id': comment_id},
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-
-            function edit_thread_comment(comId) {
-
-                if (!$("#edit_comment_message_" + comId + "_tinyeditor").hasClass('edited')) {
-                    tinymce.init({
-                        selector: "textarea#edit_comment_message_" + comId + "_tinyeditor",
-                        theme: "modern",
-                        height: 100,
-                        language: 'fr_FR',
-                        plugins: 'paste',
-                        paste_as_text: true,
-                        paste_merge_formats: false,
-                        menubar: false,
-                        statusbar: true,
-                        resize: true,
-                        toolbar: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignjustify | bullist numlist",
-                        style_formats: [
-                            {title: 'Titre 1', block: 'h1'},
-                            {title: 'Titre 2', block: 'h2'},
-                            {title: 'Titre 3', block: 'h3'},
-                            {title: 'Indice', inline: 'sub'},
-                            {title: 'Exposant', inline: 'sup'}
-                        ]
-                    });
-                    $("#edit_comment_message_" + comId + "_tinyeditor").addClass('edited');
-                }
-                if (tinymce.get("edit_comment_message_" + comId + "_tinyeditor"))
-                    tinymce.get("edit_comment_message_" + comId + "_tinyeditor").focus();
-                $('.comment-options').hide();
-                $('#comment_message_id_' + comId).hide();
-                $('#edit-options-' + comId).show();
-                $('#edit_comment_' + comId).show();
-                $('#comment_message_' + comId).focus();
-            }
-            function edit_asset_thread(threadId) {
-                if (!$("#edit_thread_message_" + threadId + "_tinyeditor").hasClass('edited')) {
-                    tinymce.init({
-                        selector: "textarea#edit_thread_message_" + threadId + "_tinyeditor",
-                        theme: "modern",
-                        width: 555,
-                        height: 100,
-                        language: 'fr_FR',
-                        plugins: 'paste',
-                        paste_as_text: true,
-                        paste_merge_formats: false,
-                        menubar: false,
-                        statusbar: true,
-                        resize: true,
-                        toolbar: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignjustify | bullist numlist",
-                        style_formats: [
-                            {title: 'Titre 1', block: 'h1'},
-                            {title: 'Titre 2', block: 'h2'},
-                            {title: 'Titre 3', block: 'h3'},
-                            {title: 'Indice', inline: 'sub'},
-                            {title: 'Exposant', inline: 'sup'}
-                        ]
-                    });
-                    $("edit_thread_message_" + threadId + "_tinyeditor").addClass('edited')
-                }
-                if (tinymce.get("edit_thread_message_" + threadId + "_tinyeditor"))
-                    tinymce.get("edit_thread_message_" + threadId + "_tinyeditor").focus();
-                $('#message-thread').hide();
-                $('#thread-options').hide();
-                $('#edit_thread_form_' + threadId).show();
-                $('#edit_thread_title' + threadId).focus();
-
-            }
-
-            function hide_edit_comment(comId) {
-                $('#comment_message_id_' + comId).show();
-                $('.comment-options').show();
-                $('#edit-options-' + comId).hide();
-                $('#edit_comment_' + comId).hide();
-            }
-
             function nl2br(str, is_xhtml) {
                 var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
                 return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
-            }
-
-            function cancel_edit_comment(comId) {
-                tinymce.get("edit_comment_message_" + comId + "_tinyeditor").setContent($('#comment_message_id_' + comId).text());
-                hide_edit_comment(comId);
-            }
-
-            function cancel_edit_thread(threadId) {
-                $('#edit_thread_form_' + threadId).hide();
-                $('#message-thread').show();
-                $('#thread-options').show();
-            }
-
-            function submit_edit_comment_form(comment_id) {
-                $('#edit_comment_message_' + comment_id + '_tinyeditor').html(tinymce.get('edit_comment_message_' + comment_id + '_tinyeditor').getContent());
-                var message = document.getElementById('edit_comment_message_' + comment_id + '_tinyeditor').value;
-                if (message == '') {
-                    window.alert('®missing_message®');
-                    return false;
-                }
-                var album = document.getElementById('edit_comment_album').value;
-                var asset = document.getElementById('edit_comment_asset').value;
-                var thread = document.getElementById('edit_comment_thread').value;
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=update_thread_comment&click=true',
-                    data: {'comment_id': comment_id, 'comment_message': message, 'thread_id': thread, 'album': album, 'asset': asset},
-                    success: function (response) {
-                        hide_edit_comment(comment_id);
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-
-            function submit_edit_thread_form(threadId, album, asset) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=update_asset_thread&click=true',
-                    data: {
-                        'thread_id': threadId,
-                        'thread_title': document.getElementById('edit_thread_title_' + threadId).value,
-                        'thread_message': document.getElementById('edit_thread_message_' + threadId + '_tinyeditor').value,
-                        'thread_timecode': document.getElementById('edit_thread_timecode_' + threadId).value,
-                        'thread_album': album,
-                        'thread_asset': asset
-                    },
-                    success: function (response) {
-                        $('#edit_thread_form_' + threadId).hide();
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-
-                    }
-                });
-            }
-
-            function toggle_hidden_thread_part(_id) {
-                if ($('#hidden-item-thread-' + _id).is(":hidden")) {
-                    $('#hidden-item-thread-' + _id).slideDown();
-                    $('.more-button-' + _id).addClass("active");
-                } else {
-                    $('#hidden-item-thread-' + _id).slideUp();
-                    $('.more-button-' + _id).removeClass("active");
-                }
-            }
-
-            function thread_details_update(thread_id, from_notif) {
-                if (from_notif) {
-                    server_trace(new Array('3', 'thread_detail_from_notif', current_album, current_asset, thread_id));
-                } else {
-                    server_trace(new Array('3', 'thread_detail_refresh', current_album, current_asset, thread_id));
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=thread_details_view&click=true',
-                    data: {'thread_id': thread_id},
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                        $.scrollTo('#threads');
-                    }
-                });
-            }
-
-
-
-            //=== END - THREAD =================================================
-
-            function admin_mode_update() {
-                // creates a form 
-                var form = document.createElement("form");
-                form.setAttribute("method", 'post');
-                form.setAttribute("action", 'index.php');
-
-                // adds a hidden field containing the action
-                var hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", 'action');
-                hiddenField.setAttribute("value", 'admin_mode_update');
-
-                form.appendChild(hiddenField);
-
-                // submits the form
-                document.body.appendChild(form);
-                form.submit();
-            }
-
-            //===== BEGIN - VOTE ===============================================
-            function vote(user, comment, type) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=vote&click=true',
-                    data: {'login': user, 'comment': comment, 'vote_type': type},
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-
-            function approve(comment) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=approve&click=true',
-                    data: {'approved_comment': comment},
-                    success: function (response) {
-                        $('#threads').html(response);
-                        tinymce.remove('textarea');
-                    }
-                });
-            }
-            //=== END - VOTE ===================================================
-
-            //===== SEARCH =====================================================
-            function show_search_options() {
-                if ($('#cb_toc').is(':checked') || $('#cb_bookmark').is(':checked')) {
-                    $('#search_bookmarks').removeClass('hidden');
-                } else {
-                    $('#search_bookmarks').addClass('hidden');
-                }
-                if ($('#cb_threads').is(':checked')) {
-                    $('#search_threads').removeClass('hidden');
-                } else {
-                    $('#search_threads').addClass('hidden');
-                }
-            }
-
-            //==================================================================
-            function check_search_form() {
-                var search_words = $('#main_search').val();
-                if (typeof search_words != 'undefined') {
-                    if (search_words.trim() == '') {
-                        return false;
-                    }
-                    submit_search_form();
-                }
-            }
-
-            function submit_search_form() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=search_bookmark&click=true',
-                    data: $('#search_form').serialize(),
-                    success: function (response) {
-                        $('#popup_search_result').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
-
-                $('#popup_search_result').reveal($(this).data());
-            }
-
-            function search_keyword(keyword) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=search_bookmark&click=true&origin=keyword',
-                    data: 'search=' + keyword + '&target=global&albums%5B%5D=&fields%5B%5D=keywords&tab%5B%5D=official&tab%5B%5D=custom&level=0',
-                    success: function (response) {
-                        $('#popup_search_result').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
-
-                $('#popup_search_result').reveal($(this).data());
-            }
-
-            function submit_import_bookmarks_form(source) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=import_bookmarks&click=true&source=' + source,
-                    data: $('#select_import_bookmark_form').serialize(),
-                    success: function (response) {
-                        $('#div_right').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //   ajaxSubmitForm('select_import_bookmark_form', 'index.php', '?action=import_bookmarks'+ 
-                //       '&source=' + source, 'div_right');    
-                close_popup();
-            }
-
-            function bookmarks_popup(album, asset, tab, source, display){
-                $('#popup_bookmarks').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=bookmarks_popup&click=true',
-                    data: 'album=' + album + '&asset=' + asset + '&tab=' + tab + '&source=' + source + '&display=' + display,
-                    success: function (response) {
-                        $('#popup_bookmarks').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
-
-                $('#popup_bookmarks').reveal($(this).data());
-            }
-
-            function submit_delete_bookmarks_form(source) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=delete_bookmarks&click=true&source=' + source,
-                    data: $('#select_delete_bookmark_form').serialize(),
-                    success: function (response) {
-                        $('#div_right').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //   ajaxSubmitForm('select_delete_bookmark_form', 'index.php', '?action=delete_bookmarks'+ 
-                //       '&source=' + source, 'div_right');    
-                close_popup();
-            }
-
-
-            function close_popup() {
-                var e = jQuery.Event("click");
-                $(".reveal-modal-bg").trigger(e); // trigger it on document
-            }
-
-            function edit_bookmark(index, tab, title, description, keywords, level) {
-                document.getElementById(tab + '_title_' + index).value = title;
-                document.getElementById(tab + '_description_' + index).value = description;
-                document.getElementById(tab + '_keywords_' + index).value = keywords;
-                document.getElementById(tab + '_level_' + index).value = level;
-                toggle_edit_bookmark_form(index, tab);
-            }
-
-            function toggle_edit_bookmark_form(index, tab) {
-                $('#' + tab + index).toggle();
-                $('#' + tab + '_info_' + index).toggle();
-                $('#edit_' + tab + '_' + index).toggle();
-                $('#' + tab + '_title_' + index).toggle();
-            }
-
-            function share_popup(album, asset, currentTime, type, display){
-                $('#popup_bookmark').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=share_popup&click=true',
-                    data: 'album=' + album + '&asset=' + asset + '&time=' + currentTime + '&type=' + type + '&display=' + display,
-                    success: function (response) {
-                        $('#popup_bookmark').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
-
-                $('#popup_bookmark').reveal($(this).data());
-            }
-            
-            function bookmark_popup(album, asset, timecode, tab, source, display){
-                $('#popup_bookmark').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=bookmark_popup&click=true',
-                    data: 'album=' + album + '&asset=' + asset + '&timecode=' + timecode + '&tab=' + tab + '&source=' + source + '&display=' + display,
-                    success: function (response) {
-                        $('#popup_bookmark').html(response);
-                    }
-                });
-                // doesn't work in IE < 10
-                //        ajaxSubmitForm('search_form', 'index.php', '?action=search_bookmark', 'popup_search_result');  
-
-                $('#popup_bookmark').reveal($(this).data());
-            }
-
-            function remove_bookmark(album, asset, timecode, source, tab) {
-                makeRequest('index.php', '?action=remove_asset_bookmark' +
-                        '&album=' + album +
-                        '&asset=' + asset +
-                        '&timecode=' + timecode +
-                        '&source=' + source +
-                        '&tab=' + tab +
-                        "&click=true", 'div_right');
-                close_popup();
-            }
-
-            function remove_bookmarks(album, asset) {
-                makeRequest('index.php', '?action=remove_asset_bookmarks' +
-                        '&album=' + album +
-                        '&asset=' + asset +
-                        "&click=true", 'div_center');
-            }
-            
-            function copy_bookmark(album, asset, timecode, title, description, keywords, level, source, tab) {
-                makeRequest('index.php', '?action=copy_bookmark' +
-                        '&album=' + album +
-                        '&asset=' + asset +
-                        '&timecode=' + timecode +
-                        '&title=' + title +
-                        '&description=' + description +
-                        '&keywords=' + keywords +
-                        '&level=' + level +
-                        '&source=' + source +
-                        '&tab=' + tab +
-                        "&click=true", 'div_right');
-                close_popup();
-            }
-
-            function delete_album_token(album) {
-                makeRequest('index.php', '?action=delete_album_token' +
-                        '&album=' + album +
-                        '&click=true', 'div_center');
-            }
-
-            function move_album_token(album, index, upDown) {
-                makeRequest('index.php', '?action=move_album_token' +
-                        '&album=' + album + '&index=' + index + '&up_down=' + upDown + "&click=true", 'div_center');
-            }
-
-            function toggle_detail(index, pane, elem) {
-                $('#' + pane + '_detail_' + index).slideToggle();
-                $('#' + pane + '_' + index).toggleClass('active');
-                elem.toggleClass('active');
-
-                server_trace(new Array('3', elem.hasClass('active') ? 'bookmark_show' : 'bookmark_hide', current_album, current_asset, current_tab));
-                var millisecondsToWait = 350;
-                setTimeout(function () {
-                    $('.' + pane + '_scroll').scrollTo('#' + pane + '_' + index);
-                    // Whatever you want to do after the wait
-                }, millisecondsToWait);
             }
 
             function toggle(elem) {
                 $(elem).toggle(200);
             }
 
+            // checks/unchecks all checkboxes
             function toggle_checkboxes(source, target) {
                 var checkboxes = document.getElementsByName(target);
                 for (var i = 0; i < checkboxes.length; i++)
                     checkboxes[i].checked = source.checked;
             }
 
-            function scroll(direction, element) {
-                var scrolled = $(element).scrollTop();
-                if (direction == 'up') {
-                    var scroll = scrolled + 55;
-                } else {
-                    var scroll = scrolled - 55;
-                }
-
-                $(element).animate({scrollTop: scroll}, "fast");
+            // scrolls to the given component
+            function scrollTo(component) {
+                if (typeof $('#' + component)[0] != 'undefined')
+                    $('#' + component)[0].scrollIntoView(true);
             }
 
+            // sends an array to the server containing the action trace to be saved
+            function server_trace(array) {
+
+                if (trace_on) { // from main.php
+                    $.ajax({
+                        type: 'POST',
+                        url: 'index.php?action=client_trace',
+                        data: {info: array}
+                    });
+                }
+                return true;
+            }
+
+            // determines whether the action has been triggered from a button or a keyboard shortcut
+            function get_origin() {
+                if (from_shortcut) { // a key has been pressed to run the action
+                    from_shortcut = false;
+                    return "from_shortcut";
+                } else {
+                    return "from_button";
+                }
+            }
+
+            // determines whether official or personal bookmarks tab is active
             function setActivePane(elem) {
                 if (elem == '.bookmarks_button') {
                     $('.settings.bookmarks').show();
@@ -912,7 +733,6 @@ if ($trace_on) {
                 $('.toc_button').removeClass("active");
                 $(elem).addClass("active");
             }
-
 
             // Render a styled file input in the submit form
             function initFileUploads() {
@@ -945,45 +765,6 @@ if ($trace_on) {
             }
 
 
-            function check_upload_form() {
-                var file = document.getElementById('loadingfile').value;
-                if (file == '') {
-                    window.alert('®No_file®');
-                    return false;
-                } else {
-                    var ext = file.split('.').pop();
-                    var extensions = <?php
-global $valid_extensions;
-echo json_encode($valid_extensions);
-?>;
-
-                    // check if extension is accepted
-                    var found = false;
-                    for (var i = 0; i < extensions.length; i++) {
-                        if (found = (extensions[i] == ext.toLowerCase()))
-                            break;
-                    }
-                    if (!found) {
-                        window.alert('®bad_extension®');
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-
-            function submit_upload_bookmarks() {
-                if (ie_browser) {
-                    document.forms["upload_bookmarks"].submit();
-                    $('#upload_target').load(function () {
-                        document.getElementById('popup_import_bookmarks').innerHTML = $("#upload_target").contents().find("body").html();
-                    });
-                } else {
-                    ajaxUpload('XMLbookmarks', 'loadingfile', 'index.php', '?action=upload_bookmarks', 'popup_import_bookmarks');
-                }
-                // doesn't work in IE < 10 (due to FormData object)
-                //     ajaxUpload('XMLbookmarks', 'loadingfile', 'index.php', '?action=upload_bookmarks', 'popup_import_bookmarks');                
-            }
 
 
         </script>
@@ -1007,8 +788,12 @@ echo json_encode($valid_extensions);
                 if ($_SESSION['browser_version'] >= 9)
                     $warning = false;
                 break;
+            case 'opera' :
+                if ($_SESSION['browser_version'] >= 26)
+                    $warning = false;
+                break;
             case 'firefox' :
-                if ($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || $_SESSION['user_os'] == "Android"))
+                if (($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || $_SESSION['user_os'] == "Android")) || $_SESSION['browser_version'] >= 35)
                     $warning = false;
                 break;
         }
@@ -1022,17 +807,18 @@ echo json_encode($valid_extensions);
                     <ul>
                         <li><b>Safari 5+</b> | </li>
                         <li><b>Google Chrome</b> | </li>
+                        <li><b>Opera 26+</b> </li>
                         <?php if ($_SESSION['user_os'] == "Windows") { ?>
-                            <li><b>Internet Explorer 9+</b> | </li>
+                            <li> | <b>Internet Explorer 9+</b> | </li>
                             <li><b>Firefox 22+</b></li>
-                        <?php } ?>
+    <?php } ?>
                     </ul>
                 </div>       
             </div>
-        <?php } ?>
+                <?php } ?>
         <div class="container">
             <div id="header_wrapper">
-                <?php include_once template_getpath('div_main_header.php'); ?>
+<?php include_once template_getpath('div_main_header.php'); ?>
             </div>
             <div id="global">
                 <div id="div_center">
@@ -1041,6 +827,8 @@ echo json_encode($valid_extensions);
                         include_once $error_path;
                     } else if ($_SESSION['ezplayer_mode'] == 'view_main') {
                         include_once template_getpath('div_main_center.php');
+                    } else if ($_SESSION['ezplayer_mode'] == 'view_asset_streaming') {
+                        include_once template_getpath("div_streaming_center.php");
                     } else {
                         include_once template_getpath('div_assets_center.php');
                     }
@@ -1057,17 +845,14 @@ echo json_encode($valid_extensions);
                 </script>           
             <?php } ?>
             <!-- FOOTER - INFOS COPYRIGHT -->
-            <?php include_once template_getpath('div_main_footer.php'); ?>
+<?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
         </div><!-- Container fin -->
 
         <div class="reveal-modal-bg"></div>         
-        <?php require template_getpath('popup_thread_visibility_choice.php'); ?>
-        <?php require_once template_getpath('popup_import_bookmarks.php'); ?>
 
-        <div id="popup_search_result" class="reveal-modal"></div>
-        <div id="popup_bookmark" class="reveal-modal"></div>
-        <div id="popup_bookmarks" class="reveal-modal"></div>
+        <!-- Popup are generated on demand and included in this div -->
+        <div id="div_popup" class="reveal-modal"></div>
 
     </body>
 </html>

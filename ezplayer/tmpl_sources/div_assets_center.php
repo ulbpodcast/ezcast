@@ -26,7 +26,9 @@
 
 include_once 'lib_print.php';
 ?>
-
+<script>
+    ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
+</script>
 <!-- Left column: player and comments -->
 <div id="div_left">
     <!-- Player goes here -->
@@ -45,9 +47,9 @@ include_once 'lib_print.php';
     <!-- Side part goes here : assets list, asset details and ToC -->                        
     <?php
     if ($_SESSION['ezplayer_mode'] == 'view_album_assets') {
-        require template_getpath('div_side_assets.php');
+        require template_getpath('div_right_assets.php');
     } else {
-        require template_getpath('div_side_details.php');
+        require template_getpath('div_right_details.php');
     }
     ?>
 
@@ -63,14 +65,15 @@ include_once 'lib_print.php';
         if (acl_display_threads() && acl_user_is_logged()) {
             ?>
             <div id="threads" class="threads_info">
-            <?php if ($_SESSION['thread_display'] == 'details'){
-                include_once template_getpath('div_thread_details.php');
-            } else {                
-                include_once template_getpath('div_threads_list.php');
-            }
-?>
+                <?php
+                if ($_SESSION['thread_display'] == 'details') {
+                    include_once template_getpath('div_thread_details.php');
+                } else {
+                    include_once template_getpath('div_threads_list.php');
+                }
+                ?>
             </div><!-- END of #threads_info -->
-        <?php
+            <?php
         }
     }
     ?>

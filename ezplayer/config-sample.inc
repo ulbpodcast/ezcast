@@ -33,8 +33,8 @@ $user_files_path = "$repository_basedir/ezplayer/users";
 $bookmarks_validation_file = "./bookmarks.xsd";
 $message_of_the_day = "$repository_basedir/ezplayer/message_of_day.html";
 
-$default_bookmarks_order = "reverse_chron"; // may be [reverse_chron | chron]
-$default_toc_order = "chron"; // may be [reverse_chron | chron]
+$default_personal_bm_order = "reverse_chron"; // may be [reverse_chron | chron]
+$default_official_bm_order = "chron"; // may be [reverse_chron | chron]
 $default_display_thread = true;
 $default_display_thread_notif = true;
 $default_display_count = true;
@@ -44,11 +44,13 @@ $accepted_media_types = array('cam', 'slide');    // Media types accepted by the
 
 $template_folder = 'tmpl/';
 $ezplayer_logs = $basedir . '/ezplayer/ezplayer.log';
-$ezplayer_trace = $repository_basedir . '/ezplayer/ezplayer.trace';
+$ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
 
 $valid_extensions = array('xml'); // accepted extensions for imported bookmarks
 $trace_on = false; // determines whether we want to enable traces on actions or not
 
 $cache_limit = 5; // number of trending threads that are displayed on level 2 
+
+$streaming_video_player = "flowplayer"; // defines the video player to use for live stream ('momovi' | 'flowplayer')
 
 ?>

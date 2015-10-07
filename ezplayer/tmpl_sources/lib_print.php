@@ -196,4 +196,22 @@ function replace_links($string) {
     return $string;
 }
 
+/**
+ * Replaces a hashtag by a clickable link
+ * @param type $string the string containing the hashtag
+ * @param type $hashtag the hashtag to make clickable (i.e '#hashtag')
+ * @param type $href link for the hashtag
+ * @param type $index index of the first occurence of hashtag
+ * @return type
+ */
+function replace_hashtag($string, $hashtag, $href, $index = false){
+    if ($index === false){
+        $index = strpos($string, $hashtag);
+    }
+    if ($index === false) return $string;
+    $hash_length = strlen($hashtag);
+    $hashtag = "<a href=\"$href\" onclick=\"server_trace(new Array('3', 'hashtag_click', current_album, current_asset, '$hashtag'));\">$hashtag</a>";
+    $string = substr_replace($string, $hashtag, $index, $hash_length);
+    return $string;
+}
 ?>

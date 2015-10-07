@@ -27,7 +27,6 @@
 
 $creationDate = (get_lang() == 'fr') ? new DateTimeFrench($comment['creationDate'], $DTZ) : new DateTime($comment['creationDate'], $DTZ);
 $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\hi') : $creationDate->format("F j, Y, g:i a");
-require template_getpath('popup_delete_comment.php');
 ?>
 <span id="comment_<?php echo $comment['id']; ?>">
     <form action="index.php" method="POST">
@@ -56,8 +55,8 @@ require template_getpath('popup_delete_comment.php');
         <!-- Submit button -->
         <div id="edit-options-<?php echo $comment['id']; ?>" style="float: right;" hidden>
             <span class="warning_edit">®Warning_edit®</span>
-            <a class="button" href="javascript: cancel_edit_comment(<?php echo $comment['id'] ?>);">®Cancel®</a>
-            <a class="button green2" href="javascript: submit_edit_comment_form(<?php echo $comment['id']; ?>);">®Submit®</a>
+            <a class="button" href="javascript: thread_comment_edit_form_cancel(<?php echo $comment['id'] ?>);">®Cancel®</a>
+            <a class="button green2" href="javascript: thread_comment_edit_form_submit(<?php echo $comment['id']; ?>);">®Submit®</a>
         </div>
         <br />
 
@@ -76,10 +75,10 @@ require template_getpath('popup_delete_comment.php');
 
                     <!-- Submit button -->
                     <div class="submitButton" style="float: right;">
-                        <a class="button green2" href="javascript: if(check_answer_comment_form(<?php echo $comment['id']; ?>)) submit_answer_comment_form(<?php echo $comment['id']; ?>);">®Reply®</a>
+                        <a class="button green2" href="javascript: if(comment_answer_form_check(<?php echo $comment['id']; ?>)) comment_answer_form_submit(<?php echo $comment['id']; ?>);">®Reply®</a>
                     </div>
                     <div class="cancelButton" style="float: right;">
-                        <a class="button" href="javascript: hide_answer_comment_form(<?php echo $comment['id']; ?>);">®Cancel®</a>
+                        <a class="button" href="javascript: comment_answer_form_hide(<?php echo $comment['id']; ?>);">®Cancel®</a>
                     </div>
                     <br />
                 </form>
@@ -90,22 +89,22 @@ require template_getpath('popup_delete_comment.php');
         <span class="comment-options">
             <!-- ----- VOTE ------------------------------------ -->
             <div class="inline-block">
-                <div class="upvote-button pull-left inline-block" onclick="javascript:vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, <?php echo '0' ?>);" ></div>
+                <div class="upvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, <?php echo '0' ?>);" ></div>
                 <label class="pull-left badge-score"><?php echo sprintf("%02s", $comment['score']); ?></label>
-                <div class="downvote-button pull-left inline-block" onclick="javascript:vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, <?php echo '1' ?>);"></div>
+                <div class="downvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, <?php echo '1' ?>);"></div>
                 <?php if (acl_has_album_moderation($thread['albumName']) || acl_is_admin()) { ?>
-                    <div style="padding-top: 5px;" class="copy-button <?php echo ($comment['approval'] == '0') ? '' : 'active' ?> inline-block" title="<?php echo ($comment['approval'] == '0') ? '®Answer_approval®' : '®Withdraw_approval®' ?>" onclick="javascript:approve(<?php echo $comment['id']; ?>)"></div>
+                    <div style="padding-top: 5px;" class="copy-button <?php echo ($comment['approval'] == '0') ? '' : 'active' ?> inline-block" title="<?php echo ($comment['approval'] == '0') ? '®Answer_approval®' : '®Withdraw_approval®' ?>" onclick="javascript:thread_comment_approve(<?php echo $comment['id']; ?>)"></div>
                 <?php } ?>
             </div>
             <!-- --- END - VOTE -------------------------------- -->
 
             <div class="right-options">
-                <a class="button-empty green2 pull-right inline-block" onclick="javascript:show_answer_comment_form('<?php echo $comment['id']; ?>');">®Reply®</a>
+                <a class="button-empty green2 pull-right inline-block" onclick="javascript:comment_answer_form_show('<?php echo $comment['id']; ?>');">®Reply®</a>
                 <?php if ($_SESSION['user_login'] == $comment['authorId'] || acl_is_admin()) { ?>
                     <div class="inline-block">
-                        <a class="edit-button green2 pull-right inline-block" title="®Edit_comment®" onclick="javascript:edit_thread_comment('<?php echo $comment['id']; ?>');"></a>
+                        <a class="edit-button green2 pull-right inline-block" title="®Edit_comment®" onclick="javascript:thread_comment_edit_form_prepare('<?php echo $comment['id']; ?>');"></a>
                         <?php if (acl_is_admin()) { ?>
-                            <a class="delete-button green2 pull-right inline-block" title="®Delete_comment®" data-reveal-id="popup_delete_comment_<?php echo $comment['id']; ?>"></a> 
+                            <a class="delete-button green2 pull-right inline-block" title="®Delete_comment®" href="javascript:popup_thread_comment('<?php echo $comment['id']; ?>', 'delete');"></a> 
                         <?php } ?>
                     </div>
                     <?php

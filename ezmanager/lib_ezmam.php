@@ -29,9 +29,9 @@
  * This is a library through which you can manage the Media Repository Filesystem
  * Use this library whenever you can instead of going directly in directory structure
  */
-include_once 'config.inc';
-include_once 'lib_error.php';
-include_once 'lib_various.php';
+include_once dirname(__FILE__) . '/config.inc';
+include_once dirname(__FILE__) . '/lib_error.php';
+include_once dirname(__FILE__) . '/lib_various.php';
 
 /**
  *

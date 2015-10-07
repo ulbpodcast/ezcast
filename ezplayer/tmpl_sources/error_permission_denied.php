@@ -30,11 +30,11 @@
     <?php if (acl_has_album_permissions($album)) { ?>
         <div style="margin-top: 18px;">
             ®Error_permission_denied®
-            <form action="index.php?action=export_album_bookmarks" method="post" name="export_album_bookmarks_form" onsubmit="return false">
+            <form action="index.php?action=bookmarks_album_export" method="post" name="export_album_bookmarks_form" onsubmit="return false">
                 <input type="hidden" name="album" value="<?php echo $album; ?>"/>
             </form>
             <br/><br/>
-                <a class="button" style="width:300px;" href="javascript: delete_album_token('<?php echo $album; ?>');">®Delete_album®</a>
+                <a class="button" style="width:300px;" href="javascript: album_token_delete('<?php echo $album; ?>');">®Delete_album®</a>
                 <a class="button" style="width:300px;" href="#" onclick="document.export_album_bookmarks_form.submit(); return false;">®Export_album_bookmarks®</a>
             
         </div>

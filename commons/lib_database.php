@@ -1,33 +1,33 @@
 <?php
+
 /*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ * EZCAST EZadmin 
+ * Copyright (C) 2014 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 		    Arnaud Wijns <awijns@ulb.ac.be>
+ *                   Antoine Dewilde
+ *                   Thibaut Roskam
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 /**
  * @package ezcast.commons.lib.database
  */
-
-if(file_exists('config.inc'))
+if (file_exists('config.inc'))
     require_once 'config.inc';
 
 $db_object = null;
@@ -44,11 +44,10 @@ $db_prepared = false;
 function db_ping($type, $host, $login, $passwd, $dbname) {
     try {
         $db = new PDO("$type:host=$host;dbname=$dbname;charset=utf8", $login, $passwd);
-    }
-    catch(PDOException $e) {
+    } catch (PDOException $e) {
         return false;
     }
-    
+
     unset($db);
     return true;
 }
@@ -57,6 +56,7 @@ function db_ping($type, $host, $login, $passwd, $dbname) {
  * Opens a connection to the DB and prepares the statements.
  * Returns a PDO object representing this connection.
  */
+
 function db_prepare(&$stmt_array = array()) {
     global $db_object;
     global $db_type;
@@ -66,16 +66,20 @@ function db_prepare(&$stmt_array = array()) {
     global $db_name;
     global $db_prepared;
     global $statements;
-    
-    $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
 
-    foreach ($stmt_array as $stmt_name => $stmt){
-        db_statement_prepare($stmt_name, $stmt);
+    try {
+        $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
+    } catch (PDOException $e) {
+        return false;
     }
     
+    foreach ($stmt_array as $stmt_name => $stmt) {
+        db_statement_prepare($stmt_name, $stmt);
+    }
+
     $db_prepared = true;
     $stmt_array = $statements;
-    
+
     return $db_object;
 }
 
@@ -83,15 +87,15 @@ function db_close() {
     global $db_object;
     global $statements;
     global $db_prepared;
-    
+
     $db_object = null;
-    unset($statements); 
+    unset($statements);
     $db_prepared = false;
 }
 
 function db_ready() {
     global $db_prepared;
-    
+
     return $db_prepared;
 }
 
@@ -105,7 +109,7 @@ function db_ready() {
 function db_statement_prepare($statement_name, $statement) {
     global $statements;
     global $db_object;
-    
+
     $statements[$statement_name] = $db_object->prepare($statement);
 }
 
@@ -115,7 +119,7 @@ function db_statement_prepare($statement_name, $statement) {
  * @return type 
  */
 function db_sanitize($input) {
-    return (empty($input)) ? '%' : '%'.$input.'%';
+    return (empty($input)) ? '%' : '%' . $input . '%';
     //return $input;
 }
 

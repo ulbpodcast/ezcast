@@ -29,10 +29,10 @@
     lvl = 1;
 
     history.replaceState({"url": 'index.php'}, '', '');
+    ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
 </script>
 <?php
 include_once 'lib_print.php';
-global $ezmanager_url;
 ?> 
 <div class="search_wrapper">
     <div id="search">
@@ -43,7 +43,7 @@ global $ezmanager_url;
 <div class="albums">
     <div id="tuto">
         <a href="#" onclick="$('#tuto_video').toggle();" id="tuto_label">®tuto®</a>
-        <video id='tuto_video' width="720" controls src="./videos/tuto.mp4" style="display: <?php echo (!isset($albums) || sizeof($albums) == 0) ? 'block' : 'none'; ?>;">
+        <video id='tuto_video' width="720" controls  type="video/mp4" src="./videos/tuto.mp4" style="display: <?php echo (!isset($albums) || sizeof($albums) == 0) ? 'block' : 'none'; ?>;">
             Démonstration EZplayer</video></div>
     <?php
     if (!isset($albums) || sizeof($albums) == 0) {
@@ -56,8 +56,6 @@ global $ezmanager_url;
         <ul>
             <?php
             foreach ($albums as $index => $album) {
-                $ezplayer_rss_url = $ezmanager_url . "/distribute.php?action=rss&album=" . $album['album'] . "&quality=ezplayer&token=" . $album['token'];
-                include template_getpath('popup_rss_feed.php');
                 $private = false;
                 if (suffix_get($album['album']) == '-priv')
                     $private = true;
@@ -72,8 +70,8 @@ global $ezmanager_url;
                 </li>
                 <?php if (acl_user_is_logged()) { ?>
                     <div class="album_options left">
-                    <a class="up-arrow" <?php if ($index == 0) { ?>style="visibility:hidden"<?php } ?> href="javascript:move_album_token('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up');" title="®Move_up®"></a>
-                    <?php if ($index != count($albums) - 1) { ?><a class="down-arrow" href="javascript:move_album_token('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php } ?>
+                        <a class="up-arrow" <?php if ($index == 0) { ?>style="visibility:hidden"<?php } ?> href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up');" title="®Move_up®"></a>
+                        <?php if ($index != count($albums) - 1) { ?><a class="down-arrow" href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php } ?>
                     </div>
                     <?php
                     if (acl_user_is_logged() && acl_show_notifications()) {
@@ -87,15 +85,14 @@ global $ezmanager_url;
                     ?> 
 
                     <div class="album_options pull-right inline-block">
-                        <a  href="#" class="button-rect green pull-right inline-block share-rss" data-reveal-id="popup_share_rss_<?php echo $album['album'] ?>">®subscribe_rss®</a>
+                        <a  class="button-rect green pull-right inline-block share-rss" href="javascript:popup_album('<?php echo $album['album'] ?>', 'rss');">®subscribe_rss®</a>
                         <?php if (suffix_get($album['album']) == '-priv' || !acl_has_album_moderation($album['album'])) { ?> 
-                            <a class="delete-album" title="®Delete_album®" href="#" data-reveal-id="popup_delete_album_<?php echo $index ?>"></a>
+                            <a class="delete-album" title="®Delete_album®" href="javascript:popup_album('<?php echo $album['album'] ?>', 'delete');"></a>
                         <?php } ?>
                     </div>
 
-                                    <!--span class="delete_album" onclick="delete_album_token('<?php echo $album['album']; ?>');">x</span-->
+                                                <!--span class="delete_album" onclick="delete_album_token('<?php echo $album['album']; ?>');">x</span-->
                     <?php
-                    include template_getpath('popup_delete_album.php');
                 }
             }
             ?>

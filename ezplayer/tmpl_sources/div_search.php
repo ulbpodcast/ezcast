@@ -25,16 +25,16 @@
 */
 ?>
 
-<form id="search_form" method="post" action="index.php?action=search_bookmark" onsubmit="return false">
+<form id="search_form" method="post" action="index.php?action=threads_bookmarks_search" onsubmit="return false">
     <input type="text" name="search" tabindex='0' id="main_search"/>
-    <a id="main_search_button" class="search_button" onclick="check_search_form();"></a>
+    <a id="main_search_button" class="search_button" onclick="search_form_check();"></a>
     <a id="more_search_button" onclick="$('#advanced_search').slideToggle(200);"></a>
     <div id="advanced_search">
         <div class="search-label">®Search_in® : </div>
         <div id="target">
-            <label ><input tabindex='1' onclick="show_search_albums();" type="radio" name="target" checked="checked" value="global"><span>®All®</span></label>
-            <label><input tabindex='2' id="album_radio" onclick="show_search_albums();" type="radio" name="target" value="album"><span>®Albums®</span></label>
-            <label><input tabindex='3' id="current_radio" onclick="show_search_albums();" type="radio" name="target" value="current"><span>®Current®</span></label>
+            <label ><input tabindex='1' onclick="search_form_setup();" type="radio" name="target" checked="checked" value="global"><span>®All®</span></label>
+            <label><input tabindex='2' id="album_radio" onclick="search_form_setup();" type="radio" name="target" value="album"><span>®Albums®</span></label>
+            <label><input tabindex='3' id="current_radio" onclick="search_form_setup();" type="radio" name="target" value="current"><span>®Current®</span></label>
         </div>  
         <?php
         $search_albums = acl_authorized_albums_list();
@@ -62,13 +62,13 @@
         <div class="search_cat">
             <div class="search_fields">
                 <label style="display:block;">
-                    <input tabindex='5' id="cb_toc" type="checkbox" checked="checked" onclick="javascript:show_search_options()" 
+                    <input tabindex='5' id="cb_toc" type="checkbox" checked="checked" onclick="javascript:search_options_adjust()" 
                            name="tab[]" value="official"/>®Toc®</label>
                 <label style="display:block;">
-                    <input tabindex='6' id="cb_bookmark" onclick="javascript:show_search_options()" 
+                    <input tabindex='6' id="cb_bookmark" onclick="javascript:search_options_adjust()" 
                            type="checkbox" checked="checked" name="tab[]" value="custom"/>®Personal®</label>
                 <label style="display:block;">
-                    <input tabindex='7' id="cb_threads" type="checkbox" onclick="javascript:show_search_options()" 
+                    <input tabindex='7' id="cb_threads" type="checkbox" onclick="javascript:search_options_adjust()" 
                            checked="checked" name="tab[]" value="threads"/>®Discussions®</label>
             </div>
         </div>
@@ -96,7 +96,7 @@
 <script>
     $('#search_form input').keydown(function(e) {
         if (e.keyCode == 13) {
-            check_search_form();
+            search_form_check();
         }
     });
 </script>

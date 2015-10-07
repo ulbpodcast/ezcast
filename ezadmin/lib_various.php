@@ -478,7 +478,7 @@ function push_classrooms_to_ezmanager() {
             $incfile .= '//' . $c['room_ID'] . PHP_EOL;
 
         $incfile .= '$podcv_ip[$idx]="' . $c['IP'] . '";' . PHP_EOL;
-        $incfile .= '$podcs_ip[$idx]="' . $c['IP'] . '";' . PHP_EOL;
+        $incfile .= '$podcs_ip[$idx]="' . $c['IP_remote'] . '";' . PHP_EOL;
         $incfile .= '$idx+=1;' . PHP_EOL . PHP_EOL;
     }
 

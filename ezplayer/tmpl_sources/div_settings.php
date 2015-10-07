@@ -26,10 +26,10 @@
 
 acl_update_settings();
 ?>
-
+<h2>®Preferences®</h2>
 <form name="submit_settings_form" action="<?php global $ezplayer_safe_url;
 echo $ezplayer_safe_url; ?>/index.php" method="post">
-    <input type="hidden" name="action" value="edit_settings" />
+    <input type="hidden" name="action" value="settings_update" />
     <table>
         <th><span class="title left">Notifications</span></th><br/>
         <tr>
@@ -51,7 +51,7 @@ echo $ezplayer_safe_url; ?>/index.php" method="post">
         <tr>
             <td></td>
             <td>
-                <a class="button-empty green" href="javascript: hide_settings_form();">®Cancel®</a>
+                <a class="button-empty green" href="javascript: header_form_hide('settings');">®Cancel®</a>
             </td>
             <td>
                 <a class="button green" href="#" onclick="document.submit_settings_form.submit();">®Update®</a>

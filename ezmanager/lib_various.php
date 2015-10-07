@@ -29,9 +29,9 @@
  * @package ezcast.ezmanager.lib.various
  */
 
-require_once 'config.inc';
-require_once 'lib_ezmam.php';
-require_once '../commons/lib_template.php';
+require_once dirname(__FILE__) . '/config.inc';
+require_once dirname(__FILE__) . '/lib_ezmam.php';
+require_once dirname(__FILE__) . '/../commons/lib_template.php';
 
 /**
  * Trims the '-priv' or '-pub' suffix from an album name

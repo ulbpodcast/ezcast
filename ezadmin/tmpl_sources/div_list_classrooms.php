@@ -61,6 +61,7 @@
     <input type="hidden" name="u_room_ID" value=""/>
     <input type="hidden" name="u_name" value=""/>
     <input type="hidden" name="u_ip" value=""/>
+    <input type="hidden" name="u_ip_remote" value=""/>
 </form>
 
 <table class="table table-striped table-hover table-condensed classrooms">
@@ -69,6 +70,7 @@
         <th data-col="room_ID" <?php echo $input['col'] == 'room_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_ID®<?php echo ($input['col'] == 'room_ID') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
         <th data-col="name" <?php echo $input['col'] == 'name' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_name®<?php echo ($input['col'] == 'name') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
         <th>®room_IP®</th>
+        <th>®room_remote_IP®</th>
         <th>®room_enabled®</th>
         <th>®enable_disable®</th>
         <th></th>
@@ -92,6 +94,10 @@
             <td class="ip">
                 <div class="view"><a href="http://<?php echo $classroom['IP']; ?>/ezrecorder/"><?php echo $classroom['IP'] ?></a> <a href="vnc://<?php echo $classroom['IP']; ?>/">(VNC)</a></div>
                 <div class="edit" style="display:none;"><input type="text" name="ip" value="<?php echo htmlspecialchars($classroom['IP']) ?>"/></div>
+            </td>
+            <td class="ip_remote">
+                <div class="view"><a href="http://<?php echo $classroom['IP_remote']; ?>/ezrecorder/"><?php echo $classroom['IP_remote'] ?></a> <?php if(isset($classroom['IP_remote']) && $classroom['IP_remote'] != "") { ?><a href="vnc://<?php echo $classroom['IP_remote']; ?>/">(VNC)</a><?php } ?></div>
+                <div class="edit" style="display:none;"><input type="text" name="ip_remote" value="<?php echo htmlspecialchars($classroom['IP_remote']) ?>"/></div>
             </td>
             <td>
                 <?php echo $classroom['enabled'] ? '<i class="icon-ok"></i>' : '<i></i>'; ?>
@@ -212,6 +218,7 @@ $(function() {
             $form.find("input[name='u_room_ID']").val($tr.find('td.room_id input').val());
             $form.find("input[name='u_name']").val($tr.find('td.name input').val());
             $form.find("input[name='u_ip']").val($tr.find('td.ip input').val());
+            $form.find("input[name='u_ip_remote']").val($tr.find('td.ip_remote input').val());
             
             $form.submit();
         } else {

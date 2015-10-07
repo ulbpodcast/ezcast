@@ -32,7 +32,7 @@
  * Error managing and logging library
  */
 
-include_once 'config.inc';
+include_once dirname(__FILE__) . '/config.inc';
 
 /**
  * Prints the error message on screen and quits

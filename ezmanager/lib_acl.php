@@ -34,9 +34,9 @@
  * NOTE: This library needs session vars, so please call session_start() first
  */
 
-require_once 'config.inc';
-require_once '../commons/lib_courses.php';
-require_once 'lib_ezmam.php';
+require_once dirname(__FILE__) . '/config.inc';
+require_once dirname(__FILE__) . '/../commons/lib_courses.php';
+require_once dirname(__FILE__) . '/lib_ezmam.php';
 
 /**
  * First method to call when using the lib_acl

@@ -27,3 +27,5 @@
 /documentation/**
 ezplayer/core
 ezplayer/tmpl_sources/core
+ezmanager/core
+**/*killme*

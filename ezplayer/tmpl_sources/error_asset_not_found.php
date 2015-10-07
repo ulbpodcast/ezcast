@@ -34,12 +34,12 @@
         ?>
         <div style="margin-top: 18px;">
             ®Error_asset_not_found®
-            <form action="index.php?action=export_asset_bookmarks" method="post" name="export_asset_bookmarks_form" onsubmit="return false">
+            <form action="index.php?action=bookmarks_asset_export" method="post" name="export_asset_bookmarks_form" onsubmit="return false">
                 <input type="hidden" name="album" value="<?php echo $album; ?>"/>
                 <input type="hidden" name="asset" value="<?php echo $asset; ?>"/>
             </form>
             <br/><br/>
-            <a class="button" style="width:300px;" href="javascript: remove_bookmarks('<?php echo $album; ?>', '<?php echo $asset; ?>');">®Delete_asset_bookmarks®</a>
+            <a class="button" style="width:300px;" href="javascript: bookmarks_delete_all('<?php echo $album; ?>', '<?php echo $asset; ?>');">®Delete_asset_bookmarks®</a>
             <a class="button" style="width:300px;" href="#" onclick="document.export_asset_bookmarks_form.submit(); return false;">®Export_asset_bookmarks®</a>
         </div>
 <?php } ?>

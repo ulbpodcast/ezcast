@@ -105,7 +105,7 @@ else {
 
         // The user clicked on an asset, we display its details to them
         case 'view_asset_details':
-            view_asset_details();
+            asset_view();
             break;
 
         // Display the help page
@@ -203,6 +203,16 @@ else {
             asset_publish_unpublish('unpublish');
             break;
 
+        //schedule publication / archiving of asset from album -pub to -priv
+        case 'schedule_asset':
+            asset_schedule();
+            break;
+
+        //cancel the scheduling
+        case 'cancel_schedule_asset':
+            asset_schedule_cancel();
+            break;
+
         // Returning the content to display in a popup
         case 'show_popup':
             view_popup();
@@ -224,7 +234,7 @@ else {
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
-            view_main();
+            albums_view();
     }
 }
 
@@ -263,7 +273,7 @@ function view_login_form() {
 /**
  * Displays the main frame, without anything on the right side
  */
-function view_main() {
+function albums_view() {
     global $url;
     // Used in redraw mode only
     global $album_name;
@@ -335,7 +345,7 @@ function redraw_page() {
     }
 
     // Whatever happens, the first thing to do is display the whole page.
-    view_main();
+    albums_view();
 }
 
 /**
@@ -411,7 +421,7 @@ function view_album() {
  * @global type $input
  * @global type $repository_path 
  */
-function view_asset_details() {
+function asset_view() {
     global $input;
     global $repository_path;
     global $ezmanager_url;
@@ -472,6 +482,9 @@ function view_asset_details() {
     $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
     $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true); // List of all the created albums (used for asset move)
     $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
+    $asset_scheduled = $asset_metadata['scheduled'];
+    $asset_sched_date = $asset_metadata['schedule_date'];
+    $asset_sched_id = $asset_metadata['schedule_id'];
     // Filling in the data about the media
     // all you want to know about high res camera video
     if (isset($media_metadata['high_cam'])) {
@@ -643,7 +656,7 @@ function user_login($login, $passwd) {
     // 6) Displaying the page
 
     header("Location: " . $ezmanager_url);
-    view_main();
+    albums_view();
 }
 
 /**
@@ -817,6 +830,9 @@ function asset_delete() {
         log_append('warning', 'delete_asset: tried to access asset ' . $input['asset'] . ' of album ' . $input['album'] . ' which does not exist');
         die;
     }
+
+    // firstly, remove the at job for scheduled move
+    private_asset_schedule_remove($input['album'], $input['asset']);
 
     // We remove the bookmarks list from the table of contents (EZcast Player)
     toc_asset_bookmarks_delete_all($input['album'], $input['asset']);
@@ -1395,7 +1411,7 @@ function asset_edit() {
     //
     // And we display the (new) asset details
     //
-    view_asset_details();
+    asset_view();
 }
 
 function asset_downloadable_set() {
@@ -1405,7 +1421,7 @@ function asset_downloadable_set() {
     if (!isset($input['album']) || !isset($input['asset']) || !isset($input['downloadable'])) {
         die;
     }
-       
+
     ezmam_repository_path($repository_path);
 
     $metadata = ezmam_asset_metadata_get($input['album'], $input['asset']);
@@ -1448,6 +1464,8 @@ function asset_move() {
         log_append('warning', 'move_asset: asset ' . $input['asset'] . ' of album ' . $input['from'] . ' does not exist');
         die;
     }
+    
+    private_asset_schedule_remove($input['from'], $input['asset']);
 
     // saves the bookmarks to copy
     $bookmarks = toc_asset_bookmark_list_get($input['from'], $input['asset']);
@@ -1532,6 +1550,7 @@ function asset_publish_unpublish($action = 'publish') {
         die;
     }
 
+    private_asset_schedule_remove($input['album'], $input['asset']);
     //
     // (Un)publishing the asset, and displaying a confirmation message.
     //
@@ -1565,6 +1584,117 @@ function asset_publish_unpublish($action = 'publish') {
         error_print_message(ezmam_last_error());
         die;
     }
+}
+
+/**
+ * Schedules the publication / archiving of an asset
+ * @global type $input
+ * @global type $repository_path
+ * @global type $php_cli_cmd
+ * @global type $asset_publish_pgm
+ * @global type $action
+ */
+function asset_schedule() {
+    global $input;
+    global $repository_path;
+    global $php_cli_cmd;
+    global $asset_publish_pgm;
+    global $action;
+
+    //
+    // Usual sanity checks
+    //
+    if (!isset($input['album']) || !isset($input['asset']) || !isset($input['date'])) {
+        echo "Usage: index.php?action=schedule_asset&album=ALBUM&asset=ASSET&date=DATE";
+        die;
+    }
+
+    ezmam_repository_path($repository_path);
+
+    if (!ezmam_album_exists($input['album'])) {
+        error_print_message(ezmam_last_error());
+        die;
+    }
+    if (!ezmam_asset_exists($input['album'], $input['asset'])) {
+        error_print_message(ezmam_last_error());
+        die;
+    }
+
+
+    $action = (album_is_public($input['album'])) ? "unpublish" : "publish";
+    $date = date("H:i M d, Y", strtotime($input["date"]));
+
+    $cmd = "echo '" . $php_cli_cmd . " " . $asset_publish_pgm . " " . $input["album"] . " " . $input["asset"] . " " . $action . "' | at " . $date . "  2>&1 | awk '/job/ {print $2}'";
+    $at_id = shell_exec($cmd);
+    //
+    // Then we update the metadata
+    //
+    $asset_meta = ezmam_asset_metadata_get($input["album"], $input["asset"]);
+
+    $asset_meta['scheduled'] = true;
+    $asset_meta['schedule_id'] = $at_id;
+    $asset_meta['schedule_date'] = $input['date'];
+
+    $res = ezmam_asset_metadata_set($input["album"], $input["asset"], $asset_meta);
+
+    if (!$res) {
+        error_print_message(ezmam_last_error());
+        die;
+    }
+
+    //  view_main();
+    require_once template_getpath('popup_asset_successfully_scheduled.php');
+}
+
+/**
+ * Cancel the scheduling of an asset
+ */
+function asset_schedule_cancel() {
+    global $input;
+    global $repository_path;
+
+    //
+    // Sanity checks
+    //
+    ezmam_repository_path($repository_path);
+
+    if (!isset($input['album']) || !isset($input['asset'])) {
+        echo "Usage: web_index.php?action=delete_asset&album=ALBUM&asset=ASSET";
+        die;
+    }
+
+    if (!acl_has_album_permissions($input['album'])) {
+        error_print_message(template_get_message('Unauthorized', get_lang()));
+        log_append('warning', 'delete_asset: tried to access album ' . $input['album'] . ' without permission');
+        die;
+    }
+
+    if (!ezmam_asset_exists($input['album'], $input['asset'])) {
+        error_print_message(template_get_message('Non-existant_asset', get_lang()));
+        log_append('warning', 'delete_asset: tried to access asset ' . $input['asset'] . ' of album ' . $input['album'] . ' which does not exist');
+        die;
+    }
+    private_asset_schedule_remove($input['album'], $input['asset']);
+    redraw_page();
+    //require_once template_getpath('popup_asset_successfully_deleted.php');
+    //view_album();
+}
+
+function private_asset_schedule_remove($album, $asset) {
+    global $repository_path;
+    ezmam_repository_path($repository_path);
+
+    $asset_meta = ezmam_asset_metadata_get($album, $asset);
+    if ($asset_meta["scheduled"]) {
+        $cmd = "at -r " . $asset_meta["schedule_id"];
+        system($cmd);
+
+        $asset_meta["scheduled"] = false;
+        unset($asset_meta["schedule_id"]);
+        unset($asset_meta["schedule_date"]);
+    }
+
+    ezmam_asset_metadata_set($album, $asset, $asset_meta);
 }
 
 function view_submit_media() {
@@ -1655,7 +1785,7 @@ function view_popup() {
         case 'embed_code':
             popup_embed_code();
             break;
-        
+
         case 'ezplayer_link':
             popup_ezplayer_link();
             break;
@@ -1765,13 +1895,14 @@ function popup_ezplayer_link() {
         error_print_message(ezmam_last_error());
         die;
     }
-
+    $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
+    $action = (strtolower($asset_meta['origin']) === "streaming") ? 'view_asset_streaming' : 'view_asset_details';
     $token = ezmam_asset_token_get($input['album'], $input['asset']);
-    $ezplayer_link = $ezplayer_url . '/index.php?action=view_asset_details'
-        . '&album=' . $album
-        . '&asset=' . $asset
-        . '&asset_token=' . $token
-        . '&anon=true';
+    $ezplayer_link = $ezplayer_url . '/index.php?'
+            . 'action=' . $action
+            . '&album=' . $album
+            . '&asset=' . $asset
+            . '&asset_token=' . $token;
 
     // Displaying the popup
     require_once template_getpath('popup_ezplayer_link.php');

@@ -27,7 +27,7 @@
                     ?>
                     <li id="result_thread_<?php echo $thread_id; ?>" class="result">
 
-                        <span class="more"><a class="more-button green2" onclick="toggle_detail('<?php echo $thread_id; ?>', 'result_thread', $(this));"></a></span>
+                        <span class="more"><a class="more-button green2" onclick="bookmark_more_toggle('<?php echo $thread_id; ?>', 'result_thread', $(this));"></a></span>
 
                         <a class="result_item" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '')">
                             <span class="timecode green2">(<?php print_time($thread['timecode']); ?>) </span><?php echo $thread['title']; ?>

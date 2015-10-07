@@ -194,7 +194,7 @@ function user_prefs_tokens_add($user, $tokens_array) {
 
     // Get the albums list
     $token_list = acl_album_tokens_get();
-
+    
     foreach ($tokens_array as &$token) {
         if (ezmam_album_exists($token['album']) && !token_array_contains($token_list, $token)) {
             array_unshift($token_list, $token);

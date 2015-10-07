@@ -48,14 +48,42 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 // However, get_user_friendly_date returns dd-mm-YYYY-HH-ii, so we need to remove the last part
                 $date = get_user_friendly_date($metadata['record_date'], '-', false);
                 $date = substr($date, 0, -6);
+                if ($metadata['origin'] === 'streaming'){ ?>
+                                    <div>
+                  
+                    <div id="asset_<?php echo $asset_name; ?>" 
+                         class="BoutonTriangleProcessing"> 
+                        <a href="javascript:show_asset_details('<?php echo $album_name_full; ?>', '<?php echo $asset_name; ?>');"> 
+                            LIVE
+                            <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
+                                | <?php echo htmlspecialchars($title); ?>
+                            </span> 
+                        </a> 
+                    </div>
+                    <div id="asset_<?php echo $asset_name ?>_clic" 
+                         class="BoutonTriangleClicProcessing" style="display:none"> 
+                        <a href="javascript:show_asset_details('<?php echo $album_name_full; ?>', '<?php echo $asset_name; ?>');" >
+                            LIVE
+                            <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic"> 
+                                | <?php echo htmlspecialchars($title); ?>
+                            </span> 
+                        </a>
+                    </div>
+                    <div id="asset_<?php echo $asset_name; ?>_details" class="asset_details" style="display: none;">
+                        <!-- Asset details go here -->
+                    </div>
+                </div>
+                <?php } else {
                 ?>
                 <div>
-
                     <input class="custom-checkbox" name="asset_downloadable" id="is_downloadable_<?php echo $asset_name; ?>" title="®Allow_download®" type="checkbox" 
                            onchange="asset_downloadable_set('<?php echo $album_name . (($public_album) ? '-pub' : '-priv'); ?>', '<?php echo $asset_name; ?>')" <?php echo ($metadata['downloadable'] !== 'false') ? 'checked' : '' ?>
                            >                    
                     <label onclick="$('#is_downloadable_<?php echo $asset_name; ?>').click();" title="®Allow_download®" >
                     </label>
+                    <?php if(isset($metadata['scheduled']) && $metadata["scheduled"] == true){ ?>
+                    <img src="images/page4/sched.png" style="float: right; width: 15px; padding: 3px;" title="<?php echo $metadata['schedule_date']; ?>">
+                    <?php } ?>
                     <div id="asset_<?php echo $asset_name; ?>" 
                          class="BoutonTriangle<?php if ($status == 'failed')
                        echo 'Error';
@@ -87,6 +115,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                     </div>
                 </div>
         <?php
+        }
     }
 }
 ?>

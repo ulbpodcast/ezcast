@@ -56,7 +56,7 @@ include_once 'lib_print.php';
                         <?php } else { ?>
                             <img src="images/Generale/visibility-all.png" title="®Visibility_all®" class="visibility"/>
                         <?php } ?>
-                        <a class="item_link" href="javascript:seek_video(<?php echo $thread['timecode'] ?>, '<?php echo (isset($thread['type'])) ? $thread['type'] : ''; ?>');">  
+                        <a class="item_link" href="javascript:player_video_seek(<?php echo $thread['timecode'] ?>, '<?php echo (isset($thread['type'])) ? $thread['type'] : ''; ?>');">  
                             <span class="timecode green2 inline-block"><?php print_time($thread['timecode']); ?> </span>
                         </a>
                         <i class="slash item-thread-slash">//</i>
@@ -70,7 +70,7 @@ include_once 'lib_print.php';
                             ®By® <?php echo (isset($thread['lastEditAuthor']) && trim($thread['lastEditAuthor']) != '') ? $thread['lastEditAuthor'] : $thread['authorFullName']; ?>
                         </span>
                         <a class="more-button-small more-button-<?php echo $thread['id']; ?> item-thread-more" 
-                           onclick="toggle_hidden_thread_part(<?php echo $thread['id'] ?>)">
+                           onclick="thread_more_toggle(<?php echo $thread['id'] ?>)">
                         </a>
                         <br/>
                         <div class="hidden-item-thread" id="hidden-item-thread-<?php echo $thread['id']; ?>">

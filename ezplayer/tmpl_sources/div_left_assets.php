@@ -61,6 +61,17 @@
                             </a>       
                         </li>
                         <?php
+                    } else if($asset['metadata']['origin'] == 'streaming') {
+                        ?>
+                        <li>
+                            <a class="item" id="asset-<?php echo $asset['name']; ?>" href="javascript:show_asset_streaming('<?php echo $album; ?>', '<?php echo $asset['name']; ?>', '<?php echo $asset['token']; ?>');">
+                                <b style="display: inline-block; width: 56px;">LIVE</b> 
+                                <div style="display:inline-block; width: 16px; height:1px;"></div>
+                                <?php echo $asset['metadata']['title']; ?>
+                                <span class="live_stream" title="®Live_stream®"></span>
+                            </a>       
+                        </li>
+                        <?php
                     }
                 }
                 ?>

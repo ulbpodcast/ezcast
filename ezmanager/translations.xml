@@ -212,6 +212,9 @@
          <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
+        <label id="schedule_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l'enregistrement soit publié / archivé</label>
+        <label id="schedule_at" lang="en">Select the date and hour you want the recording to be published / archived</label>
+        
         
 
 
@@ -233,10 +236,14 @@
         <label id="Publish" lang="en">Move to public album</label>
         <label id="Unpublish" lang="fr">Déplacer dans l'album privé</label>
         <label id="Unpublish" lang="en">Move to private album</label>
+        <label id="Program" lang="fr">Programmer</label>
+        <label id="Program" lang="en">Schedule</label>
         <label id="Create_album" lang="fr">Créer un album</label>
         <label id="Create_album" lang="en">New album</label>
         <label id="Delete_album" lang="fr">Supprimer l'album</label>
         <label id="Delete_album" lang="en">Delete this album</label>
+        <label id="Delete_sched" lang="fr">Supprimer la programmation</label>
+        <label id="Delete_sched" lang="en">Delete the scheduling</label>
         <label id="Edit_album" lang="fr">Propriétés de l'album</label>
         <label id="Edit_album" lang="en">Album properties</label>
         <label id="Regenerate_RSS" lang="fr">Régénérer RSS</label>
@@ -263,6 +270,16 @@
         <label id="Add_title_album" lang="en">Add a title to videos published in this album</label>
         
         <!-- Titles -->
+        <label id="Asset_sched_succeeded_title" lang="fr">Programmation d'asset terminée</label>
+        <label id="Asset_sched_succeeded_title" lang="en">Asset successfully scheduled</label>
+        <label id="Asset_sched_publish" lang="fr">L'enregistrement sera placé dans l'album public le </label>
+        <label id="Asset_sched_publish" lang="en">The recording will be placed in public album on </label>
+        <label id="Asset_sched_unpublish" lang="fr">L'enregistrement sera placé dans l'album privé le </label>
+        <label id="Asset_sched_unpublish" lang="en">The recording will be placed in private album on </label>
+        <label id="Asset_sched_move" lang="fr">L'enregistrement sera déplacé le </label>
+        <label id="Asset_sched_move" lang="en">The recording will be moved on </label>
+        <label id="Asset_sched_remove" lang="fr">Souhaitez-vous annuler la programmation ? </label>
+        <label id="Asset_sched_remove" lang="en">Do you want to cancel the scheduling ?</label>
         <label id="Album_creation_succeeded_title" lang="fr">Création d'album terminée</label>
         <label id="Album_creation_succeeded_title" lang="en">Album successfully created</label>
         <label id="Album_deletion_succeeded_title" lang="fr">Suppression d'album terminée</label>

@@ -55,6 +55,13 @@
     </div>
     
     <div class="control-group">
+        <label for="ip_remote" class="control-label">®classroom_remote_ip®</label>
+        <div class="controls">
+            <input type="text" name="ip_remote" value="<?php echo $input['ip_remote']?>"/>
+        </div>
+    </div>
+    
+    <div class="control-group">
         <div class="controls">
             <label class="checkbox"><input type="checkbox" name="enabled" <?php echo $input['enabled'] ? 'checked' : ''?>/>®classroom_enabled®</label>
         </div>

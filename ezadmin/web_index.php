@@ -5,7 +5,6 @@
  *
  * @package ezcast.ezadmin.main
  */
-
 /*
  * EZCAST EZadmin 
  * Copyright (C) 2014 Université libre de Bruxelles
@@ -255,23 +254,23 @@ else {
         case 'job_kill':
             job_kill();
             break;
-        
+
         case 'sync_externals':
             sync_externals();
             break;
-        
+
         case 'view_stats_ezplayer_threads':
             view_stats_threads();
             break;
-        
+
         case 'get_month_stats':
             stat_get_by_month();
             break;
-        
+
         case 'get_nDays_stats':
             stat_get_by_nDays();
             break;
-        
+
         case 'get_csv_assets':
             stat_csv_by_asset();
             break;
@@ -279,7 +278,7 @@ else {
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
-            view_main();
+            albums_view();
     }
 
     db_close();
@@ -318,7 +317,7 @@ function view_login_form() {
 /**
  * Displays the main frame, without anything on the right side
  */
-function view_main() {
+function albums_view() {
     // TODO
     include_once template_getpath('main.php');
 }
@@ -330,7 +329,7 @@ function view_main() {
 function redraw_page() {
     // Update stuff
     // Whatever happens, the first thing to do is display the whole page.
-    view_main();
+    albums_view();
 }
 
 function view_courses() {
@@ -591,9 +590,9 @@ function view_user_details() {
     }
 
     include 'admin.inc';
-    
+
     $userinfo = db_user_read($input['user_ID']);
-    
+
     if ($userinfo) {
         $courses = db_user_get_courses($input['user_ID']);
 
@@ -624,7 +623,7 @@ function view_classrooms() {
     global $input;
 
     if (isset($input['update'])) {
-        db_classroom_update($input['room_ID'], $input['u_room_ID'], $input['u_name'], $input['u_ip']);
+        db_classroom_update($input['room_ID'], $input['u_room_ID'], $input['u_name'], $input['u_ip'], $input['u_ip_remote']);
     }
 
     if (isset($input['post'])) {
@@ -763,7 +762,7 @@ function push_changes() {
     //TODO: DO THIS FUNCTION
     // Save admins into ezmanager & recorders
     $res = push_admins_to_recorders_ezmanager();
-    
+
     if (!$res) {
         echo '<div class="alert alert-warning">' . template_get_message('push_to_recorders_unsuccessful', get_lang()) . '</div>';
     }
@@ -932,6 +931,7 @@ function create_classroom() {
         $room_ID = $input['room_ID'];
         $name = $input['name'];
         $ip = $input['ip'];
+        $ip_remote = isset($input['ip_remote']) ? $input['ip_remote'] : '';
         $enabled = $input['enabled'] ? 1 : 0;
 
         $valid = false;
@@ -942,17 +942,16 @@ function create_classroom() {
         } else if (checkipsyntax($ip)) {
             $error = template_get_message('format_ip', get_lang());
         } else {
-            $valid = db_classroom_create($room_ID, $name, $ip, $enabled);
+            $valid = db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled);
         }
 
         if ($valid) {
             view_classrooms();
+            db_log(db_gettable('classrooms'), 'Created classroom ' . $input['room_ID'], $_SESSION['user_login']);
+            notify_changes();
             return;
         }
     }
-
-    db_log(db_gettable('classrooms'), 'Created classroom ' . $input['room_ID'], $_SESSION['user_login']);
-    notify_changes();
 
     include template_getpath('div_main_header.php');
     include template_getpath('div_create_classroom.php');
@@ -977,7 +976,7 @@ function view_renderers() {
     } else {
         $renderers = require_once 'renderers.inc';
     }
-    
+
     require_once template_getpath('div_main_header.php');
     require_once template_getpath('div_list_renderers.php');
     require_once template_getpath('div_main_footer.php');
@@ -1004,7 +1003,7 @@ function disable_enable_renderer($enable) {
         db_log("renderers", 'Disabled renderer ' . $input['name'], $_SESSION['user_login']);
     }
     push_renderers_to_ezmanager();
- //   notify_changes();
+    //   notify_changes();
 }
 
 function create_renderer() {
@@ -1034,7 +1033,7 @@ function create_renderer() {
 
             if (empty($renderer_name)) {
                 $error = template_get_message('missing_renderer_name', get_lang());
-            } else if (renderer_exists($renderer_name) !== false){
+            } else if (renderer_exists($renderer_name) !== false) {
                 $error = template_get_message('existing_renderer_name', get_lang());
             } else if (empty($renderer_address)) {
                 $error = template_get_message('missing_renderer_address', get_lang());
@@ -1199,19 +1198,19 @@ function create_renderer() {
                     // verification for FFMPEG
                     if ($renderer_option == 'ffmpeg' || $renderer_option == 'ffmpeg_exp') {
                         $res = test_ffmpeg_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_ffmpeg, $renderer_option == 'ffmpeg_exp');
-                    switch ($res) {
-                        case "ffmpeg_not_found" :
-                            $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
-                            break;
-                        case "missing_codec_aac" :
-                            $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
+                        switch ($res) {
+                            case "ffmpeg_not_found" :
+                                $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
+                                break;
+                            case "missing_codec_aac" :
+                                $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
                                 $display_ffmpeg_exp = true; // used in div_create_renderer_step3.php
-                            break;
-                        case "missing_codec_h264":
-                            $error .= "- " . template_get_message('missing_codec_h264', get_lang()) . "<br/>";
-                            break;
-                        default: $error .= "";
-                    }
+                                break;
+                            case "missing_codec_h264":
+                                $error .= "- " . template_get_message('missing_codec_h264', get_lang()) . "<br/>";
+                                break;
+                            default: $error .= "";
+                        }
                     }
 
                     // verification for FFPROBE
@@ -1263,7 +1262,8 @@ function create_renderer() {
             $input['renderer_num_jobs'] = $_SESSION['renderer_num_jobs'];
             $input['renderer_num_threads'] = $_SESSION['renderer_num_threads'];
             $input['renderer_options'] = $_SESSION['renderer_option']['name'];
-            if ($input['renderer_options'] == 'ffmpeg_exp') $display_ffmpeg_exp = true;
+            if ($input['renderer_options'] == 'ffmpeg_exp')
+                $display_ffmpeg_exp = true;
 
             if ($input['submit_step_4_prev']) {
                 // back to step 3
@@ -1304,11 +1304,11 @@ function create_renderer() {
                     exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " .
                             $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] .
                             " \"" . $_SESSION['renderer_php'] . " " . $_SESSION['renderer_root_path'] . "/renderer_install.php " .
-                            $_SESSION['renderer_php'] . " '" . 
+                            $_SESSION['renderer_php'] . " '" .
                             str_replace('"', '\"', serialize($_SESSION['renderer_option'])) . "' " .
-                            $_SESSION['renderer_ffmpeg'] . " " . 
-                            $_SESSION['renderer_ffprobe'] . " " . 
-                            $_SESSION['renderer_num_threads'] . " " . 
+                            $_SESSION['renderer_ffmpeg'] . " " .
+                            $_SESSION['renderer_ffprobe'] . " " .
+                            $_SESSION['renderer_num_threads'] . " " .
                             $_SESSION['renderer_num_jobs'] . "\"", $output, $returncode);
 
                     if ($returncode || strpos($output[0], "renderer installed") === false) {
@@ -1367,14 +1367,14 @@ function create_renderer() {
             unset($_SESSION['renderer_php']);
             unset($_SESSION['renderer_ffmpeg']);
             unset($_SESSION['renderer_ffprobe']);
-            
+
             include template_getpath('div_main_header.php');
             include template_getpath('div_create_renderer_step1.php');
             include template_getpath('div_main_footer.php');
     }
 
 
-       db_log('renderers', 'Created renderer ' . $_SESSION['renderer_name'], $_SESSION['user_login']);
+    db_log('renderers', 'Created renderer ' . $_SESSION['renderer_name'], $_SESSION['user_login']);
     //   notify_changes();
 }
 
@@ -1387,7 +1387,7 @@ function remove_renderer() {
         echo json_encode(array('success' => '1'));
         db_log("renderers", 'Deleted renderer ' . $input['name'], $_SESSION['user_login']);
         push_renderers_to_ezmanager();
-    //    notify_changes();
+        //    notify_changes();
     }
 }
 
@@ -1537,7 +1537,7 @@ function user_login($login, $passwd) {
     // 6) Displaying the page
 
     header("Location: " . $ezadmin_url);
-    view_main();
+    albums_view();
 }
 
 /**
@@ -1575,7 +1575,8 @@ function remove_changes_alert() {
     unset($_SESSION['changes_to_push']);
 }
 
-function sync_externals(){
+function sync_externals() {
     
 }
+
 ?>

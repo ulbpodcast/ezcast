@@ -399,6 +399,57 @@ body {
     text-align: center;
 }
 
+#user-settings{
+    margin:4px 2px 0px 2px;
+}
+
+#user-settings.active{
+    color: #7bb3b6;
+}
+#user-settings.active:hover{
+    color: #333333;
+    cursor: pointer;
+}
+#user-settings:hover{
+    color: #7bb3b6;
+    cursor: pointer;
+}
+
+#contact,
+#help{
+    display: block;
+    height: 30px;
+    width: 30px;
+    position: fixed;
+    right: 0px;
+    top: 145px;
+    background: url('../images/Generale/contact-a.png') no-repeat center center;
+    z-index: 96;
+    -moz-border-radius: 6px 0px 0px 6px;
+    -webkit-border-radius: 6px 0px 0px 6px;
+    border-radius: 6px 0px 0px 6px;
+}
+
+#help{
+    top: 110px;
+    background: url('../images/Generale/help-a.png') no-repeat center center;
+}
+
+#help:hover{
+    background: url('../images/Generale/help-b.png') no-repeat center center;
+}
+
+#contact:active,
+#contact:hover{    
+    background: url('../images/Generale/contact-b.png') no-repeat center center;
+}
+
+#settings_form_wrapper h2,
+#contact_form_wrapper h2{
+    color: #7bb3b6;
+    padding-top: 18px;
+}
+
 /* ---------------- HOME PAGE ------------------- */
 #tuto{
     width: 100%; 
@@ -664,7 +715,42 @@ body {
 
 }
 
+#assets ul li a.item span.live_stream{
+    width: 28px;
+    height: 18px;
+    background: url(../images/Generale/streaming.png) no-repeat;
+    margin: 0px;
+    margin-left: -5px;
+
+}
+
 /* ------------------ Video Player ------------------- */
+#streaming_config_wrapper{
+    height: 570px;
+    width: 930px;
+}
+
+#main_player.small_display #streaming_config_wrapper{    
+    width: 698px;
+    float: left;
+}
+
+#main_player.fullscreen #streaming_config_wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 95;
+}
+
+#streaming_config{
+    height: 100%;
+}
+
+#streaming_video{
+    height: 523px;
+    width: 100%;
+    font-size: 12px;
+}
 
 #video_player{
     position: relative;
@@ -675,6 +761,14 @@ body {
     left: 0px;
     background: #000000;
     margin-bottom: 15px;
+}
+
+#video_player.streaming{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0px;
+    background: url(../images/Generale/poster-streaming.png) no-repeat;
+    font-size: 0px;
 }
 
 #video_shortcuts{
@@ -821,6 +915,10 @@ body {
     background: #333333;
     text-align: center;
     border-top: 2px solid #5e8183;
+}
+
+.video_controls.streaming{
+    width: 100%;
 }
 
 .video_controls ul{
@@ -981,31 +1079,49 @@ body {
 .fullscreen-button{
     height: 22px;
     width: 28px;
-    background:transparent url(../images/Generale/fullscreen-a.png) no-repeat center center; 
+    background:transparent url(../images/Generale/fullscreen_a.png) no-repeat center 5px; 
 }
 
 .fullscreen-button:hover{
-    background:transparent url(../images/Generale/fullscreen-b.png) no-repeat center center; 
+    background:transparent url(../images/Generale/fullscreen_b.png) no-repeat center 5px; 
 }
 
 .fullscreen-button.active{
-    background:transparent url(../images/Generale/fullscreen-exit-a.png) no-repeat center center; 
+    background:transparent url(../images/Generale/fullscreen_exit_a.png) no-repeat center 5px; 
 }
 
 .fullscreen-button.active:hover{
-    background:transparent url(../images/Generale/fullscreen-exit-b.png) no-repeat center center; 
+    background:transparent url(../images/Generale/fullscreen_exit_b.png) no-repeat center 5px; 
 }
 
 .video_controls ul li a.panel-button{
     display: inline-block;
     height: 22px;
     width: 25px;
-    background:transparent url(../images/Generale/panel-a.png) no-repeat center center; 
+    background:transparent url(../images/Generale/chat_small_a.png) no-repeat center 5px; 
 }
 
-.video_controls ul li a.panel-button:hover,
-.video_controls ul li a.panel-button.active{
-    background:transparent url(../images/Generale/panel-b.png) no-repeat center center; 
+.video_controls ul li a.panel-button:hover{
+    display: inline-block;
+    height: 22px;
+    width: 25px;
+    background:transparent url(../images/Generale/chat_small_b.png) no-repeat center 5px; 
+}
+
+#main_player.small_display .video_controls ul li a.panel-button{
+    background:transparent url(../images/Generale/chat_large_c.png) no-repeat center 5px; 
+}
+
+#main_player.small_display .video_controls ul li a.panel-button:hover{
+    background:transparent url(../images/Generale/chat_large_d.png) no-repeat center 5px; 
+}
+
+#main_player.fullscreen.small_display .video_controls ul li a.panel-button{
+    background:transparent url(../images/Generale/chat_large_a.png) no-repeat center 5px; 
+}
+
+#main_player.fullscreen.small_display  .video_controls ul li a.panel-button:hover{
+    background:transparent url(../images/Generale/chat_large_b.png) no-repeat center 5px; 
 }
 
 /* ****** Bookmark, Thread && Settings Form ******* */
@@ -1103,7 +1219,8 @@ body {
     margin-left: 12px;
 }
 
-#settings_form{
+#settings_form,
+#contact_form{
     display: none;
     padding-bottom: 15px;
 }
@@ -1118,6 +1235,10 @@ body {
     padding-left: 4px;
 }
 
+#contact_form.form label{    
+    width:120px;
+}
+
 .form .small{
     color:#666666;
     display:block;
@@ -1125,6 +1246,10 @@ body {
     font-weight:normal;
     text-align:right;
     width:100px;
+}
+
+#contact_form.form .small{    
+    width:120px;
 }
 
 .form input, 
@@ -1139,6 +1264,11 @@ body {
     font-family: Helvetica, Arial, sans-serif;
 }
 
+#contact_form.form textarea{
+    width: 780px;
+    height: 120px;
+}
+
 .form .cancelButton{
     display: inline-block;
     margin-left: 400px;
@@ -1148,6 +1278,377 @@ body {
     display: inline-block;
 }
 
+/* ********** chat messages ************* */
+#main_player.small_display #chat_container{
+    float: left;
+}
+
+#main_player.fullscreen #chat_container{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+
+#chat{
+    margin-top: 5px;
+    background: #FFFFFF;
+    width: 930px;
+    overflow: hidden;
+}
+
+#main_player.fullscreen.small_display #chat{
+    margin-top: 50px;
+    height: 100%;
+}
+
+#main_player.small_display #chat{
+    width: 234px;
+    margin-top: 0px;
+}
+
+#chat_header{
+    font-size: 18px;
+    background-color: #25b8a5;
+    padding: 8px 12px;
+    color: white;
+    width: 906px;
+    text-align: left;
+}
+
+#main_player.small_display #chat_header{
+    font-size: 14px;
+    padding: 8px;
+    width: 234px;
+    text-align: center;
+} 
+
+#chat_logo{
+    display: inline;
+    height: 11px;
+    width: 11px;
+    padding-left: 48px;
+    padding-top: 12px;
+    padding-bottom: 14px;
+    margin-left: 0px;
+    background: url(../images/Generale/thread-logo.png) no-repeat center center;
+}
+
+#main_player.small_display #chat_logo{
+    display: none;
+}
+
+#chat_menu{
+    background: #F1F1F1;
+    font-size: 0px;
+}
+
+#chat_menu ul{
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+    font-size: 0px;
+}
+
+#chat_menu ul li{
+    display: inline-block;
+    list-style: none;
+    border-right: 1px solid #CCC;
+    padding: 0px;
+    margin: 0px;
+    font-size: 12px;
+}
+
+#chat_menu ul li a{
+    display: block;
+    text-decoration: none;
+    padding: 8px 16px;
+    margin: 0px;
+    background: #F1F1F1;
+    color: #333;
+    width: auto;
+    height: auto;
+}
+
+#main_player.small_display #chat_menu ul li a{
+    display: block;
+    text-decoration: none;
+    padding: 0;
+    margin: 0px;
+    width: 50px;
+    height: 30px;
+}
+
+#chat_menu ul li a span{
+    display: inline;
+}
+
+#main_player.small_display #chat_menu ul li a span{
+    display: none;
+}
+
+#chat_text_button,
+#chat_questions_button,
+#chat_help_button{
+    background-position: left;
+}
+
+
+#chat_menu ul li a.active,
+#main_player.small_display #chat_menu ul li a.active{
+    background-color: #FFF;
+}
+
+#chat_menu ul li a:hover,
+#main_player.small_display #chat_menu ul li a:hover{
+    background-color: rgba(37,184,165,0.5);
+}
+
+#main_player.small_display #chat_text_button{
+    background-image: url(../images/Generale/chat_text.png);    
+}
+
+#main_player.small_display #chat_questions_button{
+    background-image: url(../images/Generale/chat_hashtag.png);    
+}
+
+#main_player.small_display #chat_help_button{
+    background-image: url(../images/Generale/chat_help.png);    
+}
+
+#chat_wrapper{  
+    width: 930px;
+    height: 502px;
+    overflow: hidden;
+}
+
+#main_player.small_display #chat_wrapper{
+    width: 234px;
+}
+
+#main_player.fullscreen #chat_wrapper{
+    height: 100%;
+}
+
+#chat_scrollable_area{    
+    display: block;
+    width: 2790px;
+}
+#main_player.small_display #chat_scrollable_area{
+    width: 702px;
+}
+
+#chat_help,
+#chat_text,
+#chat_questions{
+    display: inline-block;
+    height: 500px;
+    width: 930px;
+    overflow: hidden;
+    float: right;
+}
+#main_player.small_display #chat_help,
+#main_player.small_display  #chat_text,
+#main_player.small_display #chat_questions{
+    width: 234px;
+}
+
+#main_player.small_display.fullscreen #chat_text,
+#main_player.small_display.fullscreen #chat_questions,
+#main_player.small_display.fullscreen #chat_help{
+    height: 100%;
+}
+
+.chat_ad{
+    border-bottom: 1px dotted #CCC;
+    padding: 6px;
+    color: #AAA;
+}
+
+.chat_ad a{
+    text-decoration: none;
+    font-weight: bold;
+    color: #25b8a5;
+}
+
+.chat_ad a:hover{    
+    color: #333;
+}
+
+#chat_qst_container{
+    width: 906px;
+    height: 445px;
+    padding: 4px 12px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#main_player.small_display #chat_qst_container,
+#main_player.small_display #chat_help{
+    width: 226px;
+    padding: 4px;
+}
+
+#chat_help{
+    height: 490px;
+}
+
+#chat_help b{
+    color: #25b8a5;
+}
+
+#chat_help ul li{
+    list-style: none;
+    display: block;
+    padding: 6px 12px;
+    border-bottom: 1px dotted #aaa;
+}
+
+#main_player.small_display #chat_help ul li{
+    padding: 4px
+}
+
+#chat_help ul li span{
+    display: block;
+    width: 150px;
+}
+
+#chat_messages{
+    width: 906px;
+    height: 409px;
+    padding: 4px 12px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-bottom: 1px solid #AAA;
+}
+
+#main_player.small_display #chat_messages{
+    width: 226px;
+    padding: 4px;
+}
+
+.chat_msg_wrapper{
+    position: relative;
+    clear: both;
+    width: 907px;
+}
+
+#main_player.small_display .chat_msg_wrapper{
+    width: 226px;
+}
+
+.chat_msg_info{
+    font-size: 10px;
+}
+
+.chat_msg_date{
+    display: none;
+}
+
+.chat_msg_date.visible{
+    display: inline-block;
+}
+
+.chat_msg{
+    margin: 5px 0px;
+    padding: 4px 6px;
+    background: #EBEBEB;
+    max-width: 790px;
+    min-width: 150px;
+    display: inline-block;
+    position: relative;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    clear: both;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#main_player.small_display .chat_msg{
+    max-width: 200px;
+    min-width: 0px;
+}
+
+.chat_msg .chat_private{
+    background: url('../images/Generale/chat_private.png') no-repeat center center;
+    width: 18px;
+    height: 18px;
+    float: right;
+}
+
+
+.chat_msg_wrapper.author .chat_msg{
+    background: rgba(37,184,165,0.1);
+}
+
+.chat_msg_txt{
+    padding: 2px 0px;
+    word-wrap:break-word;
+}
+
+.chat_msg_txt a,
+.chat_msg_txt a:active{
+    text-decoration: none;
+    font-weight: bold;
+    color: #25b8a5;
+}
+
+.chat_msg_txt a:hover{
+    color: #333333;
+}
+
+#chat_message{
+    width: 800px;
+    margin-left: 12px;
+    resize: none;
+    border: none;
+    display: inline-block;
+    padding: 4px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    height: 28px;
+    outline:0px none transparent;
+    -moz-appearance:none;
+}
+
+#main_player.small_display  #chat_message{
+    width: 180px;
+    margin-left: 0px;
+}
+
+#chat_message:focus{
+    outline:0px none transparent;
+    -moz-appearance:none;
+}
+
+.chat_button{
+    float: right; 
+    margin-top: -35px;
+    left: -12px;
+    position: relative;
+}
+
+.chat_button .button:hover{
+    background-color: rgba(37,184,165,0.5);
+}
+
+.chat_button .button span{
+    display: inline;
+}
+
+#main_player.small_display .chat_button .button span{
+    display: none;
+}
+
+#main_player.small_display .chat_button .button{
+    background-image: url('../images/Generale/chat_send.png');
+    background-position: center no-repeat;
+    padding: 0px;
+    width: 24px;
+    height: 24px;
+    display: block;
+}
 /* ******** Asset infos ********** */
 
 #bottom{
@@ -1801,6 +2302,21 @@ body {
     position: relative;
     width: 934px; 
     margin: 0 auto; 
+}
+
+.search_wrapper.streaming.regular{
+    width: 300px; 
+    top: -35px;
+    left: 630px;
+    margin: 0px;
+}
+
+.search_wrapper.streaming.fullscreen{
+    position: fixed;
+    top: -10px;
+    right: 0px;
+    width: 300px; 
+    margin: 0px;
 }
 
 #search{
@@ -2750,14 +3266,12 @@ span.red:hover{
     color: #c23328;
 }
 /* ------------------ POPUP IMPORT/EXPORT BOOKMARKS -------------- */
-#popup_bookmarks ul,
-#popup_import_bookmarks ul {
+#div_popup ul {
     max-height: 450px;
     overflow-y: auto;
 }
 
-#popup_bookmarks ul li,
-#popup_import_bookmarks ul li{
+#div_popup ul li {
     display: block;
     list-style: none;
     width: 480px;
@@ -3129,22 +3643,6 @@ a.tooltip:hover div.tip{
 .message-input.edit_msg{
     width: auto;
     margin: 8px 0px 12px 35px;
-}
-
-#user-settings{
-    margin:4px 2px 0px 2px;
-}
-
-#user-settings.active{
-    color: #7bb3b6;
-}
-#user-settings.active:hover{
-    color: #333333;
-    cursor: pointer;
-}
-#user-settings:hover{
-    color: #7bb3b6;
-    cursor: pointer;
 }
 
 .tinyeditor{

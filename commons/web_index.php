@@ -41,7 +41,7 @@ $input = array_merge($_GET, $_POST);
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
-            view_main();
+            albums_view();
     }
 
 
@@ -49,7 +49,7 @@ $input = array_merge($_GET, $_POST);
 /**
  * Displays the main frame, without anything on the right side
  */
-function view_main() {
+function albums_view() {
     // TODO
    // include_once template_getpath('main.php');
     echo "<!DOCTYPE html>

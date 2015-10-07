@@ -34,6 +34,8 @@ $recorder_upload_dir="$repository_basedir/queues/recorder_uploads";
 $recorder_upload_ok_dir="$repository_basedir/queues/recorder_uploads_ok";
 $recorder_upload_failed_dir="$repository_basedir/queues/recorder_uploads_failed";
 $recorder_download_pgm="$ezmanager_basedir/cli_recorder_download.php";
+$streaming_asset_delete_pgm="$ezmanager_basedir/cli_streaming_asset_delete.php";
+$asset_publish_pgm="$ezmanager_basedir/cli_asset_publish_unpublish.php";
 
 //submit parameters
 $submit_upload_dir="$repository_basedir/queues/submit_uploads";

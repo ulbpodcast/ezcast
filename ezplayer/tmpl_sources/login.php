@@ -68,8 +68,13 @@
                 if ($_SESSION['browser_version'] >= 9)
                     $warning = false;
                 break;
+            case 'opera' :
+                if ($_SESSION['browser_version'] >= 26)
+                    $warning = false;
+                break;
             case 'firefox' :
-                if ($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || $_SESSION['user_os'] == "Android"))
+                if (($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || $_SESSION['user_os'] == "Android"))
+                        || $_SESSION['browser_version'] >= 35)
                     $warning = false;
                 break;
         }
@@ -77,11 +82,13 @@
             ?>
             <div id="warning">
                 <div>
-                    <a href="#" onclick="document.getElementById('warning').style.display = 'none';">&#215;</a> 
+                    <a href="#" onclick="document.getElementById('warning').style.display = 'none';
+                       ">&#215;</a> 
                     ®Warning_browser® :
                     <ul>
                         <li><b>Safari 5+</b> | </li>
                         <li><b>Google Chrome</b> | </li>
+                        <li><b>Opera 26+</b> </li>
                         <?php if ($_SESSION['user_os'] == "Windows") { ?>
                             <li><b>Internet Explorer 9+</b> | </li>
                             <li><b>Firefox 22+</b></li>

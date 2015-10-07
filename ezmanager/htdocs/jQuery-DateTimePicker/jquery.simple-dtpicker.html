@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Demo - jquery-simple-datetimepicker</title>
+
+	<!--Requirement jQuery-->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<!--Load Script and Stylesheet -->
+	<script type="text/javascript" src="jquery.simple-dtpicker.js"></script>
+	<link type="text/css" href="jquery.simple-dtpicker.css" rel="stylesheet" />
+	<!---->
+
+	<style type="text/css">
+		body { background-color: #fefefe; padding-left: 2%; padding-bottom: 100px; color: #101010; }
+		footer{ font-size:small;position:fixed;right:5px;bottom:5px; }
+		a:link, a:visited  { color: #0000ee; }
+		pre{ background-color: #eeeeee; margin-left: 1%; margin-right: 2%; padding: 2% 2% 2% 5%; }
+		p { font-size: 0.9rem; }
+		ul { font-size: 0.9rem; }
+		hr { border: 2px solid #eeeeee; margin: 2% 0% 2% -3%; }
+		h3 { border-bottom: 2px solid #eeeeee; margin: 2rem 0 2rem -1%; padding-left: 1%; padding-bottom: 0.1em; }
+		h4 { border-bottom: 1px solid #eeeeee; margin-top: 2rem; margin-left: -1%; padding-left: 1%; padding-bottom: 0.1em; }
+	</style>
+</head>
+<body>
+	<header>
+		<h2>Demo - jquery-simple-datetimepicker</h2>
+	</header>
+	<small class="nav"><a href="#">Top</a> | <a href="#section_available_options">Avaiable options</a> | <a href="#section_more_methods">More methods</a></small>
+
+	<h3>Inline</h3>
+	<div id="date_picker"> </div>
+	<script type="text/javascript">
+		$(function(){
+			$('#date_picker').dtpicker();
+		});
+	</script>
+
+	<h3>Append to Input-field</h3>
+	<input type="text" name="date" value="">
+	<script type="text/javascript">
+		$(function(){
+			$('*[name=date]').appendDtpicker();
+		});
+	</script>
+
+	<h3>Append to Input-field (Inline)</h3>
+	<input type="text" name="date2" value="2012/01/01 10:00">
+	<script type="text/javascript">
+		$(function(){
+			$('*[name=date2]').appendDtpicker({"inline": true});
+		});
+	</script>
+	<small>In addition, this default date has specified by the input's value ("2012-01-01 10:00").</small>
+
+	<hr />
+
+	<h3 id="section_available_options">Avaiable options</h3>
+		<p>About details for these options, please see: <a href="https://github.com/mugifly/jquery-simple-datetimepicker/wiki/Options">Wiki</a>.</p>
+
+		<h4>Current date ("current": "2012-3-4 12:30")</h4>
+		<input type="text" name="date3" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date3]').appendDtpicker({
+					"inline": true,
+					"current": "2012-3-4 12:30"
+				});
+			});
+		</script>
+
+		<h4>dateFormat ("dateFormat": "DD.MM.YY H:mmTT")</h4>
+		<input type="text" name="date4" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date4]').appendDtpicker({
+					"inline": true,
+					"dateFormat": "DD.MM.YY H:mmTT"
+				});
+			});
+		</script>
+		<h5>Format options:</h5>
+		<ul>
+			<li>YYYY: Year, 4 digit</li>
+			<li>YY: Year, 2 digit</li>
+			<li>MM: Month, 01-12</li>
+			<li>M: Month, 1-12</li>
+			<li>DD: Day, 01-31</li>
+			<li>D: Day, 1-31</li>
+			<li>HH: Hour using 12-hour clock 01-12</li>
+			<li>H: Hour using 12-hour clock 1-12</li>
+			<li>hh: Hour using 24-hour clock 00-23</li>
+			<li>h: Hour using 24-hour clock 0-23</li>
+			<li>mm: Minute, 00-59</li>
+			<li>m: Minute, 0-59</li>
+			<li>tt: am/pm</li>
+			<li>TT: AM/PM</li>
+		</ul>
+
+		<h4>locale ("locale": "ja")</h4>
+		<input type="text" name="date5" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date5]').appendDtpicker({
+					"inline": true,
+					"locale": "ja"
+				});
+			});
+		</script>
+		<h5>Available locales:</h5>
+		<ul style="font-size: 0.8em;">
+			<li>"en" : English (default)</li>
+			<li>"et" : Estonian - Thanks to: <a href="https://github.com/mpuusaar">mpuusaar</a></li>
+			<li>"br" : Brazil - Thanks to: <a href="http://www.mauricioprof.com/site/principal.php">Mauricio</a></li>
+			<li>"cn" : Chinese - Thanks to: <a href="https://github.com/jasonslyvia">jasonslyvia</a></li>
+			<li>"cz" : Czech - Thanks to: <a href="http://rotten77.cz/">Jan Zatloukal</a></li>
+			<li>"da" : Danish - Thanks to: <a href="https://github.com/danielnielsen">danielnielsen</a>, <a href="https://github.com/Web-Engine">Web-Engine</a>, <a href="https://github.com/jmnote">jmnote</a></li>
+			<li>"de" : German - Thanks to: <a href="https://github.com/rtakeda">rtakeda</a></li>
+			<li>"es" : Spanish - Thanks to: <a href="https://github.com/maw">maw</a>, <a href="https://github.com/vagyriag">vagyriag</a></li>
+			<li>"fr" : French - Thanks to: <a href="https://github.com/matll42">matll42</a></li>
+			<li>"gr" : Greek - Thanks to: <a href="https://github.com/sincetomorrow">sincetomorrow</a></li>
+			<li>"hu" : Hungarian - Thanks to: <a href="https://github.com/greenformatics-peter">greenformatics-peter</a></li>
+			<li>"id" : Bahasa Indonesia - Thanks to: <a href="https://github.com/robzlabz">robzlabz</a></li>
+			<li>"it" : Italian - Thanks to: Mauro Zuccato</li>
+			<li>"ja" : Japanese</li>
+			<li>"ko" : Korean - Thanks to: <a href="https://github.com/perhapsspy">perhapsspy</a></li>
+			<li>"nl" : Dutch (Naderlands) - Thanks to: <a href="https://github.com/Mondane">Mondane</a></li>
+			<li>"no" : Norwegian - Thanks to: <a href="https://github.com/HelgeSverre">HelgeSverre</a></li>
+			<li>"pt" : Portuguese - Thanks to: <a href="https://github.com/adc-tcarvalho">adc-tcarvalho</a></li>
+			<li>"pl" : Polish - Thanks to: <a href="https://github.com/viszman">viszman</a></li>
+			<li>"ro" : Romanian - Thanks to: <a href="https://github.com/IngerAlHaosului">IngerAlHaosului</a></li>
+			<li>"ru" : Russian - Thanks to: <a href="https://github.com/rdolgushin">rdolgushin</a></li>
+			<li>"sv" : Swedish - Thanks to: <a href="https://github.com/MacDknife">MacDknife</a></li>
+			<li>"tr" : Turkish - Thanks to: <a href="https://github.com/myfell">myfell</a></li>
+			<li>"ua" : Ukrainian - Thanks to: goti2</li>
+		</ul>
+
+		<h4>Change the interval of minute ("minuteInterval": 15)</h4>
+		<input type="text" name="date6" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date6]').appendDtpicker({
+					"inline": true,
+					"minuteInterval": 15
+				});
+			});
+		</script>
+		<h5>Avaiable value:</h5>
+		<small>min: 5, max: 30. (default: 30 minute. it means interval of each 30 minute.)</small><br />
+
+		<h4>Change the first day of the week ("firstDayOfWeek": 1)</h4>
+		<input type="text" name="date8" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date8]').appendDtpicker({
+					"inline": true,
+					"firstDayOfWeek": 1
+				});
+			});
+		</script>
+		<h5>Avaiable value:</h5>
+		<small>min: 0 (sunday), max: 6 (satday), default: 0 (sunday). </small><br />
+		<small>Thanks to: <a href="https://github.com/concept1hundred">concept1hundred</a>.</small>
+
+		<h4>Close when selected date &amp; time ("closeOnSelected": true) with append to Input-field mode</h4>
+		<p>
+			<input type="text" name="date9" value="">
+			<script type="text/javascript">
+				$(function(){
+					$('*[name=date9]').appendDtpicker({
+						"closeOnSelected": true
+					});
+				});
+			</script>
+		</p>
+
+		<p>
+			It's will also useful for use with two input-fields.<br />
+			<input type="text" name="date10" value="">
+			-
+			<input type="text" name="date11" value="">
+			<script type="text/javascript">
+				$(function(){
+					$('*[name=date10]').appendDtpicker({
+						"closeOnSelected": true
+					});
+				});
+				$(function(){
+					$('*[name=date11]').appendDtpicker({
+						"closeOnSelected": true
+					});
+				});
+			</script>
+		</p>
+
+		<h4>Disable the automatic scroll of time-list ("timelistScroll": false)</h4>
+		<input type="text" name="date12" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date12]').appendDtpicker({
+					"inline": true,
+					"timelistScroll": false
+				});
+			});
+		</script>
+
+		<h4>Disable the fade animation ("animation": false)</h4>
+		<input type="text" name="date7" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date7]').appendDtpicker({
+					"inline": true,
+					"animation": false
+				});
+			});
+		</script>
+
+		<h4>Disable the calendar scroll with mouse wheel ("calendarMouseScroll": false)</h4>
+		<input type="text" name="date13" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date13]').appendDtpicker({
+					"inline": true,
+					"calendarMouseScroll": false
+				});
+			});
+		</script>
+
+		<h4>Disable the Today button ("todayButton": false)</h4>
+		<input type="text" name="date14" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date14]').appendDtpicker({
+					"inline": true,
+					"todayButton": false
+				});
+			});
+		</script>
+
+		<h4>Date-only mode ("dateOnly": true)</h4>
+		<input type="text" name="date15" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date15]').appendDtpicker({
+					"inline": true,
+					"dateOnly": true,
+					"dateFormat": "DD-MM-YYYY"
+				});
+			});
+		</script>
+
+		<h4>Time-only mode ("timeOnly": true)</h4>
+		<input type="text" name="date-time-only" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date-time-only]').appendDtpicker({
+					"inline": true,
+					"timeOnly": true,
+				});
+			});
+		</script>
+
+		<h4>Only allow future datetimes ("futureOnly": true)</h4>
+		<input type="text" name="date16" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date16]').appendDtpicker({
+					"inline": true,
+					"futureOnly": true
+				});
+			});
+		</script>
+
+		<h4>Show AM/PM in time list ("amPmInTimeList": true)</h4>
+		<input type="text" name="date19" value="">
+		<script type="text/javascript">
+			$(function(){
+				$('*[name=date19]').appendDtpicker({
+					"inline": true,
+					"amPmInTimeList": true
+				});
+			});
+		</script>
+
+		<h4>Initialize with the input-field as blank ("autodateOnStart": false)</h4>
+		<div>
+			<input type="text" name="date_false_autodateonstart" value="">
+			<script type="text/javascript">
+				$(function(){
+					$('*[name=date_false_autodateonstart]').appendDtpicker({
+						"autodateOnStart": false
+					});
+				});
+			</script>
+			<pre>
+&lt;input type=&quot;text&quot; id=&quot;date_foo&quot; value=&quot;&quot;&gt;
+
+$('#date_foo').appendDtpicker({
+	"autodateOnStart": false
+});</pre>
+		</div>
+
+		<h4>Initialize with the no close button ("closeButton": false)</h4>
+		<div>
+			<input type="text" name="date_false_closeButton" value="">
+			<script type="text/javascript">
+				$(function(){
+					$('*[name=date_false_closeButton]').appendDtpicker({
+						"closeButton": false
+					});
+				});
+			</script>
+			<pre>
+&lt;input type=&quot;text&quot; id=&quot;date_foo&quot; value=&quot;&quot;&gt;
+
+$('#date_foo').appendDtpicker({
+	"closeButton": false
+});</pre>
+		</div>
+
+		<h4>Date Ranges (not compatible with 'inline:true' at this time)</h4>
+		<label for='start_time'> Start Date: </label>
+			<input type="text" name="start_time" id="start_time" value="">
+
+		<label for='end_time'> End Date: </label>
+			<input type="text" name="end_time" id="end_time" value="">
+		<script type="text/javascript">
+			$(function(){
+			 	// -- Example Only - Set the date range --
+				var d = new Date();
+				d.setDate(10);
+				$('#start_time').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + " 1:00 pm");
+				// Example Only - Set the end date to 7 days in the future so we have an actual
+				d.setDate(d.getDate() + 7);
+				$('#end_time').val(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + " 13:45 ");
+				// -- End Example Only Code --
+
+				// Attach a change event to end_time -
+				// NOTE we are using '#ID' instead of '*[name=]' selectors in this example to ensure we have the correct field
+				$('#end_time').change(function() {
+				    $('#start_time').appendDtpicker({
+					    maxDate: $('#end_time').val() // when the end time changes, update the maxDate on the start field
+				    });
+				});
+
+				$('#start_time').change(function() {
+				    $('#end_time').appendDtpicker({
+					    minDate: $('#start_time').val() // when the start time changes, update the minDate on the end field
+				    });
+				});
+
+				// trigger change event so datapickers get attached
+				$('#end_time').trigger('change');
+				$('#start_time').trigger('change');
+			});
+		</script>
+
+		<h4>Date Ranges NEW semple with setMinDate/setMaxDate Functions</h4>
+		<h5>Not lower then start date example</h5>
+		<label for='startdt'> Start Date: </label>
+			<input type="text" class="dtpicker" name="startdt" id="startdt" value="">
+
+		<label for='enddt'> End Date: </label>
+			<input type="text" class="dtpicker" name="enddt" id="enddt" value="">
+		<script type="text/javascript">
+			$(function(){
+			 	// -- append by class just for lower strings count --
+				$('.dtpicker').appendDtpicker({"minuteInterval": 15, "calendarMouseScroll": false, "futureOnly": true, "autodateOnStart": false});
+
+				$('#startdt').change(function() {
+				     $('#enddt').handleDtpicker('setMinDate', $('#startdt').val()); //set end datetime not lower then start datetime
+				});
+			});
+		</script>
+
+		<h5>Both end limited range example</h5>
+		<label for='startdt2'> Start Date: </label>
+			<input type="text" class="dtpicker2" name="startdt2" id="startdt2" value="">
+
+		<label for='enddt2'> End Date: </label>
+			<input type="text" class="dtpicker2" name="enddt2" id="enddt2" value="">
+		<script type="text/javascript">
+			$(function(){
+			 	// -- append by class just for lower strings count --
+				$('.dtpicker2').appendDtpicker({"futureOnly": false, "autodateOnStart": false});
+
+				$('#startdt2').change(function() {
+				     var de = new Date($('#startdt2').handleDtpicker('getDate')); // constructor need to avoid linking object
+					 de.setDate(de.getDate() + 7);
+					 $('#enddt2').handleDtpicker('setMinDate', de); //set min end date is 7 day later then start date
+				});
+				$('#enddt2').change(function() {
+				     var ds = new Date($('#enddt2').handleDtpicker('getDate'));
+					 ds.setDate(ds.getDate() - 7);
+					 $('#startdt2').handleDtpicker('setMaxDate', ds); //set max end date is 7 day earlier then end date
+				});
+			});
+		</script>
+
+		<h4>Set min and max times ("minTime":"hh:mm" and "maxTime":"hh:mm")</h4>
+		<h5>e.g. 08:30 - 19:15, and future-only</h5>
+		<div>
+			<input type="text" name="date17" value="">
+			<script type="text/javascript">
+				$(function(){
+					$('*[name=date17]').appendDtpicker({
+						"inline": true,
+						"futureOnly": true,
+						"minTime":"08:30",
+						"maxTime":"19:15"
+					});
+				});
+			</script>
+		</div>
+
+		<h4>Only allow the specified days of the week ("allowWdays")</h4>
+		<h5>e.g., Weekdays only</h5>
+		<div>
+			<input type="text" name="date_allowddays" value="">
+			<script type="text/javascript">
+				$(function(){
+					$('*[name=date_allowddays]').appendDtpicker({
+						"inline": true,
+						"allowWdays": [1, 2, 3, 4, 5]
+					});
+				});
+			</script>
+			<pre>
+&lt;input type=&quot;text&quot; id=&quot;date_foo&quot; value=&quot;&quot;&gt;
+
+$('#date_foo').appendDtpicker({
+	"inline": true,
+	"allowWdays": [1, 2, 3, 4, 5] // 0: Sun, 1: Mon, 2: Tue, 3: Wed, 4: Thr, 5: Fri, 6: Sat
+});</pre>
+		</div>
+
+		<h4>Set the user event-handler (on* methods)</h4>
+		<div>
+			<ul>
+				<li>"onInit" - Called when a picker has been initialized.</li>
+				<li>"onShow" - Called when a picker has shown.</li>
+				<li>"onHide" - Called when a picker has hidden.</li>
+			</ul>
+			<p>
+				In normally, a picker has been shown/hidden by automatically when necessary.<br/>
+				But you can also catch it, And handle a picker by yourself with using methods of "<a href="#event-handler_methods">handler</a>" object.
+			</p>
+
+			<h5><a name="event-handler_methods">Available methods in <u>handler</u> object</a></h5>
+			<div>
+				<ul>
+					<li>"destroy()" - Destroy a picker.</li>
+					<li>"getInput()" - Get a input-field object (jQuery element).</li>
+					<li>"getPicker()" - Get a picker object (jQuery element).</li>
+					<li>"getDate()" - Get a selected date from a picker.</li>
+					<li>"setDate(date)" - Set a specific date to a picker.</li>
+					<li>"hide()" - Hide a picker.</li>
+					<li>"show()" - Show a picker.</li>
+					<li>"isShow()" - Get the display state of a picker.</li>
+				</ul>
+			</div>
+
+			<h5>e.g. Show a dialog, when picker has been shown or hidden.</h5>
+			<div>
+				<input type="text" name="date18" value="">
+				<script type="text/javascript">
+					$(function(){
+						$('*[name=date18]').appendDtpicker({
+							"onShow": function(handler){
+								window.alert('Picker is shown!');
+							},
+							"onHide": function(handler){
+								window.alert('Picker is hidden!');
+							}
+						});
+					});
+				</script>
+				<pre>
+&lt;input type=&quot;text&quot; id=&quot;date_foo&quot; value=&quot;&quot;&gt;
+
+$('#date_foo').appendDtpicker({
+	"onShow": function(handler){
+		window.alert('Picker is shown!');
+	},
+	"onHide": function(handler){
+		window.alert('Picker is hidden!');
+	}
+});</pre>
+			</div>
+
+			<h5>e.g. Just-in-time generate.</h5>
+			<div>
+				<input type="text" id="date_jit" value="">
+				<input type="button" id="btn_generate" value="Generate a picker">
+				<script type="text/javascript">
+					$(function(){
+						$('#btn_generate').click(function(){
+							window.alert("Generate");
+							$('#date_jit').appendDtpicker({
+								"onInit": function(handler){
+									handler.show();
+								},
+								"onHide": function(handler){
+									window.alert("Picker is hidden, Then destroy a picker");
+									handler.destroy();
+								}
+							});
+						});
+					});
+				</script>
+				<pre>&lt;input type=&quot;text&quot; id=&quot;date_jit&quot; value=&quot;&quot;&gt;
+&lt;input type=&quot;button&quot; id=&quot;btn_generate&quot; value=&quot;Generate a picker&quot;&gt;
+
+$('#btn_generate').click(function(){
+	window.alert("Generate");
+	$('#date_jit').appendDtpicker({
+		"onInit": function(handler){
+			handler.show();
+		},
+		"onHide": function(handler){
+			window.alert("Picker is hidden, Then destroy a picker");
+			handler.destroy();
+		}
+	});
+});</pre>
+			</div>
+		</div>
+
+	<hr />
+
+	<h3 id="section_more_methods">More methods</h3></a>
+
+		<h4>Manual handling of the appended picker</h4>
+		<div>
+			<p>
+				You can handle the appended picker with using "handleDtpicker" method into the input-field.<br/>
+				To handle a picker using handleDtpicker method, call the handleDtpicker method with setting the your hope method-name (e.g. "show" and <a href="#manual-handling_method-names">more</a>) as a parameter.
+			</p>
+
+			<h5><a name="manual-handling_method-names">Available method-names as parameter of <u>handleDtpicker</u> method</a></h5>
+			<div>
+				<ul>
+					<li>"destroy - Destroy a picker.</li>
+					<li>"hide" - Hide a picker.</li>
+					<li>"show" - Show a picker.</li>
+					<li>"getDate" -  Get a selected date from a picker.</li>
+					<li>"setDate" - Set a specific date to a picker.</li>
+				</ul>
+			</div>
+
+			<h5>e.g. Generate a picker as inline and handle by manual.</h5>
+			<div>
+				<input type="text" id="date_manual" value="">
+				<input type="button" id="btn_manual_generate" value="Generate">
+				<input type="button" id="btn_manual_show" value="Show">
+				<input type="button" id="btn_manual_hide" value="Hide">
+				<input type="button" id="btn_manual_get_date" value="getDate">
+				<input type="button" id="btn_manual_set_date" value="setDate">
+				<input type="button" id="btn_manual_destroy" value="Destroy">
+				<script type="text/javascript">
+					$(function(){
+						$('#btn_manual_generate').click(function(){
+							$('#date_manual').appendDtpicker({
+								"inline": true,
+								"closeButton": true
+							});
+						});
+						$('#btn_manual_show').click(function(){
+							$('#date_manual').handleDtpicker('show');
+						});
+						$('#btn_manual_hide').click(function(){
+							$('#date_manual').handleDtpicker('hide');
+						});
+						$('#btn_manual_get_date').click(function(){
+							var date = $('#date_manual').handleDtpicker('getDate');
+							window.alert(date.toString());
+						});
+						$('#btn_manual_set_date').click(function(){
+							$('#date_manual').handleDtpicker('setDate', new Date(2014, 04, 25, 0, 0, 0));
+						});
+						$('#btn_manual_destroy').click(function(){
+							$('#date_manual').handleDtpicker('destroy');
+						});
+					});
+				</script>
+				<pre>&lt;input type=&quot;text&quot; id=&quot;date_manual&quot; value=&quot;&quot;&gt;
+&lt;input type=&quot;button&quot; id=&quot;btn_manual_generate&quot; value=&quot;Generate&quot;&gt;
+&lt;input type=&quot;button&quot; id=&quot;btn_manual_show&quot; value=&quot;Show&quot;&gt;
+&lt;input type=&quot;button&quot; id=&quot;btn_manual_hide&quot; value=&quot;Hide&quot;&gt;
+&lt;input type=&quot;button&quot; id=&quot;btn_manual_destroy&quot; value=&quot;Destroy&quot;&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+	$(function(){
+		$(&#039;#btn_manual_generate&#039;).click(function(){
+			$(&#039;#date_manual&#039;).appendDtpicker({
+				&quot;inline&quot;: true,
+				&quot;closeButton&quot;: true
+			});
+		});
+		$(&#039;#btn_manual_show&#039;).click(function(){
+			$(&#039;#date_manual&#039;).handleDtpicker(&#039;show&#039;);
+		});
+		$(&#039;#btn_manual_hide&#039;).click(function(){
+			$(&#039;#date_manual&#039;).handleDtpicker(&#039;hide&#039;);
+		});
+		$(&#039;#btn_manual_get_date&#039;).click(function(){
+			var date = $(&#039;#date_manual&#039;).handleDtpicker(&#039;getDate&#039;);
+			window.alert(date.toString());
+		});
+		$(&#039;#btn_manual_set_date&#039;).click(function(){
+			$(&#039;#date_manual&#039;).handleDtpicker(&#039;setDate&#039;, new Date(2014, 04, 25, 0, 0, 0));
+		});
+		$(&#039;#btn_manual_destroy&#039;).click(function(){
+			$(&#039;#date_manual&#039;).handleDtpicker(&#039;destroy&#039;);
+		});
+	});
+&lt;/script&gt;</pre>
+			</div>
+		</div>
+
+	<footer>
+		<a href="https://github.com/mugifly/jquery-simple-datetimepicker">jquery.simple-dtpicker.js (jquery-simple-datetimepicker)</a><br>
+		 - Your feedback is highly appreciated :)
+	</footer>
+</body>
+</html>

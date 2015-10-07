@@ -33,7 +33,7 @@
  * according to the user's preferences
  */
 require_once '../commons/lib_template.php';
-require_once '../commons/lib_database.php';
+require_once 'lib_sql_management.php';
 require_once 'lib_various.php';
 require_once 'lib_error.php';
 
@@ -387,6 +387,10 @@ function validate_form() {
             escapeshellarg($input['db_prefix'] . 'logs') => array(escapeshellarg('ID'), escapeshellarg('time'), escapeshellarg('table'), escapeshellarg('message'), escapeshellarg('author')),
             escapeshellarg($input['db_prefix'] . 'users') => array(escapeshellarg('user_ID'), escapeshellarg('surname'), escapeshellarg('forename'), escapeshellarg('passwd'), escapeshellarg('recorder_passwd'), escapeshellarg('permissions'), escapeshellarg('origin')),
             escapeshellarg($input['db_prefix'] . 'users_courses') => array(escapeshellarg('ID'), escapeshellarg('course_code'), escapeshellarg('user_ID'), escapeshellarg('origin')),
+            escapeshellarg($input['db_prefix'] . 'threads') => array(escapeshellarg('id'), escapeshellarg('authorId'), escapeshellarg('authorFullName'), escapeshellarg('title'), escapeshellarg('message'), escapeshellarg('timecode'), escapeshellarg('creationDate'), escapeshellarg('studentOnly'), escapeshellarg('albumName'), escapeshellarg('assetName'), escapeshellarg('assetTitle'), escapeshellarg('lastEditDate'), escapeshellarg('lastEditAuthor'), escapeshellarg('nbComments'), escapeshellarg('deleted')),
+            escapeshellarg($input['db_prefix'] . 'comments') => array(escapeshellarg('id'), escapeshellarg('authorId'), escapeshellarg('authorFullName'), escapeshellarg('message'), escapeshellarg('creationDate'), escapeshellarg('thread'), escapeshellarg('parent'), escapeshellarg('nbChilds'), escapeshellarg('lastEditDate'), escapeshellarg('approval'), escapeshellarg('score'), escapeshellarg('upvoteScore'), escapeshellarg('downvoteScore'), escapeshellarg('deleted')),
+            escapeshellarg($input['db_prefix'] . 'votes') => array(escapeshellarg('login'), escapeshellarg('comment'), escapeshellarg('voteType')),
+            escapeshellarg($input['db_prefix'] . 'messages') => array(escapeshellarg('id'), escapeshellarg('authorId'), escapeshellarg('authorFullName'), escapeshellarg('message'), escapeshellarg('timecode'), escapeshellarg('creationDate'), escapeshellarg('albumName'), escapeshellarg('assetName')),
         );
 
         $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], $input['db_login'], $input['db_passwd']);
@@ -458,6 +462,7 @@ function create_tables($drop = true) {
                 '`room_ID` varchar(20) NOT NULL COMMENT \'Room nr (e.g. at ULB: R42-5-503)\',' .
                 '`name` varchar(255) DEFAULT NULL COMMENT \'Room name (e.g. "Auditoire K")\',' .
                 '`IP` varchar(100) NOT NULL COMMENT \'IP to recorder in classroom\',' .
+                '`IP_remote` varchar(100) DEFAULT NULL COMMENT \'IP to remote recorder in classroom\',' .
                 '`enabled` tinyint(1) NOT NULL,' .
                 'PRIMARY KEY (`room_ID`)' .
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
@@ -508,6 +513,88 @@ function create_tables($drop = true) {
                 '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'Either "external" or "internal"\',' .
                 'PRIMARY KEY (`ID`)' .
                 ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=\'Joint of Courses and Users\' AUTO_INCREMENT=45013 ;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'threads`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'threads` (' .
+                '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
+                '`authorId` varchar(50) NOT NULL COMMENT \'netid of the author of the discussion\',' .
+                '`authorFullName` varchar(255) NOT NULL COMMENT \'full name of the author of the discussion\',' .
+                '`title` varchar(140) NOT NULL,' .
+                '`message` varchar(8192) NOT NULL,' .
+                '`timecode` int(10) NOT NULL,' .
+                '`creationDate` datetime NOT NULL,' .
+                '`studentOnly` char NOT NULL,' .
+                '`albumName` varchar(255) NOT NULL,' .
+                '`assetName` varchar(255) NOT NULL,' .
+                '`assetTitle` varchar(255) NOT NULL,' .
+                '`lastEditDate` datetime NOT NULL,' .
+                '`lastEditAuthor` varchar(255) NOT NULL,' .
+                '`nbComments` int(5) DEFAULT "0",' .
+                '`deleted` char DEFAULT "0",' .
+                'PRIMARY KEY (`id`),' .
+                'FULLTEXT (`title`, `message`)' .
+                ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'comments`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'comments` (' .
+                '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
+                '`authorId` varchar(50) NOT NULL COMMENT \'netid of the author of the discussion\',' .
+                '`authorFullName` varchar(255) NOT NULL COMMENT \'full name of the author of the discussion\',' .
+                '`message` varchar(8192) NOT NULL,' .
+                '`creationDate` datetime NOT NULL,' .
+                '`thread` bigint(20) NOT NULL,' .
+                '`parent` bigint(20),' .
+                '`nbChilds` int(5) DEFAULT "0",' .
+                '`lastEditDate` datetime NOT NULL,' .
+                '`approval` char DEFAULT "0",' .
+                '`score` int(5) DEFAULT "0",' .
+                '`upvoteScore` int(5) DEFAULT "0",' .
+                '`downvoteScore` int(5) DEFAULT "0",' .
+                '`deleted` char DEFAULT "0",' .
+                'PRIMARY KEY (`id`),' .
+                'FOREIGN KEY (`thread`) REFERENCES ' . $input['db_prefix'] . 'threads(`id`),' .
+                'FOREIGN KEY (`parent`) REFERENCES ' . $input['db_prefix'] . 'comments(`id`),' .
+                'FULLTEXT (`message`)' .
+                ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'votes`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'votes` (' .
+                '`login` varchar(50) NOT NULL,' .
+                '`comment` bigint(20) NOT NULL,' .
+                '`voteType` char NOT NULL,' .
+                'PRIMARY KEY (`login`,`comment`),' .
+                'FOREIGN KEY (`comment`) REFERENCES ' . $input['db_prefix'] . 'comments(`id`)' .
+                ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
+
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'messages`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'messages` (' .
+                '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
+                '`authorId` varchar(50) NOT NULL,' .
+                '`authorFullName` varchar(255) NOT NULL,' .
+                '`message` varchar(8192) NOT NULL,' .
+                '`timecode` int(10) DEFAULT "0",' .
+                '`creationDate` datetime NOT NULL,' .
+                '`albumName` varchar(255) NOT NULL,' .
+                '`assetName` varchar(255) NOT NULL,' .
+                'PRIMARY KEY (`id`),' .
+                'FULLTEXT (`message`)' .
+                ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
+
+        // Creation of the index
+        $db->exec('CREATE INDEX `albumname_ndx` ' .
+                'ON ' . $input['db_prefix'] . 'threads(`albumName`);');
+        $db->exec('CREATE INDEX `assetname_ndx` ' .
+                'ON ' . $input['db_prefix'] . 'threads(`assetName`);');
+        $db->exec('CREATE INDEX `comment_thread_ndx` ' .
+                'ON ' . $input['db_prefix'] . 'comments(`thread`);');
+        $db->exec('CREATE INDEX `msg_albumname_ndx` ' .
+                'ON ' . $input['db_prefix'] . 'messages(`albumName`);');
+        $db->exec('CREATE INDEX `msg_assetname_ndx` ' .
+                'ON ' . $input['db_prefix'] . 'messages(`assetName`);');
         $db->commit();
     } catch (PDOException $e) {
         $errors['db_error'] = $e->getMessage();
@@ -540,7 +627,7 @@ function add_first_user() {
 
     //   try {
     if (!db_ready()) {
-        db_prepare();
+        db_prepare(statements_get());
     }
     db_user_create($user_ID, $surname, $forename, $passwd, $permissions);
     add_admin_to_file($user_ID);

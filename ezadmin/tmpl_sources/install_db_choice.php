@@ -35,7 +35,7 @@
     </head>
 
     <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && $GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
-        <div class="container">
+        <div class="container_ezplayer">
             <?php include_once template_getpath("div_header.php"); ?>
             <div id="global">
             <h2 style="padding: 10px 0px;">®install_db_choice®</h2>

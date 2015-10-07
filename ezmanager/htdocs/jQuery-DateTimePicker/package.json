@@ -1,0 +1,40 @@
+{
+  "name": "jquery-simple-datetimepicker",
+  "version": "1.13.0",
+  "description": "Date and time picker, it's simple & clean. (jQuery plugin)",
+  "files": [
+    "jquery.simple-dtpicker.js",
+    "jquery.simple-dtpicker.css"
+  ],
+  "main": "jquery.simple-dtpicker.js",
+  "scripts": {
+    "test": "grunt test --verbose --force"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mugifly/jquery-simple-datetimepicker.git"
+  },
+  "author": {
+    "name": "Masanori Ohgita",
+    "url": "http://ohgita.info/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mugifly/jquery-simple-datetimepicker/issues"
+  },
+  "homepage": "https://github.com/mugifly/jquery-simple-datetimepicker",
+  "dependencies": {
+    "jquery": ">=1.7.2"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-qunit": "^0.7.0",
+    "grunt-manifest-sync": "^1.2.1",
+    "qunitjs": "^1.14.0"
+  }
+}

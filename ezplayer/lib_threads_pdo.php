@@ -40,8 +40,8 @@ function threads_statements_get() {
         /*         * ******* T H R E A D S ******** */
         'thread_insert' =>
         'INSERT INTO ' . db_gettable('threads') .
-        ' (title, message, timecode, authorId, authorFullName, creationDate, lastEditDate, studentOnly, albumName, assetName, assetTitle) ' .
-        'VALUES (:title, :message, :timecode, :authorId, :authorFullName, :creationDate, :lastEditDate, :studentOnly, :albumName, :assetName, :assetTitle)',
+        ' (title, message, timecode, authorId, authorFullName, creationDate, lastEditDate, lastEditAuthor, studentOnly, albumName, assetName, assetTitle) ' .
+        'VALUES (:title, :message, :timecode, :authorId, :authorFullName, :creationDate, :lastEditDate, :lastEditAuthor, :studentOnly, :albumName, :assetName, :assetTitle)',
         'thread_update' =>
         'UPDATE ' . db_gettable('threads') . ' SET title = :title, message = :message, timecode = :timecode ' .
         'WHERE id = :id',
@@ -166,6 +166,7 @@ function thread_insert($values) {
     $statements['thread_insert']->bindParam(':authorFullName', $values['authorFullName']);
     $statements['thread_insert']->bindParam(':creationDate', $values['creationDate']);
     $statements['thread_insert']->bindParam(':lastEditDate', $values['lastEditDate']);
+    $statements['thread_insert']->bindParam(':lastEditAuthor', $values['authorFullName']);
     $statements['thread_insert']->bindParam(':studentOnly', $values['studentOnly']);
     $statements['thread_insert']->bindParam(':albumName', $values['albumName']);
     $statements['thread_insert']->bindParam(':assetName', $values['assetName']);

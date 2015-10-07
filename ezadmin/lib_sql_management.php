@@ -158,7 +158,7 @@ function statements_get(){
             'WHERE enabled = 1',
         
         'classrooms_list' =>
-            'SELECT room_ID, name, IP ' .
+            'SELECT room_ID, name, IP, IP_remote ' .
             'FROM ' . db_gettable('classrooms'),
         
         'classroom_update_enabled' =>
@@ -205,8 +205,8 @@ function statements_get(){
             'VALUES (NOW(), :table, :message, :author)',
         
         'classroom_create' =>
-            'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, enabled) ' .
-            'VALUES (:room_ID, :name, :ip, :enabled)',
+            'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, ip_remote, enabled) ' .
+            'VALUES (:room_ID, :name, :ip, :ip_remote, :enabled)',
         
         'unlink_course' =>
             'DELETE FROM ' . db_gettable('users_courses') . ' ' .
@@ -218,7 +218,7 @@ function statements_get(){
         
         'classroom_update' => 
             'UPDATE ' . db_gettable('classrooms') . ' ' .
-            'SET room_ID = :room_ID, name = :name,  ip = :ip' . ' ' .
+            'SET room_ID = :room_ID, name = :name,  ip = :ip,  ip_remote = :ip_remote' . ' ' .
             'WHERE room_ID = :ID',
         
         'classroom_delete' =>
@@ -495,6 +495,7 @@ function db_classrooms_search($room_ID, $name, $ip, $enabled, $order, $limit) {
             db_gettable('classrooms') . '.room_ID, ' .
             db_gettable('classrooms') . '.name, ' .
             db_gettable('classrooms') . '.IP, ' .
+            db_gettable('classrooms') . '.IP_remote, ' .
             db_gettable('classrooms') . '.enabled ' .
        'FROM '. db_gettable('classrooms') . ' ' .
        'WHERE ' . 
@@ -714,24 +715,26 @@ function db_logs_get($date_start, $date_end, $table, $author, $limit) {
     return $db_object->query($fullQuery.' ORDER BY `time` DESC LIMIT ' . $limit);
 }
 
-function db_classroom_create($room_ID, $name, $ip, $enabled) {
+function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled) {
     global $statements;
     
     $statements['classroom_create']->bindParam(':room_ID', $room_ID);
     $statements['classroom_create']->bindParam(':name', $name);
     $statements['classroom_create']->bindParam(':ip', $ip);
+    $statements['classroom_create']->bindParam(':ip_remote', $ip_remote);
     $statements['classroom_create']->bindParam(':enabled', $enabled);
     
     return $statements['classroom_create']->execute();
 }
 
-function db_classroom_update($ID, $room_ID, $name, $ip) {
+function db_classroom_update($ID, $room_ID, $name, $ip, $ip_remote) {
     global $statements;
 
     $statements['classroom_update']->bindParam(':ID', $ID);
     $statements['classroom_update']->bindParam(':room_ID', $room_ID);
     $statements['classroom_update']->bindParam(':name', $name);
     $statements['classroom_update']->bindParam(':ip', $ip);
+    $statements['classroom_update']->bindParam(':ip_remote', $ip_remote);
     
     return $statements['classroom_update']->execute();
 }

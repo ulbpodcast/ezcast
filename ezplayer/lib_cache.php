@@ -173,4 +173,73 @@ function cache_asset_threads_unset($album, $asset){
     unlink($path_to_threadsfile);  
 }
 
+/**
+ * Replace the asset's chat message cache content 
+ * @global string $repository_basedir
+ * @param string $album
+ * @param string $asset
+ * @param array $messages_array
+ */
+function cache_asset_chat_set($album, $asset,$messages_array){
+    global $repository_basedir;
+    if(!$messages_array)
+        return;
+    $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
+    
+    // --- LOG
+    file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache set (Asset chat) ".$album." / ".$asset.PHP_EOL, FILE_APPEND);
+    
+    file_put_contents($path_to_messagesfile, json_encode($messages_array));
+}
+
+/**
+ * Check if a chat messages cache exists for an asset
+ * @param string $albumName
+ * @param string $asset the asset name
+ */
+function cache_asset_chat_isset($album, $asset){
+    global $repository_basedir;
+    
+    $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
+    $isset = file_exists($path_to_messagesfile);
+    
+    // --- LOG
+    file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache is set (Asset chat) ? ".($isset ? 'true' : 'false').PHP_EOL, FILE_APPEND);
+    return $isset;
+}
+
+/**
+ * Returns the content of the asset cache as an associcative array
+ * @global string $repository_basedir
+ * @param string $album
+ * @param string $asset
+ * @return array
+ */
+function cache_asset_chat_get($album, $asset){
+    global $repository_basedir;
+    
+    $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
+    $json_data = file_get_contents($path_to_messagesfile);
+    // --- LOG
+    file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache get (Asset chat) : ".$album.' / '.$asset.PHP_EOL, FILE_APPEND);
+    $file_content = json_decode($json_data, true);
+    if( !$file_content){
+        cache_asset_chat_unset ($album, $asset);
+    }
+    return $file_content;
+}
+/**
+ * Unset the asset cache
+ * @global string $repository_basedir
+ * @param string $album asset's album name
+ * @param string $asset asset folder name
+ */
+function cache_asset_chat_unset($album, $asset){
+    global $repository_basedir;
+    $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
+    // --- LOG
+    file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Asset chat) ".PHP_EOL, FILE_APPEND);
+    unlink($path_to_messagesfile);  
+}
+
 //==============================================================================

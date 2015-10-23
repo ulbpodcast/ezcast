@@ -225,10 +225,10 @@
         <label id="user_ID" lang="en">User ID</label>
         <label id="room_ID" lang="fr">Numéro de local</label>
         <label id="room_ID" lang="en">Room number</label>
-        <label id="room_IP" lang="fr">Adresse IP (podcv)</label>
-        <label id="room_IP" lang="en">IP address (podcv)</label>
-        <label id="room_remote_IP" lang="fr">Adresse IP (podcs)</label>
-        <label id="room_remote_IP" lang="en">IP address (podcs)</label>
+        <label id="room_IP" lang="fr">Adresse IP (maitre)</label>
+        <label id="room_IP" lang="en">IP address (master)</label>
+        <label id="room_remote_IP" lang="fr">Adresse IP (esclave)</label>
+        <label id="room_remote_IP" lang="en">IP address (slave)</label>
         <label id="room_name" lang="fr">Nom du local</label>
         <label id="room_name" lang="en">Room name</label>
         <label id="room_enabled" lang="fr">Activé</label>
@@ -415,10 +415,10 @@
         <label id="classroom_id" lang="en">Room ID</label>
         <label id="classroom_name" lang="fr">Nom</label>
         <label id="classroom_name" lang="en">Name</label>
-        <label id="classroom_ip" lang="fr">IP (podcv)</label>
-        <label id="classroom_ip" lang="en">IP (podcv)</label>
-        <label id="classroom_remote_ip" lang="fr">[IP (podcs)]</label>
-        <label id="classroom_remote_ip" lang="en">[IP (podcs)]</label>
+        <label id="classroom_ip" lang="fr">IP (maitre)</label>
+        <label id="classroom_ip" lang="en">IP (master)</label>
+        <label id="classroom_remote_ip" lang="fr">[IP (esclave)]</label>
+        <label id="classroom_remote_ip" lang="en">[IP (slave)]</label>
         <label id="classroom_enabled" lang="fr">Activé</label>
         <label id="classroom_enabled" lang="en">Activate</label>
         <label id="create_classroom" lang="fr">Créer auditoire</label>

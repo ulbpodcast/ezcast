@@ -92,11 +92,11 @@
                 <div class="edit" style="display:none;"><input type="text" name="name" value="<?php echo htmlspecialchars($classroom['name']) ?>"/></div>
             </td>
             <td class="ip">
-                <div class="view"><a href="http://<?php echo $classroom['IP']; ?>/ezrecorder/"><?php echo $classroom['IP'] ?></a> <a href="vnc://<?php echo $classroom['IP']; ?>/">(VNC)</a></div>
+                <div class="view"><a target="_blank" href="http://<?php echo $classroom['IP']; ?>/ezrecorder/"><?php echo $classroom['IP'] ?></a> <a target="_blank" href="vnc://<?php echo $classroom['IP']; ?>/">(VNC)</a></div>
                 <div class="edit" style="display:none;"><input type="text" name="ip" value="<?php echo htmlspecialchars($classroom['IP']) ?>"/></div>
             </td>
             <td class="ip_remote">
-                <div class="view"><a href="http://<?php echo $classroom['IP_remote']; ?>/ezrecorder/"><?php echo $classroom['IP_remote'] ?></a> <?php if(isset($classroom['IP_remote']) && $classroom['IP_remote'] != "") { ?><a href="vnc://<?php echo $classroom['IP_remote']; ?>/">(VNC)</a><?php } ?></div>
+                <div class="view"><a target="_blank" href="http://<?php echo $classroom['IP_remote']; ?>/ezrecorder/"><?php echo $classroom['IP_remote'] ?></a> <?php if(isset($classroom['IP_remote']) && $classroom['IP_remote'] != "") { ?><a target="_blank" href="vnc://<?php echo $classroom['IP_remote']; ?>/">(VNC)</a><?php } ?></div>
                 <div class="edit" style="display:none;"><input type="text" name="ip_remote" value="<?php echo htmlspecialchars($classroom['IP_remote']) ?>"/></div>
             </td>
             <td>

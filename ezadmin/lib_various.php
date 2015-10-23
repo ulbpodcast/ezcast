@@ -270,6 +270,7 @@ function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_
         "host" => $address,
         "client" => $user,
         "status" => ($status) ? 'enabled' : 'disabled',
+        "home" => "$root_path/bin",
         "downloading_dir" => "$root_path/queues/downloading",
         "downloaded_dir" => "$root_path/queues/downloaded",
         "processed_dir" => "$root_path/queues/processed",

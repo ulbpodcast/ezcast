@@ -1413,6 +1413,7 @@ function view_queue() {
     require_once template_getpath('div_main_header.php');
     //require_once template_getpath('div_search_job.php');
     require_once template_getpath('div_list_jobs.php');
+    require_once template_getpath('div_main_footer.php');
 }
 
 function freeze_unfreeze_job() {

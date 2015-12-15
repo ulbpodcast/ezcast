@@ -179,8 +179,8 @@
         <label id="RSS_feed" lang="en">RSS feed</label>
         <label id="Player_url" lang="fr">Lien EZplayer</label>
         <label id="Player_url" lang="en">EZplayer link</label>
-        <label id="Processing" lang="fr">en cours de traitement</label>
-        <label id="Processing" lang="en">processing</label>
+        <label id="Processing" lang="fr">En cours de traitement</label>
+        <label id="Processing" lang="en">Processing</label>
         <label id="Manual_submit" lang="fr">Soumission manuelle</label>
         <label id="Manual_submit" lang="en">Manual submit</label>
         <label id="progress_bar" lang="fr">Barre de progression</label>

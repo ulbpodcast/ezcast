@@ -115,7 +115,7 @@
 <div class="pic"><img src="./images/help/properties_3.png"/></div>
 <p><strong>4.</strong>Une boite de dialogue s’ouvre. Sélectionnez les propriétés que vous souhaitez appliquer à l’album au moyen 
     des <strong>listes déroulantes</strong> [1] et validez les modifications en cliquant sur 
-    le bouton “<strong>Sauvegarder</strong>” [2].</p> 
+    le bouton “<strong>Envoyer changements</strong>” [2].</p> 
 <div ><img src="./images/help/properties_4.png"/></div>
 <p><strong>5.</strong> Après votre choix, une boîte de dialogue vous confirme la mise à jour effective des propriétés de l’album.</p>
 <div ><img src="./images/help/properties_5.png"/></div>
@@ -255,7 +255,7 @@
 <h2>Editer un enregistrement (titre &amp; description)</h2>
 <p><strong>1. </strong>Cliquez sur &quot;<strong>Editer</strong>&quot;.</p>
 <div class="pic"><img src="./images/help/edit_6.png" /></div>
-<p><strong>2. </strong>Le titre et la description deviennent modifiables. Pour les éditer, effectuez vos changements dans les boîtes de dialogue prévues à cet effet. Ensuite, cliquez sur “<strong>Sauvegarder</strong>” pour enregistrer vos modifications ou “<strong>Annuler</strong>” pour les annuler.</p>
+<p><strong>2. </strong>Le titre et la description deviennent modifiables. Pour les éditer, effectuez vos changements dans les boîtes de dialogue prévues à cet effet. Ensuite, cliquez sur “<strong>Envoyer changements</strong>” pour enregistrer vos modifications ou “<strong>Annuler</strong>” pour les annuler.</p>
 <p>&nbsp;</p>
 <div class="pic"><img src="./images/help/edit_7.png"/></div>
 <h2>Déplacer un enregistrement</h2>

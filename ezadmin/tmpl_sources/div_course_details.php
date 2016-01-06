@@ -123,7 +123,7 @@
     <tbody>
     <?php foreach($users as $u) { ?>
         <tr data-id="<?php echo $u['ID'] ?>" data-origin="<?php echo $u['origin'] ?>">
-            <td><?php echo $u['user_ID']; ?></td>
+            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $u['user_ID']; ?>"><?php echo $u['user_ID']; ?></a></td>
             <td><?php echo $u['forename'] . ' ' . $u['surname']; ?></td>
             <td><span class="label <?php if($u['origin'] == 'internal') echo 'label-info'; ?>"><?php if($u['origin'] == 'internal') echo '®intern®'; else echo '®extern®'; ?></span></td>
             <td class="unlink" style="cursor: pointer;"><?php if($u['origin'] == 'internal') echo '<i class="icon-remove"></i> ®remove_link®'; ?></td>

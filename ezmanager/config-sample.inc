@@ -25,7 +25,7 @@
  */
 
 error_reporting(E_PARSE | E_ERROR);
-require "../commons/config.inc";
+require_once "../commons/config.inc";
 
 $appname="EZmanager";
 
@@ -83,5 +83,3 @@ $flash_only_browsers = array('Firefox');
 
 // used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
 $upload_slice_size = 1024 * 1024;
-
-?>

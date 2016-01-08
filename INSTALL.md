@@ -44,7 +44,7 @@ Open your terminal and call mysql in command line to create a user and the datab
 The database will be used to store users and courses for the EZcast components. 
 Make sure you have sufficient permissions to create a user and a database in MySQL. If you don't, call your database administrator.
 
-Please refer to the following example to configure your database. Variables between < > are explained here below. 
+Please refer to the following example to configure your database. You can choose the user and database names as you fit.
 
 ```
 $ mysql -u root -p
@@ -54,13 +54,12 @@ Your MySQL connection id is 5340 to server version: 3.23.54
 
 Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
 
-Mysql> CREATE USER <ezcast_user_name> IDENTIFIED BY <ezcast_password>;
+Mysql> CREATE USER <ezcast_user_name> IDENTIFIED BY '<ezcast_password>';
 
 mysql> CREATE DATABASE <database_name> CHARACTER SET utf8 COLLATE utf8_general_ci;
 Query OK, 1 row affected (0.00 sec)
 
-mysql> GRANT ALL PRIVILEGES ON <database_name>.* TO "<ezcast_user_name>"@"<host>"
-    -> IDENTIFIED BY "<ezcast_password>";
+mysql> GRANT ALL PRIVILEGES ON <database_name>.* TO '<ezcast_user_name>'@'<host>' IDENTIFIED BY '<ezcast_password>';
 Query OK, 0 rows affected (0.00 sec)
  
 mysql> FLUSH PRIVILEGES;
@@ -70,16 +69,9 @@ Mysql> exit
 Bye
 $
 ```
-
-In the above example : 
-
-    * ezcast or ezadmin are typical values for <ezcast_user_name>
-    * ezcast is a typical value for <database_name>
-    * <host> is usually localhost. If you do not know this value, consult your sysadmin. 
-    * Feel free to choose a safe password for <ezcast_user>
-
-Please keep in mind these values (you will need them in a further step)
-
+Examples of values:
+  * ezcast_user_name: ezcast or ezadmin
+  * database_name: ezcast
 
 3. Move the EZcast directory
 

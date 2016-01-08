@@ -83,7 +83,7 @@ $record_type=$recording_metadata['record_type'];
 $course_name=$recording_metadata['course_name'];
 $record_date=$recording_metadata['record_date'];
 
-//check for album existance
+//check for album existence
 if($recording_metadata['moderation']=="false")
     $album_name=$course_name."-pub";
   else

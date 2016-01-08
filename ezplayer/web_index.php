@@ -1630,6 +1630,7 @@ function contact_send() {
     $subject = $input['subject'];
     $mail = $input['email'];
 
+    $header = 'An user reported a problem on EZPlayer:' . PHP_EOL;
     $header = '------------------------------------------------------------' . PHP_EOL;
     $header.= "from : $mail [" . $_SESSION['user_email'] . ']' . PHP_EOL;
     $header.= "Name: " . $_SESSION['user_full_name'] . PHP_EOL;

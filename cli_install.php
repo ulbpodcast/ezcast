@@ -115,4 +115,19 @@ file_put_contents("$basedir/first_user", $username);
 file_put_contents("first_user", " , $password", FILE_APPEND);
 file_put_contents("first_user", " , $firstname", FILE_APPEND);
 file_put_contents("first_user", " , $lastname", FILE_APPEND);
+
+//creating/appending to admin file
+$admins_str .= '$users[\'' . $username . '\']=1;' . PHP_EOL;
+$filePath = $basedir . '/ezadmin/admin.inc';
+if(!file_exists($filePath))
+{
+    $res = file_put_contents($filePath, '<?php ' . PHP_EOL . $admins_str);
+    if ($res === false)
+        trigger_error("Could not create admin config file at $filePath", E_USER_WARNING);
+    
+} else {
+    $res = file_put_contents($filePath, PHP_EOL . $admins_str, FILE_APPEND);
+    if ($res === false)
+        trigger_error("Could not update admin config file at $filePath", E_USER_WARNING);
+}
 ?>

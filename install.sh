@@ -517,7 +517,7 @@ chown -R $apache_username $ezcast_basedir;
 chown -R $apache_username $webspace_directory/ezadmin;
 chown -R $apache_username $webspace_directory/ezmanager;
 chown -R $apache_username $webspace_directory/ezplayer;
-#chgrp -R $apache_username $ezcast_basedir;
+
 chmod -R 755 $ezcast_basedir; 
 echo " ";
 cd commons/;

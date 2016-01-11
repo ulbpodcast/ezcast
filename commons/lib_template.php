@@ -51,16 +51,16 @@ $accepted_file_extensions = array('.html', '.xhtml', '.xml', '.htm', '.php'); //
 /**
  * Sets up or returns the "repository", i.e. the folder in which the (parsed) template files are stored
  * Warning: please use this function *before* any call to template_display()
- * @staticvar boolean $repository_path
  * @param string $path Path to the folder containing parsed templates
  * @return string|false Either the path to the templates repository, or an error status 
  */
 function template_repository_path($path="") {
-    static  $tmpl_repository_path=false;
-
+    static $tmpl_repository_path=false;
+    
       if($path==""){
         if($tmpl_repository_path===false){
           template_last_error("1 Error: repository path not defined");
+          trigger_error("Repository path not defined", E_USER_WARNING);
           return false;
          }
         else{
@@ -72,8 +72,11 @@ function template_repository_path($path="") {
       $res=is_dir($path);
       if($res)
         $tmpl_repository_path=$path;
-       else
+       else {
         template_last_error ("2 Error: repository path not found: $path");
+        trigger_error("Tried to define repository path but is was not found: $path", E_USER_WARNING);
+       }
+       
       return $res;
 }
 

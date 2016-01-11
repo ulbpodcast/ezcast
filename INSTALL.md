@@ -30,7 +30,7 @@ In order to use EZcast, you need to install / enable several components:
 
 ## Detailed installation 
 
-1. Download the source code
+### 1. Download the source code
 
 Open your terminal and call Git in command line to download the source code of EZcast
 ```
@@ -38,7 +38,7 @@ root# cd <wherever you want to install ezcast>
 root# git clone https://github.com/ulbpodcast/ezcast.git
 ```
 
-2. Create a MySQL database
+### 2. Create a MySQL database
 
 Open your terminal and call mysql in command line to create a user and the database for EZadmin. 
 The database will be used to store users and courses for the EZcast components. 
@@ -73,7 +73,7 @@ Examples of values:
   * ezcast_user_name: ezcast or ezadmin
   * database_name: ezcast
 
-3. Move the EZcast directory
+### 3. Move the EZcast directory
 
 Now you have to decide where you want to install EZcast and its components. We recommend you to install it under « /usr/local/ » directory. 
 
@@ -88,7 +88,7 @@ mkdir –p /usr/local/
 mv ezcast /usr/local
 ```
 
-4. Configure PHP
+### 4. Configure PHP
 
 Since EZmanager allows you to submit your own video files, you may want to increase the max file size for upload.
 
@@ -102,18 +102,18 @@ max_execution_time = 300
 max_input_time = 300
 ```
 
-5. Installing EZcast components
+### 5. Installing EZcast components
 
 Go in the ezcast folder. Make sure the file ‘install.sh’ can be executed. 
 Start ‘install.sh’ as root and follow the instructions written on the screen.
 
-6. Configuring EZcast
+### 6. Configuring EZcast
 
 Go to the EZadmin webpage at `http://your.server.address/ezadmin`. At the first visit, you will be redirected to a configuration page before you can run EZcast.
 
 You can also configure EZcast by editing the file config manually. To do this, go to the EZcast folder. For each subdirectories (ezmanager / ezadmin / ezplayer / common), copy ‘config-sample.inc’ to ‘config.inc’ and edit it.
 
-7. Creating your first renderer
+### 7. Creating your first renderer
 
 Create the first renderer for EZcast in EZadmin web interface. 
 Prepare your renderer by installing all dependencies. Refer to EZrenderer's documentation to know what are the required dependencies.

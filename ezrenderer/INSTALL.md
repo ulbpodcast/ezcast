@@ -5,8 +5,8 @@
 In order to use EZrecorder, you need to install / enable several components:
 
 - PHP5
--- LIB SIMPLEXML for PHP5
--- LIB GD for PHP5 (with freetype enabled)
+ - LIB SIMPLEXML for PHP5
+ - LIB GD for PHP5 (with freetype enabled)
 - SSH
 - AT
 - FFPROBE
@@ -30,17 +30,6 @@ Now you have to decide where you want to install EZrenderer. We recommend you to
 
 Go in the 'ezrenderer' folder. Make sure the file 'install.sh' can be executed. 
 Launch the 'install.sh' script as root and follow the instructions on the screen.
-
-```
-#change user to be root (may be ‘sudo’ depending on the distribution)
-su
-#move to the ezrenderer directory (change the path if you have installed ezrenderer somewhere else)
-cd ~/ezrenderer
-#change permissions for install.sh
-chmod 755 install.sh
-#execute install.sh
-./install.sh
-```
 
 4. Configure the SSH link 
 
@@ -91,11 +80,3 @@ return array(
 );
 ?>
 ```
-
-## About this document
-
-This document is written using [Markdown][] syntax, making it possible to
-provide usable information in both plain text and HTML format. Whenever
-modifying this document please use [Markdown][] syntax.
-
-[markdown]: http://www.daringfireball.net/projects/markdown

@@ -475,7 +475,6 @@ fi;
 mkdir -p $repository_basedir
 repository_basedir=$repository_basedir/ezcast
 echo "repository_basedir=$repository_basedir" >> ./commons/localpaths
-#mv $ezcast_basedir/ezmanager/ezcast_tree $repository_basedir
 cp -r $ezcast_basedir/ezmanager/ezcast_tree $repository_basedir
 chown -R $apache_username $repository_basedir
 #chgrp -R $apache_username $repository_basedir

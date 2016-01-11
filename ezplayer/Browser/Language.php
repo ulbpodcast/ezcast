@@ -1,11 +1,9 @@
 <?php
 
-use InvalidArgumentException;
+namespace Sinergi\BrowserDetector;
 
 /**
- * Language Detection
- *
- * @package browser
+ * Language Detection.
  */
 class Language
 {
@@ -21,7 +19,8 @@ class Language
 
     /**
      * @param null|string|AcceptLanguage $acceptLanguage
-     * @throws InvalidArgumentException
+     *
+     * @throws \Sinergi\BrowserDetector\InvalidArgumentException
      */
     public function __construct($acceptLanguage = null)
     {
@@ -30,12 +29,12 @@ class Language
         } elseif (null === $acceptLanguage || is_string($acceptLanguage)) {
             $this->setAcceptLanguage(new AcceptLanguage($acceptLanguage));
         } else {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException();
         }
     }
 
     /**
-     * Get all user's languages
+     * Get all user's languages.
      *
      * @return array
      */
@@ -52,16 +51,18 @@ class Language
      * Set languages.
      *
      * @param string $languages
+     *
      * @return $this
      */
     public function setLanguages($languages)
     {
         $this->languages = $languages;
+
         return $this;
     }
 
     /**
-     * Get a user's language
+     * Get a user's language.
      *
      * @return string
      */
@@ -75,9 +76,10 @@ class Language
     }
 
     /**
-     * Get a user's language and locale
+     * Get a user's language and locale.
      *
      * @param string $separator
+     *
      * @return string
      */
     public function getLanguageLocale($separator = '-')
@@ -103,11 +105,13 @@ class Language
 
     /**
      * @param AcceptLanguage $acceptLanguage
+     *
      * @return $this
      */
     public function setAcceptLanguage(AcceptLanguage $acceptLanguage)
     {
         $this->acceptLanguage = $acceptLanguage;
+
         return $this;
     }
 

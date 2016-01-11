@@ -485,7 +485,11 @@ echo "The user you are now creating will be automatically set as the"
 echo "first EZcast administrator. If you want to add other administrators"
 echo "for EZcast, do it via EZadmin once EZcast is fully installed."
 registration=0
-read -p "Username: " username
+while [ -z $username ];
+do
+    read -p "Username: " username
+done
+
 while [ "$registration" != "1" ]; do
     read -s -p "Password: " password;
     echo "";

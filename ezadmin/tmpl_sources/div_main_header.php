@@ -30,7 +30,7 @@
         <title><?php
             global $appname;
             echo $appname;
-            if ($_SESSION['changes_to_push'])
+            if (isset($_SESSION['changes_to_push']))
                 echo ' (®unsaved_changes®)';
             ?></title>
         <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
@@ -117,7 +117,7 @@
         </script>
 
     </head>
-    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if ($GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
+    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && ($GLOBALS['debugmode'] == "devl")) echo 'background="#99ff99"' ?>>
 
         <div class="container_ezplayer">
         <?php include template_getpath('div_header.php'); ?>

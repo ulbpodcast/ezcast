@@ -448,7 +448,7 @@
         <label id="renderer_delete" lang="fr">Vous pouvez désormais supprimer les fichiers d'EZrenderer sur le serveur distant (renderer).</label>
         <label id="renderer_delete" lang="en">You can now delete EZrenderer files on the remote server (renderer).</label>
         <label id="leave_empty_field" lang="fr">Laisser le champs vide pour conserver le mot de passe</label>
-        <label id="leave_empty_field" lang="fr">Leave empty field to keep the previous password</label>
+        <label id="leave_empty_field" lang="en">Leave empty field to keep the previous password</label>
         
         <!-- Install -->
         <label id="install_page_title" lang="fr">Installation EZcast</label>

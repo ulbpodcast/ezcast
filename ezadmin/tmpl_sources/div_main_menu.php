@@ -162,7 +162,7 @@ $category_names = array(
             }
         }
         else { ?>
-            <li <?php if($key == $input['objname']) echo 'class="active"'; ?> <?php if($nb_options > $threshold_num_options) echo 'style="display: none;"'; ?> class="sidebar_<?php echo $cat; ?>"><a href="index.php?&action=<?php echo $option['action'] ?>"><?php echo $option['name']; ?></a></li>
+            <li <?php if(isset($input) && ($key == $input['objname'])) echo 'class="active"'; ?> <?php if($nb_options > $threshold_num_options) echo 'style="display: none;"'; ?> class="sidebar_<?php echo $cat; ?>"><a href="index.php?&action=<?php echo $option['action'] ?>"><?php echo $option['name']; ?></a></li>
         <?php } // end if
         } // end foreach?>
     <?php } // end foreach ?>

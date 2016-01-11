@@ -571,7 +571,6 @@ function push_users_to_ezmanager() {
         $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
         $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL . PHP_EOL;
     }
-    $pwfile .= '?>';
 
     file_put_contents('var/pwfile.inc', $pwfile);
 

@@ -116,18 +116,30 @@ file_put_contents("first_user", " , $password", FILE_APPEND);
 file_put_contents("first_user", " , $firstname", FILE_APPEND);
 file_put_contents("first_user", " , $lastname", FILE_APPEND);
 
-//creating/appending to admin file
-$admins_str .= '$users[\'' . $username . '\']=1;' . PHP_EOL;
-$filePath = $basedir . '/ezadmin/admin.inc';
-if(!file_exists($filePath))
-{
-    $res = file_put_contents($filePath, '<?php ' . PHP_EOL . $admins_str);
-    if ($res === false)
-        trigger_error("Could not create admin config file at $filePath", E_USER_WARNING);
-    
-} else {
-    $res = file_put_contents($filePath, PHP_EOL . $admins_str, FILE_APPEND);
-    if ($res === false)
-        trigger_error("Could not update admin config file at $filePath", E_USER_WARNING);
+//create config file or append string in it
+function updateConfig($filePath, $string){
+    if(!file_exists($filePath)) {
+        $res = file_put_contents($filePath, '<?php ' . PHP_EOL . $string);
+        if ($res === false)
+            trigger_error("Could not create config file at $filePath", E_USER_WARNING);
+
+    } else {
+        $res = file_put_contents($filePath, PHP_EOL . $string, FILE_APPEND);
+        if ($res === false)
+            trigger_error("Could not update config file at $filePath", E_USER_WARNING);
+    }
 }
+
+//creating/appending to admin file
+$admins_str = '$users[\'' . addslashes($username) . '\']=1;' . PHP_EOL;
+$filePath = $basedir . '/ezadmin/admin.inc';
+updateConfig($filePath, $admins_str);
+
+//create/append to user file
+$user_str = '$users[\'' . addslashes($username) . '\'][\'password\']="' . $password . '";' . PHP_EOL;
+$user_str .= '$users[\'' . addslashes($username) . '\'][\'full_name\']="Admin";' . PHP_EOL;
+$user_str .= '$users[\'' . addslashes($username) . '\'][\'email\']="admin@admin.admin";' . PHP_EOL . PHP_EOL;
+$filePath = $basedir . '/commons/pwfile.inc';
+updateConfig($filePath, $user_str);
+
 ?>

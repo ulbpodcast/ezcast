@@ -34,7 +34,7 @@
  * @return assoc_array|false
  */
 function file_checkauth($login, $passwd) {
-    include "pwfile.inc"; //file containing passwords and info
+    require "pwfile.inc"; //file containing passwords and info
 
     $login = trim($login);
 

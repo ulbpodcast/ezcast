@@ -570,5 +570,3 @@ function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark
     $xml_txt = $xml->asXML();
     return $xml_txt;
 }
-
-?>

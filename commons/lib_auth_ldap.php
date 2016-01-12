@@ -179,4 +179,3 @@ function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password
 }
 
 //end function
-?>

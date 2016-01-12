@@ -381,4 +381,3 @@ function acl_is_archived($album, $asset){
         return !ezmam_asset_exists($album, $asset);
     return true;
 }
-?>

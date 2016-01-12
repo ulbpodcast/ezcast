@@ -296,5 +296,3 @@ function myerror($msg) {
 function sendmail($to, $subjet, $msg) {
     print "Download Error would send mail TO: $to SUBJECT:$subjet MESSAGE:$msg\n";
 }
-
-?>

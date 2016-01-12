@@ -364,4 +364,3 @@ function file_get_extension($filename){
 //    else
 //        return 'en';
 //}
-?>

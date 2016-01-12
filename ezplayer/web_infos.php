@@ -40,4 +40,3 @@ template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
 require_once template_getpath('infos.php');
-?>

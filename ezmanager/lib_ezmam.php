@@ -1816,5 +1816,3 @@ function assoc_array2metadata_file($assoc_array, $file_path) {
 
     return true;
 }
-
-?>

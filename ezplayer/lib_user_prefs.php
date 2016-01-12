@@ -1115,5 +1115,3 @@ function user_prefs_settings_update($user, $key, $value) {
 
     return $settings->asXML($setting_path);
 }
-
-?>

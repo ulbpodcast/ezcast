@@ -332,4 +332,3 @@ function get_lang() {
     else
         return 'en';
 }
-?>

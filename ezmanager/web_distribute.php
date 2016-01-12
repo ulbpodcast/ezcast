@@ -408,5 +408,3 @@ function accepted_type($type) {
     global $accepted_media_types;
     return in_array($type, $accepted_media_types);
 }
-
-?>

@@ -54,5 +54,3 @@ function is_dir_empty($dir) {
     }
     return TRUE;
 }
-
-?>

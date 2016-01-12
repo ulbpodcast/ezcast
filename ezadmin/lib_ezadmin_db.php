@@ -14,5 +14,3 @@ function db_sync() {
         
     return $res;
 }
-
-?>

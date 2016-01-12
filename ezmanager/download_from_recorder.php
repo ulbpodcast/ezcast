@@ -89,4 +89,3 @@ function str_to_safedir($string){
      $toalnum.="_";
   return $toalnum;
 }
-?>

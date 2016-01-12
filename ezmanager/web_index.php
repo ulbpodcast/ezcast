@@ -1941,5 +1941,3 @@ function popup_ulb_code() {
     // Displaying the popup
     require_once template_getpath('popup_ulb_code.php');
 }
-
-?>

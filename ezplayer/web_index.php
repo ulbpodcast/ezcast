@@ -2986,5 +2986,3 @@ function trace_append($array) {
 
     file_put_contents($ezplayer_trace_path . '/' . date('Y-m-d') . '.trace', $data, FILE_APPEND | LOCK_EX);
 }
-
-?>

@@ -1553,5 +1553,3 @@ function remove_changes_alert() {
 function sync_externals() {
     
 }
-
-?>

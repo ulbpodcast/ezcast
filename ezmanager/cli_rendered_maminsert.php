@@ -180,5 +180,3 @@ function insert_chapterslide_media($album, $asset, $chapter_slide_dir) {
     $res = ezmam_media_new($album, $asset, $media, $media_meta, $chapter_slide_dir, true);
     //unlink($chapter_slide_dir);
 }
-
-?>

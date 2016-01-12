@@ -68,5 +68,3 @@ class DateTimeFrench extends DateTime {
     }
 
 }
-?>
-

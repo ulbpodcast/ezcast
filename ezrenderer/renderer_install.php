@@ -72,5 +72,4 @@ file_put_contents($current_dir . "/bin/intro_title_movie.bash", $intro_title_mov
 
 chmod($current_dir . "/bin/intro_title_movie.bash", 0755);
 
-echo "renderer installed";
-?>
+echo "Renderer installed";

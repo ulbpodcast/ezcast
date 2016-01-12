@@ -139,5 +139,3 @@ else{
 	lib_scheduling_notice('Scheduler::job_perform[success]{' . $job['uid'] . '}');
 	scheduler_schedule();
 }
-
-?>

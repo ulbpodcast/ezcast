@@ -103,6 +103,3 @@ ezmam_asset_metadata_set($album, $asset, $asset_meta);
     error_print_message('Publish_unpublish: no operation provided');
     die;
 }
-
-
-?>

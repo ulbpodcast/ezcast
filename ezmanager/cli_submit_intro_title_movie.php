@@ -199,5 +199,3 @@ function myerror($msg){
     exit(1);
 
 }
-
-?>

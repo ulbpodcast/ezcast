@@ -127,5 +127,3 @@ function db_gettable($tableID) {
     global $db_prefix;
     return $db_prefix . $tableID;
 }
-
-?>

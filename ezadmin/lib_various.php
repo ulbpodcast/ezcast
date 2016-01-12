@@ -791,5 +791,3 @@ function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_
         return false;
     }
 }
-
-?>

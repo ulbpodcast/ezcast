@@ -77,5 +77,3 @@ function file_getinfo($login) {
         return false;
     }
 }
-
-?>

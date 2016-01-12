@@ -658,5 +658,3 @@ function port_get() {
 function server_get() {
     return "164.15.128.144";
 }
-
-?>

@@ -173,4 +173,3 @@ function acl_authorized_albums_list_not_created($assoc = false) {
 function acl_user_is_logged() {
     return (isset($_SESSION['podman_logged']) && !empty($_SESSION['podman_logged']));
 }
-?>

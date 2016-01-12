@@ -216,4 +216,3 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
     print "$camslide media inserted in repository in $album_name $asset_name $media_name\n";
   return $res1;
 }
-?>

@@ -657,5 +657,3 @@ function add_first_user() {
 
     require template_getpath('install_success.php');
 }
-
-?>

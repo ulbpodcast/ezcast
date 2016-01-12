@@ -30,4 +30,3 @@ $user_name = "netid";
 
 remove_admin_from_file($user_name);
 add_admin_to_file($user_name);
-?>

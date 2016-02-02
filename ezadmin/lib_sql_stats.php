@@ -29,8 +29,8 @@
 require_once '../commons/lib_database.php';
 
 
-$statements = stat_statements_get();
-db_prepare($statements);
+$stmts = stat_statements_get();
+db_prepare($stmts);
 
 function stat_statements_get(){
     return array(

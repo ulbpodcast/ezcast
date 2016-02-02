@@ -358,8 +358,8 @@ function push_admins_to_recorders_ezmanager() {
     global $ezplayer_subdir;
 
     if (!db_ready()) {
-        $statements = statements_get();
-        db_prepare($statements);
+        $stmts = statements_get();
+        db_prepare($stmts);
     }
 
     $classrooms = db_classrooms_list_enabled();

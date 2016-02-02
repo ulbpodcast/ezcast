@@ -1,5 +1,3 @@
-
-<?php
 <?php
 require_once 'config.inc';
 ?>

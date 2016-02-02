@@ -3,8 +3,8 @@
 
 <!-- Search form -->
 <form method="POST" action="index.php?action=view_courses" class="form-inline search_course">  
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®course_code®" title="®course_code®" name="course_code" value="<?php echo $input['course_code']; ?>" />
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®teacher®" title="®teacher®" name="teacher" value="<?php echo $input['teacher']; ?>" />
+    <input class="input-large auto-clear placeholder" type="text" placeholder="®course_code®" title="®course_code®" name="course_code" value="<?php if(isset($input) && isset($input['course_code'])) echo $input['course_code']; ?>" />
+    <input class="input-large auto-clear placeholder" type="text" placeholder="®teacher®" title="®teacher®" name="teacher" value="<?php if(isset($input) && isset($input['teacher'])) echo $input['teacher']; ?>" />
     
     <input type="hidden" name="post"/>
     <input type="hidden" name="page" value="1" />

@@ -24,7 +24,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
          
-error_reporting(E_PARSE | E_ERROR);
+$report_level = error_reporting();
+error_reporting($report_level | E_PARSE | E_ERROR);
 require "../commons/config.inc";
 
 $appname="ezplayer";

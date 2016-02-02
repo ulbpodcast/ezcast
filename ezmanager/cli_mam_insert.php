@@ -121,7 +121,8 @@ if(isset($recording_metadata['downloadable'])){ // if the recording has been sub
 
 //create asset if not exists!
 $asset_name=$record_date;
-if(!ezmam_asset_exists($album_name, $asset_name))ezmam_asset_new($album_name, $asset_name, $asset_meta);
+if(!ezmam_asset_exists($album_name, $asset_name))
+   ezmam_asset_new($album_name, $asset_name, $asset_meta);
 
 //do we have a cam movie?
 if( strpos($record_type,"cam")!==false) {

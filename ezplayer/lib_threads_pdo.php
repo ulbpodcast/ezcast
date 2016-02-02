@@ -32,7 +32,8 @@
 require_once '../commons/config.inc';
 require_once '../commons/lib_database.php';
 
-db_prepare(threads_statements_get());
+$stmts = threads_statements_get();
+db_prepare($stmts);
 
 function threads_statements_get() {
 

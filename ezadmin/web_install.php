@@ -637,8 +637,8 @@ function add_first_user() {
 
     //   try {
     if (!db_ready()) {
-        $statements = statements_get();
-        db_prepare($statements);
+        $stmts = statements_get();
+        db_prepare($stmts);
     }
     db_user_create($user_ID, $surname, $forename, $passwd, $permissions);
     add_admin_to_file($user_ID);

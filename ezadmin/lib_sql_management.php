@@ -100,6 +100,7 @@ function statements_get(){
 				db_gettable('users') . '.user_ID, ' .
 				db_gettable('users') . '.surname, ' .
 				db_gettable('users') . '.forename, ' .
+				db_gettable('users') . '.(recorder_passwd = "") as passNotSet, ' .
 				db_gettable('users') . '.permissions, ' .
 				db_gettable('users') . '.origin ' .
 				//db_gettable('users') . '.date_created ' .

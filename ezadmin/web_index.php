@@ -574,6 +574,7 @@ function view_user_details() {
         $user_ID = $userinfo['user_ID'];
         $surname = $userinfo['surname'];
         $forename = $userinfo['forename'];
+        $passNotSet = $userinfo['passNotSet'];
         $origin = $userinfo['origin'];
         $is_admin = ($userinfo['permissions'] != 0);
         $in_classroom = false; // TODO: CHANGE THIS!!!

@@ -78,6 +78,12 @@
                         <div class="controls"><i class="icon-remove"></i> ®no®</div>
                     <?php } ?>
                 </div>
+                
+                <?php if ($passNotSet) { ?>
+                <div class="control-group">
+                    <span class="controls alert red">®alert_pass_not_defined®</span>
+                </div>
+                <?php } ?>
 
                 <!-- recorder passwd -->
                 <div class="edit">

@@ -758,7 +758,7 @@ function album_delete() {
     global $repository_path;
 
     //
-    // Sanity checks
+    // Access checks
     //
     if (!isset($input['album']) || !acl_has_album_permissions($input['album'])) {
         error_print_message(template_get_message('Unauthorized', get_lang()));

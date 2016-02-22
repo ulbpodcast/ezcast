@@ -33,7 +33,7 @@ include_once 'config.inc';
 include_once 'lib_ezmam.php';
 /*
  * This program downloads the cam  slide movies and metadata of a recording from 2 minis in a lecture room
- * After downloading, the program calls cli_mam_insert.php for rendering
+ * After downloading, the program calls $recorder_mam_insert_pgm for rendering
  */
 if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_of_recording>\n Where <directory_of_recording> should point to a directory containing download_data.xml description file (relative to $recorder_upload_dir)\n";

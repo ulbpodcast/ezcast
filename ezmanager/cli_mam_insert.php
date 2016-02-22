@@ -90,9 +90,8 @@ if($recording_metadata['moderation']=="false")
     $album_name=$course_name."-priv";
 
 if(!ezmam_album_exists($album_name)){
- print "ERROR: album does not exist! $album_name\n";
- exit(0);
-
+    myerror("ERROR: album does not exist! $album_name");
+    exit(1);
 }
 
 //initialize asset metadata and media metadata
@@ -147,14 +146,14 @@ rename($recording_dir, $inserted_recording_dir );
     $cmd="$php_cli_cmd $submit_intro_title_movie_pgm  $album_name $asset_name $super_highres >>/dev/null 2>&1"; // TODO: restore 
     print "exec command: $cmd\n";
     exec($cmd, $cmdoutput, $returncode);
-    if($returncode) print "Submit_intro_title_movie failed";
+    if($returncode)
+        print "Submit_intro_title_movie failed";
 
 
 
 function myerror($msg){
     print $msg."\n";
     exit(1);
-
 }
 
 /**

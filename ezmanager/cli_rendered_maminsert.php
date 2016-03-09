@@ -43,7 +43,7 @@ ezmam_repository_path($repository_path);
  *   This means: build a work directory, send it via ssh to the render client , get info  back and finally add/update media
  */
 if ($argc != 4) {
-    echo "\nusage: " . $argv[0] . "<album_name> <asset_name> <processing_dir>\n";
+    echo "\nusage: " . $argv[0] . " <album_name> <asset_name> <full_path_to_processing_dir>\n";
     die;
 }
 

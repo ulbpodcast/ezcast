@@ -1389,7 +1389,7 @@ function asset_edit() {
     }
 
     if (strlen($input['title']) > $title_max_length) {
-        error_print_message(template_get_message('title_too_long', get_lang()));
+        error_print_message(template_get_message('Title_too_long', get_lang()));
         die;
     }
 

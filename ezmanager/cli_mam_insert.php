@@ -44,7 +44,7 @@ ezmam_repository_path($repository_path);
  */
 
 if($argc!=2){
-    echo "usage: ".$argv[0].' <directory_of_downloaded_ok_recording>
+    echo "usage: ".$argv[0].' <full_path_to_directory_of_downloaded_ok_recording>
         Where <directory_of_recording> should point to a directory containing metadata.xml description file and movies
         metadata.xml example:
         <?xml version="1.0" standalone="yes"?>

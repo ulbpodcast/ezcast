@@ -112,18 +112,20 @@ $DTZ = new DateTimeZone('Europe/Paris');
     </div>
 </div>
 <div id="thread-options" class="right-options">
+    <?php if (acl_user_is_logged()) { ?>
     <a class="button-empty green2 pull-right inline-block" href="javascript:thread_comment_form_toggle();" >
         ®Reply_discussion®
     </a>
+    <?php } ?>
     <?php if (($_SESSION['user_login'] == $thread['authorId']) || acl_is_admin()) { ?>
         <a class="edit-button green2 pull-right inline-block" title="®Edit_discussion®" onclick="thread_edit_form_prepare(<?php echo $thread['id'] ?>)"></a>
         <?php if (acl_is_admin()) {
             ?>     
             <a class="delete-button green2 pull-right inline-block" title="®Delete_discussion®" href="javascript:popup_thread('<?php echo $thread['id']; ?>', 'delete');" ></a>
-            <?php
+<?php
         }
     }
-    ?>
+?>
 </div>
 
 <br/><br/>

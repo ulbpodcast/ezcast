@@ -62,7 +62,7 @@ include_once 'lib_print.php';
         require template_getpath('div_trending_threads.php');
     } else {
         require template_getpath('div_video_description.php');
-        if (acl_display_threads() && acl_user_is_logged()) {
+        if (acl_display_threads()) {
             ?>
             <div id="threads" class="threads_info">
                 <?php

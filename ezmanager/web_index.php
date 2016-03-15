@@ -376,7 +376,7 @@ function view_album() {
     ezmam_repository_path($repository_path);
 
     //
-    // 0) Sanity checks
+    // 0) Permissions checks
     //
     if (!acl_has_album_permissions($album)) {
         error_print_message(template_get_message('Unauthorized', get_lang()));

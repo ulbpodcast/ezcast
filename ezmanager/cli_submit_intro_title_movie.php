@@ -29,6 +29,8 @@
  * @package ezcast.ezmanager.cli
  */
 
+chdir(__DIR__);
+
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';

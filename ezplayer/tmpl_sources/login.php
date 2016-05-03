@@ -100,13 +100,6 @@
         <div class="container">
             <?php include 'div_help_header.php'; ?>
             <div id="global">
-                <a id="news" onclick="login_server_trace(new Array('0', 'view_info'));" href='<?php global $ezplayer_url;
-            echo $ezplayer_url . "/infos.php"; ?>' target='_blank'>
-                    <div>
-                        <h3>Nouveauté EZplayer: Les discussions</h3>
-                        <p>Découvrez les discussions et les interactions qu'elles permettent en cliquant sur ce ruban.</p>
-                    </div>       
-                </a>
                 <p>
                     <br />
 

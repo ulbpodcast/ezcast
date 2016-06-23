@@ -353,6 +353,21 @@ function streaming_start() {
     file_put_contents("$ezmanager_basedir/var/streams.php", $string);
 }
 
+function create_m3u8_master($targetDir, $quality) {
+    $master_m3u8 = '#EXTM3U' . PHP_EOL .
+            '#EXT-X-VERSION:3' . PHP_EOL;
+    // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
+    if (strpos($quality, 'low') !== false) {
+        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
+                'low/live.m3u8' . PHP_EOL;
+    }
+    if (strpos($quality, 'high') !== false) {
+        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
+                'high/live.m3u8' . PHP_EOL;
+    }
+    file_put_contents($targetDir . 'live.m3u8', $master_m3u8);
+}
+
 /**
  * Add video contents to the current streaming.
  * This function is used for HTTP streaming and called each time a new
@@ -389,81 +404,44 @@ function streaming_content_add() {
     switch ($protocol) {
         case 'http':
             // the streaming has already been init, saves the m3u8 file and segments
-            if (isset($streams_array[$album][$asset][$module_type])) {
-
-                $streams_array[$album][$asset][$module_type]['status'] = $input['status'];
-                $upload_dir = $apache_documentroot . '/ezplayer/videos/' . $album . '/' . $stream_name . '_' . $streams_array[$album][$asset]['token'] . '/';
-                mkdir($upload_dir, 0755, true); // creates the directories if needed
-                /*        if (!is_file($upload_dir . 'live.m3u8')) {
-                  // master playlist file doesn't exist yet
-                  if ($streams_array[$album][$asset]['record_type'] == 'camslide') {
-                  $master_m3u8 = '#EXTM3U' . PHP_EOL .
-                  '#EXT-X-VERSION:3' . PHP_EOL .
-                  '#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="low",NAME="cam",AUTOSELECT=YES,DEFAULT=YES,URI="cam/low/live.m3u8"' . PHP_EOL .
-                  '#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="low",NAME="slide",AUTOSELECT=YES,DEFAULT=NO,URI="slide/low/live.m3u8"' . PHP_EOL . PHP_EOL .
-                  '#EXT-X-STREAM-INF:BANDWIDTH=256000,CODECS="avc1.4d001f,mp4a.40.2",VIDEO="low"' . PHP_EOL .
-                  'cam/low/live.m3u8' . PHP_EOL . PHP_EOL .
-                  '#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="high",NAME="cam",AUTOSELECT=YES,DEFAULT=YES,URI="cam/high/live.m3u8"' . PHP_EOL .
-                  '#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="high",NAME="slide",AUTOSELECT=YES,DEFAULT=NO,URI="slide/high/live.m3u8"' . PHP_EOL . PHP_EOL .
-                  '#EXT-X-STREAM-INF:BANDWIDTH=1000000,CODECS="avc1.4d001f,mp4a.40.2",VIDEO="high"' . PHP_EOL .
-                  'cam/high/live.m3u8' . PHP_EOL;
-                  } else {
-                  $master_m3u8 = '#EXTM3U' . PHP_EOL .
-                  '#EXT-X-VERSION:3' . PHP_EOL .
-                  '#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="low",NAME="' . $input['module_type'] . '",AUTOSELECT=YES,DEFAULT=YES,URI="' . $input['module_type'] .'/low/live.m3u8"' . PHP_EOL .
-                  '#EXT-X-STREAM-INF:BANDWIDTH=256000,CODECS="avc1.4d001f,mp4a.40.2",VIDEO="low"' . PHP_EOL .
-                  $input['module_type'] . '/low/live.m3u8' . PHP_EOL . PHP_EOL .
-                  '#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="high",NAME="' . $input['module_type'] . '",AUTOSELECT=YES,DEFAULT=YES,URI="' . $input['module_type'] . '/high/live.m3u8"' . PHP_EOL .
-                  '#EXT-X-STREAM-INF:BANDWIDTH=1000000,CODECS="avc1.4d001f,mp4a.40.2",VIDEO="high"' . PHP_EOL .
-                  $input['module_type'] . '/high/live.m3u8' . PHP_EOL;
-                  }
-                  file_put_contents($upload_dir . 'live.m3u8', $master_m3u8);
-                  }
-                 */
-                $upload_dir .= $input['module_type'] . '/';
-
-                mkdir($upload_dir, 0755, true); // creates the directories if needed
-                if (!is_file($upload_dir . 'live.m3u8')) {
-                    // master playlist file doesn't exist yet
-                    $master_m3u8 = '#EXTM3U' . PHP_EOL .
-                            '#EXT-X-VERSION:3' . PHP_EOL;
-                    // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
-                    if (strpos($streams_array[$album][$asset][$module_type]['quality'], 'low') !== false) {
-                        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                                'low/live.m3u8' . PHP_EOL;
-                    }
-                    if (strpos($streams_array[$album][$asset][$module_type]['quality'], 'high') !== false) {
-                        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                                'high/live.m3u8' . PHP_EOL;
-                    }
-                    file_put_contents($upload_dir . 'live.m3u8', $master_m3u8);
-                }
-
-                $upload_dir .= $input['quality'] . '/';
-                // for instance : /www2/htdocs/dev/ezplayer/videos/ALBUM-NAME/3000_001/cam/high/
-                mkdir($upload_dir, 0755, true); // creates the directories if needed
-
-                $uploadfile = $upload_dir . $input['filename'];
-                // places the file (.ts segment from HTTP request) in the webspace
-                if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
-                    echo "File is valid, and was successfully uploaded.\n";
-                } else {
-
-                }
-                // appends the m3u8 file
-                if (!is_file("$upload_dir/live.m3u8")) {
-                    $m3u8_header = explode(PHP_EOL, $input['m3u8_string']);
-                    // array_splice($m3u8_header, 4, 0, array('#EXT-X-PLAYLIST-TYPE:EVENT'));
-                    // Adds an extra line in m3u8 header: #EXT-X-PLAYLIST-TYPE:EVENT
-                    // This type of playlist allows the players to navigate freely (backward and forward) from the beginning of the program
-                    file_put_contents("$upload_dir/live.m3u8", implode(PHP_EOL, $m3u8_header));
-                } else {
-                    file_put_contents("$upload_dir/live.m3u8", $input['m3u8_string'], FILE_APPEND);
-                }
-            } else {
-                // no information found for the stream
+            if (!isset($streams_array[$album][$asset][$module_type])) {
+                 // no information found for the stream
                 print 'error - no information found for the current stream';
                 return false;
+            }
+
+            $streams_array[$album][$asset][$module_type]['status'] = $input['status'];
+            $upload_dir = $apache_documentroot . '/ezplayer/videos/' . $album . '/' . $stream_name . '_' . $streams_array[$album][$asset]['token'] . '/';
+            mkdir($upload_dir, 0755, true); // creates the directories if needed
+
+            $upload_dir .= $input['module_type'] . '/';
+
+            mkdir($upload_dir, 0755, true); // creates the directories if needed
+
+            // master playlist file doesn't exist yet
+            if (!is_file($upload_dir . 'live.m3u8')) {
+                create_m3u8_master($upload_dir, $streams_array[$album][$asset][$module_type]['quality']);
+            }
+
+            $upload_dir .= $input['quality'] . '/';
+            // for instance : /www2/htdocs/dev/ezplayer/videos/ALBUM-NAME/3000_001/cam/high/
+            mkdir($upload_dir, 0755, true); // creates the directories if needed
+
+            $uploadfile = $upload_dir . $input['filename'];
+            // places the file (.ts segment from HTTP request) in the webspace
+            if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
+                echo "File is valid, and was successfully uploaded.\n";
+            }
+
+            // appends the m3u8 file
+            if (!is_file("$upload_dir/live.m3u8")) {
+                $m3u8_header = explode(PHP_EOL, $input['m3u8_string']);
+                // array_splice($m3u8_header, 4, 0, array('#EXT-X-PLAYLIST-TYPE:EVENT'));
+                // Adds an extra line in m3u8 header: #EXT-X-PLAYLIST-TYPE:EVENT
+                // This type of playlist allows the players to navigate freely (backward and forward) from the beginning of the program
+                file_put_contents("$upload_dir/live.m3u8", implode(PHP_EOL, $m3u8_header));
+            } else {
+                file_put_contents("$upload_dir/live.m3u8", $input['m3u8_string'], FILE_APPEND);
             }
 
             print "OK";

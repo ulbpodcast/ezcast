@@ -26,6 +26,7 @@
 
 
 $basedir = "~/";
+$mailto_alert = "podcast.tech@ulb.ac.be";
 $temp_dir = "$basedir/queues/downloading";
 $downloaded_dir = "$basedir/queues/downloaded";
 $processing_dir = "$basedir/queues/processing";

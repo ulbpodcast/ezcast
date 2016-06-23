@@ -127,6 +127,14 @@ print "\n//////////////////////////////// PROCESSING DONE //////////////////////
 $t0 = time() - $t0;
 print "\nRendering took $t0 seconds \n";
 
+if (file_exists($originals['cam']))
+    if (!check_sound_presence($originals['cam']))
+        mail($mailto_alert, "EZrenderer asset sound alert", "Original asset " . $originals['cam'] . " seems to have no sound");
+if (file_exists($originals['slide']))
+    if (!check_sound_presence($originals['slide']))
+        mail($mailto_alert, "EZrenderer asset sound alert", "Original asset " . $originals['slide'] . " seems to have no sound");
+
+
 print "\n//////////////////////////////// MOVE TO PROCESSED /////////////////////////////////////////////\n";
 if (!rename($processing, $processed)) {
     // already processed ? something like that

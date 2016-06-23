@@ -65,6 +65,7 @@ function movie_join_array($movie_array, $output) {
     // -i file : input file is the list containing the video files to concat
     // -c copy : keep the current codecs (no reencoding)
     // output : the name and extension for the output file
+    // -safe 0
     $cmd = "$ffmpegpath -f concat -i ./$tmp_file -c copy -y $output";
     print $cmd;
     exec($cmd, $cmdoutput, $returncode);
@@ -215,6 +216,39 @@ function movie_qtinfo($moviein, &$qtinfo) {
     var_dump($qtinfo);
 
     return false;
+}
+
+/* Returns wheter video seems to have sound, checking from 00:04:00 to 00:04:10
+    take around 10 seconds to complete (very approximative) */
+function check_sound_presence($filename) {
+    global $ffmpegpath;
+
+    $cmd = "$ffmpegpath -i $filename -ss 240 -to 250 -af 'volumedetect' -f null /dev/null 2>&1";
+    exec($cmd, $cmdoutput, $returncode);
+    if($returncode != 0)
+        return false;
+
+    //extract mean volume from output
+    $mean_volume = 0;
+    foreach($cmdoutput as $line) {
+        $part = strstr($line, "mean_volume:");
+        if($part == false)
+            continue;
+
+        $mean_volume = filter_var($part, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+        break;
+    }
+
+    //if mean volume not found in input
+    if($mean_volume == 0)
+        return false;
+
+    echo "Found mean volume at $mean_volume for $filename \n";
+    if(floatval($mean_volume) < floatval(-45))
+        return false;
+
+    return true;
 }
 
 /**

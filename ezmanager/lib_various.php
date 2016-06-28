@@ -343,12 +343,3 @@ function file_get_extension($filename){
  $result_assoc['ext']=$ext_part;
  return $result_assoc;
 }
-
-// determines if a process is running or not
-function is_process_running($pid) {
-    if (!isset($pid) || $pid == '' || $pid == 0)
-        return false;
-    exec("ps $pid", $output, $result);
-    return count($output) >= 2;
-}
-        

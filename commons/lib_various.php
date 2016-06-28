@@ -68,3 +68,22 @@ class DateTimeFrench extends DateTime {
     }
 
 }
+
+function get_pid_from_file($filePath) {
+    $handle = fopen(filePath, "r");
+    if($handle == false)
+        return 0;
+    
+    $pid = fgets($handle);
+    fclose($handle);
+    return $pid;
+}
+
+// determines if a process is running or not
+function is_process_running($pid) {
+    if (!isset($pid) || $pid == '' || $pid == 0)
+        return false;
+    exec("ps $pid", $output, $result);
+    return count($output) >= 2;
+}
+        

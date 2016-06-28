@@ -83,20 +83,3 @@ $flash_only_browsers = array('Firefox');
 
 // used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
 $upload_slice_size = 1024 * 1024;
-
-/* Use an alternate server as streaming distribution source */
-/* */
-//enable file syncing (does not redirect user)
-$streaming_video_alternate_server_enable_sync = false;
-//redirect users to given adress (see next options). Requires $streaming_video_alternate_server_enable_sync
-$streaming_video_alternate_server_enable_redirect = false;
-if($streaming_video_alternate_server_enable_redirect && !$streaming_video_alternate_server_enable_sync)
-{
-    //this should not happen except if you're using another solution to sync the files
-    trigger_error('Possible wrong configuration ($streaming_video_alternate_server_enable_redirect enabled while $streaming_video_alternate_server_enable_sync disabled)', E_USER_WARNING);
-}
-    
-$streaming_video_alternate_server_user = "user";
-$streaming_video_alternate_server_address = "http://127.0.0.1/";
-$streaming_video_alternate_server_files_root_location = "/var/www/stream/";
-$streaming_video_alternate_server_files_web_location = "stream/";

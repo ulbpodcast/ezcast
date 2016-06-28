@@ -49,6 +49,7 @@ require_once 'lib_threads_pdo.php';
 require_once 'lib_chat_pdo.php';
 require_once 'lib_cache.php';
 require_once 'lib_acl.php';
+require_once "../commons/lib_external_stream_daemon.php";
 
 $input = array_merge($_GET, $_POST);
 
@@ -1230,7 +1231,8 @@ function asset_streaming_player_update($display = true) {
     global $streaming_video_player;
     global $repository_path;
     global $is_android;
-
+    global $streaming_video_alternate_server_enable_redirect;
+    
     $album = $_SESSION['album'];
     $asset = $_SESSION['asset'];
 
@@ -1240,13 +1242,20 @@ function asset_streaming_player_update($display = true) {
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
     $asset_token = ezmam_asset_token_get($album, $asset);
 	
-
+    $redirect = $streaming_video_alternate_server_enable_redirect && ExternalStreamDaemon::is_ready();
+    
+    $live_filename = "live.m3u8";
+    if($redirect) {
+        $live_filename = "external_live.m3u8";
+    }
+    
     if ($asset_meta['record_type'] == 'camslide') {
         $type = (isset($input['type']) && $input['type'] != '') ? $input['type'] : 'cam';
-        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $type . '/live.m3u8';
-        $m3u8_slide = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/slide/live.m3u8';
+        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $type . '/' . $live_filename;
+
+        $m3u8_slide = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/slide/' . $live_filename;
     } else {
-        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $asset_meta['record_type'] . '/live.m3u8';
+        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $asset_meta['record_type'] . '/' . $live_filename;
     }
 
     $_SESSION['current_type'] = ($asset_meta['record_type'] == 'camslide') ? $type : $asset_meta['record_type'];

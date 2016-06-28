@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__."/lib_external_stream_daemon.php";
+require_once __DIR__."/lib_external_stream_daemon.php";
 
 if($argc != 2)
 {

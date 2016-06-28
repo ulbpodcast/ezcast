@@ -30,10 +30,10 @@
  */
 //This program receives queries from classroom recording agents to tell that a new recorging is ready for download
 //IP adresses of machines allowed to submit are stored in a file
-include_once "config.inc";
+require_once "config.inc";
 include_once "classroom_recorder_ip.inc"; //valid ip file
-include_once "lib_ezmam.php";
-include_once "lib_external_stream_daemon.php";
+require_once "lib_ezmam.php";
+require_once "../commons/lib_external_stream_daemon.php";
 
 $input = array_merge($_GET, $_POST);
 //look for caller's ip in config files
@@ -355,28 +355,32 @@ function streaming_start() {
 }
 
 function create_m3u8_master($targetDir, $quality) {
-    global $streaming_video_alternate_server_enable_redirect;
+   
+    $master_m3u8 = '#EXTM3U' . PHP_EOL .
+            '#EXT-X-VERSION:3' . PHP_EOL;
+    
+    // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
+    if (strpos($quality, 'low') !== false) {
+        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
+                'low/live.m3u8' . PHP_EOL;
+    }
+    if (strpos($quality, 'high') !== false) {
+        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
+                'high/live.m3u8' . PHP_EOL;
+    }
+
+    file_put_contents($targetDir . 'live.m3u8', $master_m3u8);
+}
+
+function create_m3u8_external($targetDir) {
     global $streaming_video_alternate_server_address;
     global $streaming_video_alternate_server_files_web_location;
     
-    $master_m3u8 = '#EXTM3U' . PHP_EOL .
+    $external_m3u8 = '#EXTM3U' . PHP_EOL .
             '#EXT-X-VERSION:3' . PHP_EOL;
-    if($streaming_video_alternate_server_enable_redirect) {
-        //remove streaming is enabled, redirect to the master file in the exteral server instead
-        $master_m3u8 .= "http://" . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/live.m3u8';
-    } else {
-        // else create a local master file
-        // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
-        if (strpos($quality, 'low') !== false) {
-            $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                    'low/live.m3u8' . PHP_EOL;
-        }
-        if (strpos($quality, 'high') !== false) {
-            $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                    'high/live.m3u8' . PHP_EOL;
-        }
-    }
-    file_put_contents($targetDir . 'live.m3u8', $master_m3u8);
+    $external_m3u8 .= "http://" . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/live.m3u8';
+    
+    file_put_contents($targetDir . 'external_live.m3u8', $external_m3u8);
 }
 
 /**
@@ -395,7 +399,8 @@ function streaming_content_add() {
     global $repository_path;
     global $apache_documentroot;
     global $streaming_video_alternate_server_enable_sync;
-    
+    global $streaming_video_alternate_server_enable_redirect;
+     
     ezmam_repository_path($repository_path);
 
     $album = $input['album'];
@@ -437,10 +442,17 @@ function streaming_content_add() {
             mkdir($upload_type_dir, 0755, true); // creates the directories if needed
 
             // master playlist file doesn't exist yet
-            
-            //if (!is_file($upload_type_dir . 'live.m3u8')) { //commented out: re create each time instead, it may change with $streaming_video_alternate_server_enable_redirect // checklater: more elegant way to do this ?
+            if (!is_file($upload_type_dir . 'live.m3u8')) {
                 create_m3u8_master($upload_type_dir, $streams_array[$album][$asset][$module_type]['quality']);
-            //}
+            }
+            //also create external source if needed
+            if($streaming_video_alternate_server_enable_redirect) {
+                if (!is_file($upload_type_dir . 'external_live.m3u8')) {
+                    create_m3u8_external($upload_type_dir);
+                }
+            } else { //else make sure it's removed
+                unlink($upload_type_dir . 'external_live.m3u8');
+            }
 
             $upload_quality_dir = $upload_type_dir . $input['quality'] . '/';
             // for instance : /www2/htdocs/dev/ezplayer/videos/ALBUM-NAME/3000_001/cam/high/

@@ -1,13 +1,11 @@
 <?php
 
-include_once __DIR__."/lib_various.php";
-include_once __DIR__."/config.inc";
+require_once __DIR__."/lib_various.php";
+require_once __DIR__."/config.inc";
 
 // Start ExternalStreamDaemon if not already running
 function ensure_external_stream_daemon_is_running($upload_root_dir) {
-    global $pid_file;
-    
-    if(is_process_running($pid_file))
+    if(is_process_running(get_pid_from_file(ExternalStreamDaemon::PID_FILE)))
         return;
     
     // Start daemon in background
@@ -25,6 +23,7 @@ class ExternalStreamDaemon {
    //lock file to be placed at stream root dir to prevent the daemon to copy files from it (content does not matter, only file existence is checked)
    const SYNC_LOCK_FILENAME = 'sync_lock';
    const STOP_FILE = '/var/lib/ezcast/external_stream_stop';
+   const READY_FILE = '/var/lib/ezcast/external_stream_ready';
    const TIMEOUT_LENGHT = 86400; // in seconds, 24H
    
    var $ssh_user;
@@ -54,8 +53,11 @@ class ExternalStreamDaemon {
            throw new Exception('ExternalStreamDaemon:: pid file is not writable: ' . self::PID_FILE);
        if(!is_writable(dirname(self::STOP_FILE)))
            throw new Exception('ExternalStreamDaemon:: stop file is not writable: ' . self::STOP_FILE);
+       if(!is_writable(dirname(self::READY_FILE)))
+           throw new Exception('ExternalStreamDaemon:: ready file is not writable: ' . self::READY_FILE);
        if(!is_writable(dirname($this->lock_file)))
            throw new Exception('ExternalStreamDaemon:: lock file is not writable: ' . $this->lock_file);
+       
    }
    
    static function pause() {
@@ -68,6 +70,19 @@ class ExternalStreamDaemon {
    
    function is_paused() {
        return file_exists($this->lock_file);
+   }
+   
+   //return true if ready to stream
+   static function is_ready() {
+       return file_exists(self::READY_FILE);
+   }
+   
+   /* ready: true/false */
+   function set_ready($ready) {
+       if($ready == true)
+           file_put_contents(self::READY_FILE, "1"); //content does not matter
+       else
+           unlink(self::READY_FILE);
    }
    
    // create stop marker. Daemon will stop at the end of the current sync operation.
@@ -90,9 +105,19 @@ class ExternalStreamDaemon {
        return $this->start_time + self::TIMEOUT_LENGHT < time();
    }
    
+   function sync_files() {
+           // -- temp code for testing
+		//copy m3u8 after so that we don't reference .ts not yet copied
+       echo system("rsync -rP --delete --exclude='*.m3u8' $this->local_root_path $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
+       echo system("rsync -rP --delete --exclude='*.ts' $this->local_root_path $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
+   }
+   
    function run() {
        //make sure stop file from previous run does not exists anymore
        $this->delete_stop_file();
+       $this->set_ready(false);
+       sync_files();
+       $this->set_ready(true);
        
        while(true) {
            
@@ -103,16 +128,18 @@ class ExternalStreamDaemon {
                continue;
            }
            
-           // -- temp code for testing
-		//copy m3u8 after so that we don't reference .ts not yet copied
-           echo system("rsync -rP --delete --exclude='*.m3u8' $this->local_root_path $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
-           echo system("rsync -rP --delete --exclude='*.ts' $this->local_root_path $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
+           $time = time();
+           sync_files();
            sleep(1);
-           // --
           
+           $new_time = time();
+           $diff = $new_time - $time;
+           echo "Sync took $diff" . PHP_EOL;
+           
            if($this->must_stop() || $this->is_in_timeout())
                break; //stop infinite loop
        }
        
+       $this->set_ready(false);
    }
 }

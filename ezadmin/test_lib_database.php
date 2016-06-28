@@ -41,4 +41,3 @@ echo "All courses by $user_name ...".PHP_EOL;
 var_dump(db_courses_search_compact('%', $user_name, true, true, false, true));
 echo "All users of $course_name, step 2 ...".PHP_EOL;
 var_dump(db_course_get_users($course_name));
-?>

@@ -76,4 +76,3 @@ echo -e "Destination folder: ${G}$dest_folder${N}";
 $php_cli_path $current_dir/../commons/cli_template_generate.php $source_folder fr $dest_folder $current_dir/translations.xml;
 $php_cli_path $current_dir/../commons/cli_template_generate.php $source_folder en $dest_folder $current_dir/translations.xml;
 echo "Compilation complete. Don't forget to edit config.inc to your own needs";
-

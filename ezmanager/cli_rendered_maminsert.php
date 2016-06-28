@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+chdir(__DIR__);
+
 /**
  * @package ezcast.ezmanager.cli
  */
@@ -43,7 +45,7 @@ ezmam_repository_path($repository_path);
  *   This means: build a work directory, send it via ssh to the render client , get info  back and finally add/update media
  */
 if ($argc != 4) {
-    echo "\nusage: " . $argv[0] . "<album_name> <asset_name> <processing_dir>\n";
+    echo "\nusage: " . $argv[0] . " <album_name> <asset_name> <full_path_to_processing_dir>\n";
     die;
 }
 
@@ -180,5 +182,3 @@ function insert_chapterslide_media($album, $asset, $chapter_slide_dir) {
     $res = ezmam_media_new($album, $asset, $media, $media_meta, $chapter_slide_dir, true);
     //unlink($chapter_slide_dir);
 }
-
-?>

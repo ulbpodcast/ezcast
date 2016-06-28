@@ -376,7 +376,7 @@ function view_album() {
     ezmam_repository_path($repository_path);
 
     //
-    // 0) Sanity checks
+    // 0) Permissions checks
     //
     if (!acl_has_album_permissions($album)) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
@@ -758,7 +758,7 @@ function album_delete() {
     global $repository_path;
 
     //
-    // Sanity checks
+    // Access checks
     //
     if (!isset($input['album']) || !acl_has_album_permissions($input['album'])) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
@@ -1389,7 +1389,7 @@ function asset_edit() {
     }
 
     if (strlen($input['title']) > $title_max_length) {
-        error_print_message(template_get_message('title_too_long', get_lang()));
+        error_print_message(template_get_message('Title_too_long', get_lang()));
         die;
     }
 
@@ -1941,5 +1941,3 @@ function popup_ulb_code() {
     // Displaying the popup
     require_once template_getpath('popup_ulb_code.php');
 }
-
-?>

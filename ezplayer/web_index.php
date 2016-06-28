@@ -43,7 +43,8 @@ require_once '../commons/lib_various.php';
 require_once 'lib_various.php';
 require_once 'lib_user_prefs.php';
 include_once 'lib_toc.php';
-require_once './Browser/Autoloader.php';
+require_once './Browser/Browser.php';
+use Sinergi\BrowserDetector\Browser;
 require_once 'lib_threads_pdo.php';
 require_once 'lib_chat_pdo.php';
 require_once 'lib_cache.php';
@@ -1628,6 +1629,7 @@ function contact_send() {
     $subject = $input['subject'];
     $mail = $input['email'];
 
+    $header = 'An user reported a problem on EZPlayer:' . PHP_EOL;
     $header = '------------------------------------------------------------' . PHP_EOL;
     $header.= "from : $mail [" . $_SESSION['user_email'] . ']' . PHP_EOL;
     $header.= "Name: " . $_SESSION['user_full_name'] . PHP_EOL;
@@ -2743,6 +2745,7 @@ function asset_popup() {
     ezmam_repository_path($repository_path);
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
+    $token = ezmam_asset_token_get($album, $asset);
 
     switch ($display) {
         case 'share_time':
@@ -2751,6 +2754,9 @@ function asset_popup() {
                     . '&asset=' . $asset
                     . '&t=' . $current_time
                     . '&type=' . $type;
+            if(acl_has_album_moderation($album))
+                $share_time .= '&asset_token='.$token;
+            
             include_once template_getpath('popup_asset_timecode_share.php');
             break;
         case 'share_link':
@@ -2982,5 +2988,3 @@ function trace_append($array) {
 
     file_put_contents($ezplayer_trace_path . '/' . date('Y-m-d') . '.trace', $data, FILE_APPEND | LOCK_EX);
 }
-
-?>

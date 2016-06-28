@@ -106,4 +106,3 @@ echo "testing threads_count_all_by_asset" . '<br/>';
 print_r(threads_count_all_by_asset());
 
 die;
-?>

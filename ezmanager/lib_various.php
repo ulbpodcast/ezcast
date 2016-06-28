@@ -351,3 +351,4 @@ function is_process_running($pid) {
     exec("ps $pid", $output, $result);
     return count($output) >= 2;
 }
+        

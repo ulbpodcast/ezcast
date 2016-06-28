@@ -520,6 +520,3 @@ function toc_album_bookmarks_delete_all($album) {
     unlink($toc_path . "/_bookmarks.xml");
     return true;
 }
-
-
-?>

@@ -101,7 +101,7 @@
         <label id="list_recorder_admins" lang="en">Admins list</label>
         <label id="new_recorder_admin" lang="fr">Ajouter administrateur</label>
         <label id="new_recorder_admin" lang="en">Add admin</label>
-        <label id="push_to_recorder" lang="fr">Sauvegarder</label>
+        <label id="push_to_recorder" lang="fr">Envoyer changements</label>
         <label id="push_to_recorder" lang="en">Push changes</label>
         <label id="renderers_queue" lang="fr">Liste de jobs</label>
         <label id="renderers_queue" lang="en">Job queue</label>
@@ -303,8 +303,8 @@
         <label id="password" lang="en">Password</label>   
         <label id="delete" lang="fr">Supprimer</label>   
         <label id="delete" lang="en">Delete</label>        
-        <label id="push_changes" lang="fr">Sauvegarder</label>   
-        <label id="push_changes" lang="en">Save changes</label>        
+        <label id="push_changes" lang="fr">Envoyer changements</label>   
+        <label id="push_changes" lang="en">Push changes</label>        
         <label id="sync_externals" lang="fr">Synchro externes</label>   
         <label id="sync_externals" lang="en">Sync externals</label>        
         <label id="unsaved_changes" lang="fr">non-sauvegardé</label>   
@@ -448,7 +448,7 @@
         <label id="renderer_delete" lang="fr">Vous pouvez désormais supprimer les fichiers d'EZrenderer sur le serveur distant (renderer).</label>
         <label id="renderer_delete" lang="en">You can now delete EZrenderer files on the remote server (renderer).</label>
         <label id="leave_empty_field" lang="fr">Laisser le champs vide pour conserver le mot de passe</label>
-        <label id="leave_empty_field" lang="fr">Leave empty field to keep the previous password</label>
+        <label id="leave_empty_field" lang="en">Leave empty field to keep the previous password</label>
         
         <!-- Install -->
         <label id="install_page_title" lang="fr">Installation EZcast</label>

@@ -24,9 +24,11 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-error_reporting(E_PARSE | E_ERROR);
+$report_level = error_reporting();
+error_reporting($report_level | E_PARSE | E_ERROR);
 
-require "../commons/config.inc";
+if(file_exists("../commons/config.inc"))
+   include_once "../commons/config.inc";
 
 // General stuff
 $appname="EZadmin";
@@ -55,5 +57,3 @@ $renderers_options = array(
         'ffmpeg' => array('name' => 'ffmpeg', 'description' => 'FFMPEG command line', 'file' => 'lib_ffmpeg.php'),
         'ffmpeg_exp' => array('name' => 'ffmpeg_exp', 'description' => 'FFMPEG command line experimental mode (AAC)', 'file' => 'lib_ffmpeg.php'),
 );
-
-?>

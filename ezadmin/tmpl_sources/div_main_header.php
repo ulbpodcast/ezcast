@@ -4,33 +4,10 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <!-- Note: for details about the layout and Boostrap framwork, see http://twitter.github.com/bootstrap/ -->
 
-        <!--
-        * EZCAST EZadmin 
-        * Copyright (C) 2014 Université libre de Bruxelles
-        *
-        * Written by Michel Jansens <mjansens@ulb.ac.be>
-        * 		    Arnaud Wijns <awijns@ulb.ac.be>
-        *                   Antoine Dewilde
-        *                   Thibaut Roskam
-        *
-        * This software is free software; you can redistribute it and/or
-        * modify it under the terms of the GNU Lesser General Public
-        * License as published by the Free Software Foundation; either
-        * version 3 of the License, or (at your option) any later version.
-        *
-        * This software is distributed in the hope that it will be useful,
-        * but WITHOUT ANY WARRANTY; without even the implied warranty of
-        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-        * Lesser General Public License for more details.
-        *
-        * You should have received a copy of the GNU Lesser General Public
-        * License along with this software; if not, write to the Free Software
-        * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-        -->
         <title><?php
             global $appname;
             echo $appname;
-            if ($_SESSION['changes_to_push'])
+            if (isset($_SESSION['changes_to_push']))
                 echo ' (®unsaved_changes®)';
             ?></title>
         <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
@@ -117,7 +94,7 @@
         </script>
 
     </head>
-    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if ($GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
+    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && ($GLOBALS['debugmode'] == "devl")) echo 'background="#99ff99"' ?>>
 
         <div class="container_ezplayer">
         <?php include template_getpath('div_header.php'); ?>

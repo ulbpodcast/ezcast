@@ -87,7 +87,7 @@ switch (strtolower($_SESSION['browser_name'])) {
             <div class="shortcuts_tab"><a href="javascript:player_shortcuts_toggle();"></a></div>
         </div>
 
-        <?php if (acl_user_is_logged() && acl_has_album_permissions($album) && acl_display_thread_notification()) { ?>
+        <?php if (acl_display_thread_notification()) { ?>
             <script>
                 display_threads_notif = true;
             </script>

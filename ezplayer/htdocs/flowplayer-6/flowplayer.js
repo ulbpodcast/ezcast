@@ -1,10 +1,10 @@
 /*!
 
-   Flowplayer v6.0.3 (Thursday, 23. July 2015 09:32PM) | flowplayer.org/license
+   Flowplayer v6.0.5 (Wednesday, 13. January 2016 09:17AM) | flowplayer.org/license
 
 */
 /*! (C) WebReflection Mit Style License */
-(function(e){function m(e,t,n,r){for(var i,s=n.slice(),o=b(t,e),u=0,a=s.length;u<a;u++){handler=s[u],typeof handler=="object"&&typeof handler.handleEvent=="function"?handler.handleEvent(o):handler.call(e,o);if(o.stoppedImmediatePropagation)break}return i=!o.stoppedPropagation,r&&i&&e.parentNode?e.parentNode.dispatchEvent(o):!o.defaultPrevented}function g(e,t){return{configurable:!0,get:e,set:t}}function y(e,t,n){var r=a(t||e,n);o(e,"textContent",g(function(){return r.get.call(this)},function(e){r.set.call(this,e)}))}function b(e,t){return e.currentTarget=t,e.eventPhase=e.target===e.currentTarget?2:3,e}function w(e,t){var n=e.length;while(n--&&e[n]!==t);return n}function E(){if(this.tagName==="BR")return"\n";var e=this.firstChild,t=[];while(e)e.nodeType!==8&&e.nodeType!==7&&t.push(e.textContent),e=e.nextSibling;return t.join("")}function S(e){return e.nodeType!==9&&document.documentElement.contains(e)}function x(e){var t=document.createEvent("Event");t.initEvent("input",!0,!0),(e.srcElement||e.fromElement||document).dispatchEvent(t)}function T(e){!n&&p.test(document.readyState)&&(n=!n,document.detachEvent(r,T),e=document.createEvent("Event"),e.initEvent(i,!0,!0),document.dispatchEvent(e))}function N(e){var t;while(t=this.lastChild)this.removeChild(t);e!=null&&this.appendChild(document.createTextNode(e))}function C(t,n){return n||(n=e.event),n.target||(n.target=n.srcElement||n.fromElement||document),n.timeStamp||(n.timeStamp=(new Date).getTime()),n}if(document.createEvent)return;var t=!0,n=!1,r="onreadystatechange",i="DOMContentLoaded",s="__IE8__"+Math.random(),o=Object.defineProperty||function(e,t,n){e[t]=n.value},u=Object.defineProperties||function(t,n){for(var r in n)if(f.call(n,r))try{o(t,r,n[r])}catch(i){e.console&&console.log(r+" failed on object:",t,i.message)}},a=Object.getOwnPropertyDescriptor,f=Object.prototype.hasOwnProperty,l=e.Element.prototype,c=e.Text.prototype,h=/^[a-z]+$/,p=/loaded|complete/,d={},v=document.createElement("div");y(e.HTMLCommentElement.prototype,l,"nodeValue"),y(e.HTMLScriptElement.prototype,null,"text"),y(c,null,"nodeValue"),y(e.HTMLTitleElement.prototype,null,"text"),o(e.HTMLStyleElement.prototype,"textContent",function(e){return g(function(){return e.get.call(this.styleSheet)},function(t){e.set.call(this.styleSheet,t)})}(a(e.CSSStyleSheet.prototype,"cssText"))),u(l,{textContent:{get:E,set:N},firstElementChild:{get:function(){for(var e=this.childNodes||[],t=0,n=e.length;t<n;t++)if(e[t].nodeType==1)return e[t]}},lastElementChild:{get:function(){for(var e=this.childNodes||[],t=e.length;t--;)if(e[t].nodeType==1)return e[t]}},oninput:{get:function(){return this._oninput||null},set:function(e){this._oninput&&(this.removeEventListener("input",this._oninput),this._oninput=e,e&&this.addEventListener("input",e))}},previousElementSibling:{get:function(){var e=this.previousSibling;while(e&&e.nodeType!=1)e=e.previousSibling;return e}},nextElementSibling:{get:function(){var e=this.nextSibling;while(e&&e.nodeType!=1)e=e.nextSibling;return e}},childElementCount:{get:function(){for(var e=0,t=this.childNodes||[],n=t.length;n--;e+=t[n].nodeType==1);return e}},addEventListener:{value:function(e,t,n){var r=this,i="on"+e,u=r[s]||o(r,s,{value:{}})[s],a=u[i]||(u[i]={}),l=a.h||(a.h=[]),c;if(!f.call(a,"w")){a.w=function(e){return e[s]||m(r,C(r,e),l,!1)};if(!f.call(d,i))if(h.test(e))try{c=document.createEventObject(),c[s]=!0,r.nodeType!=9&&r.parentNode==null&&v.appendChild(r),r.fireEvent(i,c),d[i]=!0}catch(c){d[i]=!1;while(v.hasChildNodes())v.removeChild(v.firstChild)}else d[i]=!1;(a.n=d[i])&&r.attachEvent(i,a.w)}w(l,t)<0&&l[n?"unshift":"push"](t),e==="input"&&r.attachEvent("onkeyup",x)}},dispatchEvent:{value:function(e){var t=this,n="on"+e.type,r=t[s],i=r&&r[n],o=!!i,u;return e.target||(e.target=t),o?i.n?t.fireEvent(n,e):m(t,e,i.h,!0):(u=t.parentNode)?u.dispatchEvent(e):!0,!e.defaultPrevented}},removeEventListener:{value:function(e,t,n){var r=this,i="on"+e,o=r[s],u=o&&o[i],a=u&&u.h,f=a?w(a,t):-1;-1<f&&a.splice(f,1)}}}),u(c,{addEventListener:{value:l.addEventListener},dispatchEvent:{value:l.dispatchEvent},removeEventListener:{value:l.removeEventListener}}),u(e.XMLHttpRequest.prototype,{addEventListener:{value:function(e,t,n){var r=this,i="on"+e,u=r[s]||o(r,s,{value:{}})[s],a=u[i]||(u[i]={}),f=a.h||(a.h=[]);w(f,t)<0&&(r[i]||(r[i]=function(){var t=document.createEvent("Event");t.initEvent(e,!0,!0),r.dispatchEvent(t)}),f[n?"unshift":"push"](t))}},dispatchEvent:{value:function(e){var t=this,n="on"+e.type,r=t[s],i=r&&r[n],o=!!i;return o&&(i.n?t.fireEvent(n,e):m(t,e,i.h,!0))}},removeEventListener:{value:l.removeEventListener}}),u(e.Event.prototype,{bubbles:{value:!0,writable:!0},cancelable:{value:!0,writable:!0},preventDefault:{value:function(){this.cancelable&&(this.defaultPrevented=!0,this.returnValue=!1)}},stopPropagation:{value:function(){this.stoppedPropagation=!0,this.cancelBubble=!0}},stopImmediatePropagation:{value:function(){this.stoppedImmediatePropagation=!0,this.stopPropagation()}},initEvent:{value:function(e,t,n){this.type=e,this.bubbles=!!t,this.cancelable=!!n,this.bubbles||this.stopPropagation()}}}),u(e.HTMLDocument.prototype,{defaultView:{get:function(){return this.parentWindow}},textContent:{get:function(){return this.nodeType===11?E.call(this):null},set:function(e){this.nodeType===11&&N.call(this,e)}},addEventListener:{value:function(n,s,o){var u=this;l.addEventListener.call(u,n,s,o),t&&n===i&&!p.test(u.readyState)&&(t=!1,u.attachEvent(r,T),e==top&&function a(e){try{u.documentElement.doScroll("left"),T()}catch(t){setTimeout(a,50)}}())}},dispatchEvent:{value:l.dispatchEvent},removeEventListener:{value:l.removeEventListener},createEvent:{value:function(e){var t;if(e!=="Event")throw new Error("unsupported "+e);return t=document.createEventObject(),t.timeStamp=(new Date).getTime(),t}}}),u(e.Window.prototype,{getComputedStyle:{value:function(){function i(e){this._=e}function s(){}var e=/^(?:[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|))(?!px)[a-z%]+$/,t=/^(top|right|bottom|left)$/,n=/\-([a-z])/g,r=function(e,t){return t.toUpperCase()};return i.prototype.getPropertyValue=function(i){var s=this._,o=s.style,u=s.currentStyle,a=s.runtimeStyle,f,l,c;return i=(i==="float"?"style-float":i).replace(n,r),f=u?u[i]:o[i],e.test(f)&&!t.test(i)&&(l=o.left,c=a&&a.left,c&&(a.left=u.left),o.left=i==="fontSize"?"1em":f,f=o.pixelLeft+"px",o.left=l,c&&(a.left=c)),f==null?f:f+""||"auto"},s.prototype.getPropertyValue=function(){return null},function(e,t){return t?new s(e):new i(e)}}()},addEventListener:{value:function(t,n,r){var i=e,o="on"+t,u;i[o]||(i[o]=function(e){return m(i,C(i,e),u,!1)}),u=i[o][s]||(i[o][s]=[]),w(u,n)<0&&u[r?"unshift":"push"](n)}},dispatchEvent:{value:function(t){var n=e["on"+t.type];return n?n.call(e,t)!==!1&&!t.defaultPrevented:!0}},removeEventListener:{value:function(t,n,r){var i="on"+t,o=(e[i]||Object)[s],u=o?w(o,n):-1;-1<u&&o.splice(u,1)}}})})(this);
+(function(e){function g(e,t,n,r){for(var i,s=n.slice(),o=w(t,e),u=0,a=s.length;u<a;u++){handler=s[u],typeof handler=="object"&&typeof handler.handleEvent=="function"?handler.handleEvent(o):handler.call(e,o);if(o.stoppedImmediatePropagation)break}return i=!o.stoppedPropagation,r&&i&&e.parentNode?e.parentNode.dispatchEvent(o):!o.defaultPrevented}function y(e,t){return{configurable:!0,get:e,set:t}}function b(e,t,n){var r=f(t||e,n);u(e,"textContent",y(function(){return r.get.call(this)},function(e){r.set.call(this,e)}))}function w(e,t){return e.currentTarget=t,e.eventPhase=e.target===e.currentTarget?2:3,e}function E(e,t){var n=e.length;while(n--&&e[n]!==t);return n}function S(){if(this.tagName==="BR")return"\n";var e=this.firstChild,t=[];while(e)e.nodeType!==8&&e.nodeType!==7&&t.push(e.textContent),e=e.nextSibling;return t.join("")}function x(e){return e.nodeType!==9&&document.documentElement.contains(e)}function T(e){!n&&d.test(document.readyState)&&(n=!n,document.detachEvent(r,T),e=document.createEvent("Event"),e.initEvent(i,!0,!0),document.dispatchEvent(e))}function N(e){var t;while(t=this.lastChild)this.removeChild(t);e!=null&&this.appendChild(document.createTextNode(e))}function C(t,n){return n||(n=e.event),n.target||(n.target=n.srcElement||n.fromElement||document),n.timeStamp||(n.timeStamp=(new Date).getTime()),n}if(document.createEvent)return;var t=!0,n=!1,r="onreadystatechange",i="DOMContentLoaded",s="__IE8__"+Math.random(),o=e.Object,u=o.defineProperty||function(e,t,n){e[t]=n.value},a=o.defineProperties||function(t,n){for(var r in n)if(l.call(n,r))try{u(t,r,n[r])}catch(i){e.console&&console.log(r+" failed on object:",t,i.message)}},f=o.getOwnPropertyDescriptor,l=o.prototype.hasOwnProperty,c=e.Element.prototype,h=e.Text.prototype,p=/^[a-z]+$/,d=/loaded|complete/,v={},m=document.createElement("div");b(e.HTMLCommentElement.prototype,c,"nodeValue"),b(e.HTMLScriptElement.prototype,null,"text"),b(h,null,"nodeValue"),b(e.HTMLTitleElement.prototype,null,"text"),u(e.HTMLStyleElement.prototype,"textContent",function(e){return y(function(){return e.get.call(this.styleSheet)},function(t){e.set.call(this.styleSheet,t)})}(f(e.CSSStyleSheet.prototype,"cssText"))),a(c,{textContent:{get:S,set:N},firstElementChild:{get:function(){for(var e=this.childNodes||[],t=0,n=e.length;t<n;t++)if(e[t].nodeType==1)return e[t]}},lastElementChild:{get:function(){for(var e=this.childNodes||[],t=e.length;t--;)if(e[t].nodeType==1)return e[t]}},previousElementSibling:{get:function(){var e=this.previousSibling;while(e&&e.nodeType!=1)e=e.previousSibling;return e}},nextElementSibling:{get:function(){var e=this.nextSibling;while(e&&e.nodeType!=1)e=e.nextSibling;return e}},childElementCount:{get:function(){for(var e=0,t=this.childNodes||[],n=t.length;n--;e+=t[n].nodeType==1);return e}},addEventListener:{value:function(e,t,n){var r=this,i="on"+e,o=r[s]||u(r,s,{value:{}})[s],a=o[i]||(o[i]={}),f=a.h||(a.h=[]),c;if(!l.call(a,"w")){a.w=function(e){return e[s]||g(r,C(r,e),f,!1)};if(!l.call(v,i))if(p.test(e))try{c=document.createEventObject(),c[s]=!0,r.nodeType!=9&&r.parentNode==null&&m.appendChild(r),r.fireEvent(i,c),v[i]=!0}catch(c){v[i]=!1;while(m.hasChildNodes())m.removeChild(m.firstChild)}else v[i]=!1;(a.n=v[i])&&r.attachEvent(i,a.w)}E(f,t)<0&&f[n?"unshift":"push"](t)}},dispatchEvent:{value:function(e){var t=this,n="on"+e.type,r=t[s],i=r&&r[n],o=!!i,u;return e.target||(e.target=t),o?i.n?t.fireEvent(n,e):g(t,e,i.h,!0):(u=t.parentNode)?u.dispatchEvent(e):!0,!e.defaultPrevented}},removeEventListener:{value:function(e,t,n){var r=this,i="on"+e,o=r[s],u=o&&o[i],a=u&&u.h,f=a?E(a,t):-1;-1<f&&a.splice(f,1)}}}),a(h,{addEventListener:{value:c.addEventListener},dispatchEvent:{value:c.dispatchEvent},removeEventListener:{value:c.removeEventListener}}),a(e.XMLHttpRequest.prototype,{addEventListener:{value:function(e,t,n){var r=this,i="on"+e,o=r[s]||u(r,s,{value:{}})[s],a=o[i]||(o[i]={}),f=a.h||(a.h=[]);E(f,t)<0&&(r[i]||(r[i]=function(){var t=document.createEvent("Event");t.initEvent(e,!0,!0),r.dispatchEvent(t)}),f[n?"unshift":"push"](t))}},dispatchEvent:{value:function(e){var t=this,n="on"+e.type,r=t[s],i=r&&r[n],o=!!i;return o&&(i.n?t.fireEvent(n,e):g(t,e,i.h,!0))}},removeEventListener:{value:c.removeEventListener}}),a(e.Event.prototype,{bubbles:{value:!0,writable:!0},cancelable:{value:!0,writable:!0},preventDefault:{value:function(){this.cancelable&&(this.defaultPrevented=!0,this.returnValue=!1)}},stopPropagation:{value:function(){this.stoppedPropagation=!0,this.cancelBubble=!0}},stopImmediatePropagation:{value:function(){this.stoppedImmediatePropagation=!0,this.stopPropagation()}},initEvent:{value:function(e,t,n){this.type=e,this.bubbles=!!t,this.cancelable=!!n,this.bubbles||this.stopPropagation()}}}),a(e.HTMLDocument.prototype,{textContent:{get:function(){return this.nodeType===11?S.call(this):null},set:function(e){this.nodeType===11&&N.call(this,e)}},addEventListener:{value:function(n,s,o){var u=this;c.addEventListener.call(u,n,s,o),t&&n===i&&!d.test(u.readyState)&&(t=!1,u.attachEvent(r,T),e==top&&function a(e){try{u.documentElement.doScroll("left"),T()}catch(t){setTimeout(a,50)}}())}},dispatchEvent:{value:c.dispatchEvent},removeEventListener:{value:c.removeEventListener},createEvent:{value:function(e){var t;if(e!=="Event")throw new Error("unsupported "+e);return t=document.createEventObject(),t.timeStamp=(new Date).getTime(),t}}}),a(e.Window.prototype,{getComputedStyle:{value:function(){function i(e){this._=e}function s(){}var e=/^(?:[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|))(?!px)[a-z%]+$/,t=/^(top|right|bottom|left)$/,n=/\-([a-z])/g,r=function(e,t){return t.toUpperCase()};return i.prototype.getPropertyValue=function(i){var s=this._,o=s.style,u=s.currentStyle,a=s.runtimeStyle,f,l,c;return i=(i==="float"?"style-float":i).replace(n,r),f=u?u[i]:o[i],e.test(f)&&!t.test(i)&&(l=o.left,c=a&&a.left,c&&(a.left=u.left),o.left=i==="fontSize"?"1em":f,f=o.pixelLeft+"px",o.left=l,c&&(a.left=c)),f==null?f:f+""||"auto"},s.prototype.getPropertyValue=function(){return null},function(e,t){return t?new s(e):new i(e)}}()},addEventListener:{value:function(t,n,r){var i=e,o="on"+t,u;i[o]||(i[o]=function(e){return g(i,C(i,e),u,!1)}),u=i[o][s]||(i[o][s]=[]),E(u,n)<0&&u[r?"unshift":"push"](n)}},dispatchEvent:{value:function(t){var n=e["on"+t.type];return n?n.call(e,t)!==!1&&!t.defaultPrevented:!0}},removeEventListener:{value:function(t,n,r){var i="on"+t,u=(e[i]||o)[s],a=u?E(u,n):-1;-1<a&&u.splice(a,1)}}})})(this);
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.flowplayer=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 var common = module.exports = {},
@@ -41,6 +41,13 @@ common.hasClass = function(el, kls) {
   return ClassList(el).contains(kls);
 };
 
+common.isSameDomain = function(url) {
+  var w = window.location,
+      a = common.createElement('a', { href: url });
+  return w.hostname === a.hostname &&
+         w.protocol === a.protocol &&
+         w.port === a.port;
+};
 
 common.css = function(el, property, value) {
   if (typeof property === 'object') {
@@ -291,7 +298,6 @@ common.matches = function(elem, selector) {
 })(window.CSSStyleDeclaration.prototype);
 
 },{"class-list":22,"computed-style":24,"punycode":21}],2:[function(_dereq_,module,exports){
-/* global __flash_unloadHandler:true,__flash_savedUnloadHandler:true */
 'use strict';
 var common = _dereq_('../common');
 
@@ -341,7 +347,7 @@ module.exports = function embed(swf, flashvars, wmode, bgColor) {
 // Flash is buggy allover
 if (window.attachEvent) {
    window.attachEvent("onbeforeunload", function() {
-      __flash_savedUnloadHandler = __flash_unloadHandler = function() {};
+      window.__flash_savedUnloadHandler = window.__flash_unloadHandler = function() {};
    });
 }
 
@@ -371,7 +377,8 @@ engineImpl = function flashEngine(player, root) {
 
       pick: function(sources) {
 
-         if (flowplayer.support.flashVideo) {
+        var source = extend({}, (function() {
+          if (flowplayer.support.flashVideo) {
             var selectedSource;
             for (var i = 0, source; i < sources.length; i++) {
                source = sources[i];
@@ -381,7 +388,11 @@ engineImpl = function flashEngine(player, root) {
                // Did not find any source or source was video/mp4, let's try find more
             }
             return selectedSource; // Accept the fact we don't have anything or just an MP4
-         }
+          }
+        })());
+        if (!source) return;
+        if (source.src && !isAbsolute(source.src) && !player.conf.rtmp && !source.rtmp) source.src = common.createAbsoluteUrl(source.src);
+        return source;
       },
 
       load: function(video) {
@@ -392,8 +403,8 @@ engineImpl = function flashEngine(player, root) {
          }
 
          var html5Tag = common.findDirect('video', root)[0] || common.find('.fp-player > video', root)[0],
-            url = escapeURL(video.src),
-            is_absolute = /^https?:/.test(url);
+            url = video.src,
+            is_absolute = isAbsolute(url);
 
          var removeTag = function() {
             common.removeNode(html5Tag);
@@ -434,6 +445,7 @@ engineImpl = function flashEngine(player, root) {
          } else {
 
             callbackId = "fpCallback" + ("" + Math.random()).slice(3, 15);
+            url = escapeURL(url);
 
             var opts = {
                hostname: conf.embedded ? common.hostname(conf.hostname) : common.hostname(location.hostname),
@@ -467,8 +479,8 @@ engineImpl = function flashEngine(player, root) {
                opts.rtmp = escapeURL(opts.rtmp);
             }
 
-            // issue #733
-            var bgColor = common.css(root, 'background-color') ||'', bg;
+            // issues #733, 906
+            var bgColor = conf.bgcolor || common.css(root, 'background-color') ||'', bg;
             if (bgColor.indexOf('rgb') === 0) {
               bg = toHex(bgColor);
             } else if (bgColor.indexOf('#') === 0) {
@@ -501,6 +513,18 @@ engineImpl = function flashEngine(player, root) {
                 player.trigger('flashdisabled', [player]);
               }
             }, 1000);
+
+            player.off('resume.flashhack').on('resume.flashhack', function() {
+              var timer = setTimeout(function() {
+                if (player.playing) {
+                  player.trigger('flashdisabled', [player]);
+                }
+              }, 1000);
+              player.one('progress', function() {
+                clearTimeout(timer);
+              });
+            });
+
 
             api.pollInterval = setInterval(function () {
                if (!api) return;
@@ -595,10 +619,6 @@ engineImpl = function flashEngine(player, root) {
          try {
            if (player.ready) {
 
-              if (name == 'seek' && player.video.time && !player.paused) {
-                 player.trigger("beforeseek");
-              }
-
               if (arg === undefined) {
                  api["__" + name]();
 
@@ -650,6 +670,12 @@ engineImpl.canPlay = function(type, conf) {
   return flowplayer.support.flashVideo && /video\/(mp4|flash|flv)/i.test(type) || flowplayer.support.flashVideo && conf.swfHls && /mpegurl/i.test(type);
 };
 flowplayer.engines.push(engineImpl);
+
+
+
+function isAbsolute(url) {
+  return /^https?:/.test(url);
+}
 
 },{"../common":1,"../flowplayer":18,"./embed":2,"bean":20,"extend-object":26}],4:[function(_dereq_,module,exports){
 'use strict';
@@ -720,6 +746,8 @@ var createVideoTag = function(video, autoplay, preload, useCache) {
   if (useCache && videoTagCache) {
     videoTagCache.type = getType(video.type);
     videoTagCache.src = video.src;
+    common.find('track', videoTagCache).forEach(common.removeNode);
+    videoTagCache.removeAttribute('crossorigin');
     return videoTagCache;
   }
   var el  = document.createElement('video');
@@ -749,7 +777,8 @@ engine = function(player, root) {
       engineName: engine.engineName,
 
       pick: function(sources) {
-         if (support.video) {
+        var source = (function() {
+          if (support.video) {
             if (conf.videoTypePreference) {
                var mp4source = findFromSourcesByType(sources, conf.videoTypePreference);
                if (mp4source) return mp4source;
@@ -758,7 +787,11 @@ engine = function(player, root) {
             for (var i = 0, source; i < sources.length; i++) {
                if (canPlay(sources[i].type)) return sources[i];
             }
-         }
+          }
+        })();
+        if (!source) return;
+        if (typeof source.src === 'string') source.src = common.createAbsoluteUrl(source.src);
+        return source;
       },
 
       load: function(video) {
@@ -799,7 +832,7 @@ engine = function(player, root) {
          api.src = video.src;
          api.type = video.type;
 
-         listen(api, common.find("source", api).concat(api), video);
+         self._listeners = listen(api, common.find("source", api).concat(api), video);
 
          // iPad (+others?) demands load()
          if (conf.clip.preload != 'none' && video.type != "mpegurl" || !support.zeropreload || !support.dataload) api.load();
@@ -838,7 +871,14 @@ engine = function(player, root) {
          common.find('video.fp-engine', root).forEach(common.removeNode);
          if (!support.cachedVideoTag) videoTagCache = null;
          timer = clearInterval(timer);
+         var instanceId = root.getAttribute('data-flowplayer-instance-id');
+         delete api.listeners[instanceId];
          api = 0;
+         if (self._listeners) Object.keys(self._listeners).forEach(function(typ) {
+           self._listeners[typ].forEach(function(l) {
+             root.removeEventListener(typ, l, true);
+           });
+         });
       }
 
    };
@@ -867,10 +907,12 @@ engine = function(player, root) {
         bean.off(sources);
       });
 
+      var eventListeners = {};
+
       Object.keys(EVENTS).forEach(function(type) {
         var flow = EVENTS[type];
         if (!flow) return;
-        root.addEventListener(type, function(e) {
+        var l = function(e) {
           video = api.listeners[instanceId];
           if (!e.target || !ClassList(e.target).contains('fp-engine')) return;
 
@@ -903,7 +945,7 @@ engine = function(player, root) {
                   });
 
                   try {
-                     arg.seekable = !conf.live && /mpegurl/i.test(video ? (video.type || '') : '') && api.duration || api.seekable && api.seekable.end(null);
+                     arg.seekable = !player.live && /mpegurl/i.test(video ? (video.type || '') : '') && api.duration || api.seekable && api.seekable.end(null);
 
                   } catch (ignored) {}
 
@@ -929,7 +971,7 @@ engine = function(player, root) {
 
                   }, 250);
 
-                  if (!conf.live && !arg.duration && !support.hlsDuration && type === "loadeddata") {
+                  if (!player.live && !arg.duration && !support.hlsDuration && type === "loadeddata") {
                      var durationChanged = function() {
                         arg.duration = api.duration;
                         try {
@@ -991,9 +1033,13 @@ engine = function(player, root) {
             triggerEvent();
 
 
-         }, true);
+        };
+        root.addEventListener(type, l, true);
+        if (!eventListeners[type]) eventListeners[type] = [];
+        eventListeners[type].push(l);
 
       });
+      return eventListeners;
 
    }
 
@@ -1121,8 +1167,10 @@ flowplayer(function(player, root) {
       }
 
    }).on("unload", setClass)
-   .on('beforeseek', function() {
-     cuepointsDisabled = true;
+   .on('beforeseek', function(ev) {
+     setTimeout(function() {
+       if (!ev.defaultPrevented) cuepointsDisabled = true;
+     });
    }).on("seek", function(ev, api, time) {
      setClass();
      lastFiredSegment = segmentForCue(time || 0) - 0.125;
@@ -1167,7 +1215,7 @@ flowplayer(function(player, root) {
         common.css(timeline, "overflow", "visible");
 
         var time = cue.time || cue;
-        if (time < 0) time = duration + cue;
+        if (time < 0) time = duration + time;
 
         var el = common.createElement('a', {className: 'fp-cuepoint fp-cuepoint' + (player.cuepoints.length - 1)});
         common.css(el, "left", (time / duration * 100) + "%");
@@ -1175,10 +1223,8 @@ flowplayer(function(player, root) {
         timeline.appendChild(el);
         bean.on(el, 'mousedown', function(e) {
           e.preventDefault();
+          e.stopPropagation();
           player.seek(time);
-
-          // preventDefault() doesn't work
-          return false;
         });
     }
     return player;
@@ -1237,14 +1283,14 @@ flowplayer(function(player, root) {
        var src = player.conf.embed.iframe,
            width = embedConf.width || video.width || common.width(root),
            height = embedConf.height || video.height || common.height(root);
-       return '<iframe src="' + player.conf.embed.iframe + '" frameBorder="0" allowfullscreen width="' + width + '" height="' + height + '"></iframe>';
+       return '<iframe src="' + player.conf.embed.iframe + '" allowfullscreen style="width:' + width + ';height:' + height + ';border:none;"></iframe>';
      }
      var props = ['ratio', 'rtmp', 'live', 'bufferTime', 'origin', 'analytics', 'key', 'subscribe', 'swf', 'swfHls', 'embed', 'adaptiveRatio', 'logo'];
      if (embedConf.playlist) props.push('playlist');
      var c = common.pick(player.conf, props);
      if (c.logo) c.logo = common.createElement('img', {src: c.logo}).src;
      if (!embedConf.playlist || !player.conf.playlist.length) c.clip =  extend({}, player.conf.clip, common.pick(player.video, ['sources']));
-     var script = "var w=window,d=document,e;w._fpes||(w._fpes=[],w.addEventListener(\"load\",function(){var s=d.createElement(\"script\");s.src=\"//embed.flowplayer.org/6.0.3/embed.min.js\",d.body.appendChild(s)})),e=[].slice.call(d.getElementsByTagName(\"script\"),-1)[0].parentNode,w._fpes.push({e:e,l:\"$library\",c:$conf});\n".replace('$conf', JSON.stringify(c)).replace('$library', embedConf.library || '');
+     var script = "var w=window,d=document,e;w._fpes||(w._fpes=[],w.addEventListener(\"load\",function(){var s=d.createElement(\"script\");s.src=\"//embed.flowplayer.org/6.0.5/embed.min.js\",d.body.appendChild(s)})),e=[].slice.call(d.getElementsByTagName(\"script\"),-1)[0].parentNode,w._fpes.push({e:e,l:\"$library\",c:$conf});\n".replace('$conf', JSON.stringify(c)).replace('$library', embedConf.library || '');
 
      return '<a href="$href">Watch video!\n<script>$script</script></a>'.replace('$href', player.conf.origin || window.location.href).replace('$script', script);
 
@@ -1367,6 +1413,9 @@ module.exports = function(obj, elem) {
     var event = document.createEvent('Event'), typStr;
     typStr = typ.type || typ;
     event.initEvent(typStr, false, true);
+    if (Object.defineProperty) event.preventDefault = function() {
+      Object.defineProperty(this, 'defaultPrevented', { get: function() { return true; } });
+    };
     eventArguments[event.timeStamp + event.type] = args;
     elem.dispatchEvent(event);
     return returnEvent ? event : obj;
@@ -1512,7 +1561,6 @@ flowplayer(function(player, root) {
    });
 
    player.on('shutdown', function() {
-     bean.off(document, '.ffscr');
      FULL_PLAYER = null;
    });
 
@@ -1921,11 +1969,14 @@ flowplayer(function(player, root) {
    if (player.conf.playlist.length) { // playlist configured by javascript, generate playlist
       playlistInitialized = true;
       generatePlaylist();
-      if (!player.conf.clip || !player.conf.clip.sources.length) player.conf.clip = player.conf.playlist[0];
+      if (!player.conf.clip || !player.conf.clip.sources.length) {
+        player.conf.clip = player.conf.playlist[player.conf.startIndex || 0];
+      }
    }
 
    if (els().length && !playlistInitialized) { //generate playlist from existing elements
        player.conf.playlist = [];
+       delete player.conf.startIndex;
        els().forEach(function(el) {
           var src = el.href;
           el.setAttribute('data-index', player.conf.playlist.length);
@@ -1948,11 +1999,16 @@ flowplayer(function(player, root) {
     });
 
     // highlight
+    function videoIndex(video) {
+      if (typeof video.index !== 'undefined') return video.index;
+      if (typeof player.video.index !== 'undefined') return player.video.index;
+      return player.conf.startIndex || 0;
+    }
     player.on("load", function(e, api, video) {
        if (!player.conf.playlist.length) return;
        var prev = active()[0],
           prevIndex = prev && prev.getAttribute('data-index'),
-          index = video.index = video.index || player.video.index || 0,
+          index = video.index = videoIndex(video),
           el = common.find(conf.query +'[data-index="' + index + '"]', queryRoot())[0],
           is_last = index == player.conf.playlist.length - 1;
        if (prev) ClassList(prev).remove(klass);
@@ -2302,6 +2358,11 @@ flowplayer(function(p, root) {
       };
       if (!video.subtitles || !video.subtitles.length) return;
       var videoTag = common.find('video.fp-engine', root)[0];
+      if (video.subtitles.some(function(st) { return !common.isSameDomain(st.src); })) common.attr(videoTag, 'crossorigin', 'anonymous');
+      videoTag.textTracks.addEventListener('addtrack', function() {
+        setMode('disabled');
+        setMode('showing');
+      });
       video.subtitles.forEach(function(st) {
         videoTag.appendChild(common.createElement('track', {
           kind: 'subtitles',
@@ -2311,8 +2372,6 @@ flowplayer(function(p, root) {
           'default': st['default']
         }));
       });
-      setMode('disabled');
-      setMode('showing');
       return;
     }
 
@@ -2667,7 +2726,7 @@ flowplayer(function(api, root) {
 
 
    }).on("unload", function() {
-     if (!origRatio) common.css(ratio, "paddingTop", "");
+     if (!origRatio && !conf.splash) common.css(ratio, "paddingTop", "");
      timelineApi.slide(0);
 
    // buffer
@@ -2733,6 +2792,7 @@ flowplayer(function(api, root) {
 
    }).on("error", function(e, api, error) {
       common.removeClass(root, 'is-loading');
+      common.removeClass(root, 'is-seeking');
       common.addClass(root, 'is-error');
       if (error) {
          error.message = conf.errors[error.code];
@@ -2815,8 +2875,9 @@ flowplayer(function(api, root) {
    bean.on(root, 'contextmenu', function(ev) {
       var o = common.offset(common.find('.fp-player', root)[0]),
           w = window,
-          left = ev.clientX - o.left,
+          left = ev.clientX - (o.left + w.scrollX),
           t = ev.clientY - (o.top + w.scrollY);
+      if (rootClasses.contains('is-flash-disabled')) return;
       var menu = common.find('.fp-context-menu', root)[0];
       if (!menu) return;
       ev.preventDefault();
@@ -2835,7 +2896,7 @@ flowplayer(function(api, root) {
    });
    api.on('flashdisabled', function() {
      rootClasses.add('is-flash-disabled');
-     api.one('ready', function() {
+     api.one('ready progress', function() {
        rootClasses.remove('is-flash-disabled');
        common.find('.fp-flash-disabled', root).forEach(common.removeNode);
      });
@@ -2849,13 +2910,16 @@ flowplayer(function(api, root) {
       has_bg = common.css(root, 'background-image') != "none" || bc && bc != "rgba(0, 0, 0, 0)" && bc != "transparent";
 
    // is-poster class
-   if (has_bg && !conf.splash && !conf.autoplay) {
+   if (has_bg && !conf.splash) {
+      if (!conf.poster) conf.poster = true;
 
       api.on("ready stop", function() {
-         rootClasses.add("is-poster");
-         api.one("progress", function() {
-            rootClasses.remove("is-poster");
-         });
+        rootClasses.add("is-poster");
+        api.poster = true;
+        api.one("progress", function() {
+          rootClasses.remove("is-poster");
+          api.poster = false;
+        });
       });
 
    }
@@ -2967,7 +3031,7 @@ var flowplayer = module.exports = function(fn, opts, callback) {
 
 extend(flowplayer, {
 
-   version: '6.0.3',
+   version: '6.0.5',
 
    engines: [],
 
@@ -3005,8 +3069,8 @@ extend(flowplayer, {
 
       live: false,
 
-      swf: "//releases.flowplayer.org/6.0.3/flowplayer.swf",
-      swfHls: "//releases.flowplayer.org/6.0.3/flowplayerhls.swf",
+      swf: "//releases.flowplayer.org/6.0.5/flowplayer.swf",
+      swfHls: "//releases.flowplayer.org/6.0.5/flowplayerhls.swf",
 
       speeds: [0.25, 0.5, 1, 1.5, 2],
 
@@ -3187,7 +3251,6 @@ function initializePlayer(element, opts, callback) {
             })));
 
             if (video.src) {
-               video.src = common.createElement('a', {href: video.src}).href;
                var e = api.trigger('load', [api, video, engine], true);
                if (!e.defaultPrevented) {
                   engine.load(video);
@@ -3242,7 +3305,7 @@ function initializePlayer(element, opts, callback) {
                   var delta = api.video.duration * 0.1;
                   time = api.video.time + (time ? delta : -delta);
                }
-               time = lastSeekPosition = Math.min(Math.max(time, 0), api.video.duration).toFixed(1);
+               time = lastSeekPosition = Math.min(Math.max(time, 0), api.video.duration - 0.1).toFixed(1);
                var ev = api.trigger('beforeseek', [api, time], true);
                if (!ev.defaultPrevented) {
                   engine.seek(time);
@@ -3309,7 +3372,7 @@ function initializePlayer(element, opts, callback) {
             if (api.ready) {
                api.pause();
                api.seek(0, function() {
-                  api.trigger("stop");
+                  api.trigger("stop", [api]);
                });
             }
             return api;
@@ -3320,7 +3383,10 @@ function initializePlayer(element, opts, callback) {
 
                if (conf.splash) {
                   api.trigger("unload", [api]);
-                  if (engine) engine.unload();
+                  if (engine) {
+                    engine.unload();
+                    api.engine = engine = 0;
+                  }
                } else {
                   api.stop();
                }
@@ -3333,6 +3399,7 @@ function initializePlayer(element, opts, callback) {
            api.trigger('shutdown', [api]);
            bean.off(root);
            delete instances[root.getAttribute('data-flowplayer-instance-id')];
+           root.removeAttribute('data-flowplayer-instance-id');
          },
 
          disable: function(flag) {
@@ -3542,7 +3609,7 @@ _dereq_('./ext/embed');
 _dereq_('./ext/fullscreen');
 
 _dereq_('./ext/mobile');
-flowplayer(function(e,o){function a(e){var o=document.createElement("a");return o.href=e,t.hostname(o.hostname)}var n=function(e,o){var a=e.className.split(" ");-1===a.indexOf(o)&&(e.className+=" "+o)},r=function(e){return"none"!==window.getComputedStyle(e).display},l=e.conf,t=flowplayer.common,i=t.createElement,d=l.swf.indexOf("flowplayer.org")&&l.e&&o.getAttribute("data-origin"),s=d?a(d):t.hostname(),p=(document,l.key);"file:"==location.protocol&&(s="localhost"),e.load.ed=1,l.hostname=s,l.origin=d||location.href,d&&n(o,"is-embedded"),"string"==typeof p&&(p=p.split(/,\s*/));var f=function(e,a){var n=i("a",{href:a,className:"fp-brand"});n.innerHTML=e,t.find(".fp-controls",o)[0].appendChild(n)};if(p&&"function"==typeof key_check&&key_check(p,s)){if(l.logo){var c=i("a",{href:d,className:"fp-logo"});l.embed&&l.embed.popup&&(c.target="_blank");var h=i("img",{src:l.logo});c.appendChild(h),o.appendChild(c)}l.brand&&d||l.brand&&l.brand.showOnOrigin?f(l.brand.text||l.brand,d||location.href):t.addClass(o,"no-brand")}else{f("flowplayer","http://flowplayer.org");var c=i("a",{href:"http://flowplayer.org"});o.appendChild(c);var y=i("div",{className:"fp-context-menu"},'<ul><li class="copyright">&copy; 2015</li><li><a href="http://flowplayer.org">About Flowplayer</a></li><li><a href="http://flowplayer.org/license">GPL based license</a></li></ul>'),u=window.location.href.indexOf("localhost"),m=t.find(".fp-player",o)[0];7!==u&&(m||o).appendChild(y),e.on("pause resume finish unload ready",function(e,a){t.removeClass(o,"no-brand");var n=-1;if(a.video.src)for(var l=[["org","flowplayer","drive"],["org","flowplayer","my"]],i=0;i<l.length&&(n=a.video.src.indexOf("://"+l[i].reverse().join(".")),-1===n);i++);if((4===n||5===n)&&t.addClass(o,"no-brand"),/pause|resume/.test(e.type)&&"flash"!=a.engine.engineName&&4!=n&&5!=n){var d={display:"block",position:"absolute",left:"16px",bottom:"46px",zIndex:99999,width:"100px",height:"20px",backgroundImage:"url("+[".png","logo","/",".net",".cloudfront","d32wqyuo10o653","//"].reverse().join("")+")"};for(var s in d)d.hasOwnProperty(s)&&(c.style[s]=d[s]);a.load.ed=r(c)&&(7===u||y.parentNode==o||y.parentNode==m)&&!t.hasClass(o,"no-brand"),a.load.ed||a.pause()}else c.style.display="none"})}});
+flowplayer(function(e,o){function a(e){var o=document.createElement("a");return o.href=e,t.hostname(o.hostname)}var n=function(e,o){var a=e.className.split(" ");-1===a.indexOf(o)&&(e.className+=" "+o)},r=function(e){return"none"!==window.getComputedStyle(e).display},l=e.conf,t=flowplayer.common,i=t.createElement,d=l.swf.indexOf("flowplayer.org")&&l.e&&o.getAttribute("data-origin"),p=d?a(d):t.hostname(),s=(document,l.key);"file:"==location.protocol&&(p="localhost"),e.load.ed=1,l.hostname=p,l.origin=d||location.href,d&&n(o,"is-embedded"),"string"==typeof s&&(s=s.split(/,\s*/));var f=function(e,a){var n=i("a",{href:a,className:"fp-brand"});n.innerHTML=e,t.find(".fp-controls",o)[0].appendChild(n)};if(s&&"function"==typeof key_check&&key_check(s,p)){if(l.logo){var c=t.find(".fp-player",o)[0],h=i("a",{className:"fp-logo"});d&&(h.href=d),l.embed&&l.embed.popup&&(h.target="_blank");var y=i("img",{src:l.logo});h.appendChild(y),(c||o).appendChild(h)}l.brand&&d||l.brand&&l.brand.showOnOrigin?f(l.brand.text||l.brand,d||location.href):t.addClass(o,"no-brand")}else{f("flowplayer","http://flowplayer.org");var h=i("a",{href:"http://flowplayer.org"});o.appendChild(h);var u=i("div",{className:"fp-context-menu"},'<ul><li class="copyright">&copy; 2015</li><li><a href="http://flowplayer.org">About Flowplayer</a></li><li><a href="http://flowplayer.org/license">GPL based license</a></li></ul>'),g=window.location.href.indexOf("localhost"),c=t.find(".fp-player",o)[0];7!==g&&(c||o).appendChild(u),e.on("pause resume finish unload ready",function(e,a){t.removeClass(o,"no-brand");var n=-1;if(a.video.src)for(var l=[["org","flowplayer","drive"],["org","flowplayer","my"],["org","flowplayer","cdn"]],i=0;i<l.length&&(n=a.video.src.indexOf("://"+l[i].reverse().join(".")),-1===n);i++);if((4===n||5===n)&&t.addClass(o,"no-brand"),/pause|resume/.test(e.type)&&"flash"!=a.engine.engineName&&4!=n&&5!=n){var d={display:"block",position:"absolute",left:"16px",bottom:"46px",zIndex:99999,width:"100px",height:"20px",backgroundImage:"url("+[".png","logo","/",".net",".cloudfront","d32wqyuo10o653","//"].reverse().join("")+")"};for(var p in d)d.hasOwnProperty(p)&&(h.style[p]=d[p]);a.load.ed=r(h)&&(7===g||u.parentNode==o||u.parentNode==c)&&!t.hasClass(o,"no-brand"),a.load.ed||a.pause()}else h.style.display="none"})}});
 
 
 },{"./engine/embed":2,"./engine/flash":3,"./engine/html5":4,"./ext/analytics":5,"./ext/cuepoint":6,"./ext/embed":7,"./ext/fullscreen":9,"./ext/keyboard":10,"./ext/mobile":11,"./ext/playlist":12,"./ext/subtitle":15,"./ext/support":16,"./ext/ui":17,"./flowplayer":18,"es5-shim":25}],20:[function(_dereq_,module,exports){
@@ -4953,7 +5020,7 @@ module.exports = computedStyle;
 ;
 
 // UMD (Universal Module Definition)
-// see https://github.com/umdjs/umd/blob/master/returnExports.js
+// see https://github.com/umdjs/umd/blob/master/templates/returnExports.js
 (function (root, factory) {
     'use strict';
 
@@ -4999,6 +5066,7 @@ var array_push = ArrayPrototype.push;
 var array_unshift = ArrayPrototype.unshift;
 var array_concat = ArrayPrototype.concat;
 var call = FunctionPrototype.call;
+var apply = FunctionPrototype.apply;
 var max = Math.max;
 var min = Math.min;
 
@@ -5011,19 +5079,18 @@ var isRegex; /* inlined from https://npmjs.com/is-regex */ var regexExec = RegEx
 var isString; /* inlined from https://npmjs.com/is-string */ var strValue = String.prototype.valueOf, tryStringObject = function tryStringObject(value) { try { strValue.call(value); return true; } catch (e) { return false; } }, stringClass = '[object String]'; isString = function isString(value) { if (typeof value === 'string') { return true; } if (typeof value !== 'object') { return false; } return hasToStringTag ? tryStringObject(value) : to_string.call(value) === stringClass; };
 
 /* inlined from http://npmjs.com/define-properties */
+var supportsDescriptors = $Object.defineProperty && (function () {
+    try {
+        var obj = {};
+        $Object.defineProperty(obj, 'x', { enumerable: false, value: obj });
+        for (var _ in obj) { return false; }
+        return obj.x === obj;
+    } catch (e) { /* this is ES3 */
+        return false;
+    }
+}());
 var defineProperties = (function (has) {
-  var supportsDescriptors = $Object.defineProperty && (function () {
-      try {
-          var obj = {};
-          $Object.defineProperty(obj, 'x', { enumerable: false, value: obj });
-          for (var _ in obj) { return false; }
-          return obj.x === obj;
-      } catch (e) { /* this is ES3 */
-          return false;
-      }
-  }());
-
-  // Define configurable, writable and non-enumerable props
+  // Define configurable, writable, and non-enumerable props
   // if they don't exist.
   var defineProperty;
   if (supportsDescriptors) {
@@ -5062,6 +5129,8 @@ var isPrimitive = function isPrimitive(input) {
     return input === null || (type !== 'object' && type !== 'function');
 };
 
+var isActualNaN = $Number.isNaN || function (x) { return x !== x; };
+
 var ES = {
     // ES5 9.4
     // http://es5.github.com/#x9.4
@@ -5069,7 +5138,7 @@ var ES = {
     /* replaceable with https://npmjs.com/package/es-abstract ES5.ToInteger */
     ToInteger: function ToInteger(num) {
         var n = +num;
-        if (n !== n) { // isNaN
+        if (isActualNaN(n)) {
             n = 0;
         } else if (n !== 0 && n !== (1 / 0) && n !== -(1 / 0)) {
             n = (n > 0 || -1) * Math.floor(Math.abs(n));
@@ -5104,7 +5173,6 @@ var ES = {
     // http://es5.github.com/#x9.9
     /* replaceable with https://npmjs.com/package/es-abstract ES5.ToObject */
     ToObject: function (o) {
-        /* jshint eqnull: true */
         if (o == null) { // this matches both null and undefined
             throw new TypeError("can't convert " + o + ' to object');
         }
@@ -5262,11 +5330,17 @@ defineProperties(FunctionPrototype, {
 });
 
 // _Please note: Shortcuts are defined after `Function.prototype.bind` as we
-// us it in defining shortcuts.
+// use it in defining shortcuts.
 var owns = call.bind(ObjectPrototype.hasOwnProperty);
 var toStr = call.bind(ObjectPrototype.toString);
+var arraySlice = call.bind(array_slice);
+var arraySliceApply = apply.bind(array_slice);
 var strSlice = call.bind(StringPrototype.slice);
 var strSplit = call.bind(StringPrototype.split);
+var strIndexOf = call.bind(StringPrototype.indexOf);
+var push = call.bind(array_push);
+var isEnum = call.bind(ObjectPrototype.propertyIsEnumerable);
+var arraySort = call.bind(ArrayPrototype.sort);
 
 //
 // Array
@@ -5335,11 +5409,11 @@ var properlyBoxesContext = function properlyBoxed(method) {
 };
 
 defineProperties(ArrayPrototype, {
-    forEach: function forEach(callbackfn /*, thisArg*/) {
+    forEach: function forEach(callbackfn/*, thisArg*/) {
         var object = ES.ToObject(this);
         var self = splitString && isString(this) ? strSplit(this, '') : object;
         var i = -1;
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
         var T;
         if (arguments.length > 1) {
           T = arguments[1];
@@ -5354,10 +5428,10 @@ defineProperties(ArrayPrototype, {
             if (i in self) {
                 // Invoke the callback function with call, passing arguments:
                 // context, property value, property key, thisArg object
-                if (typeof T !== 'undefined') {
-                    callbackfn.call(T, self[i], i, object);
-                } else {
+                if (typeof T === 'undefined') {
                     callbackfn(self[i], i, object);
+                } else {
+                    callbackfn.call(T, self[i], i, object);
                 }
             }
         }
@@ -5371,7 +5445,7 @@ defineProperties(ArrayPrototype, {
     map: function map(callbackfn/*, thisArg*/) {
         var object = ES.ToObject(this);
         var self = splitString && isString(this) ? strSplit(this, '') : object;
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
         var result = $Array(length);
         var T;
         if (arguments.length > 1) {
@@ -5385,10 +5459,10 @@ defineProperties(ArrayPrototype, {
 
         for (var i = 0; i < length; i++) {
             if (i in self) {
-                if (typeof T !== 'undefined') {
-                    result[i] = callbackfn.call(T, self[i], i, object);
-                } else {
+                if (typeof T === 'undefined') {
                     result[i] = callbackfn(self[i], i, object);
+                } else {
+                    result[i] = callbackfn.call(T, self[i], i, object);
                 }
             }
         }
@@ -5400,10 +5474,10 @@ defineProperties(ArrayPrototype, {
 // http://es5.github.com/#x15.4.4.20
 // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
 defineProperties(ArrayPrototype, {
-    filter: function filter(callbackfn /*, thisArg*/) {
+    filter: function filter(callbackfn/*, thisArg*/) {
         var object = ES.ToObject(this);
         var self = splitString && isString(this) ? strSplit(this, '') : object;
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
         var result = [];
         var value;
         var T;
@@ -5420,7 +5494,7 @@ defineProperties(ArrayPrototype, {
             if (i in self) {
                 value = self[i];
                 if (typeof T === 'undefined' ? callbackfn(value, i, object) : callbackfn.call(T, value, i, object)) {
-                    array_push.call(result, value);
+                    push(result, value);
                 }
             }
         }
@@ -5432,10 +5506,10 @@ defineProperties(ArrayPrototype, {
 // http://es5.github.com/#x15.4.4.16
 // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every
 defineProperties(ArrayPrototype, {
-    every: function every(callbackfn /*, thisArg*/) {
+    every: function every(callbackfn/*, thisArg*/) {
         var object = ES.ToObject(this);
         var self = splitString && isString(this) ? strSplit(this, '') : object;
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
         var T;
         if (arguments.length > 1) {
             T = arguments[1];
@@ -5462,7 +5536,7 @@ defineProperties(ArrayPrototype, {
     some: function some(callbackfn/*, thisArg */) {
         var object = ES.ToObject(this);
         var self = splitString && isString(this) ? strSplit(this, '') : object;
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
         var T;
         if (arguments.length > 1) {
             T = arguments[1];
@@ -5490,10 +5564,10 @@ if (ArrayPrototype.reduce) {
     reduceCoercesToObject = typeof ArrayPrototype.reduce.call('es5', function (_, __, ___, list) { return list; }) === 'object';
 }
 defineProperties(ArrayPrototype, {
-    reduce: function reduce(callbackfn /*, initialValue*/) {
+    reduce: function reduce(callbackfn/*, initialValue*/) {
         var object = ES.ToObject(this);
         var self = splitString && isString(this) ? strSplit(this, '') : object;
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
 
         // If no callback function or if callback is not a callable function
         if (!isCallable(callbackfn)) {
@@ -5544,7 +5618,7 @@ defineProperties(ArrayPrototype, {
     reduceRight: function reduceRight(callbackfn/*, initial*/) {
         var object = ES.ToObject(this);
         var self = splitString && isString(this) ? strSplit(this, '') : object;
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
 
         // If no callback function or if callback is not a callable function
         if (!isCallable(callbackfn)) {
@@ -5593,9 +5667,9 @@ defineProperties(ArrayPrototype, {
 // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
 var hasFirefox2IndexOfBug = ArrayPrototype.indexOf && [0, 1].indexOf(1, 2) !== -1;
 defineProperties(ArrayPrototype, {
-    indexOf: function indexOf(searchElement /*, fromIndex */) {
+    indexOf: function indexOf(searchElement/*, fromIndex */) {
         var self = splitString && isString(this) ? strSplit(this, '') : ES.ToObject(this);
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
 
         if (length === 0) {
             return -1;
@@ -5622,9 +5696,9 @@ defineProperties(ArrayPrototype, {
 // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
 var hasFirefox2LastIndexOfBug = ArrayPrototype.lastIndexOf && [0, 1].lastIndexOf(0, -3) !== -1;
 defineProperties(ArrayPrototype, {
-    lastIndexOf: function lastIndexOf(searchElement /*, fromIndex */) {
+    lastIndexOf: function lastIndexOf(searchElement/*, fromIndex */) {
         var self = splitString && isString(this) ? strSplit(this, '') : ES.ToObject(this);
-        var length = self.length >>> 0;
+        var length = ES.ToUint32(self.length);
 
         if (length === 0) {
             return -1;
@@ -5673,9 +5747,9 @@ defineProperties(ArrayPrototype, {
         var args = arguments;
         this.length = max(ES.ToInteger(this.length), 0);
         if (arguments.length > 0 && typeof deleteCount !== 'number') {
-            args = array_slice.call(arguments);
+            args = arraySlice(arguments);
             if (args.length < 2) {
-                array_push.call(args, this.length - start);
+                push(args, this.length - start);
             } else {
                 args[1] = ES.ToInteger(deleteCount);
             }
@@ -5722,7 +5796,7 @@ defineProperties(ArrayPrototype, {
             k += 1;
         }
 
-        var items = array_slice.call(arguments, 2);
+        var items = arraySlice(arguments, 2);
         var itemCount = items.length;
         var to;
         if (itemCount < actualDeleteCount) {
@@ -5766,6 +5840,112 @@ defineProperties(ArrayPrototype, {
     }
 }, !spliceWorksWithLargeSparseArrays || !spliceWorksWithSmallSparseArrays);
 
+var originalJoin = ArrayPrototype.join;
+var hasStringJoinBug;
+try {
+    hasStringJoinBug = Array.prototype.join.call('123', ',') !== '1,2,3';
+} catch (e) {
+    hasStringJoinBug = true;
+}
+if (hasStringJoinBug) {
+    defineProperties(ArrayPrototype, {
+        join: function join(separator) {
+            var sep = typeof separator === 'undefined' ? ',' : separator;
+            return originalJoin.call(isString(this) ? strSplit(this, '') : this, sep);
+        }
+    }, hasStringJoinBug);
+}
+
+var hasJoinUndefinedBug = [1, 2].join(undefined) !== '1,2';
+if (hasJoinUndefinedBug) {
+    defineProperties(ArrayPrototype, {
+        join: function join(separator) {
+            var sep = typeof separator === 'undefined' ? ',' : separator;
+            return originalJoin.call(this, sep);
+        }
+    }, hasJoinUndefinedBug);
+}
+
+var pushShim = function push(item) {
+    var O = ES.ToObject(this);
+    var n = ES.ToUint32(O.length);
+    var i = 0;
+    while (i < arguments.length) {
+        O[n + i] = arguments[i];
+        i += 1;
+    }
+    O.length = n + i;
+    return n + i;
+};
+
+var pushIsNotGeneric = (function () {
+    var obj = {};
+    var result = Array.prototype.push.call(obj, undefined);
+    return result !== 1 || obj.length !== 1 || typeof obj[0] !== 'undefined' || !owns(obj, 0);
+}());
+defineProperties(ArrayPrototype, {
+    push: function push(item) {
+        if (isArray(this)) {
+            return array_push.apply(this, arguments);
+        }
+        return pushShim.apply(this, arguments);
+    }
+}, pushIsNotGeneric);
+
+// This fixes a very weird bug in Opera 10.6 when pushing `undefined
+var pushUndefinedIsWeird = (function () {
+    var arr = [];
+    var result = arr.push(undefined);
+    return result !== 1 || arr.length !== 1 || typeof arr[0] !== 'undefined' || !owns(arr, 0);
+}());
+defineProperties(ArrayPrototype, { push: pushShim }, pushUndefinedIsWeird);
+
+// ES5 15.2.3.14
+// http://es5.github.io/#x15.4.4.10
+// Fix boxed string bug
+defineProperties(ArrayPrototype, {
+    slice: function (start, end) {
+        var arr = isString(this) ? strSplit(this, '') : this;
+        return arraySliceApply(arr, arguments);
+    }
+}, splitString);
+
+var sortIgnoresNonFunctions = (function () {
+    try {
+        [1, 2].sort(null);
+        [1, 2].sort({});
+        return true;
+    } catch (e) { /**/ }
+    return false;
+}());
+var sortThrowsOnRegex = (function () {
+    // this is a problem in Firefox 4, in which `typeof /a/ === 'function'`
+    try {
+        [1, 2].sort(/a/);
+        return false;
+    } catch (e) { /**/ }
+    return true;
+}());
+var sortIgnoresUndefined = (function () {
+    // applies in IE 8, for one.
+    try {
+        [1, 2].sort(undefined);
+        return true;
+    } catch (e) { /**/ }
+    return false;
+}());
+defineProperties(ArrayPrototype, {
+    sort: function sort(compareFn) {
+        if (typeof compareFn === 'undefined') {
+            return arraySort(this);
+        }
+        if (!isCallable(compareFn)) {
+            throw new TypeError('Array.prototype.sort callback must be a function');
+        }
+        return arraySort(this, compareFn);
+    }
+}, sortIgnoresNonFunctions || !sortIgnoresUndefined || !sortThrowsOnRegex);
+
 //
 // Object
 // ======
@@ -5787,21 +5967,23 @@ var blacklistedKeys = {
     $console: true,
     $parent: true,
     $self: true,
+    $frame: true,
     $frames: true,
     $frameElement: true,
     $webkitIndexedDB: true,
-    $webkitStorageInfo: true
+    $webkitStorageInfo: true,
+    $external: true
 };
 var hasAutomationEqualityBug = (function () {
     /* globals window */
     if (typeof window === 'undefined') { return false; }
     for (var k in window) {
-        if (!blacklistedKeys['$' + k] && owns(window, k) && window[k] !== null && typeof window[k] === 'object') {
-            try {
+        try {
+            if (!blacklistedKeys['$' + k] && owns(window, k) && window[k] !== null && typeof window[k] === 'object') {
                 equalsConstructorPrototype(window[k]);
-            } catch (e) {
-                return true;
             }
+        } catch (e) {
+            return true;
         }
     }
     return false;
@@ -5825,19 +6007,20 @@ var dontEnums = [
 ];
 var dontEnumsLength = dontEnums.length;
 
-var isArguments = function isArguments(value) {
-    var str = toStr(value);
-    var isArgs = str === '[object Arguments]';
-    if (!isArgs) {
-        isArgs = !isArray(value) &&
-          value !== null &&
-          typeof value === 'object' &&
-          typeof value.length === 'number' &&
-          value.length >= 0 &&
-          isCallable(value.callee);
-    }
-    return isArgs;
+// taken directly from https://github.com/ljharb/is-arguments/blob/master/index.js
+// can be replaced with require('is-arguments') if we ever use a build process instead
+var isStandardArguments = function isArguments(value) {
+    return toStr(value) === '[object Arguments]';
 };
+var isLegacyArguments = function isArguments(value) {
+    return value !== null &&
+        typeof value === 'object' &&
+        typeof value.length === 'number' &&
+        value.length >= 0 &&
+        !isArray(value) &&
+        isCallable(value.callee);
+};
+var isArguments = isStandardArguments(arguments) ? isStandardArguments : isLegacyArguments;
 
 defineProperties($Object, {
     keys: function keys(object) {
@@ -5854,14 +6037,14 @@ defineProperties($Object, {
         var skipProto = hasProtoEnumBug && isFn;
         if ((isStr && hasStringEnumBug) || isArgs) {
             for (var i = 0; i < object.length; ++i) {
-                array_push.call(theKeys, $String(i));
+                push(theKeys, $String(i));
             }
         }
 
         if (!isArgs) {
             for (var name in object) {
                 if (!(skipProto && name === 'prototype') && owns(object, name)) {
-                    array_push.call(theKeys, $String(name));
+                    push(theKeys, $String(name));
                 }
             }
         }
@@ -5871,7 +6054,7 @@ defineProperties($Object, {
             for (var j = 0; j < dontEnumsLength; j++) {
                 var dontEnum = dontEnums[j];
                 if (!(skipConstructor && dontEnum === 'constructor') && owns(object, dontEnum)) {
-                    array_push.call(theKeys, dontEnum);
+                    push(theKeys, dontEnum);
                 }
             }
         }
@@ -5883,16 +6066,20 @@ var keysWorksWithArguments = $Object.keys && (function () {
     // Safari 5.0 bug
     return $Object.keys(arguments).length === 2;
 }(1, 2));
+var keysHasArgumentsLengthBug = $Object.keys && (function () {
+    var argKeys = $Object.keys(arguments);
+    return arguments.length !== 1 || argKeys.length !== 1 || argKeys[0] !== 1;
+}(1));
 var originalKeys = $Object.keys;
 defineProperties($Object, {
     keys: function keys(object) {
         if (isArguments(object)) {
-            return originalKeys(array_slice.call(object));
+            return originalKeys(arraySlice(object));
         } else {
             return originalKeys(object);
         }
     }
-}, !keysWorksWithArguments);
+}, !keysWorksWithArguments || keysHasArgumentsLengthBug);
 
 //
 // Date
@@ -5943,8 +6130,8 @@ defineProperties(Date.prototype, {
         }
         // pad milliseconds to have three digits.
         return (
-            year + '-' + array_slice.call(result, 0, 2).join('-') +
-            'T' + array_slice.call(result, 2).join(':') + '.' +
+            year + '-' + arraySlice(result, 0, 2).join('-') +
+            'T' + arraySlice(result, 2).join(':') + '.' +
             strSlice('000' + this.getUTCMilliseconds(), -3) + 'Z'
         );
     }
@@ -6009,11 +6196,13 @@ if (!dateToJSONIsSupported) {
 var supportsExtendedYears = Date.parse('+033658-09-27T01:46:40.000Z') === 1e15;
 var acceptsInvalidDates = !isNaN(Date.parse('2012-04-04T24:00:00.500Z')) || !isNaN(Date.parse('2012-11-31T23:59:59.000Z')) || !isNaN(Date.parse('2012-12-31T23:59:60.000Z'));
 var doesNotParseY2KNewYear = isNaN(Date.parse('2000-01-01T00:00:00.000Z'));
-if (!Date.parse || doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExtendedYears) {
+if (doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExtendedYears) {
     // XXX global assignment won't work in embeddings that use
     // an alternate object for the context.
     /* global Date: true */
     /* eslint-disable no-undef */
+    var maxSafeUnsigned32Bit = Math.pow(2, 31) - 1;
+    var hasSafariSignedIntBug = isActualNaN(new Date(1970, 0, 1, 0, 0, 0, maxSafeUnsigned32Bit + 1).getTime());
     Date = (function (NativeDate) {
     /* eslint-enable no-undef */
         // Date.length === 7
@@ -6021,13 +6210,22 @@ if (!Date.parse || doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExt
             var length = arguments.length;
             var date;
             if (this instanceof NativeDate) {
+                var seconds = s;
+                var millis = ms;
+                if (hasSafariSignedIntBug && length >= 7 && ms > maxSafeUnsigned32Bit) {
+                    // work around a Safari 8/9 bug where it treats the seconds as signed
+                    var msToShift = Math.floor(ms / maxSafeUnsigned32Bit) * maxSafeUnsigned32Bit;
+                    var sToShift = Math.floor(msToShift / 1e3);
+                    seconds += sToShift;
+                    millis -= sToShift * 1e3;
+                }
                 date = length === 1 && $String(Y) === Y ? // isString(Y)
                     // We explicitly pass it through parse:
                     new NativeDate(DateShim.parse(Y)) :
                     // We have to manually make calls depending on argument
                     // length here
-                    length >= 7 ? new NativeDate(Y, M, D, h, m, s, ms) :
-                    length >= 6 ? new NativeDate(Y, M, D, h, m, s) :
+                    length >= 7 ? new NativeDate(Y, M, D, h, m, seconds, millis) :
+                    length >= 6 ? new NativeDate(Y, M, D, h, m, seconds) :
                     length >= 5 ? new NativeDate(Y, M, D, h, m) :
                     length >= 4 ? new NativeDate(Y, M, D, h) :
                     length >= 3 ? new NativeDate(Y, M, D) :
@@ -6037,8 +6235,10 @@ if (!Date.parse || doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExt
             } else {
                 date = NativeDate.apply(this, arguments);
             }
-            // Prevent mixups with unfixed Date object
-            defineProperties(date, { constructor: DateShim }, true);
+            if (!isPrimitive(date)) {
+              // Prevent mixups with unfixed Date object
+              defineProperties(date, { constructor: DateShim }, true);
+            }
             return date;
         };
 
@@ -6079,7 +6279,16 @@ if (!Date.parse || doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExt
         };
 
         var toUTC = function toUTC(t) {
-            return $Number(new NativeDate(1970, 0, 1, 0, 0, 0, t));
+            var s = 0;
+            var ms = t;
+            if (hasSafariSignedIntBug && ms > maxSafeUnsigned32Bit) {
+                // work around a Safari 8/9 bug where it treats the seconds as signed
+                var msToShift = Math.floor(ms / maxSafeUnsigned32Bit) * maxSafeUnsigned32Bit;
+                var sToShift = Math.floor(msToShift / 1e3);
+                s += sToShift;
+                ms -= sToShift * 1e3;
+            }
+            return $Number(new NativeDate(1970, 0, 1, 0, 0, s, ms));
         };
 
         // Copy any custom methods a 3rd party library may have added
@@ -6121,19 +6330,14 @@ if (!Date.parse || doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExt
                     hourOffset = $Number(match[10] || 0),
                     minuteOffset = $Number(match[11] || 0),
                     result;
+                var hasMinutesOrSecondsOrMilliseconds = minute > 0 || second > 0 || millisecond > 0;
                 if (
-                    hour < (
-                        minute > 0 || second > 0 || millisecond > 0 ?
-                        24 : 25
-                    ) &&
+                    hour < (hasMinutesOrSecondsOrMilliseconds ? 24 : 25) &&
                     minute < 60 && second < 60 && millisecond < 1000 &&
                     month > -1 && month < 12 && hourOffset < 24 &&
                     minuteOffset < 60 && // detect invalid offsets
                     day > -1 &&
-                    day < (
-                        dayFromMonth(year, month + 1) -
-                        dayFromMonth(year, month)
-                    )
+                    day < (dayFromMonth(year, month + 1) - dayFromMonth(year, month))
                 ) {
                     result = (
                         (dayFromMonth(year, month) + day) * 24 +
@@ -6238,92 +6442,104 @@ var toFixedHelpers = {
   }
 };
 
-defineProperties(NumberPrototype, {
-    toFixed: function toFixed(fractionDigits) {
-        var f, x, s, m, e, z, j, k;
+var toFixedShim = function toFixed(fractionDigits) {
+    var f, x, s, m, e, z, j, k;
 
-        // Test for NaN and round fractionDigits down
-        f = $Number(fractionDigits);
-        f = f !== f ? 0 : Math.floor(f);
+    // Test for NaN and round fractionDigits down
+    f = $Number(fractionDigits);
+    f = isActualNaN(f) ? 0 : Math.floor(f);
 
-        if (f < 0 || f > 20) {
-            throw new RangeError('Number.toFixed called with invalid number of decimals');
-        }
-
-        x = $Number(this);
-
-        // Test for NaN
-        if (x !== x) {
-            return 'NaN';
-        }
-
-        // If it is too big or small, return the string value of the number
-        if (x <= -1e21 || x >= 1e21) {
-            return $String(x);
-        }
-
-        s = '';
-
-        if (x < 0) {
-            s = '-';
-            x = -x;
-        }
-
-        m = '0';
-
-        if (x > 1e-21) {
-            // 1e-21 < x < 1e21
-            // -70 < log2(x) < 70
-            e = toFixedHelpers.log(x * toFixedHelpers.pow(2, 69, 1)) - 69;
-            z = (e < 0 ? x * toFixedHelpers.pow(2, -e, 1) : x / toFixedHelpers.pow(2, e, 1));
-            z *= 0x10000000000000; // Math.pow(2, 52);
-            e = 52 - e;
-
-            // -18 < e < 122
-            // x = z / 2 ^ e
-            if (e > 0) {
-                toFixedHelpers.multiply(0, z);
-                j = f;
-
-                while (j >= 7) {
-                    toFixedHelpers.multiply(1e7, 0);
-                    j -= 7;
-                }
-
-                toFixedHelpers.multiply(toFixedHelpers.pow(10, j, 1), 0);
-                j = e - 1;
-
-                while (j >= 23) {
-                    toFixedHelpers.divide(1 << 23);
-                    j -= 23;
-                }
-
-                toFixedHelpers.divide(1 << j);
-                toFixedHelpers.multiply(1, 1);
-                toFixedHelpers.divide(2);
-                m = toFixedHelpers.numToString();
-            } else {
-                toFixedHelpers.multiply(0, z);
-                toFixedHelpers.multiply(1 << (-e), 0);
-                m = toFixedHelpers.numToString() + strSlice('0.00000000000000000000', 2, 2 + f);
-            }
-        }
-
-        if (f > 0) {
-            k = m.length;
-
-            if (k <= f) {
-                m = s + strSlice('0.0000000000000000000', 0, f - k + 2) + m;
-            } else {
-                m = s + strSlice(m, 0, k - f) + '.' + strSlice(m, k - f);
-            }
-        } else {
-            m = s + m;
-        }
-
-        return m;
+    if (f < 0 || f > 20) {
+        throw new RangeError('Number.toFixed called with invalid number of decimals');
     }
-}, hasToFixedBugs);
+
+    x = $Number(this);
+
+    if (isActualNaN(x)) {
+        return 'NaN';
+    }
+
+    // If it is too big or small, return the string value of the number
+    if (x <= -1e21 || x >= 1e21) {
+        return $String(x);
+    }
+
+    s = '';
+
+    if (x < 0) {
+        s = '-';
+        x = -x;
+    }
+
+    m = '0';
+
+    if (x > 1e-21) {
+        // 1e-21 < x < 1e21
+        // -70 < log2(x) < 70
+        e = toFixedHelpers.log(x * toFixedHelpers.pow(2, 69, 1)) - 69;
+        z = (e < 0 ? x * toFixedHelpers.pow(2, -e, 1) : x / toFixedHelpers.pow(2, e, 1));
+        z *= 0x10000000000000; // Math.pow(2, 52);
+        e = 52 - e;
+
+        // -18 < e < 122
+        // x = z / 2 ^ e
+        if (e > 0) {
+            toFixedHelpers.multiply(0, z);
+            j = f;
+
+            while (j >= 7) {
+                toFixedHelpers.multiply(1e7, 0);
+                j -= 7;
+            }
+
+            toFixedHelpers.multiply(toFixedHelpers.pow(10, j, 1), 0);
+            j = e - 1;
+
+            while (j >= 23) {
+                toFixedHelpers.divide(1 << 23);
+                j -= 23;
+            }
+
+            toFixedHelpers.divide(1 << j);
+            toFixedHelpers.multiply(1, 1);
+            toFixedHelpers.divide(2);
+            m = toFixedHelpers.numToString();
+        } else {
+            toFixedHelpers.multiply(0, z);
+            toFixedHelpers.multiply(1 << (-e), 0);
+            m = toFixedHelpers.numToString() + strSlice('0.00000000000000000000', 2, 2 + f);
+        }
+    }
+
+    if (f > 0) {
+        k = m.length;
+
+        if (k <= f) {
+            m = s + strSlice('0.0000000000000000000', 0, f - k + 2) + m;
+        } else {
+            m = s + strSlice(m, 0, k - f) + '.' + strSlice(m, k - f);
+        }
+    } else {
+        m = s + m;
+    }
+
+    return m;
+};
+defineProperties(NumberPrototype, { toFixed: toFixedShim }, hasToFixedBugs);
+
+var hasToPrecisionUndefinedBug = (function () {
+    try {
+        return 1.0.toPrecision(undefined) === '1';
+    } catch (e) {
+        return true;
+    }
+}());
+var originalToPrecision = NumberPrototype.toPrecision;
+defineProperties(NumberPrototype, {
+    toPrecision: function toPrecision(precision) {
+        return typeof precision === 'undefined' ? originalToPrecision.call(this) : originalToPrecision.call(this, precision);
+    }
+}, hasToPrecisionUndefinedBug);
 
 //
 // String
@@ -6355,9 +6571,10 @@ if (
 ) {
     (function () {
         var compliantExecNpcg = typeof (/()??/).exec('')[1] === 'undefined'; // NPCG: nonparticipating capturing group
+        var maxSafe32BitInt = Math.pow(2, 32) - 1;
 
         StringPrototype.split = function (separator, limit) {
-            var string = this;
+            var string = String(this);
             if (typeof separator === 'undefined' && limit === 0) {
                 return [];
             }
@@ -6376,27 +6593,24 @@ if (
                 // Make `global` and avoid `lastIndex` issues by working with a copy
                 separator2, match, lastIndex, lastLength;
             var separatorCopy = new RegExp(separator.source, flags + 'g');
-            string += ''; // Type-convert
             if (!compliantExecNpcg) {
                 // Doesn't need flags gy, but they don't hurt
                 separator2 = new RegExp('^' + separatorCopy.source + '$(?!\\s)', flags);
             }
             /* Values for `limit`, per the spec:
-             * If undefined: 4294967295 // Math.pow(2, 32) - 1
+             * If undefined: 4294967295 // maxSafe32BitInt
              * If 0, Infinity, or NaN: 0
              * If positive number: limit = Math.floor(limit); if (limit > 4294967295) limit -= 4294967296;
              * If negative number: 4294967296 - Math.floor(Math.abs(limit))
              * If other: Type-convert, then use the above rules
              */
-            var splitLimit = typeof limit === 'undefined' ?
-                -1 >>> 0 : // Math.pow(2, 32) - 1
-                ES.ToUint32(limit);
+            var splitLimit = typeof limit === 'undefined' ? maxSafe32BitInt : ES.ToUint32(limit);
             match = separatorCopy.exec(string);
             while (match) {
                 // `separatorCopy.lastIndex` is not reliable cross-browser
                 lastIndex = match.index + match[0].length;
                 if (lastIndex > lastLastIndex) {
-                    array_push.call(output, strSlice(string, lastLastIndex, match.index));
+                    push(output, strSlice(string, lastLastIndex, match.index));
                     // Fix browsers whose `exec` methods don't consistently return `undefined` for
                     // nonparticipating capturing groups
                     if (!compliantExecNpcg && match.length > 1) {
@@ -6411,7 +6625,7 @@ if (
                         /* eslint-enable no-loop-func */
                     }
                     if (match.length > 1 && match.index < string.length) {
-                        array_push.apply(output, array_slice.call(match, 1));
+                        array_push.apply(output, arraySlice(match, 1));
                     }
                     lastLength = match[0].length;
                     lastLastIndex = lastIndex;
@@ -6426,10 +6640,10 @@ if (
             }
             if (lastLastIndex === string.length) {
                 if (lastLength || !separatorCopy.test('')) {
-                    array_push.call(output, '');
+                    push(output, '');
                 }
             } else {
-                array_push.call(output, strSlice(string, lastLastIndex));
+                push(output, strSlice(string, lastLastIndex));
             }
             return output.length > splitLimit ? strSlice(output, 0, splitLimit) : output;
         };
@@ -6452,7 +6666,7 @@ var str_replace = StringPrototype.replace;
 var replaceReportsGroupsCorrectly = (function () {
     var groups = [];
     'x'.replace(/x(.)?/g, function (match, group) {
-        array_push.call(groups, group);
+        push(groups, group);
     });
     return groups.length === 1 && typeof groups[0] === 'undefined';
 }());
@@ -6470,7 +6684,7 @@ if (!replaceReportsGroupsCorrectly) {
                 searchValue.lastIndex = 0;
                 var args = searchValue.exec(match) || [];
                 searchValue.lastIndex = originalLastIndex;
-                array_push.call(args, arguments[length - 2], arguments[length - 1]);
+                push(args, arguments[length - 2], arguments[length - 1]);
                 return replaceValue.apply(this, args);
             };
             return str_replace.call(this, searchValue, wrappedReplaceValue);
@@ -6516,17 +6730,112 @@ defineProperties(StringPrototype, {
     }
 }, hasTrimWhitespaceBug);
 
+var hasLastIndexBug = StringPrototype.lastIndexOf && 'abcあい'.lastIndexOf('あい', 2) !== -1;
+defineProperties(StringPrototype, {
+    lastIndexOf: function lastIndexOf(searchString) {
+        if (typeof this === 'undefined' || this === null) {
+            throw new TypeError("can't convert " + this + ' to object');
+        }
+        var S = $String(this);
+        var searchStr = $String(searchString);
+        var numPos = arguments.length > 1 ? $Number(arguments[1]) : NaN;
+        var pos = isActualNaN(numPos) ? Infinity : ES.ToInteger(numPos);
+        var start = min(max(pos, 0), S.length);
+        var searchLen = searchStr.length;
+        var k = start + searchLen;
+        while (k > 0) {
+            k = max(0, k - searchLen);
+            var index = strIndexOf(strSlice(S, k, start + searchLen), searchStr);
+            if (index !== -1) {
+                return k + index;
+            }
+        }
+        return -1;
+    }
+}, hasLastIndexBug);
+
+var originalLastIndexOf = StringPrototype.lastIndexOf;
+defineProperties(StringPrototype, {
+    lastIndexOf: function lastIndexOf(searchString) {
+        return originalLastIndexOf.apply(this, arguments);
+    }
+}, StringPrototype.lastIndexOf.length !== 1);
+
 // ES-5 15.1.2.2
+/* eslint-disable radix */
 if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
+/* eslint-enable radix */
     /* global parseInt: true */
     parseInt = (function (origParseInt) {
-        var hexRegex = /^0[xX]/;
+        var hexRegex = /^[\-+]?0[xX]/;
         return function parseInt(str, radix) {
             var string = $String(str).trim();
             var defaultedRadix = $Number(radix) || (hexRegex.test(string) ? 16 : 10);
             return origParseInt(string, defaultedRadix);
         };
     }(parseInt));
+}
+
+if (String(new RangeError('test')) !== 'RangeError: test') {
+    var errorToStringShim = function toString() {
+        if (typeof this === 'undefined' || this === null) {
+            throw new TypeError("can't convert " + this + ' to object');
+        }
+        var name = this.name;
+        if (typeof name === 'undefined') {
+            name = 'Error';
+        } else if (typeof name !== 'string') {
+            name = $String(name);
+        }
+        var msg = this.message;
+        if (typeof msg === 'undefined') {
+            msg = '';
+        } else if (typeof msg !== 'string') {
+            msg = $String(msg);
+        }
+        if (!name) {
+            return msg;
+        }
+        if (!msg) {
+            return name;
+        }
+        return name + ': ' + msg;
+    };
+    // can't use defineProperties here because of toString enumeration issue in IE <= 8
+    Error.prototype.toString = errorToStringShim;
+}
+
+if (supportsDescriptors) {
+    var ensureNonEnumerable = function (obj, prop) {
+        if (isEnum(obj, prop)) {
+            var desc = Object.getOwnPropertyDescriptor(obj, prop);
+            desc.enumerable = false;
+            Object.defineProperty(obj, prop, desc);
+        }
+    };
+    ensureNonEnumerable(Error.prototype, 'message');
+    if (Error.prototype.message !== '') {
+      Error.prototype.message = '';
+    }
+    ensureNonEnumerable(Error.prototype, 'name');
+}
+
+if (String(/a/mig) !== '/a/gim') {
+    var regexToString = function toString() {
+        var str = '/' + this.source + '/';
+        if (this.global) {
+            str += 'g';
+        }
+        if (this.ignoreCase) {
+            str += 'i';
+        }
+        if (this.multiline) {
+            str += 'm';
+        }
+        return str;
+    };
+    // can't use defineProperties here because of toString enumeration issue in IE <= 8
+    RegExp.prototype.toString = regexToString;
 }
 
 }));
@@ -6629,7 +6938,11 @@ module.exports = function isObject(x) {
     setTimeout(function () {
       each(paths, function loading(path, force) {
         if (path === null) return callback()
-        path = !force && path.indexOf('.js') === -1 && !/^https?:\/\//.test(path) && scriptpath ? scriptpath + path + '.js' : path
+        
+        if (!force && !/^https?:\/\//.test(path) && scriptpath) {
+          path = (path.indexOf('.js') === -1) ? scriptpath + path + '.js' : scriptpath + path;
+        }
+        
         if (scripts[path]) {
           if (id) ids[id] = 1
           return (scripts[path] == 2) ? callback() : setTimeout(function () { loading(path, true) }, 0)

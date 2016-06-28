@@ -33,7 +33,7 @@ You should not have to use this file on your own; if you do, make sure the varia
 <div class="popup" id="player_url_box" style="width:600px;">
     <h2>®Player_url®</h2>
     ®Player_url_message® <br/><br/>
-    <strong><a href="<?php echo $player_full_url; ?>"><?php echo $player_full_url; ?></a><br/><br/></strong>
+    <strong><a href="<?php echo $player_full_url; ?>" target="_blank"><?php echo $player_full_url; ?></a><br/><br/></strong>
         
     <!-- Copy to clipboard button 
     All browsers use flash + javascript except Internet explorer which has an access to the clipboard -->

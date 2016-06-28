@@ -55,7 +55,6 @@
                         <div style="text-align: center; margin-bottom: 30px;">
                         <video width="720" controls src="./videos/discussions.mp4">
                             Les discussions dans EZplayer</video></div>
-                        <h1 style='color: #7bb3b6;'>Nouveauté EZplayer: les discussions</h1>
                         <br/>
                         <p>
                             Pour le deuxième quadrimestre, nous avons mis tous nos efforts dans l'élaboration d'un module de <b>discussions</b>. Cela pour plusieurs raisons: vous offrir un espace 

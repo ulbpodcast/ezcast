@@ -37,7 +37,7 @@ require_once 'lib_template.php';
 // Inits and sanity checks
 //
 if($argc < 5) {
-    echo 'Usage: cli_template_generate.php source_folder language output_folder' . PHP_EOL;
+    echo 'Usage: php cli_template_generate.php source_folder language output_folder <path to translations.xml>' . PHP_EOL;
     die;
 }
 

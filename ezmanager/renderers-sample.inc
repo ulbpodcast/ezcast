@@ -43,5 +43,3 @@ return array(
     'kill' => '/path/to/bin/cli_job_kill.php', // typically ~/ezrenderer/bin/cli_job_kill.php
   ), 
 );
-
-?>

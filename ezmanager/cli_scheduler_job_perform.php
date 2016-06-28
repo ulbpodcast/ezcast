@@ -130,14 +130,12 @@ if ($renderer['processed_dir'] . '/' . $job_dir != ''
 $cmd="$php_cli_cmd cli_rendered_maminsert.php  $album $asset $render_finished_upload_dir/$job_dir >> $render_finished_upload_dir/$job_dir/rendered_maminsert.log 2>&1";
 exec($cmd, $cmdoutput, $returncode);
 if($returncode) {
- //non zero return code -> something bad happened
- $msg = "Submit_intro_title_movie failed";
- $asset_meta['status']='failed';
- $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
+    //non zero return code -> something bad happened
+    $msg = "Submit_intro_title_movie failed";
+    $asset_meta['status']='failed';
+    $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
 }
 else{
-	lib_scheduling_notice('Scheduler::job_perform[success]{' . $job['uid'] . '}');
-	scheduler_schedule();
+    lib_scheduling_notice('Scheduler::job_perform[success]{' . $job['uid'] . '}');
+    scheduler_schedule();
 }
-
-?>

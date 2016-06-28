@@ -357,8 +357,10 @@ function push_admins_to_recorders_ezmanager() {
     global $ezplayer_basedir;
     global $ezplayer_subdir;
 
-    if (!db_ready())
-        db_prepare(statements_get());
+    if (!db_ready()) {
+        $stmts = statements_get();
+        db_prepare($stmts);
+    }
 
     $classrooms = db_classrooms_list_enabled();
     $admins = db_admins_list();
@@ -368,7 +370,7 @@ function push_admins_to_recorders_ezmanager() {
     foreach ($admins as $a) {
         $admins_str .= '$admin[\'' . $a['user_ID'] . '\']=true;' . PHP_EOL;
     }
-    $admins_str .= '?>' . PHP_EOL;
+    
     file_put_contents('var/admin.inc', $admins_str);
 
     // Copying on recorders
@@ -416,8 +418,10 @@ function push_users_courses_to_recorder() {
     global $recorder_subdir;
     global $recorder_password_storage_enabled;
 
-    if (!db_ready())
-        db_prepare(statements_get());
+    if (!db_ready()) {
+        $statements = statements_get();
+        db_prepare($statements);
+    }
 
     $users = db_users_in_recorder_get();
     $classrooms = db_classrooms_list_enabled();
@@ -567,7 +571,6 @@ function push_users_to_ezmanager() {
         $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
         $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL . PHP_EOL;
     }
-    $pwfile .= '?>';
 
     file_put_contents('var/pwfile.inc', $pwfile);
 
@@ -788,5 +791,3 @@ function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_
         return false;
     }
 }
-
-?>

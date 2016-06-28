@@ -65,7 +65,7 @@ function error_print_http($http_code) {
 
 /**
  * Adds a line in log
- * @global string $ezmanager_logs Path to the log file
+ * @global string $ezadmin_logs Path to the log file
  * @param string $operation The operation done
  * @param string $message Additionnal information (parameters)
  */
@@ -106,6 +106,5 @@ function log_append($operation, $message = '') {
     $data .= PHP_EOL;
     
     // Then we save the new entry
-    file_put_contents($ezmanager_logs, $data, FILE_APPEND | LOCK_EX);
+    file_put_contents($ezadmin_logs, $data, FILE_APPEND | LOCK_EX);
 }
-?>

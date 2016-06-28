@@ -91,4 +91,3 @@ function media_submit_error($tmp_name){
     }
     return true;
 }
-?>

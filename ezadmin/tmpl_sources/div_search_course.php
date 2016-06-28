@@ -1,36 +1,10 @@
 
-<?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
-
 <h4>®list_courses_title®</h4>
 
 <!-- Search form -->
 <form method="POST" action="index.php?action=view_courses" class="form-inline search_course">  
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®course_code®" title="®course_code®" name="course_code" value="<?php echo $input['course_code']; ?>" />
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®teacher®" title="®teacher®" name="teacher" value="<?php echo $input['teacher']; ?>" />
+    <input class="input-large auto-clear placeholder" type="text" placeholder="®course_code®" title="®course_code®" name="course_code" value="<?php if(isset($input) && isset($input['course_code'])) echo $input['course_code']; ?>" />
+    <input class="input-large auto-clear placeholder" type="text" placeholder="®teacher®" title="®teacher®" name="teacher" value="<?php if(isset($input) && isset($input['teacher'])) echo $input['teacher']; ?>" />
     
     <input type="hidden" name="post"/>
     <input type="hidden" name="page" value="1" />

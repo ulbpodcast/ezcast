@@ -30,6 +30,7 @@
 if (file_exists('config.inc'))
     require_once 'config.inc';
 
+// GLOBALS
 $db_object = null;
 $statements = null;
 $db_prepared = false;
@@ -55,6 +56,7 @@ function db_ping($type, $host, $login, $passwd, $dbname) {
 /*
  * Opens a connection to the DB and prepares the statements.
  * Returns a PDO object representing this connection.
+ * Throws an exception if connection failed
  */
 
 function db_prepare(&$stmt_array = array()) {
@@ -70,7 +72,7 @@ function db_prepare(&$stmt_array = array()) {
     try {
         $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
     } catch (PDOException $e) {
-        return false;
+        throw new Exception('Could not connect to database.');
     }
     
     foreach ($stmt_array as $stmt_name => $stmt) {
@@ -127,5 +129,3 @@ function db_gettable($tableID) {
     global $db_prefix;
     return $db_prefix . $tableID;
 }
-
-?>

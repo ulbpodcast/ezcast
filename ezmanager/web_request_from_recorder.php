@@ -111,10 +111,10 @@ function download_from_recorder() {
     }
     $recorder_version = (isset($input['recorder_version']) && !empty($input['recorder_version'])) ? $input['recorder_version'] : "1.0";
 
-// get the file that contains metadata relative to the recording
+    // get the file that contains metadata relative to the recording
     $meta_file = $input['metadata_file'];
 
-// get info for file downloading
+    // get info for file downloading
     $cam_info = unserialize($input['cam_info']);
     $slide_info = unserialize($input['slide_info']);
 
@@ -661,5 +661,3 @@ function port_get() {
 function server_get() {
     return "164.15.128.144";
 }
-
-?>

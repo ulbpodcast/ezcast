@@ -127,6 +127,3 @@ function checkauth_last_error($msg = "") {
         return true;
     }
 }
-
-
-?>

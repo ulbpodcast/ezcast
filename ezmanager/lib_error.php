@@ -112,4 +112,3 @@ function log_append($operation, $message = '') {
     // Then we save the new entry
     file_put_contents($ezmanager_logs, $data, FILE_APPEND | LOCK_EX);
 }
-?>

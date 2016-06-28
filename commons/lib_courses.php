@@ -127,5 +127,3 @@ function db_user_courses_get($user_ID) {
 
     return $statements['user_courses_get']->fetchAll();
 }
-
-?>

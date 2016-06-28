@@ -5,29 +5,6 @@
  *
  * @package ezcast.ezadmin.main
  */
-/*
- * EZCAST EZadmin 
- * Copyright (C) 2014 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 		    Arnaud Wijns <awijns@ulb.ac.be>
- *                   Antoine Dewilde
- *                   Thibaut Roskam
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
 
 //
 // Check whether the product has been installed
@@ -53,7 +30,6 @@ $input = array_merge($_GET, $_POST);
 
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
-
 //
 // Login/logout
 //
@@ -85,12 +61,10 @@ if (!user_logged_in()) {
     else {
         view_login_form();
     }
-}
-
 // At this point of the code, the user is supposed to be logged in.
 // We check whether they specified an action to perform. If not, it means they landed
 // here through a page reload, so we check the session variables to restore the page as it was.
-else if (isset($_SESSION['podcastcours_logged']) && (!isset($input['action']) || empty($input['action']))) {
+} else if (isset($_SESSION['podcastcours_logged']) && (!isset($input['action']) || empty($input['action']))) {
     redraw_page();
 }
 
@@ -600,6 +574,7 @@ function view_user_details() {
         $user_ID = $userinfo['user_ID'];
         $surname = $userinfo['surname'];
         $forename = $userinfo['forename'];
+        $passNotSet = $userinfo['passNotSet'];
         $origin = $userinfo['origin'];
         $is_admin = ($userinfo['permissions'] != 0);
         $in_classroom = false; // TODO: CHANGE THIS!!!
@@ -1501,7 +1476,7 @@ function user_login($login, $passwd) {
     }
 
     if (!file_exists('admin.inc')) {
-        $error = "User not authorized";
+        $error = "No admin list present";
         view_login_form();
         die;
     }
@@ -1579,5 +1554,3 @@ function remove_changes_alert() {
 function sync_externals() {
     
 }
-
-?>

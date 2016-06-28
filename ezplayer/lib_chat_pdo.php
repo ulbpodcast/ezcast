@@ -32,7 +32,8 @@
 require_once '../commons/config.inc';
 require_once '../commons/lib_database.php';
 
-db_prepare(chat_statements_get());
+$stmts = chat_statements_get();
+db_prepare($stmts);
 
 function chat_statements_get() {
 

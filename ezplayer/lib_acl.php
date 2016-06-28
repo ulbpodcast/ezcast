@@ -320,7 +320,7 @@ function acl_show_notifications(){
  * @return boolean
  */
 function acl_display_threads(){
-    if (!acl_user_is_logged()) return false;
+    if (!acl_user_is_logged()) return true;
     
     global $default_display_thread;
     
@@ -334,7 +334,7 @@ function acl_display_threads(){
  * @return boolean
  */
 function acl_display_thread_notification(){
-    if (!acl_user_is_logged()) return false;
+    if (!acl_user_is_logged()) return true;
     
     global $default_display_thread_notif;
     $display_thread_notif = acl_value_get('display_thread_notification');
@@ -381,4 +381,3 @@ function acl_is_archived($album, $asset){
         return !ezmam_asset_exists($album, $asset);
     return true;
 }
-?>

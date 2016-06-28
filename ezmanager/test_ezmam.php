@@ -172,4 +172,3 @@ if($step_by_step)
 //ezmam_album_delete("COURSE-MNEMO-pub");
 
 ezmam_album_token_reset("COURSE-MNEMO-priv");
-?>

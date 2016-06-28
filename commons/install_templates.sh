@@ -58,8 +58,6 @@ if [ "$php_path" == "" ]; then
     php_path=$RES;
 fi;
 
-#php_path=$default_php_path;
-
 clear;
 echo "*******************************************************************";
 echo "*                                                                 *";

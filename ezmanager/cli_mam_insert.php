@@ -44,7 +44,7 @@ ezmam_repository_path($repository_path);
  */
 
 if($argc!=2){
-    echo "usage: ".$argv[0].' <directory_of_downloaded_ok_recording>
+    echo "usage: ".$argv[0].' <full_path_to_directory_of_downloaded_ok_recording>
         Where <directory_of_recording> should point to a directory containing metadata.xml description file and movies
         metadata.xml example:
         <?xml version="1.0" standalone="yes"?>
@@ -83,16 +83,15 @@ $record_type=$recording_metadata['record_type'];
 $course_name=$recording_metadata['course_name'];
 $record_date=$recording_metadata['record_date'];
 
-//check for album existance
+//check for album existence
 if($recording_metadata['moderation']=="false")
     $album_name=$course_name."-pub";
   else
     $album_name=$course_name."-priv";
 
 if(!ezmam_album_exists($album_name)){
- print "ERROR: album does not exist! $album_name\n";
- exit(0);
-
+    myerror("ERROR: album does not exist! $album_name");
+    exit(1);
 }
 
 //initialize asset metadata and media metadata
@@ -121,7 +120,8 @@ if(isset($recording_metadata['downloadable'])){ // if the recording has been sub
 
 //create asset if not exists!
 $asset_name=$record_date;
-if(!ezmam_asset_exists($album_name, $asset_name))ezmam_asset_new($album_name, $asset_name, $asset_meta);
+if(!ezmam_asset_exists($album_name, $asset_name))
+   ezmam_asset_new($album_name, $asset_name, $asset_meta);
 
 //do we have a cam movie?
 if( strpos($record_type,"cam")!==false) {
@@ -146,14 +146,14 @@ rename($recording_dir, $inserted_recording_dir );
     $cmd="$php_cli_cmd $submit_intro_title_movie_pgm  $album_name $asset_name $super_highres >>/dev/null 2>&1"; // TODO: restore 
     print "exec command: $cmd\n";
     exec($cmd, $cmdoutput, $returncode);
-    if($returncode) print "Submit_intro_title_movie failed";
+    if($returncode)
+        print "Submit_intro_title_movie failed";
 
 
 
 function myerror($msg){
     print $msg."\n";
     exit(1);
-
 }
 
 /**
@@ -216,4 +216,3 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
     print "$camslide media inserted in repository in $album_name $asset_name $media_name\n";
   return $res1;
 }
-?>

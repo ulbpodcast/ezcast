@@ -1203,8 +1203,6 @@ function asset_streaming_view($refresh_center = true) {
     
     $is_android = strtolower($_SESSION["user_os"]) == "android" && version_compare("4.2", $_SESSION["user_os_version"], ">");
 
-
-    //  $m3u8_live_stream = 'videos/life.m3u8';
     log_append('view_asset_streaming: album = ' . $album . ", asset = " . $asset);
     $_SESSION['ezplayer_mode'] = 'view_asset_streaming';
 

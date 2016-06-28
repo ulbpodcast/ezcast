@@ -33,6 +33,7 @@
 include_once "config.inc";
 include_once "classroom_recorder_ip.inc"; //valid ip file
 include_once "lib_ezmam.php";
+include_once "lib_external_stream_daemon.php";
 
 $input = array_merge($_GET, $_POST);
 //look for caller's ip in config files
@@ -354,16 +355,26 @@ function streaming_start() {
 }
 
 function create_m3u8_master($targetDir, $quality) {
+    global $streaming_video_alternate_server_enable_redirect;
+    global $streaming_video_alternate_server_address;
+    global $streaming_video_alternate_server_files_web_location;
+    
     $master_m3u8 = '#EXTM3U' . PHP_EOL .
             '#EXT-X-VERSION:3' . PHP_EOL;
-    // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
-    if (strpos($quality, 'low') !== false) {
-        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'low/live.m3u8' . PHP_EOL;
-    }
-    if (strpos($quality, 'high') !== false) {
-        $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'high/live.m3u8' . PHP_EOL;
+    if($streaming_video_alternate_server_enable_redirect) {
+        //remove streaming is enabled, redirect to the master file in the exteral server instead
+        $master_m3u8 .= $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/live.m3u8';
+    } else {
+        // else create a local master file
+        // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
+        if (strpos($quality, 'low') !== false) {
+            $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
+                    'low/live.m3u8' . PHP_EOL;
+        }
+        if (strpos($quality, 'high') !== false) {
+            $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
+                    'high/live.m3u8' . PHP_EOL;
+        }
     }
     file_put_contents($targetDir . 'live.m3u8', $master_m3u8);
 }
@@ -383,7 +394,8 @@ function streaming_content_add() {
     global $ezmanager_basedir;
     global $repository_path;
     global $apache_documentroot;
-
+    global $streaming_video_alternate_server_enable_sync;
+    
     ezmam_repository_path($repository_path);
 
     $album = $input['album'];
@@ -411,39 +423,49 @@ function streaming_content_add() {
             }
 
             $streams_array[$album][$asset][$module_type]['status'] = $input['status'];
-            $upload_dir = $apache_documentroot . '/ezplayer/videos/' . $album . '/' . $stream_name . '_' . $streams_array[$album][$asset]['token'] . '/';
-            mkdir($upload_dir, 0755, true); // creates the directories if needed
+            $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $album . '/' . $stream_name . '_' . $streams_array[$album][$asset]['token'] . '/';
+            mkdir($upload_root_dir, 0755, true); // creates the directories if needed
 
-            $upload_dir .= $input['module_type'] . '/';
-
-            mkdir($upload_dir, 0755, true); // creates the directories if needed
-
-            // master playlist file doesn't exist yet
-            if (!is_file($upload_dir . 'live.m3u8')) {
-                create_m3u8_master($upload_dir, $streams_array[$album][$asset][$module_type]['quality']);
+            if($streaming_video_alternate_server_enable_sync)
+            {
+                ExternalStreamDaemon::pause();
+                ensure_external_stream_daemon_is_running($upload_root_dir);
             }
 
-            $upload_dir .= $input['quality'] . '/';
-            // for instance : /www2/htdocs/dev/ezplayer/videos/ALBUM-NAME/3000_001/cam/high/
-            mkdir($upload_dir, 0755, true); // creates the directories if needed
+            $upload_type_dir = $upload_root_dir . $input['module_type'] . '/';
 
-            $uploadfile = $upload_dir . $input['filename'];
+            mkdir($upload_type_dir, 0755, true); // creates the directories if needed
+
+            // master playlist file doesn't exist yet
+            
+            //if (!is_file($upload_type_dir . 'live.m3u8')) { //commented out: re create each time instead, it may change with $streaming_video_alternate_server_enable_redirect // checklater: more elegant way to do this ?
+                create_m3u8_master($upload_type_dir, $streams_array[$album][$asset][$module_type]['quality']);
+            //}
+
+            $upload_quality_dir = $upload_type_dir . $input['quality'] . '/';
+            // for instance : /www2/htdocs/dev/ezplayer/videos/ALBUM-NAME/3000_001/cam/high/
+            mkdir($upload_quality_dir, 0755, true); // creates the directories if needed
+
+            $uploadfile = $upload_quality_dir . $input['filename'];
             // places the file (.ts segment from HTTP request) in the webspace
             if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
                 echo "File is valid, and was successfully uploaded.\n";
             }
 
             // appends the m3u8 file
-            if (!is_file("$upload_dir/live.m3u8")) {
+            if (!is_file("$upload_quality_dir/live.m3u8")) {
                 $m3u8_header = explode(PHP_EOL, $input['m3u8_string']);
                 // array_splice($m3u8_header, 4, 0, array('#EXT-X-PLAYLIST-TYPE:EVENT'));
                 // Adds an extra line in m3u8 header: #EXT-X-PLAYLIST-TYPE:EVENT
                 // This type of playlist allows the players to navigate freely (backward and forward) from the beginning of the program
-                file_put_contents("$upload_dir/live.m3u8", implode(PHP_EOL, $m3u8_header));
+                file_put_contents("$upload_quality_dir/live.m3u8", implode(PHP_EOL, $m3u8_header));
             } else {
-                file_put_contents("$upload_dir/live.m3u8", $input['m3u8_string'], FILE_APPEND);
+                file_put_contents("$upload_quality_dir/live.m3u8", $input['m3u8_string'], FILE_APPEND);
             }
-
+            
+            if($streaming_video_alternate_server_enable_sync)
+                ExternalStreamDaemon::resume();
+            
             print "OK";
             break;
     }
@@ -467,6 +489,9 @@ function streaming_stop() {
     global $ezmanager_basedir;
     global $repository_path;
 
+    //stop external stream daemon if it's enabled
+    ExternalStreamDaemon::stop();
+    
     ezmam_repository_path($repository_path);
 
     $album = $input['album'];

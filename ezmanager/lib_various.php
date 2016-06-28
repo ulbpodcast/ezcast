@@ -344,24 +344,10 @@ function file_get_extension($filename){
  return $result_assoc;
 }
 
-/**
- * Sets the current language to the one chosen in parameter
- * @param type $lang 
- */
-//function set_lang($lang) {
-//    $_SESSION['lang'] = $lang;
-//}
-//
-///**
-// * Returns current chosen language
-// * @return string(fr|en) 
-// */
-//function get_lang() {
-//    //if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
-//    if(isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
-//        return $_SESSION['lang'];
-//    }
-//    else
-//        return 'en';
-//}
-?>
+// determines if a process is running or not
+function is_process_running($pid) {
+    if (!isset($pid) || $pid == '' || $pid == 0)
+        return false;
+    exec("ps $pid", $output, $result);
+    return count($output) >= 2;
+}

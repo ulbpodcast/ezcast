@@ -40,6 +40,7 @@
  */
 define('DEBUG', 5);
 
+
 /*******************************/
 /****** S C H E D U L E R ******/
 /*******************************/
@@ -51,7 +52,6 @@ define('DEBUG', 5);
  */
 function scheduler_schedule() {
     lib_scheduling_notice('Scheduler::schedule[start]');
-
     // init the queue
     $queue = lib_scheduling_queue_init();
 
@@ -380,7 +380,8 @@ function lib_scheduling_job_read_all($dir) {
     $files = lib_scheduling_file_ls($dir);
 
     $jobs = array();
-    foreach($files as $file) $jobs[] = lib_scheduling_job_read($file);
+    foreach($files as $file) 
+        $jobs[] = lib_scheduling_job_read($file);
 
     return $jobs;
 
@@ -770,7 +771,16 @@ function lib_scheduling_file_ls($dir) {
     $handler = opendir($dir);
 
     $files = array();
-    while(($file = readdir($handler)) !== false) if($file != '.' && $file != '..' && $file[0] != '.') $files[] = $dir . '/' . $file;
+    if($handler === false)
+    {
+        echo "nodir given" . PHP_EOL;
+	lib_scheduling_error('Scheduler::file_ls - Could not open dir "$dir"');
+        return $files;    
+    }
+
+    while(($file = readdir($handler)) !== false) 
+	if($file != '.' && $file != '..' && $file[0] != '.') 
+            $files[] = $dir . '/' . $file;
 
     closedir($handler);
 
@@ -805,8 +815,7 @@ function lib_scheduling_file_safe($filename) {
  * @return string|boolean The config value or false
  */
 function lib_scheduling_config($name) {
-    include 'config.inc';
-
+    require __DIR__.'/config.inc';
     switch ($name) {
         case 'scheduler-path':
             return $config['paths']['scheduler'];
@@ -846,7 +855,7 @@ function lib_scheduling_warning($msg) { if(DEBUG > 3) lib_scheduling_log('WARNIN
 function lib_scheduling_alert($msg) { if(DEBUG > 2) lib_scheduling_log('  ALERT', $msg); }
 function lib_scheduling_trace($msg) { if(DEBUG > 1) lib_scheduling_log('  TRACE', $msg); }
 function lib_scheduling_error($msg) { if(DEBUG > 0) lib_scheduling_log('  ERROR', $msg); }
-function lib_scheduling_log($cat, $msg) { file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND); }
+function lib_scheduling_log($cat, $msg) { file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND); echo $msg . PHP_EOL; }
 
 /*******************************/
 /********** M A I N ************/

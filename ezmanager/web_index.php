@@ -374,7 +374,6 @@ function view_album() {
     else
         $album = $_SESSION['podman_album'];
     ezmam_repository_path($repository_path);
-
     //
     // 0) Sanity checks
     //
@@ -412,6 +411,7 @@ function view_album() {
     //
     // 4) Then we display the album
     //
+
     include template_getpath('div_album_header.php');
     include template_getpath('div_asset_list.php');
 }
@@ -1389,7 +1389,7 @@ function asset_edit() {
     }
 
     if (strlen($input['title']) > $title_max_length) {
-        error_print_message(template_get_message('title_too_long', get_lang()));
+	error_print_message(template_get_message('Title_too_long', get_lang()));
         die;
     }
 

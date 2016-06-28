@@ -1240,6 +1240,7 @@ function asset_streaming_player_update($display = true) {
     // gets metadata for the selected asset
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
     $asset_token = ezmam_asset_token_get($album, $asset);
+	
 
     if ($asset_meta['record_type'] == 'camslide') {
         $type = (isset($input['type']) && $input['type'] != '') ? $input['type'] : 'cam';
@@ -2745,6 +2746,7 @@ function asset_popup() {
     ezmam_repository_path($repository_path);
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
+    $token = ezmam_asset_token_get($album, $asset);
 
     switch ($display) {
         case 'share_time':
@@ -2753,6 +2755,10 @@ function asset_popup() {
                     . '&asset=' . $asset
                     . '&t=' . $current_time
                     . '&type=' . $type;
+
+            if(acl_has_album_moderation($album))
+                $share_time .= '&asset_token='.$token;
+
             include_once template_getpath('popup_asset_timecode_share.php');
             break;
         case 'share_link':

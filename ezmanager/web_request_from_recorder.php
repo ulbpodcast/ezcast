@@ -363,7 +363,7 @@ function create_m3u8_master($targetDir, $quality) {
             '#EXT-X-VERSION:3' . PHP_EOL;
     if($streaming_video_alternate_server_enable_redirect) {
         //remove streaming is enabled, redirect to the master file in the exteral server instead
-        $master_m3u8 .= $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/live.m3u8';
+        $master_m3u8 .= "http://" . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/live.m3u8';
     } else {
         // else create a local master file
         // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)

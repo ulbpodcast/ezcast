@@ -1,7 +1,7 @@
 <?php
 
-include_once __DIR__."lib_various.php";
-include_once __DIR__."config.inc";
+include_once __DIR__."/lib_various.php";
+include_once __DIR__."/config.inc";
 
 // Start ExternalStreamDaemon if not already running
 function ensure_external_stream_daemon_is_running($upload_root_dir) {
@@ -47,13 +47,14 @@ class ExternalStreamDaemon {
        $this->ssh_user = $streaming_video_alternate_server_user;
        $this->ssh_address = $streaming_video_alternate_server_address;
        $this->ssh_remote_root_path = $streaming_video_alternate_server_files_root_location;
-       
+      
+       //todo: more sanity checks
        //extra checks
-       if(!is_writable(self::PID_FILE))
+       if(!is_writable(dirname(self::PID_FILE)))
            throw new Exception('ExternalStreamDaemon:: pid file is not writable: ' . self::PID_FILE);
-       if(!is_writable(self::STOP_FILE))
+       if(!is_writable(dirname(self::STOP_FILE)))
            throw new Exception('ExternalStreamDaemon:: stop file is not writable: ' . self::STOP_FILE);
-       if(!is_writable($this->lock_file))
+       if(!is_writable(dirname($this->lock_file)))
            throw new Exception('ExternalStreamDaemon:: lock file is not writable: ' . $this->lock_file);
    }
    
@@ -65,7 +66,7 @@ class ExternalStreamDaemon {
        unlink($this->lock_file);
    }
    
-   static function is_paused() {
+   function is_paused() {
        return file_exists($this->lock_file);
    }
    
@@ -85,29 +86,31 @@ class ExternalStreamDaemon {
    }
    
    // true if daemon was started more than TIMEOUT_LENGHT seconds ago
-   function is_in_timout() {
-       return $this->start_time + TIMEOUT_LENGHT < time();
+   function is_in_timeout() {
+       return $this->start_time + self::TIMEOUT_LENGHT < time();
    }
    
    function run() {
        //make sure stop file from previous run does not exists anymore
-       delete_stop_file();
+       $this->delete_stop_file();
        
        while(true) {
            
            // Do nothing and wait if daemon is paused
-           if(is_paused())
+           if($this->is_paused())
            {
                sleep(1);
                continue;
            }
            
            // -- temp code for testing
-           system("rsync -ru . $this->ssh_user@$this->ssh_address:$this->ssh_root_path");
+		//copy m3u8 after so that we don't reference .ts not yet copied
+           echo system("rsync -rP --delete --exclude='*.m3u8' $this->local_root_path $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
+           echo system("rsync -rP --delete --exclude='*.ts' $this->local_root_path $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
            sleep(1);
            // --
-           
-           if(must_stop() || is_in_timout())
+          
+           if($this->must_stop() || $this->is_in_timeout())
                break; //stop infinite loop
        }
        

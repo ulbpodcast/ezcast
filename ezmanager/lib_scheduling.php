@@ -40,6 +40,7 @@
  */
 define('DEBUG', 5);
 
+
 /*******************************/
 /****** S C H E D U L E R ******/
 /*******************************/
@@ -780,15 +781,15 @@ function lib_scheduling_file_move($from, $to) {
 function lib_scheduling_file_ls($dir) {
     $handler = opendir($dir);
     $files = array();
-    
     if($handler === false)
     {
-        lib_scheduling_error("Scheduler::file_ls - Could not open dir '$dir'");
-        return $files;
+        echo "nodir given" . PHP_EOL;
+	lib_scheduling_error('Scheduler::file_ls - Could not open dir "$dir"');
+        return $files;    
     }
-    
+
     while(($file = readdir($handler)) !== false) 
-        if($file != '.' && $file != '..' && $file[0] != '.') 
+	if($file != '.' && $file != '..' && $file[0] != '.') 
             $files[] = $dir . '/' . $file;
 
     closedir($handler);
@@ -825,7 +826,21 @@ function lib_scheduling_file_safe($filename) {
  */
 function lib_scheduling_config($name) {
     require __DIR__.'/config.inc';
-
+    switch ($name) {
+        case 'scheduler-path':
+            return $config['paths']['scheduler'];
+        case 'queue-path':
+            return $config['paths']['queue'];
+        case 'processing-path':
+            return $config['paths']['processing'];
+        case 'processed-path':
+            return $config['paths']['processed'];
+        case 'failed-path':
+            return $config['paths']['failed'];
+        case 'frozen-path':
+            return $config['paths']['frozen'];
+function lib_scheduling_config($name) {
+    require __DIR__.'/config.inc';
     switch ($name) {
         case 'scheduler-path':
             return $config['paths']['scheduler'];
@@ -869,7 +884,6 @@ function lib_scheduling_log($cat, $msg) {
     file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND); 
     //also print it to console in case scheduler was started manually
     echo $msg . PHP_EOL;
-}
 
 /*******************************/
 /********** M A I N ************/

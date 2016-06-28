@@ -33,7 +33,7 @@ return array(
     'host' => 'localhost',
     'client' => 'user name',
     'status' => 'enabled',
-    'home' => '/path/to//bin/',
+    'home' => '/path/to/bin/',
     'downloading_dir' => '/path/to/downloading', // typically ~/ezrenderer/queues/downloading
     'downloaded_dir' => '/path/to/downloaded', // typically ~/ezrenderer/queues/downloaded
     'processed_dir' => '/path/to/processed', // typically ~/ezrenderer/queues/processed

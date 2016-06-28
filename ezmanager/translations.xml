@@ -374,9 +374,9 @@
         <label id="Asset_moving_succeeded_message" lang="en">Your record has been successfully moved.</label>
         <label id="Media_submit_ok_message" lang="fr">Enregistrement envoyé, actuellement en cours de traitement.</label>
         <label id="Media_submit_ok_message" lang="en">Record sent, currently being processed.</label>
-        <label id="Title_too_long" lang="fr">Titre trop long (max. &lt;?php echo $title_max_length; ?&gt; caractères)</label>
-        <label id="Title_too_long" lang="en">Title too long (max. &lt;?php echo $title_max_length; ?&gt; characters).</label>
-        <label id="Not_available_while_processing" lang="fr">Opération non disponible pendant l'encodage. Réessayez plus tard.</label>
+<label id="Title_too_long" lang="fr">Titre trop long (max. &lt;?php echo $title_max_length; ?&gt; caractères)</label>
+        <label id="Title_too_long" lang="en">Title too long (max. &lt;?php echo $title_max_length; ?&gt; characters).</label>        
+<label id="Not_available_while_processing" lang="fr">Opération non disponible pendant l'encodage. Réessayez plus tard.</label>
         <label id="Not_available_while_processing" lang="en">Opération not available while processing. Try again later</label>
         <label id="Submitting" lang="fr">En cours de soumission...</label>
         <label id="Submitting" lang="en">Submitting...</label>
@@ -455,7 +455,7 @@
         <message id="missing_chunks" lang="en">Access denied: missing file chunks</message>
         <message id="write_error" lang="fr">Une erreur est survenue à l'écriture du fichier sur le serveur</message>
         <message id="write_error" lang="en">An error occured while writting the file on the server</message>
-        <message id="Title_too_long" lang="fr">Titre trop long</message>
-        <message id="Title_too_long" lang="en">Title too long</message>
+	<message id="Title_too_long" lang="fr">Titre trop long</message>
+	<message id="Title_too_long" lang="en">Title too long</message>
     </messages>
 </data>

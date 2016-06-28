@@ -5,5 +5,5 @@
  * This CLI is intended for manual use and is not used by the automatic ezcast process
  */
 
-require_once __DIR__.'/lib_scheduling.php';
+require_once 'lib_scheduling.php';
 scheduler_schedule();

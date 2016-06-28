@@ -374,7 +374,6 @@ function view_album() {
     else
         $album = $_SESSION['podman_album'];
     ezmam_repository_path($repository_path);
-
     //
     // 0) Permissions checks
     //
@@ -412,6 +411,7 @@ function view_album() {
     //
     // 4) Then we display the album
     //
+
     include template_getpath('div_album_header.php');
     include template_getpath('div_asset_list.php');
 }

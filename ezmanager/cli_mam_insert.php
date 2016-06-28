@@ -29,6 +29,8 @@
  * @package ezcast.ezmanager.cli
  */
 
+chdir(__DIR__);
+
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';
@@ -42,7 +44,6 @@ ezmam_repository_path($repository_path);
  *   This means: asset creation, , add metadata
  * calls renderer to process the movies
  */
-
 if($argc!=2){
     echo "usage: ".$argv[0].' <full_path_to_directory_of_downloaded_ok_recording>
         Where <directory_of_recording> should point to a directory containing metadata.xml description file and movies

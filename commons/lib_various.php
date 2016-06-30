@@ -70,7 +70,7 @@ class DateTimeFrench extends DateTime {
 }
 
 function get_pid_from_file($filePath) {
-    $handle = fopen(filePath, "r");
+    $handle = fopen($filePath, "r");
     if($handle == false)
         return 0;
     

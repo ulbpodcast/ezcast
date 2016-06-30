@@ -372,15 +372,18 @@ function create_m3u8_master($targetDir, $quality) {
     file_put_contents($targetDir . 'live.m3u8', $master_m3u8);
 }
 
-function create_m3u8_external($targetDir) {
+function create_m3u8_external($targetDir, $type) {
     global $streaming_video_alternate_server_address;
     global $streaming_video_alternate_server_files_web_location;
     
     $external_m3u8 = '#EXTM3U' . PHP_EOL .
-            '#EXT-X-VERSION:3' . PHP_EOL;
-    $external_m3u8 .= "http://" . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/live.m3u8';
+            '#EXT-X-VERSION:3' . PHP_EOL . 
+            '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
+           // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/' . $type . '/live.m3u8';
+		//temp hack instead, redirect to the low
+            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_files_web_location . '/' . $type . '/high/live.m3u8';
     
-    file_put_contents($targetDir . 'external_live.m3u8', $external_m3u8);
+    file_put_contents($targetDir . '/external_live.m3u8', $external_m3u8);
 }
 
 /**
@@ -448,7 +451,7 @@ function streaming_content_add() {
             //also create external source if needed
             if($streaming_video_alternate_server_enable_redirect) {
                 if (!is_file($upload_type_dir . 'external_live.m3u8')) {
-                    create_m3u8_external($upload_type_dir);
+                    create_m3u8_external($upload_type_dir, $input['module_type']);
                 }
             } else { //else make sure it's removed
                 unlink($upload_type_dir . 'external_live.m3u8');

@@ -12,8 +12,5 @@ if($argc != 2)
 $upload_root_dir = $argv[1];
 $streamDaemon = new ExternalStreamDaemon($upload_root_dir);
 
-$pid = getmypid();
-file_put_contents(ExternalStreamDaemon::PID_FILE, getmypid());
-
 //this does loop until stream daemon stops
 $streamDaemon->run();

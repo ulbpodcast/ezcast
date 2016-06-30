@@ -140,6 +140,6 @@ if($streaming_video_alternate_server_enable_redirect && !$streaming_video_altern
 }
     
 $streaming_video_alternate_server_user = "user";
-$streaming_video_alternate_server_address = "http://127.0.0.1/";
+$streaming_video_alternate_server_address = "127.0.0.1";
 $streaming_video_alternate_server_files_root_location = "/var/www/stream/";
 $streaming_video_alternate_server_files_web_location = "stream/";

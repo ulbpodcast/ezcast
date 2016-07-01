@@ -29,7 +29,7 @@ function ensure_external_stream_daemon_is_running($upload_root_dir) {
  * - The local server must have an auto login with ssh access to the remote server
  * - Call ensure_external_stream_daemon_is_running to start the sync process
  *      - You may use cli_external_stream_daemon manually instead for debugging/testing purpose
- * - 
+ * -
  *
  * *** Additional usage notes
  * This class in meant to be run in a separate process by starting cli_external_stream_daemon in background. For now, only one instance is meant to be run at a time.
@@ -37,9 +37,13 @@ function ensure_external_stream_daemon_is_running($upload_root_dir) {
  * The daemon stops automatically after TIMEOUT_LENGHT
  * 
  * *** WHAT STILL NEEDS TO BE DONE
- * - sshd seems to block incoming connexions after a while (I guess after too much requests)
+ * - replace rsync with ssh2
  * - code in streaming_content_add enabling the sync seems to cause an error if syncing is enabled (stream files are not even present localy anymore). Redirect seems fine though.
  * - the redirect currently only support "high" stream quality. See create_m3u8_external() function.
+ * - check stop(). 10 min lag on stop ?
+ * - Hardcoded paths
+ * - vm call stubs (ip, location de la clé, user -> fourni par le cloud_vm_start)
+ * - 
  * 
  * You can already use this class by using the cli_external_stream_daemon to sync files, and enable redirect only in config.inc.
  * 
@@ -55,6 +59,7 @@ function ensure_external_stream_daemon_is_running($upload_root_dir) {
  *      - sshd seems to block incoming connexions after a while (I guess after too much requests). This still needs to be checked.
  *  
  */
+
 class ExternalStreamDaemon {
     
    const TEMP_FOLDER = '/var/lib/ezcast/stream_var/';  
@@ -79,7 +84,7 @@ class ExternalStreamDaemon {
    function __construct($upload_root_dir) {
        global $streaming_video_alternate_server_user;
        global $streaming_video_alternate_server_address;
-       global $streaming_video_alternate_server_files_root_location;
+       global $streaming_video_alternate_server_document_root;
        
        $this->local_root_path = $upload_root_dir . '/';
        $this->lock_file = $this->local_root_path . self::SYNC_LOCK_FILENAME;
@@ -87,7 +92,7 @@ class ExternalStreamDaemon {
                
        $this->ssh_user = $streaming_video_alternate_server_user;
        $this->ssh_address = $streaming_video_alternate_server_address;
-       $this->ssh_remote_root_path = $streaming_video_alternate_server_files_root_location;
+       $this->ssh_remote_root_path = $streaming_video_alternate_server_document_root;
      
        // extra sanity checks
        if(!is_writable(dirname($this->lock_file)))

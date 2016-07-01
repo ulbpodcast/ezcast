@@ -1,74 +1,88 @@
 <?php
 
-namespace Sinergi\BrowserDetector;
+use InvalidArgumentException;
 
 class DeviceDetector implements DetectorInterface
 {
     /**
-     * Determine the user's device.
-     *
-     * @param Device $device
-     * @param UserAgent $userAgent
-     * @return bool
+     * @var Device
      */
-    public static function detect(Device $device, UserAgent $userAgent)
-    {
-        $device->setName($device::UNKNOWN);
+    private $device;
 
-        return (
-            self::checkIpad($device, $userAgent) ||
-            self::checkIphone($device, $userAgent) ||
-            self::checkWindowsPhone($device, $userAgent)
-        );
+    /**
+     * @var UserAgent
+     */
+    private $userAgent;
+
+    /**
+     * @param Device $device
+     * @throws InvalidArgumentException
+     */
+    public function detect(Device $device = null)
+    {
+        if (null !== $device) {
+            $this->device = $device;
+        }
+
+        if (!$this->device instanceof Device) {
+            throw new InvalidArgumentException;
+        }
+
+        if (!$this->userAgent instanceof UserAgent) {
+            $this->userAgent = new UserAgent();
+            $this->userAgent->createUserAgentString();
+        }
+
+        $this->checkIpad();
+
+        $this->device->setIsDetected(true);
     }
 
     /**
-     * Determine if the device is iPad.
-     *
-     * @param Device $device
-     * @param UserAgent $userAgent
      * @return bool
      */
-    private static function checkIpad(Device $device, UserAgent $userAgent)
+    public function checkIpad()
     {
-        if (stripos($userAgent->getUserAgentString(), 'ipad') !== false) {
-            $device->setName(Device::IPAD);
+        if (stripos($this->userAgent->getUserAgentString(), 'ipad') !== false) {
+            $this->device->setName(Device::IPAD);
             return true;
         }
-
-        return false;
-    }
-
-    /**
-     * Determine if the device is iPhone.
-     *
-     * @param Device $device
-     * @param UserAgent $userAgent
-     * @return bool
-     */
-    private static function checkIphone(Device $device, UserAgent $userAgent)
-    {
-        if (stripos($userAgent->getUserAgentString(), 'iphone;') !== false) {
-            $device->setName(Device::IPHONE);
-            return true;
-        }
-
         return false;
     }
 
     /**
-     * Determine if the device is Windows Phone.
-     *
-     * @param Device $device
-     * @param UserAgent $userAgent
-     * @return bool
+     * @return Device
      */
-    private static function checkWindowsPhone(Device $device, UserAgent $userAgent)
+    public function getDevice()
     {
-        if (stripos($userAgent->getUserAgentString(), 'Windows Phone') !== false) {
-            $device->setName($device::WINDOWS_PHONE);
-            return true;
-        }
-        return false;
+        return $this->device;
+    }
+
+    /**
+     * @param Device $device
+     * @return $this
+     */
+    public function setDevice(Device $device)
+    {
+        $this->device = $device;
+        return $this;
+    }
+
+    /**
+     * @return UserAgent
+     */
+    public function getUserAgent()
+    {
+        return $this->userAgent;
+    }
+
+    /**
+     * @param UserAgent $userAgent
+     * @return $this
+     */
+    public function setUserAgent(UserAgent $userAgent)
+    {
+        $this->userAgent = $userAgent;
+        return $this;
     }
 }

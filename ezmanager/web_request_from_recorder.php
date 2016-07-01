@@ -452,7 +452,7 @@ function streaming_content_add() {
             //also create external source if needed
             if($streaming_video_alternate_server_enable_redirect) {
                 if (!is_file($upload_type_dir . 'external_live.m3u8')) {
-                    create_m3u8_external($upload_type_dir, $input['module_type']);
+                    create_m3u8_external($upload_type_dir, $input['module_type'], $asset_token);
                 }
             } else { //else make sure it's removed
                 unlink($upload_type_dir . 'external_live.m3u8');

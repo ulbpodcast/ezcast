@@ -1241,7 +1241,7 @@ function asset_streaming_player_update($display = true) {
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
     $asset_token = ezmam_asset_token_get($album, $asset);
 	
-    $redirect = $streaming_video_alternate_server_enable_redirect && ExternalStreamDaemon::is_ready();
+    $redirect = $streaming_video_alternate_server_enable_redirect && ExternalStreamDaemon::is_ready($asset_token);
     
     $live_filename = "live.m3u8";
     if($redirect) {

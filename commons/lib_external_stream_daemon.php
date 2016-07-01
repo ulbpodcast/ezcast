@@ -6,13 +6,15 @@ require_once __DIR__."/lib_various.php";
 require_once __DIR__."/config.inc";
 
 // Start ExternalStreamDaemon if not already running
-function ensure_external_stream_daemon_is_running($upload_root_dir) {
-    if(ExternalStreamDaemon::is_running())
+function ensure_external_stream_daemon_is_running($video_root_dir, $asset_token) {
+    global $php_cli_cmd;
+    if(ExternalStreamDaemon::is_running($asset_token))
         return;
-    
+   
     // Start daemon in background
-    $current_dir = __DIR__;
-    system("php $current_dir/cli_external_stream_daemon.php $upload_root_dir > /dev/null &"); //checklater: php exec variable instead ?
+    $command = $php_cli_cmd . ' ' .__DIR__."/cli_external_stream_daemon.php $video_root_dir $asset_token > /dev/null &";
+    //file_put_contents("/var/lib/ezcast/external_stream/FOMXFAVE/sync_command", $command . PHP_EOL);
+    system($command); 
 }
 
 /**
@@ -38,131 +40,154 @@ function ensure_external_stream_daemon_is_running($upload_root_dir) {
  * 
  * *** WHAT STILL NEEDS TO BE DONE
  * - replace rsync with ssh2
- * - code in streaming_content_add enabling the sync seems to cause an error if syncing is enabled (stream files are not even present localy anymore). Redirect seems fine though.
  * - the redirect currently only support "high" stream quality. See create_m3u8_external() function.
- * - check stop(). 10 min lag on stop ?
- * - Hardcoded paths
  * - vm call stubs (ip, location de la clé, user -> fourni par le cloud_vm_start)
- * - 
+ * - EZPlayer in browser currently wont switch ask for a new live.m3u8 and so switch is not automatical for client already connected 
  * 
  * You can already use this class by using the cli_external_stream_daemon to sync files, and enable redirect only in config.inc.
- * 
- * *** What may be improved
- * - Make *_FILE variables relative to TEMP_FOLDER
- * - More sanity checks on construction (like checking if some configs are empty)
- * - This class currently allows to be run only one time. To change this:
- *      - State files location should be changed to a different folder per recording.
- *      - Some other idea must be found instead of static function for communicating with this process. Maybe just add the root video folder as argument to them would suffice.
- *      - (Maybe other things I don't see just now)
- * - Files synchronisation is currently done with rsync, which has several consequences :
- *      - Syncing get slightly slower over time, since rsync wtill check every existing files for size differences. This is still very fast and shouldn't cause problems except if you plan to stream for several years.
- *      - sshd seems to block incoming connexions after a while (I guess after too much requests). This still needs to be checked.
  *  
  */
 
 class ExternalStreamDaemon {
     
-   const TEMP_FOLDER = '/var/lib/ezcast/stream_var/';  
-   const PID_FILE = '/var/lib/ezcast/stream_var/external_stream_daemon.pid';
    //lock file to be placed at stream root dir to prevent the daemon to copy files from it (content does not matter, only file existence is checked)
-   const SYNC_LOCK_FILENAME = 'sync_lock';
-   const STOP_FILE = '/var/lib/ezcast/stream_var/external_stream_stop';
-   const READY_FILE = '/var/lib/ezcast/stream_var/external_stream_ready';
    const TIMEOUT_LENGHT = 43200; // in seconds, 12H
  
    var $ssh_user;
    var $ssh_address;
    var $ssh_remote_root_path;
    var $local_root_path;
-   var $lock_file;
+   var $asset_token;
    var $stop_file;
    var $start_time;
     
    /* Constructor. Multiple instances currently not supported.
-    * @param string $upload_root_dir Source files directory
+    * @param string $video_root_dir Source files directory
     */
-   function __construct($upload_root_dir) {
+   function __construct($video_root_dir, $asset_token) {
        global $streaming_video_alternate_server_user;
        global $streaming_video_alternate_server_address;
        global $streaming_video_alternate_server_document_root;
        
-       $this->local_root_path = $upload_root_dir . '/';
-       $this->lock_file = $this->local_root_path . self::SYNC_LOCK_FILENAME;
+       $this->local_root_path = $video_root_dir . '/';
+       $this->asset_token = $asset_token;
        $this->start_time = time();
                
        $this->ssh_user = $streaming_video_alternate_server_user;
        $this->ssh_address = $streaming_video_alternate_server_address;
-       $this->ssh_remote_root_path = $streaming_video_alternate_server_document_root;
+       $this->ssh_remote_root_path = $streaming_video_alternate_server_document_root . '/' . $asset_token;
      
        // extra sanity checks
-       if(!is_writable(dirname($this->lock_file)))
-           throw new Exception('ExternalStreamDaemon:: lock file is not writable: ' . $this->lock_file);
-       if(!is_writable(dirname(self::TEMP_FOLDER)))
-           throw new Exception('ExternalStreamDaemon:: temp folder is not writable: ' . $this->lock_file);
+       $temp_folder = $this->get_temp_folder($this->asset_token);
+       if(!is_writable(dirname($temp_folder)))
+           trigger_error('ExternalStreamDaemon:: temp folder is not writable: ' . $temp_folder, E_USER_ERROR);
+       if($this->asset_token == "")
+           trigger_error('ExternalStreamDaemon:: no token given', E_USER_ERROR);
+       if($this->local_root_path == "")
+           trigger_error('ExternalStreamDaemon:: no video path given', E_USER_ERROR);
    }
-  
+
+   static function get_temp_folder($asset_token) {
+
+       global $repository_basedir;
+       $temp_folder = $repository_basedir . '/external_stream/' . $asset_token . '/';
+       return $temp_folder;
+   }
+
+   static function get_pid_file_path($asset_token) {
+	
+	return self::get_temp_folder($asset_token) . '/pid';
+   }
+
+   private static function get_lock_file_path($asset_token) {
+	return self::get_temp_folder($asset_token) . '/lock';
+   }
+
+   private static function get_ready_file_path($asset_token) {
+	return self::get_temp_folder($asset_token) . '/ready';
+   }
+
+   private static function get_stop_file_path($asset_token) {
+	return self::get_temp_folder($asset_token) . '/stop';
+   }
+
    // return true if ExternalStreamDaemon is currently running
-   static function is_running() {
-       return is_process_running(get_pid_from_file(ExternalStreamDaemon::PID_FILE));
+   static function is_running($asset_token) {
+       return is_process_running(get_pid_from_file(self::get_pid_file_path($asset_token)));
    }
  
    // return true if we've done at least one complete sync and redirect can be enabled
-   static function is_ready() {
-       return file_exists(self::READY_FILE) && self::is_running();
+   static function is_ready($asset_token) {
+       $ready_file = self::get_ready_file_path($asset_token);
+       return file_exists($ready_file) && self::is_running($asset_token);
    }
    
    // create stop marker. Daemon will stop at the end of the current sync operation.
-   static function stop() {
-       file_put_contents(self::STOP_FILE, "1"); //content does not matter
+   static function stop($asset_token) {
+       $stop_file = self::get_stop_file_path($asset_token);
+       if(!file_exists(dirname($stop_file)))
+           mkdir(dirname($stop_file), 0777, true); 
+       file_put_contents($stop_file, "1"); //content does not matter
    }
    
-   // write the pid of the hosting process in PID_FILE (this is used by is_running).
-   function writePID() {
-        file_put_contents(self::PID_FILE, getmypid());
+   // write the pid of the hosting process (this is used by is_running).
+   private function write_PID() {
+       $pid_file = self::get_pid_file_path($this->asset_token);
+       if(!file_exists(dirname($pid_file)))
+           mkdir(dirname($pid_file), 0777, true);
+        file_put_contents($pid_file, getmypid());
    }
    
    // pause syncing
-   function pause() {
-       file_put_contents($this->lock_file, "1"); //content does not matter
+   static function pause($asset_token) {
+       $lock_file = self::get_lock_file_path($asset_token);
+       if(!file_exists(dirname($lock_file)))
+           mkdir(dirname($lock_file), 0777, true);
+       file_put_contents($lock_file,"1"); //content does not matter
    }
    
    // resume syncing if paused
-   function resume() {
-       if(file_exists($this->lock_file))
-           unlink($this->lock_file);
+   static function resume($asset_token) {
+       $lock_file = self::get_lock_file_path($asset_token);
+       if(file_exists($lock_file))
+           unlink($lock_file);
    }
    
-   function is_paused() {
-       return file_exists($this->lock_file);
+   static function is_paused($asset_token) {
+       $lock_file = self::get_lock_file_path($asset_token);
+       return file_exists($lock_file);
    }
    
    /* See is_ready()
     * @param bool $ready
     * */
-   function set_ready($ready) {
+   private function set_ready($ready) {
+       $ready_file = self::get_ready_file_path($this->asset_token);
        if($ready == true)
-           file_put_contents(self::READY_FILE, "1"); //content does not matter
-       else if (file_exists(self::READY_FILE))
-           unlink(self::READY_FILE);
+           file_put_contents($ready_file, "1"); //content does not matter
+       else if (file_exists($ready_file))
+           unlink($ready_file);
    }
    
    // true if stop marker is present
-   function must_stop() {
-       return file_exists(self::STOP_FILE);
+   private function must_stop() {
+       $stop_file = self::get_stop_file_path($this->asset_token);
+       return file_exists($stop_file);
    }
    
    // delete stop marker
-   function delete_stop_file() {
-       if(file_exists(self::STOP_FILE))
-           unlink(self::STOP_FILE);
+   private function delete_stop_file() {
+       $stop_file = self::get_stop_file_path($this->asset_token);
+       if(file_exists($stop_file))
+           unlink($stop_file);
    }
    
    // true if daemon was started more than TIMEOUT_LENGHT seconds ago
-   function is_in_timeout() {
+   private function is_in_timeout() {
        return $this->start_time + self::TIMEOUT_LENGHT < time();
    }
    
-   function sync_files() {
+   private function sync_files() {
 	global $streaming_video_alternate_server_keyfile;
 	
 	$command_key_part = "";
@@ -170,7 +195,9 @@ class ExternalStreamDaemon {
 	    $command_key_part = "-e 'ssh -i $streaming_video_alternate_server_keyfile' ";
  
        //first get the m3u8 but don't sync them yet, we need to send *.ts files first so that the m3u8 does not reference file not yet existing
-       $temp_folder = self::TEMP_FOLDER . '/m3u8/';
+       
+       $temp_folder = self::get_temp_folder($this->asset_token) . '/m3u8/';
+       unlink($temp_folder);
        /* echo "copy m3u8" . PHP_EOL; */
        echo system("rsync -rP --delete --exclude='*.ts' $this->local_root_path $temp_folder");
        /* echo "send ts" . PHP_EOL; */
@@ -181,8 +208,8 @@ class ExternalStreamDaemon {
    }
    
    // main loop, sync files until told to stop (with stop() function)
-   function run() {
-       $this->WritePID();
+   public function run() {
+       $this->Write_PID();
        // make sure stop and ready files from previous run do not exist anymore
        $this->delete_stop_file();
        $this->set_ready(false);
@@ -192,7 +219,7 @@ class ExternalStreamDaemon {
        $this->set_ready(true);
        
        while(true) {
-           if($this->is_paused()) { // do nothing and wait if daemon is paused
+           if(self::is_paused($this->asset_token)) { // do nothing and wait if daemon is paused
                sleep(1);
                continue;
            }

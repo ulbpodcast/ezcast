@@ -83,7 +83,13 @@ function get_pid_from_file($filePath) {
 function is_process_running($pid) {
     if (!isset($pid) || $pid == '' || $pid == 0)
         return false;
-    exec("ps $pid", $output, $result);
+  
+    if(PHP_OS == "SunOS")
+     $command = "pargs";
+    else
+     $command = "ps";
+
+    exec("$command $pid", $output, $result);
     return count($output) >= 2;
 }
         

@@ -29,7 +29,7 @@
  * Library for all cache functions
  * @package ezcast.ezplayer.lib.cache
  */
-include '../commons/config.inc';
+include_once '../commons/config.inc';
 
 
 //===== C A C H E   Lv. 2 ======================================================

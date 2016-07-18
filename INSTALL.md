@@ -107,7 +107,6 @@ max_input_time = 300
 Go in the ezcast folder. Make sure the file ‘install.sh’ can be executed. Launch the ‘install.sh’ script as root and follow the instructions written on the screen.
 
 ```
-<?php
 #change user to be root (may be ‘sudo’ depending on the distribution)
 su
 #move to the ezcast directory (change the path if you have installed ezcast somewhere else)

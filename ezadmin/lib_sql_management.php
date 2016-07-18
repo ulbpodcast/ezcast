@@ -29,13 +29,16 @@
 
 require_once '../commons/lib_database.php';
 
-if(file_exists('config.inc'))
+if(file_exists('config.inc')) {
     include_once 'config.inc';
 
-$statements = statements_get();
-db_prepare($statements);
+    $statements = statements_get();
+    db_prepare($statements);
+}
 
+    
 
+ 
 function statements_get(){
 	return array(
 		'update_courses_hasalbums' =>

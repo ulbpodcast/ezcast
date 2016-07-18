@@ -26,7 +26,7 @@
 ?>
 <script>
     paused = false;
-    var poster = "images/Generale/poster-streaming.png";
+    var poster = "images/Generale/¤poster-streaming¤.png";
     var is_camslide = <?php echo json_encode($asset_meta['record_type'] == 'camslide'); ?>;
     var main_stream_url = "<?php echo $m3u8_live_stream; ?>";
     var current_type = "<?php echo $_SESSION['current_type']; ?>";
@@ -76,7 +76,7 @@
 
     <div id="video_player" class="streaming">
         <div id="streaming_video">
-            <video width="100%" height="523px" autoplay="true" src="<?php echo $m3u8_live_stream; ?>" type="application/x-mpegurl" controls="controls" poster="images/Generale/poster-streaming.png"></video>
+            <video width="100%" height="523px" autoplay="true" src="<?php echo $m3u8_live_stream; ?>" type="application/x-mpegurl" controls="controls" poster="images/Generale/¤poster-streaming¤.png"></video>
         </div>
         <div class="video_controls streaming">
             <ul>

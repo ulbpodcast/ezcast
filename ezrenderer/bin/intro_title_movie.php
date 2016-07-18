@@ -292,7 +292,9 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         $annotated_movie = $processing . '/annotated_movie.mov';
         //set title, author,... in movie
         print "\n\n------------------------ Annotate $quality $camslide ---------------------\n";
-        $res = movie_annotate($outputrefmovie, $annotated_movie, $title_assoc['title'], $title_assoc['date'], $title_assoc['description'], $title_assoc['author'], "ULB,podcast", $title_assoc['copyright']);
+     //   $res = movie_annotate($outputrefmovie, $annotated_movie, $title_assoc['title'], $title_assoc['date'], $title_assoc['description'], $title_assoc['author'], "ULB,podcast", $title_assoc['copyright']);
+		$res = movie_annotate($outputrefmovie, $annotated_movie, $title_assoc['title'], $title_assoc['date'], $title_assoc['description'], $title_assoc['author'], $title_assoc['keywords'], $title_assoc['copyright']);
+
         if ($res)
             myerror("couldn't annotate movie $outputrefmovie");
         print "\n\n------------------------ Relocate MOOV atom $quality $camslide ---------------------\n";

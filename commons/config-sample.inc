@@ -35,6 +35,7 @@
 $organization_name = "© Your organization name";
 $organization_url = "http://ulb.ac.be";
 $copyright = 'Your copyright';
+$movie_keywords = 'Movie,keywords';
 
 // URL's to EZcast applications
 $application_url = "http://localhost/";

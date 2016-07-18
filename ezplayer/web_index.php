@@ -1651,8 +1651,9 @@ function contact_send() {
     $header.= '------------------------------------------------------------' . PHP_EOL . PHP_EOL;
 
     mail($mailto_alert, $_SESSION['user_full_name'] . " - $subject", $header . $message);
+    //also send confirmation to sender
     if (rtrim($mail) !== '') {
-        $header = "Le message suivant a été transmis à l'équipe ULB Podcast et sera traité dans les meilleurs délais." . PHP_EOL . PHP_EOL;
+        $header = template_get_message('report_success', get_lang()) . '.' . PHP_EOL . PHP_EOL;
         mail($mail, "Confirmation: $subject", $header . $message);
     }
     trace_append(array('0', 'contact_send', $mail, $subject, $message));

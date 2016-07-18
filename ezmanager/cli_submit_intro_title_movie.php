@@ -149,7 +149,7 @@ die();
  * @param string $render_dir
  */
 function submit_itm_set_title($album_meta,$asset_meta,$render_dir){
-    global $organization_name,$copyright,$title_duration;
+    global $organization_name,$copyright,$title_duration, $movie_keywords;
 
   //get date
   $human_date=get_user_friendly_date($asset_meta['record_date'], ' ', true , 'fr' , false);
@@ -162,7 +162,8 @@ function submit_itm_set_title($album_meta,$asset_meta,$render_dir){
     'author'=>$asset_meta['author'],
     'date'=> $human_date,
     'organization'=>$organization_name,
-    'copyright'=>$copyright
+    'copyright'=>$copyright,
+    'keywords'=>$movie_keywords
    );
 //write the title xml file to the "shared directory"
 $res=assoc_array2metadata_file($title_info,$render_dir."/title.xml");

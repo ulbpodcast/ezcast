@@ -838,5 +838,7 @@
         <message id="Inexistant" lang="en">Recording not available</message>    
         <message id="Last_edit" lang="fr">Modifiée le </message>
         <message id="Last_edit" lang="en">Edited on </message>
+        <message id="report_success" lang="fr">Le message suivant a été transmis à l'équipe ULB Podcast et sera traité dans les meilleurs délais</message>
+        <message id="report_success" lang="en">The following message has been sent to the ULB Podcast team and will be processed as soon as possible</message>
     </messages>
 </data>

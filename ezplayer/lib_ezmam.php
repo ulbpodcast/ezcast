@@ -620,6 +620,9 @@ function ezmam_asset_exists($album_name, $asset_name) {
  */
 function ezmam_asset_count($album) {
     $asset_list = ezmam_asset_list_metadata($album);
+    if($asset_list == "");
+        return 0;
+
     $count = 0;
     foreach ($asset_list as $asset) {
         if ($asset['metadata']['status'] == 'processed')

@@ -24,9 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-$report_level = error_reporting();
-error_reporting($report_level | E_PARSE | E_ERROR);
-require "../commons/config.inc";
+require_once "../commons/config.inc";
 
 $appname="EZmanager";
 

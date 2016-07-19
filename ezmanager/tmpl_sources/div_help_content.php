@@ -35,7 +35,7 @@
 
       <p>Ce tutoriel a pour objectif de vous permettre d’utiliser les fonctionnalités essentielles de l’interface de gestion des podcasts, de pouvoir publier vos productions ainsi que de répondre à vos questions. Si vous ne trouvez pas la réponse, contactez : <a href="mailto:<?php global $mailto_alert; echo $mailto_alert; ?>"><?php echo $mailto_alert; ?></a></p>
       <p><br />
-        Ce tutoriel existe au format .pdf ; vous pouvez le télécharger dans l'<em>Espace enseignant</em>s du site &quot;<a href="http://podcast.ulb.ac.be" target="_blank">ULB Podcast</a>&quot;.</p>
+        Ce tutoriel existe au format .pdf ; vous pouvez le télécharger dans ¤tuto¤.</p>
 <p>&nbsp;</p>
 
       <h1><a href="javascript:visibilite('Help0');" >Présentation & concepts</a></h1>
@@ -371,7 +371,7 @@ Dans ce cas, le lien que vous allez publier permettra aux utilisateurs de télé
        <h2>Introduction</h2>
  <p>Cette section décrit la marche à suivre pour partager vos publications par l’intermédiaire de l’Université Virtuellle ou de toute autre plateforme.</p>
 <h2>Copyright</h2>
-<p> Avant toute publication de podcast, nous vous conseillons de consulter la page &quot;Droit d'auteur&quot; de l'<em>Espace enseignants</em> du site &quot;<a href="http://podcast.ulb.ac.be" target="_blank">ULB Podcast</a>&quot;.</p>
+<p> Avant toute publication de podcast, nous vous conseillons de consulter la page &quot;Droit d'auteur&quot;de ¤tuto¤.</p>
   <h2>Université Virtuelle</h2>
 <p> Une fois les publications créées, vous pouvez partager les URL de celles-ci avec vos étudiants.
   <br />
@@ -386,7 +386,7 @@ Dans ce cas, le lien que vous allez publier permettra aux utilisateurs de télé
 <p>Nous mettons à votre disposition un ensemble de pictogrammes vous permettant d’illustrer vos publications sur l’université virtuelle.</p>
 <div >
 <img src="./images/help/3picto.jpg" width="103" height="84" /> <img src="./images/help/A.jpg" width="103" height="84" /> <img src="./images/help/basseD.jpg" width="103" height="84" /> <img src="./images/help/hauteD.jpg" width="103" height="84" /> <img src="./images/help/BFlux.png" width="103" height="84" /><div></div>
-<p>Pour recevoir ces pictogrammes ou en demander d’autres : <strong>podcast@ulb.ac.be</strong></p>
+<p>Pour recevoir ces pictogrammes ou en demander d’autres : <strong>¤email¤</strong></p>
 </div></div>
      </div>
 </div>

@@ -34,6 +34,7 @@
 // WARNING: you need to call template_repository_path() *before* trying to access the templates (template_display())
 
 
+
 $dictionnary_xml;
 $error_visible = false;
 $warning_visible = false;
@@ -145,9 +146,12 @@ function template_list_files($source_folder) {
  * @param type $lang Output language
  * @param type $output_folder Output folder
  * @return bool error status
+ * *** Update 2016/07/15
+ * Add institution customization based on $organization_name and $lang
  */
 function template_parse($file, $lang, $output_folder, $translation_xml_file) {
     global $dictionnary_xml;
+	global $organization_name;
     //
     // 1) Sanity checks
     //
@@ -169,6 +173,15 @@ function template_parse($file, $lang, $output_folder, $translation_xml_file) {
     $data = file_get_contents($file);
     template_load_dictionnary($translation_xml_file);
     
+
+    // *** Update 2016/07/15
+    // add information replacement based on institution and language
+    //look for ¤string¤ where string in any (smallest, ungreedy) suite of nonspace chars.
+    //Begin and end of ¤string¤ must be on the same line.
+    //calls template_get_label for each match and replace keywork with translated value in the text
+    $data = preg_replace_callback('!¤(\S+)¤!iU', create_function('$matches', 'return template_get_info($matches[1], \''.$organization_name.'\', \''.$lang.'\');'), $data);
+
+
     // Version 1 (not optimized at all)
     /*$labels = template_get_labels('fr');
     foreach($labels as $label) {
@@ -240,6 +253,35 @@ function template_get_label($id, $lang) {
     $res = $res[0];
     return (string) $res;
 }
+
+/**
+ * *** Update 2016/07/15
+ * Returns a specific info in a specific language for a specific organization
+ * @global mixed $dictionnary_xml
+ * @param type $id The label ID (used in the template and the dictionary)
+ * @param type $organization The organization name
+ * @param type $lang The language to translate the label into
+ * @return string the new label
+ */
+function template_get_info($id, $organization, $lang) {
+    global $dictionnary_xml;
+    
+    if($dictionnary_xml == null) {
+        template_last_error("Please load dictionnary before anything else");
+        return false;
+    }
+    //fetch the element matching given id and language in xml stucture via xpath
+    $res = $dictionnary_xml->xpath("/data/infos/info[@id='$id' and @organization='$organization' and @lang='$lang']");
+    
+    if(!$res) {
+        template_last_warning('Information '.$id.' not found for lang '.$lang.' and organization '.$organization);
+        return '';
+    }
+    
+    $res = $res[0];
+    return (string) $res;
+}
+
 
 /**
  * Returns the *message* given as a parameter, in the language given as another parameter

@@ -48,7 +48,6 @@ require_once 'lib_threads_pdo.php';
 require_once 'lib_chat_pdo.php';
 require_once 'lib_cache.php';
 require_once 'lib_acl.php';
-require_once "../commons/lib_external_stream_daemon.php";
 
 $input = array_merge($_GET, $_POST);
 
@@ -1204,6 +1203,8 @@ function asset_streaming_view($refresh_center = true) {
     
     $is_android = strtolower($_SESSION["user_os"]) == "android" && version_compare("4.2", $_SESSION["user_os_version"], ">");
 
+
+    //  $m3u8_live_stream = 'videos/life.m3u8';
     log_append('view_asset_streaming: album = ' . $album . ", asset = " . $asset);
     $_SESSION['ezplayer_mode'] = 'view_asset_streaming';
 
@@ -1230,8 +1231,7 @@ function asset_streaming_player_update($display = true) {
     global $streaming_video_player;
     global $repository_path;
     global $is_android;
-    global $streaming_video_alternate_server_enable_redirect;
-    
+
     $album = $_SESSION['album'];
     $asset = $_SESSION['asset'];
 
@@ -1240,21 +1240,13 @@ function asset_streaming_player_update($display = true) {
     // gets metadata for the selected asset
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
     $asset_token = ezmam_asset_token_get($album, $asset);
-	
-    $redirect = $streaming_video_alternate_server_enable_redirect && ExternalStreamDaemon::is_ready($asset_token);
-    
-    $live_filename = "live.m3u8";
-    if($redirect) {
-        $live_filename = "external_live.m3u8";
-    }
-    
+
     if ($asset_meta['record_type'] == 'camslide') {
         $type = (isset($input['type']) && $input['type'] != '') ? $input['type'] : 'cam';
-        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $type . '/' . $live_filename;
-
-        $m3u8_slide = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/slide/' . $live_filename;
+        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $type . '/live.m3u8';
+        $m3u8_slide = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/slide/live.m3u8';
     } else {
-        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $asset_meta['record_type'] . '/' . $live_filename;
+        $m3u8_live_stream = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token . '/' . $asset_meta['record_type'] . '/live.m3u8';
     }
 
     $_SESSION['current_type'] = ($asset_meta['record_type'] == 'camslide') ? $type : $asset_meta['record_type'];
@@ -1638,7 +1630,6 @@ function contact_send() {
     $subject = $input['subject'];
     $mail = $input['email'];
 
-    $header = 'An user reported a problem on EZPlayer:' . PHP_EOL;
     $header = '------------------------------------------------------------' . PHP_EOL;
     $header.= "from : $mail [" . $_SESSION['user_email'] . ']' . PHP_EOL;
     $header.= "Name: " . $_SESSION['user_full_name'] . PHP_EOL;
@@ -1651,9 +1642,9 @@ function contact_send() {
     $header.= '------------------------------------------------------------' . PHP_EOL . PHP_EOL;
 
     mail($mailto_alert, $_SESSION['user_full_name'] . " - $subject", $header . $message);
-    //also send confirmation to sender
+    global $organization_name;
     if (rtrim($mail) !== '') {
-        $header = template_get_message('report_success', get_lang()) . '.' . PHP_EOL . PHP_EOL;
+        $header = template_get_info("report_success", $organization_name, get_lang()).'.'. PHP_EOL . PHP_EOL;
         mail($mail, "Confirmation: $subject", $header . $message);
     }
     trace_append(array('0', 'contact_send', $mail, $subject, $message));
@@ -2755,7 +2746,6 @@ function asset_popup() {
     ezmam_repository_path($repository_path);
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
-    $token = ezmam_asset_token_get($album, $asset);
 
     switch ($display) {
         case 'share_time':
@@ -2764,10 +2754,6 @@ function asset_popup() {
                     . '&asset=' . $asset
                     . '&t=' . $current_time
                     . '&type=' . $type;
-            
-            if(acl_has_album_moderation($album))
-                $share_time .= '&asset_token='.$token;
-            
             include_once template_getpath('popup_asset_timecode_share.php');
             break;
         case 'share_link':
@@ -2999,3 +2985,5 @@ function trace_append($array) {
 
     file_put_contents($ezplayer_trace_path . '/' . date('Y-m-d') . '.trace', $data, FILE_APPEND | LOCK_EX);
 }
+
+?>

@@ -97,7 +97,7 @@ switch (strtolower($_SESSION['browser_name'])) {
             </div>
         <?php } ?>
 
-        <video id="main_video" poster="./images/Generale/poster-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
+        <video id="main_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
             <source id="main_video_source"
                     high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
                     high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>"
@@ -107,7 +107,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 
         <?php if ($asset_meta['record_type'] == 'camslide') { ?>
 
-            <video id="secondary_video" poster="./images/Generale/poster-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" preload="auto" type="video/mp4">
+            <video id="secondary_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" preload="auto" type="video/mp4">
             </video>
         <?php } ?>
 

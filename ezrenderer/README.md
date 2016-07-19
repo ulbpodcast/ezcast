@@ -29,12 +29,4 @@ Before installing EZrenderer, make sure the following commands / programs / libr
 
 ## Installation
 
-Here is a quick installation guide. Refer to our website [EZcast](http://ezcast.ulb.ac.be) for detailed information.
-
-1. Download the latest available version of EZrenderer from our Git repository
-`git clone https://github.com/ulbpodcast/ezcast.git`
-2. Put the 'ezrenderer' directory wherever you want on your server (we recommend to place it under "~/ezrenderer")
-3. Launch the "install.sh" script as root from the 'ezrenderer' directory and follow the instructions on the screen
-4. Configure the SSH link between EZmanager (EZcast server) and EZrenderer
-5. Add the renderer to EZmanager and EZadmin
-
+EZRenderer must be installed from ezadmin "Create renderer" menu.

@@ -1276,7 +1276,7 @@ function create_renderer() {
 
                 if ($input['installation_step'] == 2) {
                     // 4.2. Installs ezrenderer on the remote renderer
-                    exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " .
+                    $returnString = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " .
                             $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] .
                             " \"" . $_SESSION['renderer_php'] . " " . $_SESSION['renderer_root_path'] . "/renderer_install.php " .
                             $_SESSION['renderer_php'] . " '" .
@@ -1286,10 +1286,10 @@ function create_renderer() {
                             $_SESSION['renderer_num_threads'] . " " .
                             $_SESSION['renderer_num_jobs'] . "\"", $output, $returncode);
 
-                    if ($returncode || strpos($output[0], "renderer installed") === false) {
+                    if ($returncode || strpos($output[0], "0") === false) {
                         // an error occured while installing EZrenderer
                         $response['error'] = true;
-                        $response['msg'] = "<div class='red'>" . template_get_message('renderer_install_failed', get_lang()) . "</div>";
+                        $response['msg'] = "<div class='red'>" . template_get_message('renderer_install_failed', get_lang()) . "</div><p>" . $returnString . "<p/>";
                         echo json_encode($response);
                         die;
                     }

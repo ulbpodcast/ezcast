@@ -1482,7 +1482,7 @@ function user_login($login, $passwd) {
     }
     include 'admin.inc'; //file containing an assoc array of admin users
     if (!isset($users[$login_parts[0]])) {
-        $error = "User not authorized";
+        $error = "User not authorized. <br/> Check admin.inc file.";
         view_login_form();
         die;
     }

@@ -179,8 +179,8 @@
         <label id="RSS_feed" lang="en">RSS feed</label>
         <label id="Player_url" lang="fr">Lien EZplayer</label>
         <label id="Player_url" lang="en">EZplayer link</label>
-        <label id="Processing" lang="fr">En cours de traitement</label>
-        <label id="Processing" lang="en">Processing</label>
+        <label id="Processing" lang="fr">en cours de traitement</label>
+        <label id="Processing" lang="en">processing</label>
         <label id="Manual_submit" lang="fr">Soumission manuelle</label>
         <label id="Manual_submit" lang="en">Manual submit</label>
         <label id="progress_bar" lang="fr">Barre de progression</label>
@@ -374,9 +374,9 @@
         <label id="Asset_moving_succeeded_message" lang="en">Your record has been successfully moved.</label>
         <label id="Media_submit_ok_message" lang="fr">Enregistrement envoyé, actuellement en cours de traitement.</label>
         <label id="Media_submit_ok_message" lang="en">Record sent, currently being processed.</label>
-<label id="Title_too_long" lang="fr">Titre trop long (max. &lt;?php echo $title_max_length; ?&gt; caractères)</label>
-        <label id="Title_too_long" lang="en">Title too long (max. &lt;?php echo $title_max_length; ?&gt; characters).</label>        
-<label id="Not_available_while_processing" lang="fr">Opération non disponible pendant l'encodage. Réessayez plus tard.</label>
+        <label id="Title_too_long" lang="fr">Titre trop long (max. &lt;?php echo $title_max_length; ?&gt; caractères)</label>
+        <label id="Title_too_long" lang="en">Title too long (max. &lt;?php echo $title_max_length; ?&gt; characters).</label>
+        <label id="Not_available_while_processing" lang="fr">Opération non disponible pendant l'encodage. Réessayez plus tard.</label>
         <label id="Not_available_while_processing" lang="en">Opération not available while processing. Try again later</label>
         <label id="Submitting" lang="fr">En cours de soumission...</label>
         <label id="Submitting" lang="en">Submitting...</label>
@@ -455,7 +455,36 @@
         <message id="missing_chunks" lang="en">Access denied: missing file chunks</message>
         <message id="write_error" lang="fr">Une erreur est survenue à l'écriture du fichier sur le serveur</message>
         <message id="write_error" lang="en">An error occured while writting the file on the server</message>
-	<message id="Title_too_long" lang="fr">Titre trop long</message>
-	<message id="Title_too_long" lang="en">Title too long</message>
     </messages>
+    
+        <!-- update 2016/07/15 -->
+    <!-- information customized by organisation -->   
+    <infos>
+		<info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
+		<info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
+		<info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
+		<info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
+		<info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
+		<info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>		
+
+		<info id="tuto" organization="© Université libre de Bruxelles" lang="fr">l\'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
+		<info id="tuto" organization="© Université libre de Bruxelles" lang="en">l\'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="fr">l\'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="en">l\'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
+		<info id="tuto" organization="© Your organization name" lang="fr">l\'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
+		<info id="tuto" organization="© Your organization name" lang="en">l\'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>		
+		
+		<info id="email" organization="© Université libre de Bruxelles" lang="fr">podcast@ulb.ac.be</info>
+		<info id="email" organization="© Université libre de Bruxelles" lang="en">podcast@ulb.ac.be</info>
+		<info id="email" organization="© Université Catholique de Louvain" lang="fr">podcast@uclouvain.be</info>
+		<info id="email" organization="© Université Catholique de Louvain" lang="en">podcast@uclouvain.be</info>
+		<info id="email" organization="© Your organization name" lang="fr">podcast@ulb.ac.be</info>
+		<info id="email" organization="© Your organization name" lang="en">podcast@ulb.ac.be</info>	
+    </infos>
 </data>

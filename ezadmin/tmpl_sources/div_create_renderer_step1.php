@@ -2,7 +2,7 @@
 
 <form method="POST" class="form-horizontal">
     
-    <?php if($error) { ?>
+    <?php if(isset($error)) { ?>
         <div class="alert alert-error"><?php echo $error ?></div>
     <?php } ?>
     <input type="hidden" name="renderer_step" value="1"/>

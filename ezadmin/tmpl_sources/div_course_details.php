@@ -4,7 +4,7 @@
 <div class="col-md-8">
     <form class="form-horizontal" method="POST">
         
-        <?php if($error) { ?>
+        <?php if(isset($error)) { ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span></button> 
@@ -17,20 +17,21 @@
         <!-- Course name -->
         <div class="form-group">
             <label class="col-md-3 control-label">®course_name®</label>
+            <div class="col-sm-5">
             <?php if($origin == 'external') { ?>
-                <div class="col-sm-5"><?php echo $course_name; ?>
+                <p class="view form-control-static">
+                    <?php echo $course_name; ?>
+                </p>
                 <input type="hidden" class="form-control" name="course_name" 
                        value="<?php echo $course_name ?>" />
-                </div>
             <?php } else { ?>
-                <div class="col-sm-5">
-                    <p class="view form-control-static"><?php echo $course_name; ?></p>
-                    <div class="edit">
-                        <input type="text" class="form-control" name="course_name" 
-                               value="<?php echo htmlspecialchars($course_name) ?>" />
-                    </div>
+                <p class="view form-control-static"><?php echo $course_name; ?></p>
+                <div class="edit">
+                    <input type="text" class="form-control" name="course_name" 
+                           value="<?php echo htmlspecialchars($course_name) ?>" />
                 </div>
             <?php } ?>
+            </div>
         </div>
 
         <!-- Shortname -->
@@ -50,18 +51,18 @@
             <label class="col-md-3 control-label">®origin®</label>
             <div class="col-sm-5">
                 <span class="label 
-                    <?php if($course['origin'] == 'internal') { 
+                    <?php if($origin == 'internal') { 
                         echo 'label-info'; 
-                    } else if($course['origin'] == 'external') { 
+                    } else if($origin == 'external') { 
                         echo 'label-primary'; 
                     } else {
                         echo 'label-danger';
                     } ?>
                     ">
                     <?php 
-                    if($course['origin'] == 'internal') {
+                    if($origin == 'internal') {
                         echo '®intern®';
-                    } else if($course['origin'] == 'external') {
+                    } else if($origin == 'external') {
                         echo '®extern®';
                     } else {
                         echo '®error®';
@@ -134,7 +135,7 @@
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $u['user_ID']; ?>"><?php echo $u['user_ID']; ?></a></td>
             <td><?php echo $u['forename'] . ' ' . $u['surname']; ?></td>
             <td><span class="label <?php if($u['origin'] == 'internal') echo 'label-info'; ?>"><?php if($u['origin'] == 'internal') echo '®intern®'; else echo '®extern®'; ?></span></td>
-            <td class="unlink" style="cursor: pointer;"><?php if($u['origin'] == 'internal') echo '<i class="icon-remove"></i> ®remove_link®'; ?></td>
+            <td class="unlink" style="cursor: pointer;"><?php if($u['origin'] == 'internal') echo '<span class="glyphicon glyphicon-remove"></span> ®remove_link®'; ?></td>
         </tr>
         <?php } ?>
     </tbody>
@@ -238,7 +239,7 @@ $(function() {
 
                var $netid = $('<td></td>').text(data.netid);
                var $username = $('<td></td>').text(data.name);
-               var $delete = $('<td class="unlink" style="cursor:pointer;"><i class="icon-remove"></i>®remove_link®</td>');
+               var $delete = $('<td class="unlink" style="cursor:pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_link®</td>');
 
                var $tr = $('<tr data-id="' + data.id + '"></tr>');
                $tr.append($netid);

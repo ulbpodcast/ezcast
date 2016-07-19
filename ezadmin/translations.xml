@@ -608,6 +608,8 @@
         <!-- Error -->
         <label id="error" lang="fr">Erreur</label>
         <label id="error" lang="en">Error</label>
+        <label id="alert_pass_not_defined" lang="fr">Mot de passe non défini</label>
+        <label id="alert_pass_not_defined" lang="en">No password defined</label>
         
     </labels>
     

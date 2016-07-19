@@ -13,7 +13,7 @@
 
     <input type="submit" name="search" value="®search®" class="btn btn-primary">
     <input type="reset" name="reset" value="®reset®" class="btn"> 
-    <div><a href="#" onclick="javascript:toggleVisibility('options_block');"><i class="icon-plus"></i> ®options®</a></div>
+    <div><a href="#" onclick="javascript:toggleVisibility('options_block');"><span class="glyphicon glyphicon-plus"></span> ®options®</a></div>
     <div class="row" style="display: none;" id="options_block">
         <div class="col-md-1"></div>
         <div class="col-md-2">

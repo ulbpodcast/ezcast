@@ -47,8 +47,8 @@
 <table class="table table-striped table-hover table-condensed table-responsive classrooms">
     <tr>
         <th></th>
-        <th data-col="room_ID" <?php echo $input['col'] == 'room_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_ID®<?php echo ($input['col'] == 'room_ID') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
-        <th data-col="name" <?php echo $input['col'] == 'name' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_name®<?php echo ($input['col'] == 'name') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="room_ID" <?php echo $input['col'] == 'room_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_ID®<?php echo ($input['col'] == 'room_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="name" <?php echo $input['col'] == 'name' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_name®<?php echo ($input['col'] == 'name') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
         <th>®room_IP®</th>
         <th>®room_remote_IP®</th>
         <th>®room_enabled®</th>
@@ -61,7 +61,7 @@
         ?>
         <tr>
             <td>
-                <?php exec('ping '.$classroom['IP'] . ' 10', $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><i class="icon-warning-sign"></i></span>'; ?>
+                <?php exec('ping '.$classroom['IP'] . ' 10', $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
             </td>
             <td class="room_id">
                 <div class="view"><?php echo $classroom['room_ID'] ?></div>
@@ -80,15 +80,15 @@
                 <div class="edit" style="display:none;"><input type="text" name="ip_remote" value="<?php echo htmlspecialchars($classroom['IP_remote']) ?>"/></div>
             </td>
             <td>
-                <?php echo $classroom['enabled'] ? '<i class="icon-ok"></i>' : '<i></i>'; ?>
+                <?php echo $classroom['enabled'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<i></i>'; ?>
             </td>
             <td>
                 <button class="btn btn-small enabled_button <?php echo !$classroom['enabled'] ? 'btn-success' : '' ?>"><?php echo !$classroom['enabled'] ? '®enable®' : '®disable®' ?></button>
             </td>
             <td>
-                <button class="btn btn-small edit_button"><i class="icon-edit"></i></button>
-                <button class="btn btn-small cancel_button"><i class="icon-remove"></i></button>
-                <button class="btn btn-small delete_button"><i class="icon-trash"></i></button>
+                <button class="btn btn-small edit_button"><span class="glyphicon glyphicon-edit"></span></button>
+                <button class="btn btn-small cancel_button"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-small delete_button"><span class="glyphicon glyphicon-trash"></span></button>
             </td>
         </tr>
         <?php

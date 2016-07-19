@@ -11,7 +11,7 @@ swap('main_step_2', 'load_step_2')
 <div id="main_step_2">
 <form method="POST" class="form-horizontal">
     
-    <?php if($error) { ?>
+    <?php if(isset($error)) { ?>
         <div class="alert alert-error"><?php echo $error ?></div>
     <?php } ?>
     <input type="hidden" name="renderer_step" value="2"/>

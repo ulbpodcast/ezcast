@@ -30,8 +30,8 @@ require_once 'config.inc';
         //var_dump($r2);
         ?>
         <tr class="<?php echo $class; ?>">
-            <td><?php if($r['no_ping'] === true) echo '<span title="®no_ping®"><i class="icon-warning-sign"></i></span>';
-                      if($r['ssh_error'] === true) echo '<span title="®ssh_error®"><i class="icon-warning-sign"></i></span>';?></td>
+            <td><?php if($r['no_ping'] === true) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
+                      if($r['ssh_error'] === true) echo '<span title="®ssh_error®"><span class="glyphicon glyphicon-warning-sign"></span></span>';?></td>
             <td><?php echo $r['performance_idx']; ?></td>
             <td class="renderer_name"><?php echo $r['name']; ?></td>
             <td><?php echo $r['host']; ?></td>
@@ -39,12 +39,12 @@ require_once 'config.inc';
             <td><?php echo $r['num_jobs'] . '/' . $r['max_num_jobs']; ?></td>
             <td><?php echo $r['load']; ?></td>
             <td><?php echo $r['max_num_threads']; ?></td>
-            <td><?php echo $r['status'] == 'enabled' ? '<i class="icon-ok"></i>' : '<i></i>'; ?></td>
+            <td><?php echo $r['status'] == 'enabled' ? '<span class="glyphicon glyphicon-ok"></span>' : '<i></i>'; ?></td>
             <td>
                 <button class="btn btn-small enabled_button <?php echo $r['status'] != 'enabled' ? 'btn-success' : '' ?>"><?php echo $r['status'] != 'enabled' ? '®enable®' : '®disable®' ?></button>
             </td>
             <td>
-                <button class="btn btn-small delete_button"><i class="icon-trash"></i></button>
+                <button class="btn btn-small delete_button"><span class="glyphicon glyphicon-trash"></span></button>
             </td>
         </tr>
         <?php

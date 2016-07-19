@@ -14,7 +14,7 @@
         <tr data-id="<?php echo $a['user_ID'] ?>">
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $a['user_ID']; ?>"><?php echo $a['user_ID']; ?></a></td>
             <td><?php echo $a['forename'] . ' ' . $a['surname']; ?></td>
-            <td class="unlink" style="cursor: pointer;"><i class="icon-remove"></i>®remove_admin®</td>
+            <td class="unlink" style="cursor: pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_admin®</td>
         </tr>
         <?php } ?>
     </tbody>

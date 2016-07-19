@@ -22,7 +22,7 @@ function select_option(){
 
 <form method="POST" class="form-horizontal">
     
-    <?php if($error) { ?>
+    <?php if(isset($error)) { ?>
         <div class="alert alert-error"><?php echo $error ?></div>
     <?php } ?>
     <div class="alert alert-success">®ssh_connection_success®</div>

@@ -1,7 +1,7 @@
 <div class="page_title">®create_course®</div>
 <form method="POST" class="form-horizontal">
     
-    <?php if($error) { ?>
+    <?php if(isset($error)) { ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span></button> 

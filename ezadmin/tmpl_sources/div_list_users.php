@@ -37,7 +37,7 @@
 
 <table class="table table-striped table-hover table-condensed table-responsive users">
     <tr>
-        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
         <th>®fullname®</th>
         <th>®origin®</th>
         <th>®is_admin_title®</th>
@@ -50,7 +50,7 @@
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['user_ID']; ?></a></td>
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
             <td><span class="label <?php if($user['origin'] == 'internal') echo 'label-info'; ?>"><?php if($user['origin'] == 'internal') echo '®intern®'; else echo '®extern®'; ?></span></td>
-            <td><?php echo ($user['permissions'] != 0) ? '<i class="icon-ok"></i>' : ''; ?></td>
+            <td><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
         </tr>
         <?php
     }

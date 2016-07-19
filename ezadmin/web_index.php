@@ -902,7 +902,7 @@ function remove_course() {
 function create_classroom() {
     global $input;
 
-    if ($input['create']) {
+    if (isset($input) && isset($input['create']) && $input['create']) {
         $room_ID = $input['room_ID'];
         $name = $input['name'];
         $ip = $input['ip'];

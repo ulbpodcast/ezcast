@@ -24,8 +24,7 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-if(file_exists("../commons/config.inc"))
-   include_once "../commons/config.inc";
+require_once "../commons/config.inc";
 
 // General stuff
 $appname="EZadmin";

@@ -623,8 +623,6 @@ function create_config_files() {
 }
 
 function add_first_user() {
-    global $input;
-
     // Add the first user in database 
     $first_user = file_get_contents("../first_user");
     $first_user = explode(" , ", $first_user);

@@ -2,6 +2,9 @@
 require_once 'config.inc';
 ?>
 
+<div class="page_title">®list_jobs_title®</div>
+
+
 <table class="table table-striped table-hover table-condensed classrooms">
     <tr>
         <th>®job_priority®</th>

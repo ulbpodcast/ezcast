@@ -1,8 +1,18 @@
 
+<div class="page_title">®ezadmin_edit_config_title®</div>
+
+
 <form class="form-horizontal" method="post" action="index.php?action=edit_config">
-    <legend>®ezadmin_edit_config_title®</legend>
     
-    <?php echo $alert; ?> <!-- Displays alert, if any -->
+    <!-- Displays alert, if any -->
+    <?php if(isset($alert)) { ?>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span></button> 
+                    <?php echo $alert; ?>
+        </div>
+    <?php } ?>
+    
     
     <!-- Enable/disable classrooms -->
     <!-- <div class="control-group">
@@ -19,10 +29,14 @@
             </label>
         </div>
     </div> -->
-    <div class="control-group">
-        <label class="checkbox">
-            <input type="checkbox" name="recording_enabled" id="recording_enable" <?php if($params['recorders_option']) echo 'checked="checked"'; ?> />®classrooms_recording_enabled®
-        </label>
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="recording_enabled" id="recording_enable" <?php if($params['recorders_option']) echo 'checked="checked"'; ?> />®classrooms_recording_enabled®
+                </label>
+            </div>
+        </div>
     </div>
     
     <!-- Enable/disable adding users -->
@@ -40,10 +54,14 @@
             </label>
         </div>
     </div> -->
-    <div class="control-group">
-        <label class="checkbox">
-            <input type="checkbox" name="add_users_enabled" id="add_users_enable" <?php if($params['add_users_option']) echo 'checked="checked"'; ?> />®add_users_enabled®
-        </label>
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="add_users_enabled" id="add_users_enable" <?php if($params['add_users_option']) echo 'checked="checked"'; ?> />®add_users_enabled®
+                </label>
+            </div>
+        </div>
     </div>
     
     <!-- Enable/disable classroom password storage -->
@@ -61,10 +79,14 @@
             </label>
         </div>
     </div> -->
-    <div class="control-group">
-        <label class="checkbox">
-            <input type="checkbox" name="password_storage_enabled" id="password_storage_enable" <?php if($params['recorder_password_storage_option']) echo 'checked="checked"'; ?> />®password_storage_enabled®
-        </label>
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="password_storage_enabled" id="password_storage_enable" <?php if($params['recorder_password_storage_option']) echo 'checked="checked"'; ?> />®password_storage_enabled®
+                </label>
+            </div>
+        </div>
     </div>
     
     <!-- Display courses by name or by code -->
@@ -82,10 +104,14 @@
             </label>
         </div>
     </div> -->
-    <div class="control-group">
-        <label class="checkbox">
-            <input type="checkbox" name="courses_by_name" id="courses_by_name" <?php if($params['courses_by_name']) echo 'checked="checked"'; ?> />®settings_use_course_name®
-        </label>
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="courses_by_name" id="courses_by_name" <?php if($params['courses_by_name']) echo 'checked="checked"'; ?> />®settings_use_course_name®
+                </label>
+            </div>
+        </div>
     </div>
     
     <!-- Display users by name or by code -->
@@ -104,12 +130,20 @@
             </label>
         </div>
     </div> -->
-    <div class="control-group">
-        <label class="checkbox">
-            <input type="checkbox" name="users_by_name" id="users_by_name" <?php if($params['users_by_name']) echo 'checked="checked"'; ?> />®settings_use_user_name®
-        </label>
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="users_by_name" id="users_by_name" <?php if($params['users_by_name']) echo 'checked="checked"'; ?> />®settings_use_user_name®
+                </label>
+            </div>
+        </div>
     </div>
     
     <!-- Confirm -->
-    <input type="submit" name="confirm" value="®edit®" class="btn btn-primary">
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-5">
+            <input type="submit" name="confirm" value="®edit®" class="btn btn-success">
+        </div>
+    </div>
 </form>

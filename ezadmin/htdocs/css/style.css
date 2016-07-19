@@ -174,7 +174,6 @@ body{
     background-color: #F9F8F8;
     margin: auto;
     padding: 15px 0px;
-    height: 40px;
     border-bottom: 1px solid #004C93;
     margin-bottom: 15px;
 }
@@ -260,4 +259,28 @@ body{
 
 .copyright a:hover {
     color: #ffffff;
+}
+
+/* /////////////// P A G E S /////////////// */
+
+.page_title {
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 4px;
+    margin-bottom: 15px;
+}
+
+/* /////////////// M E N U /////////////// */
+
+.nav-list .sidebar a {
+    padding: 3px 5px;
+}
+
+.nav>li.nav-header {
+    padding-top: 8px;
+}
+
+.nav-list .sidebar.active {
+    text-decoration:none;
+    background-color:#eee
 }

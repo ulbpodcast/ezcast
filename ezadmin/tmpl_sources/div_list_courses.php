@@ -2,9 +2,13 @@
 
 <?php if($max > 0) { ?>
 
-<div class="pagination">
-    <ul>
-        <li><a href="#" data-page="<?php echo $input['page']-1 ?>">Prev</a></li>
+<div class="text-center">
+    <ul class="pagination">
+        <li <?php if($input['page'] == 1) { echo 'class="disabled"'; } ?>>
+            <a href="#" data-page="<?php echo $input['page']-1 ?>">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
         <li <?php echo $input['page'] == 1 ? 'class="active"' : ''?>><a href="#" data-page="1">1</a></li>
         
         <?php if($input['page'] > 5) { ?>
@@ -24,13 +28,15 @@
         <?php if($max != 1) { ?>
         <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
         <?php } ?>
-        <li><a href="#" data-page="<?php echo $input['page']+1 ?>">Next</a></li>
+        <li>
+            <a href="#" data-page="<?php echo $input['page']+1 ?>"><span aria-hidden="true">&raquo;</span></a>
+        </li>
     </ul>
 </div>
 
 <?php } ?>
 
-<table class="table table-striped table-hover table-condensed courses">
+<table class="table table-striped table-hover table-condensed table-responsive courses">
     <tr>
         <?php global $use_course_name; if($use_course_name) { ?>
             <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_name®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
@@ -58,7 +64,26 @@
             <?php } else { ?>
                 <td><span title="<?php echo $course['forename'].' '.$course['surname']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $course['user_ID']; ?>"><?php echo $course['user_ID']; ?></a></span></td>
             <?php } ?>
-            <td><span class="label <?php if($course['origin'] == 'internal') echo 'label-info'; ?>"><?php if($course['origin'] == 'internal') echo '®intern®'; else echo '®extern®'; ?></span></td>
+            <td>
+                <span class="label 
+                    <?php if($course['origin'] == 'internal') { 
+                        echo 'label-info'; 
+                    } else if($course['origin'] == 'external') { 
+                        echo 'label-primary'; 
+                    } else {
+                        echo 'label-danger';
+                    } ?>
+                    ">
+                    <?php 
+                    if($course['origin'] == 'internal') {
+                        echo '®intern®';
+                    } else if($course['origin'] == 'external') {
+                        echo '®extern®';
+                    } else {
+                        echo '®error®';
+                    } ?>
+                </span>
+            </td>
             <td><?php echo $course['has_albums'] ? '<i class="icon-ok"></i>' : ''; ?></td>
             <td><?php echo $course['in_recorders'] ? '<i class="icon-ok"></i>' : ''; ?></td>
         </tr>

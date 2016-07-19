@@ -1,32 +1,38 @@
-<h4>®create_course®</h4>
+<div class="page_title">®create_course®</div>
 <form method="POST" class="form-horizontal">
     
     <?php if($error) { ?>
-        <div class="alert alert-error"><?php echo $error ?></div>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span></button> 
+            <?php echo $error; ?>
+        </div>
     <?php } ?>
     
-    <div class="control-group">
-        <label for="course_code" class="control-label">®course_code®</label>
-        <div class="controls">
-            <input type="text" name="course_code" value="<?php echo $input['course_code']?>"/>
+    <div class="form-group">
+        <label for="course_code" class="col-md-2 control-label">®course_code®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="course_code" value="<?php echo $input['course_code']?>"/>
         </div>
     </div>
     
-    <div class="control-group">
-        <label for="course_name" class="control-label">®course_name®</label>
-        <div class="controls">
-            <input type="text" name="course_name" value="<?php echo $input['course_name']?>"/>
+    <div class="form-group">
+        <label for="course_name" class="col-md-2 control-label">®course_name®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="course_name" value="<?php echo $input['course_name']?>"/>
         </div>
     </div>
     
-    <div class="control-group">
-        <label for="shortname" class="control-label">®shortname®</label>
-        <div class="controls">
-            <input type="text" name="shortname" value="<?php echo $input['shortname']?>"/>
+    <div class="form-group">
+        <label for="shortname" class="col-md-2 control-label">®shortname®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="shortname" value="<?php echo $input['shortname']?>"/>
         </div>
     </div>
     
-    <div class="form-actions">
-        <input type="submit" class="btn btn-primary" name="create" value="®create®"/>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-5">
+            <input type="submit" class="btn btn-success" name="create" value="®create®"/>
+        </div>
     </div>
 </form>

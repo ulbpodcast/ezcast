@@ -167,6 +167,8 @@
         <label id="logs_title" lang="en">Logs</label>
         
         <!-- Form fields -->
+        <label id="submit_button" lang="fr">Envoyer</label>
+        <label id="submit_button" lang="en">Submit</label>
         <label id="course_code" lang="fr">Mnémonique</label>
         <label id="course_code" lang="en">Course code</label>
         <label id="course_name" lang="fr">Intitulé</label>
@@ -602,6 +604,11 @@
         <label id="stats_discussions_by_asset" lang="en">Number of discussions by asset</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
+        
+        <!-- Error -->
+        <label id="error" lang="fr">Erreur</label>
+        <label id="error" lang="en">Error</label>
+        
     </labels>
     
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->

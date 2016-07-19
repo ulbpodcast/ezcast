@@ -1,46 +1,56 @@
-<h4>®create_classroom®</h4>
+<div class="page_title">®create_classroom®</div>
 
 <form method="POST" class="form-horizontal">
     
     <?php if($error) { ?>
-        <div class="alert alert-error"><?php echo $error ?></div>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span></button> 
+            <?php echo $error; ?>
+        </div>
     <?php } ?>
     
-    <div class="control-group">
-        <label for="room_ID" class="control-label">®classroom_id®</label>
-        <div class="controls">
-            <input type="text" name="room_ID" value="<?php echo $input['room_ID']?>"/>
+    <div class="form-group">
+        <label for="room_ID" class="col-sm-2 control-label">®classroom_id®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="room_ID" value="<?php echo $input['room_ID']?>"/>
         </div>
     </div>
     
-    <div class="control-group">
-        <label for="name" class="control-label">®classroom_name®</label>
-        <div class="controls">
-            <input type="text" name="name" value="<?php echo $input['name']?>"/>
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">®classroom_name®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="name" value="<?php echo $input['name']?>"/>
         </div>
     </div>
     
-    <div class="control-group">
-        <label for="ip" class="control-label">®classroom_ip®</label>
-        <div class="controls">
-            <input type="text" name="ip" value="<?php echo $input['ip']?>"/>
+    <div class="form-group">
+        <label for="ip" class="col-sm-2 control-label">®classroom_ip®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="ip" value="<?php echo $input['ip']?>"/>
         </div>
     </div>
     
-    <div class="control-group">
-        <label for="ip_remote" class="control-label">®classroom_remote_ip®</label>
-        <div class="controls">
-            <input type="text" name="ip_remote" value="<?php echo $input['ip_remote']?>"/>
+    <div class="form-group">
+        <label for="ip_remote" class="col-sm-2 control-label">®classroom_remote_ip®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="ip_remote" value="<?php echo $input['ip_remote']?>"/>
         </div>
     </div>
     
-    <div class="control-group">
-        <div class="controls">
-            <label class="checkbox"><input type="checkbox" name="enabled" <?php echo $input['enabled'] ? 'checked' : ''?>/>®classroom_enabled®</label>
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-2">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="enabled" <?php echo $input['enabled'] ? 'checked' : ''?>/>®classroom_enabled®
+                </label>
+            </div>
         </div>
     </div>
     
-    <div class="form-actions">
-        <input type="submit" class="btn btn-primary" name="create" value="®create®"/>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-5">
+            <input type="submit" class="btn btn-success" name="create" value="®create®"/>
+        </div>
     </div>
 </form>

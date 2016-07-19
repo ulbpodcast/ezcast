@@ -122,7 +122,7 @@ $category_names = array(
 
 ?>
 
-<div class="span2">
+<div class="col-md-2">
 <ul class="nav nav-list">
     <?php foreach($options as $cat => $suboptions) { ?>
         <li class="nav-header" onclick="showHiddenCategory('<?php echo $category_names[$cat]; ?>');" style="cursor: pointer;"><?php echo $category_names[$cat]; ?></li>
@@ -131,19 +131,32 @@ $category_names = array(
         if($key == 'additional_buttons') {
             foreach($option as $operation => $txt) {
                 ?>
-                <li><a href="?<?php echo SID."&action=$operation"?>"><?php echo $txt; ?></a></li>
+                <li class="<?php if(isset($input) && isset($input['action']) && ($operation == $input['action'])) {echo 'active'; } ?>" >
+                    <a href="?<?php echo SID."&action=$operation"?>"><?php echo $txt; ?></a>
+                </li>
                 <?php
             }
         }
         else { ?>
-            <li <?php if(isset($input) && isset($input['objname']) && ($key == $input['objname'])) echo 'class="active"'; ?> <?php if($nb_options > $threshold_num_options) echo 'style="display: none;"'; ?> class="sidebar_<?php echo $cat; ?>"><a href="index.php?&action=<?php echo $option['action'] ?>"><?php echo $option['name']; ?></a></li>
+            <li <?php if($nb_options > $threshold_num_options) echo 'style="display: none;"'; ?> 
+                class="sidebar sidebar_<?php echo $cat; 
+                // TODO not work when no operation with input in this page
+                if(isset($input) && isset($input['action']) && ($option['action'] == $input['action'])) {
+                    echo ' active '; 
+                } ?> ">
+                
+                <a href="index.php?&action=<?php echo $option['action'] ?>">
+                    <?php echo $option['name']; ?>
+                </a>
+                
+            </li>
         <?php } // end if
         } // end foreach?>
     <?php } // end foreach ?>
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>
-    <li><a style="<?php echo ($_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
-    <li><a href="index.php?action=sync_externals">®sync_externals®</a></li>
-    <li><a href="?<?php echo SID."&action=logout"?>">®logout®</a></li>
+    <li class="sidebar"><a style="<?php echo ($_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
+    <li class="sidebar"><a href="index.php?action=sync_externals">®sync_externals®</a></li>
+    <li class="sidebar"><a href="?<?php echo SID."&action=logout"?>">®logout®</a></li>
 </ul>
 <!-- <a class="btn" style="margin-top: 10px; width: 80%;" href="?<?php echo SID."&action=logout"?>">®logout®</a> -->
 </div>

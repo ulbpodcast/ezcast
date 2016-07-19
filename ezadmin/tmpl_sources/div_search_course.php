@@ -1,10 +1,10 @@
 
-<h4>®list_courses_title®</h4>
+<div class="page_title">®list_courses_title®</div>
 
 <!-- Search form -->
 <form method="POST" action="index.php?action=view_courses" class="form-inline search_course">  
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®course_code®" title="®course_code®" name="course_code" value="<?php if(isset($input) && isset($input['course_code'])) echo $input['course_code']; ?>" />
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®teacher®" title="®teacher®" name="teacher" value="<?php if(isset($input) && isset($input['teacher'])) echo $input['teacher']; ?>" />
+    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®course_code®" title="®course_code®" name="course_code" value="<?php if(isset($input) && isset($input['course_code'])) echo $input['course_code']; ?>" />
+    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®teacher®" title="®teacher®" name="teacher" value="<?php if(isset($input) && isset($input['teacher'])) echo $input['teacher']; ?>" />
     
     <input type="hidden" name="post"/>
     <input type="hidden" name="page" value="1" />
@@ -15,8 +15,8 @@
     <input type="reset" name="reset" value="®reset®" class="btn"> 
     <div><a href="#" onclick="javascript:toggleVisibility('options_block');"><i class="icon-plus"></i> ®options®</a></div>
     <div class="row" style="display: none;" id="options_block">
-        <div class="span1"></div>
-        <div class="span2">
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
             <label class="control-label" style="display: inline-block;">
                 ®origin®: 
             </label>
@@ -31,7 +31,7 @@
                 </label>
             </div>
         </div>
-    <div class="span2">
+    <div class="col-md-2">
         ®has_albums_title®: 
         <div class="controls">
             <label class="checkbox">
@@ -48,7 +48,7 @@
         </div>
     </div>
         
-    <div class="span2">
+    <div class="col-md-2">
         ®recorders®: 
         <div class="controls">
         <label class="checkbox">
@@ -65,7 +65,7 @@
         </div>
     </div>
     
-    <div class="span2">
+    <div class="col-md-2">
         ®teacher_assign®: 
         <div class="controls">
         <label class="checkbox">

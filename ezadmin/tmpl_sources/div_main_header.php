@@ -103,4 +103,4 @@
         <div class="container-fluid">
             <div class="row-fluid">
 <?php include template_getpath('div_main_menu.php'); ?>
-                <div class="span9">
+                <div class="col-md-10">

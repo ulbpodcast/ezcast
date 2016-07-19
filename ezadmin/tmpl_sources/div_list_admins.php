@@ -1,7 +1,7 @@
 
-<h4>®admins_list_title®</h4>
+<div class="page_title">®admins_list_title®</div>
 
-<table class="table table-striped table-bordered table-hover users_table">
+<table class="table table-striped table-bordered table-hover table-responsive users_table">
     <thead>
         <tr>
             <th>®user_ID®</th>
@@ -21,8 +21,8 @@
 </table>
 
 <div class="create_link form-inline">
-    <input type="text" name="link_to" value="" class="input-medium" placeholder="®user_ID®" data-provide="typeahead" autocomplete="off" />
-    <button name="link" class="btn btn-primary">®add_admin®</button>
+    <input type="text" name="link_to" value="" class="form-control input-medium" placeholder="®user_ID®" data-provide="typeahead" autocomplete="off" />
+    <button name="link" class="btn btn-success">®add_admin®</button>
 </div>
 
 <script>

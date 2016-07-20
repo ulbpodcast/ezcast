@@ -479,8 +479,10 @@ function toc_album_bookmarks_delete_all($album) {
     }
 
     // set user's file path
-    $toc_path = $toc_path . '/' . $album;
-    unlink($toc_path . "/_bookmarks.xml");
+    $bookmarks_file = $toc_path . '/' . $album . '/' . '_bookmarks.xml';
+    if(file_exists($bookmarks_file))
+        unlink($bookmarks_file);
+    
     return true;
 }
 

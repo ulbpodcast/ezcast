@@ -12,21 +12,21 @@
     <div class="form-group">
         <label for="course_code" class="col-md-2 control-label">®course_code®</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="course_code" value="<?php echo $input['course_code']?>"/>
+            <input type="text" class="form-control" name="course_code" value="<?php if(isset($input['course_code'])) echo $input['course_code']?>"/>
         </div>
     </div>
     
     <div class="form-group">
         <label for="course_name" class="col-md-2 control-label">®course_name®</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="course_name" value="<?php echo $input['course_name']?>"/>
+            <input type="text" class="form-control" name="course_name" value="<?php if(isset($input['course_name'])) echo $input['course_name']?>"/>
         </div>
     </div>
     
     <div class="form-group">
         <label for="shortname" class="col-md-2 control-label">®shortname®</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="shortname" value="<?php echo $input['shortname']?>"/>
+            <input type="text" class="form-control" name="shortname" value="<?php if(isset($input['shortname'])) echo $input['shortname'] ?>"/>
         </div>
     </div>
     

@@ -482,9 +482,9 @@ function asset_view() {
     $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
     $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true); // List of all the created albums (used for asset move)
     $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
-    $asset_scheduled = $asset_metadata['scheduled'];
-    $asset_sched_date = $asset_metadata['schedule_date'];
-    $asset_sched_id = $asset_metadata['schedule_id'];
+    $asset_scheduled = isset($asset_metadata['scheduled']) ? $asset_metadata['scheduled'] : false;
+    $asset_sched_date = isset($asset_metadata['schedule_date']) ? $asset_metadata['schedule_date'] : false;
+    $asset_sched_id = isset($asset_metadata['schedule_id']) ? $asset_metadata['schedule_id'] : false;
     // Filling in the data about the media
     // all you want to know about high res camera video
     if (isset($media_metadata['high_cam'])) {
@@ -692,13 +692,11 @@ function user_logout() {
  */
 function album_create() {
     global $input;
-    global $ezmanager_url;
     global $repository_path;
     global $dir_date_format;
     global $default_intro;
     global $default_add_title;
     global $default_downloadable;
-
     //
     // Sanity checks
     //
@@ -746,10 +744,6 @@ function album_create() {
     //
     acl_update_permissions_list();
 
-    //
-    // Finally, we show a confirmation popup to the user
-    //
-    $public_album_url = $distribute_url . '?action=rss&amp;album=' . $input['album'] . '-pub' . '&amp;quality=high&amp;token=' . ezmam_album_token_get($input['album'] . '-pub');
     require_once template_getpath('popup_album_successfully_created.php');
 }
 
@@ -954,10 +948,7 @@ function upload_init() {
     $record_date = date($dir_date_format);
     $tmp_name = $record_date . '_' . $input['album'];
 
-    if ($input['moderation'] == 'false')
-        $moderation = "false";
-    else
-        $moderation = "true";
+    $moderation = ($input['moderation'] == 'false') ? 'false' : 'true';
 
     $metadata = array(
         'course_name' => $input['album'],
@@ -966,7 +957,7 @@ function upload_init() {
         'description' => $input['description'],
         'record_type' => $input['type'],
         'submitted_cam' => $input['cam_filename'],
-        'submitted_slide' => $input['slide_filename'],
+        'submitted_slide' => isset($input['slide_filename']) ? $input['slide_filename'] : '',
         'moderation' => $moderation,
         'author' => $_SESSION['user_full_name'],
         'netid' => $_SESSION['user_login'],
@@ -1085,8 +1076,15 @@ function upload_chunk() {
 
     // the incoming stream is put at the end of the file
     $input = fopen("php://input", "r");
-
-    if (filesize($target) <= 2048000000) {
+    if($input == false)
+    {
+        log_append('warning', "error opening php input stream");
+        $array["error"] = template_get_message('write_error', get_lang());
+        echo json_encode($array);
+        die;
+    }
+    
+    if (!file_exists($target) || filesize($target) <= 2048000000) {
         /*  $fp = fopen($target, "a");
           while ($data = fread($input, $upload_slice_size)) {
           fwrite($fp, $data);

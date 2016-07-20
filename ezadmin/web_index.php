@@ -784,7 +784,7 @@ function push_changes() {
 function create_user() {
     global $input;
 
-    if ($input['create']) {
+    if (isset($input['create']) && $input['create']) {
         $user_ID = $input['user_ID'];
         $surname = $input['surname'];
         $forename = $input['forename'];
@@ -857,7 +857,7 @@ function remove_user() {
 function create_course() {
     global $input;
 
-    if ($input['create']) {
+    if (isset($input['create']) && $input['create']) {
         $course_code = $input['course_code'];
         $course_name = $input['course_name'];
         $shortname = $input['shortname'];
@@ -872,13 +872,13 @@ function create_course() {
         }
 
         if ($valid) {
-            $input['course_code'] = $course_code;
+            $input['course_code'] = $course_code;    
+            db_log(db_gettable('courses'), 'Created course ' . $input['course_code'], $_SESSION['user_login']);
             view_course_details();
             return;
         }
     }
 
-    db_log(db_gettable('courses'), 'Created course ' . $input['course_code'], $_SESSION['user_login']);
     notify_changes();
 
     include template_getpath('div_main_header.php');

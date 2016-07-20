@@ -32,12 +32,8 @@ require_once '../commons/lib_database.php';
 if(file_exists('config.inc')) {
     include_once 'config.inc';
 
-    $statements = statements_get();
-    db_prepare($statements);
+    db_prepare(statements_get());
 }
-
-    
-
  
 function statements_get(){
 	return array(

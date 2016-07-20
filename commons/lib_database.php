@@ -32,6 +32,7 @@ if (file_exists('config.inc'))
 
 // GLOBALS
 $db_object = null;
+//contains all prepared statements. Other libs may add new statement to it.
 $statements = null;
 $db_prepared = false;
 
@@ -55,6 +56,7 @@ function db_ping($type, $host, $login, $passwd, $dbname) {
 
 /*
  * Opens a connection to the DB and prepares the statements.
+ * Will add given statements to global $statements object.
  * Returns a PDO object representing this connection.
  * Throws an exception if connection failed
  */

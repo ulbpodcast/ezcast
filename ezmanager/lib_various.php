@@ -132,7 +132,7 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
     
     $new_date .= $space_char . $matches[1]; // year
     if($long_date)
-        $new_date .= $space_char . $at; // Separator between date and hour
+        $new_date .= $space_char; // Separator between date and hour
     
     $new_date .= $space_char . $matches[4] . 'h' . $matches[5]; // Hours and minutes
     

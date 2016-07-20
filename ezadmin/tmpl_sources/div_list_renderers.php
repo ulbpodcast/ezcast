@@ -3,6 +3,9 @@
 require_once 'config.inc';
 ?>
 
+<div class="page_title">®renderers_list®</div>
+
+
 <table class="table table-striped table-hover table-condensed renderers">
     <tr>
         <th></th>
@@ -42,10 +45,14 @@ require_once 'config.inc';
             <td><?php echo $r['max_num_threads']; ?></td>
             <td><?php echo $r['status'] == 'enabled' ? '<span class="glyphicon glyphicon-ok"></span>' : '<span></span>'; ?></td>
             <td>
-                <button class="btn btn-small enabled_button <?php echo $r['status'] != 'enabled' ? 'btn-success' : '' ?>"><?php echo $r['status'] != 'enabled' ? '®enable®' : '®disable®' ?></button>
+                <button class="btn btn-sm enabled_button <?php echo $r['status'] != 'enabled' ? 'btn-success' : '' ?>">
+                    <?php echo $r['status'] != 'enabled' ? '®enable®' : '®disable®' ?>
+                </button>
             </td>
             <td>
-                <button class="btn btn-small delete_button"><span class="glyphicon glyphicon-trash"></span></button>
+                <button class="btn btn-sm btn-danger delete_button">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
             </td>
         </tr>
         <?php

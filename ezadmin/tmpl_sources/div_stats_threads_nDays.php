@@ -42,13 +42,16 @@ if (isset($_SESSION['nDaysStats'])) {
                 }
         );
     </script>
-
-    <div id="pieChartNDays" class="pie">
-        <!-- Chart container -->
-    </div>
-    <h4><span class="label label-default">Totaux</span></h4>
-    <p>®stats_discussions_count®    <span class="label label-default"><?php echo $threadsCountNDays; ?></span></p>
-    <p>®stats_comments_count®   <span class="label label-default"><?php echo $commentsCountNDays; ?></span></p>
+    
+    <center>
+        <div id="pieChartNDays" class="pie">
+            <!-- Chart container -->
+        </div>
+    </center>
+    <h4>®stats_total_counts®</h4>
+    <p class="default">®stats_discussions_count®    <span class="label label-default"><?php echo $threadsCountNDays; ?></span></p>
+    <p class="default">®stats_comments_count®   <span class="label label-default"><?php echo $commentsCountNDays; ?></span></p>
+    
     <div id='tableNDays' class="table-responsive">
         <?php include_once 'div_stats_threads_table_nDays.php'; ?>
     </div>

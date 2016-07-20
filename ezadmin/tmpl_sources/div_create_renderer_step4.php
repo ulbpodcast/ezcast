@@ -34,13 +34,13 @@
     }
 </script>
 
-<h4>®create_renderer_step_4®</h4>
-<div id="main_step_4">
+<div class="page_title">®create_renderer_step_4®</div>
 
+<div id="main_step_4">
     <form method="POST" class="form-horizontal">
 
         <?php if ($error) { ?>
-            <div class="alert alert-error"><?php echo $error ?></div>
+            <div class="alert alert-danger"><?php echo $error ?></div>
         <?php } ?>
         <?php if ($tests_success) { ?>
             <div class="alert alert-success">®configuration_success®</div>
@@ -54,33 +54,36 @@
             <li>®create_renderer_step_4_xml®</li>
         </ul>
 
-        <div class="form-actions">
+        <div class="form-group">
             <input type="submit" class="btn btn-primary" name="submit_step_4_prev" value="®previous®"/>
             <input type="button" class="btn btn-primary" name="submit_step_4_next" onclick="swap('load_step_4', 'main_step_4');
         loadStepAjax(1)" value="®continue®"/>
         </div>
     </form>
 </div>
+
 <div id="load_step_4" style="text-align:center; display: none">
     <br/>
     <img id="loading_img" src="img/loading_white.gif"/>
     <br/><br/>
     ®load_step_4_copy®
 </div>
+
 <div id="next_step" style="display: none">
     <br/><br/>    
     <form method="POST" class="form-horizontal">
         <input type="hidden" name="renderer_step" value="5"/>
-        <div class="form-actions">
+        <div class="form-group">
             <input type="submit" class="btn btn-primary" name="finish_install" value="®finish®"/>
         </div>
     </form>
 </div>
+
 <div id="main_step_4_failed" style="display: none">
     <br/><br/>    
     <form method="POST" class="form-horizontal">
         <input type="hidden" name="renderer_step" value="5"/>
-        <div class="form-actions">
+        <div class="form-group">
             <input type="button" class="btn btn-primary" onclick="swap('loading_img', 'main_step_4');loadStepAjax(save_step)" value="®retry®"/>
         </div>
     </form>

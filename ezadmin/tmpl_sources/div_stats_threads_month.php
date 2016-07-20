@@ -38,17 +38,26 @@ if (isset($_SESSION['monthStats'])) {
                     legend: {
                         show: true,
                         location: 'e'
+                    },
+                    highlighter: {
+                        show: true,
+                        useAxesFormatters: false,
+                        tooltipFormatString: '%s',
+                        sizeAdjust: 1.5
                     }
                 }
         );
     </script>
-
-    <div id="pieChartMonth" class="pie">
-        <!-- Chart container -->
-    </div>
-    <h4><span class="label label-default">Totaux</span></h4>
-    <p>®stats_discussions_count®   <span class="label label-default"><?php echo $threadsCountMonth; ?></span></p>
-    <p>®stats_comments_count®   <span class="label label-default"><?php echo $commentsCountMonth; ?></span></p>
+    
+    <center>
+        <div id="pieChartMonth" class="pie">
+            <!-- Chart container -->
+        </div>
+    </center>
+    <h4>®stats_total_counts®</h4>
+    <p class="default">®stats_discussions_count®   <span class="label label-default"><?php echo $threadsCountMonth; ?></span></p>
+    <p class="default">®stats_comments_count®   <span class="label label-default"><?php echo $commentsCountMonth; ?></span></p>
+    <br />
     <div id='tableMonth' class="table-responsive">
         <?php include_once template_getpath('div_stats_threads_table_month.php'); ?>
     </div>

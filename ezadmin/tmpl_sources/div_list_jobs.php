@@ -4,7 +4,9 @@ require_once 'config.inc';
 
 <div class="page_title">®list_jobs_title®</div>
 
-
+<?php if(empty($jobs)) { ?>
+    <div class="alert alert-warning" role="alert">®job_not_current®</div>
+<?php } ?>
 <table class="table table-striped table-hover table-condensed classrooms">
     <tr>
         <th>®job_priority®</th>
@@ -27,9 +29,7 @@ require_once 'config.inc';
             $date = '';
             $threshold1 = 0; // If duration above threshold: display in yellow as a warning
             $threshold2 = 0; // Same as above, except if we go above this threshold it is time to seriously worry
-            if(!empty($job['done'])) {
-                $date = '';
-            } else if(!empty($job['sent'])) {
+            if(!empty($job['sent'])) {
                 $date = $job['sent'];
                 $threshold1 = 18000; // 18000s = 5 hours
                 $threshold2 = 43200; // 43200s = 12 hours
@@ -50,7 +50,7 @@ require_once 'config.inc';
                 
                 $class = 'success';
                 if($duration > $threshold2)
-                    $class = 'error';
+                    $class = 'danger';
                 else if ($duration > $threshold1)
                     $class = 'info';
             }

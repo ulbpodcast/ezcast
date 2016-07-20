@@ -14,6 +14,8 @@
         <script type="text/javascript" src="js/modernizr.custom.23345.js"></script>
         <script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
         <script type="text/javascript" src="js/plugins/jqplot.pieRenderer.min.js"></script>
+        <script type="text/javascript" src="js/plugins/jqplot.highlighter.js"></script>
+        <script type="text/javascript" src="js/plugins/jqplot.enhancedPieLegendRenderer.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
         <script src="js/stats.js"></script>

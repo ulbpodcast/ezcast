@@ -58,3 +58,17 @@ section
 {
     margin-bottom: 8px;
 }
+
+.jqplot-highlighter-tooltip {
+    font-size: large;
+    color: white;
+    background-color: #afafaf;
+    border-radius: 9px;
+    padding: 3px;
+}
+
+.jumbotron p.default {
+    margin-bottom: initial;
+    font-size: initial;
+    font-weight: initial;
+}

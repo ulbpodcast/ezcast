@@ -359,6 +359,8 @@
         <label id="job_duration" lang="en">Duration</label>
         <label id="job_actions" lang="fr">Actions</label>
         <label id="job_actions" lang="en">Actions</label>
+        <label id="job_not_current" lang="fr">Aucun job en cours actuellement</label>
+        <label id="job_not_current" lang="en">No job currently</label>
         <label id="renderer_name" lang="fr">Nom</label>
         <label id="renderer_name" lang="en">Name</label>
         <label id="renderer_address" lang="fr">Adresse du serveur</label>
@@ -533,6 +535,8 @@
         <label id="install" lang="en">Install</label>
         <label id="stats_album_name" lang="fr">Nom de l'album</label>
         <label id="stats_album_name" lang="en">Album name</label>
+        <label id="stats_total_counts" lang="fr">Totaux</label>
+        <label id="stats_total_counts" lang="en">Totals</label>
         <label id="stats_discussions_count" lang="fr">Nombre de discussions</label>
         <label id="stats_discussions_count" lang="en">Number of discussions</label>
         <label id="stats_comments_count" lang="fr">Nombre de commentaires</label>
@@ -574,10 +578,10 @@
         <label id="create_renderer_step_4_xml" lang="en">Update renderers list for EZadmin and EZmanager </label>
         <label id="load_step_4_copy" lang="fr">Copie des fichiers d'installation d'EZrenderer en cours ...</label>
         <label id="load_step_4_copy" lang="en">Copying EZrenderer installation files ...</label>
-        <label id="stats_main_title" lang="fr">Statistiques générales</label>
-        <label id="stats_main_title" lang="en">Global statistics</label>
-        <label id="stats_sub_title" lang="fr">Statistiques sur discussions et commentaires</label>
-        <label id="stats_sub_title" lang="en">Statistics over discussions and comments</label>
+        <label id="stats_general_title" lang="fr">Statistiques générales</label>
+        <label id="stats_general_title" lang="en">Global statistics</label>
+        <label id="stats_comment_title" lang="fr">Statistiques sur discussions et commentaires</label>
+        <label id="stats_comment_title" lang="en">Statistics over discussions and comments</label>
         <label id="stats_since" lang="fr">Depuis le début du système </label>
         <label id="stats_since" lang="en">Since the beginning </label>
         <label id="stats_discussions_created" lang="fr">discussions ont été créées</label>

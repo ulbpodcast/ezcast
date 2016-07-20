@@ -375,7 +375,7 @@ function push_admins_to_recorders_ezmanager() {
 
     // Copying on recorders
     foreach ($classrooms as $c) {
-        exec('ping ' . $c['IP'] . ' 10', $output, $return_val);
+        exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
             $cmd = 'scp -o ConnectionTimeout=10 ./var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
@@ -391,7 +391,7 @@ function push_admins_to_recorders_ezmanager() {
     }
     else {
         // Remote copy
-        exec('ping ' . $ezmanager_host . ' 10', $output, $return_val);
+        exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
             $cmd = 'scp -o ConnectionTimeout=10 ./var/admin.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
@@ -450,7 +450,7 @@ function push_users_courses_to_recorder() {
 
     // Upload all this on server
     foreach ($classrooms as $c) {
-        exec('ping ' . $c['IP'] . ' 10', $output, $return_val);
+        exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
             $cmd = 'scp -o ConnectTimeout=10 ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
@@ -500,7 +500,7 @@ function push_classrooms_to_ezmanager() {
     }
     else {
         // Remote copy
-        exec('ping ' . $ezmanager_host . ' 10', $output, $return_val);
+        exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
             $cmd = 'scp -o ConnectTimeout=10 ./var/classroom_recorder_ip.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
@@ -533,7 +533,7 @@ function push_renderers_to_ezmanager() {
     }
     else {
         // Remote copy
-        exec('ping ' . $ezmanager_host . ' 10', $output, $return_val);
+        exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
             $cmd = 'scp -o ConnectTimeout=10 ./renderers.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);

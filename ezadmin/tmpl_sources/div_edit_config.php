@@ -6,11 +6,7 @@
     
     <!-- Displays alert, if any -->
     <?php if(isset($alert)) { ?>
-        <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span></button> 
-                    <?php echo $alert; ?>
-        </div>
+        <?php echo $alert; ?>
     <?php } ?>
     
     

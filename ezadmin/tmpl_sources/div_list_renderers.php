@@ -40,7 +40,7 @@ require_once 'config.inc';
             <td><?php echo $r['num_jobs'] . '/' . $r['max_num_jobs']; ?></td>
             <td><?php echo $r['load']; ?></td>
             <td><?php echo $r['max_num_threads']; ?></td>
-            <td><?php echo $r['status'] == 'enabled' ? '<span class="glyphicon glyphicon-ok"></span>' : '<i></i>'; ?></td>
+            <td><?php echo $r['status'] == 'enabled' ? '<span class="glyphicon glyphicon-ok"></span>' : '<span></span>'; ?></td>
             <td>
                 <button class="btn btn-small enabled_button <?php echo $r['status'] != 'enabled' ? 'btn-success' : '' ?>"><?php echo $r['status'] != 'enabled' ? '®enable®' : '®disable®' ?></button>
             </td>

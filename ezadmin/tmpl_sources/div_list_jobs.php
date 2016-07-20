@@ -27,9 +27,9 @@ require_once 'config.inc';
             $date = '';
             $threshold1 = 0; // If duration above threshold: display in yellow as a warning
             $threshold2 = 0; // Same as above, except if we go above this threshold it is time to seriously worry
-            if(!empty($job['done']))
+            if(!empty($job['done'])) {
                 $date = '';
-            else if(!empty($job['sent'])) {
+            } else if(!empty($job['sent'])) {
                 $date = $job['sent'];
                 $threshold1 = 18000; // 18000s = 5 hours
                 $threshold2 = 43200; // 43200s = 12 hours
@@ -69,14 +69,14 @@ require_once 'config.inc';
                 <td><?php echo $job['renderer']; ?></td>
                 <td>
                     <?php if(in_array($job, scheduler_frozen_get())) {
-                        echo '<i class="icon-minus-sign" title="®frozen®"></i> ®frozen®';
+                        echo '<span class="glyphicon glyphicon-minus-sign" title="®frozen®"></span> ®frozen®';
                     }
                     else if(!empty($job['done'])) {
-                        echo '<i class="icon-ok-sign" title="®finished_on® '.$job['done'].'"></i> ®finished®';
+                        echo '<span class="glyphicon glyphicon-ok-sign" title="®finished_on® '.$job['done'].'"></span> ®finished®';
                     } else if(!empty($job['sent'])) {
-                        echo '<i class="icon-refresh" title="®sent_on® '.$job['created'].'"></i> ®processing®';
+                        echo '<span class="glyphicon glyphicon-refresh" title="®sent_on® '.$job['created'].'"></span> ®processing®';
                     } else if(!empty($job['created'])) {
-                        echo '<i class="icon-time" title="®created_on® '.$job['created'].'"></i> ®waiting®';
+                        echo '<span class="glyphicon glyphicon-time" title="®created_on® '.$job['created'].'"></span> ®waiting®';
                     } ?>
                 </td>
                 <td>
@@ -96,17 +96,17 @@ require_once 'config.inc';
                 <td>
                     <?php if(empty($job['done']) && empty($job['sent'])) { ?>
                         <?php if(!in_array($job, scheduler_frozen_get())) { ?>
-                            <a href="index.php?action=job_priority_up&amp;job=<?php echo $job['uid']; ?>"><i class="icon-chevron-up" title="®increase_priority®"></i></a>&nbsp;
-                            <a href="index.php?action=job_priority_down&amp;job=<?php echo $job['uid']; ?>"><i class="icon-chevron-down" title="®decrease_priority®"></i></a>&nbsp;
+                            <a href="index.php?action=job_priority_up&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-chevron-up" title="®increase_priority®"></span></a>&nbsp;
+                            <a href="index.php?action=job_priority_down&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-chevron-down" title="®decrease_priority®"></span></a>&nbsp;
                         <?php } ?>
                         <?php if(in_array($job, scheduler_frozen_get())) { ?>
-                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><i class="icon-repeat" title="®unfreeze_job®"></i></a>
+                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-repeat" title="®unfreeze_job®"></span></a>
                         <?php } else { ?>
-                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><i class="icon-ban-circle" title="®freeze_job®"></i></a>
+                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-ban-circle" title="®freeze_job®"></span></a>
                         <?php } ?>
                     <?php } else if(empty($job['done']) && !empty($job['sent'])) {
                         ?>
-                        <a href="index.php?action=job_kill&amp;job=<?php echo $job['uid']; ?>"><i class="icon-remove" title="®kill_job®"></i></a>
+                        <a href="index.php?action=job_kill&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-remove" title="®kill_job®"></span></a>
                         <?php
                     } ?>
                 </td>

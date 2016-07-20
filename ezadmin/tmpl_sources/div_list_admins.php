@@ -77,7 +77,7 @@ $(".create_link button[name='link']").click(function() {
            var $netid = $('<td></td>');
            $netid.append($('<a href=""></a>').attr("href", 'index.php?action=view_user_details&amp;user_ID='+data.user_ID).text(data.user_ID));
            var $username = $('<td></td>').text(data.forename + ' ' + data.surname);
-           var $delete = $("<td class=\"unlink\" style=\"cursor:pointer;\"><i class=\"icon-remove\"></i>®remove_admin®</td>");
+           var $delete = $("<td class=\"unlink\" style=\"cursor:pointer;\"><span class=\"glyphicon glyphicon-remove\"></span>®remove_admin®</td>");
            
            var $tr = $('<tr data-id="' + data.user_ID + '"></tr>');
            $tr.append($netid);

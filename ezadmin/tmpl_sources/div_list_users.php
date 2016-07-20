@@ -16,7 +16,9 @@
          <?php $start = $input['page'] > 4 ? $input['page']-3 : 2 ?>
            
         <?php for($i = $start; $i < $max && $i < $start+7; ++$i){ ?>
-           <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>><a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a></li>
+           <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>>
+               <a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a>
+           </li>
         <?php } ?>
         
         <?php if($input['page']+7 < $max) { ?>
@@ -26,7 +28,8 @@
         <?php if($max != 1) { ?>
         <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
         <?php } ?>
-        <li><a href="#" data-page="<?php echo $input['page']+1 ?>">
+        <li>
+            <a href="#" data-page="<?php echo $input['page']+1 ?>">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
@@ -37,7 +40,7 @@
 
 <table class="table table-striped table-hover table-condensed table-responsive users">
     <tr>
-        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®fullname®</th>
         <th>®origin®</th>
         <th>®is_admin_title®</th>

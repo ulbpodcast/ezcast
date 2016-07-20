@@ -210,6 +210,10 @@ body{
     margin-right: 15px;
 }
 
+.badge.badge-important {
+    background-color: #d9534f;
+}
+
 /* /////////////// F O O T E R /////////////// */
 
 

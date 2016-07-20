@@ -39,11 +39,11 @@
 <table class="table table-striped table-hover table-condensed table-responsive courses">
     <tr>
         <?php global $use_course_name; if($use_course_name) { ?>
-            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_name®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_name®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <?php } else { ?>
-            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_code®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_code®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <?php } ?>
-        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®teacher®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®teacher®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®origin®</th>
         <th>®albums®</th>
         <th>®recorders®</th>

@@ -67,7 +67,7 @@ foreach ($allAlbums as $albumArr) {
                    value="<?php echo $todayMY; ?>" placeholder="Click me!" 
                    data-date-viewmode="years" data-date-minviewmode="months" readonly></input> 
             <a id="submit-month-search" class="btn btn-success btn-search"
-               onclick="javascript:getStatsByMonth()"> <i class="icon-search icon-white"></i>®search®</a>               
+               onclick="javascript:getStatsByMonth()"> <span class="glyphicon glyphicon-search icon-white"></span>®search®</a>               
         </div>
         <br/>
         <div id="month-stats">                
@@ -87,7 +87,7 @@ foreach ($allAlbums as $albumArr) {
         <div id="nDays-search">
             <input type="text" id="nDays" class="input-lg"></input> 
             <a id="submit-nDays-search" class="btn btn-success btn-search"
-               onclick="javascript:getStatsByNDays()"> <i class="icon-search icon-white"></i>®search®</a>               
+               onclick="javascript:getStatsByNDays()"> <span class="glyphicon glyphicon-search icon-white"></span>®search®</a>               
         </div>
         <br/>
         <div id="nDays-stats">                

@@ -132,38 +132,21 @@
     </div>
 
     
-<!-- Button to edit or remove user -->
-<div class="col-md-2 col-md-offset-2">
-    <form action="index.php?action=remove_user" method="POST" style="margin:0px;">
-        <input type="hidden" name="user_ID" value="<?php echo $user_ID; ?>" />
+    <!-- Button to edit or remove user -->
+    <div class="col-md-2 col-md-offset-2">
+        <form action="index.php?action=remove_user" method="POST" style="margin:0px;">
+            <input type="hidden" name="user_ID" value="<?php echo $user_ID; ?>" />
 
-        <button type="button" class="btn btn-block btn-primary edit_mode">®edit_button®</button>
-        <button type="button" class="btn btn-block edit_cancel">®cancel®</button>
-        <?php if($origin == 'internal') { ?>
-            <button type="submit" name="delete" value="®delete®" onClick="confirm('®delete_confirm®')" class="btn btn-block btn-danger delete_button"/>
-            ®delete®
-            </button>
-        <?php } ?>
-    </form>
-</div>
+            <button type="button" class="btn btn-block btn-primary edit_mode">®edit_button®</button>
+            <button type="button" class="btn btn-block edit_cancel">®cancel®</button>
 
-<!--    
-    <div class="col-md-4">
-        <table>
-            <tr>
-                <td><button class="btn edit_cancel">®cancel®</button></td>
-                <td><button class="btn edit_mode">®edit_button®</button></td>
-                <?php if ($origin == 'internal') { ?>
-                    <td>
-                        <form action="index.php?action=remove_user" method="POST" style="margin:0px;">
-                            
-                            
-                        </form>
-                    </td>
-                <?php } ?>
-            </tr>
-        </table>
-    </div>-->
+            <?php if($origin == 'internal') { ?>
+                <button type="submit" name="delete" value="®delete®" onClick="confirm('®delete_confirm®')" class="btn btn-block btn-danger delete_button"/>
+                ®delete®
+                </button>
+            <?php } ?>
+        </form>
+    </div>
 
     <table class="table table-striped table-bordered table-hover courses_table">
         <thead>
@@ -180,128 +163,135 @@
                 <tr data-id="<?php echo $c['ID'] ?>" data-origin="<?php echo $u['origin'] ?>">
                     <td><?php echo $c['course_code']; ?></td>
                     <td><?php echo $c['course_name']; ?></td>
-                    <td><span class="label <?php if ($c['origin'] == 'internal') echo 'label-info'; ?>"><?php
+                    <td>
+                        <span class="label <?php if ($c['origin'] == 'internal') echo 'label-info'; ?>"><?php
                             if ($c['origin'] == 'internal')
                                 echo '®intern®';
                             else
                                 echo '®extern®';
-                            ?></span></td>
+                            ?>
+                        </span>
+                    </td>
                     <td><?php echo $c['in_recorders'] ? '<span class="glyphicon glyphicon-ok"></span> ®yes®' : '<span class="glyphicon glyphicon-remove"></span> ®no®'; ?></td>
                     <td class="unlink" style="cursor: pointer;"><?php if ($c['origin'] == 'internal') echo '<span class="glyphicon glyphicon-remove"></span> ®remove_link®'; ?></td>
                 </tr>
-    <?php } ?>
+            <?php } ?>
         </tbody>
     </table>
 
-    <div class="create_link form-inline">
-        <input type="text" name="link_to" value="" class="input-medium" placeholder="®course_code®" data-provide="typeahead" autocomplete="off" />
-        <button name="link" class="btn btn-primary">®add_user_course®</button>
+    <div class="create_link form-inline text-center">
+            <input type="text" class="form-control" name="link_to" value="" class="input-medium" placeholder="®course_code®" data-provide="typeahead" autocomplete="off" />
+            <button name="link" class="btn btn-primary">®add_user_course®</button>
     </div>
 
 
 
     <script>
+    $(function() {
+        $('.edit_cancel').hide();
+        $('.edit').hide();
+        $("button.edit_cancel").click(function() {
+            $this = $(this);
+            $this.hide();
+            $('.edit_mode').addClass('btn-primary');
+            $('.edit_mode').removeClass('btn-success');
+            $('.edit_mode').removeClass('active_edit_mode'); // remove edit mode
+            $('.edit_mode').text("®edit_button®");
+            $('.delete_button').show();
+            $(".edit").hide();
+            $('.view').show();
 
-                                $(function() {
-                                    $('.edit_cancel').hide();
-                                    $('.edit').hide();
-                                    $("button.edit_cancel").click(function() {
-                                        $this = $(this);
-                                        $this.hide();
-                                        $('.edit_mode').removeClass('btn-primary');
-                                        $('.delete_button').show();
-                                        $(".edit").hide();
-                                        $('.view').show();
+        });
 
-                                    });
+        $("button.edit_mode").click(function() {
+            $this = $(this);
+            $('.edit_cancel').show();
+            $('.delete_button').hide();
 
-                                    $("button.edit_mode").click(function() {
-                                        $this = $(this);
-                                        $('.edit_cancel').show();
-                                        $('.delete_button').hide();
-
-                                        if ($this.hasClass("btn-primary")) {
-                                            $("form").first().submit();
-                                        } else {
-                                            $this.addClass('btn-primary');
-                                            $(".edit").show();
-                                            $('.view').hide();
-                                        }
-                                    });
+            if ($this.hasClass("active_edit_mode")) {
+                $("form").first().submit();
+            } else {
+                $this.addClass('active_edit_mode'); // Add edit mode
+                $('.edit_mode').removeClass('btn-primary');
+                $('.edit_mode').addClass('btn-success');
+                $('.edit_mode').text("®submit_button®");
+                $(".edit").show();
+                $('.view').hide();
+            }
+        });
 
 
-                                    $(".courses_table .unlink").live("click", function() {
-                                        $this = $(this);
+        $(".courses_table .unlink").live("click", function() {
+            $this = $(this);
 
-                                        if ($this.parent().data('origin') == 'external')
-                                            alert("®cannot_delete_external®");
-                                        if (!confirm("®unlink_confirm®"))
-                                            return false;
+            if ($this.parent().data('origin') == 'external')
+                alert("®cannot_delete_external®");
+            if (!confirm("®unlink_confirm®"))
+                return false;
 
-                                        var link = $this.parent().data("id");
+            var link = $this.parent().data("id");
 
-                                        $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
-                                            type: "post",
-                                            data: {
-                                                query: "unlink",
-                                                id: link
-                                            },
-                                            success: function(jqXHR, textStatus) {
-                                                var data = JSON.parse(jqXHR);
+            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
+                type: "post",
+                data: {
+                    query: "unlink",
+                    id: link
+                },
+                success: function(jqXHR, textStatus) {
+                    var data = JSON.parse(jqXHR);
 
-                                                if (data.error) {
-                                                    if (data.error == 1)
-                                                        alert("®cannot_delete_external®");
-                                                    return;
-                                                }
+                    if (data.error) {
+                        if (data.error == 1)
+                            alert("®cannot_delete_external®");
+                        return;
+                    }
 
-                                                $this.parent().hide(400, function() {
-                                                    $(this).remove();
-                                                });
-                                            }
-                                        });
-                                    });
+                    $this.parent().hide(400, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+        });
 
-                                    $(".create_link button[name='link']").click(function() {
-                                        $this = $(this);
+        $(".create_link button[name='link']").click(function() {
+            $this = $(this);
 
-                                        var user = $this.prev().val();
-                                        $this.prev().val('');
+            var user = $this.prev().val();
+            $this.prev().val('');
 
-                                        $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
-                                            type: "post",
-                                            data: {
-                                                query: "link",
-                                                id: user
-                                            },
-                                            success: function(jqXHR, textStatus) {
-                                                var data = JSON.parse(jqXHR);
+            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
+                type: "post",
+                data: {
+                    query: "link",
+                    id: user
+                },
+                success: function(jqXHR, textStatus) {
+                    var data = JSON.parse(jqXHR);
 
-                                                if (data.error) {
-                                                    if (data.error == '1')
-                                                        alert("®link_error®");
-                                                    return;
-                                                }
+                    if (data.error) {
+                        if (data.error == '1')
+                            alert("®link_error®");
+                        return;
+                    }
 
-                                                var $course_code = $('<td></td>').text(data.course_code);
-                                                var $course_name = $('<td></td>').text(data.course_name);
-                                                var $delete = $('<td class="unlink" style="cursor:pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_link®</td>');
+                    var $course_code = $('<td></td>').text(data.course_code);
+                    var $course_name = $('<td></td>').text(data.course_name);
+                    var $delete = $('<td class="unlink" style="cursor:pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_link®</td>');
 
-                                                var $tr = $('<tr data-id="' + data.id + '"></tr>');
-                                                $tr.append($course_code);
-                                                $tr.append($course_name);
-                                                $tr.append($delete);
+                    var $tr = $('<tr data-id="' + data.id + '"></tr>');
+                    $tr.append($course_code);
+                    $tr.append($course_name);
+                    $tr.append($delete);
 
-                                                $tr.hide();
+                    $tr.hide();
 
-                                                $('.courses_table tbody').append($tr);
+                    $('.courses_table tbody').append($tr);
 
-                                                $tr.show(400).css('display', 'table-row');
-                                            }
-                                        });
-                                    });
-                                });
-
+                    $tr.show(400).css('display', 'table-row');
+                }
+            });
+        });
+    });
     </script>
 
 <?php } else { ?>

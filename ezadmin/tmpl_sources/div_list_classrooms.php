@@ -47,8 +47,8 @@
 <table class="table table-striped table-hover table-condensed table-responsive classrooms">
     <tr>
         <th></th>
-        <th data-col="room_ID" <?php echo $input['col'] == 'room_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_ID®<?php echo ($input['col'] == 'room_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
-        <th data-col="name" <?php echo $input['col'] == 'name' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_name®<?php echo ($input['col'] == 'name') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="room_ID" <?php echo $input['col'] == 'room_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_ID®<?php echo ($input['col'] == 'room_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
+        <th data-col="name" <?php echo $input['col'] == 'name' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_name®<?php echo ($input['col'] == 'name') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®room_IP®</th>
         <th>®room_remote_IP®</th>
         <th>®room_enabled®</th>
@@ -80,7 +80,7 @@
                 <div class="edit" style="display:none;"><input type="text" name="ip_remote" value="<?php echo htmlspecialchars($classroom['IP_remote']) ?>"/></div>
             </td>
             <td>
-                <?php echo $classroom['enabled'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<i></i>'; ?>
+                <?php echo $classroom['enabled'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span></span>'; ?>
             </td>
             <td>
                 <button class="btn btn-small enabled_button <?php echo !$classroom['enabled'] ? 'btn-success' : '' ?>"><?php echo !$classroom['enabled'] ? '®enable®' : '®disable®' ?></button>

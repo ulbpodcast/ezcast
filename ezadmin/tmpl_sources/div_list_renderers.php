@@ -25,13 +25,14 @@ require_once 'config.inc';
         if($return_val != 0){
             $r['no_ping'] = true;
         } else {
-        $r = lib_scheduling_renderer_metadata($r);
+            $r['no_ping'] = false;
+            $r = lib_scheduling_renderer_metadata($r);
         }
         //var_dump($r2);
         ?>
         <tr class="<?php echo $class; ?>">
             <td><?php if($r['no_ping'] === true) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
-                      if($r['ssh_error'] === true) echo '<span title="®ssh_error®"><span class="glyphicon glyphicon-warning-sign"></span></span>';?></td>
+                      if(isset($r['ssh_error']) && $r['ssh_error'] === true) echo '<span title="®ssh_error®"><span class="glyphicon glyphicon-warning-sign"></span></span>';?></td>
             <td><?php echo $r['performance_idx']; ?></td>
             <td class="renderer_name"><?php echo $r['name']; ?></td>
             <td><?php echo $r['host']; ?></td>

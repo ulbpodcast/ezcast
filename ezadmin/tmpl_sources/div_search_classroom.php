@@ -15,19 +15,6 @@
     <input type="submit" name="search" value="®search®" class="btn btn-primary">
     <input type="reset" name="reset" value="®reset®" class="btn"> <br />
     
-    <!--
-    <fieldset style="display:inline-block;">
-        ®room_enabled®: 
-        <label class="checkbox">
-            <input type="checkbox" title="®enabled®" name="enabled" <?php echo isset($input['enabled']) ? 'checked' : ''; ?> />
-            ®yes®
-        </label>
-        <label class="checkbox">
-            <input type="checkbox" title="®disabled®" name="not_enabled" <?php echo isset($input['not_enabled']) ? 'checked' : ''; ?> />
-            ®no®
-        </label>
-    </fieldset>
-    -->
 </form>
 
 <hr>

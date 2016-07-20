@@ -491,28 +491,29 @@ function db_users_courses_get($course_code, $user_ID) {
  * @param type $name
  * @param type $ip
  * @param type $enabled -1 for both enabled and disabled; 0 for disabled only; 1 for enabled only
+ * @return PDO statement or FALSE on failure
  */
 function db_classrooms_search($room_ID, $name, $ip, $enabled, $order, $limit) {
-	global $db_object;
-	
-	$query =
-	   'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .
-			db_gettable('classrooms') . '.room_ID, ' .
-			db_gettable('classrooms') . '.name, ' .
-			db_gettable('classrooms') . '.IP, ' .
-			db_gettable('classrooms') . '.IP_remote, ' .
-			db_gettable('classrooms') . '.enabled ' .
-	   'FROM '. db_gettable('classrooms') . ' ' .
-	   'WHERE ' . 
-			'room_ID LIKE "' . $room_ID . '" AND ' .
-			'name LIKE "' . $name . '" AND '. 
-			'IP LIKE "' . $ip . '"' .
-			($enabled != -1 ? ' AND enabled = ' . $enabled : '') .
-	   ($order ? ' ORDER BY ' . $order : '') .
-	   ($limit ? ' LIMIT ' . $limit : '');
-	;
+    global $db_object;
 
-	return $db_object->query($query);
+    $query =
+       'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .
+                    db_gettable('classrooms') . '.room_ID, ' .
+                    db_gettable('classrooms') . '.name, ' .
+                    db_gettable('classrooms') . '.IP, ' .
+                    db_gettable('classrooms') . '.IP_remote, ' .
+                    db_gettable('classrooms') . '.enabled ' .
+       'FROM '. db_gettable('classrooms') . ' ' .
+       'WHERE ' . 
+                    'room_ID LIKE "' . $room_ID . '" AND ' .
+                    'name LIKE "' . $name . '" AND '. 
+                    'IP LIKE "' . $ip . '"' .
+                    ($enabled != -1 ? ' AND enabled = ' . $enabled : '') .
+       ($order ? ' ORDER BY ' . $order : '') .
+       ($limit ? ' LIMIT ' . $limit : '');
+    ;
+
+    return $db_object->query($query);
 }
 
 /**

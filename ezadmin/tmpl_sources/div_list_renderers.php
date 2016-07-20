@@ -21,7 +21,7 @@ require_once 'config.inc';
     <?php
     include_once 'lib_scheduling.php';
     foreach ($renderers as $r) {
-        exec('ping '.$r['host'] . ' 10', $output, $return_val); 
+        exec('ping -c 1 '.$r['host'], $output, $return_val); 
         if($return_val != 0){
             $r['no_ping'] = true;
         } else {

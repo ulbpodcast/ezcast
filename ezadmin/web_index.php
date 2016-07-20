@@ -605,16 +605,18 @@ function view_classrooms() {
         $room_ID = db_sanitize($input['room_ID']);
         $name = db_sanitize($input['name']);
         $ip = db_sanitize($input['IP']);
-        $enabled = $input['enabled'] ? 1 : 0;
-        $not_enabled = $input['not_enabled'] ? 1 : 0;
         $page = $input['page'];
         $col = $input['col'];
         $order = $input['order'];
         $size = 20;
         $limit = (intval($page) - 1) * $size;
 
-        $classrooms = db_classrooms_search($room_ID, $name, $ip, $enabled == $not_enabled ? -1 : $enabled, $col . ' ' . $order, '' . $limit . ', ' . $size);
-
+        $classrooms = db_classrooms_search($room_ID, $name, $ip, -1, $col . ' ' . $order, '' . $limit . ', ' . $size);
+        if($classrooms == false) {
+            //todo: logger instead ?
+            die("view_classrooms: db_classrooms_search failed");
+        }
+        
         $rows = db_found_rows();
         $max = intval($rows / 20) + 1;
     } else {

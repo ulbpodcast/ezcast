@@ -56,12 +56,12 @@
         <th></th>
     </tr>
     
-    <?php foreach($classrooms as $classroom) {
-     
+    <?php 
+        foreach($classrooms as $classroom) {
         ?>
         <tr>
             <td>
-                <?php exec('ping '.$classroom['IP'] . ' 10', $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
+                <?php exec('ping -c 1 '.$classroom['IP'], $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
             </td>
             <td class="room_id">
                 <div class="view"><?php echo $classroom['room_ID'] ?></div>

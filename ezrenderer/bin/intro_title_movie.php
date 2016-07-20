@@ -391,7 +391,7 @@ function get_title_info($title_meta_path, $title_filename, &$title_assoc) {
         myerror("Title metadata file read error $title_meta_path/$title_filename\n");
 
     //check if we dont have any invalid properties
-    $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright");
+    $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright", "keywords");
     $badmeta = "";
     foreach ($title_assoc as $key => $value) {
         if (!in_array($key, $valid_title_elems)) {

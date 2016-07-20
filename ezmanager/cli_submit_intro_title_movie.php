@@ -161,7 +161,7 @@ function submit_itm_set_title($album_meta,$asset_meta,$render_dir){
     'date'=> $human_date,
     'organization'=>$organization_name,
     'copyright'=>$copyright,
-+   'keywords'=>$movie_keywords
+    'keywords'=>$movie_keywords
    );
 //write the title xml file to the "shared directory"
 $res=assoc_array2metadata_file($title_info,$render_dir."/title.xml");

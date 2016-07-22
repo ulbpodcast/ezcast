@@ -21,7 +21,7 @@
  * sprintf functions contained in jqplot.sprintf.js by Ash Searle:
  *
  *     version 2007.04.27
- *     author Ash Searle
+ *     author Ash Searle  
  *     http://hexmen.com/blog/2007/03/printf-sprintf/
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:

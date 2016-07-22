@@ -65,12 +65,12 @@ echo '</script>';
     <div id="month-search form-inline">
         <div class="form-group col-md-6">
             <input type="text" id="dpMonths" class="form-control" data-date-format="mm/yyyy" 
-                   value="<?php echo $todayMY; ?>" placeholder="Click me!" 
+                   value="<?php echo $todayMY; ?>" placeholdorm-controler="Click me!" 
                    data-date-viewmode="years" data-date-minviewmode="months">
             </input> 
         </div>
         <a id="submit-month-search" class="btn btn-success btn-search" 
-           onclick="javascript:getStatsByMonth()"> <span class="glyphicon glyphicon-search icon-white"></span>®search®</a>               
+           onclick="javascript:getStatsByMonth()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
     </div>
     <br/>
     <div id="month-stats">                
@@ -81,14 +81,15 @@ echo '</script>';
 </div>
 
 <!-- S E A R C H   F O R   x L A S T   D A Y S -->
-<div class="page-header">
-    <h4>®stats_n_days®</h4>
-</div>
+<br />
+<h4>®stats_n_days®</h4>
 
-<div id="nDays-search">
-    <input type="text" id="nDays" class="input-lg"></input> 
+<div id="nDays-search form-inline">
+    <div class="form-group col-md-3">
+        <input type="text" id="nDays" class="form-control"></input> 
+    </div>
     <a id="submit-nDays-search" class="btn btn-success btn-search"
-       onclick="javascript:getStatsByNDays()"> <span class="glyphicon glyphicon-search icon-white"></span>®search®</a>               
+       onclick="javascript:getStatsByNDays()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
 </div>
 <br/>
 <div id="nDays-stats">                
@@ -98,9 +99,7 @@ echo '</script>';
 <br/>
 
 <div class="jumbotron">
-    <div class="page-header">
-        <h2>®stats_other®</h2>
-    </div>
+    <h4>®stats_other®</h4>
 
     <div>
         <form action="index.php?action=get_csv_assets" method="post" id="csv_assets_form" name="csv_assets_form" onsubmit="return false">

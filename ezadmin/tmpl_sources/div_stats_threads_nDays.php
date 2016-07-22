@@ -38,6 +38,12 @@ if (isset($_SESSION['nDaysStats'])) {
                     legend: {
                         show: true,
                         location: 'e'
+                    },
+                    highlighter: {
+                        show: true,
+                        useAxesFormatters: false,
+                        tooltipFormatString: '%s',
+                        sizeAdjust: 1.5
                     }
                 }
         );

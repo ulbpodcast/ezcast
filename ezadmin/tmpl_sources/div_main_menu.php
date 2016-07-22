@@ -138,7 +138,7 @@ $category_names = array(
             }
         }
         else { ?>
-            <li <?php if($nb_options > $threshold_num_options) echo 'style="display: none;"'; ?> 
+            <li <?php if($nb_options > $threshold_num_options) { echo 'style="display: none;"'; } ?> 
                 class="sidebar sidebar_<?php echo $cat; 
                 // TODO not work when no operation with input in this page
                 if(isset($input) && isset($input['action']) && ($option['action'] == $input['action'])) {

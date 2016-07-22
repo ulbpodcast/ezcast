@@ -46,7 +46,7 @@ include_once "$path" . "lib_gd.php";
 if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_path>\n";
     echo "        where <directory_path> is the path to a directory containing toprocess.xml and titlemeta.xml xml description files\n";
-    echo "        The command generates a movie with the right intro (given in toprocess.xml), a custom title (info in titlemeta.xml) and the video itself (from toprocess.xml )\n";
+    echo "        The command generates a movie with the right intro (given in toprocess.xml), a custom title (info in titlemeta.xml), the video itself (from toprocess.xml) and a closing credits (from toprocess.xml)\n";
     die;
 }
 
@@ -102,6 +102,8 @@ if (!file_exists($originals['slide']))
 print "\n------------------------ get title info ------------------------\n";
 $res = get_title_info($processing, "title.xml", $title_assoc);
 
+fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($title_assoc, true));
+
 // handle slide movie combine intro title and movie and encode them in 'high' and 'low' flavors
 
 $types = array('slide', 'cam');
@@ -115,9 +117,10 @@ foreach ($types as $type) {
         }
         //save original movie info
         assoc_array2metadata_file($original_qtinfo[$type], $processing . "/original_{$type}_qtinfo.xml");
-        print "\n====================== [START] Combines intro - title - movie and encodes them in HD and LD (slide) ========================\n\n";
-        itm_intro_title_movie($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
-        print "======================= [END] Combines intro - title - movie and encodes them in HD and LD (slide) ===========================\n\n";
+        print "\n====================== [START] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ========================\n\n";
+        itm_intro_title_movie($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie']);
+        //itm_intro_title_movie($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
+        print "======================= [END] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ===========================\n\n";
     }
 }
 
@@ -140,6 +143,7 @@ if (!rename($processing, $processed)) {
         'title.mov',
         'title.jpg',
         'transcoded_intro.mov',
+        'transcoded_credits.mov',
     );
 
     foreach ($blacklist as $file) {
@@ -168,8 +172,8 @@ exit(0); //quit successfully
  * @param bool $chapterize
  * @abstract process movie with addition of intro and title if present.
  */
-function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_title) {
-    global $processing, $intros_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies;
+function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_title, $credits) {
+    global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies;
 
 
     $qtinfo = $original_qtinfo[$camslide];
@@ -276,10 +280,68 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
 
             array_push($movies_to_join, $title_movieout);
         }
-        //add the real movie part to intro and title if they are present (intro , title, input_movie)
-        if (count($movies_to_join) > 0) {
+        
+        array_push($movies_to_join, $transcoded_movie);
+        
+        print "#################################################################################################\n\n";
+        if (trim($credits) != "") {
+            //encodes original credits movie using the same encoder as for the video
+            switch ($qtinfo["aspectRatio"]) {
+                case "16:9":
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['16:9'];
+                    if (!file_exists($credits_movie))
+                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
+                    break;
+                case "16:10":
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['16:10'];
+                    if (!file_exists($credits_movie))
+                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
+                    break;
+                case "3:2":
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['3:2'];
+                    if (!file_exists($credits_movie))
+                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
+                    break;
+                case "4:3":
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['4:3'];
+                    if (!file_exists($credits_movie))
+                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
+                    break;
+                case "5:3":
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['5:3'];
+                    if (!file_exists($credits_movie))
+                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
+                    break;
+                case "5:4":
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['5:4'];
+                    if (!file_exists($credits_movie))
+                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
+                    break;
+                case "8:5":
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['8:5'];
+                    if (!file_exists($credits_movie))
+                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
+                    break;
+                default : 
+                    if ($qtinfo['height'] != 0) {
+                        $ratio = $qtinfo['width'] / $qtinfo['height'];
+                        $qtinfo["aspectRatio"] = (abs($ratio - 1.77) <= abs($ratio - 1.33)) ? '16:9' : '4:3';
+                    }
+                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies[$qtinfo["aspectRatio"]];
+                    break;
+            }
+
+            $transcoded_credits = $processing . "/transcoded_credits.mov";
+
+            print "\n----------------- transcoding credits with encoder $encoder ---------------------\n\n";
+            safe_movie_encode($credits_movie, $transcoded_credits, $encoder, false);
+            array_push($movies_to_join, $transcoded_credits);
+            print "\n\n$quality credits encoder: $encoder\n";
+        }
+        
+        //add the real movie part to intro, title and credits if they are present (intro , title, input_movie, credits)
+        if (count($movies_to_join) > 1) {
             //var_dump($movies_to_join);
-            array_push($movies_to_join, $transcoded_movie);
             $outputrefmovie = $processing . "/output_ref_movie.mov";
             print "\n------------------------ joining intro title movie parts ---------------------\n";
             $res = movie_join_array($movies_to_join, $outputrefmovie);
@@ -365,12 +427,14 @@ function processing_status($status) {
  * @desc load the title (xml) info and validate it. parameters should be in title,author,date,organization,copyright
  */
 function get_processing_info($processing_info_path, $processing_filename, &$processing_assoc) {
-    global $intros_dir, $processing;
+    global $intros_dir, $credits_dir, $processing;
     $processing_assoc = metadata2assoc_array($processing_info_path . "/" . $processing_filename);
     if (!is_array($processing_assoc))
         myerror("processing info file read error $processing_info_path/$processing_filename\n");
     if (!is_dir($intros_dir . "/" . $processing_assoc['intro_movie']))
         myerror("intro_movie not found\n");
+    if (!is_dir($credits_dir . "/" . $processing_assoc['credits_movie']))
+        myerror("credits_movie not found\n");
     if (!is_file($processing . "/" . $processing_assoc['input_movie_file']))
         myerror("input_movie_file not found\n");
     return true;
@@ -393,7 +457,7 @@ function get_title_info($title_meta_path, $title_filename, &$title_assoc) {
         myerror("Title metadata file read error $title_meta_path/$title_filename\n");
 
     //check if we dont have any invalid properties
-    $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright");
+    $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright", "keywords");
     $badmeta = "";
     foreach ($title_assoc as $key => $value) {
         if (!in_array($key, $valid_title_elems)) {

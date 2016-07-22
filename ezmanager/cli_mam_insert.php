@@ -109,6 +109,7 @@ $asset_meta['super_highres'] = $recording_metadata['super_highres'];
 if(isset($recording_metadata['submitted_cam']))$asset_meta['submitted_cam']=$recording_metadata['submitted_cam'];
 if(isset($recording_metadata['submitted_slide']))$asset_meta['submitted_slide']=$recording_metadata['submitted_slide'];
 if(isset($recording_metadata['intro']))$asset_meta['intro']=$recording_metadata['intro'];
+if(isset($recording_metadata['credits']))$asset_meta['credits']=$recording_metadata['credits'];
 if(isset($recording_metadata['add_title']))$asset_meta['add_title']=$recording_metadata['add_title'];
 $asset_meta['ratio']= (isset($recording_metadata['ratio'])) ? $recording_metadata['ratio'] : 'auto';
 if(isset($recording_metadata['downloadable'])){ // if the recording has been submitted
@@ -139,7 +140,7 @@ rename($recording_dir, $inserted_recording_dir );
 //now launch cam and/or slide video processing
 
 
-    //infos neccessaires: quelle intro, info titre , input movie
+    //infos neccessaires: quelle intro, info titre , input movie , closing credits
     // intro donnees dans les metadata de l'album? ou global semeur?
     // info titre tirees des meta de l'asset
     //input movie donnee par le media

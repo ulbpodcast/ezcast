@@ -101,6 +101,16 @@
         <label id="Jingle_info" lang="en">Animation added before the actual video.</label>
         <label id='None_intro' lang="fr">Aucun</label>
         <label id='None_intro' lang="en">None</label>
+        
+        <label id="Credit" lang="fr">Crédits</label>
+        <label id="Credit" lang="en">Credits</label>
+        <label id="Credits" lang="fr">Générique fin</label>
+        <label id="Credits" lang="en">Closing crédits</label>
+        <label id="Credits_info" lang="fr">Animation visuelle ajoutée en fin de vidéo.</label>
+        <label id="Credits_info" lang="en">Animation added after the actual video.</label>
+        <label id='None_credits' lang="fr">Aucun</label>
+        <label id='None_credits' lang="en">None</label>
+        
         <label id="Title" lang="fr">Titre</label>
         <label id="Title" lang="en">Title</label>
         <label id="Title_info" lang="fr">Max. 70 caractères</label>

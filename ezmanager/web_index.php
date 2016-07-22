@@ -42,6 +42,8 @@ require_once 'lib_upload.php';
 require_once 'lib_toc.php';
 $input = array_merge($_GET, $_POST);
 
+
+
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
@@ -689,6 +691,8 @@ function user_logout() {
  * @global type $repository_path
  * @global type $dir_date_format
  * @global type $default_intro 
+ * ----Update 2016/07/19
+ * @global type $default_credits
  */
 function album_create() {
     global $input;
@@ -698,6 +702,7 @@ function album_create() {
     global $default_intro;
     global $default_add_title;
     global $default_downloadable;
+	global $default_credits;
 
     //
     // Sanity checks
@@ -720,6 +725,7 @@ function album_create() {
         'date' => date($dir_date_format),
         'anac' => $anac,
         'intro' => $default_intro,
+        'credits' => $default_credits,
         'add_title' => $default_add_title,
         'downloadable' => $default_downloadable
     );
@@ -959,6 +965,8 @@ function upload_init() {
     else
         $moderation = "true";
 
+	//fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($input, true));
+
     $metadata = array(
         'course_name' => $input['album'],
         'origin' => 'SUBMIT',
@@ -973,6 +981,7 @@ function upload_init() {
         'record_date' => $record_date,
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
+        'credits' => $input['credits'],
         'add_title' => $input['add_title'],
         'downloadable' => $input['downloadable'],
         'ratio' => $input['ratio']
@@ -1281,6 +1290,7 @@ function submit_media() {
         'record_date' => date($dir_date_format),
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
+        'credits' => $input['credits'],
         'add_title' => $input['add_title'],
         'downloadable' => $input['downloadable'],
         'ratio' => $input['ratio']
@@ -1327,7 +1337,7 @@ function album_edit() {
     // Usual sanity checks
     //
     if (!isset($input['album']) || !isset($input['moderation'])) {
-        echo "Usage: index.php?action=edit_album&session=SESSION_ID&intro=INTRO&addTitle=ADD_TITLE";
+        echo "Usage: index.php?action=edit_album&session=SESSION_ID&intro=INTRO&addTitle=ADD_TITLE&credits=CREDITS";
         die;
     }
 
@@ -1350,10 +1360,11 @@ function album_edit() {
     $album_meta = ezmam_album_metadata_get($album);
 
     $album_meta['intro'] = $input['intro'];
+    $album_meta['credits'] = $input['credits'];
     $album_meta['add_title'] = $input['add_title'];
     $album_meta['downloadable'] = $input['downloadable'];
-
-    $res = ezmam_album_metadata_set($album, $album_meta);
+    
+   $res = ezmam_album_metadata_set($album, $album_meta);
 
     if (!$res) {
         error_print_message(ezmam_last_error());
@@ -1701,6 +1712,7 @@ function view_submit_media() {
     global $dir_date_format;
     global $submit_upload_dir;
     global $intros;
+    global $credits;
     global $repository_path;
     global $default_add_title;
     global $titlings;
@@ -1716,6 +1728,7 @@ function view_submit_media() {
 
     // for preselection in the form
     $album_intro = $album_meta['intro'];
+    $album_credits = $album_meta['credits'];
     if (isset($album_meta['add_title'])) {
         $add_title = $album_meta['add_title'];
     } else {
@@ -1731,6 +1744,7 @@ function view_submit_media() {
 
 function view_edit_album() {
     global $intros;
+    global $credits;
     global $titlings;
     global $downloadable;
     global $repository_path;
@@ -1747,6 +1761,8 @@ function view_edit_album() {
 
     // for preselection in the form
     $album_intro = $album_meta['intro'];
+    $album_credits = $album_meta['credits'];
+    
     if (isset($album_meta['add_title'])) {
         $add_title = $album_meta['add_title'];
     } else {

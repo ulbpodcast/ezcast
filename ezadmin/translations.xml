@@ -6,7 +6,7 @@
     * Copyright (C) 2014 Université libre de Bruxelles
     *
     * Written by Michel Jansens <mjansens@ulb.ac.be>
-    * 		    Arnaud Wijns <awijns@ulb.ac.be>
+    *    Arnaud Wijns <awijns@ulb.ac.be>
     *                   Antoine Dewilde
     *                   Thibaut Roskam
     *
@@ -24,7 +24,7 @@
     * License along with this software; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-    Document   : translations.xml
+    Document   : translations.xml 
     Author     : Université libre de Bruxelles
     Description:
         Message translations for all the user interface.
@@ -336,6 +336,10 @@
         <label id="date_start" lang="en">After (YYYY-MM-dd)</label>
         <label id="date_end" lang="fr">Avant (YYYY-MM-dd)</label>
         <label id="date_end" lang="en">Before (YYYY-MM-dd)</label>
+        <label id="from_date" lang="fr">De</label>
+        <label id="from_date" lang="en">From</label>
+        <label id="to_date" lang="fr">A</label>
+        <label id="to_date" lang="en">To</label>
         <label id="table" lang="fr">Catégorie</label>
         <label id="table" lang="en">Category</label>
         <label id="table_users" lang="fr">Utilisateurs</label>
@@ -458,6 +462,23 @@
         <label id="renderer_delete" lang="en">You can now delete EZrenderer files on the remote server (renderer).</label>
         <label id="leave_empty_field" lang="fr">Laisser le champs vide pour conserver le mot de passe</label>
         <label id="leave_empty_field" lang="en">Leave empty field to keep the previous password</label>
+        <label id="monit_classroom" lang="fr">Auditoire</label>
+        <label id="monit_classroom" lang="en">Classroom</label>
+        <label id="monit_teacher" lang="fr">Professeur</label>
+        <label id="monit_teacher" lang="en">Teacher</label>
+        <label id="monit_courses" lang="fr">Cours</label>
+        <label id="monit_courses" lang="en">Courses</label>
+        <label id="monit_context" lang="fr">Contexte</label>
+        <label id="monit_context" lang="en">Context</label>
+        <label id="monit_record_type" lang="fr">Type d'enregistrement</label>
+        <label id="monit_record_type" lang="en">Record Type</label>
+        <label id="monit_event_date" lang="fr">Date</label>
+        <label id="monit_event_date" lang="en">Date</label>
+        <label id="monit_log_level" lang="fr">LogLevel</label>
+        <label id="monit_log_level" lang="en">LogLevel</label>
+        <label id="monit_message" lang="fr">Message</label>
+        <label id="monit_message" lang="en">Message</label> 
+        
         
         <!-- Install -->
         <label id="install_page_title" lang="fr">Installation EZcast</label>
@@ -765,17 +786,17 @@
     <!-- update 2016/07/15 -->
     <!-- information customized by organisation -->   
     <infos>
-		<info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-		<info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
-		<info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
-		<info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
-		<info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
-		<info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
-		<info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>		
+        <info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
+        <info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
+        <info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
+        <info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
+        <info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
+        <info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>
     </infos>
 </data>

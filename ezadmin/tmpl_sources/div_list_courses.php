@@ -49,9 +49,7 @@
         <th>®recorders®</th>
     </tr>
         
-    <?php foreach($courses as $course) {
-     
-        ?>
+    <?php foreach($courses as $course) { ?>
         <tr>
             <?php if($use_course_name) { ?>
                 <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo $course['course_code']; ?>"><?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?></a></span></td>

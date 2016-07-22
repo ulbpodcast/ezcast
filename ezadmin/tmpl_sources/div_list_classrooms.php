@@ -61,7 +61,9 @@
         ?>
         <tr>
             <td>
-                <?php exec('ping -c 1 '.$classroom['IP'], $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
+                <?php 
+                //TODO: move this in javascript, this heavily slow down page loading if some recorders are offline
+                exec('ping -c 1 -W 1 '.$classroom['IP'], $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
             </td>
             <td class="room_id">
                 <div class="view"><?php echo $classroom['room_ID'] ?></div>

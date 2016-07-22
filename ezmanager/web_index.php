@@ -490,7 +490,7 @@ function asset_view() {
     if (isset($media_metadata['high_cam'])) {
         $filesize_cam['HD'] = $media_metadata['high_cam']['file_size'];
         $dimensions_cam['HD'] = $media_metadata['high_cam']['width'] . ' x ' . $media_metadata['high_cam']['height'];
-        $format_cam = $media_metadata['high_cam']['codec'];
+        //not used // $format_cam = $media_metadata['high_cam']['videocodec'];
     }
 
     // Everything about the low-res version of the camera video
@@ -503,7 +503,7 @@ function asset_view() {
     if (isset($media_metadata['high_slide'])) {
         $filesize_slides['HD'] = $media_metadata['high_slide']['file_size'];
         $dimensions_slides['HD'] = $media_metadata['high_slide']['width'] . ' x ' . $media_metadata['high_slide']['height'];
-        $format_slides = $media_metadata['high_slides']['codec'];
+        //not used// $format_slides = $media_metadata['high_slides']['videocodec'];
     }
 
     // Everything about the low-res slides
@@ -514,10 +514,15 @@ function asset_view() {
 
     // To get the duration, we use the high cam media if it exists, or the high_slide
     // media otherwise. We assume at least one of these exists.
-    $duration = $media_metadata['high_cam']['duration'];
-    if (!isset($duration) || empty($duration))
+    if(isset($media_metadata['high_cam']))
+        $duration = $media_metadata['high_cam']['duration'];
+    else if(isset($media_metadata['high_slide']))
         $duration = $media_metadata['high_slide']['duration'];
-    $duration = get_user_friendly_duration($duration);
+    
+    if (!isset($duration) || empty($duration))
+        $duration = "Error getting duration";
+    else
+        $duration = get_user_friendly_duration($duration);
 
     // Finally, we set up the URLs and view counts to the different media
     if ($has_cam) {
@@ -1127,6 +1132,9 @@ function upload_finished() {
     global $input;
     global $accepted_media_types;
 
+    if(!isset($input['index']))
+       die();
+    
     $array = array();
 
     $index = $input['index'];

@@ -40,6 +40,7 @@
  */
 define('DEBUG', 5);
 
+require_once __DIR__ . '/config.inc';
 
 /*******************************/
 /****** S C H E D U L E R ******/
@@ -582,7 +583,8 @@ function lib_scheduling_renderer_generate($renderers) {
  * @return array The associated renderer or null
  */
 function lib_scheduling_renderer_find($renderers, $hostname) {
-    foreach($renderers as $renderer) if($renderer['host'] == $hostname) return $renderer;
+    foreach($renderers as $renderer) 
+        if($renderer['host'] == $hostname) return $renderer;
 
     lib_scheduling_warning('Scheduler::renderer_find[not found]{' . $hostname . '}');
 
@@ -825,22 +827,10 @@ function lib_scheduling_file_safe($filename) {
  * @return string|boolean The config value or false
  */
 function lib_scheduling_config($name) {
-    require __DIR__.'/config.inc';
-    switch ($name) {
-        case 'scheduler-path':
-            return $config['paths']['scheduler'];
-        case 'queue-path':
-            return $config['paths']['queue'];
-        case 'processing-path':
-            return $config['paths']['processing'];
-        case 'processed-path':
-            return $config['paths']['processed'];
-        case 'failed-path':
-            return $config['paths']['failed'];
-        case 'frozen-path':
-            return $config['paths']['frozen'];
-function lib_scheduling_config($name) {
-    require __DIR__.'/config.inc';
+    global $config;
+    global $ssh_pgm;
+    global $php_cli_cmd;
+    
     switch ($name) {
         case 'scheduler-path':
             return $config['paths']['scheduler'];
@@ -884,6 +874,7 @@ function lib_scheduling_log($cat, $msg) {
     file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND); 
     //also print it to console in case scheduler was started manually
     echo $msg . PHP_EOL;
+}
 
 /*******************************/
 /********** M A I N ************/

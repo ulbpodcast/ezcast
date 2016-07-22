@@ -13,7 +13,7 @@ if (!file_exists('config.inc')) {
     header('Location: install.php');
 }
 
-require 'config.inc';
+require_once 'config.inc';
 session_name($appname);
 session_start();
 require_once 'lib_statistics.php';
@@ -1063,7 +1063,7 @@ function create_renderer() {
             $renderer_name = $input['renderer_name'];
             $renderer_address = $input['renderer_address'];
             $renderer_user = $input['renderer_user'];
-            $enabled = $input['enabled'] ? 1 : 0;
+            $enabled = isset($input['enabled']) && $input['enabled'] ? 1 : 0;
 
             if (empty($renderer_name)) {
                 $error = template_get_message('missing_renderer_name', get_lang());
@@ -1112,7 +1112,7 @@ function create_renderer() {
         // 2. Ask user to copy SSH key on remote renderer and test connection
         case "2" :
 
-            if ($input['submit_step_2_prev']) {
+            if (isset($input['submit_step_2_prev']) && $input['submit_step_2_prev']) {
                 // back to step 1
                 $input['renderer_name'] = $_SESSION['renderer_name'];
                 $input['renderer_user'] = $_SESSION['renderer_user'];
@@ -1165,7 +1165,7 @@ function create_renderer() {
 
         // 3. Additional information for EZrenderer installation
         case "3" :
-            if ($input['submit_step_3_prev']) {
+            if (isset($input['submit_step_3_prev']) && $input['submit_step_3_prev']) {
                 // back to step 2
                 $ssh_public_key = $_SESSION['renderer_ssh_key'];
                 include template_getpath('div_main_header.php');
@@ -1203,7 +1203,7 @@ function create_renderer() {
                     die;
                 }
 
-                if ($input['submit_step_3_next']) {
+                if (isset($input['submit_step_3_next']) && $input['submit_step_3_next']) {
                     // tests PHP, FFMPEG and FFPROBE
 
                     $error = "";
@@ -1299,7 +1299,7 @@ function create_renderer() {
             if ($input['renderer_options'] == 'ffmpeg_exp')
                 $display_ffmpeg_exp = true;
 
-            if ($input['submit_step_4_prev']) {
+            if (isset($input['submit_step_4_prev']) && $input['submit_step_4_prev']) {
                 // back to step 3
 
                 include template_getpath('div_main_header.php');

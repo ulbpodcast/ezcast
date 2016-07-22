@@ -101,8 +101,6 @@
         <label id="list_recorder_admins" lang="en">Admins list</label>
         <label id="new_recorder_admin" lang="fr">Ajouter administrateur</label>
         <label id="new_recorder_admin" lang="en">Add admin</label>
-        <label id="push_to_recorder" lang="fr">Envoyer changements</label>
-        <label id="push_to_recorder" lang="en">Push changes</label>
         <label id="renderers_queue" lang="fr">Liste de jobs</label>
         <label id="renderers_queue" lang="en">Job queue</label>
         <label id="renderers_list" lang="fr">Liste renderers</label>
@@ -312,6 +310,8 @@
         <label id="delete" lang="en">Delete</label>        
         <label id="push_changes" lang="fr">Envoyer changements</label>   
         <label id="push_changes" lang="en">Push changes</label>        
+        <label id="push_changes_title" lang="fr">Envoyer changements aux recorders</label>   
+        <label id="push_changes_title" lang="en">Push changes to recorders</label>        
         <label id="sync_externals" lang="fr">Synchro externes</label>   
         <label id="sync_externals" lang="en">Sync externals</label>        
         <label id="unsaved_changes" lang="fr">non-sauvegardé</label>   

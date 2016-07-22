@@ -163,7 +163,7 @@ $category_names = array(
         } // end foreach?>
     <?php } // end foreach ?>
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>
-    <li class="sidebar"><a style="<?php echo ($_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
+    <li class="sidebar" title="®push_changes_title®"><a style="<?php echo (isset($_SESSION['changes_to_push']) && $_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
     <li class="sidebar"><a href="index.php?action=sync_externals">®sync_externals®</a></li>
     <li class="sidebar"><a href="?<?php echo SID."&action=logout"?>">®logout®</a></li>
 </ul>

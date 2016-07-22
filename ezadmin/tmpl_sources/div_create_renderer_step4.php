@@ -42,7 +42,7 @@
         <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error ?></div>
         <?php } ?>
-        <?php if ($tests_success) { ?>
+        <?php if (isset($tests_success) && $tests_success) { ?>
             <div class="alert alert-success">®configuration_success®</div>
         <?php } ?>
         <input type="hidden" name="renderer_step" value="4"/>

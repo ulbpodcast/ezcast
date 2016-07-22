@@ -125,6 +125,8 @@
         <label id="stats_category" lang="en">Stats</label>
         <label id="renderers_category" lang="fr">Traitement</label>
         <label id="renderers_category" lang="en">Rendering</label>
+        <label id="monitoring_category" lang="fr">Moniteur</label>
+        <label id="monitoring_category" lang="en">Monitor</label>
         <label id="additional_options" lang="fr">Autres</label>
         <label id="additional_options" lang="en">Misc</label>
         <label id="logout" lang="fr">Déconnexion</label>
@@ -148,7 +150,9 @@
         <label id="list_classrooms_title" lang="fr">Liste des locaux</label>
         <label id="list_classrooms_title" lang="en">Room list</label>     
         <label id="list_jobs_title" lang="fr">Liste des jobs</label>
-        <label id="list_jobs_title" lang="en">Jobs list</label>     
+        <label id="list_jobs_title" lang="en">Jobs list</label>
+        <label id="list_event_title" lang="fr">Liste des events</label>
+        <label id="list_event_title" lang="en">Events list</label>
         <label id="course_details_title" lang="fr">Détail du cours</label>
         <label id="course_details_title" lang="en">Course information</label>
         <label id="user_details_title" lang="fr">Détail de l'utilisateur</label>
@@ -165,6 +169,7 @@
         <label id="ezadmin_access_title" lang="en">Can access EZadmin</label>
         <label id="logs_title" lang="fr">Historique des opérations</label>
         <label id="logs_title" lang="en">Logs</label>
+        
         
         <!-- Form fields -->
         <label id="submit_button" lang="fr">Envoyer</label>
@@ -547,8 +552,6 @@
         <label id="stats_total" lang="en">Total</label>
         <label id="stats_average" lang="fr">Moyenne</label>
         <label id="stats_average" lang="en">Average</label>
-        <label id="search" lang="fr">Rechercher</label>
-        <label id="search" lang="en">Search</label>
         
         
         <!-- Long texts -->

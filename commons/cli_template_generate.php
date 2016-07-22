@@ -60,7 +60,7 @@ template_set_errors_visible();
 template_set_warnings_visible();
 
 echo 'Translation of *all* templates in '.$source_folder.' will now start.' . PHP_EOL;
-echo 'Output language: '. $lang . PHP_EOL . PHP_EOL;
+echo 'Output language: '. $lang . PHP_EOL;
 
 $files = template_list_files($source_folder);
 
@@ -75,5 +75,5 @@ foreach($files as $file) {
 
 if(template_last_error() != '' || template_last_warning() != '')
     echo PHP_EOL;
-echo 'Translation finished, you can find your files in \''.$output_folder.'/'.$lang . '\'' . PHP_EOL;
+echo 'Translation finished, you can find your files in \''.$output_folder.'/'.$lang . '\'' . PHP_EOL . PHP_EOL;
 ?>

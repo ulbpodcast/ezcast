@@ -97,6 +97,14 @@ $options['Renderers'] = array(
    )
 );
 
+$options['Monitoring'] = array(
+    'podcastcours_monit_list_events' => array(
+        'name' => '®list_event_title®',
+        'action' => 'view_events'
+        //'args' => array('table' => 'podcastcours_users_courses')
+    )
+);
+
 $options['Stats'] = array(
    'stats_ezplayer_threads' => array(
        'name' => '®stats_ezplayer_threads®',
@@ -117,7 +125,8 @@ $category_names = array(
     'EZadmin' => '®ezadmin_category®',
     'Stats' => '®stats_category®',
     'Users' => '®users_category®',
-    'Renderers' => '®renderers_category®'
+    'Renderers' => '®renderers_category®',
+    'Monitoring' => '®monitoring_category®'
 );
 
 ?>

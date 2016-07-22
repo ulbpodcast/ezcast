@@ -1,5 +1,8 @@
 function getStatsByMonth() {
-    var datePicked = $('#dpMonths').val();
+    var nowTemp = new Date();
+    
+    var datePicked = $('#datetimepickerMonths').data('date');
+    alert(datePicked);
     var year = datePicked.substring(3, 7);
     var month = datePicked.substring(0, 2);
     if (year < nowTemp.getFullYear() ||

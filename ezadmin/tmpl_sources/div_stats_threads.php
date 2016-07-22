@@ -64,10 +64,16 @@ echo '</script>';
 
     <div id="month-search form-inline">
         <div class="form-group col-md-6">
-            <input type="text" id="dpMonths" class="form-control" data-date-format="mm/yyyy" 
-                   value="<?php echo $todayMY; ?>" placeholdorm-controler="Click me!" 
-                   data-date-viewmode="years" data-date-minviewmode="months">
-            </input> 
+            <div class='input-group date' id='datetimepickerMonths'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar">
+                    </span>
+                </span>
+            </div>
+<!--            <input type="text" id="dpMonths" class="form-control" data-date-format="mm/yyyy" 
+                   value="<?php //echo $todayMY; ?>" placeholdorm-controler="Click me!" 
+                   data-date-viewmode="years" data-date-minviewmode="months" />-->
         </div>
         <a id="submit-month-search" class="btn btn-success btn-search" 
            onclick="javascript:getStatsByMonth()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
@@ -85,8 +91,8 @@ echo '</script>';
 <h4>®stats_n_days®</h4>
 
 <div id="nDays-search form-inline">
-    <div class="form-group col-md-3">
-        <input type="text" id="nDays" class="form-control"></input> 
+    <div class="form-group col-md-3">  
+        <input type="number" min="1" id="nDays" class="form-control"></input> 
     </div>
     <a id="submit-nDays-search" class="btn btn-success btn-search"
        onclick="javascript:getStatsByNDays()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
@@ -113,7 +119,15 @@ echo '</script>';
 
 
 <script>
-
+    
+    $(function () {
+        $('#datetimepickerMonths').datetimepicker({
+            viewMode: 'years',
+            format: 'MM/YYYY'
+        });
+    });
+    
+    
     var pieChartGeneral = jQuery.jqplot('pieChartGeneral', [dataArrayPieChart],
             {
                 defaultHeight: 1200,

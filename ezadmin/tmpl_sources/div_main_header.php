@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <!-- Note: for details about the layout and Boostrap framwork, see http://twitter.github.com/bootstrap/ -->
+        <!-- Note: for details about the layout and Boostrap framwork, see http://getbootstrap.com/ -->
 
         <title><?php
             global $appname;
@@ -11,21 +11,22 @@
                 echo ' (®unsaved_changes®)';
             ?></title>
         <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+        <script type="text/javascript" src="js/moment.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.23345.js"></script>
         <script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
         <script type="text/javascript" src="js/plugins/jqplot.pieRenderer.min.js"></script>
         <script type="text/javascript" src="js/plugins/jqplot.highlighter.js"></script>
         <script type="text/javascript" src="js/plugins/jqplot.enhancedPieLegendRenderer.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
-        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/bootstrap-datetimepicker.min.js"></script>
         <script src="js/stats.js"></script>
         
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
         <link href="css/style.css" rel="stylesheet">
-        <link href="css/datepicker.css" rel="stylesheet"/>
         <link href="css/jquery.jqplot.min.css" rel="stylesheet"/>
         <link href="css/ezplayerStats.css" rel="stylesheet"/>
-
+ 
         <script>
             /**
              * HTML5 Placeholder Text, jQuery Fallback with Modernizr

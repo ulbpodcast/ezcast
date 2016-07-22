@@ -68,7 +68,7 @@ echo -e "Source folder: ${G}$source_folder${N}";
 # then
     dest_folder=$default_dest_folder;
 # fi;
-mkdir $dest_folder;
+mkdir -p $dest_folder;
 echo -e "Destination folder: ${G}$dest_folder${N}";
 # echo " ";
 

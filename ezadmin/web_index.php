@@ -80,6 +80,7 @@ else {
     // Controller goes here
     //var_dump($action);
 
+    //TODO check if not used ?
     if (strpos($action, '_list') !== false) {
         $table = strstr($action, '_list', true);
         $action = 'view_table';
@@ -87,7 +88,7 @@ else {
         $table = strstr($action, '_new', true);
         $action = 'add_to_table';
     }
-
+    
     switch ($action) {
         // In case we want to log out
         case 'logout':
@@ -100,7 +101,7 @@ else {
         case 'login':
             redraw_page();
             break;
-
+        
         case 'view_logs':
             view_logs();
             break;
@@ -249,6 +250,11 @@ else {
             stat_csv_by_asset();
             break;
 
+        case 'view_events':
+            view_list_event();
+            break;
+        
+        
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
@@ -796,21 +802,23 @@ function create_user() {
         $valid = false;
         if (empty($user_ID)) {
             $error = template_get_message('missing_user_ID', get_lang());
+            
         } else if (empty($input['recorder_passwd'])) {
             $error = template_get_message('missing_recorder_passwd', get_lang());
-            ;
+            
         } else if (empty($forename)) {
             $error = template_get_message('missing_forename', get_lang());
-            ;
+            
         } else if (empty($surname)) {
             $error = template_get_message('missing_surname', get_lang());
-            ;
+            
         } else {
             $valid = db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions);
-            if ($is_ezadmin)
+            if ($is_ezadmin) {
                 add_admin_to_file($input['user_ID']);
-            else
+            } else {
                 remove_admin_from_file($input['user_ID']);
+            }
             db_log(db_gettable('users'), 'Created user ' . $input['user_ID'], $_SESSION['user_login']);
         }
 
@@ -837,6 +845,55 @@ function view_stats_threads() {
     include template_getpath('div_stats_threads.php');
     include template_getpath('div_main_footer.php');
 }
+
+/**
+ * View all the event list
+ */
+function view_list_event() {
+    global $input;
+
+    $events = array();
+
+    if (isset($input['post'])) {
+//        $user_ID = db_sanitize($input['user_ID']); 
+//        $forename = db_sanitize($input['forename']);
+//        $surname = db_sanitize($input['surname']);
+//        $intern = $input['intern'] ? 1 : 0;
+//        $extern = $input['extern'] ? 1 : 0;
+//        $is_admin = $input['is_admin'] ? 1 : 0;
+//        $is_not_admin = $input['is_not_admin'] ? 1 : 0;
+        $page = intval($input['page']);
+//        $col = addslashes($input['col']);
+//        $order = $input['order'] == 'ASC' ? 'ASC' : 'DESC';
+//        $size = 20;
+//        $limit = (intval($page) - 1) * $size;
+//
+//        $users = db_users_list($user_ID, $surname, $forename, ($intern == $extern) ? -1 : (($extern == 1) ? 'external' : 'internal'), ($is_admin == $is_not_admin) ? -1 : $is_admin, $col . ' ' . $order, '' . $limit . ', ' . $size);
+//
+//        $rows = db_found_rows();
+//        $max = intval($rows / 20) + 1;
+    } else {
+        // default options
+//        $input['intern'] = 1;
+//        $input['extern'] = 1;
+//        $input['is_admin'] = 1;
+//        $input['is_not_admin'] = 1;
+        $input['page'] = 1;
+//        $input['col'] = 'user_ID';
+//        $input['order'] = 'ASC';
+    }
+    
+    
+    // Display page
+    include template_getpath('div_main_header.php');
+    include template_getpath('div_monit_search_events.php');
+    if(!empty($events)) {
+        include template_getpath('div_monit_list_events.php');
+    }
+    include template_getpath('div_main_footer.php');
+}
+
+
 
 function remove_user() {
     global $input;

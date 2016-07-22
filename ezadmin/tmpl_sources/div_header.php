@@ -8,7 +8,9 @@
                 ?>"><img src="./img/organization-logo.png" height="42px;"/></a>
                <?php } ?>
             <a href="index.php"><img src="./img/ezadmin.png" alt="" height="42px;"/></a>
-            <?php if (isset($_SESSION['changes_to_push'])) echo '<small class="badge badge-important" title="®unsaved_changes®">!</small>'; ?>
+            <?php if (isset($_SESSION['changes_to_push'])) {
+                echo '<small class="badge badge-important" title="®unsaved_changes®">!</small>';
+            } ?>
         </div>
     </div>
 </div>

@@ -27,8 +27,7 @@
 /**
  * @package ezcast.commons.lib.database
  */
-if (file_exists('config.inc'))
-    require_once 'config.inc';
+include_once 'config.inc'; //include instead of require because this file is used in installation where config may not be create yet
 
 // GLOBALS
 $db_object = null;

@@ -112,6 +112,7 @@ class Logger extends AbstractLogger {
         //concat contexts for db insert
         $contextStr = implode('|', $context);
         
+        /*
         $insertQuery = 'INSERT INTO '.$this->EVENT_TABLE_NAME.' (`classroom`, `event_time`, `author`, `cam_slide`, `context`, `loglevel`, `message`) VALUES ('.
           '"'.$this->classroomName.'",'.
           '(SELECT datetime()),'.
@@ -123,16 +124,17 @@ class Logger extends AbstractLogger {
           ')';
 
         $this->db->exec($insertQuery);
+        */
     }
     
-    // ----
+    // ---- private
     
     
     /**
      * Current minimum logging threshold. Logs with higher log level than this are ignored.
      * @var LogLevel::*
      */
-    protected $logLevelThreshold = LogLevel::DEBUG;
+    private $logLevelThreshold = LogLevel::DEBUG;
     
     private function fill_type_by_id()
     {
@@ -147,5 +149,3 @@ class Logger extends AbstractLogger {
     }
         
 }
-
-//Ex: $logger->warning(EventType::$TYPE1, );

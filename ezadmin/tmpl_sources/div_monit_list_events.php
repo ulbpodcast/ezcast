@@ -77,7 +77,6 @@
     
 $(function() {
     
-}
     $(".pagination li").click(function() {
         if($(this).hasClass('active')) return;
         page($(this).find("a").data("page"));
@@ -117,5 +116,7 @@ $(function() {
         $form.find("input[name='order']").first().val(order);
         $form.submit();
     }
+    
+});
     
 </script>

@@ -45,17 +45,28 @@
                 showTodayButton: true, 
                 showClose: true,
                 sideBySide: true,
-                format: 'DD/MM/YYYY HH:mm',
-                useCurrent: true,
-                defaultDate: dateNow
+                format: 'YYYY-MM-DD HH:mm',
+                <?php
+                if(isset($input) && array_key_exists('startDate', $input)) {
+                    echo "defaultDate: new Date('".$input['startDate']."')";
+                } else {
+                    echo 'defaultDate: new Date()';
+                }
+                ?>
             });
             
             $('#endDate').datetimepicker({
                 showTodayButton: true,
                 showClose: true,
                 sideBySide: true,
-                format: 'DD/MM/YYYY HH:mm',
-                defaultDate: dateNow
+                format: 'YYYY-MM-DD HH:mm',
+                <?php
+                if(isset($input) && array_key_exists('endDate', $input)) {
+                    echo "defaultDate: new Date('".$input['endDate']."')";
+                } else {
+                    echo 'defaultDate: new Date()';
+                }
+                ?>
             });
             
             $("#startDate").on("dp.change", function (e) {
@@ -106,25 +117,76 @@
             <div class="col-md-3">
                 <label class="sr-only" for="type_id">®monit_type_id®</label>
                 <select name="type_id" class="form-control">
-                    <option value=""></option>
+                    <option value="" selected></option>
                     <?php
                     foreach ($logger->event_type_id as $nameEventType => $num) {
-                        echo '<option value='.$num.'">'.$nameEventType.'</option>';
+                        echo '<option value='.$num.'" ';
+                        if(isset($input) && $input['type_id'] != "" && $input['type_id'] == $num) {
+                            echo 'selected';
+                        }
+                        echo '>'.$nameEventType.
+                            '</option>';
                     }
                     ?>
                 </select>
             </div>
             <div class="col-md-3">
                 <select name="log_level" class="form-control">
-                    <option value="" selected></option>
-                    <option value="0">0 - Emergency</option>
-                    <option value="1">1 - Alert</option>
-                    <option value="2">2 - Critical</option>
-                    <option value="3">3 - Error</option>
-                    <option value="4">4 - Warning</option>
-                    <option value="5">5 - Notice</option>
-                    <option value="6">6 - Info</option>
-                    <option value="7">7 - Debug</option>
+                    <?php //TODO modify with logger informations ?>
+                    <option value="" 
+                        <?php if(!isset($input) || 
+                                !array_key_exists('log_level', $input) || 
+                                $input['log_level'] == "") { echo 'selected'; } ?>>
+                    </option>
+                    <option value="0" 
+                        <?php if(isset($input) && $input['log_level'] != "" &&
+                                $input['log_level'] == 0) {
+                            echo 'selected';
+                        } ?>>
+                        0 - Emergency
+                    </option>
+                    <option value="1"
+                        <?php if(isset($input) && $input['log_level'] == 1) {
+                            echo 'selected';
+                        } ?>>
+                        1 - Alert
+                    </option>
+                    <option value="2"
+                        <?php if(isset($input) && $input['log_level'] == 2) {
+                            echo 'selected';
+                        } ?>>
+                        2 - Critical
+                    </option>
+                    <option value="3"
+                        <?php if(isset($input) && $input['log_level'] == 3) {
+                            echo 'selected';
+                        } ?>>
+                        3 - Error
+                    </option>
+                    <option value="4"
+                        <?php if(isset($input) && $input['log_level'] == 4) {
+                            echo 'selected';
+                        } ?>>
+                        4 - Warning
+                    </option>
+                    <option value="5"
+                        <?php if(isset($input) && $input['log_level'] == 5) {
+                            echo 'selected';
+                        } ?>>
+                        5 - Notice
+                    </option>
+                    <option value="6"
+                        <?php if(isset($input) && $input['log_level'] == 6) {
+                            echo 'selected';
+                        } ?>>
+                        6 - Info
+                    </option>
+                    <option value="7"
+                        <?php if(isset($input) && $input['log_level'] == 7) {
+                            echo 'selected';
+                        } ?>>
+                        7 - Debug
+                    </option>
                 </select>
             </div>
         </div>

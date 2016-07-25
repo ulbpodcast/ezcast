@@ -36,9 +36,10 @@ require_once '../commons/lib_template.php';
 require_once 'lib_sql_management.php';
 require_once 'lib_various.php';
 require_once 'lib_error.php';
+require_once '../commons/common.inc'; //for logger access
 
 $template_folder = 'tmpl/' . get_lang();
-date_default_timezone_set("Europe/Brussels");
+date_default_timezone_set("Europe/Brussels"); //TODO: allow to change this
 template_repository_path($template_folder);
 if(template_repository_path() == "")
 {
@@ -593,8 +594,34 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`id`),' .
                 'FULLTEXT (`message`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
+        
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . Logger::EVENT_TABLE_NAME .'`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . Logger::EVENT_TABLE_NAME . '` (' .
+                "`asset` varchar(50) NOT NULL,".
+                "`origin` enum('ezmanager','ezadmin','ezrecorder','ezrenderer','other') NOT NULL,".
+                "`asset_classroom_id` varchar(20) NOT NULL,".
+                "`asset_author` varchar(50) DEFAULT '',".
+                "`asset_cam_slide` enum('cam','slides','camslides') DEFAULT NULL,".
+                "`event_time` datetime NOT NULL,".
+                "`context` varchar(30) NOT NULL,".
+                "`loglevel` tinyint(1) NOT NULL COMMENT 'See logger.php for levels',".
+                "`message` text NOT NULL".
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-        // Creation of the index
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . Logger::EVENT_STATUS_TABLE_NAME .'`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . Logger::EVENT_STATUS_TABLE_NAME . '` (' .
+                "`asset` varchar(50) NOT NULL," .
+                "`asset` varchar(50) NOT NULL," .
+                "`status` enum('auto_success, auto_success_errors, auto_success_warnings, auto_failure, manual_ok, manual_partial_ok, manual_failure, manual_ignore') NOT NULL," .
+                "`parent_asset` varchar(50) DEFAULT NULL," .
+                "`author` varchar(50) DEFAULT 'system'," .
+                "`status_time` datetime DEFAULT NULL," .
+                "`description` text" .
+                ") ENGINE=MyISAM DEFAULT CHARSET=utf8");
+        
+        // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .
                 'ON ' . $input['db_prefix'] . 'threads(`albumName`);');
         $db->exec('CREATE INDEX `assetname_ndx` ' .

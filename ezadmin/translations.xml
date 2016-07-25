@@ -479,7 +479,13 @@
         <label id="monit_log_level" lang="fr">LogLevel</label>
         <label id="monit_log_level" lang="en">LogLevel</label>
         <label id="monit_message" lang="fr">Message</label>
-        <label id="monit_message" lang="en">Message</label> 
+        <label id="monit_message" lang="en">Message</label>
+        <label id="monit_asset" lang="fr">Asset</label>
+        <label id="monit_asset" lang="en">Asset</label>
+        <label id="monit_origin" lang="fr">Origine</label>
+        <label id="monit_origin" lang="en">Origin</label>
+        <label id="monit_type_id" lang="fr">Type</label>
+        <label id="monit_type_id" lang="en">Type</label>
         
         
         <!-- Install -->

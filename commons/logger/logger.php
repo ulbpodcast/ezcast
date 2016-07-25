@@ -14,6 +14,11 @@ class EventType {
 
 class Logger extends AbstractLogger {
     
+    /* Reverted array -> key: id, value: EventType
+     * Filled at Logger construct.
+     */
+    public static $event_type_by_id = false;
+    
     public $event_type_id = array(
        EventType::TYPE1 => 0,
        EventType::TYPE2 => 1,
@@ -21,13 +26,34 @@ class Logger extends AbstractLogger {
        EventType::TYPE4 => 3,
     );
     
-    /* Reverted array -> key: id, value: EventType
-     * Filled at Logger construct.
+    
+    
+    // ---- private
+    
+    
+    /**
+     * Current minimum logging threshold. Logs with higher log level than this are ignored.
+     * @var LogLevel::*
      */
-    public static $event_type_by_id = false;
+    private $logLevelThreshold = LogLevel::DEBUG;
+    
+    private function fill_type_by_id()
+    {
+        if(Logger::$event_type_by_id == false) {
+            Logger::$event_type_by_id = array();
+            foreach($this->event_type_id as $key => $value) {
+                Logger::$event_type_by_id[$value] = $key;
+            }
+        }
+            
+        return Logger::$event_type_by_id;
+    }
+        
+    // ---- public
+    
     
     public function __construct() {
-        fill_type_by_id();
+        $this->fill_type_by_id();
     }
     
     const EVENT_TABLE_NAME = "events";
@@ -127,25 +153,5 @@ class Logger extends AbstractLogger {
         */
     }
     
-    // ---- private
     
-    
-    /**
-     * Current minimum logging threshold. Logs with higher log level than this are ignored.
-     * @var LogLevel::*
-     */
-    private $logLevelThreshold = LogLevel::DEBUG;
-    
-    private function fill_type_by_id()
-    {
-        if($this->$event_type_by_id == false) {
-            $this->$event_type_by_id = array();
-            foreach($this->event_type_id as $key => $value) {
-                $this->$event_type_by_id[$value] = $key;
-            }
-        }
-            
-        return $this->$event_type_by_id;
-    }
-        
 }

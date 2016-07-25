@@ -18,6 +18,7 @@ session_name($appname);
 session_start();
 require_once 'lib_statistics.php';
 require_once 'lib_sql_management.php';
+require_once 'lib_sql_event.php';
 require_once 'lib_error.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
@@ -851,43 +852,32 @@ function view_stats_threads() {
  */
 function view_list_event() {
     global $input;
-
-    $events = array();
-
+    global $logger;
+    
+/*
+ * $asset, $origin, $asset_classroom_id, $asset_course, $asset_author,
+        $first_event_time, $last_event_time, $context,
+        $loglevel, $message
+ */
+    
+    
     if (isset($input['post'])) {
-//        $user_ID = db_sanitize($input['user_ID']); 
-//        $forename = db_sanitize($input['forename']);
-//        $surname = db_sanitize($input['surname']);
-//        $intern = $input['intern'] ? 1 : 0;
-//        $extern = $input['extern'] ? 1 : 0;
-//        $is_admin = $input['is_admin'] ? 1 : 0;
-//        $is_not_admin = $input['is_not_admin'] ? 1 : 0;
+        //$events = db_event_get_all();
+        $events = db_event_get($input['asset'], $input['origin'], $input['classroom'],
+                $input['courses'], $input['teacher'], $input['startDate'], 
+                $input['endDate'], $input['context'], $input['log_level'], $input['message']);
+        
         $page = intval($input['page']);
-//        $col = addslashes($input['col']);
-//        $order = $input['order'] == 'ASC' ? 'ASC' : 'DESC';
-//        $size = 20;
-//        $limit = (intval($page) - 1) * $size;
-//
-//        $users = db_users_list($user_ID, $surname, $forename, ($intern == $extern) ? -1 : (($extern == 1) ? 'external' : 'internal'), ($is_admin == $is_not_admin) ? -1 : $is_admin, $col . ' ' . $order, '' . $limit . ', ' . $size);
-//
-//        $rows = db_found_rows();
-//        $max = intval($rows / 20) + 1;
+        $max = intval(count($events) / 20) + 1;
     } else {
-        // default options
-//        $input['intern'] = 1;
-//        $input['extern'] = 1;
-//        $input['is_admin'] = 1;
-//        $input['is_not_admin'] = 1;
         $input['page'] = 1;
-//        $input['col'] = 'user_ID';
-//        $input['order'] = 'ASC';
     }
     
     
     // Display page
     include template_getpath('div_main_header.php');
     include template_getpath('div_monit_search_events.php');
-    if(!empty($events)) {
+    if(isset($events)) {
         include template_getpath('div_monit_list_events.php');
     }
     include template_getpath('div_main_footer.php');

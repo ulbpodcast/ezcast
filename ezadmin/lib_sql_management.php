@@ -606,61 +606,61 @@ function db_unlink_user($user_ID) {
 }
 
 function db_unlink_course($course_code) {
-	global $statements;
-		
-	$statements['unlink_course']->bindParam(':course_code', $course_code);
-	
-	return $statements['unlink_course']->execute();
+    global $statements;
+
+    $statements['unlink_course']->bindParam(':course_code', $course_code);
+
+    return $statements['unlink_course']->execute();
 }
 
 function db_found_rows() {
-	global $statements;
-		
-	$statements['found_rows']->execute(); 
-	
-	$res = $statements['found_rows']->fetch();   
-	return intval($res[0]);
+    global $statements;
+
+    $statements['found_rows']->execute(); 
+
+    $res = $statements['found_rows']->fetch();   
+    return intval($res[0]);
 }
 
 function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions) {
-	global $statements;
-		
-	$statements['user_create']->bindParam(':user_ID', strtolower($user_ID));
-	$statements['user_create']->bindParam(':surname', $surname);
-	$statements['user_create']->bindParam(':forename', $forename);
-	$statements['user_create']->bindParam(':recorder_passwd', $recorder_passwd);
-	$statements['user_create']->bindParam(':permissions', $permissions);
-	
-	return $statements['user_create']->execute();
+    global $statements;
+
+    $statements['user_create']->bindParam(':user_ID', strtolower($user_ID));
+    $statements['user_create']->bindParam(':surname', $surname);
+    $statements['user_create']->bindParam(':forename', $forename);
+    $statements['user_create']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_create']->bindParam(':permissions', $permissions);
+
+    return $statements['user_create']->execute();
 }
 
 function db_user_delete($user_ID) {
-	global $statements;
-		
-	$statements['user_delete']->bindParam(':user_ID', $user_ID);
-	
-	return $statements['user_delete']->execute();
+    global $statements;
+
+    $statements['user_delete']->bindParam(':user_ID', $user_ID);
+
+    return $statements['user_delete']->execute();
 }
 
 function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permissions) {
-	global $statements;
-	
-	if(empty($recorder_passwd)) {
-		$statements['user_update_short']->bindParam(':user_ID', $user_ID);
-		$statements['user_update_short']->bindParam(':surname', $surname);
-		$statements['user_update_short']->bindParam(':forename', $forename);
-		$statements['user_update_short']->bindParam(':permissions', $permissions);
+    global $statements;
 
-		return $statements['user_update_short']->execute();     
-	}
-	
-	$statements['user_update']->bindParam(':user_ID', $user_ID);
-	$statements['user_update']->bindParam(':surname', $surname);
-	$statements['user_update']->bindParam(':forename', $forename);
-	$statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
-	$statements['user_update']->bindParam(':permissions', $permissions);
-	
-	return $statements['user_update']->execute();
+    if(empty($recorder_passwd)) {
+            $statements['user_update_short']->bindParam(':user_ID', $user_ID);
+            $statements['user_update_short']->bindParam(':surname', $surname);
+            $statements['user_update_short']->bindParam(':forename', $forename);
+            $statements['user_update_short']->bindParam(':permissions', $permissions);
+
+            return $statements['user_update_short']->execute();     
+    }
+
+    $statements['user_update']->bindParam(':user_ID', $user_ID);
+    $statements['user_update']->bindParam(':surname', $surname);
+    $statements['user_update']->bindParam(':forename', $forename);
+    $statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_update']->bindParam(':permissions', $permissions);
+
+    return $statements['user_update']->execute();
 }
 
 /**
@@ -669,84 +669,84 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
  * @param type $action 
  */
 function db_log($table, $action, $author) {
-	global $statements;
-	
-	$statements['log_action']->bindParam(':table', $table);
-	$statements['log_action']->bindParam(':message', $action);
-	$statements['log_action']->bindParam(':author', $author);
-	
-	return $statements['log_action']->execute();
+    global $statements;
+
+    $statements['log_action']->bindParam(':table', $table);
+    $statements['log_action']->bindParam(':message', $action);
+    $statements['log_action']->bindParam(':author', $author);
+
+    return $statements['log_action']->execute();
 }
 
 function db_logs_get($date_start, $date_end, $table, $author, $limit) {
-	global $db_object;
-	
-	$query = 'SELECT DISTINCT SQL_CALC_FOUND_ROWS `time`, `table`, message, author FROM '.  db_gettable('logs');
-	
-	$where = '';
-	if(!empty($date_start)) {
-		$where .= 'time >= \''.$date_start.' 00:00:00\'';
-	}
-	
-	if(!empty($date_end)) {
-		if(!empty($where))
-			$where .= ' AND ';
-		$where .= 'time <= \''.$date_end.' 00:00:00\'';
-	}
-	
-	if(!empty($table)) {
-		if($table != 'all') {
-			if(!empty($where))
-				$where .= ' AND ';
-			$where .= '`table` LIKE \''.db_gettable($table).'\'';
-		}
-			
-	}
-	
-	if(!empty($author)) {
-		if(!empty($where))
-			$where .= ' AND ';
-		$where .= 'author LIKE %'.$author.'%';
-	}
-	
-	$fullQuery = $query;
-	
-	if(!empty($where))
-		$fullQuery .= ' WHERE ' . $where;
+    global $db_object;
 
-	return $db_object->query($fullQuery.' ORDER BY `time` DESC LIMIT ' . $limit);
+    $query = 'SELECT DISTINCT SQL_CALC_FOUND_ROWS `time`, `table`, message, author FROM '.  db_gettable('logs');
+
+    $where = '';
+    if(!empty($date_start)) {
+            $where .= 'time >= \''.$date_start.' 00:00:00\'';
+    }
+
+    if(!empty($date_end)) {
+            if(!empty($where))
+                    $where .= ' AND ';
+            $where .= 'time <= \''.$date_end.' 00:00:00\'';
+    }
+
+    if(!empty($table)) {
+            if($table != 'all') {
+                    if(!empty($where))
+                            $where .= ' AND ';
+                    $where .= '`table` LIKE \''.db_gettable($table).'\'';
+            }
+
+    }
+
+    if(!empty($author)) {
+            if(!empty($where))
+                    $where .= ' AND ';
+            $where .= 'author LIKE %'.$author.'%';
+    }
+
+    $fullQuery = $query;
+
+    if(!empty($where))
+            $fullQuery .= ' WHERE ' . $where;
+
+    return $db_object->query($fullQuery.' ORDER BY `time` DESC LIMIT ' . $limit);
 }
 
 function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled) {
-	global $statements;
-	
-	$statements['classroom_create']->bindParam(':room_ID', $room_ID);
-	$statements['classroom_create']->bindParam(':name', $name);
-	$statements['classroom_create']->bindParam(':ip', $ip);
-	$statements['classroom_create']->bindParam(':ip_remote', $ip_remote);
-	$statements['classroom_create']->bindParam(':enabled', $enabled);
-	
-	return $statements['classroom_create']->execute();
+    global $statements;
+
+    $statements['classroom_create']->bindParam(':room_ID', $room_ID);
+    $statements['classroom_create']->bindParam(':name', $name);
+    $statements['classroom_create']->bindParam(':ip', $ip);
+    $statements['classroom_create']->bindParam(':ip_remote', $ip_remote);
+    $statements['classroom_create']->bindParam(':enabled', $enabled);
+
+    return $statements['classroom_create']->execute();
 }
 
 function db_classroom_update($ID, $room_ID, $name, $ip, $ip_remote) {
-	global $statements;
+    global $statements;
 
-	$statements['classroom_update']->bindParam(':ID', $ID);
-	$statements['classroom_update']->bindParam(':room_ID', $room_ID);
-	$statements['classroom_update']->bindParam(':name', $name);
-	$statements['classroom_update']->bindParam(':ip', $ip);
-	$statements['classroom_update']->bindParam(':ip_remote', $ip_remote);
-	
-	return $statements['classroom_update']->execute();
+    $statements['classroom_update']->bindParam(':ID', $ID);
+    $statements['classroom_update']->bindParam(':room_ID', $room_ID);
+    $statements['classroom_update']->bindParam(':name', $name);
+    $statements['classroom_update']->bindParam(':ip', $ip);
+    $statements['classroom_update']->bindParam(':ip_remote', $ip_remote);
+
+    return $statements['classroom_update']->execute();
 }
 
 function db_classroom_delete($room_ID) {    
-	global $statements;
+    global $statements;
 
-	$statements['classroom_delete']->bindParam(':room_ID', $room_ID);
-	
-	return $statements['classroom_delete']->execute();
+    $statements['classroom_delete']->bindParam(':room_ID', $room_ID);
+
+    return $statements['classroom_delete']->execute();
 }
 
 

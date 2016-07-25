@@ -58,6 +58,15 @@
         
     <?php foreach($events as $event) { ?>
         <tr>
+            <td><?php echo $event['asset']; ?></td>
+            <td><?php echo $event['origin']; ?></td>
+            <td><?php echo $event['asset_classroom_id']; ?></td>
+            <td><?php echo $event['asset_author']; ?></td>
+            <td><?php echo $event['asset_cam_slide']; ?></td>
+            <td><?php echo $event['event_time']; ?></td>
+            <td><?php echo $event['context']; ?></td>
+            <td><?php echo $event['loglevel']; ?></td>
+            <td><?php echo $event['message']; ?></td>
         </tr>
     <?php } ?>
 </table>

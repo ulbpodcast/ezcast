@@ -72,21 +72,21 @@ echo " ";
 if [ $1 == 1 ]; then
     echo -e "${G}--- Starting EZplayer template installation...${N}";
     #EZplayer template
-    ../ezplayer/install.sh $php_path;
+    ../ezplayer/tmpl_install.sh $php_path;
 fi;
 echo " ";
 
 if [ $2 == 1 ]; then
 echo -e "${G}--- Starting EZmanager template installation...${N}";
 #EZmanager template
-../ezmanager/install.sh $php_path;
+../ezmanager/tmpl_install.sh $php_path;
 fi;
 echo " ";
 
 if [ $3 == 1 ]; then
 echo -e "${G}--- Starting EZadmin template installation...${N}";
 #EZadmin template
-../ezadmin/install.sh $php_path;
+../ezadmin/tmpl_install.sh $php_path;
 fi;
 echo " ";
 

@@ -22,7 +22,7 @@
 # License along with this software; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#NAME:          install.sh
+#NAME:          tmpl_install.sh
 #DESCRIPTION:   Generate EZadmin's templates in all available languages
 #AUTHOR:        Université libre de Bruxelles
 

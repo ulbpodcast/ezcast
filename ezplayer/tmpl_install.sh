@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# EZCAST EZmanager 
+# EZCAST EZplayer 
 #
 # Copyright (C) 2014 Université libre de Bruxelles
 #
 # Written by Michel Jansens <mjansens@ulb.ac.be>
-# 	   Arnaud Wijns <awijns@ulb.ac.be>
-#         Antoine Dewilde
+# 	     Arnaud Wijns <awijns@ulb.ac.be>
+#            Carlos Avimadjessi
 # UI Design by Julien Di Pietrantonio
 #
 # This software is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 # License along with this software; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#NAME:          install.sh
+#NAME:          tmpl_install.sh
 #DESCRIPTION:   Generate templates in all available languages
 #AUTHOR:        Université libre de Bruxelles
 
@@ -47,21 +47,22 @@ default_dest_folder="$current_dir/tmpl";
 dest_folder="";
 
 echo "*******************************************************************";
-echo "*                    EZMANAGER TEMPLATES                          *";
+echo "*                     EZPLAYER TEMPLATES                          *";
 echo "*******************************************************************";
 echo "This script will now compile the templates in all available languages";
 echo " ";
-# echo "Please enter the path to template sources (relative path to the current folder, no trailing / please"
+
+# echo "Please enter the path to template sources (relative path to the current folder, no tailing '/' please)"
 # echo "(default: $default_source_folder)"
 # read source_folder;
 # if [ -z "$source_folder" ]
 # then
     source_folder=$default_source_folder;
 # fi;
-echo -e "Source folder: ${G}$source_folder${N}";
+ echo -e "Source folder: ${G}$source_folder${N}";
 # echo " ";
-#
-# echo "Please enter the path to the folder you want the compiled templates to be put into (no trailing / please)"
+
+# echo "Please enter the path to the folder you want the compiled templates to be put into (no tailing '/' please)"
 # echo "(default: $default_dest_folder)"
 # read dest_folder;
 # if [ -z "$dest_folder" ]
@@ -72,7 +73,8 @@ mkdir $dest_folder;
 echo -e "Destination folder: ${G}$dest_folder${N}";
 # echo " ";
 
-echo "Compiling files ..."
-$php_cli_path ../commons/cli_template_generate.php $source_folder fr $dest_folder $current_dir/translations.xml;
-$php_cli_path ../commons/cli_template_generate.php $source_folder en $dest_folder $current_dir/translations.xml;
+echo "Compiling files ...";
+$php_cli_path $current_dir/../commons/cli_template_generate.php $source_folder fr $dest_folder $current_dir/translations.xml;
+$php_cli_path $current_dir/../commons/cli_template_generate.php $source_folder en $dest_folder $current_dir/translations.xml;
 echo "Compilation complete. Don't forget to edit config.inc to your own needs";
+

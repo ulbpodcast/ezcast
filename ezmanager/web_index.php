@@ -972,7 +972,7 @@ function upload_init() {
         'record_date' => $record_date,
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
-        'credits' => $input['credits'],
+        //currently no user option to input credits //'credits' => $input['credits'],
         'add_title' => $input['add_title'],
         'downloadable' => $input['downloadable'],
         'ratio' => $input['ratio']
@@ -1361,7 +1361,8 @@ function album_edit() {
     $album_meta = ezmam_album_metadata_get($album);
 
     $album_meta['intro'] = $input['intro'];
-    $album_meta['credits'] = $input['credits'];
+    if(isset($input['credits']))
+        $album_meta['credits'] = $input['credits'];
     $album_meta['add_title'] = $input['add_title'];
     $album_meta['downloadable'] = $input['downloadable'];
 

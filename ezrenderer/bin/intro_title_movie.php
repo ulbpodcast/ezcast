@@ -153,8 +153,34 @@ if (!rename($processing, $processed)) {
 
 exit(0); //quit successfully
 
+// choose intro or outro movie
+function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $width, $height) {
+    switch ($aspectRatio) {
+        case "16:9":
+        case "16:10":
+        case "3:2":
+        case "4:3":
+        case "5:3":
+        case "5:4":
+        case "8:5":
+            $movie = $movies_dir . "/$movie_name" . "/" . $movies_list[$aspectRatio];
+            break;
+        default : 
+            if ($height && $width) {
+                $ratio = $width / $height;
+                $aspectRatio = (abs($ratio - 1.77) <= abs($ratio - 1.33)) ? '16:9' : '4:3';
+            }
+            $movie = $movies_dir . "/$movie_name" . "/" . $movies_list[$aspectRatio];
+            break;
+    }
+    
+    if (!file_exists($movie))
+        $movie = $movies_dir . "/$movie_name" . "/" . $movies_list['default'];
+     
+    return $movie;
+}
+
 /**
- *
  * @global type $procdirpath
  * @global string $intro_dir
  * @global type $toprocess_assoc
@@ -168,9 +194,10 @@ exit(0); //quit successfully
  * @param string $camslide
  * @param path $moviein
  * @param assoc_array $title_assoc description of title to add (or false if no title)
- * @param string $intro name of intro directory (or  empty string if no introp needed)
- * @param bool $chapterize
- * @abstract process movie with addition of intro and title if present.
+ * @param string $intro name of intro file (or empty string if no intro needed)
+ * @param bool $add_title
+ * @param string $credits name of credits file (or empty string if no intro needed)
+ * @abstract process movie with addition of intro, outro and title if present.
  */
 function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_title, $credits) {
     global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies;
@@ -202,58 +229,19 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         //check if we have an intro movie to prepend
         if (trim($intro) != "") {
             //encodes original intro movie using the same encoder as for the video
-            switch ($qtinfo["aspectRatio"]) {
-                case "16:9":
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['16:9'];
-                    if (!file_exists($intro_movie))
-                        $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['default'];
-                    break;
-                case "16:10":
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['16:10'];
-                    if (!file_exists($intro_movie))
-                        $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['default'];
-                    break;
-                case "3:2":
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['3:2'];
-                    if (!file_exists($intro_movie))
-                        $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['default'];
-                    break;
-                case "4:3":
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['4:3'];
-                    if (!file_exists($intro_movie))
-                        $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['default'];
-                    break;
-                case "5:3":
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['5:3'];
-                    if (!file_exists($intro_movie))
-                        $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['default'];
-                    break;
-                case "5:4":
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['5:4'];
-                    if (!file_exists($intro_movie))
-                        $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['default'];
-                    break;
-                case "8:5":
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['8:5'];
-                    if (!file_exists($intro_movie))
-                        $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies['default'];
-                    break;
-                default : 
-                    if ($qtinfo['height'] != 0) {
-                        $ratio = $qtinfo['width'] / $qtinfo['height'];
-                        $qtinfo["aspectRatio"] = (abs($ratio - 1.77) <= abs($ratio - 1.33)) ? '16:9' : '4:3';
-                    }
-                    $intro_movie = $intros_dir . "/$intro" . "/" . $intro_movies[$qtinfo["aspectRatio"]];
-                    break;
-            }
-
+            $intro_movie = choose_movie($qtinfo["aspectRatio"], $intros_dir, $intro, $intro_movies, $qtinfo["width"], $qtinfo["height"]);
+    
             $transcoded_intro = $processing . "/transcoded_intro.mov";
 
             print "\n----------------- transcoding intro with encoder $encoder ---------------------\n\n";
-            safe_movie_encode($intro_movie, $transcoded_intro, $encoder, false);
-            array_push($movies_to_join, $transcoded_intro);
+            if(safe_movie_encode($intro_movie, $transcoded_intro, $encoder, false) == 0)
+                array_push($movies_to_join, $transcoded_intro);
+            else
+                print "\n\nSkipping $quality intro encoder: $encoder\n";
+                
             print "\n\n$quality intro encoder: $encoder\n";
         }
+        
         //if we have a title to add, generate it
         if ($add_title != 'false') {
             //generate title movie using the same encoder as for the video
@@ -281,61 +269,21 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
             array_push($movies_to_join, $title_movieout);
         }
         
+        //join main movie
         array_push($movies_to_join, $transcoded_movie);
         
-        print "#################################################################################################\n\n";
+        //if we have a outro to add, generate it
         if (trim($credits) != "") {
             //encodes original credits movie using the same encoder as for the video
-            switch ($qtinfo["aspectRatio"]) {
-                case "16:9":
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['16:9'];
-                    if (!file_exists($credits_movie))
-                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
-                    break;
-                case "16:10":
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['16:10'];
-                    if (!file_exists($credits_movie))
-                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
-                    break;
-                case "3:2":
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['3:2'];
-                    if (!file_exists($credits_movie))
-                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
-                    break;
-                case "4:3":
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['4:3'];
-                    if (!file_exists($credits_movie))
-                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
-                    break;
-                case "5:3":
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['5:3'];
-                    if (!file_exists($credits_movie))
-                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
-                    break;
-                case "5:4":
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['5:4'];
-                    if (!file_exists($credits_movie))
-                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
-                    break;
-                case "8:5":
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['8:5'];
-                    if (!file_exists($credits_movie))
-                        $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies['default'];
-                    break;
-                default : 
-                    if ($qtinfo['height'] != 0) {
-                        $ratio = $qtinfo['width'] / $qtinfo['height'];
-                        $qtinfo["aspectRatio"] = (abs($ratio - 1.77) <= abs($ratio - 1.33)) ? '16:9' : '4:3';
-                    }
-                    $credits_movie = $credits_dir . "/$credits" . "/" . $credits_movies[$qtinfo["aspectRatio"]];
-                    break;
-            }
-
+            $credits_movie = choose_movie($qtinfo["aspectRatio"], $credits_dir, $credits, $credits_movies, $qtinfo["width"], $qtinfo["height"]);
             $transcoded_credits = $processing . "/transcoded_credits.mov";
 
             print "\n----------------- transcoding credits with encoder $encoder ---------------------\n\n";
-            safe_movie_encode($credits_movie, $transcoded_credits, $encoder, false);
-            array_push($movies_to_join, $transcoded_credits);
+            if(safe_movie_encode($credits_movie, $transcoded_credits, $encoder, false) == 0)
+                array_push($movies_to_join, $transcoded_credits);
+            else
+                print "\n\nSkipping $quality credits encoder: $encoder\n";
+            
             print "\n\n$quality credits encoder: $encoder\n";
         }
         
@@ -357,6 +305,7 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         $res = movie_annotate($outputrefmovie, $annotated_movie, $title_assoc['title'], $title_assoc['date'], $title_assoc['description'], $title_assoc['author'], $title_assoc['keywords'], $title_assoc['copyright']);
         if ($res)
             myerror("couldn't annotate movie $outputrefmovie");
+        
         print "\n\n------------------------ Relocate MOOV atom $quality $camslide ---------------------\n";
         if ($quality != 'low') {
             // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded

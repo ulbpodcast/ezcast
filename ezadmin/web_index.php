@@ -855,19 +855,21 @@ function view_list_event() {
     global $input;
     global $logger;
     
+    include_once '../commons/view_helpers/helper_pagination.php';
     
     if (isset($input['post'])) {
-        // Add type_id
+        $pagination = new Pagination($input['page'], 1);
+        
         $events = db_event_get($input['asset'], $input['origin'], $input['classroom'],
                 $input['courses'], $input['teacher'], $input['startDate'], 
                 $input['endDate'], $input['type_id'], $input['context'], 
-                $input['log_level'], $input['message']);
+                $input['log_level'], $input['message'], $pagination->getLimit());
         
+        foreach ($events as &$event) {
+            $event['loglevel_name'] = $logger->get_log_level_name($event['loglevel']);
+        }
         
-        $page = intval($input['page']);
-        $max = intval(count($events) / 20) + 1;
-    } else {
-        $input['page'] = 1;
+        $pagination->setTotalItem(db_found_rows());
     }
     
     

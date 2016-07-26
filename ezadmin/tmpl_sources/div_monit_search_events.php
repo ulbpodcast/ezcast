@@ -1,6 +1,6 @@
 <div class="page_title">®list_event_title®</div>
 
-<form method="GET" class="search_event">
+<form method="GET" class="search_event pagination">
     
     <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
     <input type="hidden" name="post" value="">
@@ -120,9 +120,9 @@
                     <option value="" selected></option>
                     <?php
                     foreach ($logger->event_type_id as $nameEventType => $num) {
-                        echo '<option value='.$num.'" ';
+                        echo '<option value="'.$num.'"';
                         if(isset($input) && $input['type_id'] != "" && $input['type_id'] == $num) {
-                            echo 'selected';
+                            echo ' selected';
                         }
                         echo '>'.$nameEventType.
                             '</option>';

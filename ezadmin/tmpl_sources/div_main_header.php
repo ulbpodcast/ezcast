@@ -10,7 +10,7 @@
             if (isset($_SESSION['changes_to_push']))
                 echo ' (®unsaved_changes®)';
             ?></title>
-        <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+        <script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
         <script type="text/javascript" src="js/moment.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.23345.js"></script>
         <script type="text/javascript" src="js/jquery.jqplot.min.js"></script>

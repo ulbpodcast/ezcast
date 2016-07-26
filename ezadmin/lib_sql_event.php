@@ -43,8 +43,8 @@ function event_statements_get() {
                     'ORDER BY event_time',
         
             'get_event' =>
-                    'SELECT * ' .
-                    'FROM ' . db_gettable('events'). ' ' .
+                    'SELECT SQL_CALC_FOUND_ROWS events.* ' .
+                    'FROM ' . db_gettable('events'). ' events ' .
                     'WHERE (:asset = "" OR asset = :asset)  AND ' 
                         . '(:origin = "" OR origin = :origin) AND ' 
                         . '(:asset_classroom_id = "%" OR asset_classroom_id LIKE :asset_classroom_id) AND '
@@ -56,7 +56,8 @@ function event_statements_get() {
                         . '(:context = "%" OR context LIKE :context) AND ' 
                         . '(:loglevel = "" OR loglevel = :loglevel) AND '
                         . '(:message = "%" OR message LIKE :message) ' .
-                    'ORDER BY event_time'
+                    'ORDER BY event_time ' .
+                    ':limit'
         );
 }
 
@@ -73,24 +74,81 @@ function db_event_get_all() {
 
 function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asset_author,
         $first_event_time, $last_event_time, $type_id, $context,
-        $loglevel, $message) {
+        $loglevel, $message, $limit) {
     global $statements;
+    global $db_object;
     
-    $statements['get_event']->bindParam(':asset', $asset);
-    $statements['get_event']->bindParam(':origin', $origin);
-    $statements['get_event']->bindParam(':asset_classroom_id', db_sanitize($asset_classroom_id));
-    $statements['get_event']->bindParam(':asset_course', db_sanitize($asset_course));
-    $statements['get_event']->bindParam(':asset_author', db_sanitize($asset_author));
-    $statements['get_event']->bindParam(':first_event_time', $first_event_time);
-    $statements['get_event']->bindParam(':last_event_time', $last_event_time);
-    $statements['get_event']->bindParam(':type_id', $type_id);
-    $statements['get_event']->bindParam(':context', db_sanitize($context));
-    $statements['get_event']->bindParam(':loglevel', $loglevel);
-    $statements['get_event']->bindParam(':message', db_sanitize($message));
+    $strSQL = 'SELECT SQL_CALC_FOUND_ROWS events.* ' .
+                    'FROM ' . db_gettable('events'). ' events ';
     
-    $statements['get_event']->execute();
+    $whereParam = array();
+    $valueWhereParam = array();
     
+    if($asset != "") {
+        $whereParam[] = "asset = ?";
+        $valueWhereParam[] = $asset;
+    }
     
-    return $statements['get_event']->fetchAll();
+    if($origin != "") {
+        $whereParam[] = "origin = ?";
+        $valueWhereParam[] = $origin;
+    }
+    
+    if($asset_classroom_id != "") {
+        $whereParam[] = "asset_classroom_id = ?";
+        $valueWhereParam[] = db_sanitize($asset_classroom_id);
+    }
+    
+    if($asset_course != "") {
+        $whereParam[] = "asset_course = ?";
+        $valueWhereParam[] = db_sanitize($asset_course);
+    }
+    
+    if($asset_author != "") {
+        $whereParam[] = "asset_author = ?";
+        $valueWhereParam[] = db_sanitize($asset_author);
+    }
+    
+    if($first_event_time != "") {
+        $whereParam[] = "event_time >= ?";
+        $valueWhereParam[] = $first_event_time;
+    }
+    
+    if($last_event_time != "") {
+        $whereParam[] = "event_time <= ?";
+        $valueWhereParam[] = $last_event_time;
+    }
+    
+    if($type_id != "") {
+        $whereParam[] = "type_id = ?";
+        $valueWhereParam[] = $type_id;
+    }
+    
+    if($context != "") {
+        $whereParam[] = "context LIKE ?";
+        $valueWhereParam[] = db_sanitize($context);
+    }
+    
+    if($loglevel != "") {
+        $whereParam[] = "loglevel = ?";
+        $valueWhereParam[] = $loglevel;
+    }
+    
+    if($message != "") {
+        $whereParam[] = "message LIKE ?";
+        $valueWhereParam[] = db_sanitize($message);
+    }
+    
+    if(!empty($whereParam)) {
+        $strSQL .= " WHERE ";
+    }
+    $strSQL .= implode(" AND ", $whereParam);
+    $strSQL .= " ORDER BY event_time";
+    $strSQL .= $limit;
+    
+    $reqSQL = $db_object->prepare($strSQL);
+    $reqSQL->execute($valueWhereParam);
+    
+    return $reqSQL->fetchAll();
 }
 

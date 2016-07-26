@@ -472,7 +472,7 @@
         <label id="monit_courses" lang="en">Courses</label>
         <label id="monit_context" lang="fr">Contexte</label>
         <label id="monit_context" lang="en">Context</label>
-        <label id="monit_record_type" lang="fr">Type d'enregistrement</label>
+        <label id="monit_record_type" lang="fr">Enregistrement</label>
         <label id="monit_record_type" lang="en">Record Type</label>
         <label id="monit_event_date" lang="fr">Date</label>
         <label id="monit_event_date" lang="en">Date</label>

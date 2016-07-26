@@ -46,7 +46,7 @@ if ($key === false) {
     if ($key === false) {
         //ip not found
         print "not talking to you";
-        $logger->log(EventType::TYPE1,LogLevel::INFO, "Testttt");
+        //$logger->log(EventType::TYPE1,LogLevel::INFO, "Testttt");
         die;
     }
 }
@@ -135,26 +135,6 @@ function download_from_recorder() {
     if (!file_exists($record_dir))
         mkdir($record_dir);
 
-// Bqckwards compatibility with v1
-    $additional_tags = "";
-    if ($recorder_version == "1.0") {
-        //look for caller's ip in config files
-        $caller_ip = trim($_SERVER["REMOTE_ADDR"]);
-
-        $key = array_search($caller_ip, $podcv_ip);
-        if ($key === false) {
-            //ip not found
-            print "not talking to you";
-            die;
-        }
-        //deduce podcs ip:
-        $cur_podcs_ip = $podcs_ip[$key];
-        $cur_podcv_ip = $caller_ip;
-
-        $additional_tags .= "<cam_ip>$cur_podcv_ip</cam_ip>";
-        $additional_tags .= "<slide_ip>$cur_podcs_ip</slide_ip>";
-    }
-
 //now we need to call the recording download cli program (outside of web environment execution to avoid timeout
 //this process will contact cam and slide modules and download video files and metadata
     $downloadxml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone='yes'?>
@@ -169,7 +149,6 @@ function download_from_recorder() {
 <recorder_version>$recorder_version</recorder_version>
 <recorder_php_cli>$recorder_php_cli</recorder_php_cli>
 $download_info_xml
-$additional_tags
 </download_metadata>
 ";
 

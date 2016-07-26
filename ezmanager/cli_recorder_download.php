@@ -136,43 +136,6 @@ do {
             sleep(600);
         }
     }
-    else if ($recorder_version == "1.0") {
-
-        // download metadata
-        $res = fetch_record_from_v1($podcv_ip, "metadata.xml", $download_dir, $recorder_user, $destrecording_path);
-        $meta_ok = !$res;
-
-        //download cam movie if available/needed
-        if ($record_type == "cam" || $record_type == "camslide") {
-            $res = fetch_record_from_v1($podcv_ip, "cam.mov", $download_dir, $recorder_user, $destrecording_path);
-            $cam_ok = !$res;
-        }//endif cam
-        //download slide movie if available/needed
-        if ($record_type == "slide" || $record_type == "camslide") {
-            $res = fetch_record_from_v1($podcs_ip, "slide.mov", $download_dir, $recorder_user, $destrecording_path);
-            $slide_ok = !$res;
-        }//endif slide
-
-        $repeat-=1;
-        if (!$meta_ok || !$cam_ok || !$slide_ok) {
-            if ($repeat == $max_download_retries - 1) {
-                if (!$meta_ok)
-                    mail($mailto_alert, "Error downloading from recorder (retrying)", "could not rsync file metadata from $podcv_ip");
-                if (!$cam_ok)
-                    mail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file cam.mov from $podcv_ip");
-                if (!$slide_ok)
-                    mail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file slide.mov from $podcs_ip");
-            } else {
-                if (!$meta_ok)
-                    sendmail($mailto_alert, "Error downloading from recorder (retrying)", "could not rsync file metadata from $podcv_ip");
-                if (!$cam_ok)
-                    sendmail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file cam.mov from $podcv_ip");
-                if (!$slide_ok)
-                    sendmail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file slide.mov from $podcs_ip");
-            }
-            sleep(600);
-        }
-    }
 } while ((!$meta_ok || !$cam_ok || !$slide_ok ) && $repeat > 0);
 
 if (!$meta_ok || !$cam_ok || !$slide_ok) {

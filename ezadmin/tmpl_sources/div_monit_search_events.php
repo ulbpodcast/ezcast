@@ -96,7 +96,7 @@
             <div class="col-md-4">
                 <label class="sr-only" for="courses">®monit_courses®</label>
                 <input type="text" class="form-control" name="courses" id="courses" placeholder="®monit_courses®"
-                    value="<?php if(isset($input) && array_key_exists('origin', $input)) { echo $input['origin']; } ?>">
+                    value="<?php if(isset($input) && array_key_exists('courses', $input)) { echo $input['courses']; } ?>">
             </div>
         </div>
     </div>
@@ -106,8 +106,8 @@
         <div class="row">
             <div class="col-md-3">
                 <label class="sr-only" for="asset">®monit_asset®</label>
-                <input type="text" class="form-control" name="asset" id="classroom" placeholder="®monit_asset®"
-                    value="<?php if(isset($input) && array_key_exists('classroom', $input)) { echo $input['classroom']; } ?>">
+                <input type="text" class="form-control" name="asset" id="asset" placeholder="®monit_asset®"
+                    value="<?php if(isset($input) && array_key_exists('asset', $input)) { echo $input['asset']; } ?>">
             </div>
             <div class="col-md-3">
                 <label class="sr-only" for="origin"">®monit_origin®</label>

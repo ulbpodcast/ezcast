@@ -45,16 +45,17 @@ function event_statements_get() {
             'get_event' =>
                     'SELECT * ' .
                     'FROM ' . db_gettable('events'). ' ' .
-                    'WHERE (:asset = "" OR asset = :asset) AND '
-                        . '(:origin = "" OR origin = :origin) AND '
-                        . '(:asset_classroom_id = "" OR asset_classroom_id = :asset_classroom_id) AND '
-                        . '(:asset_course = "" OR asset_course = :asset_course) AND '
-                        . '(:asset_author = "" OR asset_author = :asset_author) AND '
-                        . '(:first_event_time = 0 OR event_time >= :first_event_time) AND ' 
-                        . '(:last_event_time = 0 OR event_time <= :last_event_time) AND '
-                        . '(:context = "" OR context = :context) AND '
+                    'WHERE (:asset = "" OR asset = :asset)  AND ' 
+                        . '(:origin = "" OR origin = :origin) AND ' 
+                        . '(:asset_classroom_id = "%" OR asset_classroom_id LIKE :asset_classroom_id) AND '
+                        . '(:asset_course = "%" OR asset_course LIKE :asset_course) AND ' 
+                        . '(:asset_author = "%" OR asset_author LIKE :asset_author) AND '
+                        . '(:first_event_time = "" OR event_time >= :first_event_time) AND ' 
+                        . '(:last_event_time = "" OR event_time <= :last_event_time) AND ' 
+                        . '(:type_id = "" OR type_id = :type_id) AND ' 
+                        . '(:context = "%" OR context LIKE :context) AND ' 
                         . '(:loglevel = "" OR loglevel = :loglevel) AND '
-                        . '(:message = "" OR message = :message) ' .
+                        . '(:message = "%" OR message LIKE :message) ' .
                     'ORDER BY event_time'
         );
 }
@@ -71,24 +72,25 @@ function db_event_get_all() {
 }
 
 function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asset_author,
-        $first_event_time, $last_event_time, $context,
+        $first_event_time, $last_event_time, $type_id, $context,
         $loglevel, $message) {
     global $statements;
     
     $statements['get_event']->bindParam(':asset', $asset);
     $statements['get_event']->bindParam(':origin', $origin);
-    $statements['get_event']->bindParam(':asset_classroom_id', $asset_classroom_id);
-    $statements['get_event']->bindParam(':asset_course', $asset_course);
-    $statements['get_event']->bindParam(':asset_author', $asset_author);
+    $statements['get_event']->bindParam(':asset_classroom_id', db_sanitize($asset_classroom_id));
+    $statements['get_event']->bindParam(':asset_course', db_sanitize($asset_course));
+    $statements['get_event']->bindParam(':asset_author', db_sanitize($asset_author));
     $statements['get_event']->bindParam(':first_event_time', $first_event_time);
     $statements['get_event']->bindParam(':last_event_time', $last_event_time);
-    $statements['get_event']->bindParam(':context', $context);
+    $statements['get_event']->bindParam(':type_id', $type_id);
+    $statements['get_event']->bindParam(':context', db_sanitize($context));
     $statements['get_event']->bindParam(':loglevel', $loglevel);
-    $statements['get_event']->bindParam(':message', $message);
+    $statements['get_event']->bindParam(':message', db_sanitize($message));
     
     $statements['get_event']->execute();
     
+    
     return $statements['get_event']->fetchAll();
 }
-
 

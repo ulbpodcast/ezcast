@@ -857,18 +857,12 @@ function view_list_event() {
     
     
     if (isset($input['post'])) {
-        //$events = db_event_get_all();
-        
-        // TODO: change: not work :/
-        $startDateTime = new DateTime($input['startDate']);
-        $startDate = $startDateTime->format('Y/m/d H:i');
-        
-        $endDateTime = new DateTime($input['endDate']);
-        $endDate = $endDateTime->format('Y/m/d H:i');
-        
+        // Add type_id
         $events = db_event_get($input['asset'], $input['origin'], $input['classroom'],
-                $input['courses'], $input['teacher'], $startDate, 
-                $endDate, $input['context'], $input['log_level'], $input['message']);
+                $input['courses'], $input['teacher'], $input['startDate'], 
+                $input['endDate'], $input['type_id'], $input['context'], 
+                $input['log_level'], $input['message']);
+        
         
         $page = intval($input['page']);
         $max = intval(count($events) / 20) + 1;

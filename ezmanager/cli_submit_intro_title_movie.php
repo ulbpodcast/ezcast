@@ -88,6 +88,18 @@ if (!isset($asset_meta['intro'])){
     $intro = $asset_meta['intro'];
 }
 
+
+
+if (!isset($asset_meta['credits'])){
+    if(isset($album_meta['credits']))
+        $credits=$album_meta['credits'];
+    else
+        $credits=$default_credits;//default closing credits movie from config.inc
+} else {
+    $credits = $asset_meta['credits'];
+}
+
+
 if(!isset($asset_meta['add_title'])) {
     if (isset($album_meta['add_title'])) {
         $asset_meta['add_title'] = $album_meta['add_title'];
@@ -98,6 +110,7 @@ if(!isset($asset_meta['add_title'])) {
 
 //now write the processing info
 //intro movies are in the rw nfs share
+//credits movies are in the rw nfs share
 //input movie file is in the repository
 //output movie will be in rw share in $render_dir
 
@@ -107,6 +120,7 @@ $processing_assoc=array('submit_date'=>date($dir_date_format),
      'record_type'=>$asset_meta['record_type'],
      'server_pid'=>(string)getmypid(),
      'intro_movie'=>$intro,
+     'credits_movie'=>$credits,
      'super_highres' => $asset_meta['super_highres'],
      'add_title' => $asset_meta['add_title'],
      'ratio' => $asset_meta['ratio']
@@ -117,6 +131,7 @@ if(isset($asset_meta['submitted_filename']))$processing_assoc['submitted_filenam
 //get list of medias and (relative) path in the form 'original_cam'=>'<albumname>/<assetname>/<medianame>/<filename>
 $media_path_assoc=submit_itm_get_medias($album,$asset);
 //add medias original_cam and/or original_slide and their relative path in the repository:
+
 $processing_assoc=array_merge($processing_assoc,$media_path_assoc);
 $res=assoc_array2metadata_file($processing_assoc, $render_dir."/toprocess.xml");
 //fix permissions

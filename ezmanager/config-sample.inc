@@ -56,6 +56,10 @@ $dir_date_format="Y_m_d_H\hi";// ls friendly date to create directories/files
 // used by web_index when creating a new album for titling the videos
 $default_intro = 'Semeur';
 $intros = array( array('value' => 'Semeur', 'label' => 'ULB Podcast'));
+
+$default_credits = '';
+$credits = array( array('value' => 'ulb', 'label' => 'ULB Credits'));
+
 $default_add_title = "FlyingTitle";
 // titlings value: false if no titling needed / name of the titling if value
 $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (default)'));

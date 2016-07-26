@@ -202,7 +202,7 @@ function statements_get(){
 			'WHERE user_ID = :user_ID',
 		
 		'log_action' =>
-			'INSERT INTO ' . db_gettable('logs') . ' (`time`, `table`, message, author) ' .
+			'INSERT INTO ' . db_gettable('admin_logs') . ' (`time`, `table`, message, author) ' .
 			'VALUES (NOW(), :table, :message, :author)',
 		
 		'classroom_create' =>
@@ -252,11 +252,12 @@ function db_courses_search($course_code, $user_ID, $include_external, $include_i
 	$join = 'LEFT';
 	if($with_teacher == 1) $join = 'INNER';
 	
+        // will have origin = NULL when no user is yet added to course
 	$query = 
 		'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .  
 			db_gettable('courses') . '.course_code, ' .
 			db_gettable('users') . '.user_ID AS user_ID, ' .
-			db_gettable('users_courses') . '.origin, ' .
+			db_gettable('courses') . '.origin, ' .
 			db_gettable('courses') . '.in_recorders, ' .
 			db_gettable('courses') . '.has_albums, ' .
 			db_gettable('courses') . '.shortname, ' .
@@ -275,6 +276,7 @@ function db_courses_search($course_code, $user_ID, $include_external, $include_i
 				($has_albums != -1 ? ' AND ' . db_gettable('courses') . '.has_albums = "' . $has_albums . '"': '') .
 				($in_classrooms != -1 ? ' AND ' . db_gettable('courses') . '.in_recorders = "' . $in_classrooms . '"': '') .
 				($with_teacher == 0 ? ' AND '.  db_gettable('users') . '.user_ID IS NULL': '') .
+                        ' GROUP BY course_code ' .    
 			($order ? ' ORDER BY ' . $order : '') .
 			($limit ? ' LIMIT ' . $limit : '');
 	  

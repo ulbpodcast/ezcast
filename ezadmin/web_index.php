@@ -416,7 +416,7 @@ function link_unlink_user_course() {
             echo json_encode(array(
                 'id' => $info['id'],
                 'netid' => $info['user']['user_ID'],
-                'name' => $info['user']['surname'] . ' ' . $info['forename'],
+                'name' => $info['user']['surname'] . ' ' . $info['user']['forename'],
                 'origin' => 'internal'
             ));
             db_log(db_gettable('users_courses'), 'Added link between user ' . $info['user']['user_ID'] . ' and course ' . $input['course_code'], $_SESSION['user_login']);
@@ -426,7 +426,7 @@ function link_unlink_user_course() {
                 echo json_encode(array('error' => '1'));
             } else {
                 echo json_encode(array('success' => '1'));
-                db_log(db_gettable('classrooms'), 'Removed link between user ' . $input['user_ID'] . ' and course ' . $input['course_code'], $_SESSION['user_login']);
+                db_log(db_gettable('classrooms'), 'Removed link between user ' . $input['id'] . ' and course ' . $input['course_code'], $_SESSION['user_login']);
             }
 
             break;

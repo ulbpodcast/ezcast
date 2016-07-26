@@ -187,7 +187,7 @@ $(function() {
         }
     });
    
-    $(".users_table .unlink").live("click", function() {
+    $(".users_table .unlink").click(function() {
         $this = $(this);
 
         if($this.parent().data('origin') == 'external') alert("®cannot_delete_external®");

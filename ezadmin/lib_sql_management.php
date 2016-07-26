@@ -583,10 +583,12 @@ function db_users_courses_create($course_code, $user_ID) {
 	// return informations
 	global $db_object;
 	$user = db_user_read($user_ID);
-	if(!$user) return false;
+	if(!$user) 
+            return false;
 	
 	$course = db_course_read($course_code);
-	if(!$course) return false;
+	if(!$course) 
+            return false;
 	
 	return array('user' => $user, 'course' => $course, 'id' => $db_object->lastInsertId());
 }
@@ -683,7 +685,7 @@ function db_log($table, $action, $author) {
 function db_logs_get($date_start, $date_end, $table, $author, $limit) {
     global $db_object;
 
-    $query = 'SELECT DISTINCT SQL_CALC_FOUND_ROWS `time`, `table`, message, author FROM '.  db_gettable('logs');
+    $query = 'SELECT DISTINCT SQL_CALC_FOUND_ROWS `time`, `table`, message, author FROM '.  db_gettable('admin_logs');
 
     $where = '';
     if(!empty($date_start)) {

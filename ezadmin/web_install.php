@@ -492,8 +492,8 @@ function create_tables($drop = true) {
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
         if ($drop)
-            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'logs`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'logs` (   ' .
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'admin_logs`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'admin_logs` (   ' .
                 '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
                 '`time` datetime NOT NULL,' .
                 '`table` varchar(100) NOT NULL,' .
@@ -600,10 +600,12 @@ function create_tables($drop = true) {
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . Logger::EVENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL,".
                 "`origin` enum('ezmanager','ezadmin','ezrecorder','ezrenderer','other') NOT NULL,".
-                "`asset_classroom_id` varchar(20) NOT NULL,".
-                "`asset_author` varchar(50) DEFAULT '',".
+                "`asset_classroom_id` varchar(20) DEFAULT NULL,".
+                "`asset_course` varchar(20) DEFAULT NULL,".
+                "`asset_author` varchar(50) DEFAULT NULL,".
                 "`asset_cam_slide` enum('cam','slides','camslides') DEFAULT NULL,".
                 "`event_time` datetime NOT NULL,".
+                "`type_id` INT(10) NOT NULL,".
                 "`context` varchar(30) NOT NULL,".
                 "`loglevel` tinyint(1) NOT NULL COMMENT 'See logger.php for levels',".
                 "`message` text NOT NULL".
@@ -619,7 +621,7 @@ function create_tables($drop = true) {
                 "`author` varchar(50) DEFAULT 'system'," .
                 "`status_time` datetime DEFAULT NULL," .
                 "`description` text" .
-                ") ENGINE=MyISAM DEFAULT CHARSET=utf8");
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
         
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .

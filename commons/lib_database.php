@@ -69,11 +69,15 @@ function db_prepare(&$stmt_array = array()) {
     global $db_name;
     global $db_prepared;
     global $statements;
+    global $debug_mode;
 
-    try {
-        $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
-    } catch (PDOException $e) {
-        throw new Exception('Could not connect to database.');
+    if($db_object == null)
+    {
+        try {
+            $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
+        } catch (PDOException $e) {
+            throw new Exception('Could not connect to database.');
+        }
     }
     
     foreach ($stmt_array as $stmt_name => $stmt) {
@@ -83,6 +87,10 @@ function db_prepare(&$stmt_array = array()) {
     $db_prepared = true;
     $stmt_array = $statements;
 
+    if($debug_mode) {
+        $db_object->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+    
     return $db_object;
 }
 

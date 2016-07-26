@@ -46,6 +46,7 @@ if ($key === false) {
     if ($key === false) {
         //ip not found
         print "not talking to you";
+        $logger->log(EventType::TYPE1,LogLevel::INFO, "Testttt");
         die;
     }
 }

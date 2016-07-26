@@ -23,6 +23,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+require_once('logger.php');
+
 /*
  * This config file contains global config for the server
  * to run. It can be edited following your particular needs.
@@ -30,9 +32,6 @@
  * Those variables are required by EZcast to run. 
  * DO NOT REMOVE ANY OF THEM
  */
-
-//uncomment this to enable all error reporting
-//error_reporting(E_ALL);
 
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name";
@@ -131,20 +130,28 @@ $config['scheduler']['priority'] = 10;
 $config['ssh']['timeout'] = 15;
 
 
-/* Use an alternate server as streaming distribution source */
-/* */
+// -- Alternate server as streaming distribution source -- //
+
 //enable file syncing (does not redirect user)
 $streaming_video_alternate_server_enable_sync = false;
-//redirect users to given adress (see next options). Requires $streaming_video_alternate_server_enable_sync
+// redirect users to given adress (see next options). Requires $streaming_video_alternate_server_enable_sync
 $streaming_video_alternate_server_enable_redirect = false;
-if($streaming_video_alternate_server_enable_redirect && !$streaming_video_alternate_server_enable_sync)
-{
-    //this should not happen except if you're using another solution to sync the files
+if($streaming_video_alternate_server_enable_redirect && !$streaming_video_alternate_server_enable_sync) {
+    // this should not happen except if you're using another solution to sync the files
     trigger_error('Possible wrong configuration ($streaming_video_alternate_server_enable_redirect enabled while $streaming_video_alternate_server_enable_sync disabled)', E_USER_WARNING);
 }
+// -- -- //
     
 $streaming_video_alternate_server_user = "user";
 $streaming_video_alternate_server_keyfile = "";
 $streaming_video_alternate_server_address = "127.0.0.1";
 $streaming_video_alternate_server_document_root = "/var/www/stream/";
 $streaming_video_alternate_server_uri = "stream/";
+
+// -- debugging -- //
+$debug_mode = false;
+$log_level_threshold = LogLevel::INFO; //Logs with level above this level won't be logged at all
+// -- -- //
+
+// load static variables
+require_once(__DIR__ . '/common.inc');

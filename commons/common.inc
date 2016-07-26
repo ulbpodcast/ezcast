@@ -4,6 +4,13 @@
  * 
  *  */
 
-require_once __DIR__ . '/logger/logger.php';
+require_once('logger.php');
+include_once('config.inc');
 
-$logger = new logger();
+$logger = new logger($log_level_threshold);
+
+if($debug_mode)
+{
+    ini_set("display_errors", 1);
+    error_reporting(E_ALL); 
+}

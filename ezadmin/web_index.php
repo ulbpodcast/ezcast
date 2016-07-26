@@ -584,9 +584,10 @@ function view_user_details() {
         $passNotSet = $userinfo['passNotSet'];
         $origin = $userinfo['origin'];
         $is_admin = ($userinfo['permissions'] != 0);
-        $in_classroom = false; // TODO: CHANGE THIS!!!
+        $in_classroom = false;
         $is_ezadmin = array_key_exists($user_ID, $users);
 
+        //$in_classroom true if user has any course in classrooms
         foreach ($courses as $c) {
             if ($c['in_recorders'] != '0') {
                 $in_classroom = true;

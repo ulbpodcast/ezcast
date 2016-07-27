@@ -30,17 +30,27 @@
  */
 //This program receives queries from classroom recording agents to tell that a new recorging is ready for download
 //IP adresses of machines allowed to submit are stored in a file
-require_once __DIR__."/../config.inc";
-require_once __DIR__."/../lib_ezmam.php";
-require_once "web_request.php";
-require_once __DIR__."/../../commons/lib_external_stream_daemon.php";
-
-if(!isValidCaller()) {
-    die;
-}
+require_once "config.inc";
+include_once "classroom_recorder_ip.inc"; //valid ip file
+require_once "lib_ezmam.php";
+require_once "../commons/lib_external_stream_daemon.php";
 
 $input = array_merge($_GET, $_POST);
+//look for caller's ip in config files
 
+$caller_ip = trim($_SERVER["REMOTE_ADDR"]);
+
+//test $logger->log(EventType::TYPE3, LogLevel::INFO, "Caller IP: " . $caller_ip, array("context!!"), "suchasset", null);
+        
+$key = array_search($caller_ip, $podcv_ip);
+if ($key === false) {
+    $key = array_search($caller_ip, $podcs_ip);
+    if ($key === false) {
+        //ip not found
+        print "not talking to you";
+        die;
+    }
+}
 
 switch ($input['action']) {
     case 'download' :

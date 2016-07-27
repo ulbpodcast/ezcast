@@ -1,8 +1,12 @@
 <?php
 
-require_once(__DIR__ . '/lib_database.php');
+// This file is shared between server and recorder and should be kept identical in both projects.
+// Specialized loggers for each are implemented with this one as base.
+         
+require_once("logger_event_type.php");
 
 /**
+ * 
  * Describes log levels. Frm PSR-3 Logger Interface. (http://www.php-fig.org/psr/psr-3/)
  */
 class LogLevel
@@ -67,34 +71,31 @@ class LogLevel
 //Structure used as argument to log calls
 class AssetLogInfo
 {
-    public function __construct($author, $cam_slide, $course, $classroom) {
+    public function __construct($author = "", $cam_slide = "", $course = "", $classroom = "") {
         $this->author = $author;
         $this->cam_slide = $cam_slide;
         $this->course = $course;
         $this->classroom = $classroom;
     }
     
-    public $author = "todo";
-    public $cam_slide = "todo";
-    public $course = "todo";
-    public $classroom = "todo";
+    public $author;
+    public $cam_slide;
+    public $course;
+    public $classroom;
 }
 
-class EventType {
-    const TYPE1 = "type1";
-    const TYPE2 = "type2";
-    const TYPE3 = "type3";
-    const TYPE4 = "type4";
+/* This structure is used to pass temporary results from the `log` parent function to its child. 
+ * Feel free to change it if you find another more elegant solution.
+ */
+class LogData {
+    public $log_level_integer = null;
+    public $context = null;
+    public $type_id = null;
+    public $message = null;
     
-    // index by EventType
-    public static $event_type_id = array(
-       EventType::TYPE1 => 0,
-       EventType::TYPE2 => 1,
-       EventType::TYPE3 => 2,
-       EventType::TYPE4 => 3,
-    );
+    public $asset_info = null; //type AssetLogInfo
 }
-
+    
 class Logger {
     
     /* Reverted EventType array -> key: id, value: EventType
@@ -102,28 +103,23 @@ class Logger {
      */
     public static $event_type_by_id = false;
     
+    //set this to true to echo all logs
+    public static $print_logs = false;
+    
     /* 
      * Reverted LogLevel array -> key: id, value: LogLevel name (string)
      * Filled at Logger construct
      */
     public static $log_level_name_by_id = false;
-    
-    const EVENT_TABLE_NAME = "events";
-    const EVENT_STATUS_TABLE_NAME = "event_status";    
-    
-    public function __construct($log_level_threshold = LogLevel::INFO) {
+        
+    public function __construct() {
         $this->fill_event_type_by_id();
         $this->fill_level_name_by_id();
-        
-        $this->log_level_threshold = $log_level_threshold;
-        
-        global $db_object;
-        if($db_object == null)  //db is not yet prepared yet
-            db_prepare(); 
     }
     
     public function get_type_name($index)
     {
+        //var_dump(Logger::$event_type_by_id);
         if(isset(Logger::$event_type_by_id[$index]))
             return Logger::$event_type_by_id[$index];
         else
@@ -155,99 +151,64 @@ class Logger {
 
         throw new RuntimeException('get_log_level_integer: Invalid level given');
     }
-    
-    /**
-     * Sets the Log Level Threshold
-     *
-     * @param string $log_level_threshold The log level threshold
-     */
-    public function set_log_level_threshold($log_level_threshold)
-    {
-        $this->log_level_threshold = $log_level_threshold;
-    }
 
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed $type_id type in the form of EventType::*
+     * @param mixed $type type in the form of EventType::*
      * @param mixed $level in the form of LogLevel::*
      * @param string $message
      * @param string $asset asset identifier
      * @param AssetLogInfo $asset asset identifier
      * @param array $context Context can have several levels, such as array('module', 'capture_ffmpeg'). Cannot contain pipes (will be replaced with slashes if any).
-     * @return null
+     * @return LogData temporary data, used by children functions
      */
-    public function log($type_id, $level, $message, $asset = "dummy", $assetInfo = null, array $context = array())
+    public function log($type, $level, $message, array $context = array(), $asset = "dummy", $assetInfo = null)
     {
-        global $db_object;
-        global $appname; // to be used as origin
-        
-        // do not log if log above threshold log level
-        if (LogLevel::$log_levels[$this->log_level_threshold] < LogLevel::$log_levels[$level]) {
-            return;
-        }
-
-        //
+        $tempLogData = new LogData();
+        $tempLogData->message = $message;
+                
+        // convert given loglevel to integer for db storage
         try {
-          $logLevelInteger = $this->get_log_level_integer($level);
+          $tempLogData->log_level_integer = $this->get_log_level_integer($level);
         } catch (Exception $e) {
           //invalid level given, default to "error" and prepend this problem to the message
-          $message = "(Invalid log level) " . $message;
-          $logLevelInteger = LogLevel::$log_levels[LogLevel::ERROR];
+          $tempLogData->message = "(Invalid log level) " . $message;
+          $tempLogData->log_level_integer = LogLevel::$log_levels[LogLevel::ERROR];
         }
 
-        //asset infos. May be null, we only give it at record start
-        $classroom = null;
-        $course = null;
-        $author = null;
-        $cam_slide = null;
-        if($assetInfo) {
-            $classroom = $assetInfo->classroom;
-            $course = $assetInfo->course;
-            $author = $assetInfo->author;
-            $cam_slide = $assetInfo->cam_slide;
-        }
+        //convert given type_id to integer for db storage
+       $tempLogData->type_id = isset(EventType::$event_type_id[$type]) ? EventType::$event_type_id[$type] : 0;
+       
+        // asset infos. May be null, we only give it at record start
+        if($assetInfo)
+            $tempLogData->assetInfo = $assetInfo;
+        else
+            $tempLogData->asset_info = new AssetLogInfo(); //if no asset info, init with default values
         
-        //pipes will be used as seperator between contexts
-        //remove pipes
+        // pipes will be used as seperator between contexts
+        // remove pipes
         $contextStr = str_replace($context, '/', '|');
-        //concat contexts for db insert
+        // concat contexts for db insert
         $contextStr = implode('|', $context);
         
-        //public function emergency($type_id, $message, $assetLogInfo = null, array $context = array())
-                
-        $statement = $db_object->prepare(
-          'INSERT INTO '. db_gettable(Logger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `asset_classroom_id`, `asset_course`, ' .
-            '`asset_author`, `asset_cam_slide`, `event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
-          ':asset, :origin, :classroom, :course, :author, :cam_slide, NOW(), :type_id, :context, :loglevel, :message)');
+        $tempLogData->context = $contextStr;
+            
+        // okay, all data ready
+
+        if(Logger::$print_logs)
+            echo "log: [$level] / type: $contextStr / $type / $tempLogData->message" .PHP_EOL;
         
-        //(SELECT datetime())
+        //idea: if level is critical or below, push back trace to message
         
-        $statement->bindParam(':asset', $asset);
-        $statement->bindParam(':origin', $appname);
-        $statement->bindParam(':classroom', $classroom);
-        $statement->bindParam(':course', $course);
-        $statement->bindParam(':author', $author);
-        $statement->bindParam(':cam_slide', $cam_slide);
-        $statement->bindParam(':type_id', $type_id);        
-        $statement->bindParam(':context', $contextStr);
-        $statement->bindParam(':loglevel', $logLevelInteger);
-        $statement->bindParam(':message', $message);
-        
-        $statement->execute();
+        return $tempLogData;
     }
     
-    // -- PRIVATE
+    // -- PROTECTED
     // ----------
     
-    /**
-     * Current minimum logging threshold. Logs with higher log level than this are ignored.
-     * @var LogLevel::*
-     */
-    private $log_level_threshold = LogLevel::DEBUG;
-    
     //fill $event_type_by_id from $event_type_id
-    private function fill_event_type_by_id()
+    protected function fill_event_type_by_id()
     {
         if(Logger::$event_type_by_id == false) {
             Logger::$event_type_by_id = array();
@@ -260,7 +221,7 @@ class Logger {
     }
     
     //fill $log_level_name_by_id from $log_levels
-    private function fill_level_name_by_id()
+    protected function fill_level_name_by_id()
     {
         if(Logger::$log_level_name_by_id == false) {
             Logger::$log_level_name_by_id = array();

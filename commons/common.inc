@@ -4,10 +4,12 @@
  * 
  *  */
 
-require_once('logger.php');
+require_once('logger_server.php');
 include_once('config.inc');
 
-$logger = new logger($log_level_threshold);
+$logger = new ServerLogger();
+//Uncomment this to print all log message to screen (may be useful to debug services or such)
+//Logger::$print_logs = true;
 
 if($debug_mode)
 {

@@ -148,4 +148,3 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     
     return $reqSQL->fetchAll();
 }
-

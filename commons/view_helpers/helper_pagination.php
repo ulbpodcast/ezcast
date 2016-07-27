@@ -1,18 +1,20 @@
 <?php
 
+require_once 'helper_url.php';
+
 /**
- * Class who help you to create pagination system
+ * Class who help you to create pagination system (adapt for Bootstrap 3)
  * 
  * How to use:
  * - Initialise (in controller) with the constructor
  * - Adapt you SQL Request with functions getStartElem, getElemPerPage and 
  *   add `SQL_CALC_FOUND_ROWS` to the selected items
- * - Add the number of total row (with setTotalItem)
+ * - Add the number of total row (with setTotalItem) with the result of your request
  * - Insert the HTML code (in the view) with the function insert() on the object 
  *   that you have initialise
- * - Add the HTML code in your form with function insertHiddenInput()
  * 
- * REQUIRED: helper_url
+ * This system use GET variable with the attribut `page` to send informations
+ * (like: $_GET['page'])
  * 
  */
 class Pagination {
@@ -41,15 +43,6 @@ class Pagination {
      */
     public function setTotalItem($allItem) {
         $this->maxPage = ceil(intval($allItem) / $this->elemPerPage);
-    }
-    
-    /**
-     * Insert an hidden input (HTML code) to save the new page
-     * 
-     * @return String HTML code
-     */
-    public function insertHiddenInput() {
-        return '<input type="hidden" name="page" value="'.$this->currentPage.'" />';
     }
     
     

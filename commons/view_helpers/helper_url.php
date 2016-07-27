@@ -13,6 +13,10 @@
 function url_post_replace($param, $value, $initURL = NULL) {
     if($initURL == NULL) {
         $initURL = $_SERVER["REQUEST_URI"];
+        
+        if(!isset($_GET)) {
+            $initURL .= '?';
+        }
     }
     $regex = "/([&|?]".$param."=)[\w-+%]*/";
     $res = "";
@@ -35,7 +39,10 @@ function url_post_replace($param, $value, $initURL = NULL) {
  */
 function url_post_replace_multiple($replaceInfos) {
     $res = $_SERVER["REQUEST_URI"];
-
+    if(!isset($_GET)) {
+        $res .= '?';
+    }
+    
     foreach($replaceInfos as $param => $value) {
         $res = url_post_replace($param, $value, $res);
     }

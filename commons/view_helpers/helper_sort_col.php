@@ -1,14 +1,17 @@
 <?php
 
+require_once 'helper_url.php';
+
 /**
- * Helper for sort the result by column
+ * Helper for sort the result by column (adapt for Bootstrap 3)
  * 
  * How to use:
  * - Initialise (in controller) with the constructor
  * - Adapt you SQL Request with functions getCurrentSortCol and getOrderSort
  * - In HTML Table, use insertThSort() to add an specific column order
  * 
- * REQUIRED: helper_url
+ * This system use GET variable with attributs `order` and `col` to send informations
+ * (like: $_GET['order'] and $_GET['col'])
  * 
  */
 class Sort_colonne {

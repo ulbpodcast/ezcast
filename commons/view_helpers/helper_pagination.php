@@ -4,21 +4,20 @@
  * Class who help you to create pagination system
  * 
  * - Initialise (in controller) with the constructor
- * - Adapt you SQL Request with the getLimit() function and add `SQL_CALC_FOUND_ROWS`
- *   to the selected items
- * - Add the number of total row
- * - Insert the HTML code (in the view) with the function insert on the object 
+ * - Adapt you SQL Request with functions getStartElem, getElemPerPage and 
+ *   add `SQL_CALC_FOUND_ROWS` to the selected items
+ * - Add the number of total row (with setTotalItem)
+ * - Insert the HTML code (in the view) with the function insert() on the object 
  *   that you have initialise
+ * - Add the HTML code in your form with function insertHiddenInput()
  * - The javascript code is automaticly loaded when Pagination object exist
- * 
- * In you DataBase Request you must add: LIMIT 
  * 
  */
 class Pagination {
     
     private $maxPage;
     private $currentPage;
-    private $elemPerPage;
+    private $elemPerPage; 
     
     
     /**
@@ -40,6 +39,15 @@ class Pagination {
      */
     public function setTotalItem($allItem) {
         $this->maxPage = ceil(intval($allItem) / $this->elemPerPage);
+    }
+    
+    /**
+     * Insert an hidden input (HTML code) to save the new page
+     * 
+     * @return String HTML code
+     */
+    public function insertHiddenInput() {
+        return '<input type="hidden" name="page" value="'.$this->currentPage.'" />';
     }
     
     
@@ -68,7 +76,7 @@ class Pagination {
                 echo '><a href="#" data-page="1">1</a></li>';
         
         if($this->currentPage > 5) {
-           echo '<li><a href="#" data-page="0">...</a></li>';
+           echo '<li><span>...</span></li>';
         }
            
         $start = ($this->currentPage > 4) ? ($this->currentPage-3) : 2;
@@ -96,7 +104,12 @@ class Pagination {
                 <a href="#" data-page="'.$this->maxPage.'">'.$this->maxPage.'</a>
             </li>';
         }
-        echo '<li>
+        
+        echo '<li';
+        if($this->currentPage == $this->maxPage) { 
+            echo ' class="disabled"';   
+        } 
+        echo '>
             <a href="#" data-page="'.($this->currentPage+1).'">
                 <span aria-hidden="true">&raquo;</span>
             </a>
@@ -107,8 +120,6 @@ class Pagination {
             echo '<script>
                 var maxPage = '.$this->maxPage.'
             </script>';
-        
-
         }
     
     
@@ -116,12 +127,21 @@ class Pagination {
     }
     
     /**
-     * Return the SQL code to limit the request
+     * Get the first element to be recoverd by SQL
      * 
-     * @return String who contains SQL request
+     * @return int the number of the first element
      */
-    public function getLimit() {
-        return " LIMIT " . ($this->currentPage-1) * $this->elemPerPage . "," . $this->elemPerPage;
+    public function getStartElem() {
+        return ($this->currentPage-1)*$this->elemPerPage;
+    }
+    
+    /**
+     * Get the number of item in one page
+     * 
+     * @return int nbr elem
+     */
+    public function getElemPerPage() {
+        return $this->elemPerPage;
     }
     
     

@@ -17,7 +17,7 @@ require_once 'config.inc';
 session_name($appname);
 session_start();
 require_once 'lib_statistics.php';
-require_once 'lib_sql_management.php';
+require_once 'lib_sql_management.php'; 
 require_once 'lib_sql_event.php';
 require_once 'lib_error.php';
 require_once '../commons/lib_auth.php';
@@ -856,24 +856,33 @@ function view_list_event() {
     global $logger;
     
     include_once '../commons/view_helpers/helper_pagination.php';
+    include_once '../commons/view_helpers/helper_sort_col.php';
     
-    if (isset($input['post'])) {
-        $pagination = new Pagination($input['page'], 1);
+    if (isset($input['post'])) { 
+        $pagination = new Pagination($input['page']);
+        $colOrder = new Sort_colonne($input['col'], $input['order']);
         
         $events = db_event_get($input['asset'], $input['origin'], $input['classroom'],
                 $input['courses'], $input['teacher'], $input['startDate'], 
                 $input['endDate'], $input['type_id'], $input['context'], 
-                $input['log_level'], $input['message'], $pagination->getLimit());
+                $input['log_level'], $input['message'], 
+                $colOrder->getCurrentSortCol(), $colOrder->getOrderSort(),
+                $pagination->getStartElem(), $pagination->getElemPerPage());
         
         foreach ($events as &$event) {
             $event['loglevel_name'] = $logger->get_log_level_name($event['loglevel']);
         }
         
         $pagination->setTotalItem(db_found_rows());
+        
+        
+    } else {
+        $pagination = new Pagination();
+        $colOrder = new Sort_colonne("event_time");
     }
     
     
-    // Display page
+    // Display page 
     include template_getpath('div_main_header.php');
     include template_getpath('div_monit_search_events.php');
     if(isset($events)) {

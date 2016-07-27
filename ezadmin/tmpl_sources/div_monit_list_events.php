@@ -4,7 +4,7 @@
     $pagination->insert();
 } ?>
 
-<table class="table table-striped table-hover table-condensed table-responsive events">
+<table class="table table-striped table-hover table-condensed table-responsive events sort_col">
     <tr>
         <th>Asset</th>
         <th>®origin®</th>
@@ -12,14 +12,7 @@
         <th>®monit_courses®</th>
         <th>®author®</th>
         <th>®monit_record_type®</th>
-        <th data-col="event_date" <?php echo $input['col'] == 'event_date' ? 'data-order="' . $input["order"] . '"' : '' ?> 
-            style="cursor:pointer;">®monit_event_date®
-                <?php echo ($input['col'] == 'event_date') ? 
-                    ($input['order'] == 'ASC' ? 
-                        ' <span class="glyphicon glyphicon-chevron-down"></span>' : 
-                        ' <span class="glyphicon glyphicon-chevron-up"></span>') 
-                    : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?>
-        </th>
+        <?php echo $colOrder->insertThSort("event_time", "®monit_event_date®"); ?>
         <th>®monit_type_id®</th>
         <th>®monit_context®</th>
         <th>®monit_log_level®</th>
@@ -55,7 +48,7 @@
 $(function() {
     
     
-    $("table.events th").click(function() {
+    $("table.sort_col th").click(function() {
         var col = $(this).data('col');
 
         if(!col) return;

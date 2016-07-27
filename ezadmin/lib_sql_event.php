@@ -40,24 +40,7 @@ function event_statements_get() {
             'get_all_event' =>
                     'SELECT * ' .
                     'FROM ' . db_gettable('events'). ' ' .
-                    'ORDER BY event_time',
-        
-            'get_event' =>
-                    'SELECT SQL_CALC_FOUND_ROWS events.* ' .
-                    'FROM ' . db_gettable('events'). ' events ' .
-                    'WHERE (:asset = "" OR asset = :asset)  AND ' 
-                        . '(:origin = "" OR origin = :origin) AND ' 
-                        . '(:asset_classroom_id = "%" OR asset_classroom_id LIKE :asset_classroom_id) AND '
-                        . '(:asset_course = "%" OR asset_course LIKE :asset_course) AND ' 
-                        . '(:asset_author = "%" OR asset_author LIKE :asset_author) AND '
-                        . '(:first_event_time = "" OR event_time >= :first_event_time) AND ' 
-                        . '(:last_event_time = "" OR event_time <= :last_event_time) AND ' 
-                        . '(:type_id = "" OR type_id = :type_id) AND ' 
-                        . '(:context = "%" OR context LIKE :context) AND ' 
-                        . '(:loglevel = "" OR loglevel = :loglevel) AND '
-                        . '(:message = "%" OR message LIKE :message) ' .
-                    'ORDER BY event_time ' .
-                    ':limit'
+                    'ORDER BY event_time'
         );
 }
 
@@ -74,8 +57,10 @@ function db_event_get_all() {
 
 function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asset_author,
         $first_event_time, $last_event_time, $type_id, $context,
-        $loglevel, $message, $limit) {
-    global $statements;
+        $loglevel, $message, 
+        $colOrder = "event_time", $orderSort = "ASC",
+        $start_elem = "", $max_elem = "") {
+    
     global $db_object;
     
     $strSQL = 'SELECT SQL_CALC_FOUND_ROWS events.* ' .
@@ -143,8 +128,22 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
         $strSQL .= " WHERE ";
     }
     $strSQL .= implode(" AND ", $whereParam);
-    $strSQL .= " ORDER BY event_time";
-    $strSQL .= $limit;
+    if($colOrder != "") {
+        $strSQL .= " ORDER BY ".$colOrder." ";
+        if($orderSort == "DESC") {
+            $strSQL .= " DESC ";
+        }
+    }
+    
+    if($max_elem != "" && $max_elem >= 0) {
+        if($start_elem != "" && $start_elem >= 0) {
+            $strSQL .= " LIMIT ".$start_elem.",".$max_elem;
+        } else {
+            $strSQL .= " LIMIT ".$max_elem;
+        }
+    }
+    
+    echo $strSQL;
     
     $reqSQL = $db_object->prepare($strSQL);
     $reqSQL->execute($valueWhereParam);

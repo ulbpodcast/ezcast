@@ -4,8 +4,6 @@
     
     <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
     <input type="hidden" name="post" value="">
-    <?php echo $pagination->insertHiddenInput(); ?>
-    <?php echo $colOrder->insertHiddenInput(); ?>
     
     
     <!-- Date -->
@@ -47,7 +45,7 @@
                 if(isset($input) && array_key_exists('startDate', $input)) {
                     echo "defaultDate: new Date('".$input['startDate']."')";
                 } else {
-                    echo 'defaultDate: new Date()';
+                    echo 'defaultDate: moment().subtract(\'days\', 7)';
                 }
                 ?>
             });
@@ -61,7 +59,7 @@
                 if(isset($input) && array_key_exists('endDate', $input)) {
                     echo "defaultDate: new Date('".$input['endDate']."')";
                 } else {
-                    echo 'defaultDate: new Date()';
+                    echo 'defaultDate: moment().add(\'days\', 1)';
                 }
                 ?>
             });

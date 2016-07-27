@@ -143,8 +143,6 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
         }
     }
     
-    echo $strSQL;
-    
     $reqSQL = $db_object->prepare($strSQL);
     $reqSQL->execute($valueWhereParam);
     

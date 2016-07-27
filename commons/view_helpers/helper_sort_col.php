@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * Helper for sort the result by column
+ * 
+ * How to use:
+ * - Initialise (in controller) with the constructor
+ * - Adapt you SQL Request with functions getCurrentSortCol and getOrderSort
+ * - In HTML Table, use insertThSort() to add an specific column order
+ * 
+ * REQUIRED: helper_url
  * 
  */
 class Sort_colonne {
@@ -10,7 +18,7 @@ class Sort_colonne {
     private $orderOfSort;
     
     
-    public function __construct($currentSortCol= "", $orderOfSort = "ASC") {
+    public function __construct($currentSortCol= "", $orderOfSort = "DESC") {
         $this->currentSortCol = $currentSortCol;
         
         if($orderOfSort == "") {
@@ -23,13 +31,24 @@ class Sort_colonne {
         
     }
     
+    /**
+     * Return the specific icon according to the already defined
+     */
+    private function getIcon() {
+        if($this->orderOfSort == 'ASC') {
+            return '<span class="glyphicon glyphicon-chevron-down"></span>';
+        }
+        return '<span class="glyphicon glyphicon-chevron-up"></span>';
+    }
     
-    public function insertHiddenInput() {
-        return 
-            '<input type="hidden" name="col" 
-                value="'.$this->currentSortCol.'" />' .
-            '<input type="hidden" name="order"
-                value="'.$this->orderOfSort.'" />';
+    /**
+     * Get the reverse order of the sort
+     */
+    private function getReverseOrder() {
+        if($this->orderOfSort == 'ASC') {
+            return 'DESC';
+        }
+        return 'ASC';
     }
     
     
@@ -40,20 +59,29 @@ class Sort_colonne {
      * @param String $title of the colonne
      * @return string with the HTML code
      */
-    public function insertThSort($name, $title) {
-        $res = '<th data-col="'.$name.'"';
-        if($this->currentSortCol == $name) {
-            $res .= ' data-order="'.$this->orderOfSort.'" ';
+    public function insertThSort($name, $title, $class = NULL, $style = NULL) {
+        $res = '<th';
+        if($class != NULL) {
+            $res .= ' class="'.$class.'"';
         }
+        if($style != NULL) {
+            $res .= ' style="'.$style.'"';
+        }
+        $res .= '>';
+        
+        $res .= '<a style="color:black" href="';
+        $res .= url_post_replace_multiple(
+                    array(
+                        'col' => $name, 
+                        'order' => $this->getReverseOrder())
+                    );
+        $res .= '"';
         $res .= ' style="cursor:pointer;">'.$title." ";
         
         if($this->currentSortCol == $name) {
-            if($this->orderOfSort == 'ASC') {
-                $res .= '<span class="glyphicon glyphicon-chevron-down"></span>';
-            } else {
-                $res .= '<span class="glyphicon glyphicon-chevron-up"></span>';
-            }
+            $res .= $this->getIcon();
         }
+        $res .= "</a>";
         $res .= '</th>';
         
         return $res;

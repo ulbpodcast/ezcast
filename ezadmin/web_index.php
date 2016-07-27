@@ -855,13 +855,26 @@ function view_list_event() {
     global $input;
     global $logger;
     
+    
+    /// Define Helper ///
     include_once '../commons/view_helpers/helper_pagination.php';
     include_once '../commons/view_helpers/helper_sort_col.php';
+    include_once '../commons/view_helpers/helper_url.php';
     
-    if (isset($input['post'])) { 
+    if(array_key_exists('page', $input)) {
         $pagination = new Pagination($input['page']);
+    } else {
+        $pagination = new Pagination();
+    }
+    if(array_key_exists('col', $input) && array_key_exists('order', $input)) {
         $colOrder = new Sort_colonne($input['col'], $input['order']);
-        
+    } else {
+        $colOrder = new Sort_colonne('event_time');
+    }
+
+    
+    // Get Events
+    if (isset($input['post'])) { 
         $events = db_event_get($input['asset'], $input['origin'], $input['classroom'],
                 $input['courses'], $input['teacher'], $input['startDate'], 
                 $input['endDate'], $input['type_id'], $input['context'], 
@@ -870,15 +883,17 @@ function view_list_event() {
                 $pagination->getStartElem(), $pagination->getElemPerPage());
         
         foreach ($events as &$event) {
+            $event['event_time'] = date("d/m/y H:i:s", strtotime($event['event_time']));
             $event['loglevel_name'] = $logger->get_log_level_name($event['loglevel']);
+            if(strlen($event['message']) > 50) {
+                $event['min_message'] = substr($event['message'], 0, 50);
+                $event['min_message'] .= "...";
+            }
         }
         
         $pagination->setTotalItem(db_found_rows());
         
         
-    } else {
-        $pagination = new Pagination();
-        $colOrder = new Sort_colonne("event_time");
     }
     
     

@@ -608,19 +608,21 @@ function create_tables($drop = true) {
                 "`type_id` INT(10) NOT NULL,".
                 "`context` varchar(30) NOT NULL,".
                 "`loglevel` tinyint(1) NOT NULL COMMENT 'See logger.php for levels',".
-                "`message` text NOT NULL".
+                "`message` text NOT NULL,".
+                "KEY `asset` (`asset`),".
+                "KEY `event_time` (`event_time`)".
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
         if ($drop)
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . Logger::EVENT_STATUS_TABLE_NAME .'`;');
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . Logger::EVENT_STATUS_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
-                "`asset` varchar(50) NOT NULL," .
                 "`status` enum('auto_success, auto_success_errors, auto_success_warnings, auto_failure, manual_ok, manual_partial_ok, manual_failure, manual_ignore') NOT NULL," .
                 "`parent_asset` varchar(50) DEFAULT NULL," .
                 "`author` varchar(50) DEFAULT 'system'," .
                 "`status_time` datetime DEFAULT NULL," .
                 "`description` text" .
+                "KEY `asset` (`asset`)" .
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
         
         // Creation of the indexes

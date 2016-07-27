@@ -859,7 +859,6 @@ function view_list_event() {
     /// Define Helper ///
     include_once '../commons/view_helpers/helper_pagination.php';
     include_once '../commons/view_helpers/helper_sort_col.php';
-    include_once '../commons/view_helpers/helper_url.php';
     
     if(array_key_exists('page', $input)) {
         $pagination = new Pagination($input['page']);

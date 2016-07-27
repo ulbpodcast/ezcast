@@ -26,6 +26,9 @@
 */
 
 chdir("!PATH/ezmanager");
-include "web_request/web_request_from_recorder.php";
+require "web_request/web_request_for_log.php";
 ?>
+
+
+
 

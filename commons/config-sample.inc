@@ -23,8 +23,6 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-require_once('logger.php');
-
 /*
  * This config file contains global config for the server
  * to run. It can be edited following your particular needs.

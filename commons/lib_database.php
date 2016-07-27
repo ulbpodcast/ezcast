@@ -27,7 +27,7 @@
 /**
  * @package ezcast.commons.lib.database
  */
-include_once 'config.inc'; //include instead of require because this file is used in installation where config may not be create yet
+include_once __DIR__.'/config.inc'; //include instead of require because this file is used in installation where config may not be create yet
 
 // GLOBALS
 $db_object = null;
@@ -70,7 +70,7 @@ function db_prepare(&$stmt_array = array()) {
     global $db_prepared;
     global $statements;
     global $debug_mode;
-
+    
     if($db_object == null)
     {
         try {

@@ -605,9 +605,9 @@ function create_tables($drop = true) {
                 "`asset_author` varchar(50) DEFAULT NULL,".
                 "`asset_cam_slide` enum('cam','slides','camslides') DEFAULT NULL,".
                 "`event_time` datetime NOT NULL,".
-                "`type_id` INT(10) NOT NULL,".
+                "`type_id` INT(10) UNSIGNED NOT NULL,".
                 "`context` varchar(30) NOT NULL,".
-                "`loglevel` tinyint(1) NOT NULL COMMENT 'See logger.php for levels',".
+                "`loglevel` tinyint(1) UNSIGNED NOT NULL COMMENT 'See logger.php for levels',".
                 "`message` text NOT NULL,".
                 "KEY `asset` (`asset`),".
                 "KEY `event_time` (`event_time`)".

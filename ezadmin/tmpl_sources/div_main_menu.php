@@ -1,20 +1,3 @@
-
-<script type="text/javascript">
-    function showHiddenCategory(cat) {
-        //window.alert(cat);
-        
-        var realcat = 'sidebar_'+cat;
-        var elements = document.getElementsByClassName(realcat);
-         
-        for(i=0; i<elements.length; ++i) {
-            if(elements[i].style.display=='inline')
-                elements[i].style.display='hidden';
-            else
-                elements[i].style.display='inline';
-        }
-    }
-</script>
-
 <?php
 include 'config.inc';
 global $classrooms_category_enabled;
@@ -101,7 +84,10 @@ $options['Monitoring'] = array(
     'podcastcours_monit_list_events' => array(
         'name' => '®list_event_title®',
         'action' => 'view_events'
-        //'args' => array('table' => 'podcastcours_users_courses')
+    ),
+    'podcastcours_monit_track_asset' => array(
+        'name' => '®track_asset_title®',
+        'action' => 'view_track_asset'
     )
 );
 
@@ -134,13 +120,15 @@ $category_names = array(
 <div class="col-md-2">
 <ul class="nav nav-list">
     <?php foreach($options as $cat => $suboptions) { ?>
-        <li class="nav-header" onclick="showHiddenCategory('<?php echo $category_names[$cat]; ?>');" style="cursor: pointer;"><?php echo $category_names[$cat]; ?></li>
+        <li class="nav-header">
+            <?php echo $category_names[$cat]; ?>
+        </li>
         <?php $nb_options = count($options, COUNT_RECURSIVE) - count($options); ?>
         <?php foreach($suboptions as $key => $option) {
         if($key == 'additional_buttons') {
             foreach($option as $operation => $txt) {
                 ?>
-                <li class="<?php if(isset($input) && isset($input['action']) && ($operation == $input['action'])) {echo 'active'; } ?>" >
+                <li class="<?php if(isset($input) && isset($input['action']) && ($operation == $input['action'])) {echo 'active'; } ?>">
                     <a href="?<?php echo SID."&action=$operation"?>"><?php echo $txt; ?></a>
                 </li>
                 <?php
@@ -148,8 +136,7 @@ $category_names = array(
         }
         else { ?>
             <li <?php if($nb_options > $threshold_num_options) { echo 'style="display: none;"'; } ?> 
-                class="sidebar sidebar_<?php echo $cat; 
-                // TODO not work when no operation with input in this page
+                class="sidebar <?php // TODO not work when no operation with input in this page
                 if(isset($input) && isset($input['action']) && ($option['action'] == $input['action'])) {
                     echo ' active '; 
                 } ?> ">

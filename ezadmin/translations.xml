@@ -478,6 +478,8 @@
         <label id="monit_record_type" lang="en">Record Type</label>
         <label id="monit_event_date" lang="fr">Date</label>
         <label id="monit_event_date" lang="en">Date</label>
+        <label id="monit_status_date" lang="fr">Date</label>
+        <label id="monit_status_date" lang="en">Date</label>
         <label id="monit_log_level" lang="fr">LogLevel</label>
         <label id="monit_log_level" lang="en">LogLevel</label>
         <label id="monit_message" lang="fr">Message</label>
@@ -588,26 +590,38 @@
         
         
         <!-- Long texts -->
-        <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, et à bientôt.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php">Revenir à la page de connexion&lt;/a&gt;</label>
-        <label id="Logout_confirmation_message" lang="en">You are now logged out.&lt;br /&gt;Thanks for using our services, see you soon.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
-        <label id="create_renderer_step_2_message" lang="fr">Ajoutez la &lt;b&gt;clé publique&lt;/b&gt; affichée ci-dessous sur le serveur distant (renderer) dans &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt; et cliquez sur "Continuer" pour tester la connexion SSH.</label>
-        <label id="create_renderer_step_2_message" lang="en">Add the following &lt;b&gt;public key&lt;/b&gt; in &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt;on the remote server (renderer) and click "Continue" to test the SSH connection.</label>
+        <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, 
+            et à bientôt.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php">Revenir à la page de connexion&lt;/a&gt;</label>
+        <label id="Logout_confirmation_message" lang="en">You are now logged out.&lt;br /&gt;Thanks for using our services, see you soon.
+            &lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
+        <label id="create_renderer_step_2_message" lang="fr">Ajoutez la &lt;b&gt;clé publique&lt;/b&gt; affichée ci-dessous sur le serveur 
+            distant (renderer) dans &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt; 
+            et cliquez sur "Continuer" pour tester la connexion SSH.</label>
+        <label id="create_renderer_step_2_message" lang="en">Add the following &lt;b&gt;public key&lt;/b&gt; in 
+            &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt;on the remote server (renderer) 
+            and click "Continue" to test the SSH connection.</label>
         <label id="create_renderer_step_2_loading" lang="fr">Vérification de la connexion SSH avec le serveur distant (renderer)</label>
         <label id="create_renderer_step_2_loading" lang="en">Checking SSH connection to the remote server (renderer)</label>
-        <label id="create_renderer_step_2_wait" lang="fr">Ceci peut prendre jusqu'à &lt;?php echo $ssh_timeout;?&gt; secondes. Veuillez ne pas rafraichir la page.</label>
-        <label id="create_renderer_step_2_wait" lang="en">This may last up to &lt;?php echo $ssh_timeout;?&gt; seconds. Please, do not refresh the page.</label>
+        <label id="create_renderer_step_2_wait" lang="fr">Ceci peut prendre jusqu'à &lt;?php echo $ssh_timeout;?&gt; secondes. 
+            Veuillez ne pas rafraichir la page.</label>
+        <label id="create_renderer_step_2_wait" lang="en">This may last up to &lt;?php echo $ssh_timeout;?&gt; seconds. Please, 
+            do not refresh the page.</label>
         <label id="ssh_connection_success" lang="fr">Connexion SSH au serveur distant (renderer) réussie !</label>
         <label id="ssh_connection_success" lang="en">Successfully connected via SSH to the remote server (renderer) !</label>
         <label id="create_renderer_step_3_loading" lang="fr">Vérification de la configuration du serveur distant (renderer)</label>
         <label id="create_renderer_step_3_loading" lang="en">Checking configuration of the remote server (renderer)</label>
-        <label id="create_renderer_step_3_wait" lang="fr">Ceci peut prendre jusqu'à &lt;?php echo $ssh_timeout;?&gt; secondes. Veuillez ne pas rafraichir la page.</label>
-        <label id="create_renderer_step_3_wait" lang="en">This may last up to &lt;?php echo $ssh_timeout;?&gt; seconds. Please, do not refresh the page.</label>
+        <label id="create_renderer_step_3_wait" lang="fr">Ceci peut prendre jusqu'à &lt;?php echo $ssh_timeout;?&gt; secondes. 
+            Veuillez ne pas rafraichir la page.</label>
+        <label id="create_renderer_step_3_wait" lang="en">This may last up to &lt;?php echo $ssh_timeout;?&gt; seconds. 
+            Please, do not refresh the page.</label>
         <label id="configuration_success" lang="fr">Les tests de configuration du serveur distant (renderer) ont réussi !</label>
         <label id="configuration_success" lang="en">Configuration tests on the remote server (renderer) have been successful !</label>
         <label id="create_renderer_step_4_message" lang="fr">Le programme va maintenant: </label>
         <label id="create_renderer_step_4_message" lang="en">The program is now going to: </label>
-        <label id="create_renderer_step_4_copy" lang="fr">Copier les fichiers d'installation d'EZrenderer sur le serveur distant [&lt;?php echo $_SESSION['renderer_root_path'];?&gt;]</label>
-        <label id="create_renderer_step_4_copy" lang="en">Copy EZrenderer installation files on the remote server [&lt;?php echo $_SESSION['renderer_root_path'];?&gt;]</label>
+        <label id="create_renderer_step_4_copy" lang="fr">Copier les fichiers d'installation d'EZrenderer sur le serveur distant 
+            [&lt;?php echo $_SESSION['renderer_root_path'];?&gt;]</label>
+        <label id="create_renderer_step_4_copy" lang="en">Copy EZrenderer installation files on the remote server 
+            [&lt;?php echo $_SESSION['renderer_root_path'];?&gt;]</label>
         <label id="create_renderer_step_4_install" lang="fr">Installer EZrenderer sur le serveur distant (renderer)</label>
         <label id="create_renderer_step_4_install" lang="en">Install EZrenderer on the remote server (renderer) </label>
         <label id="create_renderer_step_4_xml" lang="fr">Mettre à jour la liste des renderers pour EZadmin et EZmanager </label>
@@ -644,6 +658,39 @@
         <label id="stats_discussions_by_asset" lang="en">Number of discussions by asset</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
+        <label id="monit_help_status_auto_success" lang="fr">
+            Status mis automatiquement lorsque tout va bien
+        </label>
+        <label id="monit_help_status_auto_success" lang="en"></label>
+        <label id="monit_help_status_auto_success_error" lang="fr">
+            Status mis automatiquement lorsque l'on a le résultat mais qu'il y a des erreurs critiques
+        </label>
+        <label id="monit_help_status_auto_success_error" lang="en"></label>
+        <label id="monit_help_status_auto_success_warnings" lang="fr">
+            Status mis automatiquement lorsque l'on a le résultat mais qu'il y a des warnings/erreurs
+        </label>
+        <label id="monit_help_status_auto_success_warnings" lang="en"></label>
+        <label id="monit_help_status_auto_failure" lang="fr">
+            Status mis automatiquement lorsqu'il y a un problème
+        </label>
+        <label id="monit_help_status_auto_failure" lang="en"></label>
+        <label id="monit_help_status_manual_ok" lang="fr">
+            Status mis (manuellement) lorsque tout va bien
+        </label>
+        <label id="monit_help_status_manual_ok" lang="en"></label>
+        <label id="monit_help_status_manual_partial_ok" lang="fr">
+            Status mis (manuellement) lorsque le problème a été réglé mais avec perte partielle
+        </label>
+        <label id="monit_help_status_manual_partial_ok" lang="en"></label>
+        <label id="monit_help_status_manual_failure" lang="fr">
+            Status mis (manuellement) lorsque le problème a été vu mais qu'il y a eu une perte total
+        </label>
+        <label id="monit_help_status_manual_failure" lang="en"></label>
+        <label id="monit_help_status_manual_ignore" lang="fr">
+            Status mis (manuellement) lorsque l'asset n'est pas important (permet également de lier à un autre asset)
+        </label>
+        <label id="monit_help_status_manual_ignore" lang="en"></label>
+        
         
         <!-- Error -->
         <label id="error" lang="fr">Erreur</label>
@@ -691,8 +738,10 @@
         <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a movie</message>
         <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
         <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
-        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une erreur, contactez podcast@ulb.ac.be</message>
-        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact podcast@ulb.ac.be</message>
+        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une 
+            erreur, contactez podcast@ulb.ac.be</message>
+        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, 
+            please contact podcast@ulb.ac.be</message>
         <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
         <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
         <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
@@ -709,7 +758,8 @@
         <message id="Invalid_quality" lang="en">Access denied: invalid quality</message>
         <message id="Invalid_type" lang="fr">Accès refusé: type de média non-valide</message>
         <message id="Invalid_type" lang="en">Access denied: invalid media type</message>
-        <message id="push_to_recorder_unsuccessful" lang="fr">Erreur. Il est possible que certains enregistreurs n\'aient pas été mis à jour.</message>
+        <message id="push_to_recorder_unsuccessful" lang="fr">Erreur. Il est possible que certains enregistreurs n\'aient pas été mis
+            à jour.</message>
         <message id="push_to_recorder_unsuccessful" lang="en">Error. Some recorders might not have been updated.</message>
         <message id="missing_room_id" lang="fr">Le code auditoire ne peut pas être vide.</message>
         <message id="missing_room_id" lang="en">The room ID cannot be blank</message>
@@ -745,7 +795,8 @@
         <message id="missing_renderer_ffprobe" lang="en">The FFPROBE binary cannot be blank</message>
         <message id="php_not_found" lang="fr">Le binaire PHP n'a pas été trouvé sur le serveur distant (renderer).</message>
         <message id="php_not_found" lang="en">PHP binary could not be found on the remote server (renderer).</message>
-        <message id="php_deprecated" lang="fr">La version PHP installée sur le serveur distant (renderer) n'est pas supportée. (Minimum requis: 5.3)</message>
+        <message id="php_deprecated" lang="fr">La version PHP installée sur le serveur distant (renderer) n'est pas supportée. (Minimum 
+            requis: 5.3)</message>
         <message id="php_deprecated" lang="en">The PHP version installed on remote server (renderer) is deprecated. (Min required: 5.3)</message>
         <message id="missing_module_xml" lang="fr">Le module SimpleXML pour PHP n'est pas activé sur le serveur distant (renderer).</message>
         <message id="missing_module_xml" lang="en">SimpleXML module for PHP is not enabled on the remote server (renderer).</message>
@@ -755,40 +806,59 @@
         <message id="missing_freetype" lang="en">FreeType is not enabled for GD module (PHP) on the remote server (renderer).</message>
         <message id="ffmpeg_not_found" lang="fr">Le binaire FFMPEG n'a pas été trouvé sur le serveur distant (renderer).</message>
         <message id="ffmpeg_not_found" lang="en">FFMPEG binary could not be found on the remote server (renderer).</message>
-        <message id="missing_codec_aac" lang="fr">Le codec AAC (libfdk_aac) n'est pas installé pour FFMPEG (sélectionnez 'FFMPEG experimental mode (AAC)' pour continuer sans le codec libfdk_aac)</message>
-        <message id="missing_codec_aac" lang="en">AAC codec (libfdk_aac) is not installed for FFMPEG. Select 'FFMPEG experimental mode (AAC)' to continue without libfdk_aac codec.</message>
+        <message id="missing_codec_aac" lang="fr">Le codec AAC (libfdk_aac) n'est pas installé pour FFMPEG (sélectionnez 'FFMPEG experimental 
+            mode (AAC)' pour continuer sans le codec libfdk_aac)</message>
+        <message id="missing_codec_aac" lang="en">AAC codec (libfdk_aac) is not installed for FFMPEG. Select 'FFMPEG experimental mode 
+            (AAC)' to continue without libfdk_aac codec.</message>
         <message id="missing_codec_h264" lang="fr">Le codec H.264 (libx264) n'est pas installé pour FFMPEG</message>
         <message id="missing_codec_h264" lang="en">H.264 codec (libx264) is not installed for FFMPEG</message>
         <message id="ffprobe_not_found" lang="fr">Le binaire FFPROBE n'a pas été trouvé sur le serveur distant (renderer).</message>
         <message id="ffprobe_not_found" lang="en">FFPROBE binary could not be found on the remote server (renderer).</message>
         <message id="ssh_keyscan_error" lang="fr">Impossible de retrouver la clé publique SSH du serveur distant (renderer).</message>
         <message id="ssh_keyscan_error" lang="en">Could not retrieve SSH public key from remote server (renderer).</message>
-        <message id="cannot_ssh_recorder" lang="fr">Impossible d'ouvrir une connection ssh avec le renderer. Vérifiez authorized_keys sur le recorder et $recorder_user dans le fichier de configuration commun du serveur</message>
-        <message id="cannot_ssh_recorder" lang="en">Cannot open ssh connection with renderer. Check authorized_keys file in recorder and $recorder_user in server common config file.</message>
-        <message id="ssh_known_hosts_error" lang="fr">Impossible d'ajouter la clé publique SSH du serveur distant (renderer) au fichier 'known_hosts'.</message>
-        <message id="ssh_known_hosts_error" lang="en">Could not add SSH public key from remote server (renderer) to the 'known_hosts' file.</message>
-        <message id="ssh_connection_failed" lang="fr">Impossible d'établir une connection SSH avec le serveur distant (renderer) &lt;?php echo $_SESSION['renderer_address'];?&gt;. Vérifiez que l'adresse du renderer et le nom d'utilisateur sont corrects et que vous avez bien copié la clé SSH dans le fichier 'authorized_keys' du renderer.</message>
-        <message id="ssh_connection_failed" lang="en">Could not connect via SSH to the remote renderer &lt;?php echo $_SESSION['renderer_address'];?&gt;. Verify that the renderer address and username are correct and that you have correctly added SSH key in the 'authorized_keys' file of the remote renderer.</message>
+        <message id="cannot_ssh_recorder" lang="fr">Impossible d'ouvrir une connection ssh avec le renderer. Vérifiez authorized_keys 
+            sur le recorder 
+            et $recorder_user dans le fichier de configuration commun du serveur</message>
+        <message id="cannot_ssh_recorder" lang="en">Cannot open ssh connection with renderer. Check authorized_keys file in recorder 
+            and $recorder_user in server common config file.</message>
+        <message id="ssh_known_hosts_error" lang="fr">Impossible d'ajouter la clé publique SSH du serveur distant (renderer) au fichier 
+            'known_hosts'.</message>
+        <message id="ssh_known_hosts_error" lang="en">Could not add SSH public key from remote server (renderer) to the 
+            'known_hosts' file.</message>
+        <message id="ssh_connection_failed" lang="fr">Impossible d'établir une connection SSH avec le serveur distant (renderer) 
+            &lt;?php echo $_SESSION['renderer_address'];?&gt;. Vérifiez que l'adresse du renderer et le nom d'utilisateur sont corrects et 
+            que vous avez bien copié la clé SSH dans le fichier 'authorized_keys' du renderer.</message>
+        <message id="ssh_connection_failed" lang="en">Could not connect via SSH to the remote renderer 
+            &lt;?php echo $_SESSION['renderer_address'];?&gt;. Verify that the renderer address and username are correct and that you 
+            have correctly added SSH key in the 'authorized_keys' file of the remote renderer.</message>
         <message id="missing_forename" lang="fr">Le prénom ne peut pas être vide.</message>
         <message id="missing_forename" lang="en">The forename cannot be blank.</message>
         <message id="missing_surname" lang="fr">Le nom ne peut pas être vide.</message>
         <message id="missing_surname" lang="en">The surname cannot be blank.</message>
-        <message id="root_already_exists" lang="fr">Il y a déjà une version d'EZrenderer installée sur le serveur distant (renderer). Veuillez la désinstaller avant de réessayer.</message>
-        <message id="root_already_exists" lang="en">There is already a version of EZrenderer on the remote server (renderer). Please uninstall it before retrying.</message>
-        <message id="renderer_copy_failed" lang="fr">La copie des fichiers d'installation d'EZrenderer a échoué. Vérifiez les permissions du répertoire de destination et réessayez.</message>
-        <message id="renderer_copy_failed" lang="en">Failed to copy EZrenderer installation files. Verify file permissions on destination directory and retry</message>
+        <message id="root_already_exists" lang="fr">Il y a déjà une version d'EZrenderer installée sur le serveur distant (renderer). 
+            Veuillez la désinstaller avant de réessayer.</message>
+        <message id="root_already_exists" lang="en">There is already a version of EZrenderer on the remote server (renderer). Please 
+            uninstall it before retrying.</message>
+        <message id="renderer_copy_failed" lang="fr">La copie des fichiers d'installation d'EZrenderer a échoué. Vérifiez les permissions 
+            du répertoire de destination et réessayez.</message>
+        <message id="renderer_copy_failed" lang="en">Failed to copy EZrenderer installation files. Verify file permissions on destination 
+            directory and retry</message>
         <message id="load_step_4_copy_success" lang="fr">Fichiers d'installation d'EZrenderer copiés avec succès !</message>
         <message id="load_step_4_copy_success" lang="en">EZrenderer installation files successfully copied !</message>
         <message id="load_step_4_install" lang="fr">Installation d'EZrenderer en cours ...</message>
         <message id="load_step_4_install" lang="en">Installing EZrenderer ...</message>
-        <message id="renderer_install_failed" lang="fr">L'installation de EZrenderer a échoué. Vérifiez les permissions sur le fichier 'renderer_install.php' et réessayez.</message>
-        <message id="renderer_install_failed" lang="en">Failed to install EZrenderer. Verify file permissions on 'renderer_install.php' and retry</message>
+        <message id="renderer_install_failed" lang="fr">L'installation de EZrenderer a échoué. Vérifiez les permissions sur le fichier 
+            'renderer_install.php' et réessayez.</message>
+        <message id="renderer_install_failed" lang="en">Failed to install EZrenderer. Verify file permissions on 'renderer_install.php' 
+            and retry</message>
         <message id="load_step_4_install_success" lang="fr">EZrenderer installé avec succès !</message>
         <message id="load_step_4_install_success" lang="en">EZrenderer successfully installed !</message>
         <message id="load_step_4_update" lang="fr">Mise a jour de la liste des renderers pour EZadmin et EZrenderer ...</message>
         <message id="load_step_4_update" lang="en">Updating renderers list for EZadmin and EZmanager ...</message>
-        <message id="renderer_update_failed" lang="fr">Impossible d'ajouter le renderer à la liste des renderers. Vérifiez les permissions sur les fichiers 'renderers.inc' des dossiers EZadmin et EZmanager.</message>
-        <message id="renderer_update_failed" lang="en">Failed to add the renderer to renderers list. Verify permissions on 'renderers.inc' files in EZadmin and EZmanager directories.</message>
+        <message id="renderer_update_failed" lang="fr">Impossible d'ajouter le renderer à la liste des renderers. Vérifiez 
+            les permissions sur les fichiers 'renderers.inc' des dossiers EZadmin et EZmanager.</message>
+        <message id="renderer_update_failed" lang="en">Failed to add the renderer to renderers list. Verify permissions on 
+            'renderers.inc' files in EZadmin and EZmanager directories.</message>
         <message id="load_step_4_update_success" lang="fr">Liste des renderers mise à jour avec succès !</message>
         <message id="load_step_4_update_success" lang="en">Renderers list successfully updated !</message>
         <message id="load_step_4_update_failed" lang="fr">La copie du fichier 'renderers.inc' vers EZmanager a échoué.</message>
@@ -802,12 +872,24 @@
     <!-- update 2016/07/15 -->
     <!-- information customized by organisation -->   
     <infos>
-        <info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a target="_blank" href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a target="_blank" href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">
+            &lt;a target="_blank" href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par 
+            &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université libre de Bruxelles" lang="en">
+            &lt;a target="_blank" href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by 
+            &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">
+            &lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par 
+            &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université Catholique de Louvain" lang="en">
+            &lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by 
+            &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Your organization name" lang="fr">
+            &lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par 
+            &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Your organization name" lang="en">
+            &lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by 
+            &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
         <info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
         <info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
         <info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>

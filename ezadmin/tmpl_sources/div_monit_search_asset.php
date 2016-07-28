@@ -35,7 +35,7 @@
                     <option value="" selected></option>
                     <?php
                     foreach (EventStatus::getAllEventStatus() as $status) {
-                        echo '<option value="'.$num.'"';
+                        echo '<option value="'.$status.'"';
                         if(isset($input) && $input['status'] != "" && $input['status'] == $status) {
                             echo ' selected';
                         }
@@ -45,11 +45,18 @@
                     ?>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for=""></label>
                 <button type="submit" class="btn btn-block btn-success">
                     <span class="glyphicon glyphicon-search icon-white"></span> 
                     ®search®
+                </button>
+            </div>
+            <div class="col-md-1">
+                <label for=""></label>
+                <button type="button" class="btn btn-primary" 
+                        data-toggle="modal" data-target="#help_modal">
+                    <span class="glyphicon glyphicon-info-sign icon-white"></span> 
                 </button>
             </div>
         </div>
@@ -67,7 +74,7 @@
                 if(isset($input) && array_key_exists('startDate', $input)) {
                     echo "defaultDate: new Date('".$input['startDate']."')";
                 } else {
-                    echo 'defaultDate: moment().subtract(7, \'days\')';
+                    echo 'defaultDate: moment().subtract(4, \'month\')';
                 }
                 ?>
             });
@@ -99,3 +106,25 @@
     
     
 </form>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-labelledby="Help_Modal_Label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="Help_Modal_Label">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

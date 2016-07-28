@@ -879,10 +879,12 @@ function view_list_event() {
     
     // Get Events
     if (isset($input['post'])) { 
-        $events = db_event_get($input['asset'], $input['origin'], $input['classroom'],
-                $input['courses'], $input['teacher'], $input['startDate'], 
-                $input['endDate'], $input['type_id'], $input['context'], 
-                $input['log_level'], $input['message'], 
+        $events = db_event_get(empty_str_if_not_def('asset', $input), 
+                empty_str_if_not_def('origin', $input), empty_str_if_not_def('classroom', $input),
+                empty_str_if_not_def('courses', $input), empty_str_if_not_def('teacher', $input), 
+                empty_str_if_not_def('startDate', $input), empty_str_if_not_def('endDate', $input), 
+                empty_str_if_not_def('type_id', $input), empty_str_if_not_def('context', $input), 
+                empty_str_if_not_def('log_level', $input), empty_str_if_not_def('message', $input), 
                 $colOrder->getCurrentSortCol(), $colOrder->getOrderSort(),
                 $pagination->getStartElem(), $pagination->getElemPerPage());
         
@@ -910,6 +912,15 @@ function view_list_event() {
     include template_getpath('div_main_footer.php');
 }
 
+function empty_str_if_not_def($key, $array) {
+    if(array_key_exists($key, $array)) {
+        return $array[$key];
+    }
+    return "";
+}
+
+
+
 /**
  * Track the asset with the event informations
  */
@@ -922,20 +933,74 @@ function view_track_asset() {
     
     /// Define Helper ///
     include_once '../commons/view_helpers/helper_pagination.php';
+    include_once '../commons/view_helpers/helper_sort_col.php';
     
     if(array_key_exists('page', $input)) {
         $pagination = new Pagination($input['page'], 50);
     } else {
         $pagination = new Pagination(1, 50);
     }
+    if(array_key_exists('col', $input) && array_key_exists('order', $input)) {
+        $colOrder = new Sort_colonne($input['col'], $input['order']);
+    } else {
+        $colOrder = new Sort_colonne('status_time');
+    }
+    
+    // Get Status
+    if (isset($input['post'])) { 
+        $listStatus = db_event_status_get($input['startDate'], 
+                $input['endDate'], $input['status'], 
+                $colOrder->getCurrentSortCol(), $colOrder->getOrderSort(),
+                $pagination->getStartElem(), $pagination->getElemPerPage());
+        
+        
+        $resStatus = array();
+        foreach ($listStatus as $status) {
+            if($status['parent_asset'] == "") {
+                $status['status_time'] = date("d/m/y H:i:s", strtotime($status['status_time']));
+                if(strlen($status['description']) > 50) {
+                    $status['min_description'] = substr($status['description'], 0, 50);
+                    $status['min_description'] .= "...";
+                }
+                $resStatus = addStatusInList($resStatus, $status);
+                
+            } else {
+                $resStatus = addChildStatusInList($resStatus, $status['parent_asset'], $status['asset']);
+            }
+        }
+        
+        $pagination->setTotalItem(db_found_rows());
+    }
+    
     
     // Display page 
     include template_getpath('div_main_header.php');
     include template_getpath('div_monit_search_asset.php');
-    if(isset($listStatus)) {
+    if(isset($resStatus)) {
         include template_getpath('div_monit_list_status.php');
     }
     include template_getpath('div_main_footer.php');
+}
+
+function addStatusInList($listToAdd, $status) {
+    if(array_key_exists($status['asset'], $listToAdd)) {
+        $listToAdd[$status['asset']] = array_merge($listToAdd[$status['asset']], $status);
+    } else {
+        $listToAdd[$status['asset']] = $status;
+    }
+    return $listToAdd;
+}
+
+function addChildStatusInList($listToAdd, $parentAsset, $childAsset) {
+    if(array_key_exists($parentAsset, $listToAdd)) {
+        if(!array_key_exists('children_asset', $listToAdd[$parentAsset])) {
+            $listToAdd[$parentAsset]['children_asset'] = array();
+        }
+        array_push($listToAdd[$parentAsset]['children_asset'], $childAsset);
+    } else {
+        $listToAdd[$parentAsset] = array('children_asset' => array($childAsset));
+    }
+    return $listToAdd;
 }
 
 

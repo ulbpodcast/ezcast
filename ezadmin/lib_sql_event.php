@@ -173,3 +173,58 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     
     return $reqSQL->fetchAll();
 }
+
+
+function db_event_status_get($firtDate, $endDate, $typeStatus, 
+        $colOrder = "status_time", $orderSort = "ASC", 
+        $start_elem = "", $max_elem = "") {
+    
+    global $db_object;
+    
+    $strSQL = 'SELECT SQL_CALC_FOUND_ROWS status.* ' .
+                    'FROM ' . db_gettable('event_status'). ' status ';
+    
+    $whereParam = array();
+    $valueWhereParam = array();
+    
+    if($firtDate != "") {
+        $whereParam[] = "status_time >= ?";
+        $valueWhereParam[] = $firtDate;
+    }
+    
+    if($endDate != "") {
+        $whereParam[] = "status_time <= ?";
+        $valueWhereParam[] = $endDate;
+    }
+    
+    if($typeStatus != "") {
+        $whereParam[] = "status = ?";
+        $valueWhereParam[] = $typeStatus;
+    }
+    
+    
+    if(!empty($whereParam)) {
+        $strSQL .= " WHERE ";
+    }
+    $strSQL .= implode(" AND ", $whereParam);
+    if($colOrder != "") {
+        $strSQL .= " ORDER BY ".$colOrder." ";
+        if($orderSort == "DESC") {
+            $strSQL .= " DESC ";
+        }
+    }
+    
+    if($max_elem != "" && $max_elem >= 0) {
+        if($start_elem != "" && $start_elem >= 0) {
+            $strSQL .= " LIMIT ".$start_elem.",".$max_elem;
+        } else {
+            $strSQL .= " LIMIT ".$max_elem;
+        }
+    }
+    
+    $reqSQL = $db_object->prepare($strSQL);
+    $reqSQL->execute($valueWhereParam);
+    
+    return $reqSQL->fetchAll();
+    
+}

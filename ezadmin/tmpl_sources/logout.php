@@ -9,17 +9,14 @@
 
     </head>
     <body>
-        <div class="container">
-            <?php include 'div_header.php'; ?>
-            <div id="global">
-                <div id="login_form">
-                    ®Logout_confirmation_message®
-                </div>
-
+        <?php include 'div_header.php'; ?>
+        <div id="global">
+            <div id="login_form">
+                ®Logout_confirmation_message®
             </div>
 
-            <?php include 'div_footer.php'; ?>
-
         </div>
+
+        <?php include 'div_footer.php'; ?>
     </body>
 </html>

@@ -28,7 +28,6 @@ echo $ezadmin_url;
         </script>
     </head>
     <body>
-        <div class="container">
             <?php include 'div_header.php'; ?>
             <div id="global">
                 <p>
@@ -70,8 +69,6 @@ echo $ezadmin_url;
             </div>
 
             <?php include 'div_footer.php'; ?>
-
-        </div>
 
     </body>
 </html>

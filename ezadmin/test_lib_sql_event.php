@@ -13,8 +13,8 @@ var_dump(db_prepare());
  * $type, $level, $message, array $context = array(), $asset = "dummy", $assetInfo = null
  */
 
-$listType = EventType::$event_type_id;
-$listError = LogLevel::$log_levels;
+
+/// VARIABLE ///
 $listMessage = array("Pas de pierre : pas de construction. Pas de construction : pas de palais. Pas de palais... pas de palais.",
     "-Je suis mon cher ami, très heureux de te voir - C'est un Alexandrin !",
     "- C'est quoi ces lumières là-bas au loin ? - C'est les lumières du port d'Alexandrie... - ... font naufrager les papillons de ma jeunesse. "
@@ -34,6 +34,7 @@ $listMessage = array("Pas de pierre : pas de construction. Pas de construction :
     "\"Mais comment fais-tu pour avoir cette humanité ?\" eh bien je leur réponds très simplement, je leur dis : " .
     "\"C'est ce goût de l´amour\", ce goût donc, qui m'a poussé aujourd'hui à entreprendre une construction mécanique," .
     " mais demain qui sait ? Peut-être simplement à me mettre au service de la communauté, à faire le don, le don de soi.");
+
 $listContext = array(
     array("Cont", "ext"),
     array("Aphrodite", "Vénus"),
@@ -46,11 +47,7 @@ $listContext = array(
     array("Zéphyr", "Favonius"),
     array("Zeus", "Jupiter", "Moi"),
     );
-$asset = date("Y-m-d H:i:s", mt_rand(1262055681,1469629530));
 
-/*
- * $author = "", $cam_slide = "", $course = "", $classroom = ""
- */
 
 ///// FOR ASSET INFO
 $listAuthor = array(
@@ -78,10 +75,58 @@ $listClassroom = array("S.AW1.105", 'S.AW1.115 31', 'S.AW1.117 31', 'S.AW1.120 7
     'S.AY2.112 88', 'S.AY2.114 87', 'S.AZ1.101');
 
 
-$listAssetInfo = array(
-    // TO DO
-    //new AssetLogInfo();
-);
 
+///// FUNCTION ////
+function getRandomType() {
+    return EventType::$event_type_id[array_rand(EventType::$event_type_id)];
+}
 
-$logger->log();
+function getRandomLogLevel() {
+    $key = array_keys(LogLevel::$log_levels);
+    return $key[array_rand($key)];
+}
+
+function getRandomMessage() {
+    global $listMessage;
+    return $listMessage[array_rand($listMessage)];
+}
+
+function getRandomContext() {
+    global $listContext;
+    return $listContext[array_rand($listContext)];
+}
+
+function getRandomAsset($cours) {
+    return date("Y_m_d_H\hi", mt_rand(1262055681,1469629530)).'_'.$cours;
+}
+
+function getRandomAuthor() {
+    global $listAuthor;
+    return $listAuthor[array_rand($listAuthor)];
+}
+
+function getRandomCamSlide() {
+    global $list_CamSlide;
+    return $list_CamSlide[array_rand($list_CamSlide)];
+}
+
+function getRandomCourse() {
+    global $listCourse;
+    return $listCourse[array_rand($listCourse)];
+}
+
+function getRandomClassroom() {
+    global $listClassroom;
+    return $listClassroom[array_rand($listClassroom)];
+}
+
+$i = 500;
+while($i > 0) {
+    /* $author, $cam_slide, $course, $classroom */
+    $course = getRandomCourse();
+    $assetLogInfo = new AssetLogInfo(getRandomAuthor(), getRandomCamSlide(), $course, getRandomClassroom());
+    /* $type, $level, $message, $context, $asset, $assetInfo */
+    $logger->log(getRandomType(), getRandomLogLevel(), getRandomMessage(), 
+            getRandomContext(), getRandomAsset($course), $assetLogInfo);
+    --$i;
+}

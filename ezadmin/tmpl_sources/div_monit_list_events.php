@@ -24,7 +24,8 @@
         foreach($events as &$event) { ?>
             <tr class="<?php echo $event['loglevel_name']; ?>">
                 <td>
-                    <a style="" href="<?php echo url_post_replace('asset', $event['asset']); ?>">
+                    <a style="" href="<?php echo url_post_replace_multiple(
+                            array('asset' => $event['asset'], 'page' => 1)); ?>">
                         <?php echo $event['asset']; ?>
                     </a>
                 </td>

@@ -861,9 +861,9 @@ function view_list_event() {
     include_once '../commons/view_helpers/helper_sort_col.php';
     
     if(array_key_exists('page', $input)) {
-        $pagination = new Pagination($input['page']);
+        $pagination = new Pagination($input['page'], 50);
     } else {
-        $pagination = new Pagination();
+        $pagination = new Pagination(1, 50);
     }
     if(array_key_exists('col', $input) && array_key_exists('order', $input)) {
         $colOrder = new Sort_colonne($input['col'], $input['order']);

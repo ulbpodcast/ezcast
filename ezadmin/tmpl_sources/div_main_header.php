@@ -103,7 +103,7 @@
         <?php include template_getpath('div_header.php'); ?>
             <div id="global">
 
-        <div class="container-fluid">
+        <div class="container">
             <div class="row-fluid">
 <?php include template_getpath('div_main_menu.php'); ?>
                 <div class="col-md-10">

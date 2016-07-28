@@ -1,6 +1,6 @@
 <div class="page_title">®list_event_title®</div>
 
-<form method="GET" class="search_event pagination">
+<form method="GET" class="search_event pagination" style="width: 100%;">
     
     <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
     <input type="hidden" name="post" value="">
@@ -34,7 +34,6 @@
     
     <script type="text/javascript">
         $(function () {
-            var dateNow = new Date();
             
             $('#startDate').datetimepicker({
                 showTodayButton: true, 
@@ -45,7 +44,7 @@
                 if(isset($input) && array_key_exists('startDate', $input)) {
                     echo "defaultDate: new Date('".$input['startDate']."')";
                 } else {
-                    echo 'defaultDate: moment().subtract(\'days\', 7)';
+                    echo 'defaultDate: moment().subtract(7, \'days\')';
                 }
                 ?>
             });
@@ -59,7 +58,7 @@
                 if(isset($input) && array_key_exists('endDate', $input)) {
                     echo "defaultDate: new Date('".$input['endDate']."')";
                 } else {
-                    echo 'defaultDate: moment().add(\'days\', 1)';
+                    echo 'defaultDate: moment().add(1, \'days\')';
                 }
                 ?>
             });
@@ -126,17 +125,19 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <select name="log_level" class="form-control">
-                    <?php //TODO modify with logger informations ?>
+                <select name="log_level[]" class="form-control" multiple>
                     <option value="" 
                         <?php if(!isset($input) || 
                                 !array_key_exists('log_level', $input) || 
-                                $input['log_level'] == "") { echo 'selected'; } ?>>
+                                !is_array($input['log_level']) ||
+                                $input['log_level'][0] == NULL) { 
+                            echo 'selected'; } ?>
+                        >
                     </option>
                     <?php foreach(LogLevel::$log_levels as $nameLog => $lvlLog) {
                         echo '<option value="'.$lvlLog.'" ';
-                        if(isset($input) && $input['log_level'] != "" && 
-                                $input['log_level'] == $lvlLog) {
+                        if(isset($input) && is_array($input['log_level']) && 
+                        in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL) {
                             echo 'selected';
                         }
                         echo '> '.$lvlLog . " - " . ucfirst($nameLog). '</option>';

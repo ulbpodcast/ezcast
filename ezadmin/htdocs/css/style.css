@@ -109,15 +109,27 @@ body{
     background-color:#ffffff;
 }
 
+@media (min-width: 1300px) {
+    .container {
+        width: 1370px;
+    }
+}
+
 #global{
     position:relative;
     min-height:540px;
     margin: 0 auto;
     margin-top: 15px;
     padding-bottom:65px;
-    width:1024px;
+/*    width:1024px;*/
     background-color:#ffffff;
 }
+
+#global_login {
+    width:1024px;
+}
+
+
 
 #login_form{
     font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;	

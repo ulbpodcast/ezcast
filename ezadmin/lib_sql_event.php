@@ -55,6 +55,27 @@ function db_event_get_all() {
     return $statements['get_all_event']->fetchAll();
 }
 
+/**
+ * Get event
+ * 
+ * @global PDO $db_object
+ * @param String $asset
+ * @param String $origin
+ * @param String $asset_classroom_id
+ * @param String $asset_course
+ * @param String $asset_author
+ * @param String $first_event_time
+ * @param String $last_event_time
+ * @param String $type_id
+ * @param String $context
+ * @param Array<Int> $loglevel
+ * @param String $message
+ * @param String $colOrder
+ * @param String $orderSort
+ * @param Integer $start_elem
+ * @param Integer $max_elem
+ * @return Array with result
+ */
 function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asset_author,
         $first_event_time, $last_event_time, $type_id, $context,
         $loglevel, $message, 
@@ -80,17 +101,17 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     }
     
     if($asset_classroom_id != "") {
-        $whereParam[] = "asset_classroom_id = ?";
+        $whereParam[] = "asset_classroom_id LIKE ?";
         $valueWhereParam[] = db_sanitize($asset_classroom_id);
     }
     
     if($asset_course != "") {
-        $whereParam[] = "asset_course = ?";
+        $whereParam[] = "asset_course LIKE ?";
         $valueWhereParam[] = db_sanitize($asset_course);
     }
     
     if($asset_author != "") {
-        $whereParam[] = "asset_author = ?";
+        $whereParam[] = "asset_author LIKE ?";
         $valueWhereParam[] = db_sanitize($asset_author);
     }
     
@@ -114,9 +135,13 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
         $valueWhereParam[] = db_sanitize($context);
     }
     
-    if($loglevel != "") {
-        $whereParam[] = "loglevel = ?";
-        $valueWhereParam[] = $loglevel;
+    if($loglevel != "" && !empty($loglevel) && $loglevel[0] != NULL) {
+        $tempWhereParam = array();
+        foreach($loglevel as $lvl) {
+            $tempWhereParam[] = "loglevel = ?";
+            $valueWhereParam[] = $lvl;
+        }
+        $whereParam[] = "(".implode(" OR ", $tempWhereParam).")";
     }
     
     if($message != "") {

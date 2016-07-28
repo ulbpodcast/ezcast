@@ -151,6 +151,8 @@
         <label id="list_jobs_title" lang="en">Jobs list</label>
         <label id="list_event_title" lang="fr">Liste des events</label>
         <label id="list_event_title" lang="en">Events list</label>
+        <label id="track_asset_title" lang="fr">Suivi des enregistrements</label>
+        <label id="track_asset_title" lang="en">Track Recording</label>
         <label id="course_details_title" lang="fr">Détail du cours</label>
         <label id="course_details_title" lang="en">Course information</label>
         <label id="user_details_title" lang="fr">Détail de l'utilisateur</label>
@@ -486,6 +488,8 @@
         <label id="monit_origin" lang="en">Origin</label>
         <label id="monit_type_id" lang="fr">Type</label>
         <label id="monit_type_id" lang="en">Type</label>
+        <label id="monit_status" lang="fr">Status</label>
+        <label id="monit_status" lang="en">Status</label>
         
         
         <!-- Install -->

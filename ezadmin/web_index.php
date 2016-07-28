@@ -251,8 +251,13 @@ else {
             stat_csv_by_asset();
             break;
 
+        // Monitoring
         case 'view_events':
             view_list_event();
+            break;
+        
+        case 'view_track_asset':
+            view_track_asset();
             break;
         
         
@@ -901,6 +906,34 @@ function view_list_event() {
     include template_getpath('div_monit_search_events.php');
     if(isset($events)) {
         include template_getpath('div_monit_list_events.php');
+    }
+    include template_getpath('div_main_footer.php');
+}
+
+/**
+ * Track the asset with the event informations
+ */
+function view_track_asset() {
+    global $input;
+    global $logger;
+    
+    include_once '../commons/event_status.php';
+    
+    
+    /// Define Helper ///
+    include_once '../commons/view_helpers/helper_pagination.php';
+    
+    if(array_key_exists('page', $input)) {
+        $pagination = new Pagination($input['page'], 50);
+    } else {
+        $pagination = new Pagination(1, 50);
+    }
+    
+    // Display page 
+    include template_getpath('div_main_header.php');
+    include template_getpath('div_monit_search_asset.php');
+    if(isset($listStatus)) {
+        include template_getpath('div_monit_list_status.php');
     }
     include template_getpath('div_main_footer.php');
 }

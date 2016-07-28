@@ -1,11 +1,10 @@
 <?php
 
 /** All static variable common to all ezcast projects go here
- * 
  *  */
 
-require_once('logger_server.php');
 include_once('config.inc');
+require_once('logger_server.php');
 
 $logger = new ServerLogger();
 //Uncomment this to print all log message to screen (may be useful to debug services or such)

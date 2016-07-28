@@ -19,17 +19,18 @@ class ServerLogger extends Logger {
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed $type_id type in the form of EventType::*
+     * @param mixed $type type in the form of EventType::*
      * @param mixed $level in the form of LogLevel::*
      * @param string $message
      * @param string $asset asset identifier
-     * @param AssetLogInfo $asset asset identifier
      * @param array $context Context can have several levels, such as array('module', 'capture_ffmpeg'). Cannot contain pipes (will be replaced with slashes if any).
+     * @param string $asset asset name
+     * @param AssetLogInfo $asset_info Additional information about asset if any, in the form of a AssetLogInfo structure
      * @return LogData temporary data, used by children functions
      */
-    public function log($type, $level, $message, array $context = array(), $asset = "dummy", $assetInfo = null)
+    public function log($type, $level, $message, array $context = array(), $asset = "dummy", $asset_info = null)
     {
-        $tempLogData = parent::log($type, $level, $message, $context, $asset, $assetInfo);
+        $tempLogData = parent::log($type, $level, $message, $context, $asset, $asset_info);
         
         global $db_object;
         global $appname; // to be used as origin

@@ -6,6 +6,7 @@
 class EventType {
     // Commons
     const TEST = "test";
+    const LOGGER = "logger";
     
     // Recorder
     const RECORDER_DB               = "recorder_db";
@@ -13,6 +14,8 @@ class EventType {
     const CAPTURE_POST_PROCESSING   = "capture_post_processing";
     const UPLOAD_TO_EZCAST          = "upload_to_ezcast";
     const PUSH_STOP                 = "push_stop";
+    const REQUEST_TO_MANAGER        = "request_to_manager";
+    
     // EZAdmin
     
     // EZManager
@@ -26,12 +29,15 @@ class EventType {
     public static $event_type_id = array(
        // Commons: 0->999
        EventType::TEST                                       => 0,
+       EventType::LOGGER                                     => 1,
         
        // Recorder: 1000->1999
        EventType::RECORDER_DB                                => 1000,
        EventType::UPLOAD_WRONG_METADATA                      => 1001,
        EventType::CAPTURE_POST_PROCESSING                    => 1002,
        EventType::UPLOAD_TO_EZCAST                           => 1003,
+       EventType::PUSH_STOP                                  => 1004,
+       EventType::REQUEST_TO_MANAGER                         => 1005,
        
        // EZAdmin: 2000->2999
        

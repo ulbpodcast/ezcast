@@ -107,9 +107,12 @@ function download_from_recorder() {
     $meta_file = $input['metadata_file'];
 
     // get info for file downloading
-    $cam_info = unserialize($input['cam_info']);
-    $slide_info = unserialize($input['slide_info']);
-
+    $cam_info = array();
+    $slide_info = array();
+    if(isset($input['cam_info']))
+        $cam_info = unserialize($input['cam_info']);
+    if(isset($input['slide_info']))
+        $slide_info = unserialize($input['slide_info']);
 
     $download_info_xml = "";
     foreach ($cam_info as $key => $value) {
@@ -144,7 +147,7 @@ $download_info_xml
 ";
 
     file_put_contents($record_dir . "/download_data.xml", $downloadxml);
-    $cmd = "$php_cli_cmd $recorder_download_pgm $record_name_sanitized >>$record_dir/download.log 2>&1 |at now";
+    $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >>$record_dir/download.log 2>&1 '|at now";
     $pid = shell_exec($cmd);
 //print "will execute command: '$cmd'\n<br>";
     print "OK:$pid";

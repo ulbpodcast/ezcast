@@ -31,6 +31,9 @@
 
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
+
+Logger::$print_logs = true;
+
 /*
  * This program downloads the cam  slide movies and metadata of a recording from 2 minis in a lecture room
  * After downloading, the program calls $recorder_mam_insert_pgm for rendering
@@ -39,7 +42,6 @@ if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_of_recording>\n Where <directory_of_recording> should point to a directory containing download_data.xml description file (relative to $recorder_upload_dir)\n";
     die;
 }
-
 
 $recording_dir = $argv[1]; //first (and only) parameter in command line
 $destrecording_path = $recorder_upload_dir . "/" . $recording_dir;
@@ -52,9 +54,14 @@ if (!file_exists($destrecording_path)) {
 $local_log_file = $destrecording_path . "/download.log";
 
 //now get download data to start downloading
-$download_meta = metadata2assoc_array($destrecording_path . "/download_data.xml");
-if ($download_meta === false)
-    myerror("bad xml or read problem on  $destrecording_path" . "/download_data.xml"); //log to file
+$download_meta_file = $destrecording_path . "/download_data.xml";
+$download_meta = metadata2assoc_array($download_meta_file);
+if ($download_meta === false) {
+    $error = "Bad xml or read problem on  $destrecording_path" . "/download_data.xml";
+    $logger->log(EventType::UPLOAD_TO_EZCAST, LogLevel::ERROR, "$error", array("cli_recorder_download"));
+    myerror($error); //log to file
+    return 1;
+}
 
 $request_date = $download_meta['request_date'];
 $course_name = $download_meta['course_name'];
@@ -67,8 +74,13 @@ $recorder_php_cli = $download_meta['recorder_php_cli'];
 $caller_ip = $download_meta['caller_ip']; // Caller contains the metadata
 $meta_file = $download_meta['metadata_file'];
 
-$cam_protocol = $download_meta['cam_protocol'];
-$slide_protocol = $download_meta['slide_protocol'];
+if($caller_ip == "") {
+    $logger->log(EventType::UPLOAD_TO_EZCAST, LogLevel::ERROR, "Caller IP not present in metadata ($download_meta_file)", array("cli_recorder_download"), $recording_dir);
+    return 2;
+}
+
+$cam_download_info = null;
+$slide_download_info = null;
 
 foreach ($download_meta as $key => $value) {
     if (substr($key, 0, 4) == 'cam_') {
@@ -80,12 +92,19 @@ foreach ($download_meta as $key => $value) {
     }
 }
 
-$podcv_ip = $download_meta['cam_ip'];
-$podcs_ip = $download_meta['slide_ip'];
+$podcv_ip = null;
+$podcs_ip = null;
+if(isset($download_meta['cam_ip']))
+    $podcv_ip = $download_meta['cam_ip'];
+if(isset($download_meta['slide_ip']))
+    $podcs_ip = $download_meta['slide_ip'];
 
 var_dump($download_meta);
-var_dump($cam_download_info);
-var_dump($slide_download_info);
+if($cam_download_info)
+    var_dump($cam_download_info);
+if($slide_download_info)
+    var_dump($slide_download_info);
+
 var_dump($recorder_version);
 
 $download_dir = $recorder_upload_to_server . "/" . $record_date . "_" . $course_name;

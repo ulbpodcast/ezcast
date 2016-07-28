@@ -3,7 +3,7 @@
 require_once 'web_request.php';
 require_once __DIR__.'/../../commons/config.inc';
 
-if(false && !isValidCaller()) {
+if(!isValidCaller()) {
     die;
 }
 

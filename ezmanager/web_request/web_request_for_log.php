@@ -146,7 +146,8 @@ function updateLastInsert($lastInsert, $source) {
     $strSQL = 'INSERT INTO '.db_gettable('event_last_indexes') . '
         (source, id) VALUES(:source, :id) 
         ON DUPLICATE KEY UPDATE 
-        id = :id';
+        id = :id
+        WHERE id < :id';
     global $db_object;
     
     $reqSQL = $db_object->prepare($strSQL);

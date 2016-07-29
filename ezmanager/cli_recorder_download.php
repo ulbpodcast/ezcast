@@ -60,7 +60,7 @@ if ($download_meta === false) {
     $error = "Bad xml or read problem on  $destrecording_path" . "/download_data.xml";
     $logger->log(EventType::UPLOAD_TO_EZCAST, LogLevel::ERROR, "$error", array("cli_recorder_download"));
     myerror($error); //log to file
-    return 1;
+    exit(1);
 }
 
 $request_date = $download_meta['request_date'];
@@ -76,7 +76,7 @@ $meta_file = $download_meta['metadata_file'];
 
 if($caller_ip == "") {
     $logger->log(EventType::UPLOAD_TO_EZCAST, LogLevel::ERROR, "Caller IP not present in metadata ($download_meta_file)", array("cli_recorder_download"), $recording_dir);
-    return 2;
+    exit(2);
 }
 
 $cam_download_info = null;
@@ -265,7 +265,7 @@ function rsync_fetch_record($ip, $source_filename, $remote_username, $dest_dir, 
 
 function myerror($msg) {
     print $msg . "\n";
-    die;
+    exit(1);
 }
 
 /**

@@ -2,7 +2,8 @@
 
 // This file is shared between server and recorder and should be kept identical in both projects.
 // Specialized loggers for each are implemented with this one as base.
-         
+// example :
+// $logger->log(EventType::RECORDER_UPLOAD_TO_EZCAST, LogLevel::ERROR, "Couldn't get info from slide module. Slides will be ignored", array("cli_process_upload"), $asset);
 require_once("logger_event_type.php");
 
 /**
@@ -52,6 +53,7 @@ class LogLevel
     const INFO      = 'info';
     /**
      * Detailed debug information.
+     * Those are not sent to server from recorders if $send_debug_logs_to_server is disabled (recorder global config)
      */
     const DEBUG     = 'debug';
     
@@ -182,14 +184,15 @@ class Logger {
     public function log($type, $level, $message, array $context = array(), $asset = "dummy", $asset_info = null)
     {
         $tempLogData = new LogData();
-        $tempLogData->message = $message;
+        //limit string size
+        $tempLogData->message = substr($message, 0, 1000);
                 
         // convert given loglevel to integer for db storage
         try {
           $tempLogData->log_level_integer = $this->get_log_level_integer($level);
         } catch (Exception $e) {
           //invalid level given, default to "error" and prepend this problem to the message
-          $tempLogData->message = "(Invalid log level) " . $message;
+          $tempLogData->message = "(Invalid log level) " . $tempLogData->message;
           $tempLogData->log_level_integer = LogLevel::$log_levels[LogLevel::ERROR];
         }
 

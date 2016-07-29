@@ -596,8 +596,8 @@ function create_tables($drop = true) {
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
         
         if ($drop)
-            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . Logger::EVENT_TABLE_NAME .'`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . Logger::EVENT_TABLE_NAME . '` (' .
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_TABLE_NAME .'`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL,".
                 "`origin` enum('ezmanager','ezadmin','ezrecorder','ezrenderer','other') NOT NULL,".
                 "`asset_classroom_id` varchar(20) DEFAULT NULL,".
@@ -614,8 +614,8 @@ function create_tables($drop = true) {
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
         if ($drop)
-            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . Logger::EVENT_STATUS_TABLE_NAME .'`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . Logger::EVENT_STATUS_TABLE_NAME . '` (' .
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_STATUS_TABLE_NAME .'`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_STATUS_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
                 "`status` enum('auto_success, auto_success_errors, auto_success_warnings, auto_failure, manual_ok, manual_partial_ok, manual_failure, manual_ignore') NOT NULL," .
                 "`parent_asset` varchar(50) DEFAULT NULL," .
@@ -624,6 +624,14 @@ function create_tables($drop = true) {
                 "`description` text" .
                 "KEY `asset` (`asset`)" .
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
+        
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_LAST_INDEXES_TABLE_NAME .'`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_LAST_INDEXES_TABLE_NAME . '` (' .
+                "`source` varchar(20) NOT NULL," .
+                "`id` int(10) unsigned NOT NULL" .
+                " PRIMARY KEY (`source`) " .
+                " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .

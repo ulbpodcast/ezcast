@@ -45,7 +45,7 @@
                 <td
                 <?php if(array_key_exists('min_message', $event)) { ?>
                     data-container="body" data-toggle="popover" data-trigger="hover" 
-                        data-placement="right" data-content="<?php echo $event['message']; ?>">
+                    data-placement="right" data-content="<?php echo htmlspecialchars($event['message']); ?>">
                     <?php 
                     echo $event['min_message'];
                 } else { 

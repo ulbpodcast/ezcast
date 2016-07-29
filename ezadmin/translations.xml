@@ -492,6 +492,16 @@
         <label id="monit_type_id" lang="en">Type</label>
         <label id="monit_status" lang="fr">Statut</label>
         <label id="monit_status" lang="en">Status</label>
+        <label id="monit_view_all" lang="fr">Voir tous les résultats</label>
+        <label id="monit_view_all" lang="en">View all results</label>
+        <label id="monit_parent_define" lang="fr">Définir le parent</label>
+        <label id="monit_parent_define" lang="en">Define parent</label>
+        <label id="monit_parent_asset" lang="fr">Asset étant le parent</label>
+        <label id="monit_parent_asset" lang="en">Parent asset name</label>
+        <label id="monit_status_change" lang="fr">Changer le statut</label>
+        <label id="monit_status_change" lang="en">Change status</label>
+        <label id="monit_select_all" lang="fr">Tout sélectionner</label>
+        <label id="monit_select_all" lang="en">Select all</label>
         
         
         <!-- Install -->

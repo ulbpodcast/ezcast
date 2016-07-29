@@ -593,17 +593,6 @@ function push_users_to_ezmanager() {
 }
 
 /**
- * Checks that $var holds a valid value
- * @param type $var
- * @return type 
- */
-function check_val($var, $error) {
-    if (!isset($var) || empty($var)) {
-        $error = template_get_message($error, 'en');
-    }
-}
-
-/**
  * Checks either the ip adress syntax is correct or not
  * @return error_string
  * @param string $ipstr
@@ -645,15 +634,6 @@ function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node) {
     if ($node + 0 > 255)
         $returncode+=16;
     return $returncode;
-}
-
-/**
- * Boolean to string
- * @param type $bool
- * @return type
- */
-function bool2str($bool) {
-    return ($bool) ? 'true' : 'false';
 }
 
 function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts = true) {
@@ -791,3 +771,18 @@ function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_
         return false;
     }
 }
+
+/**
+ * Check if a key is in the array
+ * 
+ * @param String $key to test
+ * @param Array $array to test
+ * @return mixed the value of the array key or empty string if not exist
+ */
+function empty_str_if_not_def($key, $array) {
+    if(array_key_exists($key, $array)) {
+        return $array[$key];
+    }
+    return "";
+}
+

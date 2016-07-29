@@ -6,10 +6,10 @@
     <input type="hidden" name="post" value="">
     
     
-    <!-- Date -->
+    <!-- Date and status -->
     <div class="form-group">
         <div class="row">
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-6">
                 <label for="startDate">®from_date®</label>
                 <div class='input-group date' id='startDate'>
                     <input type='text' name='startDate' class="form-control" />
@@ -19,7 +19,7 @@
                     </span>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-6">
                 <label for="endDate">®to_date®</label>
                 <div class='input-group date' id='endDate'>
                     <input type='text' name='endDate' class="form-control" />
@@ -32,7 +32,7 @@
             <div class="col-md-3">
                 <label for="status">®monit_status®</label>
                 <select name="status" class="form-control">
-                    <option value="" selected></option>
+                    <option value="" selected>®monit_select_all®</option>
                     <?php
                     foreach (EventStatus::getAllEventStatus() as $status) {
                         echo '<option value="'.$status.'"';
@@ -45,13 +45,6 @@
                     }
                     ?>
                 </select>
-            </div>
-            <div class="col-md-2">
-                <label for=""></label>
-                <button type="submit" class="btn btn-block btn-success">
-                    <span class="glyphicon glyphicon-search icon-white"></span> 
-                    ®search®
-                </button>
             </div>
             <div class="col-md-1">
                 <label for=""></label><br />
@@ -104,7 +97,31 @@
         });
         
     </script>
-    
+        
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-5">
+                <label class="sr-only" for="asset">®monit_asset®</label>
+                <input type="text" class="form-control" name="asset" id="asset" placeholder="®monit_asset®"
+                    value="<?php if(isset($input) && array_key_exists('asset', $input)) { echo $input['asset']; } ?>">
+            </div>
+            <div class="col-md-3">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="view_all" 
+                            <?php if(isset($input) && array_key_exists('view_all', $input)) { echo 'checked'; } ?>> 
+                        ®monit_view_all®
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-block btn-success">
+                    <span class="glyphicon glyphicon-search icon-white"></span> 
+                    ®search®
+                </button>
+            </div>
+        </div>
+    </div>
     
 </form>
 

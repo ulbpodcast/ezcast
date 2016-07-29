@@ -181,6 +181,12 @@ body{
     width: 160px;
 }
 
+/* /////////// POPOVER /////////// */
+.popover-content {
+    word-break: break-all;
+}
+
+
 /* //////////// CUSTOM BOOTSTRAP COLOR //////////// */
 
 

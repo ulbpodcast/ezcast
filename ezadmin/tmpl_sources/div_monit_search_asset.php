@@ -36,7 +36,8 @@
                     <?php
                     foreach (EventStatus::getAllEventStatus() as $status) {
                         echo '<option value="'.$status.'"';
-                        if(isset($input) && $input['status'] != "" && $input['status'] == $status) {
+                        if(isset($input) && array_key_exists('status', $input) && 
+                                $input['status'] != "" && $input['status'] == $status) {
                             echo ' selected';
                         }
                         echo '>'.$status.
@@ -53,7 +54,7 @@
                 </button>
             </div>
             <div class="col-md-1">
-                <label for=""></label>
+                <label for=""></label><br />
                 <button type="button" class="btn btn-primary" 
                         data-toggle="modal" data-target="#help_modal">
                     <span class="glyphicon glyphicon-info-sign icon-white"></span> 
@@ -112,19 +113,39 @@
 
 <!-- Modal -->
 <div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-labelledby="Help_Modal_Label">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="Help_Modal_Label">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="®monit_help_status_close®">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="Help_Modal_Label">®monit_help_status_title®</h4>
+                </div>
+                <div class="modal-body">
+                    <br />
+                    <h3>®monit_help_status_automatic®</h3>
+                    <h4>AUTO_SUCCESS</h4>
+                    <p>®monit_help_status_auto_success®</p>
+                    <h4>AUTO_SUCCESS_ERRORS</h4>
+                    <p>®monit_help_status_auto_success_error®</p>
+                    <h4>AUTO_SUCCESS_WARNINGS</h4>
+                    <p>®monit_help_status_auto_success_warnings®</p>
+                    <h4>AUTO_FAILURE</h4>
+                    <p>®monit_help_status_auto_failure®</p>
+                    <br />
+                    <h3>®monit_help_status_manual®</h3>
+                    <h4>MANUAL_OK</h4>
+                    <p>®monit_help_status_manual_ok®</p>
+                    <h4>MANUAL_PARTIAL_OK</h4>
+                    <p>®monit_help_status_manual_partial_ok®</p>
+                    <h4>MANUAL_FAILURE</h4>
+                    <p>®monit_help_status_manual_failure®</p>
+                    <h4>MANUAL_IGNORE</h4>
+                    <p>®monit_help_status_manual_ignore®</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">®monit_help_status_close®</button>
+                </div>
+        </div>
     </div>
-  </div>
 </div>

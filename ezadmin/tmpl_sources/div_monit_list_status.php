@@ -15,7 +15,7 @@
 
         <?php 
         foreach($resStatus as &$status) { ?>
-            <tr>
+            <tr class="<?php echo EventStatus::getColorStatus($status['status']); ?>">
                 <td></td>
                 <td style="text-align: left;">
                     <a href="./index.php?action=view_events&post=&startDate=0&asset=<?php echo $status['asset']; ?>">

@@ -81,14 +81,6 @@ else {
     // Controller goes here
     //var_dump($action);
 
-    //TODO check if not used ?
-    if (strpos($action, '_list') !== false) {
-        $table = strstr($action, '_list', true);
-        $action = 'view_table';
-    } else if (strpos($action, '_new' !== false)) {
-        $table = strstr($action, '_new', true);
-        $action = 'add_to_table';
-    }
     
     switch ($action) {
         // In case we want to log out
@@ -876,6 +868,7 @@ function view_list_event() {
         $colOrder = new Sort_colonne('event_time');
     }
 
+    $logLevel_default_max_selected = 3;
     
     // Get Events
     if (isset($input['post'])) { 
@@ -899,7 +892,6 @@ function view_list_event() {
         
         $pagination->setTotalItem(db_found_rows());
         
-        
     }
     
     
@@ -911,14 +903,6 @@ function view_list_event() {
     }
     include template_getpath('div_main_footer.php');
 }
-
-function empty_str_if_not_def($key, $array) {
-    if(array_key_exists($key, $array)) {
-        return $array[$key];
-    }
-    return "";
-}
-
 
 
 /**
@@ -948,24 +932,41 @@ function view_track_asset() {
     
     // Get Status
     if (isset($input['post'])) { 
-        $listStatus = db_event_status_get($input['startDate'], 
-                $input['endDate'], $input['status'], 
+        $listStatus = db_event_status_get(empty_str_if_not_def('startDate', $input), 
+                empty_str_if_not_def('endDate', $input),
+                empty_str_if_not_def('status', $input), 
+                empty_str_if_not_def('asset', $input),
                 $colOrder->getCurrentSortCol(), $colOrder->getOrderSort(),
                 $pagination->getStartElem(), $pagination->getElemPerPage());
         
+        $view_all = array_key_exists('view_all', $input) && $input['view_all'] == 'on';
         
+        // List of status who must be viewed
+        // If view_all is define, this is just an array list
+        // If view_all is turn off, it's a dictionnary
         $resStatus = array();
+        $listChildren = array();
+        
         foreach ($listStatus as $status) {
+            // If parent is null
             if($status['parent_asset'] == "") {
+                // Just adapt var
                 $status['status_time'] = date("d/m/y H:i:s", strtotime($status['status_time']));
                 if(strlen($status['description']) > 50) {
                     $status['min_description'] = substr($status['description'], 0, 50);
                     $status['min_description'] .= "...";
                 }
-                $resStatus = addStatusInList($resStatus, $status);
+                $resStatus = status_listStatus_add($resStatus, $status, $view_all);
                 
+            // If there is a parent
             } else {
-                $resStatus = addChildStatusInList($resStatus, $status['parent_asset'], $status['asset']);
+                $listChildren = status_listStatus_child_add($listChildren, 
+                        $status['parent_asset'], $status['asset']);
+                
+                if($view_all) {
+                    $resStatus = status_listStatus_add($resStatus, $status, $view_all);
+                }
+                
             }
         }
         
@@ -982,23 +983,26 @@ function view_track_asset() {
     include template_getpath('div_main_footer.php');
 }
 
-function addStatusInList($listToAdd, $status) {
-    if(array_key_exists($status['asset'], $listToAdd)) {
-        $listToAdd[$status['asset']] = array_merge($listToAdd[$status['asset']], $status);
+function status_listStatus_add($listToAdd, $status, $view_all) {
+    if($view_all) {
+        array_push($listToAdd, $status);
     } else {
-        $listToAdd[$status['asset']] = $status;
+        if(array_key_exists($status['asset'], $listToAdd)) {
+            if($listToAdd[$status['asset']]['status_time'] < $status['status_time']) {
+                $listToAdd[$status['asset']] = array_merge($listToAdd[$status['asset']], $status);
+            }
+        } else {
+            $listToAdd[$status['asset']] = $status;
+        }
     }
     return $listToAdd;
 }
 
-function addChildStatusInList($listToAdd, $parentAsset, $childAsset) {
+function status_listStatus_child_add($listToAdd, $parentAsset, $childAsset) {
     if(array_key_exists($parentAsset, $listToAdd)) {
-        if(!array_key_exists('children_asset', $listToAdd[$parentAsset])) {
-            $listToAdd[$parentAsset]['children_asset'] = array();
-        }
-        array_push($listToAdd[$parentAsset]['children_asset'], $childAsset);
+        array_push($listToAdd[$parentAsset], $childAsset);
     } else {
-        $listToAdd[$parentAsset] = array('children_asset' => array($childAsset));
+        $listToAdd[$parentAsset] = array($childAsset);
     }
     return $listToAdd;
 }

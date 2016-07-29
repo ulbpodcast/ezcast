@@ -81,7 +81,9 @@ function push_log() {
         
         
         if(isAllColValid($arrayToInsert)) {
-            $lastInsert = $arrayToInsert['id'];
+            if($lastInsert < $arrayToInsert['id']) {
+                $lastInsert = $arrayToInsert['id'];
+            }
             unset($arrayToInsert['id']);
             $reqSQL->execute($arrayToInsert);
         } else {
@@ -143,10 +145,17 @@ function isAllColValid($arrayToTest) {
  */
 function updateLastInsert($lastInsert, $source) {
     
-    $strSQL = 'INSERT INTO '.db_gettable('event_last_indexes') . '
-        (source, id) VALUES(:source, :id) 
-        ON DUPLICATE KEY UPDATE 
-        id = :id';
+//    $strSQL = 'INSERT INTO '.db_gettable('event_last_indexes') . '
+//        (source, id) VALUES(:source, :id) 
+//        ON DUPLICATE KEY UPDATE 
+//        id = :id'; // WHERE id = :id // Not work :/
+    
+    $strSQL = 'REPLACE INTO '.db_gettable('event_last_indexes') . ' (id, source)
+        SELECT :id, :source
+        FROM dual
+        WHERE NOT EXISTS (SELECT 1 FROM '.db_gettable('event_last_indexes') . '
+         WHERE id >= :id AND source = :source)';
+    
     global $db_object;
     
     $reqSQL = $db_object->prepare($strSQL);

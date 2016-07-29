@@ -490,8 +490,18 @@
         <label id="monit_origin" lang="en">Origin</label>
         <label id="monit_type_id" lang="fr">Type</label>
         <label id="monit_type_id" lang="en">Type</label>
-        <label id="monit_status" lang="fr">Status</label>
+        <label id="monit_status" lang="fr">Statut</label>
         <label id="monit_status" lang="en">Status</label>
+        <label id="monit_view_all" lang="fr">Voir tous les résultats</label>
+        <label id="monit_view_all" lang="en">View all results</label>
+        <label id="monit_parent_define" lang="fr">Définir le parent</label>
+        <label id="monit_parent_define" lang="en">Define parent</label>
+        <label id="monit_parent_asset" lang="fr">Asset étant le parent</label>
+        <label id="monit_parent_asset" lang="en">Parent asset name</label>
+        <label id="monit_status_change" lang="fr">Changer le statut</label>
+        <label id="monit_status_change" lang="en">Change status</label>
+        <label id="monit_select_all" lang="fr">Tout sélectionner</label>
+        <label id="monit_select_all" lang="en">Select all</label>
         
         
         <!-- Install -->
@@ -658,38 +668,62 @@
         <label id="stats_discussions_by_asset" lang="en">Number of discussions by asset</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
+        <label id="monit_help_status_title" lang="fr">Informations</label>
+        <label id="monit_help_status_title" lang="en">Informations</label>
         <label id="monit_help_status_auto_success" lang="fr">
-            Status mis automatiquement lorsque tout va bien
+            Statut mis automatiquement lorsque tout va bien
         </label>
-        <label id="monit_help_status_auto_success" lang="en"></label>
+        <label id="monit_help_status_auto_success" lang="en">
+            Status set automatically when all is ok
+        </label>
         <label id="monit_help_status_auto_success_error" lang="fr">
-            Status mis automatiquement lorsque l'on a le résultat mais qu'il y a des erreurs critiques
+            Statut mis automatiquement lorsque l'on a le résultat mais qu'il y a des erreurs critiques
         </label>
-        <label id="monit_help_status_auto_success_error" lang="en"></label>
+        <label id="monit_help_status_auto_success_error" lang="en">
+            Status set automatically when we have the result that there are critical errors
+        </label>
         <label id="monit_help_status_auto_success_warnings" lang="fr">
-            Status mis automatiquement lorsque l'on a le résultat mais qu'il y a des warnings/erreurs
+            Statut mis automatiquement lorsque l'on a le résultat mais qu'il y a des warnings/erreurs
         </label>
-        <label id="monit_help_status_auto_success_warnings" lang="en"></label>
+        <label id="monit_help_status_auto_success_warnings" lang="en">
+            Status set automatically when we have the result that there are warnings/errors
+        </label>
         <label id="monit_help_status_auto_failure" lang="fr">
-            Status mis automatiquement lorsqu'il y a un problème
+            Statut mis automatiquement lorsqu'il y a un problème
         </label>
-        <label id="monit_help_status_auto_failure" lang="en"></label>
+        <label id="monit_help_status_auto_failure" lang="en">
+            Status set automatically when there is a problem
+        </label>
         <label id="monit_help_status_manual_ok" lang="fr">
-            Status mis (manuellement) lorsque tout va bien
+            Statut mis (manuellement) lorsque tout va bien
         </label>
-        <label id="monit_help_status_manual_ok" lang="en"></label>
+        <label id="monit_help_status_manual_ok" lang="en">
+            Status set (manually) when all is ok
+        </label>
         <label id="monit_help_status_manual_partial_ok" lang="fr">
-            Status mis (manuellement) lorsque le problème a été réglé mais avec perte partielle
+            Statut mis (manuellement) lorsque le problème a été réglé mais avec perte partielle
         </label>
-        <label id="monit_help_status_manual_partial_ok" lang="en"></label>
+        <label id="monit_help_status_manual_partial_ok" lang="en">
+            Status set (manually) when the problem was fixed but with partial loss
+        </label>
         <label id="monit_help_status_manual_failure" lang="fr">
-            Status mis (manuellement) lorsque le problème a été vu mais qu'il y a eu une perte total
+            Statut mis (manuellement) lorsque le problème a été vu mais qu'il y a eu une perte total
         </label>
-        <label id="monit_help_status_manual_failure" lang="en"></label>
+        <label id="monit_help_status_manual_failure" lang="en">
+            Status set (manually) when the problem was seen but there was a total loss
+        </label>
         <label id="monit_help_status_manual_ignore" lang="fr">
-            Status mis (manuellement) lorsque l'asset n'est pas important (permet également de lier à un autre asset)
+            Statut mis (manuellement) lorsque l'asset n'est pas important (permet également de lier à un autre asset)
         </label>
-        <label id="monit_help_status_manual_ignore" lang="en"></label>
+        <label id="monit_help_status_manual_ignore" lang="en">
+            Status set (manually) when the asset is not important (and could be link with an other asset)
+        </label>
+        <label id="monit_help_status_close" lang="fr">Fermer</label>
+        <label id="monit_help_status_close" lang="en">Close</label>
+        <label id="monit_help_status_automatic" lang="fr">Automatique</label>
+        <label id="monit_help_status_automatic" lang="en">Automaic</label>
+        <label id="monit_help_status_manual" lang="fr">Manuel</label>
+        <label id="monit_help_status_manual" lang="en">Manual</label>
         
         
         <!-- Error -->

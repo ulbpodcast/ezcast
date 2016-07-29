@@ -28,5 +28,30 @@ class EventStatus {
             EventStatus::MANUAL_FAILURE, EventStatus::MANUAL_IGNORE);
     }
     
+    static function getColorStatus($statut) {
+        switch(strtoupper($statut)) {
+            case EventStatus::AUTO_SUCCESS:
+            case EventStatus::MANUAL_OK:
+                return "success";
+                
+            case EventStatus::AUTO_SUCCESS_ERRORS:
+            case EventStatus::MANUAL_FAILURE:
+                return "danger";
+                
+            case EventStatus::AUTO_SUCCESS_WARNINGS:
+            case EventStatus::MANUAL_PARTIAL_OK:
+                return "warning";
+                
+            case EventStatus::AUTO_FAILURE:
+                return "alert";
+                
+                
+            case EventStatus::MANUAL_IGNORE:
+            default:
+                return "";
+                
+        }
+    }
+    
     
 }

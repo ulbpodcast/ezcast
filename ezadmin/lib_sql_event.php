@@ -176,7 +176,7 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
 
 
 function db_event_status_get($firtDate, $endDate, $typeStatus, 
-        $colOrder = "status_time", $orderSort = "ASC", 
+        $asset, $colOrder = "status_time", $orderSort = "ASC", 
         $start_elem = "", $max_elem = "") {
     
     global $db_object;
@@ -200,6 +200,11 @@ function db_event_status_get($firtDate, $endDate, $typeStatus,
     if($typeStatus != "") {
         $whereParam[] = "status = ?";
         $valueWhereParam[] = $typeStatus;
+    }
+    
+    if($asset != "") {
+        $whereParam[] = "asset = ?";
+        $valueWhereParam[] = $asset;
     }
     
     

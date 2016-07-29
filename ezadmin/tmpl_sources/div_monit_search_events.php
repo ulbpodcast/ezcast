@@ -127,17 +127,22 @@
             <div class="col-md-3">
                 <select name="log_level[]" class="form-control" multiple>
                     <option value="" 
-                        <?php if(!isset($input) || 
-                                !array_key_exists('log_level', $input) || 
-                                !is_array($input['log_level']) ||
+                        <?php if(isset($input) && 
+                                array_key_exists('log_level', $input) && 
+                                is_array($input['log_level']) &&
                                 $input['log_level'][0] == NULL) { 
                             echo 'selected'; } ?>
                         >
+                        ®monit_select_all®
                     </option>
                     <?php foreach(LogLevel::$log_levels as $nameLog => $lvlLog) {
                         echo '<option value="'.$lvlLog.'" ';
-                        if(isset($input) && is_array($input['log_level']) && 
-                        in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL) {
+                        if(isset($input) && 
+                            ((!is_array($input['log_level']) && $lvlLog <= $logLevel_default_max_selected) 
+                                || 
+                            (is_array($input['log_level']) && 
+                            in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL))) {
+                            
                             echo 'selected';
                         }
                         echo '> '.$lvlLog . " - " . ucfirst($nameLog). '</option>';

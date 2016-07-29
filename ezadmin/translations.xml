@@ -133,8 +133,8 @@
         <label id="search" lang="en">Search</label>
         <label id="reset" lang="fr">Effacer</label>
         <label id="reset" lang="en">Reset</label>
-        <label id="logs" lang="fr">Historique des opérations</label>
-        <label id="logs" lang="en">Logs</label>
+        <label id="logs" lang="fr">Historique administrateur</label>
+        <label id="logs" lang="en">Admin activity history</label>
         <label id="stats_ezplayer_threads" lang="fr">Discussions</label>
         <label id="stats_ezplayer_threads" lang="en">Discussions</label>
         <label id="stats_ezplayer_bookmarks" lang="fr">Signets</label>

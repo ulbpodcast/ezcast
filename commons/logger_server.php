@@ -8,6 +8,7 @@ class ServerLogger extends Logger {
     const EVENT_TABLE_NAME = "events";
     const EVENT_STATUS_TABLE_NAME = "event_status";    
     const EVENT_LAST_INDEXES_TABLE_NAME = "event_last_indexes";
+    const EVENT_ASSET_PARENT = "event_asset_parent";
     
     public function __construct() {
         parent::__construct();

@@ -1006,6 +1006,7 @@ function view_track_asset() {
                 empty_str_if_not_def('asset', $input),
                 $colOrder->getCurrentSortCol(), $colOrder->getOrderSort(),
                 $pagination->getStartElem(), $pagination->getElemPerPage());
+        $pagination->setTotalItem(db_found_rows());
         
         $view_all = array_key_exists('view_all', $input) && $input['view_all'] == 'on';
         
@@ -1046,7 +1047,7 @@ function view_track_asset() {
             
         }
         
-        $pagination->setTotalItem(db_found_rows());
+        
     }
     
     

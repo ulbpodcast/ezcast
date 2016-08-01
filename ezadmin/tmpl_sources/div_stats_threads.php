@@ -5,20 +5,7 @@
     var result = null;
 </script>
 <?php
-########## CHARTS DATA LOADING #################################################
-setlocale(LC_ALL, 'fr_BE');
-$DTZ = new DateTimeZone('Europe/Paris');
-$allAlbums = stat_album_get_all();
 
-setlocale(LC_ALL, 'fr_BE');
-$threadsCount = stat_threads_count_all();
-$commentsCount = stat_get_nb_comments();
-
-$minCreationDate = get_oldest_date();
-$minDateFr = new DateTimeFrench($minCreationDate, $DTZ);
-$maxCreationDate = get_newest_date();
-$today = date('Y-m-d H:i:s');
-$todayMY = date('m/Y');
 
 echo '<script>';
 foreach ($allAlbums as $albumArr) {

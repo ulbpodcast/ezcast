@@ -2,11 +2,11 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th class="left">®stats_album_name®</th>
+            <?php echo $colOrder->insertThSort("albumName", "®stats_album_name®", "left"); ?> 
             <th>®stats_discussions_count®</th>
             <th>®stats_discussions_count® (%)</th>
             <th>®stats_comments_count®</th>
-            <th>®stats_comments_by_discussion®n</th>
+            <th>®stats_comments_by_discussion®</th>
             <!--<th>Nombre de commentaires par jour</th>-->
         </tr>
     </thead>

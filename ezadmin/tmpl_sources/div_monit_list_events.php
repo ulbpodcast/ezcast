@@ -1,5 +1,3 @@
-
-
 <?php if(isset($pagination)) {
     $pagination->insert();
 } ?>
@@ -45,7 +43,7 @@
                 <td
                 <?php if(array_key_exists('min_message', $event)) { ?>
                     data-container="body" data-toggle="popover" data-trigger="hover" 
-                    data-placement="right" data-content="<?php echo htmlspecialchars($event['message']); ?>">
+                    data-placement="left" data-content="<?php echo htmlspecialchars($event['message']); ?>">
                     <?php 
                     echo $event['min_message'];
                 } else { 
@@ -56,6 +54,11 @@
         <?php } ?>
     </table>
 </div>
+
+<?php if(isset($pagination)) {
+    $pagination->insert();
+} ?>
+
 
 
 <script> 

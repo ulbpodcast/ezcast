@@ -18,11 +18,13 @@
         <script type="text/javascript" src="js/plugins/jqplot.highlighter.js"></script>
         <script type="text/javascript" src="js/plugins/jqplot.enhancedPieLegendRenderer.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
-        <script src="js/bootstrap-datetimepicker.min.js"></script>
+        <script src="bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
         <script src="js/stats.js"></script>
         
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap-datetimepicker.min.css" />
+        <link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet"/>
         <link href="css/style.css" rel="stylesheet">
         <link href="css/jquery.jqplot.min.css" rel="stylesheet"/>
         <link href="css/ezplayerStats.css" rel="stylesheet"/>
@@ -81,7 +83,6 @@
                 }
             });
         </script>
-        <script src="bootstrap/js/bootstrap-dropdown.js"></script>
         <script>
             function toggleVisibility(thingId)
             {
@@ -95,7 +96,7 @@
                 }
             }
         </script>
-
+        
     </head>
     <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && ($GLOBALS['debugmode'] == "devl")) echo 'background="#99ff99"' ?>>
 

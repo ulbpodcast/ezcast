@@ -910,9 +910,52 @@ function view_list_event() {
  */
 function view_track_asset() {
     global $input;
-    global $logger;
     
     include_once '../commons/event_status.php';
+    
+    /// Make action from the modal ///
+    if(isset($input) && array_key_exists('modal_action', $input) && 
+            array_key_exists('current_asset', $input)) {
+        
+        $current_asset = $input['current_asset'];
+        
+        if($input['modal_action'] == "new_parent") {
+            
+            if(array_key_exists('parent_asset', $input)) {
+                $parent_asset = $input['parent_asset'];
+                if(db_event_asset_status_exist($parent_asset)) {
+                    db_event_status_add($current_asset, EventStatus::MANUAL_IGNORE, 
+                            "Define a new parent: ".$parent_asset, $_SESSION['user_login']);
+                    db_event_asset_parent_add($current_asset, $parent_asset);
+                } else {
+                    $errorActionMsg = 1;
+                }
+                
+            } else {
+                $errorActionMsg = 2;
+            }
+            
+        } else if($input['modal_action'] == "new_status") {
+            
+            if(array_key_exists('new_status', $input) && array_key_exists('new_description', $input)) {
+                
+                $new_status = $input['new_status'];
+                $description = $input['new_description'];
+
+                db_event_status_add($current_asset, $new_status, $description, 
+                        $_SESSION['user_login']);
+            } else {
+                $errorActionMsg = 10;
+            }
+            
+        } else if($input['modal_action'] == "remove_parent") {
+            db_event_asset_parent_remove($current_asset);
+            db_event_status_add($current_asset, EventStatus::MANUAL_IGNORE, 
+                            "Remove parent", $_SESSION['user_login']);
+            
+        }
+        
+    }
     
     
     /// Define Helper ///
@@ -941,15 +984,32 @@ function view_track_asset() {
         
         $view_all = array_key_exists('view_all', $input) && $input['view_all'] == 'on';
         
+        // Get children and parent
+        $allParent = db_event_get_asset_parent(empty_str_if_not_def('asset', $input));
+        
+        // List of the children (key = an asset and in value his children)
+        $listChildren = array();
+        $listAssetWithParent = array(); // List of asset who have an parent
+        foreach($allParent as $parentInfo) {
+            $parentAsset = $parentInfo['parent_asset'];
+            $asset = $parentInfo['asset'];
+            
+            array_push($listAssetWithParent, $asset);
+            if(!array_key_exists($parentAsset, $listChildren)) {
+                $listChildren[$parentAsset] = array();
+            }
+            array_push($listChildren[$parentAsset], $asset);
+        }
+        
         // List of status who must be viewed
         // If view_all is define, this is just an array list
         // If view_all is turn off, it's a dictionnary
         $resStatus = array();
-        $listChildren = array();
+        
         
         foreach ($listStatus as $status) {
-            // If parent is null
-            if($status['parent_asset'] == "") {
+            // If not in array or if we will see all
+            if(!in_array($status['asset'], $listAssetWithParent) || $view_all) {
                 // Just adapt var
                 $status['status_time'] = date("d/m/y H:i:s", strtotime($status['status_time']));
                 if(strlen($status['description']) > 50) {
@@ -957,17 +1017,8 @@ function view_track_asset() {
                     $status['min_description'] .= "...";
                 }
                 $resStatus = status_listStatus_add($resStatus, $status, $view_all);
-                
-            // If there is a parent
-            } else {
-                $listChildren = status_listStatus_child_add($listChildren, 
-                        $status['parent_asset'], $status['asset']);
-                
-                if($view_all) {
-                    $resStatus = status_listStatus_add($resStatus, $status, $view_all);
-                }
-                
             }
+            
         }
         
         $pagination->setTotalItem(db_found_rows());
@@ -976,7 +1027,7 @@ function view_track_asset() {
     
     // Display page 
     include template_getpath('div_main_header.php');
-    include template_getpath('div_monit_search_asset.php');
+    include template_getpath('div_monit_search_status.php');
     if(isset($resStatus)) {
         include template_getpath('div_monit_list_status.php');
     }
@@ -987,22 +1038,16 @@ function status_listStatus_add($listToAdd, $status, $view_all) {
     if($view_all) {
         array_push($listToAdd, $status);
     } else {
-        if(array_key_exists($status['asset'], $listToAdd)) {
-            if($listToAdd[$status['asset']]['status_time'] < $status['status_time']) {
-                $listToAdd[$status['asset']] = array_merge($listToAdd[$status['asset']], $status);
-            }
-        } else {
+        
+        
+        
+        
+        // If not in array or if newer than the old saved
+        if(!array_key_exists($status['asset'], $listToAdd) || 
+                strtotime($listToAdd[$status['asset']]['status_time']) < strtotime($status['status_time'])) {
+            
             $listToAdd[$status['asset']] = $status;
         }
-    }
-    return $listToAdd;
-}
-
-function status_listStatus_child_add($listToAdd, $parentAsset, $childAsset) {
-    if(array_key_exists($parentAsset, $listToAdd)) {
-        array_push($listToAdd[$parentAsset], $childAsset);
-    } else {
-        $listToAdd[$parentAsset] = array($childAsset);
     }
     return $listToAdd;
 }

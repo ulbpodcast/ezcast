@@ -41,7 +41,6 @@ require_once 'config.inc';
             }
             
             if(!empty($date)) {
-                date_default_timezone_set('Europe/Brussels');
                 $dt = new DateTime();
 
                 $dt = $dt->createFromFormat('Y-m-d H:i:s', $date);

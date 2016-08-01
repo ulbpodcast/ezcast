@@ -6,6 +6,10 @@
 include_once('config.inc');
 require_once('logger_server.php');
 
+
+if(isset($timezone))
+    date_default_timezone_set($timezone);
+
 $logger = new ServerLogger();
 //Uncomment this to print all log message to screen (may be useful to debug services or such)
 //Logger::$print_logs = true;

@@ -34,8 +34,8 @@ require_once 'lib_sql_stats.php';
  * Returns an array with all albums
  * @return type
  */
-function stat_album_get_all() {
-    return album_get_all();
+function stat_album_get_all($colOrder = "", $orderSort = "") {
+    return album_get_all($colOrder, $orderSort);
 }
 
 /**

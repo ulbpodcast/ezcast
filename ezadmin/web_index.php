@@ -892,8 +892,6 @@ function view_list_event() {
     } else {
         $colOrder = new Sort_colonne('event_time');
     }
-
-    $logLevel_default_max_selected = 3;
     
     // Get Events
     if (isset($input['post'])) { 
@@ -917,6 +915,8 @@ function view_list_event() {
         
         $pagination->setTotalItem(db_found_rows());
         
+    } else {
+        $logLevel_default_max_selected = 3;
     }
     
     

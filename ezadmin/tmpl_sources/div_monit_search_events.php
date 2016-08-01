@@ -133,10 +133,10 @@
                         echo '<option value="'.$lvlLog.'" ';
                         echo 'data-content="<span class=\'label label-'.$nameLog.'\'>'.$nameLevel.'</span>"';
                         if(isset($input) && 
-                            ((!is_array($input['log_level']) && $lvlLog <= $logLevel_default_max_selected) 
+                            (isset($logLevel_default_max_selected) && $lvlLog <= $logLevel_default_max_selected) 
                                 || 
                             (is_array($input['log_level']) && 
-                            in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL))) {
+                            in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL)) {
                             
                             echo 'selected';
                         }

@@ -633,8 +633,8 @@ function create_tables($drop = true) {
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
         if ($drop)
-            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_ASSET_PARENT .'`;');
-        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_ASSET_PARENT . '` (' .
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_ASSET_PARENT_TABLE_NAME .'`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_ASSET_PARENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
                 "`parent_asset` varchar(50) NOT NULL,",
                 " UNIQUE KEY `asset` (`asset`) " .

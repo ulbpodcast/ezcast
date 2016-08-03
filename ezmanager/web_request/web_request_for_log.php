@@ -105,7 +105,7 @@ function push_log() {
             unset($arrayToInsert['id']);
             save_log($arrayToInsert['asset'], $arrayToInsert['origin'], 
                     $arrayToInsert['loglevel'], $arrayToInsert['type_id'], 
-                    $arrayToInsert['asset_classroom'], $arrayToInsert['event_time'], 
+                    $arrayToInsert['asset_classroom_id'], $arrayToInsert['event_time'], 
                     $arrayToInsert['message'], $arrayToInsert['asset_course'], 
                     $arrayToInsert['asset_author'], $arrayToInsert['asset_cam_slide'], 
                     $arrayToInsert['context']);

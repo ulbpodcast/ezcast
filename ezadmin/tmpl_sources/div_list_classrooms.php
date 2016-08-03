@@ -1,39 +1,8 @@
-
-<?php if($max > 0) { ?>
-
-<div class="text-center">
-    <ul class="pagination">
-        <li <?php if($input['page'] == 1) { echo 'class="disabled"'; } ?>>
-            <a href="#" data-page="<?php echo $input['page']-1 ?>">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li <?php echo $input['page'] == 1 ? 'class="active"' : ''?>><a href="#" data-page="1">1</a></li>
-        
-        <?php if($input['page'] > 5) { ?>
-           <li><a href="#" data-page="0">...</a></li>
-        <?php } ?>
-           
-         <?php $start = $input['page'] > 4 ? $input['page']-3 : 2 ?>
-           
-        <?php for($i = $start; $i < $max && $i < $start+7; ++$i){ ?>
-           <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>><a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a></li>
-        <?php } ?>
-        
-        <?php if($input['page']+7 < $max) { ?>
-           <li><a href="#" data-page="0">...</a></li>
-        <?php } ?> 
-           
-        <?php if($max != 1) { ?>
-        <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
-        <?php } ?>
-        <li>
-            <a href="#" data-page="<?php echo $input['page']+1 ?>"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-    </ul>
-</div>
-
-<?php } ?>
+<?php 
+if(isset($pagination)) {
+    $pagination->insert();
+} 
+?>
 
 <form class="classroom_update" style="display:hidden" method="POST">
     <input type="hidden" name="update" />
@@ -44,64 +13,133 @@
     <input type="hidden" name="u_ip_remote" value=""/>
 </form>
 
-<table class="table table-striped table-hover table-condensed table-responsive classrooms">
+<table class="table table-striped table-bordered table-hover table-responsive table-condensed classrooms table-left">
     <tr>
         <th></th>
-        <th data-col="room_ID" <?php echo $input['col'] == 'room_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_ID®<?php echo ($input['col'] == 'room_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
-        <th data-col="name" <?php echo $input['col'] == 'name' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_name®<?php echo ($input['col'] == 'name') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
-        <th>®room_IP®</th>
-        <th>®room_remote_IP®</th>
+        <?php echo $colOrder->insertThSort("room_ID", "®room_ID®"); ?>
+        <?php echo $colOrder->insertThSort("name", "®room_name®"); ?>
+        <?php echo $colOrder->insertThSort("IP", "®room_IP®"); ?>
+        <?php echo $colOrder->insertThSort("IP_remote", "®room_remote_IP®"); ?>
         <th>®room_enabled®</th>
-        <th>®enable_disable®</th>
         <th></th>
     </tr>
     
     <?php 
-        foreach($classrooms as $classroom) {
+        foreach($listClassrooms as $currClass) {
         ?>
         <tr>
-            <td>
+            <td style="text-align: center;">
                 <?php 
+                if((!array_key_exists('online', $currClass) || !$currClass['online']) && 
+                        $currClass['enabled']) {
+                    echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
+                }
                 //TODO: move this in javascript, this heavily slow down page loading if some recorders are offline
-                exec('ping -c 1 -W 1 '.$classroom['IP'], $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
+                //exec('ping -c 1 -W 1 '.$currClass['IP'], $output, $return_val); if($return_val != 0) 
+                //echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
             </td>
             <td class="room_id">
-                <div class="view"><?php echo $classroom['room_ID'] ?></div>
+                <div class="view">
+                    <?php echo $currClass['room_ID'] ?>
+                </div>
                 <div class="edit" style="display:none;">
-                    <input class="form-control input-xsm" type="text" name="room_ID" value="<?php echo htmlspecialchars($classroom['room_ID']) ?>"/>
+                    <input class="form-control input-xsm" type="text" name="room_ID" 
+                           value="<?php echo htmlspecialchars($currClass['room_ID']) ?>"/>
                 </div>
             </td>
             <td class="name">
-                <div class="view"><?php echo $classroom['name'] ?></div>
+                <div class="view">
+                    <?php echo $currClass['name'] ?>
+                </div>
                 <div class="edit" style="display:none;">
-                    <input class="form-control input-xsm" type="text" name="name" value="<?php echo htmlspecialchars($classroom['name']) ?>"/>
+                    <input class="form-control input-xsm" type="text" name="name" 
+                           value="<?php echo htmlspecialchars($currClass['name']) ?>"/>
                 </div>
             </td>
             <td class="ip">
-                <div class="view"><a target="_blank" href="http://<?php echo $classroom['IP']; ?>/ezrecorder/"><?php echo $classroom['IP'] ?></a> <a target="_blank" href="vnc://<?php echo $classroom['IP']; ?>/">(VNC)</a></div>
+                <div class="view">
+                    <a target="_blank" href="http://<?php echo $currClass['IP']; ?>/ezrecorder/">
+                        <?php echo $currClass['IP'] ?>
+                    </a> 
+                    <a target="_blank" href="vnc://<?php echo $currClass['IP']; ?>/">
+                        (VNC)
+                    </a>
+                </div>
                 <div class="edit" style="display:none;">
-                    <input class="form-control input-xsm" type="text" name="ip" value="<?php echo htmlspecialchars($classroom['IP']) ?>"/>
+                    <input class="form-control input-xsm" type="text" name="ip" 
+                           value="<?php echo htmlspecialchars($currClass['IP']) ?>"/>
                 </div>
             </td>
             <td class="ip_remote">
-                <div class="view"><a target="_blank" href="http://<?php echo $classroom['IP_remote']; ?>/ezrecorder/"><?php echo $classroom['IP_remote'] ?></a> <?php if(isset($classroom['IP_remote']) && $classroom['IP_remote'] != "") { ?><a target="_blank" href="vnc://<?php echo $classroom['IP_remote']; ?>/">(VNC)</a><?php } ?></div>
-                <div class="edit" style="display:none;">
-                    <input class="form-control input-xsm" type="text" name="ip_remote" value="<?php echo htmlspecialchars($classroom['IP_remote']) ?>"/>
-                </div>
+                <?php if(array_key_exists('IP_remote', $currClass)) { ?>
+                    <div class="view">
+                        <a target="_blank" href="http://<?php echo $currClass['IP_remote']; ?>/ezrecorder/">
+                            <?php echo $currClass['IP_remote'] ?>
+                        </a> 
+                        <?php if(isset($currClass['IP_remote']) && $currClass['IP_remote'] != "") { ?>
+                            <a target="_blank" href="vnc://<?php echo $currClass['IP_remote']; ?>/">
+                                (VNC)
+                            </a>
+                        <?php } ?>
+                    </div>
+                    <div class="edit" style="display:none;">
+                        <input class="form-control input-xsm" type="text" name="ip_remote" 
+                               value="<?php echo htmlspecialchars($currClass['IP_remote']) ?>" />
+                    </div>
+                <?php } ?>
             </td>
-            <td>
-                <?php echo $classroom['enabled'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span></span>'; ?>
+            <td style="text-align: center;">
+                <span class="glyphicon glyphicon-<?php echo $currClass['enabled'] ? 'ok' : 'remove'; ?>"></span>
             </td>
-            <td>
-                <button class="btn btn-sm enabled_button <?php echo !$classroom['enabled'] ? 'btn-success' : '' ?>"><?php echo !$classroom['enabled'] ? '®enable®' : '®disable®' ?></button>
-            </td>
-            <td>
-                <button class="btn btn-sm edit_button"><span class="glyphicon glyphicon-edit"></span></button>
-                <button class="btn btn-sm btn-danger cancel_button"><span class="glyphicon glyphicon-remove"></span></button>
-                <button class="btn btn-sm btn-danger delete_button"><span class="glyphicon glyphicon-trash"></span></button>
+            <td style="text-align: right;">
+                <button class="btn btn-xs enabled_button <?php echo !$currClass['enabled'] ? 'btn-success' : '' ?>">
+                    <?php echo !$currClass['enabled'] ? '®enable®' : '®disable®' ?>
+                </button>
+                <button class="btn btn-xs edit_button"><span class="glyphicon glyphicon-edit"></span></button>
+                <button class="btn btn-xs btn-danger cancel_button"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-xs btn-danger delete_button"><span class="glyphicon glyphicon-trash"></span></button>
             </td>
         </tr>
-        <?php
+        <?php if(array_key_exists('recording', $currClass) && $currClass['recording']) { ?>
+        <tr class="<?php echo $currClass['loglevel']; ?>">
+            <td></td>
+            <td colspan="6" style="padding-bottom: 12px;">
+                <div class="col-md-3">
+                    <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+                    ®status_record_general®: 
+                    <?php echo $currClass['status_general']; ?><br />
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    ®monit_teacher®: 
+                    <?php echo $currClass['author']; ?>
+                </div>
+                <div class="col-md-3">
+                    <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+                    ®classroom_record_cam®: 
+                    <?php echo $currClass['status_cam']; ?><br />
+                    <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+                    ®monit_courses®: 
+                    <?php echo $currClass['course']; ?>
+                </div>
+                <div class="col-md-3">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                    ®classroom_record_slide®: 
+                    <?php echo $currClass['status_slides']; ?><br />
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                    Asset: 
+                    <a href="./index.php?action=view_events&post=&startDate=0&asset=<?php echo $currClass['asset']; ?>">
+                        <?php echo $currClass['asset']; ?>
+                        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <br />
+                    <span class="label label-<?php echo $currClass['loglevel']; ?>">
+                    <?php echo ucfirst($currClass['loglevel']); ?>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <?php }
     }
     ?>
 </table>
@@ -109,92 +147,57 @@
 <script>
     
 $(function() {
-    $(".pagination li").click(function() {
-        if($(this).hasClass('active')) return;
-        page($(this).find("a").data("page"));
-    });
-
-    $("table.classrooms th").click(function() {
-        var col = $(this).data('col');
-
-        if(!col) return;
-
-        var order = $(this).data('order');
-
-        if(order == 'ASC') order = 'DESC';
-        else order = 'ASC';
-
-        // remove other col sort
-        $(this).parent().find("th").each(function() {
-            $(this).data('order', '');
-        })
-
-        // update col sort
-        $(this).data('order', order);
-
-        sort(col, order);
-    });
-
-    function page(n) {
-        if(!n || n < 1 || n > <?php echo $max ?>) return;
-        var $form = $("form.search_classroom");
-        $form.find("input[name='page']").first().val(n);
-        $form.submit();
-    }
-
-    function sort(col, order) {
-        var $form = $("form.search_classroom");
-        $form.find("input[name='col']").first().val(col);
-        $form.find("input[name='order']").first().val(order);
-        $form.submit();
-    }
    
     $("table.classrooms .enabled_button").click(function() {
        $this = $(this);
 
         var room = $this.parent().parent().find("td.room_id .view").text();
        
-       if($this.hasClass('btn-success')) {
-           $.ajax("index.php?action=enable_classroom", {
-             type: "post",
-             data: {
-                id: room
-             },
-             success: function(jqXHR, textStatus) {
+        if($this.hasClass('btn-success')) {
+            $.ajax("index.php?action=enable_classroom", {
+                type: "post",
+                data: {
+                    id: room
+                },
+                success: function(jqXHR, textStatus) {
 
-                var data = JSON.parse(jqXHR);
-           
-                if(data.error) {
-                    if(data.error == '1') alert("®room_enable_error®");
-                    return;
+                    var data = JSON.parse(jqXHR);
+
+                    if(data.error) {
+                        if(data.error == '1') alert("®room_enable_error®");
+                        return;
+                    }
+
+                    $this.removeClass('btn-success');
+                    $this.text('®disable®');
+                    var icon = $this.parent().prev().find(".glyphicon");
+                    icon.removeClass('glyphicon-remove');
+                    icon.addClass('glyphicon-ok');
                 }
+            });
+        } else {
+            $.ajax("index.php?action=disable_classroom", {
+                type: "post",
+                data: {
+                    id: room
+                },
+                success: function(jqXHR, textStatus) {
+                    
+                    var data = JSON.parse(jqXHR);
+                    
+                    if(data.error) {
+                        if(data.error == '1') alert("®room_enable_error®");
+                        return;
+                    }
            
-                $this.removeClass('btn-success');
-                $this.text('®disable®');
-                $this.parent().prev().find("i").addClass('icon-ok');
-            }
-          });
-       } else {
-          $.ajax("index.php?action=disable_classroom", {
-             type: "post",
-             data: {
-                id: room
-             },
-             success: function(jqXHR, textStatus) {
-
-                var data = JSON.parse(jqXHR);
-
-                if(data.error) {
-                    if(data.error == '1') alert("®room_enable_error®");
-                    return;
+                    $this.addClass('btn-success');
+                    $this.text('®enable®');
+                    var icon = $this.parent().prev().find(".glyphicon");
+                    icon.removeClass('glyphicon-ok');
+                    icon.addClass('glyphicon-remove');
                 }
-           
-                $this.addClass('btn-success');
-                $this.text('®enable®');
-                $this.parent().prev().find("i").removeClass('icon-ok');
-            }
-          });
-       }
+            });
+        }
     });
     
     $("table.classrooms .edit_button").click(function() {

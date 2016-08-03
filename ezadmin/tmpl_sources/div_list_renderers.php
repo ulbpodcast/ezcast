@@ -88,7 +88,7 @@ require_once 'config.inc';
 
                         $this.removeClass('btn-success');
                         $this.text('®disable®');
-                        $this.parent().prev().find("i").addClass('icon-ok');
+                        $this.parent().prev().find(".glyphicon").addClass('icon-ok');
                     }
                 });
             } else {
@@ -109,7 +109,7 @@ require_once 'config.inc';
 
                         $this.addClass('btn-success');
                         $this.text('®enable®');
-                        $this.parent().prev().find("i").removeClass('icon-ok');
+                        $this.parent().prev().find(".glyphicon").removeClass('icon-ok');
                     }
                 });
             }

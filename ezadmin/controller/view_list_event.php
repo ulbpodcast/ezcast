@@ -1,16 +1,15 @@
 <?php
 
 require_once 'lib_sql_event.php';
+/// Define Helper ///
+include_once '../commons/view_helpers/helper_pagination.php';
+include_once '../commons/view_helpers/helper_sort_col.php';
 
 
 function index($param = array()) {
     global $input;
     global $logger;
     
-    
-    /// Define Helper ///
-    include_once '../commons/view_helpers/helper_pagination.php';
-    include_once '../commons/view_helpers/helper_sort_col.php';
     
     if(array_key_exists('page', $input)) {
         $pagination = new Pagination($input['page'], 50);

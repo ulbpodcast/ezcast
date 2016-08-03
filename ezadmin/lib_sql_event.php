@@ -43,6 +43,11 @@ function event_statements_get() {
                     'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' ' .
                     'ORDER BY event_time',
         
+            'get_event_loglevel_most' =>
+                    'SELECT MIN(loglevel) AS max_loglevel ' .
+                    'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' ' .
+                    'WHERE asset = :asset',
+        
             'status_insert' => 
                     'INSERT INTO ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' ' .
                     '(asset, status, author, status_time, description) ' . 
@@ -74,6 +79,28 @@ function db_event_get_all() {
     $statements['get_all_event']->execute();
     return $statements['get_all_event']->fetchAll();
 }
+
+/**
+ * Get the most important loglevel for a specific asset
+ * 
+ * @global Array $statements slq request
+ * @param String $asset name of the asset
+ * @return int the most important loglevel (or -1 if not exist)
+ */
+function db_event_get_event_loglevel_most($asset) {
+    global $statements;
+    
+    $statements['get_event_loglevel_most']->bindParam(':asset', $asset);
+    
+    $statements['get_event_loglevel_most']->execute();
+    $res = $statements['get_event_loglevel_most']->fetch();
+    if(array_key_exists('max_loglevel', $res) && $res['max_loglevel'] != "") {
+        return $res['max_loglevel'];
+    }
+    return -1;
+}
+
+
 
 /**
  * Get event

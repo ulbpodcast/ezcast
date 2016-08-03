@@ -17,8 +17,8 @@ if(isset($pagination)) {
             <th></th>
             <?php echo $colOrder->insertThSort("asset", "Asset"); ?>
             <?php echo $colOrder->insertThSort("status_time", "®monit_status_date®"); ?>
-            <th>®author®</th>
-            <th>®monit_status®</th>
+            <?php echo $colOrder->insertThSort("author", "®author®"); ?>
+            <?php echo $colOrder->insertThSort("status", "®monit_status®"); ?>
             <th>®monit_message®</th>
         </tr>
 
@@ -127,7 +127,7 @@ if(isset($pagination)) {
                     <button type="button" class="close" data-dismiss="modal" aria-label="®monit_help_status_close®">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">®monit_status_process®</h4>
+                    <h4 class="modal-title">®monit_status_change®</h4>
                 </div>
                 <form method="POST">
                     <div class="modal-body">

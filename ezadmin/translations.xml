@@ -242,6 +242,14 @@
         <label id="room_enabled" lang="en">Enabled</label>
         <label id="room_alive" lang="fr">En ligne</label>
         <label id="room_alive" lang="en">Online</label>
+        <label id="being_record" lang="fr">En cours d'enregistrement</label>
+        <label id="being_record" lang="en">Being Recorded</label>
+        <label id="only_online" lang="fr">Seulement ceux en ligne</label>
+        <label id="only_online" lang="en">Only online</label>
+        <label id="status_record_general" lang="fr">Général</label>
+        <label id="status_record_general" lang="en">General</label>
+        <label id="classroom_only_active" lang="fr">Uniquement les auditoires activé</label>
+        <label id="classroom_only_active" lang="en">Only activated classroom</label>
         <label id="no_ping" lang="fr">Ne répond pas aux requêtes ping</label>
         <label id="no_ping" lang="en">No answer to ping requests</label>
         <label id="ssh_error" lang="fr">Ne répond pas aux requêtes ssh</label>
@@ -438,6 +446,12 @@
         <label id="classroom_enabled" lang="en">Activate</label>
         <label id="classroom_ignore_ssh_check" lang="fr">Ignorer check SSH</label>
         <label id="classroom_ignore_ssh_check" lang="en">Ignore SSH check</label>
+        <label id="classroom_record_cam" lang="fr">Cam</label>
+        <label id="classroom_record_cam" lang="en">Cam</label>
+        <label id="classroom_record_slide" lang="fr">Slide</label>
+        <label id="classroom_record_slide" lang="en">Slide</label>
+        <label id="classroom_view_log" lang="fr">Voir les logs</label>
+        <label id="classroom_view_log" lang="en">View log</label>
         <label id="create_classroom" lang="fr">Créer auditoire</label>
         <label id="create_classroom" lang="en">Create classroom</label>     
         <label id="create_renderer" lang="fr">Créer renderer</label>

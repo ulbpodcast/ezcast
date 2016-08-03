@@ -483,35 +483,80 @@ function db_users_courses_get($course_code, $user_ID) {
 }
 
 /**
+ * Search classroom
  * 
- * @global array $statements
- * @param type $room_ID
- * @param type $name
- * @param type $ip
- * @param type $enabled -1 for both enabled and disabled; 0 for disabled only; 1 for enabled only
+ * @global PDO $db_object
+ * @param String $room_ID id of the classroom
+ * @param String $name of the classroom
+ * @param String $ip adresse ip
+ * @param int $enabled -1 for both enabled and disabled; 0 for disabled only; 1 for enabled only
+ * @param String $colOrder column who must be use to order result
+ * @param String $orderSort ASC or DESC 
+ * @param int $start_elem first element to return
+ * @param int $max_elem max elements who must be return
  * @return PDO statement or FALSE on failure
  */
-function db_classrooms_search($room_ID, $name, $ip, $enabled, $order, $limit) {
+function db_classrooms_search($room_ID, $name, $ip, $enabled, $colOrder, $orderSort, 
+        $start_elem, $max_elem) {
     global $db_object;
 
-    $query =
+    
+    $strSQL =
        'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .
-                    db_gettable('classrooms') . '.room_ID, ' .
-                    db_gettable('classrooms') . '.name, ' .
-                    db_gettable('classrooms') . '.IP, ' .
-                    db_gettable('classrooms') . '.IP_remote, ' .
-                    db_gettable('classrooms') . '.enabled ' .
-       'FROM '. db_gettable('classrooms') . ' ' .
-       'WHERE ' . 
-                    'room_ID LIKE "' . $room_ID . '" AND ' .
-                    'name LIKE "' . $name . '" AND '. 
-                    'IP LIKE "' . $ip . '"' .
-                    ($enabled != -1 ? ' AND enabled = ' . $enabled : '') .
-       ($order ? ' ORDER BY ' . $order : '') .
-       ($limit ? ' LIMIT ' . $limit : '');
-    ;
-
-    return $db_object->query($query);
+                    'classroom.room_ID, ' .
+                    'classroom.name, ' .
+                    'classroom.IP, ' .
+                    'classroom.IP_remote, ' .
+                    'classroom.enabled ' .
+       'FROM '. db_gettable('classrooms') . ' classroom ';
+    
+    $valueWhereParam = array();
+    $whereParam = array();
+    
+    if($room_ID != "") {
+        $whereParam[] = "room_ID LIKE ?";
+        $valueWhereParam[] = db_sanitize($room_ID);
+    }
+    
+    if($name != "") {
+        $whereParam[] = "name LIKE ?";
+        $valueWhereParam[] = db_sanitize($name);
+    }
+    
+    if($ip != "") {
+        $whereParam[] = "IP LIKE ?";
+        $valueWhereParam[] = db_sanitize($ip);
+    }
+    
+    if(($enabled == 0 || $enabled == 1) && $enabled != "") {
+        $whereParam[] = "enabled = ?";
+        $valueWhereParam[] = $enabled;
+    }
+    
+    if(!empty($whereParam)) {
+        $strSQL .= " WHERE ";
+        $strSQL .= implode(" AND ", $whereParam);
+    }
+    
+    if($colOrder != "") {
+        $strSQL .= " ORDER BY ".$colOrder." ";
+        if($orderSort == "DESC") {
+            $strSQL .= " DESC ";
+        }
+    }
+       
+    if($max_elem != "" && $max_elem >= 0) {
+        if($start_elem != "" && $start_elem >= 0) {
+            $strSQL .= " LIMIT ".$start_elem.",".$max_elem;
+        } else {
+            $strSQL .= " LIMIT ".$max_elem;
+        }
+    }
+    
+    $reqSQL = $db_object->prepare($strSQL);
+    $reqSQL->execute($valueWhereParam);
+    
+    return $reqSQL->fetchAll();
 }
 
 /**

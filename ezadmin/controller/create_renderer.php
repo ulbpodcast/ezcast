@@ -1,5 +1,7 @@
 <?php
 
+$ssh_timeout;
+
 function index($param = array()) {
     global $input;
     global $ssh_public_key;
@@ -75,6 +77,7 @@ function stepOne() {
     global $ssh_pub_key_location;
     global $apache_username;
     global $ssh_public_key;
+    global $ssh_timeout;
     
     $renderer_name = $input['renderer_name'];
     $renderer_address = $input['renderer_address'];

@@ -65,6 +65,11 @@ td {
     color: #000000;
 }
 
+.table-left.table td, .table-left.table th {
+    text-align: left;
+}
+
+
 .green{
     color: rgb(114,187,29);
 }

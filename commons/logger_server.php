@@ -10,12 +10,28 @@ class ServerLogger extends Logger {
     const EVENT_LAST_INDEXES_TABLE_NAME = "event_last_indexes";
     const EVENT_ASSET_PARENT = "event_asset_parent";
     
+    private $statement = NULL;
+    
     public function __construct() {
         parent::__construct();
         
         global $db_object;
-        if($db_object == null)  //db is not yet prepared yet
+        if($db_object == null) { //db is not yet prepared yet
             db_prepare(); 
+        }
+        
+        
+        $this->statement = $db_object->prepare(
+          'INSERT INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `asset_classroom_id`, `asset_course`, ' .
+            '`asset_author`, `asset_cam_slide`, `event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
+          ':asset, :origin, :classroom, :course, :author, :cam_slide, NOW(), :type_id, :context, :loglevel, :message)');
+        
+        if($this->statement == false) {
+            echo __CLASS__ . ": Prepared statement failed";
+            print_r($this->db->errorInfo());
+            throw new Exception("Prepared statement failed");
+        }
+        
     }
     
     /**
@@ -34,33 +50,34 @@ class ServerLogger extends Logger {
     {
         $tempLogData = parent::log($type, $level, $message, $context, $asset, $asset_info);
         
-        global $db_object;
+        
         global $appname; // to be used as origin
         
-        $statement = $db_object->prepare(
-          'INSERT INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `asset_classroom_id`, `asset_course`, ' .
-            '`asset_author`, `asset_cam_slide`, `event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
-          ':asset, :origin, :classroom, :course, :author, :cam_slide, NOW(), :type_id, :context, :loglevel, :message)');
+        insert_log($tempLogData->type_id, $tempLogData->log_level_integer, 
+                $message, $tempLogData->context, $asset, $appname, 
+                $asset_info->classroom, $asset_info->course, $asset_info->author, 
+                $asset_info->cam_slide);
         
-        if($statement == false) {
-            echo __CLASS__ . ": Prepared statement failed";
-            print_r($this->db->errorInfo());
-            return null;
-        }
-        
-        $statement->bindParam(':asset', $asset);
-        $statement->bindParam(':origin', $appname);
-        $statement->bindParam(':classroom', $asset_info->classroom);
-        $statement->bindParam(':course', $asset_info->course);
-        $statement->bindParam(':author', $asset_info->author);
-        $statement->bindParam(':cam_slide', $asset_info->cam_slide);
-        $statement->bindParam(':type_id', $tempLogData->type_id);        
-        $statement->bindParam(':context', $tempLogData->context);
-        $statement->bindParam(':loglevel', $tempLogData->log_level_integer);
-        $statement->bindParam(':message', $message);
-        
-        $statement->execute();
         
         return $tempLogData;
     }
+    
+    public function insert_log($type, $level, $message, $context, $asset, $origin, 
+            $classroom, $course, $author, $cam_slide) {
+        
+        $this->statement->bindParam(':asset', $asset);
+        $this->statement->bindParam(':origin', $origin);
+        $this->statement->bindParam(':classroom', $classroom);
+        $this->statement->bindParam(':course', $course);
+        $this->statement->bindParam(':author', $author);
+        $this->statement->bindParam(':cam_slide', $cam_slide);
+        $this->statement->bindParam(':type_id', $type);        
+        $this->statement->bindParam(':context', $context);
+        $this->statement->bindParam(':loglevel', $level);
+        $this->statement->bindParam(':message', $message);
+        
+        $this->statement->execute();
+    }
+    
+    
 }

@@ -119,7 +119,7 @@ class ServersideLogEntry  {
     public $message = "";
 }
 
-class Logger {
+abstract class Logger {
     
     /* Reverted EventType array -> key: id, value: EventType
      * Filled at Logger construct.
@@ -135,7 +135,7 @@ class Logger {
      */
     public static $log_level_name_by_id = false;
         
-    public function __construct() {
+    protected function __construct() {
         $this->fill_event_type_by_id();
         $this->fill_level_name_by_id();
     }
@@ -169,7 +169,7 @@ class Logger {
      * @param AssetLogInfo $asset_info Additional information about asset if any, in the form of a AssetLogInfo structure
      * @return LogData temporary data, used by children functions
      */
-    public function log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", &$asset_info = null)
+    protected function log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", &$asset_info = null)
     {
         if(!isset($message) || !$message)
             $message = "";

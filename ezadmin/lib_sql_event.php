@@ -38,9 +38,29 @@ if(file_exists('config.inc')) {
 function event_statements_get() {
     return array(
             'get_all_event' =>
-                    'SELECT * ' .
-                    'FROM ' . db_gettable('events'). ' ' .
-                    'ORDER BY event_time'
+                    'SELECT (`asset`, `origin`, `asset_classroom_id`, `asset_course`, `asset_author`,'
+                            . ' `asset_cam_slide`, `event_time`, `type_id`, `context`, `loglevel`, `message`) ' .
+                    'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' ' .
+                    'ORDER BY event_time',
+        
+            'status_insert' => 
+                    'INSERT INTO ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' ' .
+                    '(asset, status, author, status_time, description) ' . 
+                    'VALUES(:asset, :status, :author, NOW(), :description)',
+        
+            'asset_parent_add' =>
+                'INSERT INTO ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT) . ' ' .
+                '(asset, parent_asset) ' .
+                'VALUES(:asset, :parent_asset)',
+        
+            'asset_status_exist' =>
+                'SELECT 1 ' .
+                'FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' ' .
+                'WHERE asset = :asset LIMIT 1',
+        
+            'asset_parent_remove' =>
+                'DELETE FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT) . ' ' .
+                'WHERE asset = :asset'
         );
 }
 
@@ -85,7 +105,7 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     global $db_object;
     
     $strSQL = 'SELECT SQL_CALC_FOUND_ROWS events.* ' .
-                    'FROM ' . db_gettable('events'). ' events ';
+                    'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' events ';
     
     $whereParam = array();
     $valueWhereParam = array();
@@ -182,7 +202,7 @@ function db_event_status_get($firtDate, $endDate, $typeStatus,
     global $db_object;
     
     $strSQL = 'SELECT SQL_CALC_FOUND_ROWS status.* ' .
-                    'FROM ' . db_gettable('event_status'). ' status ';
+                    'FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME). ' status ';
     
     $whereParam = array();
     $valueWhereParam = array();
@@ -197,10 +217,15 @@ function db_event_status_get($firtDate, $endDate, $typeStatus,
         $valueWhereParam[] = $endDate;
     }
     
-    if($typeStatus != "") {
-        $whereParam[] = "status = ?";
-        $valueWhereParam[] = $typeStatus;
+    if($typeStatus != "" && !empty($typeStatus) && $typeStatus[0] != NULL) {
+        $tempWhereParam = array();
+        foreach($typeStatus as $status) {
+            $tempWhereParam[] = "status = ?";
+            $valueWhereParam[] = $status;
+        }
+        $whereParam[] = "(".implode(" OR ", $tempWhereParam).")";
     }
+    
     
     if($asset != "") {
         $whereParam[] = "asset = ?";
@@ -233,3 +258,66 @@ function db_event_status_get($firtDate, $endDate, $typeStatus,
     return $reqSQL->fetchAll();
     
 }
+
+function db_event_get_asset_parent($asset = "") {
+    global $db_object;
+    
+    $whereParam = array();
+    $strSQL = 'SELECT asset, parent_asset FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT);
+    if($asset != "") {
+        $strSQL .= " WHERE asset = :asset OR parent_asset = :asset";
+        $whereParam[':asset'] = $asset;
+    }
+    
+    $reqSQL = $db_object->prepare($strSQL);
+    $reqSQL->execute($whereParam);
+    
+    return $reqSQL->fetchAll();
+}
+
+function db_event_status_add($asset, $status, $message = "", $author = "system") {
+    global $statements;
+    
+    $statements['status_insert']->bindParam(':asset', $asset);
+    $statements['status_insert']->bindParam(':status', $status);
+    $statements['status_insert']->bindParam(':author', $author);
+    $statements['status_insert']->bindParam(':description', $message);
+    
+    $statements['status_insert']->execute();
+}
+
+function db_event_asset_parent_remove($asset) {
+    global $statements;
+    
+    $statements['asset_parent_remove']->bindParam(':asset', $asset);
+    $statements['asset_parent_remove']->execute();
+}
+
+
+function db_event_asset_parent_add($asset, $asset_parent) {
+    global $statements;
+    
+    $statements['asset_parent_add']->bindParam(':asset', $asset);
+    $statements['asset_parent_add']->bindParam(':parent_asset', $asset_parent);
+    
+    $statements['asset_parent_add']->execute();
+}
+
+/**
+ * Check if an asset exist in the event_status table
+ * 
+ * @param String $asset to test
+ * @return True if exist
+ */
+function db_event_asset_status_exist($asset) {
+    global $statements;
+    
+    $statements['asset_status_exist']->bindParam(':asset', $asset);
+    $statements['asset_status_exist']->execute();
+    
+    $res = $statements['asset_status_exist']->fetchAll();
+    return !empty($res);
+}
+
+
+

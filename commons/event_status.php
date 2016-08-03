@@ -28,6 +28,12 @@ class EventStatus {
             EventStatus::MANUAL_FAILURE, EventStatus::MANUAL_IGNORE);
     }
     
+    static function getManualEventStatus() {
+        return array(EventStatus::MANUAL_OK, EventStatus::MANUAL_PARTIAL_OK,
+            EventStatus::MANUAL_FAILURE, EventStatus::MANUAL_IGNORE);
+    }
+    
+    
     static function getColorStatus($statut) {
         switch(strtoupper($statut)) {
             case EventStatus::AUTO_SUCCESS:
@@ -47,6 +53,8 @@ class EventStatus {
                 
                 
             case EventStatus::MANUAL_IGNORE:
+                return "default";
+                
             default:
                 return "";
                 

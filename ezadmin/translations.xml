@@ -500,8 +500,12 @@
         <label id="monit_parent_asset" lang="en">Parent asset name</label>
         <label id="monit_status_change" lang="fr">Changer le statut</label>
         <label id="monit_status_change" lang="en">Change status</label>
-        <label id="monit_select_all" lang="fr">Tout sélectionner</label>
-        <label id="monit_select_all" lang="en">Select all</label>
+        <label id="monit_select_loglevel" lang="fr">Selectionner le LogLevel</label>
+        <label id="monit_select_loglevel" lang="en">Select LogLevel</label>
+        <label id="monit_select_status" lang="fr">Selectionner le statut</label>
+        <label id="monit_select_status" lang="en">Select Status</label>
+        <label id="monit_error_param" lang="fr">Une erreur c'est produite avec les paramètres</label>
+        <label id="monit_error_param" lang="en">An error occured with parameters</label>
         
         
         <!-- Install -->
@@ -724,6 +728,8 @@
         <label id="monit_help_status_automatic" lang="en">Automaic</label>
         <label id="monit_help_status_manual" lang="fr">Manuel</label>
         <label id="monit_help_status_manual" lang="en">Manual</label>
+        <label id="monit_help_parent_define" lang="fr">Le statut de l'asset actuel sera automatiquement mis en Ignorer</label>
+        <label id="monit_help_parent_define" lang="en">The status of the current asset will be automatically set to Ignore</label>
         
         
         <!-- Error -->

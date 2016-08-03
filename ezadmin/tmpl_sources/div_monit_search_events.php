@@ -124,28 +124,23 @@
                     ?>
                 </select>
             </div>
+            
             <div class="col-md-3">
-                <select name="log_level[]" class="form-control" multiple>
-                    <option value="" 
-                        <?php if(isset($input) && 
-                                array_key_exists('log_level', $input) && 
-                                is_array($input['log_level']) &&
-                                $input['log_level'][0] == NULL) { 
-                            echo 'selected'; } ?>
-                        >
-                        ®monit_select_all®
-                    </option>
+                <select name="log_level[]" class="form-control selectpicker" multiple data-actions-box="true"
+                        title="®monit_select_loglevel®">
                     <?php foreach(LogLevel::$log_levels as $nameLog => $lvlLog) {
+                        $nameLevel = $lvlLog . " - " . ucfirst($nameLog);
                         echo '<option value="'.$lvlLog.'" ';
+                        echo 'data-content="<span class=\'label label-'.$nameLog.'\'>'.$nameLevel.'</span>"';
                         if(isset($input) && 
-                            ((!is_array($input['log_level']) && $lvlLog <= $logLevel_default_max_selected) 
+                            (isset($logLevel_default_max_selected) && $lvlLog <= $logLevel_default_max_selected) 
                                 || 
                             (is_array($input['log_level']) && 
-                            in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL))) {
+                            in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL)) {
                             
                             echo 'selected';
                         }
-                        echo '> '.$lvlLog . " - " . ucfirst($nameLog). '</option>';
+                        echo '> '.$nameLevel. '</option>';
                     
                     } ?>
                 </select>

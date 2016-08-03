@@ -15,12 +15,14 @@
         <label class="control-label">®classrooms_recording_enabled®</label>
         <div class="controls">
             <label class="radio">
-                <input type="radio" name="recording_enabled" id="recording_enable" value="enabled" <?php if($params['recorders_option']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="recording_enabled" id="recording_enable" value="enabled" 
+                    <?php //if($params['recorders_option']) echo 'checked="checked"'; ?> />
                 ®enabled®
             </label>
             
             <label class="radio">
-                <input type="radio" name="recording_enabled" id="recording_disable" value="disabled" <?php if(!$params['recorders_option']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="recording_enabled" id="recording_disable" value="disabled" 
+                    <?php //if(!$params['recorders_option']) echo 'checked="checked"'; ?> />
                 ®disabled®
             </label>
         </div>
@@ -29,7 +31,10 @@
         <div class="col-sm-5 col-sm-offset-1">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="recording_enabled" id="recording_enable" <?php if($params['recorders_option']) echo 'checked="checked"'; ?> />®classrooms_recording_enabled®
+                    <input type="checkbox" name="recording_enabled" id="recording_enable" 
+                        <?php if(array_key_exists('recorders_option', $params) && $params['recorders_option']) { 
+                            echo 'checked="checked"';} ?> />
+                        ®classrooms_recording_enabled®
                 </label>
             </div>
         </div>
@@ -40,12 +45,14 @@
         <label class="control-label">®add_users_enabled®</label>
         <div class="controls">
             <label class="radio">
-                <input type="radio" name="add_users_enabled" id="add_users_enable" value="enabled" <?php if($params['add_users_option']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="add_users_enabled" id="add_users_enable" value="enabled" 
+                    <?php // if($params['add_users_option']) echo 'checked="checked"'; ?> />
                 ®enabled®
             </label>
             
             <label class="radio">
-                <input type="radio" name="add_users_enabled" id="add_users_disable" value="disabled" <?php if(!$params['add_users_option']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="add_users_enabled" id="add_users_disable" value="disabled" 
+                    <?php // if(!$params['add_users_option']) echo 'checked="checked"'; ?> />
                 ®disabled®
             </label>
         </div>
@@ -54,7 +61,10 @@
         <div class="col-sm-5 col-sm-offset-1">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="add_users_enabled" id="add_users_enable" <?php if($params['add_users_option']) echo 'checked="checked"'; ?> />®add_users_enabled®
+                    <input type="checkbox" name="add_users_enabled" id="add_users_enable" 
+                        <?php if(array_key_exists('add_users_option', $params) && $params['add_users_option']) {
+                            echo 'checked="checked"'; } ?> />
+                    ®add_users_enabled®
                 </label>
             </div>
         </div>
@@ -65,12 +75,14 @@
         <label class="control-label">®password_storage_enabled®</label>
         <div class="controls">
             <label class="radio">
-                <input type="radio" name="password_storage_enabled" id="password_storage_enable" value="enabled" <?php if($params['recorder_password_storage_option']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="password_storage_enabled" id="password_storage_enable" value="enabled" 
+                    <?php // if($params['recorder_password_storage_option']) echo 'checked="checked"'; ?> />
                 ®enabled®
             </label>
             
             <label class="radio">
-                <input type="radio" name="password_storage_enabled" id="password_storage_disable" value="disabled" <?php if(!$params['recorder_password_storage_option']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="password_storage_enabled" id="password_storage_disable" value="disabled" 
+                    <?php // if(!$params['recorder_password_storage_option']) echo 'checked="checked"'; ?> />
                 ®disabled®
             </label>
         </div>
@@ -79,7 +91,10 @@
         <div class="col-sm-5 col-sm-offset-1">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="password_storage_enabled" id="password_storage_enable" <?php if($params['recorder_password_storage_option']) echo 'checked="checked"'; ?> />®password_storage_enabled®
+                    <input type="checkbox" name="password_storage_enabled" id="password_storage_enable" 
+                        <?php if(array_key_exists('recorder_password_storage_option', $params) && $params['recorder_password_storage_option']) { 
+                            echo 'checked="checked"'; } ?> />
+                    ®password_storage_enabled®
                 </label>
             </div>
         </div>
@@ -90,12 +105,14 @@
         <label class="control-label">®how_to_display_courses®</label>
         <div class="controls">
             <label class="radio">
-                <input type="radio" name="how_to_display_courses" id="courses_by_code" value="course_code" <?php if(!$params['use_course_name']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="how_to_display_courses" id="courses_by_code" value="course_code" 
+                    <?php // if(!$params['use_course_name']) echo 'checked="checked"'; ?> />
                 ®display_course_by_code®
             </label>
             
             <label class="radio">
-                <input type="radio" name="how_to_display_courses" id="courses_by_name" value="course_name" <?php if($params['use_course_name']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="how_to_display_courses" id="courses_by_name" value="course_name" 
+                    <?php // if($params['use_course_name']) echo 'checked="checked"'; ?> />
                 ®display_course_by_name®
             </label>
         </div>
@@ -104,7 +121,9 @@
         <div class="col-sm-5 col-sm-offset-1">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="courses_by_name" id="courses_by_name" <?php if($params['courses_by_name']) echo 'checked="checked"'; ?> />®settings_use_course_name®
+                    <input type="checkbox" name="courses_by_name" id="courses_by_name" 
+                        <?php if(array_key_exists('courses_by_name', $params) && $params['courses_by_name']) { echo 'checked="checked"'; } ?> />
+                    ®settings_use_course_name®
                 </label>
             </div>
         </div>
@@ -116,12 +135,14 @@
         <label class="control-label">®how_to_display_users®</label>
         <div class="controls">
             <label class="radio">
-                <input type="radio" name="how_to_display_users" id="users_by_ID" value="user_ID" <?php if(!$params['use_user_name']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="how_to_display_users" id="users_by_ID" value="user_ID" 
+                    <?php //if(!$params['use_user_name']) echo 'checked="checked"'; ?> />
                 ®display_course_by_code®
             </label>
 
             <label class="radio">
-                <input type="radio" name="how_to_display_users" id="users_by_name" value="user_name" <?php if($params['use_user_name']) echo 'checked="checked"'; ?> />
+                <input type="radio" name="how_to_display_users" id="users_by_name" value="user_name" 
+                    <?php // if($params['use_user_name']) echo 'checked="checked"'; ?> />
                 ®display_course_by_name®
             </label>
         </div>
@@ -130,7 +151,9 @@
         <div class="col-sm-5 col-sm-offset-1">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="users_by_name" id="users_by_name" <?php if($params['users_by_name']) echo 'checked="checked"'; ?> />®settings_use_user_name®
+                    <input type="checkbox" name="users_by_name" id="users_by_name" 
+                        <?php if(array_key_exists('users_by_name', $params) && $params['users_by_name']) { echo 'checked="checked"'; } ?> />
+                    ®settings_use_user_name®
                 </label>
             </div>
         </div>

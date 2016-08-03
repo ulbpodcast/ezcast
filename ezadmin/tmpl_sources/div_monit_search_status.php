@@ -31,15 +31,16 @@
             </div>
             <div class="col-md-3">
                 <label for="status">®monit_status®</label>
-                <select name="status" class="form-control">
-                    <option value="" selected>®monit_select_all®</option>
+                <select name="status[]" class="form-control selectpicker" multiple data-actions-box="true" 
+                        title="®monit_select_status®">
                     <?php
                     foreach (EventStatus::getAllEventStatus() as $status) {
                         echo '<option value="'.$status.'"';
                         if(isset($input) && array_key_exists('status', $input) && 
-                                $input['status'] != "" && $input['status'] == $status) {
+                                is_array($input['status']) && in_array($status, $input['status'])) {
                             echo ' selected';
                         }
+                        echo ' data-content="<span class=\'label label-'.EventStatus::getColorStatus($status).'\'>'.$status.'</span>"';
                         echo '>'.$status.
                             '</option>';
                     }

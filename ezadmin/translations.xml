@@ -169,6 +169,8 @@
         <label id="ezadmin_access_title" lang="en">Can access EZadmin</label>
         <label id="logs_title" lang="fr">Historique des opérations</label>
         <label id="logs_title" lang="en">Logs</label>
+        <label id="classroom_calendar_title" lang="fr">Calendrier des enregistrements</label>
+        <label id="classroom_calendar_title" lang="en">Record calendar</label>
         
         
         <!-- Form fields -->
@@ -520,6 +522,8 @@
         <label id="monit_select_status" lang="en">Select Status</label>
         <label id="monit_error_param" lang="fr">Une erreur c'est produite avec les paramètres</label>
         <label id="monit_error_param" lang="en">An error occured with parameters</label>
+        <label id="monit_nbr_week" lang="fr">Nombre de semaines</label>
+        <label id="monit_nbr_week" lang="en">Number of weeks</label>
         
         
         <!-- Install -->

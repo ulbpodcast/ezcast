@@ -256,6 +256,10 @@ else {
             requireController('view_track_asset.php');
             break;
         
+        case 'view_classroom_calendar':
+            requireController('view_classroom_calendar.php');
+            break;
+        
         
         // No action selected: we choose to display the homepage again
         default:

@@ -77,8 +77,11 @@ $listClassroom = array("S.AW1.105", 'S.AW1.115 31', 'S.AW1.117 31', 'S.AW1.120 7
 
 
 ///// FUNCTION ////
+$listType = array(EventType::ASSET_CREATED, EventType::ASSET_RECORD_END);
 function getRandomType() {
-    return EventType::$event_type_id[array_rand(EventType::$event_type_id)];
+    global $listType;
+    //return EventType::$event_type_id[array_rand(EventType::$event_type_id)];
+    return $listType[array_rand($listType)];
 }
 
 function getRandomLogLevel() {
@@ -120,13 +123,11 @@ function getRandomClassroom() {
     return $listClassroom[array_rand($listClassroom)];
 }
 
-$i = 500;
+$i = 3;
 while($i > 0) {
-    /* $author, $cam_slide, $course, $classroom */
     $course = getRandomCourse();
-    $assetLogInfo = new AssetLogInfo(getRandomAuthor(), getRandomCamSlide(), $course, getRandomClassroom());
-    /* $type, $level, $message, $context, $asset, $assetInfo */
     $logger->log(getRandomType(), getRandomLogLevel(), getRandomMessage(), 
-            getRandomContext(), getRandomAsset($course), $assetLogInfo);
+            getRandomContext(), getRandomAsset($course), getRandomAuthor(), getRandomCamSlide(),
+            $course, getRandomClassroom());
     --$i;
 }

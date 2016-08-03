@@ -1,7 +1,7 @@
 <?php
 
 require_once 'web_request.php';
-require_once __DIR__.'/../../commons/config.inc';
+require_once __DIR__.'/../config.inc';
 
 if(!isValidCaller()) {
     die;
@@ -33,6 +33,7 @@ switch($input['action']) {
  */
 function push_log() {
     global $input;
+    global $appname;
     
     if(!array_key_exists('log_data', $input)) {
         echo "ERROR 0";
@@ -56,57 +57,87 @@ function push_log() {
         :asset_cam_slide, :event_time, :type_id, :context, :loglevel, :message)';
     global $db_object;
     
+    // Prepare statement
     $reqSQL = $db_object->prepare($strSQL);
-    $error = false;
+    // Get last instert ID
     $lastInsert = -1;
-    $source = NULL;
+    // Source of the log
+    $source = "";
+    
+    $lastAsset = "";
+    $listBugID = array();
+    $lastDataError = array();
     
     foreach ($infoJSON as $log) {
         
         $arrayToInsert = get_object_vars($log);
         
+        $tempSource = get_source($arrayToInsert);
+        if($tempSource != NULL) {
+            $source = $tempSource;
+        }
         if(!array_key_exists('id', $arrayToInsert)) {
-            echo "ERROR 2";
-            $error = true;
-            break;
+            
+            $msgLog = 'Log without any ID';
+            if($source != "") {
+                $msgLog .= ' from '.$source;
+            }
+            
+            save_log($reqSQL, 'Service', $appname, LogLevel::get_log_level_integer(LogLevel::ALERT), 
+                    EventType::$event_type_id[EventType::MANAGER_LOG_SYNC], $source, 
+                    date('Y-m-d G:i:s'), $msgLog);
+            continue;
         }
+        $id = $arrayToInsert['id'];
         
-        if(!array_key_exists('asset_classroom_id', $arrayToInsert) || 
-                $arrayToInsert['asset_classroom_id'] == "") {
-            echo "ERROR 5";
-            $error = true;
-            break;
+        if($tempSource == NULL) {
+            $listBugID[$id] = 'Classroom id not defined';
+            $lastDataError = $arrayToInsert;
+            continue;
         }
-        $source = $arrayToInsert['asset_classroom_id'];
         
         if(!array_key_exists('asset', $arrayToInsert) ||
                 $arrayToInsert['asset'] == "") {
-            echo "ERROR 6";
-            $error = true;
-            break;
+            $listBugID[$id] = 'No asset defined';
+            $lastDataError = $arrayToInsert;
+            continue;
         }
+        $lastAsset = $arrayToInsert['asset'];
         
-        
-        if(isAllColValid($arrayToInsert)) {
+        // If there is an error in the data column
+        if(!is_all_col_valid($arrayToInsert)) {
+            $listBugID[$id] = 'Error with column name';
+            $lastDataError = $arrayToInsert;
+            continue;
+            
+        } else {
             if($lastInsert < $arrayToInsert['id']) {
                 $lastInsert = $arrayToInsert['id'];
             }
             unset($arrayToInsert['id']);
-            $reqSQL->execute($arrayToInsert);
-        } else {
-            $error = true;
-            break;
+            save_log_array($reqSQL, $arrayToInsert);
         }
     }
     
     if($lastInsert >= 0) {
         updateLastInsert($lastInsert, $source);
-        if(!$error) {
-            echo "SUCCESS";
-        }
-    } else {
-        echo "ERROR 4";
     }
+    
+    if(!empty($lastDataError)) {
+        $resMsg = "Error save log:\n";
+        foreach ($listBugID as $id => $msg) {
+            $resMsg .= 'Id: '.$id . " (".$msg.")\n";
+        }
+        $resMsg .= "\nLast Data: ".json_encode($lastDataError);
+        
+        
+        save_log($reqSQL, $lastAsset, $appname, 
+                LogLevel::get_log_level_integer(LogLevel::CRITICAL), 
+                EventType::$event_type_id[EventType::MANAGER_LOG_SYNC], $source, 
+                date('Y-m-d G:i:s'), $resMsg);
+    }
+    
+    echo "SUCCESS";
 
 }
 
@@ -116,7 +147,7 @@ function push_log() {
  * @param String $col to test
  * @return True if the data base have this column
  */
-function isColName($col) {
+function is_col_name($col) {
     return in_array($col, array('id', 'asset', 'origin', 'asset_classroom_id', 
         'asset_course', 'asset_author', 'asset_cam_slide', 'event_time', 
         'type_id', 'context', 'loglevel', 'message'));
@@ -128,16 +159,54 @@ function isColName($col) {
  * @param Array $arrayToTest list of the column name
  * @return boolean True is all is ok else False (and echo the errors)
  */
-function isAllColValid($arrayToTest) {
+function is_all_col_valid($arrayToTest) {
     foreach (array_keys($arrayToTest) as $col) {
-        if(!isColName($col)) {
-            echo "ERROR 3 - ";
-            echo "Col ".$col." not good - ";
-            print_r($db_object->errorInfo());
+        if(!is_col_name($col)) {
             return false;
         }
     }
     return true;
+}
+
+/**
+ * Get the origin of the request
+ * 
+ * @param Array $input array with all informations
+ * @return NULL or String with source
+ */
+function get_source($input) {
+    if(array_key_exists('asset_classroom_id', $input)) {
+        $source = $input['asset_classroom_id'];
+        if($source != NULL && $source != '') {
+            return $source;
+        }
+    }
+    return NULL;
+}
+
+
+function save_log_array($reqSQL, $arrayToSave) {
+    $reqSQL->execute($arrayToSave);
+}
+
+function save_log($reqSQL, $asset, $origin, $loglevel, $type_id, $asset_classroom, 
+        $event_time, $message = "", $asset_course = "", $asset_author ="", 
+        $asset_cam_slide = "", $context = "") {
+    
+    save_log_array($reqSQL, array(
+        ':asset' => $asset,
+        ':origin' => $origin,
+        ':loglevel' => $loglevel,
+        ':type_id' => $type_id,
+        ':event_time' => $event_time,
+        ':message' => $message,
+        ':asset_classroom_id' => $asset_classroom,
+        ':asset_course' => $asset_course,
+        ':asset_author' => $asset_author,
+        ':asset_cam_slide' => $asset_cam_slide,
+        ':context' => $context
+        ));
+    
 }
 
 

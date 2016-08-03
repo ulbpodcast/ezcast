@@ -44,19 +44,19 @@ function statements_get(){
 		
 		'course_list' =>
 			'SELECT ' . 
-				db_gettable('courses') . '.course_code, ' .
-				db_gettable('courses') . '.course_name, ' .
-				db_gettable('courses') . '.in_recorders, ' .
-				db_gettable('courses') . '.has_albums, ' .
-				db_gettable('courses') . '.origin, ' .
-				db_gettable('courses') . '.date_created ' .
-			'FROM ' . db_gettable('courses') . ' ' .
+				'courses.course_code, ' .
+				'courses.course_name, ' .
+				'courses.in_recorders, ' .
+				'courses.has_albums, ' .
+				'courses.origin, ' .
+				'courses.date_created ' .
+			'FROM ' . db_gettable('courses') . ' courses ' .
 			'WHERE ' .
-				db_gettable('courses') . '.course_code LIKE :course_code AND ' . 
-				db_gettable('courses') . '.course_name LIKE :course_name AND ' .
-				db_gettable('courses') . '.in_recorders = :in_recorders AND ' .
-				db_gettable('courses') . '.has_albums = :has_albums AND ' .
-				db_gettable('courses') . '.origin = :origin',
+				'courses.course_code LIKE :course_code AND ' . 
+				'courses.course_name LIKE :course_name AND ' .
+				'courses.in_recorders = :in_recorders AND ' .
+				'courses.has_albums = :has_albums AND ' .
+				'courses.origin = :origin',
 		
 		'course_create' =>
 			'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
@@ -798,5 +798,3 @@ function db_classroom_delete($room_ID) {
     return $statements['classroom_delete']->execute();
 }
 
-
-?>

@@ -48,13 +48,20 @@ function event_statements_get() {
                     'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' ' .
                     'WHERE asset = :asset',
         
+            'get_record_after_date' =>
+                    'SELECT `asset`, `start_time`, `end_time`, `asset_classroom_id`, '
+                        . '`asset_course`, `asset_author` ' .
+                    'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' ' .
+                    'WHERE asset_classroom_id = :asset_classroom_id AND '
+                        . 'start_time >= :time_limit AND end_time IS NOT NULL',
+        
             'status_insert' => 
                     'INSERT INTO ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' ' .
                     '(asset, status, author, status_time, description) ' . 
                     'VALUES(:asset, :status, :author, NOW(), :description)',
         
             'asset_parent_add' =>
-                'INSERT INTO ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT) . ' ' .
+                'INSERT INTO ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME) . ' ' .
                 '(asset, parent_asset) ' .
                 'VALUES(:asset, :parent_asset)',
         
@@ -64,7 +71,7 @@ function event_statements_get() {
                 'WHERE asset = :asset LIMIT 1',
         
             'asset_parent_remove' =>
-                'DELETE FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT) . ' ' .
+                'DELETE FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME) . ' ' .
                 'WHERE asset = :asset'
         );
 }
@@ -98,6 +105,26 @@ function db_event_get_event_loglevel_most($asset) {
         return $res['max_loglevel'];
     }
     return -1;
+}
+
+/**
+ * Get all record after a define date in a specific classroom
+ * 
+ * @global PDO $statements prepared request list
+ * @param String $classroom_id id of the classroom
+ * @param String $start_date all record after this date
+ * @return Array all restult
+ */
+function db_event_get_record_after_date($classroom_id, $start_date) {
+    global $statements;
+    
+    echo $classroom_id. " -> ".$start_date;
+    print_r($statements['get_record_after_date']);
+    $statements['get_record_after_date']->bindParam(':asset_classroom_id', $classroom_id);
+    $statements['get_record_after_date']->bindParam(':time_limit', $start_date);
+    $statements['get_record_after_date']->execute();
+    
+    return $statements['get_record_after_date']->fetchAll();
 }
 
 
@@ -290,7 +317,7 @@ function db_event_get_asset_parent($asset = "") {
     global $db_object;
     
     $whereParam = array();
-    $strSQL = 'SELECT asset, parent_asset FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT);
+    $strSQL = 'SELECT asset, parent_asset FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME);
     if($asset != "") {
         $strSQL .= " WHERE asset = :asset OR parent_asset = :asset";
         $whereParam[':asset'] = $asset;

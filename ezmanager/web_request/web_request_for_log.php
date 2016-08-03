@@ -46,19 +46,7 @@ function push_log() {
         echo "ERROR 1";
         die;
     }
-
-    require_once __DIR__.'/../../commons/lib_database.php';
-    global $db_object;
     
-    $strSQL = 'INSERT INTO '.db_gettable('events') . '
-        (asset, origin, asset_classroom_id, asset_course, asset_author, 
-        asset_cam_slide, event_time, type_id, context, loglevel, message)
-        VALUES (:asset, :origin, :asset_classroom_id, :asset_course, :asset_author, 
-        :asset_cam_slide, :event_time, :type_id, :context, :loglevel, :message)';
-    global $db_object;
-    
-    // Prepare statement
-    $reqSQL = $db_object->prepare($strSQL);
     // Get last instert ID
     $lastInsert = -1;
     // Source of the log
@@ -83,7 +71,7 @@ function push_log() {
                 $msgLog .= ' from '.$source;
             }
             
-            save_log($reqSQL, 'Service', $appname, LogLevel::get_log_level_integer(LogLevel::ALERT), 
+            save_log('Service', $appname, LogLevel::get_log_level_integer(LogLevel::ALERT), 
                     EventType::$event_type_id[EventType::MANAGER_LOG_SYNC], $source, 
                     date('Y-m-d G:i:s'), $msgLog);
             continue;
@@ -115,7 +103,13 @@ function push_log() {
                 $lastInsert = $arrayToInsert['id'];
             }
             unset($arrayToInsert['id']);
-            save_log_array($reqSQL, $arrayToInsert);
+            save_log($arrayToInsert['asset'], $arrayToInsert['origin'], 
+                    $arrayToInsert['loglevel'], $arrayToInsert['type_id'], 
+                    $arrayToInsert['asset_classroom'], $arrayToInsert['event_time'], 
+                    $arrayToInsert['message'], $arrayToInsert['asset_course'], 
+                    $arrayToInsert['asset_author'], $arrayToInsert['asset_cam_slide'], 
+                    $arrayToInsert['context']);
+            
         }
     }
     
@@ -131,7 +125,7 @@ function push_log() {
         $resMsg .= "\nLast Data: ".json_encode($lastDataError);
         
         
-        save_log($reqSQL, $lastAsset, $appname, 
+        save_log($lastAsset, $appname, 
                 LogLevel::get_log_level_integer(LogLevel::CRITICAL), 
                 EventType::$event_type_id[EventType::MANAGER_LOG_SYNC], $source, 
                 date('Y-m-d G:i:s'), $resMsg);
@@ -185,27 +179,12 @@ function get_source($input) {
 }
 
 
-function save_log_array($reqSQL, $arrayToSave) {
-    $reqSQL->execute($arrayToSave);
-}
-
-function save_log($reqSQL, $asset, $origin, $loglevel, $type_id, $asset_classroom, 
+function save_log($asset, $origin, $loglevel, $type_id, $asset_classroom, 
         $event_time, $message = "", $asset_course = "", $asset_author ="", 
         $asset_cam_slide = "", $context = "") {
     
-    save_log_array($reqSQL, array(
-        ':asset' => $asset,
-        ':origin' => $origin,
-        ':loglevel' => $loglevel,
-        ':type_id' => $type_id,
-        ':event_time' => $event_time,
-        ':message' => $message,
-        ':asset_classroom_id' => $asset_classroom,
-        ':asset_course' => $asset_course,
-        ':asset_author' => $asset_author,
-        ':asset_cam_slide' => $asset_cam_slide,
-        ':context' => $context
-        ));
+    insert_log($type_id, $loglevel, $message, $context, $asset, $origin, 
+            $asset_classroom, $asset_course, $asset_author, $asset_cam_slide, $event_time);
     
 }
 

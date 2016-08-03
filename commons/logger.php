@@ -77,21 +77,6 @@ class LogLevel
     );
 }
 
-//Structure used as argument to log calls
-class AssetLogInfo {
-    public function __construct($author = "", $cam_slide = "", $course = "", $classroom = "") {
-        $this->author = $author;
-        $this->cam_slide = $cam_slide;
-        $this->course = $course;
-        $this->classroom = $classroom;
-    }
-    
-    public $author;
-    public $cam_slide;
-    public $course;
-    public $classroom;
-}
-
 /* This structure is used to pass temporary results from the `log` parent function to its child. 
  * Feel free to change it if you find another more elegant solution.
  */
@@ -99,8 +84,6 @@ class LogData {
     public $log_level_integer = null;
     public $type_id = null;
     public $context = null;
-    
-    public $asset_info = null; //type AssetLogInfo
 }
 
 //Log serverside structure for db insertion using the ezmanager services
@@ -142,7 +125,6 @@ abstract class Logger {
     
     public function get_type_name($index)
     {
-        //var_dump(Logger::$event_type_by_id);
         if(isset(Logger::$event_type_by_id[$index]))
             return Logger::$event_type_by_id[$index];
         else
@@ -169,7 +151,8 @@ abstract class Logger {
      * @param AssetLogInfo $asset_info Additional information about asset if any, in the form of a AssetLogInfo structure
      * @return LogData temporary data, used by children functions
      */
-    protected function log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", &$asset_info = null)
+    protected function log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", 
+            &$author = null, &$cam_slide = null, &$course = null, &$classroom = null)
     {
         if(!isset($message) || !$message)
             $message = "";
@@ -193,10 +176,15 @@ abstract class Logger {
         //convert given type_id to integer for db storage
        $tempLogData->type_id = isset(EventType::$event_type_id[$type]) ? EventType::$event_type_id[$type] : 0;
        
-        // asset infos. May be null, we only give it at record start
-        if(!$asset_info)
-            $asset_info = new AssetLogInfo(); //if no asset info, init with default values
-        
+       if(!isset($author))
+           $author = "";
+       if(!isset($cam_slide))
+           $cam_slide = "";
+       if(!isset($course))
+           $course = "";
+       if(!isset($classroom))
+           $classroom = "";
+       
         // pipes will be used as seperator between contexts
         // concat contexts for db insert
         $tempLogData->context = implode('|', $context);
@@ -236,7 +224,7 @@ abstract class Logger {
                 Logger::$log_level_name_by_id[$value] = $key;
             }
         }
-            
+        
         return Logger::$log_level_name_by_id;
     }
 }

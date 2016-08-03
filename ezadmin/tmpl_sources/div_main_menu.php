@@ -11,19 +11,19 @@ $threshold_num_options = 100; // The number of options in the sidebar above whic
 // webobjects ending in _new are pages for creating new items
 $options = array();
 $options['Courses'] = array(
-    'podcastcours_users_courses_list' => array(
+    array(
         'name' => '®list_courses®',
         'action' => 'view_courses'
         //'args' => array('table' => 'podcastcours_users_courses')
     ),
-    'create_course' => array(
+    array(
         'name' => '®create_course®',
         'action' => 'create_course'
     )
 );
 
 $options['Users'] = array(
-    'list_users' => array(
+    array(
         'name' => '®list_users®',
         'action' => 'view_users'
     )
@@ -39,11 +39,11 @@ if($add_users_enabled) {
 
 if($classrooms_category_enabled) {
     $options['Classrooms'] = array(
-        'podcastcours_classrooms_list' => array(
+        array(
             'name' => '®list_classrooms®',
             'action' => 'view_classrooms'
         ),
-        'create_classroom' => array(
+        array(
             'name' => '®create_classroom®',
             'action' => 'create_classroom'
         )
@@ -51,55 +51,59 @@ if($classrooms_category_enabled) {
 }
 
 $options['EZadmin'] = array(
-    'podcastcours_config' => array(
+    array(
         'name' => '®config®',
         'action' => 'edit_config'
     ),
-    'podcastcours_admins' => array(
+    array(
         'name' => '®admins®',
         'action' => 'edit_admins'
     ),
-    'podcastcours_logs' => array(
+    array(
         'name' => '®logs®',
         'action' => 'view_logs'
     )
 );
 
 $options['Renderers'] = array(
-   'podcastcours_queue' => array(
-       'name' => '®renderers_queue®',
-       'action' => 'view_queue'
-   ),
-   'podcastcours_renderers' => array(
-       'name' => '®renderers_list®',
-       'action' => 'view_renderers'
-   ),
-   'create_renderer' => array(
-       'name' => '®create_renderer®',
-       'action' => 'create_renderer'
-   )
+    array(
+        'name' => '®renderers_queue®',
+        'action' => 'view_queue'
+    ),
+    array(
+        'name' => '®renderers_list®',
+        'action' => 'view_renderers'
+    ),
+    array(
+        'name' => '®create_renderer®',
+        'action' => 'create_renderer'
+    )
 );
 
 $options['Monitoring'] = array(
-    'podcastcours_monit_list_events' => array(
+    array(
         'name' => '®list_event_title®',
         'action' => 'view_events'
     ),
-    'podcastcours_monit_track_asset' => array(
+    array(
         'name' => '®track_asset_title®',
         'action' => 'view_track_asset'
+    ),
+    array(
+        'name' => '®classroom_calendar_title®',
+        'action' => 'view_classroom_calendar'
     )
 );
 
 $options['Stats'] = array(
-   'stats_ezplayer_threads' => array(
+    array(
        'name' => '®stats_ezplayer_threads®',
        'action' => 'view_stats_ezplayer_threads'
-   ),
-   'stats_ezplayer_bookmarks' => array(
+    ),
+    array(
        'name' => '®stats_ezplayer_bookmarks®',
        'action' => 'view_stats_ezplayer_bookmarks'
-   )
+    )
 );
 
 // Each element is the translation in the destination language of the keyword used to reference the category in the above array.
@@ -124,17 +128,7 @@ $category_names = array(
             <?php echo $category_names[$cat]; ?>
         </li>
         <?php $nb_options = count($options, COUNT_RECURSIVE) - count($options); ?>
-        <?php foreach($suboptions as $key => $option) {
-        if($key == 'additional_buttons') {
-            foreach($option as $operation => $txt) {
-                ?>
-                <li class="<?php if(isset($input) && isset($input['action']) && ($operation == $input['action'])) {echo 'active'; } ?>">
-                    <a href="?<?php echo SID."&action=$operation"?>"><?php echo $txt; ?></a>
-                </li>
-                <?php
-            }
-        }
-        else { ?>
+        <?php foreach($suboptions as $option) { ?>
             <li <?php if($nb_options > $threshold_num_options) { echo 'style="display: none;"'; } ?> 
                 class="sidebar <?php // TODO not work when no operation with input in this page
                 if(isset($input) && isset($input['action']) && ($option['action'] == $input['action'])) {
@@ -146,7 +140,7 @@ $category_names = array(
                 </a>
                 
             </li>
-        <?php } // end if
+            <?php
         } // end foreach?>
     <?php } // end foreach ?>
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>

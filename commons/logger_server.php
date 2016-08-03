@@ -37,7 +37,6 @@ class ServerLogger extends Logger {
         global $db_object;
         global $appname; // to be used as origin
         
-        // insert into db
         $statement = $db_object->prepare(
           'INSERT INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `asset_classroom_id`, `asset_course`, ' .
             '`asset_author`, `asset_cam_slide`, `event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
@@ -51,14 +50,14 @@ class ServerLogger extends Logger {
         
         $statement->bindParam(':asset', $asset);
         $statement->bindParam(':origin', $appname);
-        $statement->bindParam(':classroom', $tempLogData->asset_info->classroom);
-        $statement->bindParam(':course', $tempLogData->asset_info->course);
-        $statement->bindParam(':author', $tempLogData->asset_info->author);
-        $statement->bindParam(':cam_slide', $tempLogData->asset_info->cam_slide);
+        $statement->bindParam(':classroom', $asset_info->classroom);
+        $statement->bindParam(':course', $asset_info->course);
+        $statement->bindParam(':author', $asset_info->author);
+        $statement->bindParam(':cam_slide', $asset_info->cam_slide);
         $statement->bindParam(':type_id', $tempLogData->type_id);        
         $statement->bindParam(':context', $tempLogData->context);
         $statement->bindParam(':loglevel', $tempLogData->log_level_integer);
-        $statement->bindParam(':message', $tempLogData->message);
+        $statement->bindParam(':message', $message);
         
         $statement->execute();
         

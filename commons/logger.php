@@ -57,8 +57,15 @@ class LogLevel
      */
     const DEBUG     = 'debug';
     
+    /**
+    * Return log level given in the form of LogLevel::* into an integer
+    */
+    static function get_log_level_integer($log_level) {
+        return LogLevel::$log_levels[$log_level];
+    }
+    
     // index by LogLevel
-    public static $log_levels = array(
+    static $log_levels = array(
         LogLevel::EMERGENCY => 0,
         LogLevel::ALERT     => 1,
         LogLevel::CRITICAL  => 2,
@@ -90,9 +97,8 @@ class AssetLogInfo {
  */
 class LogData {
     public $log_level_integer = null;
-    public $context = null;
     public $type_id = null;
-    public $message = null;
+    public $context = null;
     
     public $asset_info = null; //type AssetLogInfo
 }
@@ -152,47 +158,35 @@ class Logger {
     }
     
     /**
-    * Return log level given in the form of LogLevel::* into an integer
-    * Throws RuntimeException if invalid level given
-    */
-    public function get_log_level_integer($level)
-    {
-        if(isset(LogLevel::$log_levels[$level]))
-            return LogLevel::$log_levels[$level];
-        
-        foreach(LogLevel::$log_levels as $key => $value)
-        {
-          if($key == $level)
-            return $value;
-        }
-
-        throw new RuntimeException('get_log_level_integer: Invalid level given');
-    }
-
-    /**
      * Logs with an arbitrary level.
      *
      * @param mixed $type type in the form of EventType::*
      * @param mixed $level in the form of LogLevel::*
      * @param string $message
      * @param string $asset asset identifier
-     * @param array $context Context can have several levels, such as array('module', 'capture_ffmpeg'). Cannot contain pipes (will be replaced with slashes if any).
+     * @param array $context Additional context info. Context can have several levels, such as array('module', 'capture_ffmpeg').
      * @param string $asset asset name
      * @param AssetLogInfo $asset_info Additional information about asset if any, in the form of a AssetLogInfo structure
      * @return LogData temporary data, used by children functions
      */
-    public function log($type, $level, $message, array $context = array(), $asset = "dummy", $asset_info = null)
+    public function log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", &$asset_info = null)
     {
+        if(!isset($message) || !$message)
+            $message = "";
+        
+        if(!isset($asset) || !$asset)
+            $asset = "dummy";
+        
         $tempLogData = new LogData();
         //limit string size
-        $tempLogData->message = substr($message, 0, 1000);
+        $message = substr($message, 0, 1000);
                 
         // convert given loglevel to integer for db storage
         try {
-          $tempLogData->log_level_integer = $this->get_log_level_integer($level);
+          $tempLogData->log_level_integer = LogLevel::get_log_level_integer($level);
         } catch (Exception $e) {
           //invalid level given, default to "error" and prepend this problem to the message
-          $tempLogData->message = "(Invalid log level) " . $tempLogData->message;
+          $message = "(Invalid log level) " . $message;
           $tempLogData->log_level_integer = LogLevel::$log_levels[LogLevel::ERROR];
         }
 
@@ -200,23 +194,17 @@ class Logger {
        $tempLogData->type_id = isset(EventType::$event_type_id[$type]) ? EventType::$event_type_id[$type] : 0;
        
         // asset infos. May be null, we only give it at record start
-        if($asset_info)
-            $tempLogData->asset_info = $asset_info;
-        else
-            $tempLogData->asset_info = new AssetLogInfo(); //if no asset info, init with default values
+        if(!$asset_info)
+            $asset_info = new AssetLogInfo(); //if no asset info, init with default values
         
         // pipes will be used as seperator between contexts
-        // remove pipes
-        $contextStr = str_replace($context, '/', '|');
         // concat contexts for db insert
-        $contextStr = implode('|', $context);
+        $tempLogData->context = implode('|', $context);
         
-        $tempLogData->context = $contextStr;
-            
         // okay, all data ready
 
         if(Logger::$print_logs)
-            echo "log: [$level] / type: $contextStr / $type / $tempLogData->message" .PHP_EOL;
+            echo "log| [$level] / context: $tempLogData->context / type: $type / $message" .PHP_EOL;
         
         //idea: if level is critical or below, push back trace to message
         

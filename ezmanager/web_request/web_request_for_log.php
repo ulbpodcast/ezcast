@@ -79,6 +79,13 @@ function push_log() {
         }
         $source = $arrayToInsert['asset_classroom_id'];
         
+        if(!array_key_exists('asset', $arrayToInsert) ||
+                $arrayToInsert['asset'] == "") {
+            echo "ERROR 6";
+            $error = true;
+            break;
+        }
+        
         
         if(isAllColValid($arrayToInsert)) {
             if($lastInsert < $arrayToInsert['id']) {

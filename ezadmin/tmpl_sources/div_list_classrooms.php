@@ -22,6 +22,7 @@ if(isset($pagination)) {
         <?php echo $colOrder->insertThSort("IP_remote", "®room_remote_IP®"); ?>
         <th>®room_enabled®</th>
         <th></th>
+        <th></th>
     </tr>
     
     <?php 
@@ -40,7 +41,9 @@ if(isset($pagination)) {
             </td>
             <td class="room_id">
                 <div class="view">
-                    <?php echo $currClass['room_ID'] ?>
+                    <a href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4">
+                        <?php echo $currClass['room_ID']; ?>
+                    </a>
                 </div>
                 <div class="edit" style="display:none;">
                     <input class="form-control input-xsm" type="text" name="room_ID" 
@@ -91,6 +94,12 @@ if(isset($pagination)) {
             <td style="text-align: center;">
                 <span class="glyphicon glyphicon-<?php echo $currClass['enabled'] ? 'ok' : 'remove'; ?>"></span>
             </td>
+            <td style="text-align: center">
+                <a href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4"
+                   class="btn btn-default btn-xs" role="button">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                </a>
+            </td>
             <td style="text-align: right;">
                 <button class="btn btn-xs enabled_button <?php echo !$currClass['enabled'] ? 'btn-success' : '' ?>">
                     <?php echo !$currClass['enabled'] ? '®enable®' : '®disable®' ?>
@@ -103,7 +112,7 @@ if(isset($pagination)) {
         <?php if(array_key_exists('recording', $currClass) && $currClass['recording']) { ?>
         <tr class="<?php echo $currClass['loglevel']; ?>">
             <td></td>
-            <td colspan="6" style="padding-bottom: 12px;">
+            <td colspan="7" style="padding-bottom: 12px;">
                 <div class="col-md-3">
                     <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
                     ®status_record_general®: 

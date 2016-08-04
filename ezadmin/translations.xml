@@ -490,12 +490,12 @@
         <label id="monit_courses" lang="en">Courses</label>
         <label id="monit_context" lang="fr">Contexte</label>
         <label id="monit_context" lang="en">Context</label>
-        <label id="monit_record_type" lang="fr">Enregistrement</label>
+        <label id="monit_record_type" lang="fr">C/S</label>
         <label id="monit_record_type" lang="en">Record Type</label>
         <label id="monit_event_date" lang="fr">Date</label>
         <label id="monit_event_date" lang="en">Date</label>
-        <label id="monit_status_date" lang="fr">Date</label>
-        <label id="monit_status_date" lang="en">Date</label>
+        <label id="monit_status_date" lang="fr">Date du statut</label>
+        <label id="monit_status_date" lang="en">Status date</label>
         <label id="monit_log_level" lang="fr">LogLevel</label>
         <label id="monit_log_level" lang="en">LogLevel</label>
         <label id="monit_message" lang="fr">Message</label>
@@ -524,7 +524,15 @@
         <label id="monit_error_param" lang="en">An error occured with parameters</label>
         <label id="monit_nbr_week" lang="fr">Nombre de semaines</label>
         <label id="monit_nbr_week" lang="en">Number of weeks</label>
-        
+        <label id="classroom_not_display_date" lang="fr">Les assets suivants ne sont pas être affiché car ils 
+            s'étalent sur plusieurs jours: </label>
+        <label id="classroom_not_display_date" lang="en">The following assets can not be displayed because 
+            they are spread over several days: </label>
+        <label id="classroom_not_display_short_record" lang="fr">Les assets suivants ne sont pas être affiché car ils 
+            sont trop courts: </label>
+        <label id="classroom_not_display_short_record" lang="en">The following assets can not be displayed because 
+            they are too small: </label>
+            
         
         <!-- Install -->
         <label id="install_page_title" lang="fr">Installation EZcast</label>

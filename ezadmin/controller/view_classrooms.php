@@ -7,9 +7,6 @@ include_once '../commons/view_helpers/helper_sort_col.php';
 
 const URL_ADR = '/ezrecorder/services/state.php';
 
-$onlyRecording = false;
-$onlyOnline = false;
-
 
 function index($param = array()) {
     global $input;
@@ -17,6 +14,10 @@ function index($param = array()) {
     
     global $onlyRecording;
     global $onlyOnline;
+    
+    $onlyRecording = false;
+    $onlyOnline = false;
+
     
     if (isset($input['update'])) {
         db_classroom_update($input['room_ID'], $input['u_room_ID'], $input['u_name'], $input['u_ip'], $input['u_ip_remote']);

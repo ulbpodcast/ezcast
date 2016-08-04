@@ -33,7 +33,7 @@
                 <td><?php echo $event['asset_author']; ?></td>
                 <td><?php echo $event['asset_cam_slide']; ?></td>
                 <td><?php echo $event['event_time']; ?></td>
-                <td><?php echo $logger->get_type_name($event['type_id']); ?></td>
+                <td><?php echo str_replace("_", "-", $logger->get_type_name($event['type_id'])); ?></td>
                 <td><?php echo $event['context']; ?></td>
                 <td><span class="label label-<?php echo $event['loglevel_name']; ?>">
                     <?php echo $event['loglevel']. " - " .
@@ -42,7 +42,7 @@
                 </td>
                 <td
                 <?php if(array_key_exists('min_message', $event)) { ?>
-                    data-container="body" data-toggle="popover" data-trigger="hover" 
+                    tabindex="0" data-container="body" data-toggle="popover"
                     data-placement="left" data-content="<?php echo nl2br(htmlspecialchars($event['message'])); ?>">
                     <?php 
                     echo $event['min_message'];
@@ -63,6 +63,30 @@
 
 <script> 
 $(document).ready(function(){
-    $('[data-toggle="popover"]').popover(); 
+    $('[data-toggle="popover"]').popover();
+
+    $('body').on('click', function (e) {
+        $('[data-toggle="popover"]').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
+    
+    $('[data-toggle="popover"]').hover(function(e) {
+        closeAll(e.target);
+        $(this).popover('show');
+    });
+    
+    function closeAll(element) {
+        $('[data-toggle="popover"]').each(function () {
+            if(this !== element) {
+                $(this).popover('hide');
+            } 
+        });
+    }
+    
 }); 
 </script>

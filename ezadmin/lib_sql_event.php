@@ -122,7 +122,7 @@ function db_event_get_record_after_date($classroom_id, $start_date) {
     $statements['get_record_after_date']->bindParam(':time_limit', $start_date);
     $statements['get_record_after_date']->execute();
     
-    return $statements['get_record_after_date']->fetchAll();
+    return $statements['get_record_after_date']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 

@@ -118,8 +118,6 @@ function db_event_get_event_loglevel_most($asset) {
 function db_event_get_record_after_date($classroom_id, $start_date) {
     global $statements;
     
-    echo $classroom_id. " -> ".$start_date;
-    print_r($statements['get_record_after_date']);
     $statements['get_record_after_date']->bindParam(':asset_classroom_id', $classroom_id);
     $statements['get_record_after_date']->bindParam(':time_limit', $start_date);
     $statements['get_record_after_date']->execute();

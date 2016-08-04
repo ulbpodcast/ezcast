@@ -23,7 +23,7 @@ section
     min-height: 400px;
 }
 
-.table td, .table th
+.stats .table td, .stats .table th
 {
     text-align: right;
 }

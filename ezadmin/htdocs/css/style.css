@@ -53,22 +53,6 @@ body {
     color: #000000;
     margin: 0px;
 } 
-th {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    color: #000000;
-}
-
-td {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    color: #000000;
-}
-
-.table-left.table td, .table-left.table th {
-    text-align: left;
-}
-
 
 .green{
     color: rgb(114,187,29);
@@ -189,6 +173,40 @@ body{
 /* /////////// POPOVER /////////// */
 .popover-content {
     word-break: break-all;
+}
+
+/* ///////// TABLE ///////// */
+.table-vertical-bordered td {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-top: none;
+}
+
+.table-vertical-bordered>tbody>tr>td, .table-vertical-bordered>tbody>tr>th, 
+.table-vertical-bordered>tfoot>tr>td, .table-vertical-bordered>tfoot>tr>th, 
+.table-vertical-bordered>thead>tr>td, .table-vertical-bordered>thead>tr>th {
+    border-top: none;
+}
+
+
+.table-center, .table-center th, .table-center td {
+    text-align: center;
+}
+
+th {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: #000000;
+}
+
+td {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: #000000;
+}
+
+.table-left.table td, .table-left.table th {
+    text-align: left;
 }
 
 

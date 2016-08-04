@@ -39,12 +39,12 @@ echo '</script>';
     <div id="pieChartGeneral" class="pie"></div>
 </center>
 <br />
-<div id="tableGeneral" class="table-responsive">
+<div id="tableGeneral" class="table-responsive stats">
     <?php include_once template_getpath('div_stats_threads_table_generale.php'); ?>
 </div>
 
 <!-- M O N T H   S E A R C H -->
-<div class="jumbotron">
+<div class="jumbotron stats">
     <div class="page-header">
         <h4>®stats_month®</h4>
     </div>
@@ -85,13 +85,13 @@ echo '</script>';
        onclick="javascript:getStatsByNDays()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
 </div>
 <br/>
-<div id="nDays-stats">                
+<div id="nDays-stats" class="stats">                
     <!-- Results go here -->
 </div>
 <label id="nDays-search-error" class="label label-important">®stats_nan_error®</label>
 <br/>
 
-<div class="jumbotron">
+<div class="jumbotron stats">
     <h4>®stats_other®</h4>
 
     <div>

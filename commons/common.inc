@@ -6,7 +6,6 @@
 include_once('config.inc');
 require_once('logger_server.php');
 
-
 if(isset($timezone))
     date_default_timezone_set($timezone);
 

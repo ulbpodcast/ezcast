@@ -117,8 +117,10 @@ function scheduler_append($job) {
 
     $status = lib_scheduling_job_write($job, lib_scheduling_config('queue-path'));
 
-    if($status) lib_scheduling_notice('Scheduler::append[success]{' . $job['uid'] . '}');
-    else lib_scheduling_warning('Scheduler::append[fail]{' . $job['uid'] . '}');
+    if($status) 
+        lib_scheduling_notice('Scheduler::append[success]{' . $job['uid'] . '}');
+    else 
+        lib_scheduling_warning('Scheduler::append[fail]{' . $job['uid'] . '}');
 
     return $status;
 }
@@ -699,9 +701,10 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
 function lib_scheduling_renderer_ssh($renderer, $cmd) {
     $ssh_pgm=lib_scheduling_config('ssh-path');
 
-    exec($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
+    $ssh_cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"';
+    exec($ssh_cmd, $output, $ret);
     if($ret) {
-        lib_scheduling_alert($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"');
+        lib_scheduling_alert($ssh_cmd);
         lib_scheduling_alert('Scheduler::renderer_ssh[fail]{' . $cmd . '} |::>' . implode("\n", $output) . '<::|');
     }
     return implode("\n", $output);

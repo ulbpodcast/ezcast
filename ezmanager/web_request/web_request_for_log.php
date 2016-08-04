@@ -182,8 +182,9 @@ function get_source($input) {
 function save_log($asset, $origin, $loglevel, $type_id, $asset_classroom, 
         $event_time, $message = "", $asset_course = "", $asset_author ="", 
         $asset_cam_slide = "", $context = "") {
+    global $logger;
     
-    insert_log($type_id, $loglevel, $message, $context, $asset, $origin, 
+    $logger->insert_log($type_id, $loglevel, $message, $context, $asset, $origin, 
             $asset_classroom, $asset_course, $asset_author, $asset_cam_slide, $event_time);
     
 }

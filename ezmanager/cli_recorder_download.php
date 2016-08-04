@@ -40,16 +40,23 @@ Logger::$print_logs = true;
  */
 if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_of_recording>\n Where <directory_of_recording> should point to a directory containing download_data.xml description file (relative to $recorder_upload_dir)\n";
-    die;
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, __FILE__ ." called with wrong arg count ($argc). argv: " .json_encode($argv), array("cli_recorder_download"));
+    exit(1);
 }
 
+$logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::DEBUG, __FILE__ . " called", array("cli_recorder_download"));
+    
 $recording_dir = $argv[1]; //first (and only) parameter in command line
+$asset = $recording_dir;
+
 $destrecording_path = $recorder_upload_dir . "/" . $recording_dir;
 //did the web application do a good job of creating directory and download (meta)datas?
 if (!file_exists($destrecording_path)) {
     //no
-    myerror("could not find recording directory: $destrecording_path"); //log error
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Given folder ($$destrecording_path) does not exists", array("cli_recorder_download"), $asset);
+    exit(2);
 }
+
 //local log file:
 $local_log_file = $destrecording_path . "/download.log";
 
@@ -58,9 +65,8 @@ $download_meta_file = $destrecording_path . "/download_data.xml";
 $download_meta = metadata2assoc_array($download_meta_file);
 if ($download_meta === false) {
     $error = "Bad xml or read problem on  $destrecording_path" . "/download_data.xml";
-    $logger->log(EventType::UPLOAD_TO_EZCAST, LogLevel::ERROR, "$error", array("cli_recorder_download"));
-    myerror($error); //log to file
-    exit(1);
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::ERROR, "$error", array("cli_recorder_download"));
+    exit(3);
 }
 
 $request_date = $download_meta['request_date'];
@@ -75,8 +81,8 @@ $caller_ip = $download_meta['caller_ip']; // Caller contains the metadata
 $meta_file = $download_meta['metadata_file'];
 
 if($caller_ip == "") {
-    $logger->log(EventType::UPLOAD_TO_EZCAST, LogLevel::ERROR, "Caller IP not present in metadata ($download_meta_file)", array("cli_recorder_download"), $recording_dir);
-    exit(2);
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::ERROR, "Caller IP not present in metadata ($download_meta_file)", array("cli_recorder_download"), $asset);
+    exit(4);
 }
 
 $cam_download_info = null;
@@ -107,81 +113,98 @@ if($slide_download_info)
 
 var_dump($recorder_version);
 
-$download_dir = $recorder_upload_to_server . "/" . $record_date . "_" . $course_name;
+$asset = $record_date . "_" . $course_name;
+$download_dir = $recorder_upload_to_server . "/" . $asset;
 //download metadata at all times
 $meta_ok = true;
 $cam_ok = true;
 $slide_ok = true;
-//$idx=$max_download_retries;
-$repeat = $max_download_retries;
+$repeat = $max_download_retries; //$max_download_retries is a global var
 
 //loop until all downloads are completed or timeout
 do {
+    switch($recorder_version) {
+        case "2.0":
+        default:
+        {
+            // download metadata
+            $res = rsync_fetch_record($caller_ip, $meta_file, $recorder_user, $destrecording_path);
+            $meta_ok = !$res;
 
-    if ($recorder_version == "2.0") {
-        // download metadata
-        $res = rsync_fetch_record($caller_ip, $meta_file, $recorder_user, $destrecording_path);
-        $meta_ok = !$res;
+            //download cam movie if available/needed
+            if ($record_type == "cam" || $record_type == "camslide") {
+                $res = fetch_record_from_v2($cam_download_info, $destrecording_path, "cam");
+                $cam_ok = !$res;
+            }//endif cam
+            //download slide movie if available/needed
+            if ($record_type == "slide" || $record_type == "camslide") {
+                $res = fetch_record_from_v2($slide_download_info, $destrecording_path, "slide");
+                $slide_ok = !$res;
+            }//endif slide
 
-        //download cam movie if available/needed
-        if ($record_type == "cam" || $record_type == "camslide") {
-            $res = fetch_record_from_v2($cam_download_info, $destrecording_path, "cam");
-            $cam_ok = !$res;
-        }//endif cam
-        //download slide movie if available/needed
-        if ($record_type == "slide" || $record_type == "camslide") {
-            $res = fetch_record_from_v2($slide_download_info, $destrecording_path, "slide");
-            $slide_ok = !$res;
-        }//endif slide
+            $repeat -= 1;
 
-        $repeat-=1;
-
-        if (!$meta_ok || !$cam_ok || !$slide_ok) {
-            if ($repeat == $max_download_retries - 1) {
-                if (!$meta_ok)
-                    mail($mailto_alert, "Error downloading from recorder (retrying)", "could not rsync file metadata from $podcv_ip");
-                if (!$cam_ok)
-                    mail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file cam.mov from $podcv_ip");
-                if (!$slide_ok)
-                    mail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file slide.mov from $podcs_ip");
-            } else {
-                if (!$meta_ok)
-                    sendmail($mailto_alert, "Error downloading from recorder (retrying)", "could not rsync file metadata from $podcv_ip");
-                if (!$cam_ok)
-                    sendmail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file cam.mov from $podcv_ip");
-                if (!$slide_ok)
-                    sendmail($mailto_alert, "Error downloading from recorder(retrying)", "could not rsync file slide.mov from $podcs_ip");
+            if (!$meta_ok || !$cam_ok || !$slide_ok) {
+                $title = "Error downloading from recorder (retrying)";
+                $first_try = $repeat == $max_download_retries - 1;
+                if ($first_try) {
+                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "First try rsync failed ($meta_ok, $cam_ok, $slide_ok) ", array("cli_recorder_download"), $asset);
+                    if (!$meta_ok) 
+                        mail($mailto_alert, $title, "Could not rsync file metadata from $podcv_ip (first try)");
+                    if (!$cam_ok)
+                        mail($mailto_alert, $title, "Could not rsync file cam.mov from $podcv_ip (first try)");
+                    if (!$slide_ok)
+                        mail($mailto_alert, $title, "Could not rsync file slide.mov from $podcs_ip (first try)");
+                } else {
+                    if (!$meta_ok)
+                        echo "could not rsync file metadata from $podcv_ip";
+                    if (!$cam_ok)
+                        echo "could not rsync file cam.mov from $podcv_ip";
+                    if (!$slide_ok)
+                        echo "could not rsync file slide.mov from $podcs_ip";
+                }
+                sleep(600);
             }
-            sleep(600);
         }
     }
 } while ((!$meta_ok || !$cam_ok || !$slide_ok ) && $repeat > 0);
 
 if (!$meta_ok || !$cam_ok || !$slide_ok) {
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Record download failed after $max_download_retries retries. Sending alert mail.", array("cli_recorder_download"), $asset);
+
+    $title = "FINAL Error downloading from recorder";
     if (!$meta_ok)
-        mail($mailto_alert, "FINAL Error downloading from recorder", "could not rsync file metadata from $podcv_ip");
+        mail($mailto_alert, $title, "could not rsync file metadata from $podcv_ip");
     if (!$cam_ok)
-        mail($mailto_alert, "FINAL Error downloading from recorder", "could not rsync file cam.mov from $podcv_ip");
+        mail($mailto_alert, $title, "could not rsync file cam.mov from $podcv_ip");
     if (!$slide_ok)
-        mail($mailto_alert, "FINAL Error downloading from recorder", "could not rsync file slide.mov from $podcs_ip");
+        mail($mailto_alert, $title, "could not rsync file slide.mov from $podcs_ip");
 
     //Move  recording directory to the failed downloads folder
     rename($destrecording_path, $recorder_upload_failed_dir . "/" . $recording_dir);
 }//endif !download ok
 else {
-    // the download went well. We then finalize recording on the remote recorder
-    $asset = $record_date . '_' . $course_name;
-    $cmd = "$ssh_pgm $recorder_user@$caller_ip \"$recorder_php_cli $recorder_basedir/cli_upload_finished.php $asset\"";
-    exec($cmd, $cmdoutput, $returncode);
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::NOTICE, "Asset download succesfully finished", array("cli_recorder_download"), $asset);
+
+    // Finalize recording on the remote recorder
+    $cmd = "$ssh_pgm -oBatchMode=yes $recorder_user@$caller_ip \"$recorder_php_cli $recorder_basedir/cli_upload_finished.php $asset\"";
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::DEBUG, "Calling recorder for assset finalization: $cmd", array("cli_recorder_download"), $asset);
+    $output = system($cmd, $return_val);
+    if($return_val != 0) {
+        $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::ERROR, "Failed asset finalization on the recorder. Not critical, but files will be left over on the recorder. Command: $cmd. Output: $output", array("cli_recorder_download"), $asset);
+    }
 
     //Move server's recording directory to the downloaded folder
-    rename($destrecording_path, $recorder_upload_ok_dir . "/" . $recording_dir);
+    $record_ok_asset_dir = $recorder_upload_ok_dir . "/" . $recording_dir;
+    rename($destrecording_path, $record_ok_asset_dir);
 
     //now we need to create an asset in an album and add the 2 originals and metadata
     // then ask to process the 2 medias into a low & high .mov files
-    $cmd = "$php_cli_cmd $recorder_mam_insert_pgm $recorder_upload_ok_dir/$recording_dir >>$recorder_upload_ok_dir/$recording_dir/maminsert.log 2>&1";
-    $pid = shell_exec($cmd);
-    print "shell_exec $cmd\npid=$pid\n";
+    $cmd = "$php_cli_cmd $recorder_mam_insert_pgm $record_ok_asset_dir >> $record_ok_asset_dir/maminsert.log 2>&1";
+    system($cmd, $return_val);
+    if($return_val != 0) {
+        $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::ERROR, "Call to $recorder_mam_insert_pgm failed with error $return_val", array("cli_recorder_download"), $asset);
+    }
 }//end else
 
 /**
@@ -195,6 +218,8 @@ else {
  */
 function fetch_record_from_v2($download_info_array, $dest_dir, $camslide) {
     global $dir_date_format;
+    global $asset;
+    global $logger;
 
     $download_protocol = $download_info_array['protocol'];
     $src_file = $download_info_array['filename'];
@@ -204,39 +229,16 @@ function fetch_record_from_v2($download_info_array, $dest_dir, $camslide) {
         case "rsync" :
             $remote_ip = $download_info_array['ip'];
             $remote_username = $download_info_array['username'];
-            if (!isset($remote_ip) || $remote_ip == '' || !isset($remote_username) || $remote_username == '')
-                myerror("Error : missing required param : 
-                    rsync -e ssh -tv --partial-dir=<DIR> <REMOTE_USERNAME>@<REMOTE_IP>:<FILENAME> <DEST_DIR>");
+            if (!isset($remote_ip) || $remote_ip == '' || !isset($remote_username) || $remote_username == '') {
+                $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Error : missing required param : rsync -e ssh -tv --partial-dir=<DIR> <REMOTE_USERNAME>@<REMOTE_IP>:<FILENAME> <DEST_DIR>", array("cli_recorder_download"), $asset);
+                exit(5);
+            }
             return rsync_fetch_record($remote_ip, $src_file, $remote_username, $dest_dir, $camslide);
-            break;
         default :
-            myerror("Can't handle that protocol");
-            break;
+            $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Unrecognized protocol $download_protocol", array("cli_recorder_download"), $asset);
+            exit(6);
     }
     print date($dir_date_format) . "\n";
-}
-
-/**
- *
- * @param <ipaddress> $ip ip address of mini (where to download from)
- * @param <string> $source_filename
- * @param <path> $source_path
- * @param <string> $remote_username
- * @param <path> $dest_dir
- * @return <bool> try to fetch a file from a mini recording agent
- *
- *
- */
-function fetch_record_from_v1($ip, $source_filename, $source_path, $remote_username, $dest_dir) {
-    global $rsync_pgm, $dir_date_format;
-
-    print date($dir_date_format) . "\n";
-    $cmd = "$rsync_pgm -e ssh -tv  --partial-dir=$dest_dir/downloading/ $remote_username@$ip:$source_path/$source_filename $dest_dir 2>&1";
-    exec($cmd, $cmdoutput, $returncode);
-    print date($dir_date_format) . "\n";
-    print "rsync cmd: $cmd\n";
-    print "rsync done returncode:$returncode stdout&stderr: " . join("\n", $cmdoutput) . "\n";
-    return $returncode;
 }
 
 /**
@@ -261,20 +263,4 @@ function rsync_fetch_record($ip, $source_filename, $remote_username, $dest_dir, 
     print "rsync cmd: $cmd\n";
     print "rsync done returncode:$returncode stdout&stderr: " . join("\n", $cmdoutput) . "\n";
     return $returncode;
-}
-
-function myerror($msg) {
-    print $msg . "\n";
-    exit(1);
-}
-
-/**
- *
- * @param <string> $to
- * @param <string> $subjet
- * @param <string> $msg
- * @desc Sendmail wrapper
- */
-function sendmail($to, $subjet, $msg) {
-    print "Download Error would send mail TO: $to SUBJECT:$subjet MESSAGE:$msg\n";
 }

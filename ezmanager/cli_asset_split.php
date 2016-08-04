@@ -203,7 +203,7 @@ for ($i = 0; $i < 3; $i++) {
     };
 }
 
-$cmd = $ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' . 
+$cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' . 
         $renderer['php'] . ' ' . $renderer['home'] . '/cli_rerender.php '. 
         $renderer['downloaded_dir'] . '/' . $rendering_array['new_asset'] . '_' . $rendering_array['new_album'] . '_rerender' . "/" 
         . '"';
@@ -217,7 +217,7 @@ $cmd = 'scp -r ' . $renderer['client'] . '@' . $renderer['host'] . ':' .
 print $cmd . PHP_EOL;
 exec($cmd);
 
-$cmd = $ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' . 
+$cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' . 
         'rm -rf ' . $renderer['processed_dir'] . '/' . $rendering_array['new_asset'] . '_' . $rendering_array['new_album']
         . '"';
 print $cmd . PHP_EOL;

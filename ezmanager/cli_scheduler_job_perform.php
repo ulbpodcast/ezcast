@@ -73,7 +73,7 @@ if($err) {
 }
 
 // Launch the rendering
-$cmd= $ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['launch'] . ' ' . $job_dir . ' 2>&1"';
+$cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['launch'] . ' ' . $job_dir . ' 2>&1"';
 $t1=time();
 exec($cmd, $cmdoutput, $returncode);
 $t2=time();
@@ -121,7 +121,7 @@ lib_scheduling_file_move($job['location'], $render_finished_upload_dir . '/' . $
 // Now that the files have been copied on EZcast server, we delete them from EZrenderer
 if ($renderer['processed_dir'] . '/' . $job_dir != '' 
         && $renderer['processed_dir'] . '/' . $job_dir != '/'){
-            $cmd= $ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' " rm -rf  ' . $renderer['processed_dir'] . '/' . $job_dir . ' 2>&1"';
+            $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " rm -rf  ' . $renderer['processed_dir'] . '/' . $job_dir . ' 2>&1"';
             exec($cmd, $out, $err);
         }
 

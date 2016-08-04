@@ -83,12 +83,13 @@ class ServerLogger extends Logger {
         
         $type_name = $this->get_type_name($type);
         
-        if($type_name== EventType::ASSET_CREATED) {
-            $this->insert_asset_infos($asset, $event_time, $classroom, $course, $author);
-            
-        } else if ($type_name == EventType::ASSET_RECORD_END) {
-            $this->insert_asset_infos_end($asset, $event_time);
-            
+        switch($type_name) {
+            case EventType::ASSET_CREATED:
+                $this->insert_asset_infos($asset, $event_time, $classroom, $course, $author);
+                break;
+            case EventType::ASSET_RECORD_END:
+                $this->update_asset_infos_end($asset, $event_time);
+                break;
         }
         
         $this->statement['insert_log']->bindParam(':asset', $asset);
@@ -116,7 +117,7 @@ class ServerLogger extends Logger {
         $this->statement['insert_asset_info']->execute();
     }
     
-    public function insert_asset_infos_end($asset, $end_date) {
+    public function update_asset_infos_end($asset, $end_date) {
         $this->statement['update_asset_info']->bindParam(':end_time', $end_date);
         $this->statement['update_asset_info']->bindParam(':asset', $asset);
         

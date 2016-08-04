@@ -41,8 +41,11 @@ if(!isValidCaller()) {
 
 $input = array_merge($_GET, $_POST);
 
+$action = $input['action'];
 
-switch ($input['action']) {
+$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, __FILE__ . " called with action $action", array("web_request_from_recorder"));
+    
+switch ($action) {
     case 'download' :
         download_from_recorder();
         break;
@@ -64,7 +67,7 @@ switch ($input['action']) {
 }
 
 /**
- * Downloads both cam and slide movies (if they exist) from the remote
+ * Prepare data from download from recorder, then call download records (using cli_recorder_download)
  * recorder
  * @global type $input
  * @global type $ssh_pgm
@@ -88,69 +91,92 @@ function download_from_recorder() {
     global $podcs_ip;
     global $php_cli_cmd;
     global $recorder_download_pgm;
-
+    global $logger;
+    
     //get input parameters
     $record_type = $input['record_type']; // cam|slide|camslide
     $record_date = $input['record_date'];
     $course_name = $input['course_name'];
-    $recorder_php_cli = $input['php_cli'];
+    $meta_file = $input['metadata_file'];
+    $recorder_php_cli = $input['php_cli']; //if empty, we can still recover by using 'php' as default cli command line
+    $recorder_version = $input['recorder_version']; //if empty, we can still recover by using default protocol version
+    
+    if(!$record_type || !$record_date || !$course_name || !$meta_file) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, __FILE__ . " called invalid input (missing parameters). input dump:" . json_encode($input), array("web_request_from_recorder"));
+        exit(1);
+    }
+    
     if (!isset($recorder_php_cli) || $recorder_php_cli == '') {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::WARNING, "Recorder did not provide its php_cli, trying to get it (or default to 'php')", array("web_request_from_recorder"));
+
         $cmd = "$ssh_pgm -o BatchMode=yes $recorder_user@$caller_ip \"which php\"";
         $recorder_php_cli = exec($cmd);
         if ($recorder_php_cli == '') {
             $recorder_php_cli = "php";
         }
     }
-    $recorder_version = (isset($input['recorder_version']) && !empty($input['recorder_version'])) ? $input['recorder_version'] : "1.0";
-
-    // get the file that contains metadata relative to the recording
-    $meta_file = $input['metadata_file'];
+    
 
     // get info for file downloading
-    $cam_info = array();
-    $slide_info = array();
+    $cam_info = null;
+    $slide_info = null;
     if(isset($input['cam_info']))
         $cam_info = unserialize($input['cam_info']);
     if(isset($input['slide_info']))
         $slide_info = unserialize($input['slide_info']);
 
-    $download_info_xml = "";
-    foreach ($cam_info as $key => $value) {
-        $download_info_xml .= "<cam_$key>$value</cam_$key>" . PHP_EOL;
+    if(!$cam_info && !$slide_info) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Neither cam_info or slide_info provided, nothing we can do.", array("web_request_from_recorder"));
+        exit(2);
     }
-    foreach ($slide_info as $key => $value) {
-        $download_info_xml .= "<slide_$key>$value</slide_$key>" . PHP_EOL;
+    
+    $download_info_xml = "";
+    if($cam_info) {
+        foreach ($cam_info as $key => $value) {
+            $download_info_xml .= "<cam_$key>$value</cam_$key>" . PHP_EOL;
+        }
+    }
+    if($slide_info) {
+        foreach ($slide_info as $key => $value) {
+            $download_info_xml .= "<slide_$key>$value</slide_$key>" . PHP_EOL;
+        }
     }
 
     $record_name_sanitized = str_to_safedir($record_date . "_" . $course_name);
     $request_date = date($dir_date_format);
-//creates a directory that will contain slide, camera and record metadata
+    //creates a directory that will contain slide, camera and record metadata
     $record_dir = $recorder_upload_dir . "/" . $record_name_sanitized;
     if (!file_exists($record_dir))
         mkdir($record_dir);
 
-//now we need to call the recording download cli program (outside of web environment execution to avoid timeout
-//this process will contact cam and slide modules and download video files and metadata
+    //now we need to call the recording download cli program (outside of web environment execution to avoid timeout
+    //this process will contact cam and slide modules and download video files and metadata
     $downloadxml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone='yes'?>
-<download_metadata>
-<metadata_file>$meta_file</metadata_file>
-<request_date>$request_date</request_date>
-<course_name>$course_name</course_name>
-<record_date>$record_date</record_date>
-<download_complete>false</download_complete>
-<record_type>$record_type</record_type>
-<caller_ip>$caller_ip</caller_ip>
-<recorder_version>$recorder_version</recorder_version>
-<recorder_php_cli>$recorder_php_cli</recorder_php_cli>
-$download_info_xml
-</download_metadata>
-";
+        <download_metadata>
+            <metadata_file>$meta_file</metadata_file>
+            <request_date>$request_date</request_date>
+            <course_name>$course_name</course_name>
+            <record_date>$record_date</record_date>
+            <download_complete>false</download_complete>
+            <record_type>$record_type</record_type>
+            <caller_ip>$caller_ip</caller_ip>
+            <recorder_version>$recorder_version</recorder_version>
+            <recorder_php_cli>$recorder_php_cli</recorder_php_cli>
+            $download_info_xml
+        </download_metadata>
+        ";
 
-    file_put_contents($record_dir . "/download_data.xml", $downloadxml);
-    $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >>$record_dir/download.log 2>&1 '|at now";
+    $ok = file_put_contents($record_dir . "/download_data.xml", $downloadxml);
+    if(!$ok) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml file to $record_dir, can't recover.", array("web_request_from_recorder"));
+        exit(3);
+    }
+    //start download in background
+    $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1 '| at now";
     $pid = shell_exec($cmd);
 //print "will execute command: '$cmd'\n<br>";
     print "OK:$pid";
+    exit(0);
 }
 
 /**

@@ -29,11 +29,17 @@ class EventType {
     const RECORDER_START                     = "recorder_start";
     const RECORDER_FINALIZE                  = "recorder_finalize";
     const RECORDER_INFO_GET                  = "recorder_info_get";
+    const RECORDER_CANCEL                    = "recorder_cancel";  //user cancelled
+    const RECORDER_FORCE_QUIT                = "recorder_force_quit"; //record was forcefully ended (ex: another user logs in)
     
     // EZAdmin
     
     // EZManager
     const MANAGER_LOG_SYNC                   = "manager_log_sync";
+    const MANAGER_UPLOAD_TO_EZCAST           = "manager_upload_to_ezcast";
+    const MANAGER_REQUEST_FROM_RECORDER      = "manager_request_from_recorder";
+    const MANAGER_MAM_INSERT                 = "manager_mam_insert";
+    const MANAGER_SUBMIT_RENDERING           = "manager_submit_rendering";
     
     // EZRenderer
     
@@ -67,12 +73,17 @@ class EventType {
        EventType::RECORDER_START                             => 1014,
        EventType::RECORDER_FINALIZE                          => 1015,
        EventType::RECORDER_INFO_GET                          => 1016,
-
+       EventType::RECORDER_CANCEL                            => 1017,
+       EventType::RECORDER_FORCE_QUIT                        => 1018,
        
        // EZAdmin: 2000->2999
        
        // EZManager: 3000->3999 
        EventType::MANAGER_LOG_SYNC                           => 3000,
+       EventType::MANAGER_UPLOAD_TO_EZCAST                   => 3001,
+       EventType::MANAGER_REQUEST_FROM_RECORDER              => 3002,
+       EventType::MANAGER_MAM_INSERT                         => 3003,
+       EventType::MANAGER_SUBMIT_RENDERING                   => 3004,
         
        // EZRenderer: 4000->4999
         

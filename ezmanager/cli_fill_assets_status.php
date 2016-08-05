@@ -21,7 +21,7 @@ function get_db_event_status_not_check() {
 
     $strSQL = 'SELECT event.asset, event.event_time, event.loglevel, event.type_id '
             . 'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' event ' .
-            ' WHERE NOT EXISTS ('.
+            ' WHERE event.event_time >= DATE_SUB(curdate(), INTERVAL 2 WEEK) AND NOT EXISTS ('.
                 'SELECT asset FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' status ' .
                 'WHERE status.asset = event.asset' .
             ')';

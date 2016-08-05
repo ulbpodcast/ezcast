@@ -92,6 +92,10 @@ $options['Monitoring'] = array(
     array(
         'name' => '®classroom_calendar_title®',
         'action' => 'view_classroom_calendar'
+    ),
+    array(
+        'name' => '®event_calendar_title®',
+        'action' => 'view_event_calendar'
     )
 );
 

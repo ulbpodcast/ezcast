@@ -260,6 +260,10 @@ else {
             requireController('view_classroom_calendar.php');
             break;
         
+        case 'view_event_calendar':
+            requireController('view_event_calendar.php');
+            break;
+        
         
         // No action selected: we choose to display the homepage again
         default:

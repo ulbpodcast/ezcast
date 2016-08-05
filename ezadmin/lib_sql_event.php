@@ -73,6 +73,7 @@ function event_statements_get() {
             'asset_parent_remove' =>
                 'DELETE FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME) . ' ' .
                 'WHERE asset = :asset'
+        
         );
 }
 
@@ -371,5 +372,28 @@ function db_event_asset_status_exist($asset) {
     return !empty($res);
 }
 
-
+function db_event_asset_infos_get($classroom = "") {
+    global $db_object;
+    
+    $argument = array();
+    
+    $strSQL = 'SELECT asset_info.asset, asset_info.start_time, asset_info.end_time, 
+                    asset_info.asset_classroom_id, status.status
+                FROM ezcast_test_asset_infos asset_info
+                    LEFT JOIN ezcast_test_event_status status
+                        ON status.asset = asset_info.asset';
+    
+    if($classroom != "") {
+        $strSQL .= ' WHERE asset_info.asset_classroom_id = :asset_classroom_id';
+        $argument['asset_classroom_id'] = $classroom;
+    }
+    
+    $strSQL .= ' GROUP BY asset_info.asset
+                HAVING MAX(status.status_time) OR (status IS NULL)';
+    
+    
+    $reqSQL = $db_object->prepare($strSQL);
+    $reqSQL->execute($argument);
+    return $reqSQL->fetchAll(PDO::FETCH_ASSOC);
+}
 

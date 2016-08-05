@@ -53,7 +53,7 @@
         <label id="OK" lang="en">OK</label>
         <label id="Next" lang="fr">Suivant</label>
         <label id="Next" lang="en">Next</label>
-        <label id="Type" lang="fr">Type</label>
+        <label id="Type" lang="fr">Type</label> 
         <label id="Type" lang="en">Type</label>
         <label id="cam" lang="fr">Vidéo caméra</label>
         <label id="cam" lang="en">Camera movie file</label>

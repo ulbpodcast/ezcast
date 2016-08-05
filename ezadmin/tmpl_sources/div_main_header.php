@@ -20,16 +20,26 @@
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="bootstrap/js/bootstrap-datetimepicker.min.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+        
         <script src="js/stats.js"></script>
+        
+        <!-- Calendar -->
+        <script src="js/angular.min.js"></script>
+        <script src="bootstrap/js/ui-bootstrap-tpls.min.js"></script>
+        <script src="bootstrap/js/angular-bootstrap-calendar.min.js"></script>
+        
+        
         
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap-datetimepicker.min.css" />
         <link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet"/>
+        <link href="bootstrap/css/angular-bootstrap-calendar.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <link href="css/jquery.jqplot.min.css" rel="stylesheet"/>
         <link href="css/ezplayerStats.css" rel="stylesheet"/>
  
         <script>
+            
             /**
              * HTML5 Placeholder Text, jQuery Fallback with Modernizr
              *

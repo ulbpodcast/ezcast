@@ -171,6 +171,8 @@
         <label id="logs_title" lang="en">Logs</label>
         <label id="classroom_calendar_title" lang="fr">Calendrier des enregistrements</label>
         <label id="classroom_calendar_title" lang="en">Record calendar</label>
+        <label id="event_calendar_title" lang="fr">Calendrier des Erreurs</label>
+        <label id="event_calendar_title" lang="en">Errors calendar</label>
         
         
         <!-- Form fields -->
@@ -310,6 +312,8 @@
         <label id="continue" lang="en">Next</label>
         <label id="previous" lang="fr">Précédent</label>
         <label id="previous" lang="en">Previous</label>
+        <label id="today" lang="fr">Aujourd'hui</label>
+        <label id="today" lang="en">Today</label> 
         <label id="skip" lang="fr">Ignorer les tests</label>
         <label id="skip" lang="en">Skip tests</label>
         <label id="finish" lang="fr">Terminer</label>
@@ -532,7 +536,60 @@
             sont trop courts: </label>
         <label id="classroom_not_display_short_record" lang="en">The following assets can not be displayed because 
             they are too small: </label>
+        <label id="calendar_no_result" lang="fr">Aucun résultat à afficher</label>
+        <label id="calendar_no_result" lang="en">No result</label>
             
+        <!-- Calendar informations -->
+        <label id="calendar_year" lang="fr">Année</label>
+        <label id="calendar_year" lang="en">Year</label>
+        <label id="calendar_month" lang="fr">Mois</label>
+        <label id="calendar_month" lang="en">Month</label>
+        <label id="calendar_week" lang="fr">Semaine</label>
+        <label id="calendar_week" lang="en">Week</label>
+        <label id="calendar_day" lang="fr">Jour</label>
+        <label id="calendar_day" lang="en">Day</label>
+        <label id="calendar_monday" lang="fr">Lundi</label>
+        <label id="calendar_monday" lang="en">Monday</label>
+        <label id="calendar_tuesday" lang="fr">Mardi</label>
+        <label id="calendar_tuesday" lang="en">Tuesday</label>
+        <label id="calendar_wednesday" lang="fr">Mercredi</label>
+        <label id="calendar_wednesday" lang="en">Wednesday</label>
+        <label id="calendar_thursday" lang="fr">Jeudi</label>
+        <label id="calendar_thursday" lang="en">Thursday</label>
+        <label id="calendar_friday" lang="fr">Vendredi</label>
+        <label id="calendar_friday" lang="en">Friday</label>
+        <label id="calendar_saturday" lang="fr">Samedi</label>
+        <label id="calendar_saturday" lang="en">Saturday</label>
+        <label id="calendar_sunday" lang="fr">Dimanche</label>
+        <label id="calendar_sunday" lang="en">Sunday</label>
+        <label id="calendar_legend" lang="fr">Légende</label>
+        <label id="calendar_legend" lang="en">Legend</label>
+        <label id="calendar_january" lang="fr">Janvier</label>
+        <label id="calendar_january" lang="en">January</label>
+        <label id="calendar_february" lang="fr">Février</label>
+        <label id="calendar_february" lang="en">February</label>
+        <label id="calendar_march" lang="fr">Mars</label>
+        <label id="calendar_march" lang="en">March</label>
+        <label id="calendar_april" lang="fr">Avril</label>
+        <label id="calendar_april" lang="en">April</label>
+        <label id="calendar_may" lang="fr">Mai</label>
+        <label id="calendar_may" lang="en">May</label>
+        <label id="calendar_june" lang="fr">Juin</label>
+        <label id="calendar_june" lang="en">June</label>
+        <label id="calendar_july" lang="fr">Juillet</label>
+        <label id="calendar_july" lang="en">July</label>
+        <label id="calendar_august" lang="fr">Août</label>
+        <label id="calendar_august" lang="en">August</label>
+        <label id="calendar_september" lang="fr">September</label>
+        <label id="calendar_september" lang="en">September</label>
+        <label id="calendar_october" lang="fr">Octobre</label>
+        <label id="calendar_october" lang="en">October</label>
+        <label id="calendar_november" lang="fr">Novembre</label>
+        <label id="calendar_november" lang="en">November</label>
+        <label id="calendar_december" lang="fr">Decembre</label>
+        <label id="calendar_december" lang="en">December</label>
+        
+        
         
         <!-- Install -->
         <label id="install_page_title" lang="fr">Installation EZcast</label>

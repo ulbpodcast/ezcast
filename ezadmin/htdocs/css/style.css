@@ -231,11 +231,12 @@ td {
 .table>tbody>tr.alert>td, .table>tbody>tr.alert>th, .table>tbody>tr>td.alert, 
 .table>tbody>tr>th.alert, .table>tfoot>tr.alert>td, .table>tfoot>tr.alert>th, 
 .table>tfoot>tr>td.alert, .table>tfoot>tr>th.alert, .table>thead>tr.alert>td, 
-.table>thead>tr.alert>th, .table>thead>tr>td.alert, .table>thead>tr>th.alert {
+.table>thead>tr.alert>th, .table>thead>tr>td.alert, .table>thead>tr>th.alert,
+.day-highlight.dh-event-alert, .day-highlight.dh-event-alert:hover {
     background-color: #ff6666;
 }
 
-.label-alert {
+.label-alert, .event-alert {
     background-color: red;
 }
 
@@ -257,14 +258,23 @@ td {
 .table>tbody>tr.error>td, .table>tbody>tr.error>th, .table>tbody>tr>td.error, 
 .table>tbody>tr>th.error, .table>tfoot>tr.error>td, .table>tfoot>tr.error>th, 
 .table>tfoot>tr>td.error, .table>tfoot>tr>th.error, .table>thead>tr.error>td, 
-.table>thead>tr.error>th, .table>thead>tr>td.error, .table>thead>tr>th.error {
+.table>thead>tr.error>th, .table>thead>tr>td.error, .table>thead>tr>th.error,
+.day-highlight.dh-event-danger, .day-highlight.dh-event-danger:hover {
     background-color: #ffcba4;
 }
 
-.label-error {
+.label-error, .event-danger {
     background-color: #ff8400;
 }
 
+/* 4 - WARNING */
+.day-highlight.dh-event-warning, .day-highlight.dh-event-warning:hover {
+    background-color: #fcf8e3;
+}
+
+.event-warning {
+    background-color: #f0ad4e;
+}
 
 /* 5 - NOTICE */
 .table>tbody>tr.notice>td, .table>tbody>tr.notice>th, .table>tbody>tr>td.notice, 
@@ -292,6 +302,19 @@ td {
 }
 
 
+/* /// OTHER : SUCCESS /// */
+.day-highlight.dh-event-success, .day-highlight.dh-event-success:hover {
+    background-color: #dff0d8;
+}
+
+.error-success {
+    background-color: #5cb85c;
+}
+
+/* ///// CALENDAR ///// */
+.cal-events-num.badge.badge-important.pull-left.ng-binding {
+    background-color: #5bc0de;
+}
 
 /* ///////////////// H E A D E R /////////////// */
 .header {

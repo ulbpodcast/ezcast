@@ -1,7 +1,7 @@
 
 <?php if(!empty($error_asset['Error_date'])) { ?>
     <div class="alert alert-warning" role="alert">
-        ®classroom_not_display®
+        ®classroom_not_display_date®
         <?php echo implode(', ', $error_asset['Error_date']); ?>
     </div>
 <?php 
@@ -18,13 +18,13 @@ if(!empty($error_asset['Error_time'])) {?>
     <thead> 
         <tr> 
             <th></th> 
-            <th>Lundi</th> 
-            <th>Mardi</th> 
-            <th>Mercredi</th>
-            <th>Jeudi</th>
-            <th>Vendredi</th>
-            <th>Samedi</th>
-            <th>Dimanche</th>
+            <th>®calendar_monday®</th> 
+            <th>®calendar_tuesday®</th> 
+            <th>®calendar_wednesday®</th>
+            <th>®calendar_thursday®</th>
+            <th>®calendar_friday®</th>
+            <th>®calendar_saturday®</th>
+            <th>®calendar_sunday®</th> 
         </tr> 
     </thead> 
     <tbody> 
@@ -67,6 +67,7 @@ if(!empty($error_asset['Error_time'])) {?>
 </table>
 
 <div class="col-md-10 col-md-offset-1 jumbotron">
+    <p>®calendar_legend®</p>
     <?php for($color = 1; $color <= $max_count; ++$color) { ?>
         <div class="col-md-2" style="margin-bottom: 8px;">
             <div style="background-color: <?php echo number_to_color($color); ?>;

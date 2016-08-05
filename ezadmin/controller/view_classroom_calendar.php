@@ -1,9 +1,6 @@
 <?php
 
 require_once 'lib_sql_event.php'; 
-/// Define Helper ///
-include_once '../commons/view_helpers/helper_pagination.php';
-include_once '../commons/view_helpers/helper_sort_col.php';
 
 
 function index($param = array()) {
@@ -18,7 +15,6 @@ function index($param = array()) {
     $max_count = 0;
     $MIN_TIME_RECORD = 180; // minum time of a record (in second)
 
-    
     
     $START_HOUR = 11; // must be divided by 2
     $END_HOUR = 44; // must be divided by 2
@@ -40,7 +36,7 @@ function index($param = array()) {
     include template_getpath('div_main_header.php');
     include template_getpath('div_monit_search_calendar.php');
     if (!empty($resultRecord)) {
-        include template_getpath('div_monit_view_calendar.php');
+        include template_getpath('div_monit_classroom_calendar.php');
     }
     include template_getpath('div_main_footer.php');
     

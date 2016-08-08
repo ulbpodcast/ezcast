@@ -139,7 +139,10 @@ if(!$ok) {
 // Launch the scheduler
 scheduler_schedule();
 
-$logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::INFO, "Successfully scheduled rendering job", array("cli_submit_intro_title_movie"), $asset);
+$pos = strrpos($album, "-");
+$album_without_mod = substr($album, 0, $pos);
+$asset_name = $asset . '_' . $album_without_mod;
+$logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::INFO, "Successfully scheduled rendering job", array("cli_submit_intro_title_movie"), $asset_name);
 exit(0);
 
 /**

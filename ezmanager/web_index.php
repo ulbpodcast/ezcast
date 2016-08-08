@@ -865,7 +865,7 @@ function submit_media_progress_bar() {
     global $accepted_media_types;
     global $php_cli_cmd;
     global $recorder_mam_insert_pgm;
-
+    global $logger;
 
     $input = array_merge($_GET, $_POST);
 
@@ -883,9 +883,6 @@ function submit_media_progress_bar() {
         log_append('warning', 'submit_media: ' . $input['type'] . ' is not a valid media type');
         die;
     }
-
-
-
 
     // 2) Creating the folder in the queue, and the metadata for the Filedata
     $tmp_name = date($dir_date_format) . '_' . $input['album'];
@@ -917,8 +914,10 @@ function submit_media_progress_bar() {
     // 4) Calling cli_mam_insert.php so that it adds the file into ezmam
     $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . dirname($path) . '  >>' . dirname($path) . '/mam_insert.log 2>&1"|at now';
 
+    $logger->log(EventType::ASSET_CREATED, LogLevel::NOTICE, 
+       "User ".$_SESSION['user_login']." submitted asset", array('submit_media_progress_bar'), $tmp_name, $_SESSION['user_full_name'], "todo", $input['album'], "");
+         
     exec($cmd, $output, $ret);
-
     if ($ret != 0) {
         error_print_message('Error while trying to use cli_mam_insert: error code ' . $ret);
         die;
@@ -964,7 +963,7 @@ function upload_init() {
         'title' => $input['title'],
         'description' => $input['description'],
         'record_type' => $input['type'],
-        'submitted_cam' => $input['cam_filename'],
+        'submitted_cam' => isset($input['cam_filename']) ? $input['cam_filename'] : '',
         'submitted_slide' => isset($input['slide_filename']) ? $input['slide_filename'] : '',
         'moderation' => $moderation,
         'author' => $_SESSION['user_full_name'],
@@ -1135,6 +1134,7 @@ function upload_finished() {
     global $recorder_mam_insert_pgm;
     global $input;
     global $accepted_media_types;
+    global $logger;
 
     if(!isset($input['index']))
        die();
@@ -1185,21 +1185,6 @@ function upload_finished() {
 
     if ($finished) {
 
-        // recreates full file
-        /* $target = "$path/$type.mov";
-          $dst = fopen($target, 'wb');
-
-          for ($i = 0; $i < $index; $i++) {
-          $slice = $path . '/' . $type . '/' . $type . '-' . $i;
-          $src = fopen($slice, 'rb');
-          stream_copy_to_stream($src, $dst);
-          fclose($src);
-          unlink($slice);
-          }
-
-          fclose($dst);
-          rmdir($path . '/' . $type);
-         */
         // Calling cli_mam_insert.php so that it adds the file into ezmam
         $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . $path . ' >>' . $path . '/mam_insert.log 2>&1"|at now';
 
@@ -1317,6 +1302,9 @@ function submit_media() {
     // 4) Calling cli_mam_insert.php so that it adds the file into ezmam
     $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . dirname($path) . ' >>' . dirname($path) . '/mam_insert.log 2>&1"|at now';
 
+    $logger->log(EventType::ASSET_CREATED, LogLevel::NOTICE, 
+       "User ".$_SESSION['user_login']." submitted asset", array('submit_media'), $tmp_name, $_SESSION['user_full_name'], "todo", $input['album'], "");
+         
     exec($cmd, $output, $ret);
 
     if ($ret != 0) {

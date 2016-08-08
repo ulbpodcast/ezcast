@@ -80,8 +80,7 @@ $local_log_file=$recording_dir."/download.log";
 
 //now get metadata about the recording
 $recording_metadata = metadata2assoc_array($recording_dir."/metadata.xml");
-if($recording_metadata===false)    
-{
+if($recording_metadata===false) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Bad xml or read problem on $recording_dir"."/metadata.xml", array("cli_mam_insert"), $asset);
     // 'course_name' 'origin' 'record_date' 'description' 'record_type' 'moderation'
     exit(3);
@@ -114,7 +113,7 @@ $asset_meta['record_date']=$recording_metadata['record_date'];
 $asset_meta['record_type']=$recording_metadata['record_type'];
 $asset_meta['status']='processing';
 $asset_meta['tags']="";
-$asset_meta['language']="français";
+$asset_meta['language']="français"; //TODO: this shouldn't be hardcoded
 $asset_meta['super_highres'] = $recording_metadata['super_highres'];
 if(isset($recording_metadata['submitted_cam'])) $asset_meta['submitted_cam']=$recording_metadata['submitted_cam'];
 if(isset($recording_metadata['submitted_slide'])) $asset_meta['submitted_slide']=$recording_metadata['submitted_slide'];
@@ -224,6 +223,8 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
     $media_meta['filename']=  basename($media_file_path);
   }
   
+  $asset_name_with_course = basename($recording_dir);
+  
   $filesize = round(filesize($media_file_path)/1048576);
   $media_meta['file_size'] = $filesize;
   $ok = ezmam_media_new($album_name, $asset_name, $media_name, $media_meta, $media_file_path);
@@ -231,7 +232,7 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
       $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Error adding original_$camslide:".  ezmam_last_error(), array("cli_mam_insert"), $asset);
       return false;
   } else {
-    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::NOTICE, "$camslide media inserted in repository in $album_name $asset_name $media_name", array("cli_mam_insert"), $asset);
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::NOTICE, "$camslide media inserted in repository in $album_name $asset_name $media_name", array("cli_mam_insert"), $asset_name_with_course);
   }
       
   return true;

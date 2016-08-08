@@ -1,19 +1,32 @@
 <?php
 
+/// Define Helper ///
+include_once '../commons/view_helpers/helper_pagination.php';
+
+
 function index($param = array()) {
     global $input;
+    
+    $pagination = new Pagination();
+    if (isset($input['search']) && !empty($input['search'])) {
+        if(array_key_exists('page', $input)) {
+            $pagination = new Pagination($input['page']);
+        }
+        
+        $logs = db_logs_get($input['date_start'], $input['date_end'], $input['table'], $input['author'], 
+                $pagination->getStartElem(), $pagination->getElemPerPage());
 
-    if (isset($input['post']) && !empty($input['post'])) {
-        $page = $input['page'];
-        $size = 20;
-        $limit = (intval($page) - 1) * $size;
-
-        $logs = db_logs_get($input['date_start'], $input['date_end'], $input['table'], $input['author'], '' . $limit . ', ' . $size);
-
-        $rows = db_found_rows();
-        $max = intval($rows / 20) + 1;
+        $pagination->setTotalItem(db_found_rows());
+        
     }
-
+    
+    // Create variable to specific whitch option is selected
+    $selectTable = '';
+    if(isset($input) && array_key_exists('table', $input)) {
+        $selectTable = $input['table'];
+    }
+    
+    
     // Display page
     include template_getpath('div_main_header.php');
     include template_getpath('div_search_logs.php');

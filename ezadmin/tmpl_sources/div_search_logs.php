@@ -1,56 +1,118 @@
-
 <div class="page_title">®logs_title®</div>
 
 <!-- Search form -->
-<form method="POST" action="index.php?action=view_logs" class="form-inline search_logs">  
+<form method="POST" action="index.php?action=view_logs" class="search_logs">
+    
+    
+    <!-- Date -->
     <div class="form-group">
-        <input class="form-control input input-medium auto-clear placeholder" type="text" placeholder="®date_start®" 
-               title="®date_start®" name="date_start" 
-               value="<?php if(isset($input) && array_key_exists('date_start', $input)) { echo $input['date_start']; } ?>" />
-        <br />
-        <input class="form-control input input-medium auto-clear placeholder" type="text" placeholder="®date_end®" 
-               title="®date_end®" name="date_end" 
-               value="<?php if(isset($input) && array_key_exists('date_end', $input)) { echo $input['date_end']; } ?>" />
+        <div class="row">
+            <div class="col-md-2 col-sm-6">
+                <label for="startDate">®from_date®</label>
+                <div class='input-group date' id='startDate'>
+                    <input type='text' name='date_start' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar">
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+                <label for="endDate">®to_date®</label>
+                <div class='input-group date' id='endDate'>
+                    <input type='text' name='date_end' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar">
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <label for="table">®table®</label>
+                <select name="table" class="form-control" title="®table®">
+                    <option value="users" <?php if($selectTable == 'users') { echo 'selected'; }?>>
+                        ®table_users®
+                    </option>
+                    <option value="courses" <?php if($selectTable == 'courses') { echo 'selected'; }?>>
+                        ®table_courses®
+                    </option>
+                    <option value="users_courses" <?php if($selectTable == 'users_courses') { echo 'selected'; }?>>
+                        ®table_users_courses®
+                    </option>
+                    <option value="classrooms" <?php if($selectTable == 'classrooms') { echo 'selected'; }?>>
+                        ®table_classrooms®
+                    </option>
+                    <option value="all" <?php if($selectTable == '' || $selectTable == 'all') { echo 'selected'; }?> >
+                        ®table_all®
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <label for="author">®author®</label>
+                <input class="form-control input input-medium auto-clear placeholder" type="text" placeholder="®author®" 
+                       title="®author®" name="author" 
+                       value="<?php if(isset($input) && array_key_exists('author', $input)) { echo $input['author']; } ?>" />
+            </div>
+            <div class="col-md-2">
+                <label></label>
+                <button type="submit" name="search" value="on" class="btn btn-success btn-block">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    ®search®
+                </button>
+            </div>
+        </div>
     </div>
         
-    <div class="form-group">
-        <?php
-        // Create variable to specific whitch option is selected
-        $selected = '';
-        if(isset($input) && array_key_exists('table', $input)) {
-            $selected = $input['table'];
-        }
-        ?>
-        <select name="table" class="form-control" title="®table®">
-            <option value="users" <?php if($selected == 'users') { echo 'selected'; }?>>
-                ®table_users®
-            </option>
-            <option value="courses" <?php if($selected == 'courses') { echo 'selected'; }?>>
-                ®table_courses®
-            </option>
-            <option value="users_courses" <?php if($selected == 'users_courses') { echo 'selected'; }?>>
-                ®table_users_courses®
-            </option>
-            <option value="classrooms" <?php if($selected == 'classrooms') { echo 'selected'; }?>>
-                ®table_classrooms®
-            </option>
-            <option value="all" <?php if($selected == '' || $selected == 'all') { echo 'selected'; }?> >
-                ®table_all®
-            </option>
-        </select>
+<br /><br />
 
-        <input class="form-control input input-medium auto-clear placeholder" type="text" placeholder="®author®" 
-               title="®author®" name="author" 
-               value="<?php if(isset($input) && array_key_exists('author', $input)) { echo $input['author']; } ?>" />
-    </div>
-        
-    <input type="hidden" name="post" value="logs" />
-    <input type="hidden" name="page" value="1" />
 
-    <div class="form-group text-center">
-        <input type="submit" name="search" value="®search®" class="btn btn-primary">
-        <input type="reset" name="reset" value="®reset®" class="btn btn-default"> <br />
-    </div>
+<?php if (!empty($logs)) {
+    if(isset($pagination)) {
+        $pagination->insert('POST');
+    }
+} ?>
 </form>
 
-<hr>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#startDate').datetimepicker({
+            showTodayButton: true, 
+            showClose: true,
+            sideBySide: true,
+            format: 'YYYY-MM-DD',
+            <?php
+            if(isset($input) && array_key_exists('date_start', $input)) {
+                echo "defaultDate: '".$input['date_start']."'";
+            } else {
+                echo 'defaultDate: 0';
+            }
+            ?>
+        });
+
+        $('#endDate').datetimepicker({
+            showTodayButton: true,
+            showClose: true,
+            sideBySide: true,
+            format: 'YYYY-MM-DD',
+            <?php
+            if(isset($input) && array_key_exists('date_end', $input)) {
+                echo "defaultDate: '".$input['date_end']."'";
+            } else {
+                echo 'defaultDate: moment().add(1, \'days\')';
+            }
+            ?>
+        });
+
+        $("#startDate").on("dp.change", function (e) {
+            $('#endDate').data("DateTimePicker").minDate(e.date);
+        });
+        $("#endDate").on("dp.change", function (e) {
+            $('#startDate').data("DateTimePicker").maxDate(e.date);
+        });
+
+    });
+
+</script>

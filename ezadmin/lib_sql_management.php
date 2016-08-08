@@ -728,43 +728,54 @@ function db_log($table, $action, $author) {
     return $statements['log_action']->execute();
 }
 
-function db_logs_get($date_start, $date_end, $table, $author, $limit) {
+function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $limit = -1) {
     global $db_object;
 
     $query = 'SELECT DISTINCT SQL_CALC_FOUND_ROWS `time`, `table`, message, author FROM '.  db_gettable('admin_logs');
 
     $where = '';
     if(!empty($date_start)) {
-            $where .= 'time >= \''.$date_start.' 00:00:00\'';
+        $where .= 'time >= \''.$date_start.' 00:00:00\'';
     }
 
     if(!empty($date_end)) {
-            if(!empty($where))
-                    $where .= ' AND ';
-            $where .= 'time <= \''.$date_end.' 00:00:00\'';
+        if(!empty($where)) {
+            $where .= ' AND ';
+        }
+        $where .= 'time <= \''.$date_end.' 00:00:00\'';
     }
 
     if(!empty($table)) {
-            if($table != 'all') {
-                    if(!empty($where))
-                            $where .= ' AND ';
-                    $where .= '`table` LIKE \''.db_gettable($table).'\'';
+        if($table != 'all') {
+            if(!empty($where)) {
+                $where .= ' AND ';
             }
+            $where .= '`table` LIKE \''.db_gettable($table).'\'';
+        }
 
     }
 
     if(!empty($author)) {
-            if(!empty($where))
-                    $where .= ' AND ';
-            $where .= 'author LIKE %'.$author.'%';
+        if(!empty($where)) {
+            $where .= ' AND ';
+        }
+        $where .= 'author LIKE %'.$author.'%';
     }
 
     $fullQuery = $query;
 
-    if(!empty($where))
-            $fullQuery .= ' WHERE ' . $where;
-
-    return $db_object->query($fullQuery.' ORDER BY `time` DESC LIMIT ' . $limit);
+    if(!empty($where)) {
+        $fullQuery .= ' WHERE ' . $where;
+    }
+    
+    $fullQuery .= ' ORDER BY `time` DESC';
+    
+    if($startElem != -1 && $limit != -1) {
+        $fullQuery .= ' LIMIT ' . $startElem . ', '.$limit;
+    }
+    
+    
+    return $db_object->query($fullQuery);
 }
 
 function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled) {

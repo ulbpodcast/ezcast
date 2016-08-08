@@ -48,10 +48,17 @@ class Pagination {
     
     /**
      * Insert the HTML to view the page system
+     * 
+     * @param String $type Type of request (POST or GET)
      */
-    public function insert() {
-        
+    public function insert($type = 'GET') {
         if($this->maxPage > 0) {
+            
+            if(strtoupper($type) == 'POST') {
+                echo '<input type="hidden" name="page" class="nbr_page" id="nbr_page" value="1">';
+            }
+            
+            
             echo '
             <div class="text-center">
               <ul class="pagination">';
@@ -61,19 +68,18 @@ class Pagination {
                             <span aria-hidden="true">&laquo;</span>
                         </li>';
                 } else {
-                    echo 
-                    '<li>
-                        <a href="'.url_post_replace('page', $this->currentPage-1).'">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>';
+                    echo '<li>';
+                    echo $this->getLink($this->currentPage-1, '<span aria-hidden="true">&laquo;</span>', $type);
+                    echo '</li>';
                 }
 
                 echo '<li';
                 if($this->currentPage == 1) {
                     echo ' class="active"';
                 }
-                echo '><a href="'.url_post_replace('page', 1).'">1</a></li>';
+                echo '>';
+                echo $this->getLink(1, '1', $type);
+                echo '</li>';
         
                 if($this->currentPage > 5) {
                    echo '<li><span>...</span></li>';
@@ -86,9 +92,9 @@ class Pagination {
                     if($this->currentPage == $i) {
                         echo ' class="active"'; 
                     }
-                    echo '>'
-                        . '<a href="'.url_post_replace('page', $i).'" >'.$i.'</a>'
-                    . '</li>';
+                    echo '>';
+                    echo $this->getLink($i, $i, $type);
+                    echo '</li>';
                 }
         
                 if(($this->currentPage+7) < $this->maxPage) {
@@ -100,9 +106,9 @@ class Pagination {
                     if($this->currentPage == $this->maxPage) { 
                         echo ' class="active"'; 
                     } 
-                    echo '>
-                        <a href="'.url_post_replace('page', $this->maxPage).'" >'.$this->maxPage.'</a>
-                    </li>';
+                    echo '>';
+                    echo $this->getLink($this->maxPage, $this->maxPage, $type);
+                    echo '</li>';
                 }
                 
                 if($this->currentPage == $this->maxPage) { 
@@ -111,12 +117,9 @@ class Pagination {
                             <span aria-hidden="true">&raquo;</span>
                         </li>';
                 } else {
-                    echo 
-                    '<li>
-                        <a href="'.url_post_replace('page', $this->currentPage+1).'">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>';
+                    echo '<li>';
+                    echo $this->getLink($this->currentPage+1, '<span aria-hidden="true">&raquo;</span>', $type);
+                    echo '</li>';
                 }
                 
                 echo '
@@ -125,9 +128,26 @@ class Pagination {
         
         }
     
-    
-    
     }
+    
+    private function getLink($pageNumber, $text, $type = 'GET') {
+        if(strtoupper($type) == 'POST') {
+            return '<span onClick="$(\'.nbr_page#nbr_page\').val(\''.$pageNumber.'\');$(\'form\').submit()"'
+                    . 'style="cursor: pointer;">'.
+                    $text.'</span>';
+            
+        } else if(strtoupper($type) == 'GET') {
+            return '<a href="'.url_post_replace('page', $pageNumber).'">
+                        '.$text.'
+                    </a>';
+            
+        } else {
+            throw new InvalidArgumentException('Type of page send is not good. Allow: GET or POST (actually: '.$type.')');
+            
+        }
+    }
+    
+    
     
     /**
      * Get the first element to be recoverd by SQL

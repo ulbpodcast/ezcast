@@ -22,7 +22,9 @@ function index($param = array()) {
         $size = 20;
         $limit = (intval($page) - 1) * $size;
 
-        $courses = db_courses_search($course_code, $teacher, $extern, $intern, $has_albums == $no_albums ? -1 : $has_albums, $in_recorders == $out_recorders ? -1 : $in_recorders, $with_teacher == $without_teacher ? -1 : $with_teacher, $col . ' ' . $order, '' . $limit . ', ' . $size);
+        $courses = db_courses_search($course_code, $teacher, $extern, $intern, $has_albums == $no_albums ? -1 : $has_albums, 
+                $in_recorders == $out_recorders ? -1 : $in_recorders, $with_teacher == $without_teacher ? -1 : $with_teacher, 
+                $col . ' ' . $order, '' . $limit . ', ' . $size);
 
         $rows = db_found_rows();
         $max = intval($rows / 20) + 1;

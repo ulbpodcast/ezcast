@@ -8,11 +8,20 @@
     
     <div class="form-group">
         <div class="row">
-            <div class="col-md-4 col-md-offset-1">
+            <div class="col-md-3">
                 <label class="sr-only" for="classroom">®monit_classroom®</label>
-                <input type="text" class="form-control" name="classroom" id="context" placeholder="®monit_classroom®"
-                    value="<?php if(isset($input) && array_key_exists('classroom', $input)) { echo $input['classroom']; } ?>"
-                    required >
+                <input type="text" class="form-control" name="classroom" id="classroom" placeholder="®monit_classroom®"
+                    value="<?php if(isset($input) && array_key_exists('classroom', $input)) { echo $input['classroom']; } ?>">
+            </div>
+            <div class="col-md-3">
+                <label class="sr-only" for="courses">®monit_courses®</label>
+                <input type="text" class="form-control" name="courses" id="courses" placeholder="®monit_courses®"
+                    value="<?php if(isset($input) && array_key_exists('courses', $input)) { echo $input['courses']; } ?>">
+            </div>
+            <div class="col-md-3">
+                <label class="sr-only" for="teacher">®monit_teacher®</label>
+                <input type="text" class="form-control" name="teacher" id="teacher" placeholder="®monit_teacher®"
+                    value="<?php if(isset($input) && array_key_exists('teacher', $input)) { echo $input['teacher']; } ?>">
             </div>
             <div class="col-md-2">
                 <label class="sr-only" for="nweek">®monit_nbr_week®</label>
@@ -20,10 +29,9 @@
                     value="<?php if(isset($input) && array_key_exists('nweek', $input)) { echo $input['nweek']; } ?>"
                     required>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-1">
                 <button type="submit" class="btn btn-block btn-success">
                     <span class="glyphicon glyphicon-search icon-white"></span> 
-                    ®search®
                 </button>
             </div>
         </div>

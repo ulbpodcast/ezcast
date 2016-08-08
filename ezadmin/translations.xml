@@ -171,7 +171,7 @@
         <label id="logs_title" lang="en">Logs</label>
         <label id="classroom_calendar_title" lang="fr">Calendrier des enregistrements</label>
         <label id="classroom_calendar_title" lang="en">Record calendar</label>
-        <label id="event_calendar_title" lang="fr">Calendrier des Erreurs</label>
+        <label id="event_calendar_title" lang="fr">Calendrier des erreurs</label>
         <label id="event_calendar_title" lang="en">Errors calendar</label>
         
         

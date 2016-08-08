@@ -112,18 +112,47 @@ function db_event_get_event_loglevel_most($asset) {
  * Get all record after a define date in a specific classroom
  * 
  * @global PDO $statements prepared request list
- * @param String $classroom_id id of the classroom
  * @param String $start_date all record after this date
+ * @param String $classroom_id id of the classroom
+ * @param String $courses name of the course
+ * @param String $teacher name of the teacher
  * @return Array all restult
  */
-function db_event_get_record_after_date($classroom_id, $start_date) {
-    global $statements;
+function db_event_get_record_after_date($start_date, $classroom_id = "", $courses = "", $teacher = "") {
+    global $db_object;
     
-    $statements['get_record_after_date']->bindParam(':asset_classroom_id', $classroom_id);
-    $statements['get_record_after_date']->bindParam(':time_limit', $start_date);
-    $statements['get_record_after_date']->execute();
+    $strSQL = 'SELECT `asset`, `start_time`, `end_time`, `asset_classroom_id`, '
+                        . '`asset_course`, `asset_author` ' .
+                    'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME);
     
-    return $statements['get_record_after_date']->fetchAll(PDO::FETCH_ASSOC);
+    $whereParam = array('start_time >= :time_limit AND end_time IS NOT NULL');
+    $valueWhereParam = array('time_limit' => $start_date);
+    
+    if($classroom_id != "") {
+        $whereParam[] = 'asset_classroom_id = :asset_classroom_id';
+        $valueWhereParam['asset_classroom_id'] = $classroom_id;
+    }
+    
+    if($courses != "") {
+        $whereParam[] = 'asset_course = :courses';
+        $valueWhereParam['courses'] = $courses;
+    }
+    
+    if($teacher != "") {
+        $whereParam[] = 'asset_author = :teacher';
+        $valueWhereParam['teacher'] = $teacher;
+    }
+    
+    
+    if(!empty($whereParam)) {
+        $strSQL .= " WHERE ";
+    }
+    $strSQL .= implode(" AND ", $whereParam);
+    
+    $reqSQL = $db_object->prepare($strSQL);
+    $reqSQL->execute($valueWhereParam);
+    
+    return $reqSQL->fetchAll(PDO::FETCH_ASSOC);
 }
 
 

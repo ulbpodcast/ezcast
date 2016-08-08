@@ -23,9 +23,10 @@ function index($param = array()) {
     if(array_key_exists('post', $input)) {
         
         if(array_key_exists('classroom', $input) && array_key_exists('nweek', $input)) {
-            $recordRepartition = db_event_get_record_after_date(
-                        $input['classroom'], 
-                        calcul_date($input['nweek']));
+            $recordRepartition = db_event_get_record_after_date(calcul_date($input['nweek']),
+                        empty_str_if_not_def('classroom', $input), 
+                        empty_str_if_not_def('courses', $input),
+                        empty_str_if_not_def('teacher', $input));
             
             $resultRecord = calcul_hour_by_hour($recordRepartition);
             
@@ -84,7 +85,7 @@ function calcul_hour_by_hour($recordData) {
             continue;
         }
         
-        $timeStart = calcul_int_date($record['start_time']);
+        $timeStart = calcul_int_date($record['start_time'], true);
         $timeEnd = calcul_int_date($record['end_time']);
         
         for($hour = $timeStart; $hour <= $timeEnd; ++$hour) {
@@ -123,13 +124,18 @@ function get_day_number($date) {
  * 
  * @param Data $date format YYYY-MM-DD HH:mm:ss
  */
-function calcul_int_date($date) {
+function calcul_int_date($date, $start = false) {
     $nbrHour = date("G", strtotime($date));
     $nbrMin = date("i", strtotime($date));
+    
     
     if($nbrMin >= 50) {
         ++$nbrHour;
         $nbrMin = 0;
+    } else if($nbrMin < 10 && !$start) {
+        --$nbrHour;
+        $nbrMin = 31;
+        
     } else if($nbrMin > 20) {
         $nbrMin += 10;
     }

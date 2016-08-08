@@ -244,7 +244,8 @@ function statements_get(){
  * @param String $order the order condition
  * @param String $limit the limit condition
  */
-function db_courses_search($course_code, $user_ID, $include_external, $include_internal, $has_albums, $in_classrooms, $with_teacher, $order, $limit) {   
+function db_courses_search($course_code, $user_ID, $include_external, $include_internal, $has_albums, 
+        $in_classrooms, $with_teacher, $order, $limit) {   
 	global $db_object;
 	
 	$origin = $include_external && $include_internal ? '%' : ($include_external ? 'external' : 'internal');
@@ -255,27 +256,27 @@ function db_courses_search($course_code, $user_ID, $include_external, $include_i
         // will have origin = NULL when no user is yet added to course
 	$query = 
 		'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .  
-			db_gettable('courses') . '.course_code, ' .
-			db_gettable('users') . '.user_ID AS user_ID, ' .
-			db_gettable('courses') . '.origin, ' .
-			db_gettable('courses') . '.in_recorders, ' .
-			db_gettable('courses') . '.has_albums, ' .
-			db_gettable('courses') . '.shortname, ' .
-			db_gettable('courses') . '.course_name, ' .
-			db_gettable('users') . '.forename, ' .
-			db_gettable('users') . '.surname ' .
-			'FROM ' . db_gettable('users_courses') . ' ' .
-			'RIGHT JOIN ' . db_gettable('courses') . ' ' .
-				'ON ' . db_gettable('courses') . '.course_code = ' . db_gettable('users_courses') .'.course_code ' .
-			$join . ' JOIN ' . db_gettable('users') . ' ' .
-				'ON ' . db_gettable('users').'.user_ID = ' . db_gettable('users_courses').'.user_ID ' .
+			' table_courses.course_code, ' .
+			' table_users.user_ID AS user_ID, ' .
+			' table_courses.origin, ' .
+			' table_courses.in_recorders, ' .
+			' table_courses.has_albums, ' .
+			' table_courses.shortname, ' .
+			' table_courses.course_name, ' .
+			' table_users.forename, ' .
+			' table_users.surname ' .
+			'FROM ' . db_gettable('users_courses') . ' users_courses ' .
+			'RIGHT JOIN ' . db_gettable('courses') . ' table_courses ' .
+				'ON ' . ' table_courses.course_code = users_courses.course_code ' .
+			$join . ' JOIN ' . db_gettable('users') . ' table_users ' .
+				'ON table_users.user_ID = users_courses.user_ID ' .
 			'WHERE ' .
-				db_gettable('courses') . '.course_code LIKE "' . addslashes($course_code) . '"' .
-				($origin != "%" ? ' AND ' . db_gettable('users_courses') . '.origin LIKE "' . addslashes($origin) . '"' : '') .
-				($user_ID != "%" ? ' AND ' . db_gettable('users') . '.user_ID LIKE "' . $user_ID . '"': '') .
-				($has_albums != -1 ? ' AND ' . db_gettable('courses') . '.has_albums = "' . $has_albums . '"': '') .
-				($in_classrooms != -1 ? ' AND ' . db_gettable('courses') . '.in_recorders = "' . $in_classrooms . '"': '') .
-				($with_teacher == 0 ? ' AND '.  db_gettable('users') . '.user_ID IS NULL': '') .
+				' table_courses.course_code LIKE "' . addslashes($course_code) . '"' .
+				($origin != "%" ? ' AND users_courses.origin LIKE "' . addslashes($origin) . '"' : '') .
+				($user_ID != "%" ? ' AND table_users.user_ID LIKE "' . $user_ID . '"': '') .
+				($has_albums != -1 ? ' AND ' . ' table_courses.has_albums = "' . $has_albums . '"': '') .
+				($in_classrooms != -1 ? ' AND ' . ' table_courses.in_recorders = "' . $in_classrooms . '"': '') .
+				($with_teacher == 0 ? ' AND table_users.user_ID IS NULL': '') .
                         ' GROUP BY course_code ' .    
 			($order ? ' ORDER BY ' . $order : '') .
 			($limit ? ' LIMIT ' . $limit : '');

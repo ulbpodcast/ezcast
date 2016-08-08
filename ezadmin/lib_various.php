@@ -38,8 +38,8 @@ function parse_config_file() {
         'recorders_option' => $classrooms_category_enabled,
         'add_users_option' => $add_users_enabled,
         'recorder_password_storage_option' => $recorder_password_storage_enabled,
-        'use_course_name' => $use_course_name,
-        'use_user_name' => $use_user_name
+        'course_name_option' => $use_course_name,
+        'user_name_option' => $use_user_name
     );
 
     return $res;
@@ -53,7 +53,8 @@ function parse_config_file() {
  * @param type $use_course_name_option
  * @param type $use_user_name_option
  */
-function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_course_name_option, $use_user_name_option) {
+function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, 
+        $use_course_name_option, $use_user_name_option) {
     $config = file_get_contents('config.inc');
 
     $conf1 = ($recorder_option) ? 'true' : 'false';
@@ -67,6 +68,7 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
     $config = preg_replace('/\$recorder_password_storage_enabled = (.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
     $config = preg_replace('/\$use_course_name = (.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
     $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
+    
     file_put_contents('config.inc', $config);
 }
 

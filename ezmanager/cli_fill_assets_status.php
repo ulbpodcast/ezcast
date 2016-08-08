@@ -11,7 +11,7 @@ const LOG_LEVEL_WARNINGS = LogLevel::WARNING;
 
 
 /**
- * Database request to get all event who haven't an status
+ * Database request to get all event from assets having no status
  * 
  * @global PDO $db_object
  * @return Array with the result

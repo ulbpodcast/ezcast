@@ -3,7 +3,8 @@
 require_once 'web_request.php';
 require_once __DIR__.'/../config.inc';
 
-if(!isValidCaller()) {
+if(!is_authorized_caller()) {
+    print "not talking to you";
     die;
 }
 
@@ -26,10 +27,11 @@ switch($input['action']) {
 //////////// PUSH ////////////
 
 /**
- * Push log into the data base
+ * Push log into the database
  * Information to push must be on input['log_data']
+ * This is used by recorders to sync their logs with server.
  * 
- * echo SUCCESS if all is ok, ERROR (and informations) else
+ * echo SUCCESS if all is ok, else ERROR (and informations)
  */
 function push_log() {
     global $input;
@@ -102,10 +104,9 @@ function push_log() {
             if($lastInsert < $arrayToInsert['id']) {
                 $lastInsert = $arrayToInsert['id'];
             }
-            unset($arrayToInsert['id']);
             save_log($arrayToInsert['asset'], $arrayToInsert['origin'], 
                     $arrayToInsert['loglevel'], $arrayToInsert['type_id'], 
-                    $arrayToInsert['asset_classroom_id'], $arrayToInsert['event_time'], 
+                    $arrayToInsert['asset_classroom_id'], $arrayToInsert['id'], $arrayToInsert['event_time'], 
                     $arrayToInsert['message'], $arrayToInsert['asset_course'], 
                     $arrayToInsert['asset_author'], $arrayToInsert['asset_cam_slide'], 
                     $arrayToInsert['context']);
@@ -114,7 +115,7 @@ function push_log() {
     }
     
     if($lastInsert >= 0) {
-        updateLastInsert($lastInsert, $source);
+        update_last_inserted_index($lastInsert, $source);
     }
     
     if(!empty($lastDataError)) {
@@ -179,13 +180,13 @@ function get_source($input) {
 }
 
 
-function save_log($asset, $origin, $loglevel, $type_id, $asset_classroom, 
+function save_log($asset, $origin, $loglevel, $type_id, $asset_classroom, $classroom_event_id,
         $event_time, $message = "", $asset_course = "", $asset_author ="", 
         $asset_cam_slide = "", $context = "") {
     global $logger;
     
     $logger->insert_log($type_id, $loglevel, $message, $context, $asset, $origin, 
-            $asset_classroom, $asset_course, $asset_author, $asset_cam_slide, $event_time);
+            $asset_classroom, $asset_course, $asset_author, $asset_cam_slide, $event_time, $classroom_event_id);
     
 }
 
@@ -199,7 +200,7 @@ function save_log($asset, $origin, $loglevel, $type_id, $asset_classroom,
  * @param String $source of the machine who send log
  * @return true if the id have been insert
  */
-function updateLastInsert($lastInsert, $source) {
+function update_last_inserted_index($lastInsert, $source) {
     
 //    $strSQL = 'INSERT INTO '.db_gettable('event_last_indexes') . '
 //        (source, id) VALUES(:source, :id) 

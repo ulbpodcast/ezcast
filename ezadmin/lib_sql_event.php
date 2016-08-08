@@ -39,9 +39,9 @@ function event_statements_get() {
     return array(
             'get_all_event' =>
                     'SELECT (`asset`, `origin`, `asset_classroom_id`, `asset_course`, `asset_author`,'
-                            . ' `asset_cam_slide`, `event_time`, `type_id`, `context`, `loglevel`, `message`) ' .
+                            . ' `asset_cam_slide`, `classroom_event_id`, `event_time`, `type_id`, `context`, `loglevel`, `message`) ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' ' .
-                    'ORDER BY event_time',
+                    'ORDER BY event_time, classroom_event_id',
         
             'get_event_loglevel_most' =>
                     'SELECT MIN(loglevel) AS max_loglevel ' .
@@ -78,7 +78,7 @@ function event_statements_get() {
 }
 
 /**
- * Return all the event list (without event status)
+ * Return all events (BIG!)
  * @global array $statements
  */
 function db_event_get_all() {
@@ -90,6 +90,7 @@ function db_event_get_all() {
 
 /**
  * Get the most important loglevel for a specific asset
+ * (As an integer, most important is lowest)
  * 
  * @global Array $statements slq request
  * @param String $asset name of the asset
@@ -109,7 +110,7 @@ function db_event_get_event_loglevel_most($asset) {
 }
 
 /**
- * Get all record after a define date in a specific classroom
+ * Get all record after given date in a specific classroom
  * 
  * @global PDO $statements prepared request list
  * @param String $start_date all record after this date
@@ -255,12 +256,16 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
         $strSQL .= " WHERE ";
     }
     $strSQL .= implode(" AND ", $whereParam);
+    
+    $strSQL .= " ORDER BY ";
     if($colOrder != "") {
-        $strSQL .= " ORDER BY ".$colOrder." ";
+        $strSQL .= $colOrder.' ';
         if($orderSort == "DESC") {
             $strSQL .= " DESC ";
-        }
+        } 
+        $strSQL .= ', ';
     }
+    $strSQL .= 'classroom_event_id '; //order by classroom_event_id too so that we can order events which happened in the same second
     
     if($max_elem != "" && $max_elem >= 0) {
         if($start_elem != "" && $start_elem >= 0) {

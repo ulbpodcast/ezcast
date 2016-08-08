@@ -24,8 +24,8 @@ class ServerLogger extends Logger {
         
         $this->statement['insert_log'] = $db_object->prepare(
           'INSERT INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `asset_classroom_id`, `asset_course`, ' .
-            '`asset_author`, `asset_cam_slide`, `event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
-          ':asset, :origin, :classroom, :course, :author, :cam_slide, :event_time, :type_id, :context, :loglevel, :message)');
+            '`asset_author`, `asset_cam_slide`, `classroom_event_id`, `event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
+          ':asset, :origin, :classroom, :course, :author, :cam_slide, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)');
         
         $this->statement['insert_asset_info'] = $db_object->prepare(
             'INSERT INTO ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' (asset, ' .
@@ -79,7 +79,7 @@ class ServerLogger extends Logger {
     }
     
     public function insert_log($type, $level, $message, $context, $asset, $origin, 
-            $classroom, $course, $author, $cam_slide, $event_time) {
+            $classroom, $course, $author, $cam_slide, $event_time, $classroom_event_id) {
         
         $type_name = $this->get_type_name($type);
         
@@ -103,6 +103,7 @@ class ServerLogger extends Logger {
         $this->statement['insert_log']->bindParam(':loglevel', $level);
         $this->statement['insert_log']->bindParam(':message', $message);
         $this->statement['insert_log']->bindParam(':event_time', $event_time);
+        $this->statement['insert_log']->bindParam(':classroom_event_id', $classroom_event_id);
         
         $this->statement['insert_log']->execute();
     }

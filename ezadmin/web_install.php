@@ -640,6 +640,18 @@ function create_tables($drop = true) {
                 " UNIQUE KEY `asset` (`asset`) " .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
+        if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_ASSET_INFO_TABLE_NAME .'`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . LoggerServer::EVENT_ASSET_INFO_TABLE_NAME . '` (' .
+                "`asset` varchar(50) NOT NULL," .
+                "`start_time` datetime NOT NULL," .
+                "`end_time` datetime DEFAULT NULL," .
+                "`asset_classroom_id` varchar(50) NOT NULL," .
+                "`asset_course` varchar(50) NOT NULL," .
+                "`asset_author` varchar(50) NOT NULL," .
+                "PRIMARY KEY (`asset`)" .
+                " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+        
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .
                 'ON ' . $input['db_prefix'] . 'threads(`albumName`);');

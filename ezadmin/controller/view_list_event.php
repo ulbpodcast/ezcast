@@ -16,11 +16,19 @@ function index($param = array()) {
     } else {
         $pagination = new Pagination(1, 50);
     }
+    
     if(array_key_exists('col', $input) && array_key_exists('order', $input)) {
         $colOrder = new Sort_colonne($input['col'], $input['order']);
     } else {
         $colOrder = new Sort_colonne('event_time');
     }
+    
+    $js_classroom = "";
+    $listClassroom = array();
+    foreach(db_classrooms_list() as $classroomInfos) {
+        $listClassroom[] = "'".$classroomInfos['name']."'";
+    }
+    $js_classroom = '['.implode(', ', $listClassroom).']';
     
     // Get Events
     if (isset($input['post'])) { 

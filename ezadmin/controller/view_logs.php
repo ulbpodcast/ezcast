@@ -8,7 +8,7 @@ function index($param = array()) {
     global $input;
     
     $pagination = new Pagination();
-    if (isset($input['search']) && !empty($input['search'])) {
+    if (isset($input['post']) && !empty($input['post'])) {
         if(array_key_exists('page', $input)) {
             $pagination = new Pagination($input['page']);
         }

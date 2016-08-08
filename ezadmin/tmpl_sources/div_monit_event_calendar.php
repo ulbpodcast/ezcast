@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-4 col-md-offset-3">
                 <label class="sr-only" for="classroom">®monit_classroom®</label>
-                <input type="text" class="form-control" name="classroom" id="context" placeholder="®monit_classroom®"
+                <input type="text" class="form-control classroomSuggest" name="classroom" id="context" placeholder="®monit_classroom®"
                     value="<?php if(isset($input) && array_key_exists('classroom', $input)) { echo $input['classroom']; } ?>">
             </div>
             <div class="col-md-2">
@@ -180,5 +180,13 @@
 
   });
 
-
+$('.classroomSuggest').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 0
+},
+{
+  name: 'classroom',
+  source: substringMatcher(<?php echo $js_classroom; ?>)
+});
 </script>

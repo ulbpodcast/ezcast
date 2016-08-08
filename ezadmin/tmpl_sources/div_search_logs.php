@@ -2,7 +2,7 @@
 
 <!-- Search form -->
 <form method="POST" action="index.php?action=view_logs" class="search_logs">
-    
+    <input type="hidden" name="post" value="1">
     
     <!-- Date -->
     <div class="form-group">

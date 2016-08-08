@@ -40,6 +40,13 @@ function index($param = array()) {
     
     $dateEvent = json_encode($phpDateEvent);
     
+    $js_classroom = "";
+    $listClassroom = array();
+    foreach(db_classrooms_list() as $classroomInfos) {
+        $listClassroom[] = "'".$classroomInfos['name']."'";
+    }
+    $js_classroom = '['.implode(', ', $listClassroom).']';
+    
     // Display page
     include template_getpath('div_main_header.php');
     include template_getpath('div_monit_event_calendar.php');

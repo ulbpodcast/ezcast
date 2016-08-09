@@ -247,6 +247,10 @@ else {
             requireController('stat_csv_by_asset.php');
             break;
 
+        case 'view_report':
+            requireController('view_report.php');
+            break;
+        
         // Monitoring
         case 'view_events':
             requireController('view_list_event.php');

@@ -12,7 +12,7 @@ $threshold_num_options = 100; // The number of options in the sidebar above whic
 $options = array();
 $options['Courses'] = array(
     array(
-        'name' => '®list_courses®',
+        'name' => '®list_courses®', 
         'action' => 'view_courses'
         //'args' => array('table' => 'podcastcours_users_courses')
     ),
@@ -107,6 +107,10 @@ $options['Stats'] = array(
     array(
        'name' => '®stats_ezplayer_bookmarks®',
        'action' => 'view_stats_ezplayer_bookmarks'
+    ),
+    array(
+        'name' => '®stats_view_report®',
+        'action' => 'view_report'
     )
 );
 

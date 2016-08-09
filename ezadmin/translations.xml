@@ -29,7 +29,7 @@
     Description:
         Message translations for all the user interface.
 --> 
-
+ 
 <data>
     <!-- Labels are keywords that appear in templates 
          Note: please use the same label name as the keyword between ®'s that appears in the template -->
@@ -139,6 +139,8 @@
         <label id="stats_ezplayer_threads" lang="en">Discussions</label>
         <label id="stats_ezplayer_bookmarks" lang="fr">Signets</label>
         <label id="stats_ezplayer_bookmarks" lang="en">Bookmarks and TOC</label>
+        <label id="stats_view_report" lang="fr">Rapport</label>
+        <label id="stats_view_report" lang="en">Report</label>
         
         <!-- Titles -->
         <label id="list_courses_title" lang="fr">Liste des cours</label>
@@ -173,6 +175,9 @@
         <label id="classroom_calendar_title" lang="en">Record calendar</label>
         <label id="event_calendar_title" lang="fr">Calendrier des erreurs</label>
         <label id="event_calendar_title" lang="en">Errors calendar</label>
+        <label id="report_title" lang="fr">Rapport</label>
+        <label id="report_title" lang="en">Report</label>
+        
         
         
         <!-- Form fields -->

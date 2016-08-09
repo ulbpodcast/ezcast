@@ -330,6 +330,12 @@ td {
     width: 934px;
 }
 
+@media (min-width: 1300px) {
+    .header_content {
+        width: 1370px;
+    }
+}
+
 
 .logout{
     float: right;

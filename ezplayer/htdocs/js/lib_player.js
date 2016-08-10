@@ -190,6 +190,8 @@ function player_prepare(currentQuality, currentType, startTime) {
     // get all videos of the page
     var videos = document.getElementsByTagName('video');
     var max = videos.length;
+    var seeked = false;
+    
     // determines whether it's a camslide or not
     camslide = (max === 2);
     // set the current type being played
@@ -215,9 +217,8 @@ function player_prepare(currentQuality, currentType, startTime) {
                 time = Math.round(this.currentTime);
                 document.getElementById('bookmark_timecode').value = time;
                 document.getElementById('thread_timecode').value = time;
-                if (!trace_pause) {
-                    server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
-                } else {
+                seeked = true;
+                if (trace_pause) {
                     trace_pause = false;
                 }
             }
@@ -272,6 +273,12 @@ function player_prepare(currentQuality, currentType, startTime) {
         // --> hides the shortcuts panel
         // --> saves trace
         videos[i].addEventListener('play', function () {
+            if(seeked) {
+                seeked = false;
+                console.log("video_seeked");
+                server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
+            }
+            
             if (!shortcuts)
                 $(".shortcuts_tab").css('display', 'none');
             if (!trace_pause) {

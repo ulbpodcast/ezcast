@@ -29,12 +29,12 @@
     Description:
         Message translations for all the user interface.
 --> 
- 
+
 <data>
     <!-- Labels are keywords that appear in templates 
          Note: please use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
-        <!-- Product-wise stuff -->
+        <!-- Product-wise stuff --> 
         <label id="service_name" lang="fr">EZadmin</label>
         <label id="service_name" lang="en">EZadmin</label>
         <label id="ezadmin_page_title" lang="fr">EZadmin</label>

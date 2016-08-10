@@ -493,8 +493,8 @@
         <label id="leave_empty_field" lang="en">Leave empty field to keep the previous password</label>
         <label id="monit_classroom" lang="fr">Auditoire</label>
         <label id="monit_classroom" lang="en">Classroom</label>
-        <label id="monit_teacher" lang="fr">Professeur</label>
-        <label id="monit_teacher" lang="en">Teacher</label>
+        <label id="monit_author" lang="fr">Auteur</label>
+        <label id="monit_author" lang="en">Author</label>
         <label id="monit_courses" lang="fr">Cours</label>
         <label id="monit_courses" lang="en">Courses</label>
         <label id="monit_context" lang="fr">Contexte</label>

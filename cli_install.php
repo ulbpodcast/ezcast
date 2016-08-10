@@ -58,10 +58,6 @@ $apache_username = $argv[10];
  * position of EZcast products
  */
 
-$web_file = file_get_contents($apache_documentroot . "/index.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/index.php", $web_file);
-
 $web_file = file_get_contents($apache_documentroot . "/ezadmin/install.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
 file_put_contents($apache_documentroot . "/ezadmin/install.php", $web_file);

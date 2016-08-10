@@ -19,8 +19,8 @@
                     value="<?php if(isset($input) && array_key_exists('courses', $input)) { echo $input['courses']; } ?>">
             </div>
             <div class="col-md-3">
-                <label class="sr-only" for="teacher">®monit_teacher®</label>
-                <input type="text" class="form-control" name="teacher" id="teacher" placeholder="®monit_teacher®"
+                <label class="sr-only" for="teacher">®monit_author®</label>
+                <input type="text" class="form-control" name="teacher" id="teacher" placeholder="®monit_author®"
                     value="<?php if(isset($input) && array_key_exists('teacher', $input)) { echo $input['teacher']; } ?>">
             </div>
             <div class="col-md-2">

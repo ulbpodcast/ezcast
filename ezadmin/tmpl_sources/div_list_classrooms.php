@@ -118,7 +118,7 @@ if(isset($pagination)) {
                     ®status_record_general®: 
                     <?php echo $currClass['status_general']; ?><br />
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                    ®monit_teacher®: 
+                    ®monit_author®: 
                     <?php echo $currClass['author']; ?>
                 </div>
                 <div class="col-md-3">

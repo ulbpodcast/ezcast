@@ -19,7 +19,7 @@ function index($param = array()) {
     push_classrooms_to_ezmanager();
 
     // Remove "save changes" alert
-    remove_changes_alert();
+    notify_changes(false);
 
     db_log('', 'Pushed changes on recorders and ezmanager', $_SESSION['user_login']);
     include template_getpath('div_main_header.php');

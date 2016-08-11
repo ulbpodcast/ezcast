@@ -25,7 +25,6 @@ require_once '../commons/lib_various.php';
 require_once 'lib_various.php';
 require_once 'lib_scheduling.php';
 
-
 $input = array_merge($_GET, $_POST);
 
 template_repository_path($template_folder . get_lang());
@@ -35,10 +34,6 @@ template_load_dictionnary('translations.xml');
 //
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
-    /* if (isset($input['action']) && $input['action'] == 'view_help'){
-      view_help ();
-      die;
-      } */
     // Step 2: Logging in a user who already submitted the form
     if (isset($input['action']) && $input['action'] == 'login') {
         if (!isset($input['login']) || !isset($input['passwd'])) {
@@ -443,13 +438,9 @@ function user_login($login, $passwd) {
 /**
  * Changes have been made but not saved yet: we display an alert
  */
-function notify_changes() {
-    $_SESSION['changes_to_push'] = true;
-}
-
-/**
- * Changes have been saved: we remove the alert.
- */
-function remove_changes_alert() {
-    unset($_SESSION['changes_to_push']);
+function notify_changes($enable = true) {
+    if($enable)
+        $_SESSION['changes_to_push'] = true;
+    else
+        unset($_SESSION['changes_to_push']);
 }

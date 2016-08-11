@@ -10,6 +10,7 @@ class EventType {
     const ASSET_CREATED = "asset_created";
     const ASSET_FINALIZED = "asset_finalized";
     const ASSET_RECORD_END = "asset_record_end";
+    const PHP              = "php";
     
     // Recorder
     const RECORDER_DB                        = "recorder_recorder_db";
@@ -55,6 +56,7 @@ class EventType {
        EventType::ASSET_CREATED                              => 2,
        EventType::ASSET_FINALIZED                            => 3,
        EventType::ASSET_RECORD_END                           => 4,
+       EventType::PHP                                        => 5,
         
        // Recorder: 1000->1999
        EventType::RECORDER_DB                                => 1000,

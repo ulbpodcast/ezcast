@@ -69,7 +69,9 @@ class ServerLogger extends Logger {
         $tempLogData = parent::log($type, $level, $message, $context, $asset, $author, $cam_slide, $course, $classroom);
         
         global $appname; // to be used as origin
-        
+        if(!isset($appname))
+            $appname = "?";
+            
         $this->insert_log($tempLogData->type_id, $tempLogData->log_level_integer, 
                 $message, $tempLogData->context, $asset, $appname, 
                 $classroom, $course, $author, 

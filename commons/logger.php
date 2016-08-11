@@ -154,6 +154,8 @@ abstract class Logger {
     protected function log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", 
             &$author = null, &$cam_slide = null, &$course = null, &$classroom = null)
     {
+        global $debug_mode;
+        
         if(!isset($message) || !$message)
             $message = "";
         
@@ -190,9 +192,15 @@ abstract class Logger {
         $tempLogData->context = implode('|', $context);
         
         // okay, all data ready
+        
 
+        $print_str = "log| [$level] / context: $tempLogData->context / type: $type / $message";
         if(Logger::$print_logs)
-            echo "log| [$level] / context: $tempLogData->context / type: $type / $message" .PHP_EOL;
+            echo $print_str . PHP_EOL;
+        
+        if($debug_mode && $type != EventType::PHP) //PHP events are already printed in custom_error_handling.php
+            echo("<script>console.log('$print_str');</script>");
+        
         
         //idea: if level is critical or below, push back trace to message
         

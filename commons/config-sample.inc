@@ -148,8 +148,7 @@ $streaming_video_alternate_server_document_root = "/var/www/stream/";
 $streaming_video_alternate_server_uri = "stream/";
 
 // -- debugging -- //
-$debug_mode = false;
-$log_level_threshold = LogLevel::INFO; //Logs with level above this level won't be logged at all
+$debug_mode = false; //debug mode print recorder events and php errors to console
 // -- -- //
 
 // load static variables

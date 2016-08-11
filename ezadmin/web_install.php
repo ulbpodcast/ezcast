@@ -650,6 +650,7 @@ function create_tables($drop = true) {
                 "`asset_classroom_id` varchar(50) NOT NULL," .
                 "`asset_course` varchar(50) NOT NULL," .
                 "`asset_author` varchar(50) NOT NULL," .
+                "`asset_cam_slide` enum('cam','slides','camslides') NOT NULL," .
                 "PRIMARY KEY (`asset`)" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         

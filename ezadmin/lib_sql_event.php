@@ -31,7 +31,8 @@ require_once '../commons/lib_database.php';
 if(file_exists('config.inc')) {
     include_once 'config.inc';
 
-    db_prepare(event_statements_get());
+    $stmt_array = event_statements_get();
+    db_prepare($stmt_array);
 }
  
 
@@ -50,7 +51,7 @@ function event_statements_get() {
         
             'get_record_after_date' =>
                     'SELECT `asset`, `start_time`, `end_time`, `asset_classroom_id`, '
-                        . '`asset_course`, `asset_author` ' .
+                        . '`asset_course`, `asset_author`, `asset_cam_slide` ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' ' .
                     'WHERE asset_classroom_id = :asset_classroom_id AND '
                         . 'start_time >= :time_limit AND end_time IS NOT NULL',
@@ -119,11 +120,11 @@ function db_event_get_event_loglevel_most($asset) {
  * @param String $teacher name of the teacher
  * @return Array all restult
  */
-function db_event_get_record_after_date($start_date, $classroom_id = "", $courses = "", $teacher = "") {
+function db_event_get_record_after_date($start_date, $classroom_id = "", $courses = "", $teacher = "", $cam_slide = "") {
     global $db_object;
     
     $strSQL = 'SELECT `asset`, `start_time`, `end_time`, `asset_classroom_id`, '
-                        . '`asset_course`, `asset_author` ' .
+                        . '`asset_course`, `asset_author`, `asset_cam_slide` ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME);
     
     $whereParam = array('start_time >= :time_limit AND end_time IS NOT NULL');
@@ -142,6 +143,11 @@ function db_event_get_record_after_date($start_date, $classroom_id = "", $course
     if($teacher != "") {
         $whereParam[] = 'asset_author = :teacher';
         $valueWhereParam['teacher'] = $teacher;
+    }
+    
+    if($cam_slide != "") {
+        $whereParam[] = 'asset_cam_slide = :cam_slide';
+        $valueWhereParam['cam_slide'] = $cam_slide;
     }
     
     

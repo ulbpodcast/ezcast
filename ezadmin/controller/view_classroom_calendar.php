@@ -26,7 +26,8 @@ function index($param = array()) {
             $recordRepartition = db_event_get_record_after_date(calcul_date($input['nweek']),
                         empty_str_if_not_def('classroom', $input), 
                         empty_str_if_not_def('courses', $input),
-                        empty_str_if_not_def('teacher', $input));
+                        empty_str_if_not_def('teacher', $input),
+                        empty_str_if_not_def('cam_slide', $input)); //cam_slide not currently in form, add it if you need it
             
             $resultRecord = calcul_hour_by_hour($recordRepartition);
             

@@ -1314,6 +1314,7 @@ function submit_media() {
     echo "success";
     return true;
     // 5) Displaying a confirmation alert.
+    //TODO translate
     $head_code = '<script type="text/javascript">$(document).ready(function() {window.alert(\'Fichier envoyé et en cours de traitement.\');});</script>';
     redraw_page();
 }

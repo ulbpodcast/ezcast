@@ -29,8 +29,8 @@ class ServerLogger extends Logger {
         
         $this->statement['insert_asset_info'] = $db_object->prepare(
             'INSERT INTO ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' (asset, ' .
-                'start_time, asset_classroom_id, asset_course, asset_author) VALUES(' .
-                ':asset, :start_time, :asset_classroom_id, :asset_course, :asset_author)'
+                'start_time, asset_classroom_id, asset_course, asset_author, asset_cam_slide) VALUES(' .
+                ':asset, :start_time, :asset_classroom_id, :asset_course, :asset_author, :asset_cam_slide)'
             );
         
         $this->statement['update_asset_info'] = $db_object->prepare(
@@ -81,13 +81,13 @@ class ServerLogger extends Logger {
     }
     
     public function insert_log($type, $level, $message, $context, $asset, $origin, 
-            $classroom, $course, $author, $cam_slide, $event_time, $classroom_event_id) {
+            $classroom, $course, $author, $cam_slide, $event_time, $classroom_event_id = null) {
         
         $type_name = $this->get_type_name($type);
         
         switch($type_name) {
             case EventType::ASSET_CREATED:
-                $this->insert_asset_infos($asset, $event_time, $classroom, $course, $author);
+                $this->insert_asset_infos($asset, $event_time, $classroom, $course, $author, $cam_slide);
                 break;
             case EventType::ASSET_RECORD_END:
                 $this->update_asset_infos_end($asset, $event_time);
@@ -110,13 +110,14 @@ class ServerLogger extends Logger {
         $this->statement['insert_log']->execute();
     }
     
-    public function insert_asset_infos($asset, $start_date, $classroom, $course, $author) {
+    public function insert_asset_infos($asset, $start_date, $classroom, $course, $author, $cam_slide) {
         $this->statement['insert_asset_info']->bindParam(':asset', $asset);
         $this->statement['insert_asset_info']->bindParam(':start_time', $start_date);
         $this->statement['insert_asset_info']->bindParam(':asset_classroom_id', $classroom);
         $this->statement['insert_asset_info']->bindParam(':asset_course', $course);
         $this->statement['insert_asset_info']->bindParam(':asset_author', $author);
-        
+        $this->statement['insert_asset_info']->bindParam(':asset_cam_slide', $cam_slide);
+
         $this->statement['insert_asset_info']->execute();
     }
     

@@ -151,10 +151,11 @@ abstract class Logger {
      * @param AssetLogInfo $asset_info Additional information about asset if any, in the form of a AssetLogInfo structure
      * @return LogData temporary data, used by children functions
      */
-    protected function log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", 
+    protected function _log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", 
             &$author = null, &$cam_slide = null, &$course = null, &$classroom = null)
     {
         global $debug_mode;
+        global $service;
         
         if(!isset($message) || !$message)
             $message = "";

@@ -26,8 +26,10 @@ function get_error_type_str($errno) {
         case E_RECOVERABLE_ERROR: return "recoverable_error";
         case E_USER_ERROR:        return "user_error";
         case E_PARSE:             return "parse";
-        case E_USER_WARNING:      return "warning";
-        case E_USER_NOTICE:       return "notice";
+        case E_USER_WARNING:      return "user_warning";
+        case E_USER_NOTICE:       return "user_notice";
+        case E_NOTICE:            return "notice";
+        case E_WARNING:           return "warning";
         case E_STRICT:            return "strict"; 
         default:                  return "$errno"; //unknown, print no instead
     }
@@ -71,11 +73,11 @@ function error_handler($error_type, $errstr, $errfile, $errline) {
     return false; // returning false here executes php internal error handler after this function
 }
 
-function shutdown_handler() //will be called when php script ends.
-{
+function shutdown_handler() { //will be called when php script ends.
     global $debug_mode;
+    global $service;
     
-    if($debug_mode) {
+    if($debug_mode && !$service) {
         $lasterror = error_get_last();
         if(is_critical_error($lasterror['type'])) {
             $type_str = get_error_type_str($lasterror['type']);

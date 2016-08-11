@@ -75,7 +75,6 @@ else {
     // Controller goes here
     //var_dump($action);
 
-    
     $paramController = array();
     switch ($action) {
         // In case we want to log out

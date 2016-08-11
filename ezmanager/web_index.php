@@ -91,6 +91,14 @@ else {
     $action = $input['action'];
     $redraw = false;
 
+    /**
+     * Until pages and services are divided, mark some action as services
+     * A service = action not returning a page.
+     * A lot of these services actually return presentation too (in the form on popups), presentation should be moved to calling page
+     */
+    global $service; //true if we're currently running a service. 
+    $service = false;
+    
     //
     // Actions
     //
@@ -100,7 +108,6 @@ else {
 
         case 'view_album':
             view_album();
-
             break;
 
         // The user clicked on an asset, we display its details to them
@@ -120,21 +127,25 @@ else {
 
         // The user selected an album to create. We now create the two albums (-pub and -priv) they want
         case 'create_album':
+            $service = true;
             album_create();
             break;
 
         // The user chose to delete an album.
         case 'delete_album':
+            $service = true;
             album_delete();
             break;
 
         // reset rss token
         case 'reset_rss':
+            $service = true;
             reset_rss();
             break;
 
         //The users wants to upload an asset into the current album, show lets show him the upload form
         case 'submit_media_progress_bar':
+            $service = true;
             submit_media_progress_bar();
             break;
 
@@ -148,6 +159,7 @@ else {
 
         // users has filled in the edit album form and has confirmed
         case 'edit_album':
+            $service = true;
             album_edit();
             break;
 
@@ -158,22 +170,27 @@ else {
 
         // Called by APC plugin to get info on current upload
         case 'get_upload_progress':
+            $service = true;
             get_upload_progress();
             break;
 
         case 'upload_init':
+            $service = true;
             upload_init();
             break;
 
         case 'upload_chunk':
+            $service = true;
             upload_chunk();
             break;
 
         case 'upload_finished':
+            $service = true;
             upload_finished();
             break;
 
         case 'upload_error':
+            $service = true;
             upload_error();
             break;
 
@@ -182,34 +199,41 @@ else {
             break;
 
         case 'asset_downloadable_set':
+            $service = true;
             asset_downloadable_set();
             break;
 
         case 'delete_asset':
+            $service = true;
             asset_delete();
             break;
 
         case 'move_asset':
+            $service = true;
             asset_move();
             break;
 
         //move asset from album -priv to -pub
         case 'publish_asset':
+            $service = true;
             asset_publish_unpublish('publish');
             break;
 
         //move asset from album -pub to -priv
         case 'unpublish_asset':
+            $service = true;
             asset_publish_unpublish('unpublish');
             break;
 
         //schedule publication / archiving of asset from album -pub to -priv
         case 'schedule_asset':
+            $service = true;
             asset_schedule();
             break;
 
         //cancel the scheduling
         case 'cancel_schedule_asset':
+            $service = true;
             asset_schedule_cancel();
             break;
 
@@ -1183,12 +1207,23 @@ function upload_finished() {
         }
     }
 
+    //all files finished
     if ($finished) {
+
+        $recording_metadata = metadata2assoc_array($path."/metadata.xml");
+        $album = "";
+        if($recording_metadata) {
+            $album = $recording_metadata['course_name'];
+        }
+        $asset_name = basename($path);
 
         // Calling cli_mam_insert.php so that it adds the file into ezmam
         $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . $path . ' >>' . $path . '/mam_insert.log 2>&1"|at now';
 
         exec($cmd, $output, $ret);
+
+        $logger->log(EventType::ASSET_CREATED, LogLevel::NOTICE, 
+           "User ".$_SESSION['user_login']." submitted asset", array('upload_finished'), $asset_name, $_SESSION['user_full_name'], $_SESSION[$id]['type'], $album, "");
 
         if ($ret != 0) {
 
@@ -1204,7 +1239,6 @@ function upload_finished() {
         echo json_encode($array);
         die;
     }
-
 
     $array['value'] = "OK";
     echo json_encode($array);

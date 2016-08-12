@@ -36,7 +36,7 @@
                     <label>
                         <input type="checkbox" name="general"
                             <?php if(isset($input) && array_key_exists('general', $input)) { echo 'checked'; } ?>> 
-                        General
+                        ®report_form_general®
                     </label>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     <label>
                         <input type="checkbox" name="ezplayer" 
                             <?php if(isset($input) && array_key_exists('ezplayer', $input)) { echo 'checked'; } ?>> 
-                        EZPlayer
+                        ®report_form_ezplayer®
                     </label>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 <br />
                 <button type="submit" class="btn btn-block btn-success">
                     <span class="glyphicon glyphicon-refresh icon-white"></span> 
-                    Générer
+                    ®report_form_generate®
                 </button>
             </div>
         </div>
@@ -110,8 +110,8 @@
 
 <div class="alert alert-info alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    Les informations se trouvant dans la colonne "Période" concernent les informations récupéres entre le 
-    <?php echo date("d/m/y", strtotime($input['start_date'])); ?> et le 
+    ®report_info_date®
+    <?php echo date("d/m/y", strtotime($input['start_date'])); ?> ®report_info_date_end®
     <?php echo date("d/m/y", strtotime($input['end_date'])); ?>
 </div>
 
@@ -121,9 +121,9 @@
         <tr> 
             <th class="col-md-10"></th> 
             <?php if($general) { ?>
-            <th class="col-md-1">Général</th> 
+            <th class="col-md-1">®report_column_general®</th> 
             <?php } ?>
-            <th class="col-md-1">Période</th> 
+            <th class="col-md-1">®report_column_date®</th> 
         </tr> 
     </thead> 
     <tbody> 
@@ -131,8 +131,7 @@
             aria-expanded="false" aria-controls="list_all_author"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Nombre d'utilisateurs différents (ayant soumis des vidéos et/ou 
-                ayant enregistré en auditoire)
+                ®report_row_all_author®
             </td> 
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_list_all_author(); ?></td>
@@ -159,7 +158,7 @@
             aria-expanded="false" aria-controls="list_submit_author"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Nombre d'utilisateurs différents ayant soumis des vidéos
+                ®report_row_submit_author®
             </td> 
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_list_all_submit_author(); ?></td>
@@ -186,7 +185,7 @@
             aria-expanded="false" aria-controls="list_record_author"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Nombre d'utilisateurs différents ayant enregistré en auditoire 
+                ®report_row_record_author®
             </td> 
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_list_all_record_author(); ?></td>
@@ -213,8 +212,7 @@
             aria-expanded="false" aria-controls="list_cours"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Nombre de cours différents (contenant des capsules et/ou des 
-                enregistrements en auditoire)
+                ®report_row_list_cours®
             </td> 
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_list_all_cours(); ?></td>
@@ -241,7 +239,7 @@
             aria-expanded="false" aria-controls="list_cours_submit"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Nombre de cours différents contenant des capsules 
+                ®report_row_list_cours_submit®
             </td> 
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_list_all_cours_submit(); ?></td>
@@ -268,7 +266,7 @@
             aria-expanded="false" aria-controls="list_cours_record"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Nombre de cours différents contenant des enregistrements faits en auditoire
+                ®report_row_list_cours_record®
             </td> 
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_list_all_cours_record(); ?></td>
@@ -295,10 +293,10 @@
         
         <tr> 
             <td>
-                Nombre d'assets ajoutés au repository (capsules + cours enregistrés)
+                ®report_row_total_asset®
                 <p class="help-block" style="margin: 1px;">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    Ne tient pas compte des assets supprimés ni des tests 
+                    ®report_row_no_delete_test®
                 </p>
             </td> 
             <?php if($general) { ?>
@@ -308,10 +306,10 @@
         </tr>
         <tr> 
             <td>
-                Nombre de capsules soumises dans le repository
+                ®report_row_asset_submit®
                 <p class="help-block" style="margin: 1px;">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    Ne tient pas compte des assets supprimés ni des tests 
+                    ®report_row_no_delete_test®
                 </p>
             </td> 
             <?php if($general) { ?>
@@ -321,10 +319,10 @@
         </tr>
         <tr> 
             <td>
-                Nombre de cours enregistrés ajoutés au repository
+                ®report_row_asset_record®
                 <p class="help-block" style="margin: 1px;">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    Ne tient pas compte des assets supprimés ni des tests 
+                    ®report_row_no_delete_test®
                 </p>
             </td> 
             <?php if($general) { ?>
@@ -344,15 +342,15 @@
         <tr> 
             <th class="col-md-10"></th> 
             <?php if($general) { ?>
-            <th class="col-md-1">Général</th> 
+            <th class="col-md-1">®report_column_general®</th> 
             <?php } ?>
-            <th class="col-md-1">Période</th> 
+            <th class="col-md-1">®report_column_date®</th> 
         </tr> 
     </thead> 
     <tbody> 
         <tr> 
             <td>
-                Nombre total d'utilisateurs différents
+                ®report_row_total_users®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_total_user(); ?></td>
@@ -361,7 +359,7 @@
         </tr>
         <tr> 
             <td>
-                Nombre total de discussions créées
+                ®report_row_total_thread®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_thread(); ?></td>
@@ -373,7 +371,7 @@
             aria-expanded="false" aria-controls="list_cours_thread"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Liste des cours contenant des discussions
+                ®report_row_cours_thread®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_cours_thread(); ?></td>
@@ -401,7 +399,7 @@
         
         <tr> 
             <td>
-                Nombre total de commentaires ajoutés
+                ®report_row_total_comment®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_comment(); ?></td>
@@ -413,7 +411,7 @@
             aria-expanded="false" aria-controls="list_cours_comment"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                Liste des cours contenant des commentaires
+                ®report_row_cours_comment®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_cours_comment(); ?></td>
@@ -441,7 +439,7 @@
         
         <tr> 
             <td>
-                Nombre total de signets (personnels et officiels) ajoutés (traces)
+                ®report_row_total_bookmark®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_bookmark(); ?></td>
@@ -451,7 +449,7 @@
         
         <tr> 
             <td>
-                Nombre total de signets officiels ajoutés (traces)
+                ®report_row_bookmark_official®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_offi_bookmark(); ?></td>
@@ -461,7 +459,7 @@
         
         <tr> 
             <td>
-                Nombre total de signets personnels ajoutés (traces)
+                ®report_row_bookmark_personal®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_pers_bookmark(); ?></td>
@@ -471,8 +469,7 @@
         
         <tr> 
             <td>
-                Nombre total d'utilisateurs différents ayant ajouté des signets
-                officiels (traces)
+                ®report_row_bookmark_user_official®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_user_offi_bookmark(); ?></td>
@@ -482,8 +479,7 @@
         
         <tr> 
             <td>
-                Nombre total d'utilisateurs différents ayant ajouté des signets
-                personnels (traces)
+                ®report_row_bookmark_user_personal®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_user_pers_bookmark(); ?></td>
@@ -495,17 +491,17 @@
 </table>
 <?php } ?>
 
-<h3>Information pour la période</h3>
+<h3>®report_title_date_info®</h3>
 
 <?php if(!empty($allClassRoom)) { ?>
 <div class="col-md-12">
-    <h5>Utilisation des auditoires</h5>
+    <h5>®report_classroom_utilisation®</h5>
     <table class="table table-bordered table-hover"> 
         <thead> 
             <tr> 
-                <th class="col-md-10">Auditoire</th> 
-                <th class="col-md-1">Nombre d'enregistrements</th> 
-                <th class="col-md-1">Temps d'enregistrements</th> 
+                <th class="col-md-10">®report_classroom®</th> 
+                <th class="col-md-1">®report_record_number®</th> 
+                <th class="col-md-1">®report_record_time®</th> 
             </tr> 
         </thead> 
         <tbody> 
@@ -517,21 +513,21 @@
             } ?>
             <tr class="warning"> 
                 <td>
-                    Total Submit
+                    ®report_total_submit®
                 </td>
                 <td><?php echo $totalSubmit['nbr']; ?></td>
                 <td><?php echo convert_seconds($totalSubmit['time']); ?></td> 
             </tr>
             <tr class="warning"> 
                 <td>
-                    Total Classroom
+                    ®report_total_classroom®
                 </td>
                 <td><?php echo $totalClassroom['nbr']; ?></td>
                 <td><?php echo convert_seconds($totalClassroom['time']); ?></td> 
             </tr>
             <tr class="danger"> 
                 <td>
-                    Total
+                    ®report_total®
                 </td>
                 <td><?php echo ($totalSubmit['nbr']+$totalClassroom['nbr']); ?></td>
                 <td><?php echo convert_seconds($totalSubmit['time']+$totalClassroom['time']); ?></td> 
@@ -544,10 +540,10 @@
     <br />
     <div class="progress">
         <div class="progress-bar progress-bar-success" style="width: <?php echo $percentSubmit; ?>%">
-            <?php echo $percentSubmit; ?>% vidéos soumises
+            <?php echo $percentSubmit; ?>% ®report_video_submit®
         </div>
         <div class="progress-bar progress-bar-info" style="width: <?php echo $percentAuditoir; ?>%">
-            <?php echo $percentAuditoir; ?>% video enregistrées
+            <?php echo $percentAuditoir; ?>% ®report_video_record®
         </div>
     </div>
 </div>
@@ -562,7 +558,7 @@
                 zoomType: 'xy'
             },
             title: {
-                text: 'Utilisation des auditoires'
+                text: "®report_classroom_utilisation®"
             },
             xAxis: [{
                 categories: ['<?php echo implode("', '", array_keys($allClassRoom)); ?>'],
@@ -575,14 +571,14 @@
                     }
                 },
                 title: {
-                    text: 'Nombre d\'enregistrement',
+                    text: "®report_record_number®",
                     style: {
                         color: Highcharts.getOptions().colors[1]
                     }
                 }
             }, { // Secondary yAxis
                 title: {
-                    text: 'Temps',
+                    text: "®report_record_time®",
                     style: {
                         color: Highcharts.getOptions().colors[0]
                     }
@@ -606,19 +602,18 @@
                     min = Math.floor((this.points[0].y/60)%60);
                     sec = this.points[0].y%60;
                     return '<b>' + this.x + ':</b><br />' +
-                            'Temps d\'enregistrement: <b>' + convert_seconds(this.points[0].y) + '</b><br /><b>' + 
-                            this.points[1].y + '</b> enregistrement' + 
+                            "®report_record_time®: <b>" + 
+                            convert_seconds(this.points[0].y) + '</b><br /><b>' + 
+                            this.points[1].y + '</b> ®report_nbr_record®' + 
                             ((this.points[1].y > 1) ? 's' : '');
                 }
             },
             series: [{
-                name: 'Temps',
                 type: 'column',
                 yAxis: 1,
                 data: [<?php echo implode(', ', array_map(function ($ar) {return $ar['time'];}, $allClassRoom)); ?>]
 
             }, {
-                name: 'Enregistrement',
                 type: 'column',
                 data: [<?php echo implode(', ', array_map(function ($ar) {return $ar['nbr'];}, $allClassRoom)); ?>]
             }]
@@ -654,7 +649,7 @@
 </div>
 
 <div class="col-md-2">
-    <h5>Auditoire inutilisé</h5>
+    <h5>®report_classroom_unused®</h5>
     <ul>
     <?php foreach($classroom_not_use as $classroom) {
         echo '<li>'.$classroom.'</li>';
@@ -667,12 +662,12 @@
 
 <?php if($ezplayer) { ?>
 <div class="col-md-12"><br />
-    <h4>EZPlayer</h4>
+    <h4>®report_form_ezplayer®</h4>
     <table class="table table-bordered table-hover"> 
         <thead> 
             <tr> 
                 <th class="col-md-10"></th> 
-                <th class="col-md-1">Valeur</th> 
+                <th class="col-md-1">®report_row_value®</th> 
             </tr> 
         </thead> 
         <tbody> 
@@ -680,7 +675,7 @@
                 aria-expanded="false" aria-controls="list_user_login"> 
                 <td>
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    Nombre d'utilisateurs (authentifiés) différents pour la période donnée
+                    ®report_row_user_login®
                 </td>
                 <td><?php echo $report->get_ezplayer_nbr_date_list_user_login(); ?></td> 
             </tr>
@@ -688,8 +683,8 @@
                 <td colspan="3" class="hidden_row">
                     <div class="accordian-body collapse list_user_login" style="padding: 5px" id="list_user_login" 
                          aria-labelledby="list_user_login">
-                        <div class="col-md-2"><b>Nombre de connexion</b></div>
-                        <div class="col-md-10"><b>Utilisateur</b></div>
+                        <div class="col-md-2"><b>®report_nbr_connexion®</b></div>
+                        <div class="col-md-10"><b>®report_user®</b></div>
                         <?php $i=0;
                         foreach($report->get_ezplayer_date_list_user_login() as $user => $nbr) { 
                             if(++$i > $MAX_DETAILS_LIST) { break; }
@@ -704,7 +699,7 @@
             
             <tr> 
                 <td>
-                    Nombre d'utilisateurs (anonymes) pour la période donnée 
+                    ®report_row_nbr_anonym_user®
                 </td>
                 <td><?php echo $report->get_ezplayer_nbr_date_list_ip_login(); ?></td> 
             </tr>
@@ -713,16 +708,16 @@
                 aria-expanded="false" aria-controls="list_user_browser"> 
                 <td colspan="2">
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    Classement des navigateurs web | OS par ordre d'utilisation pour la période donnée
+                    ®report_row_user_browser®
                 </td>
             </tr>
             <tr>
                 <td colspan="3" class="hidden_row">
                     <div class="accordian-body collapse list_user_browser" style="padding: 5px" id="list_user_browser" 
                          aria-labelledby="list_user_browser">
-                        <div class="col-md-2"><b>Nombre de Connexion</b></div>
-                        <div class="col-md-2 col-md-offset-1"><b>Navigateur</b></div>
-                        <div class="col-md-7"><b>Système d'exploitation</b></div>
+                        <div class="col-md-2"><b>®report_nbr_connexion®</b></div>
+                        <div class="col-md-2 col-md-offset-1"><b>®report_browser®</b></div>
+                        <div class="col-md-7"><b>®report_os®</b></div>
                         <?php $i=0;
                         foreach($report->get_ezplayer_date_list_user_browser() as $browser => $nbr) { 
                             if(++$i > $MAX_DETAILS_LIST) { break; } $strBrowser = explode('|', $browser);
@@ -741,8 +736,7 @@
                 aria-expanded="false" aria-controls="list_album"> 
                 <td>
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    Nombre d'albums différents consultés pour la période donnée (parcourir l'album, sans 
-                    forcément cliquer sur un asset)
+                    ®report_row_list_album®
                 </td>
                 <td><?php echo $report->get_ezplayer_nbr_date_list_album(); ?></td> 
             </tr>
@@ -766,12 +760,7 @@
                 aria-expanded="false" aria-controls="list_album_click"> 
                 <td>
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    Nombre d'albums différents contenant au moins un asset ayant 
-                    été consulté pour la période donnée. 
-                    Contrairement aux albums consultés, qui peuvent avoir été 
-                    parcourus sans avoir cliqué sur aucune vidéo, ce nombre-ci 
-                    ne tient compte que des albums dans lesquels au moins un 
-                    utilisateur a consulté au moins un asset. 
+                    ®report_row_album_click®
                 </td>
                 <td><?php echo $report->get_ezplayer_nbr_date_list_album_click(); ?></td> 
             </tr>
@@ -793,17 +782,17 @@
             
             <tr> 
                 <td>
-                    Nombre d'assets différents consultés pour la période donnée
+                    ®report_row_nbr_unique_asset®
                 </td>
                 <td><?php echo $report->get_ezplayer_nbr_date_unique_asset(); ?></td> 
             </tr>
             
             <tr> 
                 <td>
-                    Nombre de consultations d'assets total pour la période donnée
+                    ®report_row_nbr_asset®
                     <p class="help-block" style="margin: 1px;">
                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                        Un même asset peut avoir été consulté plusieurs fois
+                        ®report_warning_asset®
                     </p>
                 </td>
                 <td><?php echo $report->get_ezplayer_nbr_date_asset(); ?></td> 
@@ -813,15 +802,15 @@
                 aria-expanded="false" aria-controls="unique_asset"> 
                 <td colspan="2">
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    Assets les plus consultés
+                    ®report_row_list_asset®
                 </td>
             </tr>
             <tr>
                 <td colspan="3" class="hidden_row">
                     <div class="accordian-body collapse unique_asset" style="padding: 5px" id="unique_asset" 
                          aria-labelledby="unique_asset">
-                        <div class="col-md-2"><b>Nombre de consultation</b></div>
-                        <div class="col-md-10"><b>Asset</b></div>
+                        <div class="col-md-2"><b>®report_row_view_number®</b></div>
+                        <div class="col-md-10"><b>®report_asset®</b></div>
                         <?php $i=0;
                         foreach($report->get_ezplayer_date_unique_asset() as $asset => $nbr) { 
                             if(++$i > $MAX_DETAILS_LIST) { break; }
@@ -842,16 +831,15 @@
                 aria-expanded="false" aria-controls="cours_pers_bookmark"> 
                 <td colspan="2">
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    Cours dans lesquels le plus de signets (officiels et personnels)
-                    ont été ajoutés
+                    ®report_row_cours_bookmark_personal®
                 </td>
             </tr>
             <tr>
                 <td colspan="3" class="hidden_row">
                     <div class="accordian-body collapse cours_pers_bookmark" style="padding: 5px" id="cours_pers_bookmark" 
                          aria-labelledby="cours_pers_bookmark">
-                        <div class="col-md-2"><b>Signet ajouté</b></div>
-                        <div class="col-md-10"><b>Cours</b></div>
+                        <div class="col-md-2"><b>®report_bookmark_add®</b></div>
+                        <div class="col-md-10"><b>®report_cours®</b></div>
                         <?php $i=0;
                         foreach($report->get_ezplayer_date_cours_pers_bookmark() as $cours => $nbr) { 
                             if(++$i > $MAX_DETAILS_LIST) { break; }
@@ -868,15 +856,15 @@
                 aria-expanded="false" aria-controls="user_offi_bookmark"> 
                 <td colspan="2">
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    Utilisateurs ajoutant le plus de signets officiels
+                    ®report_row_cours_bookmark_official®
                 </td>
             </tr>
             <tr>
                 <td colspan="3" class="hidden_row">
                     <div class="accordian-body collapse user_offi_bookmark" style="padding: 5px" id="user_offi_bookmark" 
                          aria-labelledby="user_offi_bookmark">
-                        <div class="col-md-2"><b>Signet ajouté</b></div>
-                        <div class="col-md-10"><b>Utilisateur</b></div>
+                        <div class="col-md-2"><b>®report_bookmark_add®</b></div>
+                        <div class="col-md-10"><b>®report_user®</b></div>
                         <?php $i=0;
                         foreach($report->get_ezplayer_date_user_offi_bookmark() as $user => $nbr) { 
                             if(++$i > $MAX_DETAILS_LIST) { break; }

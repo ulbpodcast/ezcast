@@ -690,6 +690,131 @@
         <label id="stats_average" lang="fr">Moyenne</label>
         <label id="stats_average" lang="en">Average</label>
         
+        <!-- Report -->
+        <label id="report_form_general" lang="fr">Général</label>
+        <label id="report_form_general" lang="en">General</label>
+        <label id="report_form_ezplayer" lang="fr">EZPlayer</label>
+        <label id="report_form_ezplayer" lang="en">EZPlayer</label>
+        <label id="report_form_generate" lang="fr">Générer</label>
+        <label id="report_form_generate" lang="en">Generate</label>
+        <label id="report_info_date" lang="fr">Les informations se trouvant dans la colonne "Période" concernent les informations récupéres entre le</label>
+        <label id="report_info_date" lang="en">The informations in the "Period" column concern retrieved informations between</label>
+        <label id="report_info_date_end" lang="fr">et le</label>
+        <label id="report_info_date_end" lang="en">and</label>
+        <label id="report_column_general" lang="fr">Général</label>
+        <label id="report_column_general" lang="en">General</label>
+        <label id="report_column_date" lang="fr">Période</label>
+        <label id="report_column_date" lang="en">Period</label>
+        <label id="report_row_all_author" lang="fr">Nombre d'utilisateurs différents (ayant soumis des vidéos et/ou ayant enregistré en auditoire)</label>
+        <label id="report_row_all_author" lang="en">Number of different users (who submitted videos and/or have registered in classroom)</label>
+        <label id="report_row_submit_author" lang="fr">Nombre d'utilisateurs différents ayant soumis des vidéos</label>
+        <label id="report_row_submit_author" lang="en">Number of different users that submitted videos</label>
+        <label id="report_row_record_author" lang="fr">Nombre d'utilisateurs différents ayant enregistré en auditoire</label>
+        <label id="report_row_record_author" lang="en">Number of different users having registered in classroom</label>
+        <label id="report_row_list_cours" lang="fr">Nombre de cours différents (contenant des capsules et/ou des enregistrements en auditoire)</label>
+        <label id="report_row_list_cours" lang="en">Number of different courses (containing capsules and/or classroom records)</label>
+        <label id="report_row_list_cours_submit" lang="fr">Nombre de cours différents contenant des capsules</label>
+        <label id="report_row_list_cours_submit" lang="en">Number of different courses containing capsules</label>
+        <label id="report_row_list_cours_record" lang="fr">Nombre de cours différents contenant des enregistrements faits en auditoire</label>
+        <label id="report_row_list_cours_record" lang="en">Number of different courses containing classroom recordings</label>
+        <label id="report_row_no_delete_test" lang="fr">Ne tient pas compte des assets supprimés ni des tests </label>
+        <label id="report_row_no_delete_test" lang="en">Ignores deleted or tested assets</label>
+        <label id="report_row_total_asset" lang="fr">Nombre d'assets ajoutés au repository (capsules + cours enregistrés)</label>
+        <label id="report_row_total_asset" lang="en">Number of assets added to the repository (capsules + cours recorded)</label>
+        <label id="report_row_asset_submit" lang="fr">Nombre de capsules soumises dans le repository</label>
+        <label id="report_row_asset_submit" lang="en">Number of capsules submit in the repository</label>
+        <label id="report_row_asset_record" lang="fr">Nombre de cours enregistrés ajoutés au repository</label>
+        <label id="report_row_asset_record" lang="en">Number of registered courses added to the repository</label>
+        <label id="report_row_total_users" lang="fr">Nombre total d'utilisateurs différents</label>
+        <label id="report_row_total_users" lang="en">Total number of different users</label>
+        <label id="report_row_total_thread" lang="fr">Nombre total de discussions créées</label>
+        <label id="report_row_total_thread" lang="en">Total number of threads created</label>
+        <label id="report_row_cours_thread" lang="fr">Liste des cours contenant des discussions</label>
+        <label id="report_row_cours_thread" lang="en">Course list containing discussions</label>
+        <label id="report_row_total_comment" lang="fr">Nombre total de commentaires ajoutés</label>
+        <label id="report_row_total_comment" lang="en">Total number of comment added</label>
+        <label id="report_row_cours_comment" lang="fr">Liste des cours contenant des commentaires</label>
+        <label id="report_row_cours_comment" lang="en">Course list containing comments</label>
+        <label id="report_row_total_bookmark" lang="fr">Nombre total de signets (personnels et officiels) ajoutés (traces)</label>
+        <label id="report_row_total_bookmark" lang="en">Total number of bookmarks (personal and official) added (traces)</label>
+        <label id="report_row_bookmark_official" lang="fr">Nombre total de signets officiels ajoutés (traces)</label>
+        <label id="report_row_bookmark_official" lang="en">Total official added bookmarks (traces)</label>
+        <label id="report_row_bookmark_personal" lang="fr">Nombre total de signets personnels ajoutés (traces)</label>
+        <label id="report_row_bookmark_personal" lang="en">Total added personal bookmarks (traces)</label>
+        <label id="report_row_bookmark_user_official" lang="fr">Nombre total d'utilisateurs différents ayant ajouté des signets officiels (traces)</label>
+        <label id="report_row_bookmark_user_official" lang="en">Total number of different users who have add bookmarks official (traces)</label>
+        <label id="report_row_bookmark_user_personal" lang="fr">Nombre total d'utilisateurs différents ayant ajouté des signets personnels (traces)</label>
+        <label id="report_row_bookmark_user_personal" lang="en">Total number of different users who have add bookmarks personal (traces)</label>
+        <label id="report_title_date_info" lang="fr">Information pour la période</label>
+        <label id="report_title_date_info" lang="en">Information for the period</label>
+        <label id="report_classroom_utilisation" lang="fr">Utilisation des auditoires</label>
+        <label id="report_classroom_utilisation" lang="en">Classroom utilisation</label>
+        <label id="report_classroom" lang="fr">Auditoire</label>
+        <label id="report_classroom" lang="en">Classroom</label>
+        <label id="report_record_number" lang="fr">Nombre d'enregistrements</label>
+        <label id="report_record_number" lang="en">Number of records</label>
+        <label id="report_record_time" lang="fr">Temps d'enregistrements</label>
+        <label id="report_record_time" lang="en">Records time</label>
+        <label id="report_total_submit" lang="fr">Total envoyé</label>
+        <label id="report_total_submit" lang="en">Total submit</label>
+        <label id="report_total_classroom" lang="fr">Total en auditoire</label>
+        <label id="report_total_classroom" lang="en">Total Classroom</label>
+        <label id="report_total" lang="fr">Total</label>
+        <label id="report_total" lang="en">Total</label>
+        <label id="report_video_submit" lang="fr">vidéos soumises</label>
+        <label id="report_video_submit" lang="en">submited videos</label>
+        <label id="report_video_record" lang="fr">vidéos enregistrées</label>
+        <label id="report_video_record" lang="en">recorded videos</label>
+        <label id="report_nbr_record" lang="fr">enregistrement</label>
+        <label id="report_nbr_record" lang="en">record</label>
+        <label id="report_classroom_unused" lang="fr">Auditoire inutilisé</label>
+        <label id="report_classroom_unused" lang="en">Unused classroom</label>
+        <label id="report_row_value" lang="fr">Valeur</label>
+        <label id="report_row_value" lang="en">Value</label>
+        <label id="report_row_user_login" lang="fr">Nombre d'utilisateurs (authentifiés) différents pour la période donnée</label>
+        <label id="report_row_user_login" lang="en">Number of different users (authenticated) for current period</label>
+        <label id="report_nbr_connexion" lang="fr">Nombre de connexion</label>
+        <label id="report_nbr_connexion" lang="en">Number of connection</label>
+        <label id="report_user" lang="fr">Utilisateur</label>
+        <label id="report_user" lang="en">User</label>
+        <label id="report_row_nbr_anonym_user" lang="fr">Nombre d'utilisateurs (anonymes) pour la période donnée </label>
+        <label id="report_row_nbr_anonym_user" lang="en">Number of users (anonymous) for the period</label>
+        <label id="report_row_user_browser" lang="fr">Classement des navigateurs web | OS par ordre d'utilisation pour la période donnée</label>
+        <label id="report_row_user_browser" lang="en">Ranking web browsers | OS in order of use for the given period</label>
+        <label id="report_browser" lang="fr">Navigateur</label>
+        <label id="report_browser" lang="en">Browser</label>
+        <label id="report_os" lang="fr">Système d'exploitation</label>
+        <label id="report_os" lang="en">Operating system</label>
+        <label id="report_row_list_album" lang="fr">Nombre d'albums différents consultés pour la période donnée (parcourir l'album, sans forcément cliquer sur un asset)</label>
+        <label id="report_row_list_album" lang="en">Number of different albums found for the given period (the album cover, without necessarily clicking an asset)</label>
+        <label id="report_row_album_click" lang="fr">Nombre d'albums différents contenant au moins un asset ayant été consulté pour la période donnée. 
+            Contrairement aux albums consultés, qui peuvent avoir été parcourus sans avoir cliqué sur aucune vidéo, ce nombre-ci ne tient compte que des albums 
+            dans lesquels au moins un utilisateur a consulté au moins un asset. </label>
+        <label id="report_row_album_click" lang="en">Number of different albums containing at least one asset that was consulted for 
+            the given period. Unlike consulted albums, which may have been driven without clicking any video, that number will consider only 
+            the albums that at least one user has consulted at least one asset.</label>
+        <label id="report_row_nbr_unique_asset" lang="fr">Nombre d'assets différents consultés pour la période donnée</label>
+        <label id="report_row_nbr_unique_asset" lang="en">Number of different assets found for the given period</label>
+        <label id="report_row_nbr_asset" lang="fr">Nombre de consultations d'assets total pour la période donnée</label>
+        <label id="report_row_nbr_asset" lang="en">Number of consultations of the total assets for the period</label>
+        <label id="report_warning_asset" lang="fr">Un même asset peut avoir été consulté plusieurs fois</label>
+        <label id="report_warning_asset" lang="en">One asset may have been consulted several times</label>
+        <label id="report_row_list_asset" lang="fr">Assets les plus consultés</label>
+        <label id="report_row_list_asset" lang="en">Most viewed assets</label>
+        <label id="report_row_view_number" lang="fr">Nombre de consulation</label>
+        <label id="report_row_view_number" lang="en">View number</label>
+        <label id="report_asset" lang="fr">Asset</label>
+        <label id="report_asset" lang="en">Asset</label>
+        <label id="report_row_cours_bookmark_personal" lang="fr">Cours dans lesquels le plus de signets (personnels) ont été ajoutés</label>
+        <label id="report_row_cours_bookmark_personal" lang="en">Courses in which most of bookmarks (personal) were added</label>
+        <label id="report_bookmark_add" lang="fr">Signet ajouté</label>
+        <label id="report_bookmark_add" lang="en">Add bookmark</label>
+        <label id="report_cours" lang="fr">Cours</label>
+        <label id="report_cours" lang="en">Cours</label>
+        <label id="report_row_cours_bookmark_official" lang="fr">Utilisateurs ajoutant le plus de signets officiels</label>
+        <label id="report_row_cours_bookmark_official" lang="en">Courses in wich most of bookmarks (official) were added</label>
+        
+        
         
         <!-- Long texts -->
         <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, 

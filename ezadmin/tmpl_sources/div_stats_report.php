@@ -350,7 +350,7 @@
     <tbody> 
         <tr> 
             <td>
-                ®report_row_total_users®
+                ®report_ezplayer_row_total_users®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_nbr_total_user(); ?></td>
@@ -359,7 +359,7 @@
         </tr>
         <tr> 
             <td>
-                ®report_row_total_thread®
+                ®report_ezplayer_row_total_thread®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_thread(); ?></td>
@@ -371,7 +371,7 @@
             aria-expanded="false" aria-controls="list_cours_thread"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                ®report_row_cours_thread®
+                ®report_ezplayer_row_course_thread®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_cours_thread(); ?></td>
@@ -399,7 +399,7 @@
         
         <tr> 
             <td>
-                ®report_row_total_comment®
+                ®report_ezplayer_row_total_comment®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_comment(); ?></td>
@@ -411,7 +411,7 @@
             aria-expanded="false" aria-controls="list_cours_comment"> 
             <td>
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                ®report_row_cours_comment®
+                ®report_ezplayer_row_course_comment®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_cours_comment(); ?></td>
@@ -439,7 +439,7 @@
         
         <tr> 
             <td>
-                ®report_row_total_bookmark®
+                ®report_ezplayer_row_total_bookmark®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_bookmark(); ?></td>
@@ -449,7 +449,7 @@
         
         <tr> 
             <td>
-                ®report_row_bookmark_official®
+                ®report_ezplayer_row_bookmark_official®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_offi_bookmark(); ?></td>
@@ -459,7 +459,7 @@
         
         <tr> 
             <td>
-                ®report_row_bookmark_personal®
+                ®report_ezplayer_row_bookmark_personal®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_total_pers_bookmark(); ?></td>
@@ -469,7 +469,7 @@
         
         <tr> 
             <td>
-                ®report_row_bookmark_user_official®
+                ®report_ezplayer_row_bookmark_user_official®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_user_offi_bookmark(); ?></td>
@@ -479,7 +479,7 @@
         
         <tr> 
             <td>
-                ®report_row_bookmark_user_personal®
+                ®report_ezplayer_row_bookmark_user_personal®
             </td>
             <?php if($general) { ?>
             <td><?php echo $report->get_ezplayer_nbr_list_user_pers_bookmark(); ?></td>

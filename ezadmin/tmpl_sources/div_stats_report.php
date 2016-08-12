@@ -389,7 +389,8 @@
                         if(++$i > $MAX_DETAILS_LIST) { break; }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'
-                            . '<a href="index.php?action=view_course_details&course_code='.$cours.'" target="_blank">'
+                            . '<a class="hidden-print-link" target="_blank" '
+                                . 'href="index.php?action=view_course_details&course_code='.$cours.'" >'
                             .$cours
                             . '</a></div>';
                     } 
@@ -429,7 +430,8 @@
                         if(++$i > $MAX_DETAILS_LIST) { break; }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'
-                            . '<a href="index.php?action=view_course_details&course_code='.$cours.'" target="_blank">'
+                            . '<a href="index.php?action=view_course_details&course_code='.$cours.'"'
+                                . ' class="hidden-print-link" target="_blank">'
                             .$cours
                             . '</a></div>';
                     } 
@@ -823,7 +825,7 @@
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.
                                     '<a href="./index.php?action=view_events&post=&asset='.$asset.'"'
-                                    . 'target="_blank">'.
+                                    . 'target="_blank" class="hidden-print-link" >'.
                                     $asset
                                     .'</a></div>';
                         } 
@@ -886,6 +888,7 @@
         </tbody>
     </table>
     
+    <?php if($json_view_asset_data != "[[]]") { ?>
     <div class="col-md-12">
         <div id="container_asset_view" style="height: 500px; min-width: 500px"></div>
         
@@ -913,8 +916,8 @@
             });
         });
         </script>
-        
     </div>
+    <?php } ?>
 </div>
 <?php 
 }

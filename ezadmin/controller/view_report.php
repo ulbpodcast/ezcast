@@ -8,8 +8,8 @@ function index($param = array()) {
     global $input;
     
     // DEBUG TIME
-    $time = explode(' ', microtime());
-    $start = $time[1] + $time[0];
+//    $time = explode(' ', microtime());
+//    $start = $time[1] + $time[0];
     
     if(array_key_exists('post', $input)) {
         
@@ -54,10 +54,10 @@ function index($param = array()) {
     }
         
     // DEBUG TIME
-    echo "real: ".(memory_get_peak_usage(true)/1024/1024)." MiB\n\n";
-    $time = explode(' ', microtime());
-    $finish = $time[1] + $time[0];
-    echo '<br />Page generated in '.round(($finish - $start), 4).' seconds.';
+//    echo "real: ".(memory_get_peak_usage(true)/1024/1024)." MiB\n\n";
+//    $time = explode(' ', microtime());
+//    $finish = $time[1] + $time[0];
+//    echo '<br />Page generated in '.round(($finish - $start), 4).' seconds.';
     
     // Display page
     include template_getpath('div_main_header.php');

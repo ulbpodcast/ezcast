@@ -1,38 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-
-    * EZCAST EZadmin 
-    * Copyright (C) 2016 Université libre de Bruxelles
-    *
-    * Written by Michel Jansens <mjansens@ulb.ac.be>
-    *    Arnaud Wijns <awijns@ulb.ac.be>
-    *                   Antoine Dewilde
-    *                   Thibaut Roskam
-    *
-    * This software is free software; you can redistribute it and/or
-    * modify it under the terms of the GNU Lesser General Public
-    * License as published by the Free Software Foundation; either
-    * version 3 of the License, or (at your option) any later version.
-    *
-    * This software is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    * Lesser General Public License for more details.
-    *
-    * You should have received a copy of the GNU Lesser General Public
-    * License along with this software; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-    Document   : translations.xml 
-    Author     : Université libre de Bruxelles
     Description:
         Message translations for all the user interface.
 --> 
 
 <data>
     <!-- Labels are keywords that appear in templates 
-         Note: please use the same label name as the keyword between ®'s that appears in the template -->
+         Note: use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff --> 
         <label id="service_name" lang="fr">EZadmin</label>
@@ -331,8 +306,8 @@
         <label id="delete" lang="en">Delete</label>        
         <label id="push_changes" lang="fr">Envoyer changements</label>   
         <label id="push_changes" lang="en">Push changes</label>        
-        <label id="push_changes_title" lang="fr">Envoyer changements aux recorders</label>   
-        <label id="push_changes_title" lang="en">Push changes to recorders</label>        
+        <label id="push_changes_title" lang="fr">Envoyer changements aux recorders et au manager</label>   
+        <label id="push_changes_title" lang="en">Push changes to recorders and manager</label>        
         <label id="sync_externals" lang="fr">Synchro externes</label>   
         <label id="sync_externals" lang="en">Sync externals</label>        
         <label id="unsaved_changes" lang="fr">non-sauvegardé</label>   
@@ -351,7 +326,7 @@
         <label id="list_users" lang="en">User list</label>
         <label id="room_enable_error" lang="fr">Impossible de changer l'état de cet auditoire.</label>
         <label id="room_enable_error" lang="en">Impossible to change the state of this room.</label>
-        <label id="recorder_passwd" lang="fr">Mot de passe enregistreur</label>
+        <label id="recorder_passwd" lang="fr">Mot de passe interne</label>
         <label id="recorder_passwd" lang="en">Recorder password</label>
         <label id="date_start" lang="fr">Après (YYYY-MM-dd)</label>
         <label id="date_start" lang="en">After (YYYY-MM-dd)</label>
@@ -755,10 +730,10 @@
         <label id="report_record_number" lang="en">Number of records</label>
         <label id="report_record_time" lang="fr">Temps d'enregistrements</label>
         <label id="report_record_time" lang="en">Records time</label>
-        <label id="report_total_submit" lang="fr">Total envoyé</label>
-        <label id="report_total_submit" lang="en">Total submit</label>
+        <label id="report_total_submit" lang="fr">Total soumis sur EZManager</label>
+        <label id="report_total_submit" lang="en">Total submitted using EZManager</label>
         <label id="report_total_classroom" lang="fr">Total en auditoire</label>
-        <label id="report_total_classroom" lang="en">Total Classroom</label>
+        <label id="report_total_classroom" lang="en">Total classroom</label>
         <label id="report_total" lang="fr">Total</label>
         <label id="report_total" lang="en">Total</label>
         <label id="report_video_submit" lang="fr">vidéos soumises</label>
@@ -771,48 +746,48 @@
         <label id="report_classroom_unused" lang="en">Unused classroom</label>
         <label id="report_row_value" lang="fr">Valeur</label>
         <label id="report_row_value" lang="en">Value</label>
-        <label id="report_row_user_login" lang="fr">Nombre d'utilisateurs (authentifiés) différents pour la période donnée</label>
-        <label id="report_row_user_login" lang="en">Number of different users (authenticated) for current period</label>
-        <label id="report_nbr_connexion" lang="fr">Nombre de connexion</label>
-        <label id="report_nbr_connexion" lang="en">Number of connection</label>
-        <label id="report_user" lang="fr">Utilisateur</label>
-        <label id="report_user" lang="en">User</label>
-        <label id="report_row_nbr_anonym_user" lang="fr">Nombre d'utilisateurs (anonymes) pour la période donnée </label>
-        <label id="report_row_nbr_anonym_user" lang="en">Number of users (anonymous) for the period</label>
+        <label id="report_row_user_login" lang="fr">Utilisateurs authentifiés différents pour la période donnée</label>
+        <label id="report_row_user_login" lang="en">Authenticated users for current period</label>
+        <label id="report_nbr_connexion" lang="fr">Connexions</label>
+        <label id="report_nbr_connexion" lang="en">Connections</label>
+        <label id="report_user" lang="fr">Utilisateur (id)</label>
+        <label id="report_user" lang="en">User (id)</label>
+        <label id="report_row_nbr_anonym_user" lang="fr">Utilisateurs anonymes pour la période donnée </label>
+        <label id="report_row_nbr_anonym_user" lang="en">Anonymous users for the period</label>
         <label id="report_row_user_browser" lang="fr">Classement des navigateurs web | OS par ordre d'utilisation pour la période donnée</label>
         <label id="report_row_user_browser" lang="en">Ranking web browsers | OS in order of use for the given period</label>
         <label id="report_browser" lang="fr">Navigateur</label>
         <label id="report_browser" lang="en">Browser</label>
         <label id="report_os" lang="fr">Système d'exploitation</label>
         <label id="report_os" lang="en">Operating system</label>
-        <label id="report_row_list_album" lang="fr">Nombre d'albums différents consultés pour la période donnée (parcourir l'album, sans forcément cliquer sur un asset)</label>
-        <label id="report_row_list_album" lang="en">Number of different albums found for the given period (the album cover, without necessarily clicking an asset)</label>
-        <label id="report_row_album_click" lang="fr">Nombre d'albums différents contenant au moins un asset ayant été consulté pour la période donnée. 
+        <label id="report_row_list_album" lang="fr">Albums consultés pour la période donnée (parcourir l'album, sans forcément cliquer sur un asset)</label>
+        <label id="report_row_list_album" lang="en">Albums browsed for the given period (the album cover, without necessarily clicking an asset)</label>
+        <label id="report_row_album_click" lang="fr">Albums contenant au moins un asset ayant été consulté pour la période donnée. 
             Contrairement aux albums consultés, qui peuvent avoir été parcourus sans avoir cliqué sur aucune vidéo, ce nombre-ci ne tient compte que des albums 
             dans lesquels au moins un utilisateur a consulté au moins un asset. </label>
         <label id="report_row_album_click" lang="en">Number of different albums containing at least one asset that was consulted for 
-            the given period. Unlike consulted albums, which may have been driven without clicking any video, that number will consider only 
-            the albums that at least one user has consulted at least one asset.</label>
-        <label id="report_row_nbr_unique_asset" lang="fr">Nombre d'assets différents consultés pour la période donnée</label>
-        <label id="report_row_nbr_unique_asset" lang="en">Number of different assets found for the given period</label>
-        <label id="report_row_nbr_asset" lang="fr">Nombre de consultations d'assets total pour la période donnée</label>
-        <label id="report_row_nbr_asset" lang="en">Number of consultations of the total assets for the period</label>
-        <label id="report_warning_asset" lang="fr">Un même asset peut avoir été consulté plusieurs fois</label>
-        <label id="report_warning_asset" lang="en">One asset may have been consulted several times</label>
+            the given period. Unlike consulted albums, which may have been viewed without clicking any video, that number will consider only 
+            the albums with at least one user which has consulted at least one asset.</label>
+        <label id="report_row_nbr_unique_asset" lang="fr">Assets consultés pour la période donnée</label>
+        <label id="report_row_nbr_unique_asset" lang="en">Assets found for given period</label>
+        <label id="report_row_nbr_asset" lang="fr">Total consultations d'asset pour la période donnée</label>
+        <label id="report_row_nbr_asset" lang="en">Total asset consultations for given period period</label>
+        <label id="report_warning_asset" lang="fr">Un même utilisateur est compté plusieurs fois s'il regarde plusieurs fois le même asset</label>
+        <label id="report_warning_asset" lang="en">One user will be counted several times if he views several time the same asset</label>
         <label id="report_row_list_asset" lang="fr">Assets les plus consultés</label>
         <label id="report_row_list_asset" lang="en">Most viewed assets</label>
-        <label id="report_row_view_number" lang="fr">Nombre de consulation</label>
-        <label id="report_row_view_number" lang="en">View number</label>
+        <label id="report_row_view_number" lang="fr">Consulations</label>
+        <label id="report_row_view_number" lang="en">Consultations</label>
         <label id="report_asset" lang="fr">Asset</label>
         <label id="report_asset" lang="en">Asset</label>
-        <label id="report_row_cours_bookmark_personal" lang="fr">Cours dans lesquels le plus de signets (personnels) ont été ajoutés</label>
-        <label id="report_row_cours_bookmark_personal" lang="en">Courses in which most of bookmarks (personal) were added</label>
-        <label id="report_bookmark_add" lang="fr">Signet ajouté</label>
-        <label id="report_bookmark_add" lang="en">Add bookmark</label>
+        <label id="report_row_cours_bookmark_personal" lang="fr">Cours dans lesquels le plus de signets personnels ont été ajoutés</label>
+        <label id="report_row_cours_bookmark_personal" lang="en">Courses in which most of personal bookmarks were added</label>
+        <label id="report_bookmark_add" lang="fr">Signet(s) ajouté(s)</label>
+        <label id="report_bookmark_add" lang="en">Bookmark(s) added</label>
         <label id="report_cours" lang="fr">Cours</label>
         <label id="report_cours" lang="en">Cours</label>
-        <label id="report_row_cours_bookmark_official" lang="fr">Utilisateurs ajoutant le plus de signets officiels</label>
-        <label id="report_row_cours_bookmark_official" lang="en">Courses in wich most of bookmarks (official) were added</label>
+        <label id="report_row_cours_bookmark_official" lang="fr">Utilisateurs ayant le plus de signets officiels</label>
+        <label id="report_row_cours_bookmark_official" lang="en">Users with most of bookmarks (official)</label>
         
         
         

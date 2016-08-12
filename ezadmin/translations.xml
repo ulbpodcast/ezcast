@@ -336,6 +336,8 @@
         <label id="from_date" lang="en">From</label>
         <label id="to_date" lang="fr">A</label>
         <label id="to_date" lang="en">To</label>
+        <label id="loading" lang="fr">Chargement</label>
+        <label id="loading" lang="en">Loading</label>
         <label id="table" lang="fr">Catégorie</label>
         <label id="table" lang="en">Category</label>
         <label id="table_users" lang="fr">Utilisateurs</label>
@@ -762,12 +764,12 @@
         <label id="report_os" lang="en">Operating system</label>
         <label id="report_row_list_album" lang="fr">Albums consultés pour la période donnée (parcourir l'album, sans forcément cliquer sur un asset)</label>
         <label id="report_row_list_album" lang="en">Albums browsed for the given period (the album cover, without necessarily clicking an asset)</label>
-        <label id="report_row_album_click" lang="fr">Albums contenant au moins un asset ayant été consulté pour la période donnée. 
-            Contrairement aux albums consultés, qui peuvent avoir été parcourus sans avoir cliqué sur aucune vidéo, ce nombre-ci ne tient compte que des albums 
-            dans lesquels au moins un utilisateur a consulté au moins un asset. </label>
-        <label id="report_row_album_click" lang="en">Number of different albums containing at least one asset that was consulted for 
-            the given period. Unlike consulted albums, which may have been viewed without clicking any video, that number will consider only 
-            the albums with at least one user which has consulted at least one asset.</label>
+        <label id="report_row_album_click" lang="fr">Albums contenant au moins un asset ayant été consulté pour la période donnée.</label> 
+        <label id="report_row_album_click" lang="en">Number of different albums containing at least one asset that was consulted for the given period.</label>
+        <label id="report_row_album_click_info" lang="fr">Contrairement aux albums consultés, qui peuvent avoir été parcourus sans avoir cliqué sur 
+            aucune vidéo, ce nombre-ci ne tient compte que des albums dans lesquels au moins un utilisateur a consulté au moins un asset.</label>
+        <label id="report_row_album_click_info" lang="en">Unlike consulted albums, which may have been viewed without clicking any video, 
+            that number will consider only the albums with at least one user which has consulted at least one asset.</label>
         <label id="report_row_nbr_unique_asset" lang="fr">Assets consultés pour la période donnée</label>
         <label id="report_row_nbr_unique_asset" lang="en">Assets found for given period</label>
         <label id="report_row_nbr_asset" lang="fr">Total consultations d'asset pour la période donnée</label>
@@ -788,6 +790,8 @@
         <label id="report_cours" lang="en">Cours</label>
         <label id="report_row_cours_bookmark_official" lang="fr">Utilisateurs ayant le plus de signets officiels</label>
         <label id="report_row_cours_bookmark_official" lang="en">Users with most of bookmarks (official)</label>
+        <label id="report_asset_distribution" lang="fr">Répartition des assets</label>
+        <label id="report_asset_distribution" lang="en">Asset distribution</label>
         
         
         

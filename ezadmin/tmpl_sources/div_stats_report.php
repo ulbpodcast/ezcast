@@ -53,7 +53,7 @@
             <div class="col-md-2">
                 <br />
                 <button type="submit" class="btn btn-block btn-success" 
-                        data-loading-text="<img style='height: 16px;' src='img/loading_transparent.gif'/> Loading..."
+                        data-loading-text="<img style='height: 16px;' src='img/loading_transparent.gif'/> ®loading®..."
                         onClick="$(this).button('loading');">
                     <span class="glyphicon glyphicon-refresh icon-white"></span> 
                     ®report_form_generate®
@@ -763,6 +763,10 @@
                 <td>
                     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                     ®report_row_album_click®
+                    <p class="help-block" style="margin: 1px;">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        ®report_row_album_click_info®
+                    </p>
                 </td>
                 <td><?php echo $report->get_ezplayer_nbr_date_list_album_click(); ?></td> 
             </tr>
@@ -893,15 +897,12 @@
                     selected : 1
                 },
                 title : {
-                    text : "®report_row_nbr_unique_asset®"
+                    text : "®report_asset_distribution®"
                 },
                 series : [{
                     type: 'column',
                     name : "Nombre d'asset",
                     data: <?php echo $json_view_asset_data; ?>,
-                    tooltip: {
-                        valueDecimals: 2
-                    },
                     dataGrouping: {
                         approximation: "sum",
                         enabled: true,

@@ -55,11 +55,7 @@ $distribute_url = "$ezmanager_url/distribute.php";
 
 // Absolute paths 
 $repository_basedir = "/var/lib/ezcast";
-$repository_path="$repository_basedir/repository";
 $basedir = "/usr/local/ezcast";
-
-$ezmanager_basedir = $basedir . '/ezmanager/'; // Path from the root to the source code
-$ezplayer_basedir = $basedir . '/ezplayer/'; // Path from the root to the source code
 
 // Database info
 $db_type = 'mysql';
@@ -83,8 +79,6 @@ $apache_documentroot = "/www/htdocs/"; // used by ezadmin to copy organization l
 $ssh_pub_key_location = ""; // leave empty for default location or enter absolute path to Apache user's ssh public key 
 
 $mailto_alert = "mail@your.organization"; //who to call in case of problem in the processing chain
-
-
 
 $auth_methods = array("file", "ldap");
 
@@ -111,34 +105,12 @@ $ldap_servers_auth_json_file = "$basedir/commons/ldap_servers_auth.json";
  */
 $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
 
-
-/*******************************************************/
-/** S C H E D U L I N G     C O N F I G U R A T I O N **/
-/*******************************************************/
-
-$config['paths']['scheduler'] = "$repository_basedir/queues/scheduling/";
-$config['paths']['queue'] = $config['paths']['scheduler'] . 'queue/';
-$config['paths']['processing'] = $config['paths']['scheduler'] . 'processing/';
-$config['paths']['processed'] = $config['paths']['scheduler'] . 'processed/';
-$config['paths']['failed'] = $config['paths']['scheduler'] . 'failed/';
-$config['paths']['frozen'] = $config['paths']['scheduler'] . 'frozen/';
-$config['paths']['logs'] = "$repository_basedir/queues/scheduling/logs.log";
-$config['paths']['var'] = "$ezmanager_basedir/var/";
-$config['keys']['sem'] = 82397779218067476;
-$config['scheduler']['priority'] = 10;
-$config['ssh']['timeout'] = 15;
-
-
 // -- Alternate server as streaming distribution source -- //
 
 //enable file syncing (does not redirect user)
 $streaming_video_alternate_server_enable_sync = false;
 // redirect users to given adress (see next options). Requires $streaming_video_alternate_server_enable_sync
 $streaming_video_alternate_server_enable_redirect = false;
-if($streaming_video_alternate_server_enable_redirect && !$streaming_video_alternate_server_enable_sync) {
-    // this should not happen except if you're using another solution to sync the files
-    trigger_error('Possible wrong configuration ($streaming_video_alternate_server_enable_redirect enabled while $streaming_video_alternate_server_enable_sync disabled)', E_USER_WARNING);
-}
 // -- -- //
     
 $streaming_video_alternate_server_user = "user";

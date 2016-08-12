@@ -719,7 +719,7 @@
                 <td colspan="3" class="hidden_row">
                     <div class="accordian-body collapse list_user_browser" style="padding: 5px" id="list_user_browser" 
                          aria-labelledby="list_user_browser">
-                        <div class="col-md-2"><b>®report_nbr_connexion®</b></div>
+                        <div class="col-md-2 text-right"><b>®report_nbr_connexion®</b></div>
                         <div class="col-md-2 col-md-offset-1"><b>®report_browser®</b></div>
                         <div class="col-md-7"><b>®report_os®</b></div>
                         <?php $i=0;

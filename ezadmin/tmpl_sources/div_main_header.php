@@ -30,7 +30,7 @@
         <script src="bootstrap/js/angular-bootstrap-calendar.min.js"></script>
         
         <!-- HighCharts -->
-        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/stock/highstock.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         
         <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">

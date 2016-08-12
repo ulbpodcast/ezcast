@@ -477,7 +477,7 @@ class Report {
         $this->array_increment_or_init($this->ezplayer_date_list_album_click, $newEntryTrace['album']);
         $this->ezplayer_date_asset[] = $newEntryTrace['asset'];
         $this->array_increment_or_init_static($this->ezplayer_asset_view_date, 
-                substr($newEntryTrace['date'], 0, 10));
+                strtotime(substr($newEntryTrace['date'], 0, 10)).'000');
     }
     
     

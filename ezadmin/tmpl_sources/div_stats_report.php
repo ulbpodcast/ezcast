@@ -52,7 +52,8 @@
             </div>
             <div class="col-md-2">
                 <br />
-                <button type="submit" class="btn btn-block btn-success" data-loading-text="Loading..."
+                <button type="submit" class="btn btn-block btn-success" 
+                        data-loading-text="<img style='height: 16px;' src='img/loading_transparent.gif'/> Loading..."
                         onClick="$(this).button('loading');">
                     <span class="glyphicon glyphicon-refresh icon-white"></span> 
                     ®report_form_generate®
@@ -892,12 +893,12 @@
                     selected : 1
                 },
                 title : {
-                    text : 'AAPL Stock Price'
+                    text : "®report_row_nbr_unique_asset®"
                 },
                 series : [{
                     type: 'column',
-                    name : 'AAPL',
-                    data: <?php echo json_encode($report->get_ezplayer_asset_view_date()); ?>,
+                    name : "Nombre d'asset",
+                    data: <?php echo $json_view_asset_data; ?>,
                     tooltip: {
                         valueDecimals: 2
                     },
@@ -905,7 +906,7 @@
                         approximation: "sum",
                         enabled: true,
                         forced: true,
-                        units: [['month',[1]]],
+                        units: [['month',[1]]]
                     }
                 }]
             });
@@ -913,21 +914,6 @@
         </script>
         
     </div>
-    
-<!--    
-    <ul>
-        <li>
-            Nombre de consultations d'assets par mois pour la période donnée<br />
-            (Un même asset peut avoir été consulté plusieurs fois) 
-            <ul>
-                <?php // for($i = 1; $i <= 12; ++$i) { 
-//                    echo '<li>'.$i.':  ('.
-//                            round(($mountAsset[$i]/$report->get_ezplayer_nbr_date_asset())*100, 2).
-//                        '%) '.$mountAsset[$i].'</li>';
-//                } ?>
-            </ul>
-        </li>
-    </ul>-->
 </div>
 <?php 
 }

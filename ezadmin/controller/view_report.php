@@ -42,9 +42,11 @@ function index($param = array()) {
         // Browser
         $totalBrowser = array_sum($report->get_ezplayer_date_list_user_browser());
         
-        echo '<pre>';
-        print_r(json_encode($report->get_ezplayer_asset_view_date()));
-        echo '</pre>';
+        $json_view_asset_data = json_encode($report->get_ezplayer_asset_view_date());
+        $json_view_asset_data = str_replace(',"', '], [', $json_view_asset_data);
+        $json_view_asset_data = str_replace('":', ',', $json_view_asset_data);
+        $json_view_asset_data = substr($json_view_asset_data, 2, -1);
+        $json_view_asset_data = '[['.$json_view_asset_data.']]';
         
         
         $MAX_DETAILS_LIST = 20;

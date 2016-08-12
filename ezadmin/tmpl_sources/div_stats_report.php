@@ -52,7 +52,8 @@
             </div>
             <div class="col-md-2">
                 <br />
-                <button type="submit" class="btn btn-block btn-success">
+                <button type="submit" class="btn btn-block btn-success" data-loading-text="Loading..."
+                        onClick="$(this).button('loading');">
                     <span class="glyphicon glyphicon-refresh icon-white"></span> 
                     ®report_form_generate®
                 </button>
@@ -549,11 +550,11 @@
 </div>
 
 <div class="col-md-10">
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="container_classroom_util" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
     <script>
     $(function () {
-        $('#container').highcharts({
+        $('#container_classroom_util').highcharts({
             chart: {
                 zoomType: 'xy'
             },
@@ -880,19 +881,53 @@
         </tbody>
     </table>
     
+    <div class="col-md-12">
+        <div id="container_asset_view" style="height: 500px; min-width: 500px"></div>
+        
+        <script>
+        $(function() {
+            // Create the chart
+            $('#container_asset_view').highcharts('StockChart', {
+                rangeSelector : {
+                    selected : 1
+                },
+                title : {
+                    text : 'AAPL Stock Price'
+                },
+                series : [{
+                    type: 'column',
+                    name : 'AAPL',
+                    data: <?php echo json_encode($report->get_ezplayer_asset_view_date()); ?>,
+                    tooltip: {
+                        valueDecimals: 2
+                    },
+                    dataGrouping: {
+                        approximation: "sum",
+                        enabled: true,
+                        forced: true,
+                        units: [['month',[1]]],
+                    }
+                }]
+            });
+        });
+        </script>
+        
+    </div>
+    
+<!--    
     <ul>
         <li>
             Nombre de consultations d'assets par mois pour la période donnée<br />
             (Un même asset peut avoir été consulté plusieurs fois) 
             <ul>
-                <?php for($i = 1; $i <= 12; ++$i) { 
-                    echo '<li>'.$i.':  ('.
-                            round(($mountAsset[$i]/$report->get_ezplayer_nbr_date_asset())*100, 2).
-                        '%) '.$mountAsset[$i].'</li>';
-                } ?>
+                <?php // for($i = 1; $i <= 12; ++$i) { 
+//                    echo '<li>'.$i.':  ('.
+//                            round(($mountAsset[$i]/$report->get_ezplayer_nbr_date_asset())*100, 2).
+//                        '%) '.$mountAsset[$i].'</li>';
+//                } ?>
             </ul>
         </li>
-    </ul>
+    </ul>-->
 </div>
 <?php 
 }

@@ -75,6 +75,7 @@ class Report {
     private $ezplayer_date_list_album_click = array();
     private $ezplayer_date_asset = array();
     private $ezplayer_date_unique_asset = array();
+    private $ezplayer_asset_view_date = array();
     
     private $ezplayer_date_cours_thread = array();
     private $ezplayer_date_nbr_comment = 0;
@@ -88,6 +89,8 @@ class Report {
     
     
     function __construct($start_date, $end_date, $general = true, $ezplayer = true) {
+        set_time_limit(0);
+        
         $this->allRepositoryXML = array();
         $this->allTrace = array();
         
@@ -473,6 +476,8 @@ class Report {
         
         $this->array_increment_or_init($this->ezplayer_date_list_album_click, $newEntryTrace['album']);
         $this->ezplayer_date_asset[] = $newEntryTrace['asset'];
+        $this->array_increment_or_init_static($this->ezplayer_asset_view_date, 
+                substr($newEntryTrace['date'], 0, 10));
     }
     
     
@@ -504,6 +509,14 @@ class Report {
         $nbrDate = preg_replace("/([0-9]{4})_([0-9]{2})_([0-9]{2})_[0-9]{2}h[0-9]{2}/", 
                     "$1$2$3", $date);
         return str_replace(' ', '', $nbrDate);
+    }
+    
+    private function array_increment_or_init_static(&$array, $key) {
+        if(array_key_exists($key, $array)) {
+            ++$array[$key];
+        } else {
+            $array[$key] = 1;
+        }
     }
     
     private function array_increment_or_init(&$array, &$key) {
@@ -782,6 +795,10 @@ class Report {
     
     public function get_ezplayer_nbr_date_list_album_click() {
         return count($this->ezplayer_date_list_album_click);
+    }
+    
+    public function get_ezplayer_asset_view_date() {
+        return $this->ezplayer_asset_view_date;
     }
     
     public function get_ezplayer_date_unique_asset() {

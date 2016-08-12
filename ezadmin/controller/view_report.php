@@ -42,17 +42,10 @@ function index($param = array()) {
         // Browser
         $totalBrowser = array_sum($report->get_ezplayer_date_list_user_browser());
         
-        /// Mount asset consult
-        $mountAsset = array();
-        for($i = 1; $i <= 12; ++$i) {
-            $mountAsset[$i] = 0;
-        }
-        foreach($report->get_ezplayer_date_unique_asset() as $asset => $nbr) {
-            $res = array();
-            preg_match("/[0-9]{4}_([0-9]{2})_[0-9]{2}_[0-9]{2}h[0-9]{2}_[\w-_]*/", $asset, $res);
-            $mount = $res[1];
-            $mountAsset[intval($mount)] += $nbr;
-        }
+        echo '<pre>';
+        print_r(json_encode($report->get_ezplayer_asset_view_date()));
+        echo '</pre>';
+        
         
         $MAX_DETAILS_LIST = 20;
         

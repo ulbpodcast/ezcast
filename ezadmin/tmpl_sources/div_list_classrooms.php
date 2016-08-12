@@ -6,7 +6,7 @@ if(isset($pagination)) {
 
 <form class="classroom_update" style="display:hidden" method="POST">
     <input type="hidden" name="update" />
-    <input type="hidden" name="room_ID" value=""/>
+    <input type="hidden" name="a_room_ID" value=""/>
     <input type="hidden" name="u_room_ID" value=""/>
     <input type="hidden" name="u_name" value=""/>
     <input type="hidden" name="u_ip" value=""/>
@@ -40,13 +40,11 @@ if(isset($pagination)) {
                 //echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
             </td>
             <td class="room_id">
-                <div class="view">
-                    <a href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4">
-                        <?php echo $currClass['room_ID']; ?>
-                    </a>
-                </div>
+                <a class="view" href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4">
+                    <?php echo $currClass['room_ID']; ?>
+                </a>
                 <div class="edit" style="display:none;">
-                    <input class="form-control input-xsm" type="text" name="room_ID" 
+                    <input class="form-control input-xsm" type="text" name="new_room_ID" 
                            value="<?php echo htmlspecialchars($currClass['room_ID']) ?>"/>
                 </div>
             </td>
@@ -119,7 +117,9 @@ if(isset($pagination)) {
                     <?php echo $currClass['status_general']; ?><br />
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     ®monit_author®: 
-                    <?php echo $currClass['author']; ?>
+                    <a href="./index.php?action=view_user_details&user_ID=<?php echo $currClass['author']; ?>">
+                        <?php echo $currClass['author']; ?>
+                    </a>
                 </div>
                 <div class="col-md-3">
                     <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
@@ -127,7 +127,9 @@ if(isset($pagination)) {
                     <?php echo $currClass['status_cam']; ?><br />
                     <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
                     ®monit_courses®: 
-                    <?php echo $currClass['course']; ?>
+                    <a href="./index.php?action=view_course_details&course_code=<?php echo $currClass['course']; ?>">
+                        <?php echo $currClass['course']; ?>
+                    </a>
                 </div>
                 <div class="col-md-3">
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -216,7 +218,7 @@ $(function() {
             var $tr = $this.parent().parent();
             var $form = $("form.classroom_update");
             
-            $form.find("input[name='room_ID']").val($tr.find('td.room_id .view').text());
+            $form.find("input[name='a_room_ID']").val($tr.find('td.room_id .view').text());
             $form.find("input[name='u_room_ID']").val($tr.find('td.room_id input').val());
             $form.find("input[name='u_name']").val($tr.find('td.name input').val());
             $form.find("input[name='u_ip']").val($tr.find('td.ip input').val());

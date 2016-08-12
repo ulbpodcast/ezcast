@@ -11,46 +11,53 @@ function index($param = array()) {
     $time = explode(' ', microtime());
     $start = $time[1] + $time[0];
     
-    
-    if(array_key_exists('start_date', $input) && array_key_exists('end_date', $input)) {
-        $start_date = $input['start_date'];
-        $end_date = $input['end_date'];
-    } else {
-        $start_date = 0;
-        $end_date = PHP_INT_MAX;
-    }
-     
-    $report = new Report($start_date, $end_date);
-    
-    $classroom_not_use = array();
-    $allClassRoom = $report->get_date_classroom_record_time();
-    $sqlClassroom = db_classrooms_list();
-    foreach($sqlClassroom as $classroomInfo) {
-        $classroom = $classroomInfo['room_ID'];
-        if(!in_array($classroom, $allClassRoom)) {
-            $classroom_not_use[] = $classroom;
+    if(array_key_exists('post', $input)) {
+        
+        // Param for report
+        if(array_key_exists('start_date', $input) && array_key_exists('end_date', $input)) {
+            $start_date = str_replace('-', '', $input['start_date']);
+            $end_date = str_replace('-', '', $input['end_date']);
+        } else {
+            $start_date = 0;
+            $end_date = PHP_INT_MAX;
         }
+        $general = array_key_exists('general', $input);
+        $ezplayer = array_key_exists('ezplayer', $input);
+        // Generate report
+        $report = new Report($start_date, $end_date, $general, $ezplayer);
+        
+        // get all classroom, number and time record
+        $allClassRoom = $report->get_date_classroom_record_time();
+        $totalSubmit = $allClassRoom['SUBMIT'];
+        $totalClassroom = $allClassRoom['CLASSROOM'];
+        unset($allClassRoom['SUBMIT']);
+        unset($allClassRoom['CLASSROOM']);
+        $classroom_not_use = calcul_unused_classroom($allClassRoom);
+        
+        $nbrSubmit = $totalSubmit['nbr'];
+        $totalNbrClassroom = $nbrSubmit + $totalClassroom['nbr'];
+        $percentSubmit = calcul_percent($nbrSubmit, $totalNbrClassroom);
+        $percentAuditoir = round((100-$percentSubmit), 2);
+
+        // Browser
+        $totalBrowser = array_sum($report->get_ezplayer_date_list_user_browser());
+        
+        /// Mount asset consult
+        $mountAsset = array();
+        for($i = 1; $i <= 12; ++$i) {
+            $mountAsset[$i] = 0;
+        }
+        foreach($report->get_ezplayer_date_unique_asset() as $asset => $nbr) {
+            $res = array();
+            preg_match("/[0-9]{4}_([0-9]{2})_[0-9]{2}_[0-9]{2}h[0-9]{2}_[\w-_]*/", $asset, $res);
+            $mount = $res[1];
+            $mountAsset[intval($mount)] += $nbr;
+        }
+        
+        $MAX_DETAILS_LIST = 20;
+        
     }
-    $nbrSubmit = $allClassRoom['SUBMIT']['nbr'];
-    if(!array_key_exists('AUDITOIRES', $allClassRoom)) {
-        $allClassRoom['AUDITOIRES'] = array('nbr' => 0, 'time' => 0);
-    }
-    $totalClassroom = $nbrSubmit + $allClassRoom['AUDITOIRES']['nbr'];
-    $percentSubmit = round(($nbrSubmit / $totalClassroom) *100, 2);
-    $percentAuditoir = round((100-$percentSubmit), 2);
-    
-    /// Mount asset consult
-    $mountAsset = array();
-    for($i = 1; $i <= 12; ++$i) {
-        $mountAsset[$i] = 0;
-    }
-    foreach($report->get_ezplayer_date_unique_asset() as $asset => $nbr) {
-        $res = array();
-        preg_match("/[0-9]{4}_([0-9]{2})_[0-9]{2}_[0-9]{2}h[0-9]{2}_[\w-_]*/", $asset, $res);
-        $mount = $res[1];
-        $mountAsset[intval($mount)] += $nbr;
-    }
-    
+        
     // DEBUG TIME
     echo "real: ".(memory_get_peak_usage(true)/1024/1024)." MiB\n\n";
     $time = explode(' ', microtime());
@@ -63,3 +70,26 @@ function index($param = array()) {
     include template_getpath('div_main_footer.php');
 }
 
+function calcul_unused_classroom(&$allClassRoom) {
+    $classroom_not_use = array();
+    $sqlClassroom = db_classrooms_list();
+    foreach($sqlClassroom as $classroomInfo) {
+        $classroom = $classroomInfo['room_ID'];
+        if(!in_array($classroom, $allClassRoom)) {
+            $classroom_not_use[] = $classroom;
+        }
+    }
+    return $classroom_not_use;
+}
+
+function convert_seconds($duration){
+    $hours = floor($duration / 3600);
+    $minutes = floor(($duration / 60) % 60);
+    $seconds = $duration % 60;
+
+    return sprintf("%1$3d:%2$02d:%3$02d", $hours, $minutes, $seconds);
+}
+
+function calcul_percent($value, $total) {
+    return round(($value / max(1, $total)) *100, 2);
+}

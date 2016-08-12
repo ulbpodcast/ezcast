@@ -49,7 +49,7 @@ class Report {
     private $date_count_submit_asset = 0;
     private $date_count_record_asset = 0;
     
-    private $date_classroom_record_time = array();
+    private $date_classroom_record_time;
     
     private $nbr_total_user = -1;
     
@@ -64,6 +64,8 @@ class Report {
     private $ezplayer_list_user_offi_bookmark = array();
     private $ezplayer_list_user_pers_bookmark = array();
     
+    private $ezplayer_date_total_thread = 0;
+    
     private $ezplayer_date_list_user_login = array();
     private $ezplayer_date_list_ip_login = array();
     private $ezplayer_date_list_user_system = array();
@@ -76,6 +78,8 @@ class Report {
     
     private $ezplayer_date_cours_thread = array();
     private $ezplayer_date_nbr_comment = 0;
+    private $ezplayer_date_cours_comment = array();
+    private $ezplayer_date_total_bookmark = 0;
     private $ezplayer_date_pers_bookmark = 0;
     private $ezplayer_date_user_pers_bookmark = array();
     private $ezplayer_date_cours_pers_bookmark = array();
@@ -93,12 +97,19 @@ class Report {
         $this->param_general = $general;
         $this->param_ezplayer = $ezplayer;
         
+        $this->date_classroom_record_time = array(
+            'SUBMIT' => array(
+                    'nbr' => 0,
+                    'time' => 0),
+            'CLASSROOM' => array(
+                    'nbr' => 0,
+                    'time' => 0)
+            );
+        
         
         $this->repository_get_all();
         if($this->param_ezplayer) {
             $this->ezplayer_trace_get_all();
-        }
-        if($this->param_general) {
             $this->ezplayer_calcul_user_nbr();
         }
         
@@ -191,11 +202,11 @@ class Report {
 
 
             if($origin != "SUBMIT") {
-                if(!array_key_exists('AUDITOIRES', $classroomRecordTime)) {
-                    $classroomRecordTime['AUDITOIRES'] = array('nbr' => 0, 'time' => 0);
+                if(!array_key_exists('CLASSROOM', $classroomRecordTime)) {
+                    $classroomRecordTime['CLASSROOM'] = array('nbr' => 0, 'time' => 0);
                 }
-                ++$classroomRecordTime['AUDITOIRES']['nbr'];
-                $classroomRecordTime['AUDITOIRES']['time'] += $asset->duration;
+                ++$classroomRecordTime['CLASSROOM']['nbr'];
+                $classroomRecordTime['CLASSROOM']['time'] += $asset->duration;
             }
 
         }
@@ -357,6 +368,9 @@ class Report {
     //    $newEntryTrace['bookmark_lvl'] = trim($traceInfo[14]);
 
         ++$this->ezplayer_total_bookmark;
+        if($isInDate) {
+            ++$this->ezplayer_date_total_bookmark;
+        }
         $user = $newEntryTrace['user'];
 
         if($newEntryTrace['target'] == 'official') {
@@ -383,6 +397,9 @@ class Report {
 
     private function trace_info_thread_add(&$traceInfo, &$newEntryTrace, &$isInDate) {
         ++$this->ezplayer_total_thread;
+        if($isInDate) {
+            ++$this->ezplayer_date_total_thread;
+        }
         
 
         // '3', 'thread_add', $thread_album, $thread_asset, $thread_timecode, $thread_title, $thread_visibility
@@ -412,6 +429,7 @@ class Report {
         $cours = $newEntryTrace['cours'];
         $this->array_increment_or_init($this->ezplayer_list_cours_comment, $cours);
         if($isInDate) {
+            $this->array_increment_or_init($this->ezplayer_date_cours_comment, $cours);
             ++$this->ezplayer_date_nbr_comment;
         }
     }
@@ -530,6 +548,7 @@ class Report {
         $this->ezplayer_date_unique_asset = array_count_values($this->ezplayer_date_asset);
         arsort($this->ezplayer_date_unique_asset);
         
+        arsort($this->ezplayer_date_cours_comment);
         arsort($this->ezplayer_date_cours_pers_bookmark);
         arsort($this->ezplayer_date_user_offi_bookmark);
     }
@@ -717,6 +736,10 @@ class Report {
         return count($this->ezplayer_list_user_pers_bookmark);
     }
 
+    public function get_ezplayer_date_total_thread() {
+        return $this->ezplayer_date_total_thread;
+    }
+    
     public function get_ezplayer_date_list_user_login() {
         return $this->ezplayer_date_list_user_login;
     }
@@ -783,6 +806,18 @@ class Report {
     
     public function get_ezplayer_date_nbr_comment() {
         return $this->ezplayer_date_nbr_comment;
+    }
+    
+    public function get_ezplayer_date_cours_comment() {
+        return $this->ezplayer_date_cours_comment;
+    }
+    
+    public function get_ezplayer_nbr_date_cours_comment() {
+        return count($this->ezplayer_date_cours_comment);
+    }
+    
+    public function get_ezplayer_date_total_bookmark() {
+        return $this->ezplayer_date_total_bookmark;
     }
     
     public function get_ezplayer_date_pers_bookmark() {

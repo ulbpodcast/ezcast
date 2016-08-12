@@ -209,6 +209,9 @@ td {
     text-align: left;
 }
 
+.hidden_row {
+    padding: 0 !important;
+}
 
 /* //////////// CUSTOM BOOTSTRAP COLOR //////////// */
 
@@ -452,4 +455,45 @@ textarea.no_resize {
 .nav-list .sidebar.active {
     text-decoration:none;
     background-color:#eee
+}
+
+
+/* ////////////// COLLAPSE ////////////////// */
+.accordion-toggle {
+    cursor: pointer;
+}
+
+/* ////////////////// PRINT ////////////////// */
+@media print {
+    a.hidden-print-link[href]:after {
+        content: none !important;
+    }
+  
+    .collapse {
+        display: block !important;
+        height: auto !important;
+    }
+    
+    .progress{
+        background-color: #F5F5F5 !important;
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#F5F5F5', endColorstr='#F5F5F5')" !important;
+    }
+    
+    .progress-bar-info{
+        background-color: #5bc0de !important;
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#5BC0DE', endColorstr='#5BC0DE')" !important;
+    }
+    .progress-bar-success{
+        display: block !important;
+        background-color: #5cb85c !important;
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#5bc0de', endColorstr='#5bc0de')" !important;
+    }
+
+    .progress, .progress > .progress-bar {
+        display: block !important;
+        -webkit-print-color-adjust: exact !important;
+
+        box-shadow: inset 0 0 !important;
+        -webkit-box-shadow: inset 0 0 !important;
+    } 
 }

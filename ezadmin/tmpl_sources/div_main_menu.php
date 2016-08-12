@@ -129,7 +129,7 @@ $category_names = array(
 
 ?>
 
-<div class="col-md-2">
+<div class="col-md-2 hidden-print">
 <ul class="nav nav-list">
     <?php foreach($options as $cat => $suboptions) { ?>
         <li class="nav-header">

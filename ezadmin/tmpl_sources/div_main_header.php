@@ -29,9 +29,11 @@
         <script src="bootstrap/js/ui-bootstrap-tpls.min.js"></script>
         <script src="bootstrap/js/angular-bootstrap-calendar.min.js"></script>
         
+        <!-- HighCharts -->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
         
-        
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <link href="css/typeahead.min.css" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap-datetimepicker.min.css" />
         <link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet"/>

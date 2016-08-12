@@ -6,10 +6,14 @@ include_once '../commons/event_status.php';
 include_once '../commons/view_helpers/helper_pagination.php';
 include_once '../commons/view_helpers/helper_sort_col.php';
 
+global $MAX_TIME_NO_CRON;
+$MAX_TIME_NO_CRON = 259200;
+
 
 function index($param = array()) {
     global $input;
-    
+    global $MAX_TIME_NO_CRON;
+    global $ezmanager_basedir;
     
     /// Make action from the modal ///
     if(isset($input) && array_key_exists('modal_action', $input) && 
@@ -18,6 +22,10 @@ function index($param = array()) {
         $errorActionMsg = actionFromModal($input);
     }
     
+    $date_last_insert = db_event_status_last_insert();
+    if(time() - strtotime($date_last_insert[0]) > $MAX_TIME_NO_CRON) {
+        $cronWarningMsg = true;
+    }
     
     if(array_key_exists('page', $input)) {
         $pagination = new Pagination($input['page'], 50);

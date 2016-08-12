@@ -5,6 +5,12 @@ if(isset($errorActionMsg)) { ?>
     </div>
 <?php }
 
+if(isset($cronWarningMsg) && $cronWarningMsg) { ?>
+    <div class="alert alert-warning col-md-10 col-md-offset-1" role="alert">
+    ®monit_warning_cron®
+    </div>
+<?php }
+
 if(isset($pagination)) {
     $pagination->insert();
 } 

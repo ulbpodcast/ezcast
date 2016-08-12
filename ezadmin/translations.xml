@@ -520,6 +520,7 @@
             they are too small: </label>
         <label id="calendar_no_result" lang="fr">Aucun résultat à afficher</label>
         <label id="calendar_no_result" lang="en">No result</label>
+        
             
         <!-- Calendar informations -->
         <label id="calendar_year" lang="fr">Année</label>
@@ -922,6 +923,16 @@
         <label id="monit_help_status_manual" lang="en">Manual</label>
         <label id="monit_help_parent_define" lang="fr">Le statut de l'asset actuel sera automatiquement mis en Ignorer</label>
         <label id="monit_help_parent_define" lang="en">The status of the current asset will be automatically set to Ignore</label>
+        <label id="monit_warning_cron" lang="fr">Attention, aucun statut n'a été posté depuis un certains temps. Vérifiez que la tache "cron" est 
+            toujours activée.&lt;br /&gt;
+            Si elle était désactivée, exécutez le script: 
+            &lt;code&gt;php &lt;?php echo $ezmanager_basedir; ?&gt;cli_fill_assets_status.php all&lt;/code&gt;
+        </label>
+        <label id="monit_warning_cron" lang="en">Warning, no status has been posted for a certaine time. Check the 
+            "cron" task.&lt;br /&gt;
+            If it was disabled, run this script: 
+            &lt;code&gt;php &lt;?php echo $ezmanager_basedir; ?&gt;cli_fill_assets_status.php all&lt;/code&gt;
+        </label>
         
         
         <!-- Error -->

@@ -13,15 +13,20 @@ const LOG_LEVEL_WARNINGS = LogLevel::WARNING;
 /**
  * Database request to get all event from assets having no status
  * 
+ * @param boolean $check_all check all event or juste the last two weeks
  * @global PDO $db_object
  * @return Array with the result
  */
-function get_db_event_status_not_check() {
+function get_db_event_status_not_check($check_all) {
     global $db_object;
 
     $strSQL = 'SELECT event.asset, event.event_time, event.loglevel, event.type_id '
             . 'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' event ' .
-            ' WHERE event.event_time >= DATE_SUB(curdate(), INTERVAL 2 WEEK) AND NOT EXISTS ('.
+            ' WHERE ';
+    if(!$check_all) {
+        $strSQL .= 'event.event_time >= DATE_SUB(curdate(), INTERVAL 2 WEEK) AND';
+    }
+    $strSQL .= ' NOT EXISTS ('.
                 'SELECT asset FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' status ' .
                 'WHERE status.asset = event.asset' .
             ')';
@@ -59,14 +64,19 @@ function add_db_event_status($asset, $status, $description) {
 /**
  * Select the asset who must be check and saved them in two list
  * 
+ * @param boolean $check_all 
  * @global Array $resListAsset dictionnary with asset in key and array with info in value
  * @global Array $listAsset List of the asset who must be check (timeout in value if it's timeout)
  */
-function selectAssetWhoMustBeCheck() {
+function selectAssetWhoMustBeCheck($check_all) {
     global $resListAsset;
     global $listAsset;
     
-    $allEvent = get_db_event_status_not_check();
+    $allEvent = get_db_event_status_not_check($check_all);
+    if($check_all) {
+        echo 'Check all event'.PHP_EOL;
+    }
+    
     
     foreach ($allEvent as $event) {
         $asset = $event['asset'];
@@ -140,5 +150,5 @@ $resListAsset = array();
 // List with asset who must be treat (timeout in value if it's timeout)
 $listAsset = array();
 
-selectAssetWhoMustBeCheck();
+selectAssetWhoMustBeCheck($argc > 1 && $argv[1] == 'all');
 sendAssetStatus();

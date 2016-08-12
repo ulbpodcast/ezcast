@@ -73,8 +73,14 @@ function event_statements_get() {
         
             'asset_parent_remove' =>
                 'DELETE FROM ' . db_gettable(ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME) . ' ' .
-                'WHERE asset = :asset'
+                'WHERE asset = :asset',
         
+            'status_last_insert' => 
+                'SELECT status_time ' .
+                'FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
+                'ORDER BY status_time DESC ' .
+                'LIMIT 1'
+                
         );
 }
 
@@ -437,3 +443,8 @@ function db_event_asset_infos_get($classroom = "") {
     return $reqSQL->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function db_event_status_last_insert() {
+    global $statements;
+    $statements['status_last_insert']->execute();
+    return $statements['status_last_insert']->fetch(PDO::FETCH_NUM);
+}

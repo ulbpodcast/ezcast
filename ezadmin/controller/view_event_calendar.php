@@ -28,7 +28,11 @@ function index($param = array()) {
         $event['asset'] = $info['asset'];
         $event['title'] = "";
         if(!$classRoom) {
-            $event['title'] = '['.$info['asset_classroom_id'].'] ';
+            if($info['asset_classroom_id'] != "") {
+                $event['title'] = '['.$info['asset_classroom_id'].'] ';
+            } else {
+                $event['title'] = '[Submit] ';
+            }
         }
         $event['title'] .= $info['asset'];
         $event['startsAt'] = $info['start_time'];

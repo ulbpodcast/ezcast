@@ -788,3 +788,19 @@ function empty_str_if_not_def($key, $array) {
     return "";
 }
 
+
+function array_increment_or_init_static(&$array, $key) {
+    if(array_key_exists($key, $array)) {
+        ++$array[$key];
+    } else {
+        $array[$key] = 1;
+    }
+}
+
+function array_increment_or_init(&$array, &$key) {
+    if(array_key_exists($key, $array)) {
+        ++$array[$key];
+    } else {
+        $array[$key] = 1;
+    }
+}

@@ -79,8 +79,35 @@ function event_statements_get() {
                 'SELECT status_time ' .
                 'FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
                 'ORDER BY status_time DESC ' .
-                'LIMIT 1'
-                
+                'LIMIT 1',
+        
+            'status_nbr_success' =>
+                'SELECT COUNT(*) AS total ' .
+                'FROM ' .  db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
+                'WHERE (status = "auto_success" OR status = "auto_success_errors" ' .
+                'OR status = "auto_success_warnings" OR status = "manual_ok" OR ' .
+                'status = "manual_partial_ok") AND status_time >= :start_date AND ' .
+                'status_time <= :end_date',
+        
+            'status_nbr_error' =>
+                'SELECT COUNT(*) AS total ' .
+                'FROM ' .  db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
+                'WHERE (status = "auto_failure" OR status = "manual_failure") '. 
+                'AND status_time >= :start_date AND ' .
+                'status_time <= :end_date',
+        
+            'status_date_asset' =>
+                'SELECT status, status_time ' .
+                'FROM ' .  db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
+                'WHERE status_time >= :start_date AND ' .
+                'status_time <= :end_date',
+        
+            'asset_info_camslide' => 
+                'SELECT asset_cam_slide, COUNT(asset_cam_slide) AS total_type '.
+                'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' ' .
+                'WHERE start_time >= :start_date AND end_time <= :end_date '.
+                'GROUP BY asset_cam_slide'
+        
         );
 }
 
@@ -447,4 +474,69 @@ function db_event_status_last_insert() {
     global $statements;
     $statements['status_last_insert']->execute();
     return $statements['status_last_insert']->fetch(PDO::FETCH_NUM);
+}
+
+/**
+ * Return the number of success and fail asset
+ * 
+ * @param String $start_date start date of the status who must be selected
+ * @param String $end_date limit of the date
+ * @return Array with the number of success first and error after
+ */
+function db_event_status_get_nbr($start_date, $end_date) {
+    global $statements;
+    
+    $statements['status_nbr_success']->bindParam(':start_date', $start_date);
+    $statements['status_nbr_success']->bindParam(':end_date', $end_date);
+    $statements['status_nbr_success']->execute();
+    $reqResSuccess = $statements['status_nbr_success']->fetch(PDO::FETCH_NUM);
+    $success = $reqResSuccess[0];
+    
+    $statements['status_nbr_error']->bindParam(':start_date', $start_date);
+    $statements['status_nbr_error']->bindParam(':end_date', $end_date);
+    $statements['status_nbr_error']->execute();
+    $reqResError = $statements['status_nbr_error']->fetch(PDO::FETCH_NUM);
+    $error = $reqResError[0];
+    
+    return array($success, $error);
+}
+
+/**
+ * Return an array with date of success and error asset
+ * 
+ * @param String $start_date start date of the status who must be selected
+ * @param String $end_date limit of the date
+ * @return Array with the number of success first and error after
+ */
+function db_event_status_get_date($start_date, $end_date) {
+    global $statements;
+    $res = array('success' => array(),
+                'error' => array());
+    
+    $valide_status = array('auto_success', 'auto_success_errors', 'auto_success_warnings', 
+                    'manual_ok', 'manual_partial_ok');
+    
+    $statements['status_date_asset']->bindParam(':start_date', $start_date);
+    $statements['status_date_asset']->bindParam(':end_date', $end_date);
+    $statements['status_date_asset']->execute();
+    
+    foreach($statements['status_date_asset']->fetchAll(PDO::FETCH_ASSOC) as $line) {
+        if(in_array($line['status'], $valide_status)) {
+            $type = 'success';
+        } else {
+            $type = 'error';
+        }
+        array_increment_or_init_static($res[$type], strtotime($line['status_time']).'000');
+    }
+    
+    return $res;
+}
+
+function db_event_info_camslide_nbr($start_date, $end_date) {
+    global $statements;
+    
+    $statements['asset_info_camslide']->bindParam(':start_date', $start_date);
+    $statements['asset_info_camslide']->bindParam(':end_date', $end_date);
+    $statements['asset_info_camslide']->execute();
+    return $statements['asset_info_camslide']->fetchAll(PDO::FETCH_ASSOC);
 }

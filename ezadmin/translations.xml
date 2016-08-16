@@ -791,8 +791,24 @@
         <label id="report_cours" lang="en">Cours</label>
         <label id="report_row_cours_bookmark_official" lang="fr">Utilisateurs ayant le plus de signets officiels</label>
         <label id="report_row_cours_bookmark_official" lang="en">Users with most of bookmarks (official)</label>
-        <label id="report_asset_distribution" lang="fr">Répartition des assets</label>
-        <label id="report_asset_distribution" lang="en">Asset distribution</label>
+        <label id="report_asset_distribution" lang="fr">Répartition des vues assets</label>
+        <label id="report_asset_distribution" lang="en">Asset view distribution</label>
+        <label id="report_asset_number" lang="fr">Nombre d'asset</label>
+        <label id="report_asset_number" lang="en">Asset number</label>
+        <label id="report_status_percent_success" lang="fr">Proportion&lt;br /&gt;d'enregistrements&lt;br /&gt;réussis</label>
+        <label id="report_status_percent_success" lang="en">Proportion of&lt;br /&gt;successful recording</label>
+        <label id="report_status_error" lang="fr">Echec</label>
+        <label id="report_status_error" lang="en">Fail</label>
+        <label id="report_status_success" lang="fr">Réussi</label>
+        <label id="report_status_success" lang="en">Success</label>
+        <label id="report_camslide_distribution" lang="fr">Répartition des&lt;br /&gt;enregistrements camslide</label>
+        <label id="report_camslide_distribution" lang="en">Distribution of&lt;br /&gt;camslide recording</label>
+        <label id="report_status_sum" lang="fr">Somme des enregistrements réussis et ratés</label>
+        <label id="report_status_sum" lang="en">Sum recording successed and failed</label>
+        <label id="report_os_graphic" lang="fr">Système d'exploitation utilisé</label>
+        <label id="report_os_graphic" lang="en">Used operator system</label>
+        <label id="report_browser_graphic" lang="fr">Navigateur utilisé</label>
+        <label id="report_browser_graphic" lang="en">Used browser</label>
         
         
         

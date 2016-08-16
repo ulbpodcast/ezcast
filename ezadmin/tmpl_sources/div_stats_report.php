@@ -553,7 +553,7 @@
 </div>
 
 <div class="col-md-10">
-    <div id="container_classroom_util" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="container_classroom_util" style="width: 100%; height: 400px; margin: 0 auto"></div>
 
     <script>
     $(function () {
@@ -614,11 +614,13 @@
             },
             series: [{
                 type: 'column',
+                name: "<?php echo ucfirst("®report_record_time®"); ?>",
                 yAxis: 1,
                 data: [<?php echo implode(', ', array_map(function ($ar) {return $ar['time'];}, $allClassRoom)); ?>]
 
             }, {
                 type: 'column',
+                name: "<?php echo ucfirst("®report_nbr_record®"); ?>",
                 data: [<?php echo implode(', ', array_map(function ($ar) {return $ar['nbr'];}, $allClassRoom)); ?>]
             }]
         });
@@ -652,7 +654,7 @@
     </script>
 </div>
 
-<div class="col-md-2">
+<div class="col-md-2 col-print-md-12">
     <h5>®report_classroom_unused®</h5>
     <ul>
     <?php foreach($classroom_not_use as $classroom) {
@@ -819,6 +821,7 @@
                          aria-labelledby="unique_asset">
                         <div class="col-md-2"><b>®report_row_view_number®</b></div>
                         <div class="col-md-10"><b>®report_asset®</b></div>
+                        <div class="col-md-12"></div>
                         <?php $i=0;
                         foreach($report->get_ezplayer_date_unique_asset() as $asset => $nbr) { 
                             if(++$i > $MAX_DETAILS_LIST) { break; }
@@ -848,6 +851,7 @@
                          aria-labelledby="cours_pers_bookmark">
                         <div class="col-md-2"><b>®report_bookmark_add®</b></div>
                         <div class="col-md-10"><b>®report_cours®</b></div>
+                        <div class="col-md-12"></div>
                         <?php $i=0;
                         foreach($report->get_ezplayer_date_cours_pers_bookmark() as $cours => $nbr) { 
                             if(++$i > $MAX_DETAILS_LIST) { break; }
@@ -890,7 +894,8 @@
     
     <?php if($json_view_asset_data != "[[]]") { ?>
     <div class="col-md-12">
-        <div id="container_asset_view" style="height: 500px; min-width: 500px"></div>
+        <br /><br />
+        <div id="container_asset_view" style="height: 500px; width: 100%"></div>
         
         <script>
         $(function() {
@@ -904,7 +909,7 @@
                 },
                 series : [{
                     type: 'column',
-                    name : "Nombre d'asset",
+                    name : "®report_asset_number®",
                     data: <?php echo $json_view_asset_data; ?>,
                     dataGrouping: {
                         approximation: "sum",
@@ -916,9 +921,259 @@
             });
         });
         </script>
+        <br />
+        <br />
     </div>
-    <?php } ?>
+    
+    <?php }
+echo '</div>';
+}?>
+
+<div id="container_status_percent" class="col-md-6 col-print-md-12 text-center" style="height: 400px; margin: 0 auto"></div>
+<script>
+$(function () {
+    $('#container_status_percent').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        colors: ['#5cb85c', 'red', '#777'],
+        title: {
+            text: "®report_status_percent_success®",
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 40
+        },
+        tooltip: {
+            pointFormat: '<b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white',
+                        textShadow: '0px 1px 2px black'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '75%']
+            }
+        },
+        series: [{
+            type: 'pie',
+            innerSize: '50%',
+            data: [
+                ["®report_status_success®",   <?php echo $percentSuccess; ?>],
+                ["®report_status_error®",       <?php echo $percentError; ?>]
+            ]
+        }]
+    });
+});    
+</script>
+
+<div id="container_camslide_graph" class="col-md-6 col-print-md-12 text-center" style="height: 400px; margin: 0 auto"></div>
+<script>
+$(function () {
+    $('#container_camslide_graph').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: "®report_camslide_distribution®"
+        },
+        tooltip: {
+            pointFormat: '<b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    formatter: function () {
+                        return this.y > 1 ? (this.y + ' %'): null;
+                    },
+                    color: '#ffffff',
+                    distance: -30
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            colorByPoint: true,
+            data: [
+                <?php $i = 0;
+                foreach ($nbr_camslide as $infos) { ++$i;
+                    if($i > 1) {
+                        echo ',';
+                    }
+                    echo '{';
+                    echo 'name: "'.ucfirst($infos['asset_cam_slide']).'",';
+                    echo 'y: '.calcul_percent($infos['total_type'], $total_nbr_camslide);
+                    echo '}';
+                }
+                ?>
+                ]
+        }]
+    });
+});    
+</script>
+
+<div class="col-md-12">
+    <br /><br /><br />
+    <div id="container_status_date" style="height: 500px; width: 100%"></div>
+    <br /><br /><br />
 </div>
+<script>
+$(function() {
+    // Create the chart
+    $('#container_status_date').highcharts('StockChart', {
+        chart: {
+            type: 'area'
+        },
+        rangeSelector : {
+            selected : 1
+        },
+        title : {
+            text : "®report_status_sum®"
+        },
+        legend: {
+            enabled: true,
+            align: 'right',
+            layout: 'vertical',
+            verticalAlign: 'top',
+            y: 100,
+            shadow: true
+        },
+        colors: ['#5cb85c', 'red', '#777'],
+        series : [{
+                name : "®report_status_success®",
+                data: <?php echo $json_status_date_success; ?>,
+                dataGrouping: {
+                    approximation: "sum",
+                    enabled: true,
+                    forced: true,
+                    units: [['month',[1]]]
+                }
+            }, {
+                name : "®report_status_error®",
+                data: <?php echo $json_status_date_error; ?>,
+                dataGrouping: {
+                    approximation: "sum",
+                    enabled: true,
+                    forced: true,
+                    units: [['month',[1]]]
+                }
+            }]
+    });
+});
+</script>
+
+<div class="col-md-6 col-print-md-12 add-print-space">
+    <div id="container_browser" style="height: 500px; width: 100%"></div>
+</div>
+<script>
+$(function() {
+    // Build the chart
+    $('#container_browser').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: "®report_browser_graphic®"
+        },
+        tooltip: {
+            pointFormat: '<b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    formatter: function () {
+                        // display only if larger than 1
+                        return this.y > 1 ? '<b>'+ this.point.name +'</b><br />' + this.y +' %' : null;
+                    }
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            colorByPoint: true,
+            data: [<?php $i =0;
+            foreach($report->get_ezplayer_date_list_user_system() as $browser => $nbr) { ++$i;
+                if($i > 1) { echo ','; }
+                echo '{'; 
+                echo 'name: "'.$browser.'",';
+                echo 'y: '.calcul_percent($nbr, $totalBrowser);
+                echo '}';
+            } ?> ]
+            }]
+    });
+});
+</script>
+
+<div class="col-md-6 col-print-md-12">
+    <div id="container_os" style="height: 500px; width: 100%"></div>
+    <br /><br /><br />
+</div>
+<script>
+$(function() {
+    // Build the chart
+    $('#container_os').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: "®report_os_graphic®"
+        },
+        tooltip: {
+            pointFormat: '<b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    formatter: function () {
+                        // display only if larger than 1
+                        return this.y > 1 ? '<b>'+ this.point.name +'</b><br />' + this.y +' %' : null;
+                    }
+                    /*format: '<b>{point.name}</b><br />{point.percentage:.1f} %'*/
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            colorByPoint: true,
+            data: [<?php $i =0;
+            foreach($report->get_ezplayer_date_list_user_os() as $browser => $nbr) { ++$i;
+                if($i > 1) { echo ','; }
+                echo '{'; 
+                echo 'name: "'.$browser.'",';
+                echo 'y: '.calcul_percent($nbr, $totalBrowser);
+                echo '}';
+            } ?> ]
+            }]
+    });
+});
+</script>
+
 <?php 
-}
 } // if post

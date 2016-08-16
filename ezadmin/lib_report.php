@@ -176,22 +176,22 @@ class Report {
         }
 
         // Total Author
-        $this->array_increment_or_init($listAuthor, $author);
+        array_increment_or_init($listAuthor, $author);
 
         // Submit author
         if($origin == 'SUBMIT') {
-            $this->array_increment_or_init($submitAuthor, $author);
+            array_increment_or_init($submitAuthor, $author);
         } else {
-            $this->array_increment_or_init($recordAuthor, $author);
+            array_increment_or_init($recordAuthor, $author);
         }
 
         // Cours
-        $this->array_increment_or_init($listCours, $cours);
+        array_increment_or_init($listCours, $cours);
 
         if($origin == 'SUBMIT') {
-            $this->array_increment_or_init($listCoursSubmit, $cours);
+            array_increment_or_init($listCoursSubmit, $cours);
         } else {
-            $this->array_increment_or_init($listCoursRecord, $cours);
+            array_increment_or_init($listCoursRecord, $cours);
         }  
 
         if($classroomRecordTime != -1 && $asset->duration > 0) {
@@ -378,20 +378,20 @@ class Report {
 
         if($newEntryTrace['target'] == 'official') {
             ++$this->ezplayer_total_offi_bookmark;
-            $this->array_increment_or_init($this->ezplayer_list_user_offi_bookmark, $user);
+            array_increment_or_init($this->ezplayer_list_user_offi_bookmark, $user);
             if($isInDate) {
                 ++$this->ezplayer_date_offi_bookmark;
-                $this->array_increment_or_init($this->ezplayer_date_user_offi_bookmark, $user);
+                array_increment_or_init($this->ezplayer_date_user_offi_bookmark, $user);
             }
             
         } else {
             ++$this->ezplayer_total_pers_bookmark;
-            $this->array_increment_or_init($this->ezplayer_list_user_pers_bookmark, $user);
+            array_increment_or_init($this->ezplayer_list_user_pers_bookmark, $user);
             
             if($isInDate) {
                 ++$this->ezplayer_date_pers_bookmark;
-                $this->array_increment_or_init($this->ezplayer_date_user_pers_bookmark, $user);
-                $this->array_increment_or_init($this->ezplayer_date_cours_pers_bookmark, $newEntryTrace['cours']);
+                array_increment_or_init($this->ezplayer_date_user_pers_bookmark, $user);
+                array_increment_or_init($this->ezplayer_date_cours_pers_bookmark, $newEntryTrace['cours']);
             }
             
         }
@@ -414,9 +414,9 @@ class Report {
         $newEntryTrace['visibility'] = trim($traceInfo[10]);
 
         $cours = $newEntryTrace['cours'];
-        $this->array_increment_or_init($this->ezplayer_list_cours_thread, $cours);
+        array_increment_or_init($this->ezplayer_list_cours_thread, $cours);
         if($isInDate) {
-            $this->array_increment_or_init($this->ezplayer_date_cours_thread, $cours);
+            array_increment_or_init($this->ezplayer_date_cours_thread, $cours);
         }
     }
 
@@ -430,9 +430,9 @@ class Report {
         $newEntryTrace['thread'] = trim($traceInfo[8]);
 
         $cours = $newEntryTrace['cours'];
-        $this->array_increment_or_init($this->ezplayer_list_cours_comment, $cours);
+        array_increment_or_init($this->ezplayer_list_cours_comment, $cours);
         if($isInDate) {
-            $this->array_increment_or_init($this->ezplayer_date_cours_comment, $cours);
+            array_increment_or_init($this->ezplayer_date_cours_comment, $cours);
             ++$this->ezplayer_date_nbr_comment;
         }
     }
@@ -444,26 +444,26 @@ class Report {
         $newEntryTrace['browser_version'] = $traceInfo[7];
         $newEntryTrace['user_os'] = $traceInfo[8];
         
-        $this->array_increment_or_init($this->ezplayer_date_list_user_system, 
+        array_increment_or_init($this->ezplayer_date_list_user_system, 
                 $newEntryTrace['browser_name']);
         
-        $this->array_increment_or_init($this->ezplayer_date_list_user_os, 
+        array_increment_or_init($this->ezplayer_date_list_user_os, 
                 $newEntryTrace['user_os']);
 
         $browse = $newEntryTrace['browser_name'].' | '.$newEntryTrace['user_os'];
-        $this->array_increment_or_init($this->ezplayer_date_list_user_browser, 
+        array_increment_or_init($this->ezplayer_date_list_user_browser, 
                 $browse);
         
         if($user != 'nologin') {
-            $this->array_increment_or_init($this->ezplayer_date_list_user_login, $user);
+            array_increment_or_init($this->ezplayer_date_list_user_login, $user);
         } else {
-            $this->array_increment_or_init($this->ezplayer_date_list_ip_login, $newEntryTrace['ip']);
+            array_increment_or_init($this->ezplayer_date_list_ip_login, $newEntryTrace['ip']);
         }
     }
     
     private function trace_info_view_album_assets(&$traceInfo, &$newEntryTrace) {
         $newEntryTrace['album'] = $traceInfo[6];
-        $this->array_increment_or_init($this->ezplayer_date_list_album, $newEntryTrace['album']);
+        array_increment_or_init($this->ezplayer_date_list_album, $newEntryTrace['album']);
     }
     
     private function trace_info_view_asset_details($traceInfo, $newEntryTrace) {
@@ -474,12 +474,11 @@ class Report {
                 $this->utils_decode_album_date($newEntryTrace['album'], trim($traceInfo[7])));
         $newEntryTrace['camslide'] = $traceInfo[8];
         
-        $this->array_increment_or_init($this->ezplayer_date_list_album_click, $newEntryTrace['album']);
+        array_increment_or_init($this->ezplayer_date_list_album_click, $newEntryTrace['album']);
         $this->ezplayer_date_asset[] = $newEntryTrace['asset'];
-        $this->array_increment_or_init_static($this->ezplayer_asset_view_date, 
+        array_increment_or_init_static($this->ezplayer_asset_view_date, 
                 strtotime(substr($newEntryTrace['date'], 0, 10)).'000');
     }
-    
     
     /////////////////// UTILITIES ///////////////////
 
@@ -511,21 +510,6 @@ class Report {
         return str_replace(' ', '', $nbrDate);
     }
     
-    private function array_increment_or_init_static(&$array, $key) {
-        if(array_key_exists($key, $array)) {
-            ++$array[$key];
-        } else {
-            $array[$key] = 1;
-        }
-    }
-    
-    private function array_increment_or_init(&$array, &$key) {
-        if(array_key_exists($key, $array)) {
-            ++$array[$key];
-        } else {
-            $array[$key] = 1;
-        }
-    }
     
     private function utils_sortAllList() {
         arsort($this->list_all_author);

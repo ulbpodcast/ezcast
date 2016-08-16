@@ -1,6 +1,7 @@
 <?php
 
 require_once 'lib_sql_management.php';
+require_once 'lib_sql_event.php';
 require_once 'lib_report.php';
 
 
@@ -17,10 +18,16 @@ function index($param = array()) {
         if(array_key_exists('start_date', $input) && array_key_exists('end_date', $input)) {
             $start_date = str_replace('-', '', $input['start_date']);
             $end_date = str_replace('-', '', $input['end_date']);
+            $str_start_date = $input['start_date'].' 00:00:00';
+            $str_end_date = $input['end_date'].' 00:00:00';
         } else {
             $start_date = 0;
             $end_date = PHP_INT_MAX;
+            $str_start_date = $start_date;
+            $str_end_date = $end_date;
+            
         }
+        
         $general = array_key_exists('general', $input);
         $ezplayer = array_key_exists('ezplayer', $input);
         // Generate report
@@ -42,12 +49,23 @@ function index($param = array()) {
         // Browser
         $totalBrowser = array_sum($report->get_ezplayer_date_list_user_browser());
         
-        $json_view_asset_data = json_encode($report->get_ezplayer_asset_view_date());
-        $json_view_asset_data = str_replace(',"', '], [', $json_view_asset_data);
-        $json_view_asset_data = str_replace('":', ',', $json_view_asset_data);
-        $json_view_asset_data = substr($json_view_asset_data, 2, -1);
-        $json_view_asset_data = '[['.$json_view_asset_data.']]';
+        $json_view_asset_data = date_to_json_highcharts($report->get_ezplayer_asset_view_date());
         
+        $data_status_date = db_event_status_get_date($str_start_date, $str_end_date);
+        $json_status_date_success = date_to_json_highcharts($data_status_date['success']);
+        $json_status_date_error = date_to_json_highcharts($data_status_date['error']);
+        
+        
+        list($success, $error) = db_event_status_get_nbr($str_start_date, $str_end_date);
+        $totalStatus = $success+$error;
+        $percentSuccess = calcul_percent($success, $totalStatus);
+        $percentError = calcul_percent($error, $totalStatus);
+        
+        $nbr_camslide = db_event_info_camslide_nbr($str_start_date, $str_end_date);
+        $total_nbr_camslide = 0;
+        foreach ($nbr_camslide as $infos) {
+            $total_nbr_camslide += $infos['total_type'];
+        }
         
         $MAX_DETAILS_LIST = 20;
         
@@ -87,4 +105,12 @@ function convert_seconds($duration){
 
 function calcul_percent($value, $total) {
     return round(($value / max(1, $total)) *100, 2);
+}
+
+function date_to_json_highcharts($data) {
+    $json_data = json_encode($data);
+    $json_data = str_replace(',"', '], [', $json_data);
+    $json_data = str_replace('":', ',', $json_data);
+    $json_data = substr($json_data, 2, -1);
+    return '[['.$json_data.']]';
 }

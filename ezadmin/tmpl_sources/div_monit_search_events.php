@@ -115,7 +115,8 @@
                     <?php
                     foreach (EventType::$event_type_id as $nameEventType => $num) {
                         echo '<option value="'.$num.'"';
-                        if(isset($input) && $input['type_id'] != "" && $input['type_id'] == $num) {
+                        if(isset($input) && array_key_exists('type_id', $input) && 
+                                $input['type_id'] != "" && $input['type_id'] == $num) {
                             echo ' selected';
                         }
                         echo '>'.$nameEventType.

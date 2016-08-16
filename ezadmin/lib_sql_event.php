@@ -50,10 +50,10 @@ function event_statements_get() {
                     'WHERE asset = :asset',
         
             'get_record_after_date' =>
-                    'SELECT `asset`, `start_time`, `end_time`, `asset_classroom_id`, '
-                        . '`asset_course`, `asset_author`, `asset_cam_slide` ' .
+                    'SELECT `asset`, `start_time`, `end_time`, `classroom_id`, '
+                        . '`course`, `author`, `cam_slide` ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' ' .
-                    'WHERE asset_classroom_id = :asset_classroom_id AND '
+                    'WHERE classroom_id = :asset_classroom_id AND '
                         . 'start_time >= :time_limit AND end_time IS NOT NULL',
         
             'status_insert' => 
@@ -103,10 +103,11 @@ function event_statements_get() {
                 'status_time <= :end_date',
         
             'asset_info_camslide' => 
-                'SELECT asset_cam_slide, COUNT(asset_cam_slide) AS total_type '.
+                'SELECT cam_slide, COUNT(cam_slide) AS total_type '.
                 'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' ' .
-                'WHERE start_time >= :start_date AND end_time <= :end_date '.
-                'GROUP BY asset_cam_slide'
+                'WHERE start_time >= :start_date AND end_time <= :end_date ' .
+                ' AND cam_slide != "" '.
+                'GROUP BY cam_slide'
         
         );
 }
@@ -451,13 +452,13 @@ function db_event_asset_infos_get($classroom = "") {
     $argument = array();
     
     $strSQL = 'SELECT asset_info.asset, asset_info.start_time, asset_info.end_time, 
-                    asset_info.asset_classroom_id, status.status
-                FROM ezcast_test_asset_infos asset_info
+                    asset_info.classroom_id, status.status
+                FROM '. db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME).' asset_info
                     LEFT JOIN ezcast_test_event_status status
                         ON status.asset = asset_info.asset';
     
     if($classroom != "") {
-        $strSQL .= ' WHERE asset_info.asset_classroom_id = :asset_classroom_id';
+        $strSQL .= ' WHERE asset_info.classroom_id = :asset_classroom_id';
         $argument['asset_classroom_id'] = $classroom;
     }
     

@@ -647,10 +647,10 @@ function create_tables($drop = true) {
                 "`asset` varchar(50) NOT NULL," .
                 "`start_time` datetime NOT NULL," .
                 "`end_time` datetime DEFAULT NULL," .
-                "`asset_classroom_id` varchar(50) NOT NULL," .
-                "`asset_course` varchar(50) NOT NULL," .
-                "`asset_author` varchar(50) NOT NULL," .
-                "`asset_cam_slide` enum('cam','slides','camslides') NOT NULL," .
+                "`classroom_id` varchar(50) NOT NULL," .
+                "`course` varchar(50) NOT NULL," .
+                "`author` varchar(50) NOT NULL," .
+                "`cam_slide` enum('cam','slides','camslides') NOT NULL," .
                 "PRIMARY KEY (`asset`)" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         

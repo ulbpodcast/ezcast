@@ -1077,6 +1077,7 @@ $(function() {
 });
 </script>
 
+<?php if($ezplayer) { ?>
 <div class="col-md-6 col-print-md-12 add-print-space">
     <div id="container_browser" style="height: 500px; width: 100%"></div>
 </div>
@@ -1176,4 +1177,5 @@ $(function() {
 </script>
 
 <?php 
+}
 } // if post

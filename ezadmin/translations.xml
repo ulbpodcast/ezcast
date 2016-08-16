@@ -796,7 +796,7 @@
         <label id="report_asset_number" lang="fr">Nombre d'asset</label>
         <label id="report_asset_number" lang="en">Asset number</label>
         <label id="report_status_percent_success" lang="fr">Proportion&lt;br /&gt;d'enregistrements&lt;br /&gt;réussis</label>
-        <label id="report_status_percent_success" lang="en">Proportion of&lt;br /&gt;successful recording</label>
+        <label id="report_status_percent_success" lang="en">Proportion of&lt;br /&gt;successful&lt;br /&gt;recording</label>
         <label id="report_status_error" lang="fr">Echec</label>
         <label id="report_status_error" lang="en">Fail</label>
         <label id="report_status_success" lang="fr">Réussi</label>

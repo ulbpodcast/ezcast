@@ -157,8 +157,8 @@ function db_event_get_event_loglevel_most($asset) {
 function db_event_get_record_after_date($start_date, $classroom_id = "", $courses = "", $teacher = "", $cam_slide = "") {
     global $db_object;
     
-    $strSQL = 'SELECT `asset`, `start_time`, `end_time`, `asset_classroom_id`, '
-                        . '`asset_course`, `asset_author`, `asset_cam_slide` ' .
+    $strSQL = 'SELECT `asset`, `start_time`, `end_time`, `classroom_id`, '
+                        . '`course`, `author`, `cam_slide` ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME);
     
     $whereParam = array('start_time >= :time_limit AND end_time IS NOT NULL');

@@ -62,7 +62,7 @@ function error_handler($error_type, $errstr, $errfile, $errline) {
     $full_err_str = "PHP [$err_no_str]: $errstr (file $errfile, line $errline)";
             
     if(isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"] != "" && $debug_mode) { //first conditions is to avoid printing error in case of php execution in console
-        echo("<script>console.log('$full_err_str');</script>");
+        echo("<script>console.error('$full_err_str');</script>");
     }
     
     if(is_critical_error($error_type)) {

@@ -130,7 +130,9 @@ do {
             // download metadata
             $res = rsync_fetch_record($caller_ip, $meta_file, $recorder_user, $destrecording_path);
             $meta_ok = !$res;
-
+            
+            //todo: validate that user with netid from metadata has access to album
+            
             //download cam movie if available/needed
             if ($record_type == "cam" || $record_type == "camslide") {
                 $res = fetch_record_from_v2($cam_download_info, $destrecording_path, "cam");

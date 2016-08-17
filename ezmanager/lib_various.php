@@ -343,13 +343,3 @@ function file_get_extension($filename){
  $result_assoc['ext']=$ext_part;
  return $result_assoc;
 }
-
-function get_pid_from_file($filePath) {
-    $handle = fopen($filePath, "r");
-    if($handle == false)
-        return 0;
-    
-    $pid = fgets($handle);
-    fclose($handle);
-    return $pid;
-}

@@ -23,27 +23,25 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-?>
 
-<!--
-Before calling this template, please declare the following variables:
-- $asset_name The asset (technical) name
-- $title The asset (user-friendly) title
-- $description The asset's description
-- $public_album Set to true if the album is public, false otherwise (used for the "publish/unpublish option)
-- $has_cam Set to true if the asset has a "live action" media
-- $has_slides Set to true if the asset has a "slides" media
-- $type Can be "cam", "slide" or "camslide"
-- $date The date the asset was created, in a user-friendly format
-- $duration The duration of the asset
-- $filesize_[cam|slides] An assoc array (indexes 'low' and 'high') with the filesize for both the videos 1 and 2, as a string (including the unit!)
-    Example : $filesize_cam['high'] = '640 Mo' means that the live-action video weights 640Mo in HD
-- $dimensions_[cam|slides] An assoc array with the dimensions of the video, as a string
-    Example : $dimensions_cam['high'] = '1024 x 768' means the video in the left column in high-res is in 1024*768
-- $urls An assoc array (indexes 'low' and 'high') with the URL to the asset (web_distribute.php)
-- $embeds An assoc array with embed codes for the assets
--->
-<?php
+// Before calling this template, please declare the following variables:
+// - $asset_name The asset (technical) name
+// - $title The asset (user-friendly) title
+// - $description The asset's description
+// - $public_album Set to true if the album is public, false otherwise (used for the "publish/unpublish option)
+// - $has_cam Set to true if the asset has a "live action" media
+// - $has_slides Set to true if the asset has a "slides" media
+// - $type Can be "cam", "slide" or "camslide"
+// - $date The date the asset was created, in a user-friendly format
+// - $duration The duration of the asset
+// - $filesize_[cam|slides] An assoc array (indexes 'low' and 'high') with the filesize for both the videos 1 and 2, as a string (including the unit!)
+//     Example : $filesize_cam['high'] = '640 Mo' means that the live-action video weights 640Mo in HD
+// - $dimensions_[cam|slides] An assoc array with the dimensions of the video, as a string
+//     Example : $dimensions_cam['high'] = '1024 x 768' means the video in the left column in high-res is in 1024*768
+// - $urls An assoc array (indexes 'low' and 'high') with the URL to the asset (web_distribute.php)
+// - $embeds An assoc array with embed codes for the assets
+
+
 
 /**
  * Helper function, used for pretty print.

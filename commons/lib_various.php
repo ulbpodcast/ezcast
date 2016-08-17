@@ -76,3 +76,24 @@ function debug_to_console($data) {
             echo("<script>console.log('PHP: ".$data."');</script>");
     }
 }
+
+/**
+ * Require Once a controller
+ * 
+ * @param String $controller_name name of the controller
+ */
+function requireController($controller_name) {
+    require_once './controller/'.$controller_name;
+}
+
+/**
+ * Redirect the user to an other controller
+ * 
+ * @global Array $input which was send to the current page
+ * @param String $controller_name name of the new controller page
+ */
+function redirectToController($controller_name) {
+    global $input;
+    $input['action'] = $controller_name;
+    header('Location: index.php?'.http_build_query($input));
+}

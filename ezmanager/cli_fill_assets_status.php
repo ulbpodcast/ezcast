@@ -1,5 +1,61 @@
 <?php
 
+/*
+ * This CLI will check assets logs from the last two weeks and set a status for those having none.
+ * Usage: php cli_fill_assets_status [all]
+ * If 'all' arg is set, this will check all assets for all time.
+ */
+
+/*
+    Here is a PlantUML diagram for status decision
+ * 
+ * 
+ * 
+    @startuml
+    title Automatic cron
+
+    'accessibilité
+    skinparam classAttributeIconSize 0
+
+    'pas d'ombre
+    skinparam shadowing false
+
+    'taille de l'image
+    skinparam dpi 200 
+
+    'couleurs
+    skinparam activity {
+      StartColor Navy
+      BackgroundColor AliceBlue
+      ArrowColor CornflowerBlue
+      BorderColor CornflowerBlue
+      EndColor Navy
+    }
+    skinparam NoteBackgroundColor PapayaWhip
+    skinparam NoteBorderColor LightSalmon
+    skinparam stereotypeCBackgroundColor OldLace
+
+    start
+
+    :Get all logs having no status;
+    if (Is there an END log for this status?) then (non)
+      if (Is the last log for this asset older than X ?) then (yes)
+        :FAILURE;
+      else (no)
+        :Do nothing (asset will be checked again at next execution);
+      endif;
+    else (yes)
+      if (Is there an event with critical level ?) then (yes)
+        :FAILURE;
+      else (no)
+        :OKAY;
+      endif;
+    endif
+
+    stop
+    @enduml
+*/
+
 require_once __DIR__.'/../commons/config.inc';
 require_once __DIR__.'/../commons/event_status.php';
 require_once __DIR__.'/../commons/lib_database.php';

@@ -41,7 +41,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
                 <?php
-                if(isset($input) && array_key_exists('startDate', $input)) {
+                if(isset($input) && array_key_exists('startDate', $input) && $input['startDate'] != "") {
                     echo "defaultDate: new Date('".$input['startDate']."')";
                 } else {
                     echo 'defaultDate: moment().subtract(7, \'days\')';

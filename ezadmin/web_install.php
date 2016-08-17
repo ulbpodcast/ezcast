@@ -626,7 +626,7 @@ function create_tables($drop = true) {
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'votes` (' .
                 '`login` varchar(50) NOT NULL,' .
                 '`comment` bigint(20) NOT NULL,' .
-                '`voteType` char NOT NULL,' .
+                '`voteType` tinyint(1) NOT NULL,' .
                 'PRIMARY KEY (`login`,`comment`),' .
                 'FOREIGN KEY (`comment`) REFERENCES ' . $input['db_prefix'] . 'comments(`id`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');

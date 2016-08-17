@@ -10,9 +10,9 @@ Each product remains the entire property of its original author and keeps its or
 * HIGHLIGHT V4 under the MIT license, copyright Johann Burkard <http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html>
 --> ./htdocs/js/jQuery/highlight-js.js
 
-* JQUERY 1.6.2 under the MIT license, copyright John Resig <http://jquery.org/license>,
+* JQUERY 2.1.3 under the MIT license, copyright John Resig <http://jquery.org/license>,
   including sizzle.js under the MIT license, copyright The Dojo Foundation <http://sizzlejs.com/>
---> ./htdocs/js/jQuery/jquery-1.6.2.min.js
+--> ./htdocs/js/jQuery/jquery-2.1.3.min.js
 
 * JQUERY LOCALSCROLL v1.2.7 under the MIT license, copyright Ariel Flesler <http://flesler.blogspot.com>
 --> ./htdocs/js/jQuery/jquery.localscroll-1.2.7-min.js

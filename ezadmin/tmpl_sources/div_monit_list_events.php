@@ -5,12 +5,12 @@
 <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered table-condensed events sort_col">
         <tr>
-            <?php echo $colOrder->insertThSort("asset", "Asset"); ?>
+            <?php echo $colOrder->insertThSort("events.asset", "Asset"); ?>
             <?php echo $colOrder->insertThSort("origin", "®origin®"); ?>
-            <?php echo $colOrder->insertThSort("asset_classroom_id", "®monit_classroom®"); ?>
-            <?php echo $colOrder->insertThSort("asset_course", "®monit_courses®"); ?>
-            <?php echo $colOrder->insertThSort("asset_author", "®author®"); ?>
-            <?php echo $colOrder->insertThSort("asset_cam_slide", "®monit_record_type®"); ?>
+            <?php echo $colOrder->insertThSort("classroom_id", "®monit_classroom®"); ?>
+            <?php echo $colOrder->insertThSort("course", "®monit_courses®"); ?>
+            <?php echo $colOrder->insertThSort("author", "®author®"); ?>
+            <?php echo $colOrder->insertThSort("cam_slide", "®monit_record_type®"); ?>
             <?php echo $colOrder->insertThSort("event_time", "®monit_event_date®"); ?>
             <?php echo $colOrder->insertThSort("type_id", "®monit_type_id®"); ?>
             <?php echo $colOrder->insertThSort("context", "®monit_context®"); ?>
@@ -28,10 +28,10 @@
                     </a>
                 </td>
                 <td><?php echo $event['origin']; ?></td>
-                <td><?php echo $event['asset_classroom_id']; ?></td>
-                <td><?php echo $event['asset_course']; ?></td>
-                <td><?php echo $event['asset_author']; ?></td>
-                <td><?php echo $event['asset_cam_slide']; ?></td>
+                <td><?php echo $event['classroom_id']; ?></td>
+                <td><?php echo $event['course']; ?></td>
+                <td><?php echo $event['author']; ?></td>
+                <td><?php echo $event['cam_slide']; ?></td>
                 <td><?php echo $event['event_time']; ?></td>
                 <td><?php echo str_replace("_", "-", $logger->get_type_name($event['type_id'])); ?></td>
                 <td><?php echo $event['context']; ?></td>

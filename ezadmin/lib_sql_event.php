@@ -39,8 +39,8 @@ if(file_exists('config.inc')) {
 function event_statements_get() {
     return array(
             'get_all_event' =>
-                    'SELECT (`asset`, `origin`, `asset_classroom_id`, `asset_course`, `asset_author`,'
-                            . ' `asset_cam_slide`, `classroom_event_id`, `event_time`, `type_id`, `context`, `loglevel`, `message`) ' .
+                    'SELECT (`asset`, `origin`, `classroom_event_id`, `event_time`, ' .
+                    '`type_id`, `context`, `loglevel`, `message`) ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' ' .
                     'ORDER BY event_time, classroom_event_id',
         
@@ -147,7 +147,8 @@ function db_event_get_event_loglevel_most($asset) {
 /**
  * Get all record after given date in a specific classroom
  * 
- * @global PDO $statements prepared request list
+ * @global PDO $db_object
+ * 
  * @param String $start_date all record after this date
  * @param String $classroom_id id of the classroom
  * @param String $courses name of the course
@@ -227,68 +228,74 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     
     global $db_object;
     
-    $strSQL = 'SELECT SQL_CALC_FOUND_ROWS events.* ' .
-                    'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' events ';
+    $strSQL = 'SELECT SQL_CALC_FOUND_ROWS events.asset, events.origin, events.event_time,'
+            . ' events.type_id, events.context, events.loglevel, events.message, infos.start_time, '
+            . 'infos.end_time, infos.classroom_id, infos.course, infos.author, infos.cam_slide ' .
+                    'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' events ' .
+                ' LEFT JOIN ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' infos ' .
+                    ' on events.asset = infos.asset';
+    
+    
     
     $whereParam = array();
     $valueWhereParam = array();
     
     if($asset != "") {
-        $whereParam[] = "asset = ?";
+        $whereParam[] = "events.asset = ?";
         $valueWhereParam[] = $asset;
     }
     
     if($origin != "") {
-        $whereParam[] = "origin = ?";
+        $whereParam[] = "events.origin = ?";
         $valueWhereParam[] = $origin;
     }
     
     if($asset_classroom_id != "") {
-        $whereParam[] = "asset_classroom_id LIKE ?";
+        $whereParam[] = "infos.classroom_id LIKE ?";
         $valueWhereParam[] = db_sanitize($asset_classroom_id);
     }
     
     if($asset_course != "") {
-        $whereParam[] = "asset_course LIKE ?";
+        $whereParam[] = "infos.course LIKE ?";
         $valueWhereParam[] = db_sanitize($asset_course);
     }
     
     if($asset_author != "") {
-        $whereParam[] = "asset_author LIKE ?";
+        $whereParam[] = "infos.author LIKE ?";
         $valueWhereParam[] = db_sanitize($asset_author);
     }
     
     if($first_event_time != "") {
-        $whereParam[] = "event_time >= ?";
+        $whereParam[] = "events.event_time >= ?";
         $valueWhereParam[] = $first_event_time;
     }
     
     if($last_event_time != "") {
-        $whereParam[] = "event_time <= ?";
+        $whereParam[] = "events.event_time <= ?";
         $valueWhereParam[] = $last_event_time;
     }
     
     if($type_id != "") {
-        $whereParam[] = "type_id = ?";
+        $whereParam[] = "events.type_id = ?";
         $valueWhereParam[] = $type_id;
     }
     
     if($context != "") {
-        $whereParam[] = "context LIKE ?";
+        $whereParam[] = "events.context LIKE ?";
         $valueWhereParam[] = db_sanitize($context);
     }
     
     if($loglevel != "" && !empty($loglevel) && $loglevel[0] != NULL) {
         $tempWhereParam = array();
         foreach($loglevel as $lvl) {
-            $tempWhereParam[] = "loglevel = ?";
+            $tempWhereParam[] = "events.loglevel = ?";
             $valueWhereParam[] = $lvl;
         }
         $whereParam[] = "(".implode(" OR ", $tempWhereParam).")";
     }
     
     if($message != "") {
-        $whereParam[] = "message LIKE ?";
+        $whereParam[] = "events.message LIKE ?";
         $valueWhereParam[] = db_sanitize($message);
     }
     

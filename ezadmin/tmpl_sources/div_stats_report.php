@@ -1016,7 +1016,7 @@ $(function () {
                         echo ',';
                     }
                     echo '{';
-                    echo 'name: "'.ucfirst($infos['asset_cam_slide']).'",';
+                    echo 'name: "'.ucfirst($infos['cam_slide']).'",';
                     echo 'y: '.calcul_percent($infos['total_type'], $total_nbr_camslide);
                     echo '}';
                 }

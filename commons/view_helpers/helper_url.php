@@ -18,7 +18,7 @@ function url_post_replace($param, $value, $initURL = NULL) {
             $initURL .= '?';
         }
     }
-    $regex = "/([&|?]".$param."=)[\w-+%]*/";
+    $regex = "/([&|?]".$param."=)[\w-+.%]*/";
     $res = "";
 
     if(preg_match($regex, $initURL)) {

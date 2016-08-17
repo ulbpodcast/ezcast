@@ -23,9 +23,9 @@ class ServerLogger extends Logger {
         
         
         $this->statement['insert_log'] = $db_object->prepare(
-          'INSERT INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `asset_classroom_id`, `asset_course`, ' .
-            '`asset_author`, `asset_cam_slide`, `classroom_event_id`, `event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
-          ':asset, :origin, :classroom, :course, :author, :cam_slide, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)');
+          'INSERT INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `classroom_event_id`, '
+                . '`event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
+          ':asset, :origin, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)');
         
         $this->statement['insert_asset_info'] = $db_object->prepare(
             'INSERT INTO ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' (asset, ' .
@@ -96,10 +96,6 @@ class ServerLogger extends Logger {
         
         $this->statement['insert_log']->bindParam(':asset', $asset);
         $this->statement['insert_log']->bindParam(':origin', $origin);
-        $this->statement['insert_log']->bindParam(':classroom', $classroom);
-        $this->statement['insert_log']->bindParam(':course', $course);
-        $this->statement['insert_log']->bindParam(':author', $author);
-        $this->statement['insert_log']->bindParam(':cam_slide', $cam_slide);
         $this->statement['insert_log']->bindParam(':type_id', $type);        
         $this->statement['insert_log']->bindParam(':context', $context);
         $this->statement['insert_log']->bindParam(':loglevel', $level);

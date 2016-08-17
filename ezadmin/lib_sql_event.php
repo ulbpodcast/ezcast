@@ -312,7 +312,7 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
         } 
         $strSQL .= ', ';
     }
-    $strSQL .= 'classroom_event_id '; //order by classroom_event_id too so that we can order events which happened in the same second
+    $strSQL .= 'classroom_event_id DESC '; //order by classroom_event_id too so that we can order events which happened in the same second
     
     if($max_elem != "" && $max_elem >= 0) {
         if($start_elem != "" && $start_elem >= 0) {

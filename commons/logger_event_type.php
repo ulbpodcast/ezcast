@@ -33,6 +33,9 @@ class EventType {
     const RECORDER_CANCEL                    = "recorder_cancel";  //user cancelled
     const RECORDER_FORCE_QUIT                = "recorder_force_quit"; //record was forcefully ended (ex: another user logs in)
     const RECORDER_LOGIN                     = "recorder_login";
+    const RECORDER_STOP                      = "recorder_stop";
+    const RECORDER_METADATA                  = "recorder_metadata";
+    
     //
     // EZAdmin
     
@@ -79,6 +82,8 @@ class EventType {
        EventType::RECORDER_CANCEL                            => 1017,
        EventType::RECORDER_FORCE_QUIT                        => 1018,
        EventType::RECORDER_LOGIN                             => 1019,
+       EventType::RECORDER_STOP                              => 1020,
+       EventType::RECORDER_METADATA                          => 1021,
         
        // EZAdmin: 2000->2999
        

@@ -202,7 +202,9 @@ abstract class Logger {
         if($debug_mode 
                 && $type != EventType::PHP //PHP events are already printed in custom_error_handling.php
                 && (!isset($service) || $service == false)) //some services will try to parse the response, and our <script> may interfere in this case
+        {
             echo("<script>console.log('$print_str');</script>");
+        }
         
         
         //idea: if level is critical or below, push back trace to message

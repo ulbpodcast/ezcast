@@ -99,10 +99,14 @@ switch (strtolower($_SESSION['browser_name'])) {
 
         <video id="main_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
             <source id="main_video_source"
+                    <?php if(array_key_exists('low_slide_src', $asset_meta)) { ?>
                     high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
-                    high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>"
                     low_slide_src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>"
-                    low_cam_src="<?php echo $asset_meta['low_cam_src'] . '&origin=' . $appname; ?>">  
+                    <?php } ?>
+                    <?php if(array_key_exists('low_cam_src', $asset_meta)) { ?>
+                    high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>"
+                    low_cam_src="<?php echo $asset_meta['low_cam_src'] . '&origin=' . $appname; ?>"
+                    <?php } ?>>  
         </video>
 
         <?php if ($asset_meta['record_type'] == 'camslide') { ?>

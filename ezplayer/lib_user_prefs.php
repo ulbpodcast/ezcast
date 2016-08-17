@@ -574,8 +574,10 @@ function user_prefs_album_bookmarks_list_get($user, $album) {
  */
 function user_prefs_asset_bookmarks_list_get($user, $album, $asset) {
     $assoc_album_bookmarks = user_prefs_album_bookmarks_list_get($user, $album);
-    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false)
+    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false || 
+            empty($assoc_album_bookmarks)) {
         return false;
+    }
 
     $assoc_asset_bookmarks = array();
     $index = 0;

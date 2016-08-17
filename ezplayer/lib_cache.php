@@ -82,7 +82,9 @@ function cache_album_threads_unset($album){
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Album threads) ".PHP_EOL, FILE_APPEND);
     
-    unlink($path_cache_album_threads_file);
+    if(file_exists($path_cache_album_threads_file)) {
+        unlink($path_cache_album_threads_file);
+    }
 }
 
 /**
@@ -170,7 +172,9 @@ function cache_asset_threads_unset($album, $asset){
     $path_to_threadsfile = $repository_basedir."/repository/".$album."/".$asset."/_threads.json";
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Asset threads) ".PHP_EOL, FILE_APPEND);
-    unlink($path_to_threadsfile);  
+    if(file_exists($path_to_threadsfile)) {
+        unlink($path_to_threadsfile);  
+    }
 }
 
 /**

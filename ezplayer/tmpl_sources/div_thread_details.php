@@ -31,7 +31,7 @@ include_once 'lib_print.php';
         threads_array = new Array();
 
     <?php
-    if (is_array($threads) && count($threads) > 0) {
+    if (isset($threads) && is_array($threads) && count($threads) > 0) {
         foreach ($threads as $thread_meta) {
             if (($thread_meta['studentOnly'] == '0') || ($thread_meta['studentOnly'] == '1' && !acl_has_moderated_album()) || acl_is_admin()) {
                 ?>

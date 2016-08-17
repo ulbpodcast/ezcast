@@ -110,8 +110,10 @@ function toc_album_bookmarks_list_get($album) {
  */
 function toc_asset_bookmark_list_get($album, $asset) {
     $assoc_album_bookmarks = toc_album_bookmarks_list_get($album);
-    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false)
+    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false ||
+            empty($assoc_album_bookmarks)) {
         return false;
+    }
 
     $assoc_asset_bookmarks = array();
     $index = 0;

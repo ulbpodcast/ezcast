@@ -50,7 +50,7 @@ function print_search($keywords){
     // transforms each keyword in a search link
     foreach($keywords_array as $keyword){
     	$comma = ($keywords != '') ? ',' : '';
-    	$tmp = "$comma<a href=\"#\" onclick=\"search_keyword('$keyword');\">$keyword</a>";
+    	$tmp = "$comma<a href=\"#\" onclick=\"keyword_search('$keyword');\">$keyword</a>";
     	$keywords .= $tmp;
     }
     echo $keywords;

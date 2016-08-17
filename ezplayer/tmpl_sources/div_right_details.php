@@ -130,7 +130,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                 <div class="side_pane_content" id="asset_bookmarks">
                     <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.bookmark_scroll');"></a></div>
                     <?php
-                    if (!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) {
+                    if (!isset($personal_bookmarks) || $personal_bookmarks == false || sizeof($personal_bookmarks) == 0) {
                         ?>
                         <div class="no_content">®No_bookmarks®</div>
                         <?php
@@ -206,7 +206,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                 <?php } ?>
             <div class="side_pane_content" id="album_toc">
                 <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.toc_scroll');"></a></div>
-                <?php if (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0) {
+                <?php if (!isset($official_bookmarks) || $official_bookmarks == false || sizeof($official_bookmarks) == 0) {
                     ?>
                     <div class="no_content">®No_toc®</div>
                     <?php

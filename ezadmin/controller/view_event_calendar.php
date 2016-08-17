@@ -28,8 +28,8 @@ function index($param = array()) {
         $event['asset'] = $info['asset'];
         $event['title'] = "";
         if(!$classRoom) {
-            if($info['asset_classroom_id'] != "") {
-                $event['title'] = '['.$info['asset_classroom_id'].'] ';
+            if($info['classroom_id'] != "") {
+                $event['title'] = '['.$info['classroom_id'].'] ';
             } else {
                 $event['title'] = '[Submit] ';
             }

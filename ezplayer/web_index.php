@@ -320,7 +320,7 @@ function load_page() {
 
         // orders the bookmarks (chron | reverse chron)
         case 'bookmarks_sort':
-            requireController('bookmarks_sort');
+            requireController('bookmarks_sort.php');
             break;
 
         // ============== T H R E A D S ================= //
@@ -856,7 +856,7 @@ function trace_append($array) {
 function thread_details_update($display = true) {
     global $input;
     
-    if ($input['thread_id'] != NULL) {
+    if (array_key_exists('thread_id', $input) && $input['thread_id'] != NULL) {
         $id = $input['thread_id'];
         $_SESSION['current_thread'] = $id;
     } else {

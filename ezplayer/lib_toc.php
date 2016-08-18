@@ -124,7 +124,9 @@ function toc_asset_bookmark_list_get($album, $asset) {
             array_push($assoc_asset_bookmarks, $assoc_album_bookmarks[$index]);
         }
         ++$index;
-        $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        if($index < $count) {
+            $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        }
     }
 
     return $assoc_asset_bookmarks;
@@ -256,19 +258,17 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
 
     if ($count > 0) {
         $index = -1;
-        $asset_ref = $bookmarks_list[0]['asset'];
-        $timecode_ref = $bookmarks_list[0]['timecode'];
+        
         // loop while the asset is older than the reference asset
-        while ($index < $count && $asset > $asset_ref) {
+        do {
             ++$index;
             $asset_ref = $bookmarks_list[$index]['asset'];
             $timecode_ref = $bookmarks_list[$index]['timecode'];
-        }
+        } while($index < ($count-1) && $asset > $asset_ref);
+        
         // if the asset already contains bookmarks, loop while 
         // timecode is bigger than reference timecode
-        while ($index < $count
-        && $asset == $asset_ref
-        && $timecode > $timecode_ref) {
+        while ($index < ($count-1) && $asset == $asset_ref && $timecode > $timecode_ref) {
             ++$index;
             $timecode_ref = $bookmarks_list[$index]['timecode'];
             $asset_ref = $bookmarks_list[$index]['asset'];

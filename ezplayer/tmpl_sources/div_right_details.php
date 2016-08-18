@@ -43,7 +43,9 @@ include_once 'lib_print.php';
 
     history.pushState({"url": 'index.php?action=view_asset_details&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');
 
-<?php if ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0)) { ?>
+<?php global $show_panel;
+    if ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0)
+        && !isset($show_panel)) { ?>
         show_panel = false;
 <?php } else { ?>
         show_panel = true;
@@ -189,7 +191,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
 
                                     </form>
                                 </li>
-                                    <?php if ($timecode == $bookmark['timecode']) { ?>
+                                    <?php if (array_key_exists('timecode', $bookmark) && isset($timecode) && $timecode == $bookmark['timecode']) { ?>
                                     <script>
                                         bookmark_more_toggle('<?php echo $index; ?>', 'bookmark', $("#bookmark_<?php echo $index; ?> .more a"));</script>
                                     <?php
@@ -266,7 +268,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                         </div>
                                 </form>
                             </li>
-                            <?php if ($timecode == $bookmark['timecode']) { ?>
+                            <?php if (isset($timecode) && $timecode == $bookmark['timecode']) { ?>
                                 <script>bookmark_more_toggle('<?php echo $index; ?>', 'toc', $("#toc_<?php echo $index; ?> .more a"));</script>
                                 <?php
                             }

@@ -3385,7 +3385,7 @@ a.tooltip:hover div.tip{
     clear: both;
     background-image: url("../images/Generale/backgroundFooter.png");
     background-repeat: repeat-x;
-    height: 35px;
+/*    height: 35px;*/
     width: 100%;
     bottom: 0px;
 }

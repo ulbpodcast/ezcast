@@ -17,11 +17,11 @@ function index($param = array()) {
     global $user_files_path;
     global $words; // used to highlight the searched words in 'div_search_result.php'
 
-    $search = $input['search']; // the pattern to be searched
+    $search = trim($input['search']); // the pattern to be searched
     $target = $input['target']; // where to search (all albums / selected albums / current album)
     $albums = $input['albums']; // the selection of albums
     $fields = $input['fields']; // where to search in the bookmark fields (title / descr. / keywords)
-    $fields_thread = $input['fields_thread'];
+    $fields_thread = array_key_exists('fields_thread', $input) ? $input['fields_thread'] : array('');
     $level = $input['level'];
     $tab = $input['tab'];
 

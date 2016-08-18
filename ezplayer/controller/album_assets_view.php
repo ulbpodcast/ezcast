@@ -127,14 +127,16 @@ function index_asset_view($param) {
                 $threads_list[] = $thread;
         }
     }
-
-    if ($input['click']) { // called by a local link
+    
+    if (array_key_exists('click', $input) && $input['click']) { // called by a local link
         // lvl, action, album, origin
         trace_append(array('2', 'view_album_assets', $album, 'from_ezplayer'));
         include_once template_getpath('div_assets_center.php');
     } else {// accessed by the UV or shared link
         // lvl, action, album, origin
-        trace_append(array('2', 'view_album_assets', $album, 'from_external'));
+        if(!array_key_exists('no_trace', $input) || !$input['no_trace']) {
+            trace_append(array('2', 'view_album_assets', $album, 'from_external'));
+        }
         include_once template_getpath('main.php');
     }
 }

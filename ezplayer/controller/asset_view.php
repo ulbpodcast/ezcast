@@ -195,12 +195,15 @@ function index($param = array()) {
             $_SESSION['thread_display'] = 'list';
         }
     }
-    if ($input['click']) { // called from a local link
+    if (array_key_exists('click', $input) && $input['click']) { // called from a local link
         // lvl, action, album, asset, record type (cam|slide|camslide), permissions (view official | add personal), origin
         trace_append(array('3', $ezplayer_mode, $album, $asset, $asset_meta['record_type'], ($has_bookmark) ? 'view_and_add' : 'view_only', 'from_ezplayer'));
         include_once template_getpath('div_assets_center.php');
     } else {// called from the UV or a shared link
-        trace_append(array('3', $ezplayer_mode, $album, $asset, $asset_meta['record_type'], ($has_bookmark) ? 'view_and_add' : 'view_only', 'from_external'));
+        if(!array_key_exists('no_trace', $input) || !$input['no_trace']) {
+            trace_append(array('3', $ezplayer_mode, $album, $asset, $asset_meta['record_type'], ($has_bookmark) ? 'view_and_add' : 'view_only', 'from_external'));
+        }
+        
         include_once template_getpath('main.php');
     }
     

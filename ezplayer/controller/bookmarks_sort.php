@@ -29,6 +29,10 @@ function index($param = array()) {
     }
     // lvl, action, album, panel (official|personal), new_order (chron|reverse_chron)
     trace_append(array($input['source'] == 'assets' ? '2' : '3', 'bookmarks_sort', $album, $panel, $new_order));
+    
+    global $show_panel;
+    $show_panel = true;
+    
     // determines the page to display
     if ($input['source'] == 'assets') {
         // the token is needed to display the album assets

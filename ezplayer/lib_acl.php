@@ -144,11 +144,12 @@ function acl_update_settings(){
  * @return boolean
  */
 function acl_is_watched($album, $asset) {
-    if (!acl_user_is_logged())
+    if (!acl_user_is_logged()) {
         return true;
+    }
+    
     foreach ($_SESSION['acl_watched_assets'] as $watched) {
-        if ($watched['album'] == $album
-                && in_array($asset, $watched['assets'])) {
+        if ($watched['album'] == $album && in_array($asset, $watched['assets'])) {
             return true;
         }
     }
@@ -194,9 +195,9 @@ function acl_global_count($album){
  * @param string $setting
  * @return boolean
  */
-function acl_value_get($setting){
+function acl_value_get($setting) {
     $settings = $_SESSION["acl_user_settings"];
-    if(array_key_exists($setting, $settings)) {
+    if(is_string($setting) && is_array($settings) && array_key_exists($setting, $settings)) {
         return $settings[$setting];
     }
     return NULL;

@@ -588,7 +588,9 @@ function user_prefs_asset_bookmarks_list_get($user, $album, $asset) {
             array_push($assoc_asset_bookmarks, $assoc_album_bookmarks[$index]);
         }
         ++$index;
-        $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        if($index < $count) {
+            $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        }
     }
 
     return $assoc_asset_bookmarks;
@@ -641,6 +643,10 @@ function user_prefs_asset_bookmarks_selection_get($user, $album, $asset, $select
  */
 function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode) {
     $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get($user, $album, $asset);
+    if($assoc_asset_bookmarks == false || !is_array($assoc_asset_bookmarks)) {
+        return false;
+    }
+    
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['timecode'] == $timecode) {
             return true;
@@ -1011,7 +1017,7 @@ function user_prefs_settings_edit($user, $key, $value) {
         return false;
 
     // 1) set the repository path
-    $user_files_path = user_prefs_repository_path($user_files_path);
+    $user_files_path = user_prefs_repository_path();
     if ($user_files_path === false) {
         return false;
     }

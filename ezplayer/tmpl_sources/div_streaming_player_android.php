@@ -74,7 +74,7 @@
     <link rel="stylesheet" href="flowplayer-6/skin/functional.css">
 
 
-    <div id="video_player" class="streaming">
+    <div id="video_player" class="streaming remove_full">
         <div id="streaming_video">
             <video width="100%" height="523px" autoplay="true" src="<?php echo $m3u8_live_stream; ?>" type="application/x-mpegurl" controls="controls" poster="images/Generale/¤poster-streaming¤.png"></video>
         </div>

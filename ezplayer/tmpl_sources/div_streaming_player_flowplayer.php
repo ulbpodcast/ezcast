@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="flowplayer-6/skin/functional.css">
 
 
-    <div id="video_player" class="streaming">
+    <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
         <div class="video_controls streaming">
             <ul>

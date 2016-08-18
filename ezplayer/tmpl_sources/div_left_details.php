@@ -65,7 +65,7 @@ switch (strtolower($_SESSION['browser_name'])) {
         <div class="right-arrow"></div><?php print_info($asset_meta['title']); ?>
     </div>
 
-    <div id="video_player">
+    <div id="video_player" class="remove_full">
         <!-- #main_video : HTML5 video player.
             There is no selected source by default.
         -->

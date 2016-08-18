@@ -33,6 +33,7 @@
 </script>
 <?php
 include_once 'lib_print.php';
+global $first_connexion;
 ?> 
 <div class="search_wrapper">
     <div id="search">
@@ -43,8 +44,9 @@ include_once 'lib_print.php';
 <div class="albums">
     <div id="tuto">
         <a href="#" onclick="$('#tuto_video').toggle();" id="tuto_label">®tuto®</a>
-        <video id='tuto_video' width="720" controls  type="video/mp4" src="./videos/tuto.mp4" style="display: <?php echo (!isset($albums) || sizeof($albums) == 0) ? 'block' : 'none'; ?>;">
-            Démonstration EZplayer</video></div>
+        <video id='tuto_video' width="720" controls  type="video/mp4" src="./videos/tuto_<?php echo get_lang(); ?>.mp4" 
+               style="display: <?php echo (!isset($albums) || sizeof($albums) == 0 || $first_connexion) ? 'block' : 'none'; ?>;">
+            ®tuto®</video></div>
     <?php
     if (!isset($albums) || sizeof($albums) == 0) {
         ?>

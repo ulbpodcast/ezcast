@@ -39,14 +39,9 @@ function index($param = array()) {
     // loads the previous action
     $input['action'] = $_SESSION['ezplayer_mode'];
 
-    if (count($input) > 0) {
-        $ezplayer_url .= '/index.php?';
-        foreach ($input as $key => $value) {
-            $ezplayer_url .= "$key=$value&";
-        }
-    }
+    $new_url = $ezplayer_url.'/index.php?'.http_build_query($input);
 
     // Displaying the previous page
-    header("Location: " . $ezplayer_url);
+    header("Location: " . $new_url);
     load_page();
 }

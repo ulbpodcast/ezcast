@@ -40,7 +40,7 @@
     <![endif]-->
 
 
-    <div id="video_player" class="streaming">
+    <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
         <?php if ($asset_meta['record_type'] === 'camslide') { ?>
             <div class="video_controls streaming">

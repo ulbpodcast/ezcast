@@ -121,7 +121,12 @@ if (!user_logged_in()) {
 // At this point of the code, the user is supposed to be logged in.
 // We check whether they specified an action to perform. If not, it means they landed
 // here through a page reload, so we check the session variables to restore the page as it was.
-else if (isset($_SESSION['ezplayer_logged']) && (!isset($input['action']) || empty($input['action']))) {
+else if (isset($_SESSION['ezplayer_logged']) && (!isset($input['action']) || empty($input['action']))) {    
+    // Check if player first connexion
+    global $first_connexion;
+    $first_connexion = !isset($_COOKIE['is_connect']);
+    setcookie('is_connect', true);
+    
     redraw_page();
 }
 
@@ -143,7 +148,7 @@ function load_page() {
     global $input;
     $action = $input['action'];
     $redraw = false;
-
+    
     //
     // Actions
     //
@@ -589,13 +594,20 @@ function user_logged_in() {
 function view_login_form() {
     global $ezplayer_url;
     global $error, $input;
+    global $template_folder;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash']))
         $_SESSION['has_flash'] = false;
     $url = $ezplayer_url;
+    
+    $lang = isset($input['lang']) ? $input['lang'] : 'fr';
+    set_lang($lang);
+    
+    template_repository_path($template_folder . get_lang());
+    
     // template include goes here
-    include_once template_getpath('login.php');
+    require_once template_getpath('login.php');
 }
 
 /**

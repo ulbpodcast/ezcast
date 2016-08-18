@@ -45,9 +45,9 @@ include_once 'lib_print.php';
 
 <?php global $show_panel;
     if ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0)
-        && !isset($show_panel)) { ?>
+        && !isset($show_panel)) { $hiden_side = true; ?>
         show_panel = false;
-<?php } else { ?>
+<?php } else { $hiden_side = false; ?>
         show_panel = true;
 <?php }
 if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (isset($official_bookmarks) && sizeof($official_bookmarks) != 0))) {
@@ -87,7 +87,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
 <?php include_once template_getpath('div_search.php'); ?>
 </div>
 
-<div id="side_wrapper">
+<div id="side_wrapper" <?php if($hiden_side) { echo 'style="right: -232px;"'; } ?>>
     <div id="side_menu">
 
                                                 <?php if ($has_bookmark) { ?>
@@ -283,4 +283,6 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
     </div>
 </div>
 
-
+<script>
+    $(window).trigger('resize');
+</script>

@@ -161,6 +161,14 @@
         <label id="Admin_mode_disabled" lang="en">Admin mode disabled </label>
         <label id="Admin_mode_update" lang="fr">Activer/désactiver le mode Admin</label>
         <label id="Admin_mode_update" lang="en">Enable/disable Admin mode</label>
+        <label id="login" lang="fr">Connexion</label>
+        <label id="login" lang="en">Login</label>
+        <label id="tuto_ezplayer" lang="fr">Découvrez EZPlayer</label>
+        <label id="tuto_ezplayer" lang="en">Meet EZPlayer</label>
+        <label id="cookie_infos" lang="fr">Notre site utilise des cookies pour améliorer votre expérience. 
+            En continuant à naviguer sur notre site, vous acceptez leur utilisation.</label>
+        <label id="cookie_infos" lang="en">Our website uses cookies to improve your user experience. 
+            By continuing to browse our website, you are agreeing to our use of cookies.</label>
 
         <label id="Deleted" lang="fr">Supprimé</label>
         <label id="Deleted" lang="en">Deleted</label>

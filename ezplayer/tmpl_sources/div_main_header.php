@@ -25,6 +25,14 @@
  */
 ?>
 
+<?php if(!isset($_COOKIE['infos_cookie'])) { ?>
+    <div class="cookie_header">
+        ®cookie_infos®
+        <button onclick="document.cookie='infos_cookie=true';$('.cookie_header').hide()">OK</button>
+    </div>
+<?php } ?>
+
+
 <script>
     settings_form = false;
     contact_form = false;

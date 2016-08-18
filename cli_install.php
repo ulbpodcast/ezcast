@@ -137,3 +137,6 @@ $user_str .= '$users[\'' . addslashes($username) . '\'][\'full_name\']="Admin";'
 $user_str .= '$users[\'' . addslashes($username) . '\'][\'email\']="admin@admin.admin";' . PHP_EOL . PHP_EOL;
 $filePath = $basedir . '/commons/pwfile.inc';
 updateConfig($filePath, $user_str);
+
+//install cron for cli_fill_assets_status, fill status every 2 hours
+system("(crontab -l 2>/dev/null; echo \"0 */2 * * * php /usr/local/ezcast/ezmanager/cli_fill_assets_status.php\") | crontab -");

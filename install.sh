@@ -520,6 +520,7 @@ cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezmanager/commons;
 cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezplayer/commons;
 
 $php_path $ezcast_basedir/cli_install.php "$php_path" "$rsync_path" "$webspace_directory" "$ezcast_basedir" "$repository_basedir" "$username" "$password" "$firstname" "$lastname" "$apache_username";
+
 # set permissions for Apache user on EZcast files
 chown -R $apache_username $ezcast_basedir;
 chown -R $apache_username $webspace_directory/ezadmin;

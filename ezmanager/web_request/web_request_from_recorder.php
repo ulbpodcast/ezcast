@@ -1,30 +1,5 @@
 <?php
 
-/*
- * EZCAST EZmanager 
- *
- * Copyright (C) 2016 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	   Arnaud Wijns <awijns@ulb.ac.be>
- *         Antoine Dewilde
- * UI Design by Julien Di Pietrantonio
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
 /**
  * @package ezcast.ezmanager.download
  */
@@ -116,7 +91,6 @@ function download_from_recorder() {
             $recorder_php_cli = "php";
         }
     }
-    
 
     // get info for file downloading
     $cam_info = null;
@@ -172,11 +146,16 @@ function download_from_recorder() {
         $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml file to $record_dir, can't recover.", array("web_request_from_recorder"));
         exit(3);
     }
-    //start download in background
+    
+    //start download in background. Can't check return value with at, replace by background process ?
     $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1 '| at now";
-    $pid = shell_exec($cmd);
+    $pid = system($cmd);
 //print "will execute command: '$cmd'\n<br>";
     print "OK:$pid";
+    
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background.", array("web_request_from_recorder"));
+
+            
     exit(0);
 }
 

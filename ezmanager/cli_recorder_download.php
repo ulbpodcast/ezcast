@@ -205,7 +205,7 @@ else {
     $cmd = "$php_cli_cmd $recorder_mam_insert_pgm $record_ok_asset_dir >> $record_ok_asset_dir/maminsert.log 2>&1";
     system($cmd, $return_val);
     if($return_val != 0) {
-        $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::ERROR, "Call to $recorder_mam_insert_pgm failed with error $return_val", array("cli_recorder_download"), $asset);
+        $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::ERROR, "Call to $recorder_mam_insert_pgm failed with error $return_val. Command $cmd.", array("cli_recorder_download"), $asset);
     }
 }//end else
 

@@ -7,8 +7,8 @@ class Report {
     const REPOSITOR_FOLDER = 'repository';
     const TRACE_FOLDER = 'ezplayer/ezplayer_traces';
     
-    private static $NOT_VALID_COURS = array('TEST', 'TEST-AW', 'APR-POD', 'DEMO');
-    private static $IGNORE_FILE = array('.', '..', '.gitignore');
+    private static $IGNORED_COURSES = array('TEST', 'TEST-AW', 'APR-POD', 'DEMO');
+    private static $IGNORED_FILES = array('.', '..', '.gitignore');
 
     const META_FILE_NAME = '_metadata.xml';
     
@@ -163,7 +163,7 @@ class Report {
         $origin = (String) $asset->origin;
 
         $cours = (String) $asset->cours;
-        if(in_array($cours, self::$NOT_VALID_COURS)) {
+        if(in_array($cours, self::$IGNORED_COURSES)) {
             return;
         }
         
@@ -222,7 +222,7 @@ class Report {
             return;
         }
         foreach(scandir($folder) as $file) {
-            if (!in_array($file, self::$IGNORE_FILE))  {
+            if (!in_array($file, self::$IGNORED_FILES))  {
 
                 if(is_dir($folder.'/'.$file)) {
                     ++$rec;
@@ -243,7 +243,7 @@ class Report {
      */
     private function ezplayer_calcul_user_nbr() {
         $res = scandir(self::EZCAST_FOLDER.'ezplayer/users');
-        $this->nbr_total_user = count(array_diff($res, self::$IGNORE_FILE));
+        $this->nbr_total_user = count(array_diff($res, self::$IGNORED_FILES));
     }
 
 
@@ -269,7 +269,7 @@ class Report {
         $vide = NULL;
 
         foreach(scandir($folder) as $file) {
-            if (!is_dir($folder.'/'.$file) && !in_array($file, self::$IGNORE_FILE) && 
+            if (!is_dir($folder.'/'.$file) && !in_array($file, self::$IGNORED_FILES) && 
                     preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}.trace/", $file, $vide) == 1) {
 
                 $res[] = $folder.'/'.$file;

@@ -745,6 +745,35 @@ function ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array) {
 }
 
 /**
+ * 
+ * @param string $album
+ * @param string $asset
+ * @param string $change_key
+ * @param string $value
+ * @return bool success
+ */
+function ezmam_asset_status_set_properties($album, $asset, $change_key, $value) {
+    $metadata_assoc_array = ezmam_media_metadata_get($album, $asset);
+    if(!$metadata_assoc_array)
+        return false;
+    
+    $found = false;
+    foreach ($metadata_assoc_array as $key => $val) {
+       if($key == $change_key) {
+           $metadata_assoc_array[$key] = $value;
+           $found = true;
+           break;
+       }
+    }
+    
+    if(!$found)
+        return false;
+    
+    $res = ezmam_media_metadata_set($album, $asset, $metadata_assoc_array);
+    return $res;
+}
+
+/**
  *
  * @param string $album_name
  * @param string $asset_name

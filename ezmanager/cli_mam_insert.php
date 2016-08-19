@@ -69,7 +69,7 @@ if($argc!=2){
 }
 
 $recording_dir = $argv[1]; //first (and only) parameter in command line
-$asset = $recording_dir;
+$asset = basename($recording_dir);
 
 if(!file_exists($recording_dir)){
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "could not find recording directory: $recording_dir", array("cli_mam_insert"), $asset);
@@ -140,6 +140,7 @@ if( strpos($record_type,"cam")!==false) {
   $ok = originals_mam_insert_media($album_name,$asset_name,'cam',$recording_metadata,$recording_dir);
   if(!$ok) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Cam media insertion failed for album $album_name", array("cli_mam_insert"), $asset);
+    set_asset_status_to_failure();
     exit(6);
   }
       
@@ -150,6 +151,7 @@ if(strpos($record_type,"slide")!==false){
   $ok = originals_mam_insert_media($album_name,$asset_name,'slide',$recording_metadata,$recording_dir);
   if(!$ok) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Slide media insertion failed for album $album_name", array("cli_mam_insert"), $asset);
+    set_asset_status_to_failure();
     exit(6);
   }
 }
@@ -167,9 +169,17 @@ $cmd="$php_cli_cmd $submit_intro_title_movie_pgm  $album_name $asset_name >> /de
 exec($cmd, $cmdoutput, $returncode);
 if($returncode) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Command $cmd failed with result $returncode", array("cli_mam_insert"), $asset);
+    set_asset_status_to_failure();
     exit(7);
 }
     
+//
+function set_asset_status_to_failure() {
+    global $album_name;
+    global $asset_name;
+    ezmam_asset_status_set_properties($album_name,$asset_name, 'status', 'failed');
+}
+
 /**
  * insert original cam or slide in repository and if user submit, checks submitted file's extension
  * @param string $camslide

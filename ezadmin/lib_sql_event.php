@@ -166,22 +166,22 @@ function db_event_get_record_after_date($start_date, $classroom_id = "", $course
     $valueWhereParam = array('time_limit' => $start_date);
     
     if($classroom_id != "") {
-        $whereParam[] = 'asset_classroom_id = :asset_classroom_id';
+        $whereParam[] = 'classroom_id = :asset_classroom_id';
         $valueWhereParam['asset_classroom_id'] = $classroom_id;
     }
     
     if($courses != "") {
-        $whereParam[] = 'asset_course = :courses';
+        $whereParam[] = 'course = :courses';
         $valueWhereParam['courses'] = $courses;
     }
     
     if($teacher != "") {
-        $whereParam[] = 'asset_author = :teacher';
+        $whereParam[] = 'author = :teacher';
         $valueWhereParam['teacher'] = $teacher;
     }
     
     if($cam_slide != "") {
-        $whereParam[] = 'asset_cam_slide = :cam_slide';
+        $whereParam[] = 'cam_slide = :cam_slide';
         $valueWhereParam['cam_slide'] = $cam_slide;
     }
     

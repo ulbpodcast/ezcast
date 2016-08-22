@@ -31,8 +31,8 @@
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <script type="text/javascript" src="js/jQuery/jquery-2.1.3.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
 
         <script type="text/javascript">
             function detect_flash() {

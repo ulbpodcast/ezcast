@@ -34,6 +34,15 @@ function index($param = array()) {
         $bookmark_type = '';
     }
 
+    $str_bookmark_keywords = "";
+    foreach(explode(",", $bookmark_keywords) as $keyword) {
+        if($str_bookmark_keywords != "") {
+            $str_bookmark_keywords .= ",";
+        }
+        $str_bookmark_keywords .= trim($keyword);
+    }
+    $bookmark_keywords = $str_bookmark_keywords;
+    
     // init paths
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);

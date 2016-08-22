@@ -418,7 +418,7 @@ function get_keywords(&$string) {
             // if it ends by '#', it is a keyword
             if ($string[$j] == "#") {
                 // pushes the keyword in the array 
-                $keywords[] = $keyword;
+                $keywords[] = trim($keyword);
                 // removes the '#' tags from the text
                 $string[$i] = ' ';
                 $string[$j] = ' ';

@@ -142,14 +142,16 @@ function toc_asset_bookmark_list_get($album, $asset) {
 function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
     $bookmarks_list;
     $selected_bookmarks = array();
-
+    
     if (!isset($album) || $album == '')
         return false;
-    if (!isset($asset) || $asset == '') {
+    
+    if (!isset($asset) || $asset == "") {
         $bookmarks_list = toc_album_bookmarks_list_get($album);
     } else {
         $bookmarks_list = toc_asset_bookmark_list_get($album, $asset);
     }
+    
     if (count($bookmarks_list) > 0) {
         $min_index = 0;
         $max_index = count($bookmarks_list) - 1;

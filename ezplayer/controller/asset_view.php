@@ -165,7 +165,7 @@ function index($param = array()) {
     $_SESSION['album'] = $album;
     $_SESSION['asset'] = $asset;
     $_SESSION['timecode'] = $timecode;
-    if ($seek)
+    if ($seek && isset($thread_id))
         $_SESSION['current_thread'] = $thread_id;
     $_SESSION['asset_token'] = $asset_token;
     

@@ -156,7 +156,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <div class="blue-title">®Description® :</div>
                                                 <?php print_info($bookmark['description']); ?>
                                                 <div class="blue-title" style="margin-top: 6px;">®Keywords® : </div>
-            <?php print_search($bookmark['keywords']); ?>
+                                                <?php print_search($bookmark['keywords']); ?>
                                             </div>
                                             <div class="edit_bookmark_form" id="edit_bookmark_<?php echo $index; ?>">            
                                                 <input type="hidden" name="album" id="bookmark_album_<?php echo $index; ?>" value="<?php echo $bookmark['album']; ?>"/>

@@ -73,6 +73,8 @@ function bookmark_edit_form_toggle(index, tab) {
     $('#' + tab + '_info_' + index).toggle();
     $('#edit_' + tab + '_' + index).toggle();
     $('#' + tab + '_title_' + index).toggle();
+    $('#'+ tab + '_' + index + ' .more').toggle();
+    $('#'+ tab + '_' + index + ' .bookmark_options').toggle();
 }
 
 /**

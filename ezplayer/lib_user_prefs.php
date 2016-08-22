@@ -726,7 +726,7 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
         $asset_ref = $bookmarks_list[0]['asset'];
         $timecode_ref = $bookmarks_list[0]['timecode'];
         // loop while the asset is older than the reference asset
-        while ($index < $count && $asset < $asset_ref) {
+        while ($index < ($count-1) && $asset < $asset_ref) {
             ++$index;
             $asset_ref = $bookmarks_list[$index]['asset'];
             $timecode_ref = $bookmarks_list[$index]['timecode'];

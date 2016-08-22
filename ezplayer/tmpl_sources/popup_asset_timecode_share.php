@@ -35,7 +35,7 @@ include_once 'lib_print.php';
 
 <!--[if !IE]><!-->
 <div class="wrapper_clip" style="position:relative; text-align: center;">
-    <span id="share_time" onclick="copy_url();" class="copy-to-clipboard-button">
+    <span id="share_time" onclick="copy_video_url();" class="copy-to-clipboard-button">
         <span id="share_valid" style="display: none">✔</span>
         ®Copy_to_clipboard®
     </span>
@@ -48,7 +48,7 @@ include_once 'lib_print.php';
 
 <script>
     var copy = false;
-    function copy_url() {
+    function copy_video_url() {
         if(!copy) {
             server_trace(new Array('4', 'link_copy', current_album, current_asset, duration, time, type, quality))
             copy = true;

@@ -230,8 +230,8 @@
         <label id="Level" lang="en">Level</label>
         <label id="Level_info" lang="fr">Niveau hiérarchique du signet</label>
         <label id="Level_info" lang="en">Level of the bookmark</label>
-        <label id="Bad_level" lang="fr">Niveau incorrect. Le niveau doit être compris entre 1 et 5</label>
-        <label id="Bad_level" lang="en">Incorrect level. The level must be a number between 1 and 5</label>
+        <label id="Bad_level" lang="fr">Niveau incorrect. Le niveau doit être compris entre 1 et 3</label>
+        <label id="Bad_level" lang="en">Incorrect level. The level must be a number between 1 and 3</label>
         <label id="optional" lang="fr">Facultatif</label>
         <label id="optional" lang="en">Optional</label>
         <label id="File_info" lang="fr">Max. 2Mo</label>

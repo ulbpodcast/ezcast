@@ -80,7 +80,6 @@ if ($trace_on) {
         <script type="text/javascript" src="js/lib_threads.js"></script>
         <script type="text/javascript" src="js/lib_bookmarks.js"></script>
         <script type="text/javascript" src="js/lib_chat.js"></script>
-        <script type="text/javascript" src="js/ZeroClipboard.js"></script>
 
         <script>
             var current_album;
@@ -94,8 +93,6 @@ if ($trace_on) {
             var display_threads_notif = false;
             var thread_to_display = null;
             var ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
-
-            ZeroClipboard.setMoviePath('./swf/ZeroClipboard10.swf');
 
             $(document).ready(function () {
 
@@ -651,31 +648,6 @@ if ($trace_on) {
             }
 
             // =============== V A R I O U S ================= //
-
-
-            // Links an instance of clipboard to its position 
-            function copyToClipboard(id, tocopy, width) {
-                if (width == null || width == '' || width == 0)
-                    width = 200;
-                if (id == '#share_clip') {
-                    clippy = new ZeroClipboard.Client();
-                    clip = clippy;
-                } else {
-                    clip = new ZeroClipboard.Client();
-                }
-                clip.setText('');
-                clip.addEventListener('mouseDown', function () {
-                    console.log('Copy done.');
-                    clip.setText(tocopy);
-                });
-                clip.addEventListener('onComplete', function () {
-                    alert("®Content_in_clipboard®");
-                });
-
-                // Set the text to copy in the clipboard
-                clip.setText(tocopy);
-                $(id).html(clip.getHTML(width, 30));
-            }
 
             function nl2br(str, is_xhtml) {
                 var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';

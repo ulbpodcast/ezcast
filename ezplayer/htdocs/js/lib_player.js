@@ -39,7 +39,7 @@ var panel_width = 231;
 // variable describing which components are displayed on the page
 var fullscreen = false;
 var show_panel = false;
-var bookmark_form = false;
+var bookmark_form = "";
 var thread_form = false;
 var comment_form = false;
 var shortcuts = false;
@@ -692,14 +692,14 @@ function player_bookmark_form_show(source) {
     if (camslide)
         (type == 'slide') ? $('#main_video').hide() : $('#secondary_video').hide();
     $('#bookmark_form').slideDown();
-    bookmark_form = true;
+    bookmark_form = source;
 
 }
 
 // hides the bookmark creation form
 function player_bookmark_form_hide(canceled) {
     var window_height = $(window).height() - 39;
-    bookmark_form = false;
+    bookmark_form = "";
     $("#video_shortcuts").css("display", "block");
     $('video').animate({'height': (fullscreen) ? window_height + 'px' : '525px'});
     if (camslide)
@@ -724,15 +724,19 @@ function player_bookmark_form_toggle(source) {
     origin = get_origin();
 
     from_shortcut = false;
-    if (bookmark_form) {
-        server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, source, quality, origin));
-        player_bookmark_form_hide(false);
-
-    } else {
-        server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, time, type, source, quality, origin));
-        player_bookmark_form_show(source);
-        $("#bookmark_title").focus();
+    if (bookmark_form != "") {
+        
+        server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, bookmark_form, quality, origin));
+        if(bookmark_form == source) {
+            player_bookmark_form_hide(false);
+            return;
+        }
     }
+    
+
+    server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, time, type, source, quality, origin));
+    player_bookmark_form_show(source);
+    $("#bookmark_title").focus();   
 }
 
 // ===================== T H R E A D S    A C T I O N S ======================= //
@@ -817,7 +821,7 @@ function player_thread_form_toggle() {
         server_trace(new Array('4', 'thread_form_hide', current_album, current_asset, duration, time, type, quality, origin));
         player_thread_form_hide(false);
         return;
-    } else if (bookmark_form) {
+    } else if (bookmark_form != "") {
         player_bookmark_form_hide(false);
         return;
     }

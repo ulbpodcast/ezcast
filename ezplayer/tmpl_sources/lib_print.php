@@ -44,6 +44,12 @@ function print_info($info, $suffix = '', $htmlspecialchars = true) {
 
 
 function print_search($keywords){
+    
+    if (!isset($keywords) || empty($keywords)) {
+        echo '®Not_available®';
+        return;
+    }
+    
     // split the string
     $keywords_array = explode(",", $keywords);
     $keywords = '';

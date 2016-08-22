@@ -51,6 +51,6 @@
             <div id="global">
 
         <div class="container">
-            <div class="row-fluid">
+            <div class="row">
 <?php include template_getpath('div_main_menu.php'); ?>
                 <div class="col-md-10">

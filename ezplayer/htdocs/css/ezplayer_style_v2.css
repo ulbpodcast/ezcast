@@ -103,6 +103,7 @@ body {
     background-color:#F1F1F1;
     float: left;
     width: 100%;
+    padding: 0px;
 }
 
 #global{
@@ -278,36 +279,34 @@ body {
     margin-bottom: 20px;
 }
 
+#form_login label {
+    font-size: 14px;
+}
 
 #login_form{
     font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;	
     font-size:12px; 
-    /*  color:#000000;  */
-    color: #444444;
+    color:#000000;
     background-color: #F9F8F8;
-    /*   margin-left:30px; */
-    /*   line-height:40px; */
     
     width: 270px;
-    /*   height: 280px; */
-    /*   padding-left: 15px; */
-    /*  padding-right: 15px; */
     padding:10px 25px 25px 25px;
-    margin:auto;
+    margin: auto;
+    margin-top:50px;
 
     border-radius: 25px;
     border: 1px dotted #BEBEBE;
-    margin-top:50px;
 
-    /*  text-align: center; */
+    text-align: center; 
 }
-
+/*
 #login_form label {
     min-width: 90px;
     text-align: right;
     display: inline-block;
     margin-bottom: 15px;
-}
+    font-size: 14px;
+}*/
 
 #login_form h2{
     font-size: 22px;
@@ -328,7 +327,7 @@ body {
 #login_fields input{
     width: 190px;
 }
-
+/*
 #login_form .login {
     margin-left: 215px;
 }
@@ -338,7 +337,7 @@ body {
     padding: 0px; 
     margin-bottom: 15px;
     margin-left: 88px;
-}
+}*/
 
 
 /* ----------------- MAIN HEADER ---------------------- */
@@ -3197,8 +3196,6 @@ b.green-title{
 
 .edit_bookmark_form .editButtons{
     display: block;
-    margin-bottom: -45px;
-    margin-left: 60px;
 }
 
 /* Bookmark options (delete - edit - share) */
@@ -3802,3 +3799,10 @@ a.tooltip:hover div.tip{
 .comment-message ul li{
     margin-left: 24px;
 }
+
+
+/* --- REMOVE Bootstrap CSS ---  */
+input.form-control, select.form-control {
+    border-radius: 0px;
+}
+    

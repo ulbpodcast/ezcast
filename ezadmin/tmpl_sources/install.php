@@ -85,8 +85,8 @@
                         </div>
 
                         <div class="panel-body well" style="margin-bottom:0;">
-                            <div class="row-fluid">
-                                    <div class="span6" style='width: 75%;'>
+                            <div class="row">
+                                    <div class="col-md-6" style='width: 75%;'>
 
                                     <div class="control-group">
                                         <label class="control-label">®settings_application_url®</label>
@@ -181,7 +181,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="span6">
+                                <div class="col-md-6">
                                     <div class="help-body">
                                     </div>
                                 </div>
@@ -195,8 +195,8 @@
                         </div>    
 
                         <div class="panel-body well" style="margin-bottom:0;">
-                            <div class="row-fluid">
-                                <div class="span6">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="control-group">
                                         <label class="control-label">®settings_db_type®</label>
                                         <div class="controls">
@@ -247,7 +247,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="span6">
+                                <div class="col-md-6">
                                     <div class="help-body">
                                     </div>
                                 </div>
@@ -261,8 +261,8 @@
                         </div>    
 
                         <div class="panel-body well" style="margin-bottom:0;">
-                            <div class="row-fluid">
-                                <div class="span6">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="control-group">
                                         <label class="control-label">®settings_recorder_user®</label>
                                         <div class="controls">
@@ -279,7 +279,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="span6">
+                                <div class="col-md-6">
                                     <div class="help-body">
                                     </div>
                                 </div>
@@ -293,8 +293,8 @@
                         </div>
 
                         <div class="panel-body well" style="margin-bottom:0;">
-                            <div class="row-fluid">
-                                <div class="span6">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="control-group">
                                         <label class="control-label">®settings_ezmanager_host®</label>
                                         <div class="controls">
@@ -311,7 +311,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="span6">
+                                <div class="col-md-6">
                                     <div class="help-body">
                                     </div>
                                 </div>
@@ -325,8 +325,8 @@
                         </div>
 
                         <div class="panel-body well" style="margin-bottom:0;">
-                            <div class="row-fluid">
-                                <div class="span6">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
@@ -377,7 +377,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="span6">
+                                <div class="col-md-6">
                                     <div class="help-body">
                                     </div>
                                 </div>

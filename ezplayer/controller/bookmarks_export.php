@@ -29,7 +29,7 @@ function index($param = array()) {
         $filename .= '_' . $asset;
     }
     $filename .= '.xml';
-
+    
     // download popup
     if ($target == 'official') { // bookmarks from the table of contents
         $bookmarks = toc_asset_bookmarks_selection_get($album, $asset, $selection);
@@ -41,7 +41,7 @@ function index($param = array()) {
     header("Content-Disposition: attachment; filename=$filename");
     header("Content-Type: text/xml");
     header("Content-Transfer-Encoding: binary");
-
+    
     // XML to save in the file
     $xml_txt = assoc_array2xml_string($bookmarks, "bookmarks", "bookmark");
 

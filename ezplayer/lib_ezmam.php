@@ -144,12 +144,7 @@ function ezmam_album_new($album_name, $metadata) {
  * @desc tell if thet given album exists
  */
 function ezmam_album_exists($album_name) {
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        return false;
-    }
-    $res = file_exists($repository_path . "/" . $album_name);
-    return $res;
+    return ezmam_asset_exists($album_name, "");
 }
 
 /**
@@ -609,7 +604,11 @@ function ezmam_asset_exists($album_name, $asset_name) {
     if ($repository_path === false) {
         return false;
     }
-    $res = file_exists($repository_path . "/" . $album_name . "/" . $asset_name);
+    $path = $repository_path . "/" . $album_name;
+    if($asset_name != "") {
+        $path .= "/" . $asset_name;
+    }
+    $res = file_exists($path);
     return $res;
 }
 
@@ -1785,5 +1784,3 @@ function assoc_array2metadata_file($assoc_array, $file_path) {
 
     return true;
 }
-
-?>

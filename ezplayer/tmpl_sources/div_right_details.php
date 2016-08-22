@@ -131,6 +131,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                 <?php if ($has_bookmark) { ?>
                 <div class="side_pane_content" id="asset_bookmarks">
                     <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.bookmark_scroll');"></a></div>
+                    <script>var personal_bookmarks_time_code = new Array();</script>
                     <?php
                     if (!isset($personal_bookmarks) || $personal_bookmarks == false || sizeof($personal_bookmarks) == 0) {
                         ?>
@@ -142,6 +143,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                             <?php
                             foreach ($personal_bookmarks as $index => $bookmark) {
                                 ?>
+                                <script>personal_bookmarks_time_code.push(<?php echo $bookmark['timecode']; ?>);</script>
                                 <li id="bookmark_<?php echo $index; ?>" class="blue level_<?php echo $bookmark['level']; ?>">
                                     <form action="index.php" method="post" id="submit_bookmark_form_<?php echo $index; ?>" onsubmit="return false">
 
@@ -156,7 +158,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <div class="blue-title">®Description® :</div>
                                                 <?php print_info($bookmark['description']); ?>
                                                 <div class="blue-title" style="margin-top: 6px;">®Keywords® : </div>
-            <?php print_search($bookmark['keywords']); ?>
+                                                <?php print_search($bookmark['keywords']); ?>
                                             </div>
                                             <div class="edit_bookmark_form" id="edit_bookmark_<?php echo $index; ?>">            
                                                 <input type="hidden" name="album" id="bookmark_album_<?php echo $index; ?>" value="<?php echo $bookmark['album']; ?>"/>
@@ -165,7 +167,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <input type="hidden" name="timecode" id="bookmark_timecode_<?php echo $index; ?>" value="<?php echo $bookmark['timecode']; ?>"/>
                                                 <input type="hidden" name="type" id="bookmark_type_<?php echo $index; ?>" value="<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>"/>
                                                 <div class="blue-title">®Description® :</div>
-                                                <textarea name="description" id="bookmark_description_<?php echo $index; ?>" rows="4" ></textarea>
+                                                <textarea name="description" id="bookmark_description_<?php echo $index; ?>" style="resize: vertical;" rows="4" ></textarea>
                                                 <div class="blue-title" style="margin-top: 6px;">®Keywords® : </div>
                                                 <input name="keywords" id="bookmark_keywords_<?php echo $index; ?>" type="text"/>
                                                 <div class="blue-title" style="margin-top: 6px;">®Level® : </div>
@@ -208,6 +210,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                 <?php } ?>
             <div class="side_pane_content" id="album_toc">
                 <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.toc_scroll');"></a></div>
+                <script>var official_bookmarks_time_code = new Array();</script>
                 <?php if (!isset($official_bookmarks) || $official_bookmarks == false || sizeof($official_bookmarks) == 0) {
                     ?>
                     <div class="no_content">®No_toc®</div>
@@ -218,6 +221,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                         <?php
                         foreach ($official_bookmarks as $index => $bookmark) {
                             ?>
+                            <script>official_bookmarks_time_code.push(<?php echo $bookmark['timecode']; ?>);</script>
                             <li id="toc_<?php echo $index; ?>" class="orange level_<?php echo $bookmark['level']; ?>">
                                 <form action="index.php" method="post" id="submit_toc_form_<?php echo $index; ?>" onsubmit="return false">
 
@@ -236,7 +240,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <div class="orange-title">®Description® :</div>
                                                 <?php print_info($bookmark['description']); ?>
                                                 <div class="orange-title" style="margin-top: 6px;">®Keywords® : </div>
-        <?php print_search($bookmark['keywords']); ?>
+                                                <?php print_search($bookmark['keywords']); ?>
                                             </div>
 
                                             <div class="edit_bookmark_form" id="edit_toc_<?php echo $index; ?>">            

@@ -685,7 +685,8 @@ function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode) {
  * @param type $level the level of the bookmark
  * @return boolean
  */
-function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title = '', $description = '', $keywords = '', $level = '1', $type = '') {
+function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title = '', 
+        $description = '', $keywords = '', $level = '1', $type = '') {
     // Sanity check
     if (!isset($user) || $user == '')
         return false;
@@ -708,7 +709,7 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
     // set user's file path
     $user_path = $user_files_path . '/' . $user;
     // remove the previous same bookmark if it existed yet
-    user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode);
+    $bookmarks_list = user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode);
 
     // if the user's directory doesn't exist yet, we create it
     if (!file_exists($user_path)) {
@@ -717,8 +718,8 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
 
 
     // Get the bookmarks list
-    $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
-    $count = count($bookmarks_list);
+    //$bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
+    $count = $bookmarks_list === false ? 0 : count($bookmarks_list);
     $index = 0;
 
     if ($count > 0) {
@@ -726,7 +727,7 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
         $asset_ref = $bookmarks_list[0]['asset'];
         $timecode_ref = $bookmarks_list[0]['timecode'];
         // loop while the asset is older than the reference asset
-        while ($index < $count && $asset < $asset_ref) {
+        while ($index < ($count-1) && $asset < $asset_ref) {
             ++$index;
             $asset_ref = $bookmarks_list[$index]['asset'];
             $timecode_ref = $bookmarks_list[$index]['timecode'];
@@ -886,10 +887,12 @@ function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode) {
         foreach ($bookmarks_list as $index => $bookmark) {
             if ($bookmark['asset'] == $asset && $bookmark['timecode'] == $timecode) {
                 unset($bookmarks_list[$index]);
+                break;
             }
         }
         return assoc_array2xml_file($bookmarks_list, $user_path . "/bookmarks_$album.xml", "bookmarks", "bookmark");
     }
+    return array();
 }
 
 /**

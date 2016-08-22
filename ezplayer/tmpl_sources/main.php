@@ -387,13 +387,22 @@ if ($trace_on) {
             function bookmark_form_check() {
                 var timecode = document.getElementById('bookmark_timecode');
                 var level = document.getElementById('bookmark_level');
-
+                var bookmark_source = document.getElementById('bookmark_source');
+                
                 if (isNaN(timecode.value)
                         || timecode.value == ''
                         || timecode.value < 0) {
                     window.alert('®Bad_timecode®');
                     return false;
                 }
+                
+                var liste = (bookmark_source.value === 'official') ? official_bookmarks_time_code : personal_bookmarks_time_code;
+                
+                if($.inArray(parseInt(timecode.value), liste) >= 0) {
+                    window.alert("®already_use_timecode®");
+                    return false;
+                }
+                    
 
                 if (isNaN(level.value)
                         || level.value < 1

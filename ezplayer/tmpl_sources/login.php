@@ -99,7 +99,7 @@
                 </div>       
             </div>
         <?php } ?>
-        <div class="login_background">
+        <div class="login_background container">
             <?php include 'div_help_header.php'; ?>
             <div id="global" class="row">
                 <form id="form_login" class="form-horizontal col-md-4 col-md-offset-4" style="margin-top: 50px;" method="post" action="<?php

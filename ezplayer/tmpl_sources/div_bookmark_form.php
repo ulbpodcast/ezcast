@@ -75,7 +75,7 @@
             <label>®Timecode®&nbsp;:
                 <span class="small">®Timecode_info®</span>
             </label>
-            <input name="timecode" tabindex='15' id="bookmark_timecode" type="text" value="0"/>
+            <input name="timecode" tabindex='15' id="bookmark_timecode" type="number" value="0" required/>
 
             <br/><br/>
             <!-- Submit button -->

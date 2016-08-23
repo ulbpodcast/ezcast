@@ -149,6 +149,14 @@ function load_page() {
     $action = $input['action'];
     $redraw = false;
     
+    /**
+     * Until pages and services are divided, mark some action as services
+     * A service = action not returning a page.
+     * A lot of these services actually return presentation too (in the form on popups), presentation should be moved to calling page
+     */
+    global $service; //true if we're currently running a service. 
+    $service = false;
+    
     //
     // Actions
     //
@@ -294,16 +302,19 @@ function load_page() {
 
         // exports a selection of bookmarks
         case 'bookmarks_export':
+            $service = true;
             requireController('bookmarks_export.php');
             break;
 
         // exports all bookmarks of the given album
         case 'bookmarks_album_export':
+            $service = true;
             requireController('bookmarks_export_all.php');
             break;
 
         // exports all bookmarks of the given asset
         case 'bookmarks_asset_export':
+            $service = true;
             $paramController[] = true;
             requireController('bookmarks_export_all.php');
             break;

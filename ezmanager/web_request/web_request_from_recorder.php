@@ -143,7 +143,7 @@ function download_from_recorder() {
 
     $ok = file_put_contents($record_dir . "/download_data.xml", $downloadxml);
     if(!$ok) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml file to $record_dir, can't recover.", array("web_request_from_recorder"));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml file to $record_dir, can't recover.", array("web_request_from_recorder"), $record_name_sanitized);
         exit(3);
     }
     
@@ -153,7 +153,7 @@ function download_from_recorder() {
 //print "will execute command: '$cmd'\n<br>";
     print "OK:$pid";
     
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background.", array("web_request_from_recorder"));
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background.", array("web_request_from_recorder"), $record_name_sanitized);
 
             
     exit(0);

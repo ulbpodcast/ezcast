@@ -29,8 +29,8 @@
  * @package ezcast.ezmanager.cli
  */
 
-include_once 'config.inc';
-include_once 'lib_ezmam.php';
+include_once __DIR__.'/config.inc';
+include_once __DIR__.'/lib_ezmam.php';
 
 Logger::$print_logs = true;
 
@@ -129,7 +129,7 @@ do {
         {
             // download metadata
             $res = rsync_fetch_record($caller_ip, $meta_file, $recorder_user, $destrecording_path);
-            $meta_ok = !$res;
+            $meta_ok = $res == 0;
             
             //todo: validate that user with netid from metadata has access to album
             
@@ -147,10 +147,11 @@ do {
             $repeat -= 1;
 
             if (!$meta_ok || !$cam_ok || !$slide_ok) {
+                $sleep_time = 600;
                 $title = "Error downloading from recorder (retrying)";
                 $first_try = $repeat == $max_download_retries - 1;
                 if ($first_try) {
-                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "First try rsync failed ($meta_ok, $cam_ok, $slide_ok) ", array("cli_recorder_download"), $asset);
+                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "First try rsync failed ($meta_ok, $cam_ok, $slide_ok). Will try again in $sleep_time seconds.", array("cli_recorder_download"), $asset);
                     if (!$meta_ok) 
                         mail($mailto_alert, $title, "Could not rsync file metadata from $podcv_ip (first try)");
                     if (!$cam_ok)
@@ -158,6 +159,7 @@ do {
                     if (!$slide_ok)
                         mail($mailto_alert, $title, "Could not rsync file slide.mov from $podcs_ip (first try)");
                 } else {
+                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync failed ($meta_ok, $cam_ok, $slide_ok).", array("cli_recorder_download"), $asset);
                     if (!$meta_ok)
                         echo "could not rsync file metadata from $podcv_ip";
                     if (!$cam_ok)
@@ -165,7 +167,7 @@ do {
                     if (!$slide_ok)
                         echo "could not rsync file slide.mov from $podcs_ip";
                 }
-                sleep(600);
+                sleep($sleep_time);
             }
         }
     }
@@ -186,7 +188,7 @@ if (!$meta_ok || !$cam_ok || !$slide_ok) {
     rename($destrecording_path, $recorder_upload_failed_dir . "/" . $recording_dir);
 }//endif !download ok
 else {
-    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::NOTICE, "Asset download succesfully finished", array("cli_recorder_download"), $asset);
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::NOTICE, "Asset download successfully finished", array("cli_recorder_download"), $asset);
 
     // Finalize recording on the remote recorder
     $cmd = "$ssh_pgm -oBatchMode=yes $recorder_user@$caller_ip \"$recorder_php_cli $recorder_basedir/cli_upload_finished.php $asset\"";

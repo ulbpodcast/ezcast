@@ -6,15 +6,16 @@ function index($param = array()) {
     if (empty($input['course_code']))
         die;
 
+    $netid = trim($input['id']);
     switch ($input['query']) {
         case 'link':
-            $info = db_users_courses_create($input['course_code'], $input['id']);
+            $info = db_users_courses_create($input['course_code'], $netid);
             if (!$info) {
                 echo json_encode(array('error' => '1'));
                 return;
             }
             echo json_encode(array(
-                'id' => $info['id'],
+                'id' => $netid,
                 'netid' => $info['user']['user_ID'],
                 'name' => $info['user']['surname'] . ' ' . $info['user']['forename'],
                 'origin' => 'internal'
@@ -22,7 +23,7 @@ function index($param = array()) {
             db_log(db_gettable('users_courses'), 'Added link between user ' . $info['user']['user_ID'] . ' and course ' . $input['course_code'], $_SESSION['user_login']);
             break;
         case 'unlink':
-            if (!db_users_courses_delete($input['id'])) {
+            if (!db_users_courses_delete($netid)) {
                 echo json_encode(array('error' => '1'));
             } else {
                 echo json_encode(array('success' => '1'));

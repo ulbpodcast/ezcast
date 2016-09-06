@@ -23,12 +23,12 @@ class ServerLogger extends Logger {
         
         
         $this->statement['insert_log'] = $db_object->prepare(
-          'INSERT INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `classroom_event_id`, '
+          'REPLACE INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `classroom_event_id`, '
                 . '`event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
           ':asset, :origin, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)');
         
         $this->statement['insert_asset_info'] = $db_object->prepare(
-            'INSERT INTO ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' (asset, ' .
+            'REPLACE INTO ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' (asset, ' .
                 'start_time, classroom_id, course, author, cam_slide) VALUES(' .
                 ':asset, :start_time, :asset_classroom_id, :asset_course, :asset_author, :asset_cam_slide)'
             );

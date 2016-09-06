@@ -48,7 +48,7 @@ var shortcuts = false;
  * Duration of the notification (sec)
  * @type Number
  */
-var notif_display_delay = 10;
+var notif_display_delay = 3;
 /**
  * Number of threads to display at once
  * @type Number

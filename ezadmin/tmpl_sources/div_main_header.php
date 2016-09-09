@@ -10,6 +10,7 @@
             if (isset($_SESSION['changes_to_push'])) {
                 echo ' (®unsaved_changes®)';
             }?></title>
+        <meta name="description" content="EZAdmin is an application to manage EZCast" />
         <script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
         <script type="text/javascript" src="js/moment.min.js"></script>
         <script type="text/javascript" src="js/jquery.jqplot.min.js"></script>

@@ -38,6 +38,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <title>®podman_page_title®</title>
+        <meta name="description" content="EZManager is an web application to manage video from EZCast" />
         <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />

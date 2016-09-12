@@ -15,6 +15,9 @@ if(!is_authorized_caller()) {
     die;
 }
 
+global $service;
+$service = true;
+
 $input = array_merge($_GET, $_POST);
 
 $action = $input['action'];
@@ -69,6 +72,8 @@ function download_from_recorder() {
     global $recorder_download_pgm;
     global $logger;
     
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE,"Received download request from $caller_ip", array(__FUNCTION__));
+            
     //get input parameters
     $record_type = $input['record_type']; // cam|slide|camslide
     $record_date = $input['record_date'];
@@ -78,12 +83,12 @@ function download_from_recorder() {
     $recorder_version = $input['recorder_version']; //if empty, we can still recover by using default protocol version
     
     if(!$record_type || !$record_date || !$course_name || !$meta_file) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, __FILE__ . " called invalid input (missing parameters). input dump:" . json_encode($input), array("web_request_from_recorder"));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, __FILE__ . " called invalid input (missing parameters). input dump:" . json_encode($input), array(__FUNCTION__));
         exit(1);
     }
     
     if (!isset($recorder_php_cli) || $recorder_php_cli == '') {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::WARNING, "Recorder did not provide its php_cli, trying to get it (or default to 'php')", array("web_request_from_recorder"));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::WARNING, "Recorder did not provide its php_cli, trying to get it (or default to 'php')", array(__FUNCTION__));
 
         $cmd = "$ssh_pgm -o BatchMode=yes $recorder_user@$caller_ip \"which php\"";
         $recorder_php_cli = exec($cmd);
@@ -101,7 +106,7 @@ function download_from_recorder() {
         $slide_info = unserialize($input['slide_info']);
 
     if(!$cam_info && !$slide_info) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Neither cam_info or slide_info provided, nothing we can do.", array("web_request_from_recorder"));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Neither cam_info or slide_info provided, nothing we can do.", array(__FUNCTION__));
         exit(2);
     }
     
@@ -115,6 +120,13 @@ function download_from_recorder() {
         foreach ($slide_info as $key => $value) {
             $download_info_xml .= "<slide_$key>$value</slide_$key>" . PHP_EOL;
         }
+    }
+    
+    if(    (strpos($record_type, "cam" != false) && strpos($download_info_xml, "cam_protocol") == false) 
+        || (strpos($record_type, "slide" != false) && strpos($download_info_xml, "slide_protocol") == false) 
+        ) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Download data has record type $record_type but cam or slide infos are missing.", array(__FUNCTION__));
+        exit(3);
     }
 
     $record_name_sanitized = str_to_safedir($record_date . "_" . $course_name);
@@ -143,8 +155,8 @@ function download_from_recorder() {
 
     $ok = file_put_contents($record_dir . "/download_data.xml", $downloadxml);
     if(!$ok) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml file to $record_dir, can't recover.", array("web_request_from_recorder"), $record_name_sanitized);
-        exit(3);
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml file to $record_dir, can't recover.", array(__FUNCTION__), $record_name_sanitized);
+        exit(4);
     }
     
     //start download in background. Can't check return value with at, replace by background process ?
@@ -153,7 +165,7 @@ function download_from_recorder() {
 //print "will execute command: '$cmd'\n<br>";
     print "OK:$pid";
     
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background.", array("web_request_from_recorder"), $record_name_sanitized);
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background.", array(__FUNCTION__), $record_name_sanitized);
 
             
     exit(0);

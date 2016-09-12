@@ -229,8 +229,18 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
         return false;
     }
   } else {
-    $media_file_path = system("ls $recording_dir/$camslide.*");
-    $media_meta['filename']=  basename($media_file_path);
+    $return_val = 0;
+    $media_file_path = system("ls $recording_dir/$camslide.*", $return_val);
+    if($return_val != 0) {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Could not find media file in $recording_dir/$camslide.*", array("cli_mam_insert"), $asset);
+        return false;
+
+    }
+    $media_meta['filename']= basename($media_file_path);
+    if($media_meta['filename'] == "") {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Invalid file path '$media_file_path' found for media $camslide", array("cli_mam_insert"), $asset);
+        return false;
+    }
   }
   
   $asset_name_with_course = basename($recording_dir);
@@ -242,7 +252,7 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
       $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Error adding original_$camslide:".  ezmam_last_error(), array("cli_mam_insert"), $asset);
       return false;
   } else {
-    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::NOTICE, "$camslide media inserted in repository in $album_name $asset_name $media_name", array("cli_mam_insert"), $asset_name_with_course);
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::NOTICE, "$camslide media inserted in repository in $album_name $asset_name $media_name. Last error:" . ezmam_last_error(), array("cli_mam_insert"), $asset_name_with_course);
   }
       
   return true;

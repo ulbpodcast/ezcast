@@ -195,7 +195,7 @@ abstract class Logger {
         // okay, all data ready
         
 
-        $print_str = "log| [$level] / context: $tempLogData->context / type: $type / " . json_encode($message);
+        $print_str = "log| [$level] / context: $tempLogData->context / type: $type / " . htmlspecialchars($message);
         if(Logger::$print_logs)
             echo $print_str . PHP_EOL;
         

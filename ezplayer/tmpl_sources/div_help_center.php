@@ -115,7 +115,7 @@
                 </p>
                 <p><img alt="Icônes de l'Université Virtuelle" src="./images/Help_v2/screen_005.png"/></p>
                 <p><b>2.</b> Si vous n’êtes pas encore connecté à l’interface EZplayer, vous devez vous connecter 
-                    (référez vous au point “<i>2. Se connecter</i>” de ce tutroriel). Vous arrivez alors sur la page 
+                    (référez vous au point “<i>2. Se connecter</i>” de ce tutoriel). Vous arrivez alors sur la page 
                     qui vous permet de <b>sélectionner un enregistrement</b> parmi tous ceux disponibles pour le cours. </p>
                 <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_006.png"/></p>
 

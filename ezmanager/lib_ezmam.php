@@ -752,7 +752,7 @@ function ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array) {
  * @return bool success
  */
 function ezmam_asset_status_set_properties($album, $asset, $change_key, $value) {
-    $metadata_assoc_array = ezmam_media_metadata_get($album, $asset);
+    $metadata_assoc_array = ezmam_asset_metadata_get($album, $asset);
     if(!$metadata_assoc_array)
         return false;
     
@@ -768,7 +768,7 @@ function ezmam_asset_status_set_properties($album, $asset, $change_key, $value) 
     if(!$found)
         return false;
     
-    $res = ezmam_media_metadata_set($album, $asset, $metadata_assoc_array);
+    $res = ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array);
     return $res;
 }
 

@@ -1,30 +1,5 @@
 <?php
 
-/*
- * EZCAST EZmanager 
- *
- * Copyright (C) 2016 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	   Arnaud Wijns <awijns@ulb.ac.be>
- *         Antoine Dewilde
- * UI Design by Julien Di Pietrantonio
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
 /**
  * @package ezcast.ezmanager.cli
  */
@@ -35,11 +10,11 @@ include_once __DIR__.'/lib_ezmam.php';
 Logger::$print_logs = true;
 
 /*
- * This program downloads the cam  slide movies and metadata of a recording from 2 minis in a lecture room
+ * This program downloads the cam slide movies and metadata of a recording from 2 minis in a lecture room
  * After downloading, the program calls $recorder_mam_insert_pgm for rendering
  */
 if ($argc != 2) {
-    echo "usage: " . $argv[0] . " <directory_of_recording>\n Where <directory_of_recording> should point to a directory containing download_data.xml description file (relative to $recorder_upload_dir)\n";
+    echo "usage: " . $argv[0] . " <relative_directory_of_recording>\n Where <directory_of_recording> should point to a directory containing download_data.xml description file (relative to $recorder_upload_dir)\n";
     $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, __FILE__ ." called with wrong arg count ($argc). argv: " .json_encode($argv), array("cli_recorder_download"));
     exit(1);
 }
@@ -53,7 +28,7 @@ $destrecording_path = $recorder_upload_dir . "/" . $recording_dir;
 //did the web application do a good job of creating directory and download (meta)datas?
 if (!file_exists($destrecording_path)) {
     //no
-    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Given folder ($$destrecording_path) does not exists", array("cli_recorder_download"), $asset);
+    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Given folder ($destrecording_path) does not exists", array("cli_recorder_download"), $asset);
     exit(2);
 }
 
@@ -135,12 +110,12 @@ do {
             
             //download cam movie if available/needed
             if ($record_type == "cam" || $record_type == "camslide") {
-                $res = fetch_record_from_v2($cam_download_info, $destrecording_path, "cam");
+                $res = fetch_record_from($cam_download_info, $destrecording_path, "cam");
                 $cam_ok = !$res;
             }//endif cam
             //download slide movie if available/needed
             if ($record_type == "slide" || $record_type == "camslide") {
-                $res = fetch_record_from_v2($slide_download_info, $destrecording_path, "slide");
+                $res = fetch_record_from($slide_download_info, $destrecording_path, "slide");
                 $slide_ok = !$res;
             }//endif slide
 
@@ -220,7 +195,7 @@ else {
  * @param type $dest_dir the directory where the downloaded file should be saved
  * @return type
  */
-function fetch_record_from_v2($download_info_array, $dest_dir, $camslide) {
+function fetch_record_from($download_info_array, $dest_dir, $camslide) {
     global $dir_date_format;
     global $asset;
     global $logger;
@@ -257,13 +232,19 @@ function fetch_record_from_v2($download_info_array, $dest_dir, $camslide) {
  */
 function rsync_fetch_record($ip, $source_filename, $remote_username, $dest_dir, $camslide = "") {
     global $rsync_pgm;
+    global $logger;
 
     $ext = pathinfo($source_filename, PATHINFO_EXTENSION);
     if ($camslide != "" && basename($source_filename) != "$camslide.mov")
         $dest_dir .= "/$camslide.$ext";
 
-    $cmd = "$rsync_pgm -e ssh -tv  --partial-dir=$dest_dir/downloading/ $remote_username@$ip:$source_filename $dest_dir 2>&1";
+    $cmd = "$rsync_pgm -e \"ssh -o 'BatchMode yes'\" -tv  --partial-dir=$dest_dir/downloading/ $remote_username@$ip:$source_filename $dest_dir 2>&1";
+    echo $cmd;
+    $returncode = 0;
     exec($cmd, $cmdoutput, $returncode);
+    if($returncode != 0) {
+        $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync fetch failed with return val '$returncode' for command: $cmd ||| Output: $cmdoutput", array(__FUNCTION__));
+    }
     print "rsync cmd: $cmd\n";
     print "rsync done returncode:$returncode stdout&stderr: " . join("\n", $cmdoutput) . "\n";
     return $returncode;

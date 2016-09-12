@@ -37,6 +37,7 @@
          */
         ?>
         <title>®ezplayer_page_title®</title>
+        <meta name="description" content="EZPlayer is a video player to view EZCast video" />
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />

@@ -42,7 +42,13 @@
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />
-
+    
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="#EZPlayer" />
+        <meta name="twitter:title" content="EZPlayer (from EZCast)" /> <!-- Personalise with translation -->
+        <meta name="twitter:description" content="EZPlayer is propulsed by EZCast (ULB)" />
+        <meta name="twitter:image" content="./images/Header/LogoEZplayer.png" />
+    
         <script>
 <?php
 global $trace_on;

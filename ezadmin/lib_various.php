@@ -28,6 +28,8 @@
  * @package ezcast.ezadmin.lib.various
  */
 
+require_once(__DIR__."/../commons/lib_database.php");
+
 /**
  * Parses the config file and returns the settings that can be changed in it.
  */
@@ -360,6 +362,7 @@ function push_admins_to_recorders_ezmanager() {
     global $ezplayer_subdir;
 
     if (!db_ready()) {
+        require_once("lib_sql_management.php");
         $stmts = statements_get();
         db_prepare($stmts);
     }
@@ -379,7 +382,7 @@ function push_admins_to_recorders_ezmanager() {
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectionTimeout=10 ./var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 ./var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
         }
     }
@@ -395,7 +398,7 @@ function push_admins_to_recorders_ezmanager() {
         // Remote copy
         exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectionTimeout=10 ./var/admin.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 ./var/admin.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
             if ($return_val == 0) {
                 return false;

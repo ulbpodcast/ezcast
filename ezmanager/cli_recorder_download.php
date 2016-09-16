@@ -102,6 +102,8 @@ do {
         case "2.0":
         default:
         {
+            //to improve: do not re download already downloaded files on retry
+            
             // download metadata
             $res = rsync_fetch_record($caller_ip, $meta_file, $recorder_user, $destrecording_path);
             $meta_ok = $res == 0;
@@ -126,7 +128,7 @@ do {
                 $title = "Error downloading from recorder (retrying)";
                 $first_try = $repeat == $max_download_retries - 1;
                 if ($first_try) {
-                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "First try rsync failed ($meta_ok, $cam_ok, $slide_ok). Will try again in $sleep_time seconds.", array("cli_recorder_download"), $asset);
+                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "First try rsync failed (meta: $meta_ok, cam: $cam_ok, slide: $slide_ok). Will try again in $sleep_time seconds.", array("cli_recorder_download"), $asset);
                     if (!$meta_ok) 
                         mail($mailto_alert, $title, "Could not rsync file metadata from $podcv_ip (first try)");
                     if (!$cam_ok)
@@ -134,7 +136,7 @@ do {
                     if (!$slide_ok)
                         mail($mailto_alert, $title, "Could not rsync file slide.mov from $podcs_ip (first try)");
                 } else {
-                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync failed ($meta_ok, $cam_ok, $slide_ok).", array("cli_recorder_download"), $asset);
+                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync failed (meta: $meta_ok, cam: $cam_ok, slide: $slide_ok).", array("cli_recorder_download"), $asset);
                     if (!$meta_ok)
                         echo "could not rsync file metadata from $podcv_ip";
                     if (!$cam_ok)
@@ -238,12 +240,12 @@ function rsync_fetch_record($ip, $source_filename, $remote_username, $dest_dir, 
     if ($camslide != "" && basename($source_filename) != "$camslide.mov")
         $dest_dir .= "/$camslide.$ext";
 
-    $cmd = "$rsync_pgm -e \"ssh -o 'BatchMode yes'\" -tv  --partial-dir=$dest_dir/downloading/ $remote_username@$ip:$source_filename $dest_dir 2>&1";
+    $cmd = "$rsync_pgm -e \"ssh -o StrictHostKeyChecking=no -o 'BatchMode yes'\" -tv  --partial-dir=$dest_dir/downloading/ $remote_username@$ip:$source_filename $dest_dir 2>&1";
     echo $cmd;
     $returncode = 0;
     exec($cmd, $cmdoutput, $returncode);
     if($returncode != 0) {
-        $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync fetch failed with return val '$returncode' for command: $cmd ||| Output: $cmdoutput", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync fetch failed with return val '$returncode' for command: $cmd ||| Output: " . var_dump($cmdoutput, true), array(__FUNCTION__));
     }
     print "rsync cmd: $cmd\n";
     print "rsync done returncode:$returncode stdout&stderr: " . join("\n", $cmdoutput) . "\n";

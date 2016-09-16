@@ -223,7 +223,7 @@ function db_event_get_record_after_date($start_date, $classroom_id = "", $course
 function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asset_author,
         $first_event_time, $last_event_time, $type_id, $context,
         $loglevel, $message, 
-        $colOrder = "event_time", $orderSort = "ASC",
+        $colOrder = "event_time", $orderSort = "DESC",
         $start_elem = "", $max_elem = "") {
     
     global $db_object;

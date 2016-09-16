@@ -22,7 +22,7 @@ $input = array_merge($_GET, $_POST);
 
 $action = $input['action'];
 
-$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, __FILE__ . " called with action $action", array("web_request_from_recorder"));
+$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, __FILE__ . " called with action $action. Caller: $caller_ip", array("web_request_from_recorder"));
     
 switch ($action) {
     case 'download' :
@@ -72,7 +72,6 @@ function download_from_recorder() {
     global $recorder_download_pgm;
     global $logger;
     
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE,"Received download request from $caller_ip", array(__FUNCTION__));
             
     //get input parameters
     $record_type = $input['record_type']; // cam|slide|camslide

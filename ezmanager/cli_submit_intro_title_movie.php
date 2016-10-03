@@ -22,7 +22,9 @@ Logger::$print_logs = true;
 ezmam_repository_path($repository_path);
 
 if($argc!=3){
-    echo "\nusage: ".$argv[0]." <album_name> <asset_name>\n";
+    echo "Usage: ".$argv[0]." <album_name> <asset_name>" . PHP_EOL;
+    echo "Example php cli_submit_intro_title_movie.php MOOC-G3-pub 2016_09_26_10h40" . PHP_EOL;
+
     $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::WARNING, __FILE__ ." called with wrong argc count: $argc. argv: " . json_encode($argv), array("cli_submit_intro_title_movie"));
     exit(1);
 }

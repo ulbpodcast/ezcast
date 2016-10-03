@@ -4,7 +4,7 @@ require_once 'web_request.php';
 require_once __DIR__.'/../config.inc';
 
 if(!is_authorized_caller()) {
-    print "not talking to you";
+    print "not talking to you ($caller_ip)";
     die;
 }
 
@@ -234,7 +234,7 @@ function last_log_sent() {
     global $input;
     
     if(!array_key_exists('source', $input)) {
-        echo "ERROR 0";
+        echo "ERROR 1";
         die;
     }
 

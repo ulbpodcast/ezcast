@@ -31,9 +31,9 @@
 
 chdir(__DIR__);
 
-include_once 'config.inc';
-include_once 'lib_ezmam.php';
-include_once 'lib_various.php';
+include_once __DIR__.'/config.inc';
+include_once __DIR__.'/lib_ezmam.php';
+include_once __DIR__.'/lib_various.php';
 
 Logger::$print_logs = true;
 
@@ -165,7 +165,7 @@ rename($recording_dir, $inserted_recording_dir );
 // intro donnees dans les metadata de l'album? ou global semeur?
 // info titre tirees des meta de l'asset
 //input movie donnee par le media
-$cmd="$php_cli_cmd $submit_intro_title_movie_pgm  $album_name $asset_name >> /dev/null 2>&1"; 
+$cmd="$php_cli_cmd $submit_intro_title_movie_pgm $album_name $asset_name >> /dev/null 2>&1"; 
 exec($cmd, $cmdoutput, $returncode);
 if($returncode) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Command $cmd failed with result $returncode", array("cli_mam_insert"), $asset);

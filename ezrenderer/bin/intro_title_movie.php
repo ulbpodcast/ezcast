@@ -33,15 +33,10 @@
 // Starting time
 $t0 = time();
 
-// get the program directory to fix a relative path include problem
-$path = dirname($argv[0]);
-if (trim($path) != "")
-    $path.='/';
-
-include_once "$path" . "config.inc";
-include_once "$path" . $encoding_pgm['file'];
-include_once "$path" . "lib_metadata.php";
-include_once "$path" . "lib_gd.php";
+include_once __DIR__ . "/config.inc";
+include_once __DIR__ .'/'.$encoding_pgm['file'];
+include_once __DIR__ . "/lib_metadata.php";
+include_once __DIR__ . "/lib_gd.php";
 
 if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_path>\n";
@@ -561,5 +556,3 @@ function safe_movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing
     } while ($res && $repeat < 10);
     return $res;
 }
-
-?>

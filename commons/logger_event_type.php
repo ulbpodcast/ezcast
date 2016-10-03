@@ -5,12 +5,12 @@
 // When adding a new type, add a class member + add it's ID into the $event_type_id array
 class EventType {
     // Commons
-    const TEST = "test";
-    const LOGGER = "logger";
-    const ASSET_CREATED = "asset_created";
-    const ASSET_FINALIZED = "asset_finalized";
-    const ASSET_RECORD_END = "asset_record_end";
-    const PHP              = "php";
+    const TEST                               = "test";
+    const LOGGER                             = "logger";
+    const ASSET_CREATED                      = "asset_created";
+    const ASSET_FINALIZED                    = "asset_finalized";
+    const ASSET_RECORD_END                   = "asset_record_end";
+    const PHP                                = "php";
     
     // Recorder
     const RECORDER_DB                        = "recorder_recorder_db";
@@ -35,6 +35,7 @@ class EventType {
     const RECORDER_LOGIN                     = "recorder_login";
     const RECORDER_STOP                      = "recorder_stop";
     const RECORDER_METADATA                  = "recorder_metadata";
+    const RECORDER_SET_STATUS                = "recorder_set_status";
     
     //
     // EZAdmin
@@ -84,6 +85,7 @@ class EventType {
        EventType::RECORDER_LOGIN                             => 1019,
        EventType::RECORDER_STOP                              => 1020,
        EventType::RECORDER_METADATA                          => 1021,
+       EventType::RECORDER_SET_STATUS                        => 1022,
         
        // EZAdmin: 2000->2999
        

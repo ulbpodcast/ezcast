@@ -29,9 +29,9 @@
  * @package ezcast.ezmanager.cli
  */
 
-include_once 'config.inc';
-include_once 'lib_scheduling.php';
-include_once 'lib_ezmam.php';
+include_once __DIR__.'/config.inc';
+include_once __DIR__.'/lib_scheduling.php';
+include_once __DIR__.'/lib_ezmam.php';
 
 ezmam_repository_path($repository_path);
 

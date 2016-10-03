@@ -72,9 +72,10 @@ function scheduler_schedule() {
         foreach($renderers as $renderer) {
 
             // check the renderer availibility
-            if(!lib_scheduling_renderer_is_available($renderer)) continue;
+            if(!lib_scheduling_renderer_is_available($renderer)) 
+                continue;
 
-            // if no choice, pick the first fit otherwhise find the optimal
+            // if no choice, pick the first fit. Otherwhise find the optimal
             if(!$choice) {
                 $choice = $renderer;
                 continue;

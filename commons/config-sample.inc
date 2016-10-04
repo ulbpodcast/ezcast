@@ -1,27 +1,6 @@
 <?php
 
-/*
-* EZCAST Commons 
-* Copyright (C) 2016 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*
-* This softare is free; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+require_once('logger_server.php');
 
 /*
  * This config file contains global config for the server
@@ -31,10 +10,13 @@
  * DO NOT REMOVE ANY OF THEM
  */
 
+// Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in config and common.inc don't match, a warning is triggered.
+$config_version = "20161003"; 
+
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name";
 $organization_url = "http://ulb.ac.be";
-$copyright = 'Your copyright';
+$copyright = "Your copyright";
 $movie_keywords = 'Movie,keywords';
 $timezone = 'Europe/Brussels';
 

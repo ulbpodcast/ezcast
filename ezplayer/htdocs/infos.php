@@ -24,6 +24,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-chdir("PATH!/ezplayer");
+chdir("!PATH/ezplayer");
 include "web_infos.php";
 ?>

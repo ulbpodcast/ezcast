@@ -11,6 +11,7 @@
 //
 if (!file_exists('config.inc')) {
     header('Location: install.php');
+    return;
 }
 
 require_once 'config.inc';

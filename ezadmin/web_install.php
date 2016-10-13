@@ -14,6 +14,8 @@ require_once 'lib_various.php';
 require_once 'lib_error.php';
 require_once '../commons/common.inc'; //for logger access
 
+$in_install = true;
+
 $template_folder = 'tmpl/' . get_lang();
 date_default_timezone_set("Europe/Brussels"); //TODO: allow to change this
 template_repository_path($template_folder);

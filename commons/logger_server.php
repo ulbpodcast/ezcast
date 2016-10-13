@@ -16,6 +16,11 @@ class ServerLogger extends Logger {
     public function __construct() {
         parent::__construct();
         
+        global $in_install;
+        if($in_install == true) {
+            return; //no database when still in installation
+        }
+        
         global $db_object;
         if($db_object == null) { //db is not yet prepared yet
             db_prepare(); 
@@ -125,6 +130,11 @@ class ServerLogger extends Logger {
     }
     
     public function try_exec(&$statement) {
+        global $in_install;
+        if($in_install == true) {
+            return; //no database when still in installation
+        }
+        
         try {
              $statement->execute();
         } catch (Exception $ex) {

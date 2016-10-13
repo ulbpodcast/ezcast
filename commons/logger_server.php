@@ -103,7 +103,7 @@ class ServerLogger extends Logger {
         $this->statement['insert_log']->bindParam(':event_time', $event_time);
         $this->statement['insert_log']->bindParam(':classroom_event_id', $classroom_event_id);
         
-        $this->statement['insert_log']->execute();
+        try_exec($this->statement['insert_log']);
     }
     
     public function insert_asset_infos($asset, $start_date, $classroom, $course, $author, $cam_slide) {
@@ -114,13 +114,23 @@ class ServerLogger extends Logger {
         $this->statement['insert_asset_info']->bindParam(':asset_author', $author);
         $this->statement['insert_asset_info']->bindParam(':asset_cam_slide', $cam_slide);
 
-        $this->statement['insert_asset_info']->execute();
+        try_exec($this->statement['insert_asset_info']);
     }
     
     public function update_asset_infos_end($asset, $end_date) {
         $this->statement['update_asset_info']->bindParam(':end_time', $end_date);
         $this->statement['update_asset_info']->bindParam(':asset', $asset);
         
-        $this->statement['update_asset_info']->execute();
+        try_exec($this->statement['update_asset_info']);
+    }
+    
+    public function try_exec(&$statement) {
+        try {
+             $statement->execute();
+        } catch (Exception $ex) {
+            trigger_error("LoggerSever exception: ". $ex->getMessage());
+            //something went wrong. How to report this ?
+            return false;
+        }
     }
 }

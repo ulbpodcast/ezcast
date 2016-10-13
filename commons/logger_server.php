@@ -26,7 +26,6 @@ class ServerLogger extends Logger {
             db_prepare(); 
         }
         
-        
         $this->statement['insert_log'] = $db_object->prepare(
           'REPLACE INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `classroom_event_id`, '
                 . '`event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
@@ -71,6 +70,11 @@ class ServerLogger extends Logger {
     public function log($type, $level, $message, array $context = array(), $asset = "dummy", 
             $author = null, $cam_slide = null, $course = null, $classroom = null)
     {
+        global $in_install;
+        if($in_install == true) {
+            return; //no database when still in installation
+        }
+        
         $tempLogData = parent::_log($type, $level, $message, $context, $asset, $author, $cam_slide, $course, $classroom);
         
         global $appname; // to be used as origin
@@ -130,11 +134,6 @@ class ServerLogger extends Logger {
     }
     
     public function try_exec(&$statement) {
-        global $in_install;
-        if($in_install == true) {
-            return; //no database when still in installation
-        }
-        
         try {
              $statement->execute();
         } catch (Exception $ex) {

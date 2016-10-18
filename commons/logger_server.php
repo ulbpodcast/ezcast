@@ -112,7 +112,7 @@ class ServerLogger extends Logger {
         $this->statement['insert_log']->bindParam(':event_time', $event_time);
         $this->statement['insert_log']->bindParam(':classroom_event_id', $classroom_event_id);
         
-        try_exec($this->statement['insert_log']);
+        $this->try_exec($this->statement['insert_log']);
     }
     
     public function insert_asset_infos($asset, $start_date, $classroom, $course, $author, $cam_slide) {
@@ -123,14 +123,14 @@ class ServerLogger extends Logger {
         $this->statement['insert_asset_info']->bindParam(':asset_author', $author);
         $this->statement['insert_asset_info']->bindParam(':asset_cam_slide', $cam_slide);
 
-        try_exec($this->statement['insert_asset_info']);
+        $this->try_exec($this->statement['insert_asset_info']);
     }
     
     public function update_asset_infos_end($asset, $end_date) {
         $this->statement['update_asset_info']->bindParam(':end_time', $end_date);
         $this->statement['update_asset_info']->bindParam(':asset', $asset);
         
-        try_exec($this->statement['update_asset_info']);
+        $this->try_exec($this->statement['update_asset_info']);
     }
     
     public function try_exec(&$statement) {

@@ -37,7 +37,7 @@ class EventType {
     const RECORDER_METADATA                  = "recorder_metadata";
     const RECORDER_SET_STATUS                = "recorder_set_status";
     const RECORDER_REMOTE_CALL               = "recorder_remote_call";
-    
+    const RECORDER_TIMEOUT_MONITORING        = "recorder_timeout_monitoring";
     //
     // EZAdmin
     
@@ -88,6 +88,7 @@ class EventType {
        EventType::RECORDER_METADATA                          => 1021,
        EventType::RECORDER_SET_STATUS                        => 1022,
        EventType::RECORDER_REMOTE_CALL                       => 1023,
+       EventType::RECORDER_TIMEOUT_MONITORING                => 1024,
         
        // EZAdmin: 2000->2999
        

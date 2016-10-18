@@ -24,9 +24,9 @@ function index($param = array()) {
     }
     
     if(array_key_exists('page', $input)) {
-        $pagination = new Pagination($input['page'], 10);
+        $pagination = new Pagination($input['page'], 20);
     } else {
-        $pagination = new Pagination(1, 10);
+        $pagination = new Pagination(1, 20);
     }
     if(array_key_exists('col', $input) && array_key_exists('order', $input)) {
         $colOrder = new Sort_colonne($input['col'], $input['order']);
@@ -61,19 +61,14 @@ function index($param = array()) {
                 continue;
             }
             
-            // Timeout after one second
-            $ctx = stream_context_create(array( 
-                'http' => array( 
-                    'timeout' => 1 
-                    ) 
-                ) 
-            ); 
             // Get JSON informations
-            $json = @file_get_contents('http://'.$classroom['IP'].URL_ADR, 0, $ctx);
-            if($json == null) {
+            
+            $json = @url_get_contents('http://'.$classroom['IP'].URL_ADR, 1);
+            $data = json_decode($json);
+            if($data == null) {
                 $classroom['online'] = false;
-                if(!must_be_remove($classroom)) {
-                    echo "add: ".$classroom;
+                if(!must_be_removed($classroom)) {
+                    //echo "add: ".$classroom;
                     $listClassrooms[] = $classroom;
                 }
                 continue;
@@ -81,9 +76,8 @@ function index($param = array()) {
             $classroom['online'] = true;
             
             
-            $data = json_decode($json);
             $classroom['recording'] = isset($data->recording) && $data->recording == 1;
-            if(!$classroom['recording'] && !must_be_remove($classroom)) {
+            if(!$classroom['recording'] && !must_be_removed($classroom)) {
                 $listClassrooms[] = $classroom;
             }
             
@@ -136,7 +130,17 @@ function index($param = array()) {
     include template_getpath('div_main_footer.php');
 }
 
-function must_be_remove($element) {
+function url_get_contents($url, $timeout) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout); //timeout in seconds
+    $output = curl_exec($ch);
+    curl_close($ch);
+    return $output;
+}
+
+function must_be_removed($element) {
     global $onlyOnline;
     global $onlyRecording;
     

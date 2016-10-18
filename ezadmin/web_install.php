@@ -16,7 +16,7 @@ require_once 'lib_various.php';
 require_once 'lib_error.php';
 require_once '../commons/common.inc'; //for logger access
 
-$template_folder = 'tmpl/' . get_lang();
+$template_folder = __DIR__. '/tmpl/' . get_lang();
 date_default_timezone_set("Europe/Brussels"); //TODO: allow to change this
 template_repository_path($template_folder);
 if(template_repository_path() == "")
@@ -663,7 +663,7 @@ function create_tables($drop = true) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME .'`;');
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
-                "`parent_asset` varchar(50) NOT NULL,",
+                "`parent_asset` varchar(50) NOT NULL," .
                 " UNIQUE KEY `asset` (`asset`) " .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         

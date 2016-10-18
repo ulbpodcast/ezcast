@@ -30,6 +30,8 @@
  * Note: you can add languages by editing config.inc
  */
 
+$in_install = true;
+
 require_once 'config.inc';
 require_once 'lib_template.php';
 

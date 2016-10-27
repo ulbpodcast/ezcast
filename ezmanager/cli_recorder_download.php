@@ -240,7 +240,10 @@ function rsync_fetch_record($ip, $source_filename, $remote_username, $dest_dir, 
     if ($camslide != "" && basename($source_filename) != "$camslide.mov")
         $dest_dir .= "/$camslide.$ext";
 
-    $cmd = "$rsync_pgm -e \"ssh -o StrictHostKeyChecking=no -o 'BatchMode yes'\" -tv  --partial-dir=$dest_dir/downloading/ $remote_username@$ip:$source_filename $dest_dir 2>&1";
+    $ssh_options = "";
+    if(PHP_OS != "SunOS")
+        $ssh_options = "-o 'BatchMode yes'";
+    $cmd = "$rsync_pgm -e \"ssh -o StrictHostKeyChecking=no $ssh_options\" -tv  --partial-dir=$dest_dir/downloading/ $remote_username@$ip:$source_filename $dest_dir 2>&1";
     echo $cmd;
     $returncode = 0;
     exec($cmd, $cmdoutput, $returncode);

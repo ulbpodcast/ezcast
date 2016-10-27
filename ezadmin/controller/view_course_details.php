@@ -16,7 +16,7 @@ function index($param = array()) {
             $error = template_get_message('missing_course_name', get_lang());
         } else {
             db_course_update($course_code, $course_name, $shortname, $in_recorders);
-            db_log(db_gettable('course'), 'Edited course ' . $input['course_ID'], $_SESSION['user_login']);
+            db_log(db_gettable('course'), 'Edited course ' . $input['course_code'], $_SESSION['user_login']);
             notify_changes();
         }
     }

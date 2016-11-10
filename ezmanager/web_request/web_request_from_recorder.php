@@ -160,11 +160,15 @@ function download_from_recorder() {
     
     //start download in background. Can't check return value with at, replace by background process ?
     $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1 '| at now";
-    $pid = system($cmd);
+    $pid = system($cmd, $return_val);
+    if($return_val != 0) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Received valid download request, but download failed to start. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
+        exit(1);
+    }
 //print "will execute command: '$cmd'\n<br>";
     print "OK:$pid";
     
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background.", array(__FUNCTION__), $record_name_sanitized);
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
 
             
     exit(0);

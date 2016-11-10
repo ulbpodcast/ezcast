@@ -47,6 +47,7 @@ class EventType {
     const MANAGER_REQUEST_FROM_RECORDER      = "manager_request_from_recorder";
     const MANAGER_MAM_INSERT                 = "manager_mam_insert";
     const MANAGER_SUBMIT_RENDERING           = "manager_submit_rendering";
+    const MANAGER_FILL_STATUS                = "manager_fill_status";
     
     // EZRenderer
     
@@ -98,6 +99,7 @@ class EventType {
        EventType::MANAGER_REQUEST_FROM_RECORDER              => 3002,
        EventType::MANAGER_MAM_INSERT                         => 3003,
        EventType::MANAGER_SUBMIT_RENDERING                   => 3004,
+       EventType::MANAGER_FILL_STATUS                        => 3005,
         
        // EZRenderer: 4000->4999
         

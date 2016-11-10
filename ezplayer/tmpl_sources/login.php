@@ -151,7 +151,7 @@
                 
                 <div class="login_video col-md-12">
                     <h2>®tuto_ezplayer®</h2>
-                    <video id="tuto_video" width="720" controls="" type="video/mp4" src="./videos/tuto_<?php echo get_lang(); ?>.mp4" style="" muted autoplay>
+                    <video id="tuto_video" width="720" controls="" type="video/mp4" src="./videos/tuto_<?php echo get_lang(); ?>.mp4" style="">
                         ®tuto_ezplayer®</video>
                 </div>
 

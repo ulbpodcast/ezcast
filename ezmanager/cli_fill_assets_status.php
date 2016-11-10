@@ -3,7 +3,7 @@
 /*
  * This CLI will check assets logs from the last two weeks and set a status for those having none.
  * Usage: php cli_fill_assets_status [all]
- * If 'all' arg is set, this will check all assets for all time.
+ * If 'all' arg is set, this will check all assets not yet processed for all time.
  */
 
 /*
@@ -61,9 +61,11 @@ require_once __DIR__.'/../commons/event_status.php';
 require_once __DIR__.'/../commons/lib_database.php';
 db_prepare();
 
+Logger::$print_logs = true;
+
 const TIME_LIMIT = 43200; // 12 hours
-const LOG_LEVEL_ERROR = LogLevel::CRITICAL;
-const LOG_LEVEL_WARNINGS = LogLevel::WARNING;
+const LOG_LEVEL_ERROR_THRESHOLD = LogLevel::CRITICAL; //if an event of this level appears, warn a serious problem occured in status
+const LOG_LEVEL_WARNING_THRESHOLD = LogLevel::ERROR; //if an event of this level, warn a possible problem occured
 
 
 /**
@@ -80,7 +82,7 @@ function get_db_event_status_not_check($check_all) {
             . 'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' event ' .
             ' WHERE ';
     if(!$check_all) {
-        $strSQL .= 'event.event_time >= DATE_SUB(curdate(), INTERVAL 2 WEEK) AND';
+        $strSQL .= 'event.event_time >= DATE_SUB(curdate(), INTERVAL 1 WEEK) AND';
     }
     $strSQL .= ' NOT EXISTS ('.
                 'SELECT asset FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' status ' .
@@ -103,6 +105,7 @@ function get_db_event_status_not_check($check_all) {
  */
 function add_db_event_status($asset, $status, $description) {
     global $db_object;
+    global $logger;
     
     $whereParam = array();
     $strSQL = 'INSERT INTO ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' ' .
@@ -114,6 +117,8 @@ function add_db_event_status($asset, $status, $description) {
     
     $reqSQL = $db_object->prepare($strSQL);
     $reqSQL->execute($whereParam);
+    
+    $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Inserted asset status $status for asset $asset", array(__FUNCTION__), $asset);
 }
 
 
@@ -124,9 +129,10 @@ function add_db_event_status($asset, $status, $description) {
  * @global Array $resListAsset dictionnary with asset in key and array with info in value
  * @global Array $listAsset List of the asset who must be check (timeout in value if it's timeout)
  */
-function selectAssetWhoMustBeCheck($check_all) {
+function select_asset_to_check($check_all) {
     global $resListAsset;
     global $listAsset;
+    global $logger;
     
     $allEvent = get_db_event_status_not_check($check_all);
     if($check_all) {
@@ -150,6 +156,7 @@ function selectAssetWhoMustBeCheck($check_all) {
 
         if($event['type_id'] == EventType::$event_type_id[EventType::ASSET_FINALIZED]) {
             $listAsset[$asset] = "final";
+            $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found finalization event for asset $asset", array(__FUNCTION__), $asset);
 
         } else if(time()-strtotime($event['event_time']) > TIME_LIMIT) {
             $listAsset[$asset] = "timeout";
@@ -165,7 +172,7 @@ function selectAssetWhoMustBeCheck($check_all) {
  * @global Array $resListAsset dictionnary of all events (asset in key and
  * all event about this in value)
  */
-function sendAssetStatus() {
+function write_asset_status() {
     global $listAsset;
     global $resListAsset;
     
@@ -185,10 +192,10 @@ function sendAssetStatus() {
             }
 
 
-            if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_ERROR]) {
+            if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_ERROR_THRESHOLD]) {
                 $eventStatus = EventStatus::AUTO_SUCCESS_ERRORS;
 
-            } else if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_WARNINGS]) {
+            } else if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_WARNING_THRESHOLD]) {
                 $eventStatus = EventStatus::AUTO_SUCCESS_WARNINGS;
 
             } else {
@@ -201,10 +208,13 @@ function sendAssetStatus() {
     }
 }
 
-// Dictionnary with asset in key and array with info in value
+$logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Cli fill status started", array(__FUNCTION__));
+
+// Dictionnary with asset in key and event info (array) in value 
 $resListAsset = array();
-// List with asset who must be treat (timeout in value if it's timeout)
+// For each asset 'final' or 'timeout' status 
 $listAsset = array();
 
-selectAssetWhoMustBeCheck($argc > 1 && $argv[1] == 'all');
-sendAssetStatus();
+$fill_all = $argc > 1 && $argv[1] == 'all';
+select_asset_to_check($fill_all);
+write_asset_status();

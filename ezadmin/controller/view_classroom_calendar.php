@@ -177,19 +177,19 @@ function number_to_color($nbr) {
 
 function insert_record_in_an_hour($listToInsert, $data) {
     // If not exist
-    if(!array_key_exists($data['asset_course'], $listToInsert)) {
-        $listToInsert[$data['asset_course']] = array();
-        $subList = &$listToInsert[$data['asset_course']];
+    if(!isset($data['course']) || !array_key_exists($data['course'], $listToInsert)) {
+        $listToInsert[$data['course']] = array();
+        $subList = &$listToInsert[$data['course']];
         foreach($data as $key => $value) {
             $subList[$key] = array($value);
         }
         $subList['day_nbr'] = array(get_day_number($data['start_time']));
         increment_nbr_new_cours($listToInsert['nbr_cours']);
-        $subList['str_infos'] = generate_str_info($data['asset_course'], $subList);
+        $subList['str_infos'] = generate_str_info($data['course'], $subList);
         
     // If already exist
     } else {
-        $subList = &$listToInsert[$data['asset_course']];
+        $subList = &$listToInsert[$data['course']];
         
         $dayNbr = get_day_number($data['start_time']);
         if(!in_array($dayNbr, $subList['day_nbr'])) {
@@ -204,7 +204,7 @@ function insert_record_in_an_hour($listToInsert, $data) {
         }
         
         
-        $subList['str_infos'] = generate_str_info($data['asset_course'], $subList);
+        $subList['str_infos'] = generate_str_info($data['course'], $subList);
     }
     
     return $listToInsert;
@@ -245,7 +245,7 @@ function generate_str_info($cours_asset, $cours_data) {
         $strRes .= '<br />';
     }
     
-    foreach($cours_data['asset_author'] as $author) {
+    foreach($cours_data['author'] as $author) {
         $strRes .= '<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ';
         $strRes .= $author;
         $strRes .= '<br />';

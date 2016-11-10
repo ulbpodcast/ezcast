@@ -1,9 +1,9 @@
 <?php
-
 /** All static variable common to all ezcast projects go here
  *  */
 
-include_once('config.inc');
+if(!isset($common_config_defined))
+    include_once('config.inc');
 require_once('logger_server.php');
 
 if(isset($timezone))

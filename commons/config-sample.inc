@@ -105,5 +105,8 @@ $streaming_video_alternate_server_uri = "stream/";
 $debug_mode = false; //debug mode print recorder events and php errors to console
 // -- -- //
 
+$common_config_defined = true; //config and common include each other... apparently php does not consider a file already included until he completely finished including it. This variable is a workaround for this problem.
+
 // load static variables
 require_once(__DIR__ . '/common.inc');
+require_once('logger_server.php');

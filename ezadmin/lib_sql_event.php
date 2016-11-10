@@ -461,7 +461,7 @@ function db_event_asset_infos_get($classroom = "") {
     $strSQL = 'SELECT asset_info.asset, asset_info.start_time, asset_info.end_time, 
                     asset_info.classroom_id, status.status
                 FROM '. db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME).' asset_info
-                    LEFT JOIN ezcast_test_event_status status
+                    LEFT JOIN '. db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME).' status
                         ON status.asset = asset_info.asset';
     
     if($classroom != "") {

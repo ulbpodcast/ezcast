@@ -1,7 +1,7 @@
 /*
 * EZCAST EZmanager 
 *
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -1083,7 +1083,7 @@ body{
     clear: both;
     width: 100%;
     background: #222222;
-    height: 35px;
+/*    height: 35px;*/
     bottom: 0px;
 }
 
@@ -1577,8 +1577,8 @@ a.greyLink.ezplayer:hover {
 #dropdown_menu .submenu {
     display: none;
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    margin-top: 20px;
+    position: absolute;
     background-color: white;
     border: dotted;
     border-width: 1px;

@@ -2,7 +2,7 @@
 
 /*
 * EZCAST Commons 
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -148,7 +148,10 @@ function ldap_getinfo($login) {
  */
 function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password = "") {
     $ldap_servers_count = count($ldap_servers);
-    if (!isset($index)) $index = 0;
+    if (!isset($index)) 
+        $index = 0;
+    
+    $link_identifier = false;
     while ($index < $ldap_servers_count) {
         $rdn = str_replace("!LOGIN", $login, $ldap_servers[$index]["rdn"]);
         if (!isset($password) || $password == "") {
@@ -164,10 +167,8 @@ function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password
         ldap_set_option($link_identifier, LDAP_OPT_PROTOCOL_VERSION, 3);
         //try to bind with login and password
         @ $res = ldap_bind($link_identifier, $rdn, $password); //check ldap branch
-        if ($res)
+        if ($res) {
             return $link_identifier;
-        else{
-            ldap_close($link_identifier);
         }
         $index++;
     }
@@ -175,8 +176,10 @@ function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password
     $errno = ldap_errno($link_identifier);
     $errstring = ldap_error($link_identifier);
     checkauth_last_error("$errno:$errstring:Bind to ldap failed");
+    if($link_identifier)
+        ldap_close($link_identifier);
+        
     return false;
 }
 
 //end function
-?>

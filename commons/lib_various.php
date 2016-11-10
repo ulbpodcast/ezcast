@@ -1,29 +1,5 @@
 <?php
 
-/*
-* EZCAST Commons 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
- *                  Carlos Avimadjessi
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
 /**
  * @package ezcast.commons.lib.various
  */
@@ -68,5 +44,56 @@ class DateTimeFrench extends DateTime {
     }
 
 }
-?>
 
+function get_pid_from_file($filePath) {
+    $handle = fopen($filePath, "r");
+    if($handle == false)
+        return 0;
+    
+    $pid = fgets($handle);
+    fclose($handle);
+    return $pid;
+}
+
+// determines if a process is running or not
+function is_process_running($pid) {
+    if (!isset($pid) || $pid == '' || $pid == 0)
+        return false;
+  
+    if(PHP_OS == "SunOS")
+      $command = "pargs";
+    else
+      $command = "ps";
+
+    exec("$command $pid", $output, $result);
+    return count($output) >= 2;
+}
+        
+function debug_to_console($data) {
+    if(is_array($data) || is_object($data)) {
+            echo("<script>console.log('PHP: ".json_encode($data)."');</script>");
+    } else {
+            echo("<script>console.log('PHP: ".$data."');</script>");
+    }
+}
+
+/**
+ * Require Once a controller
+ * 
+ * @param String $controller_name name of the controller
+ */
+function requireController($controller_name) {
+    require_once './controller/'.$controller_name;
+}
+
+/**
+ * Redirect the user to an other controller
+ * 
+ * @global Array $input which was send to the current page
+ * @param String $controller_name name of the new controller page
+ */
+function redirectToController($controller_name) {
+    global $input;
+    $input['action'] = $controller_name;
+    header('Location: index.php?'.http_build_query($input));
+}

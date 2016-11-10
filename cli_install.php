@@ -2,7 +2,7 @@
 /*
  * EZCAST 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -58,10 +58,6 @@ $apache_username = $argv[10];
  * position of EZcast products
  */
 
-$web_file = file_get_contents($apache_documentroot . "/index.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/index.php", $web_file);
-
 $web_file = file_get_contents($apache_documentroot . "/ezadmin/install.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
 file_put_contents($apache_documentroot . "/ezadmin/install.php", $web_file);
@@ -81,6 +77,10 @@ file_put_contents($apache_documentroot . "/ezmanager/distribute.php", $web_file)
 $web_file = file_get_contents($apache_documentroot . "/ezmanager/recorder/index.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
 file_put_contents($apache_documentroot . "/ezmanager/recorder/index.php", $web_file);
+
+$web_file = file_get_contents($apache_documentroot . "/ezmanager/recorder/logs.php");
+$web_file = str_replace("!PATH", $basedir, $web_file);
+file_put_contents($apache_documentroot . "/ezmanager/recorder/logs.php", $web_file);
 
 $web_file = file_get_contents($apache_documentroot . "/ezplayer/index.php");
 $web_file = str_replace("!PATH", $basedir, $web_file);
@@ -115,4 +115,32 @@ file_put_contents("$basedir/first_user", $username);
 file_put_contents("first_user", " , $password", FILE_APPEND);
 file_put_contents("first_user", " , $firstname", FILE_APPEND);
 file_put_contents("first_user", " , $lastname", FILE_APPEND);
-?>
+
+//create config file or append string in it
+function updateConfig($filePath, $string){
+    if(!file_exists($filePath)) {
+        $res = file_put_contents($filePath, '<?php ' . PHP_EOL . $string);
+        if ($res === false)
+            trigger_error("Could not create config file at $filePath", E_USER_WARNING);
+
+    } else {
+        $res = file_put_contents($filePath, PHP_EOL . $string, FILE_APPEND);
+        if ($res === false)
+            trigger_error("Could not update config file at $filePath", E_USER_WARNING);
+    }
+}
+
+//creating/appending to admin file
+$admins_str = '$users[\'' . addslashes($username) . '\']=1;' . PHP_EOL;
+$filePath = $basedir . '/ezadmin/admin.inc';
+updateConfig($filePath, $admins_str);
+
+//create/append to user file
+$user_str = '$users[\'' . addslashes($username) . '\'][\'password\']="' . $password . '";' . PHP_EOL;
+$user_str .= '$users[\'' . addslashes($username) . '\'][\'full_name\']="Admin";' . PHP_EOL;
+$user_str .= '$users[\'' . addslashes($username) . '\'][\'email\']="admin@admin.admin";' . PHP_EOL . PHP_EOL;
+$filePath = $basedir . '/commons/pwfile.inc';
+updateConfig($filePath, $user_str);
+
+//install cron for cli_fill_assets_status, fill status every 2 hours
+system("(crontab -l 2>/dev/null; echo \"0 */2 * * * php /usr/local/ezcast/ezmanager/cli_fill_assets_status.php\") | crontab -");

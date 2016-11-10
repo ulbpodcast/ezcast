@@ -1,0 +1,3 @@
+This folder is used to store shared web ressources between project.
+It is copied in each project web folder under 'commons' subdir at install time.
+Ex: For ezadmin, the file ezcast/commons/htdocs/js/dummy.js in the repository will be copied under /ezadmin/commons/js/dummy.js in the webspace.

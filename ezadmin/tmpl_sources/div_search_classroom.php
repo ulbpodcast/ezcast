@@ -1,60 +1,80 @@
 
-<?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
-
-
-<h4>®list_classrooms_title®</h4>
+<div class="page_title">®list_classrooms_title®</div>
 
 <!-- Search form -->
-<form method="POST" action="index.php?action=view_classrooms" class="form-inline search_classroom">
+<form method="GET" class="search_classroom">
+    
+    <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
     <input type="hidden" name="post"/>
-    <input type="hidden" name="page" value="1" />
-    <input type="hidden" name="col" value="<?php echo $input['col'] ?>" />
-    <input type="hidden" name="order" value="<?php echo $input['order'] ?>" />
     
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®room_ID®" title="®room_ID®" name="room_ID" value="<?php echo $input['room_ID']; ?>" />
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®room_name®" title="®room_name®" name="name" value="<?php echo $input['name']; ?>" />
-    <input class="input-large auto-clear placeholder" type="text" placeholder="®room_IP®" title="®room_IP®" name="IP" value="<?php echo $input['IP']; ?>" />
-
-    <input type="submit" name="search" value="®search®" class="btn btn-primary">
-    <input type="reset" name="reset" value="®reset®" class="btn"> <br />
+    <!-- Classroom id and name -->
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                
+                <label class="sr-only" for="room_ID">®room_ID®</label>
+                <input class="form-control" type="text" placeholder="®room_ID®" 
+                    title="®room_ID®" name="room_ID" 
+                    value="<?php if(isset($input) && isset($input['room_ID'])) { echo  $input['room_ID']; } ?>" />
+            </div>
+            <div class="col-md-4">
+                <label class="sr-only" for="name">®room_name®</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="®room_name®"
+                    value="<?php if(isset($input) && array_key_exists('name', $input)) { echo $input['name']; } ?>">
+            </div>
+            <div class="col-md-4">
+                <label class="sr-only" for="IP">®room_IP®</label>
+                <input type="text" class="form-control" name="IP" id="IP" placeholder="®room_IP®"
+                    value="<?php if(isset($input) && array_key_exists('IP', $input)) { echo $input['IP']; } ?>">
+            </div>
+        </div>
+    </div>
     
-    <!--
-    <fieldset style="display:inline-block;">
-        ®room_enabled®: 
-        <label class="checkbox">
-            <input type="checkbox" title="®enabled®" name="enabled" <?php echo isset($input['enabled']) ? 'checked' : ''; ?> />
-            ®yes®
-        </label>
-        <label class="checkbox">
-            <input type="checkbox" title="®disabled®" name="not_enabled" <?php echo isset($input['not_enabled']) ? 'checked' : ''; ?> />
-            ®no®
-        </label>
-    </fieldset>
-    -->
+    
+    
+    <!-- Context, message and submit -->
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="being_record" value="1"
+                            <?php if(isset($input) && array_key_exists('being_record', $input)) {
+                                   echo 'checked';
+                               } ?>>  
+                        ®being_record®
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="only_classroom_active" value="1" 
+                               <?php if(isset($input) && array_key_exists('only_classroom_active', $input)) {
+                                   echo 'checked';
+                               } ?>> 
+                        ®classroom_only_active®
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="only_online" value="1"
+                               <?php if(isset($input) && array_key_exists('only_online', $input)) {
+                                   echo 'checked';
+                               } ?>> 
+                        ®only_online®
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-block btn-success">
+                    <span class="glyphicon glyphicon-search icon-white"></span> 
+                    ®search®
+                </button>
+            </div>
+        </div>
+    </div>
+    
 </form>
-
-<hr>

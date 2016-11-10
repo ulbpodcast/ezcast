@@ -1,7 +1,7 @@
 <?php
 /*
 * EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -28,7 +28,9 @@
  */
 require_once '../commons/lib_database.php';
 
-db_prepare(stat_statements_get());
+
+$stmts = stat_statements_get();
+db_prepare($stmts);
 
 function stat_statements_get(){
     return array(
@@ -208,12 +210,21 @@ function comments_select_by_threadId($thread_id){
  * @global null $db
  * @return array
  */
-function album_get_all(){
-    global $statements;
+function album_get_all($colOrder = "", $orderSort = ""){
+    global $db_object;
     
-    $statements['albums_all_get']->execute();
+    $strSQL = 'SELECT DISTINCT albumName FROM ' . db_gettable('threads');
+    if($colOrder != "") {
+        $strSQL .= " ORDER BY ".$colOrder;
+        if($orderSort != "") {
+            $strSQL .= ' '.$orderSort;
+        }
+    }
     
-    return $statements['albums_all_get']->fetchAll(PDO::FETCH_ASSOC);  
+    $reqSQL = $db_object->prepare($strSQL);
+    $reqSQL->execute();
+    
+    return $reqSQL->fetchAll(PDO::FETCH_ASSOC);  
 }
 
 /**

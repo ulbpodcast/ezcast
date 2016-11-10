@@ -1,34 +1,12 @@
-
-<?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
-
 <?php
 require_once 'config.inc';
 ?>
 
+<div class="page_title">®list_jobs_title®</div>
+
+<?php if(empty($jobs)) { ?>
+    <div class="alert alert-warning" role="alert">®job_not_current®</div>
+<?php } ?>
 <table class="table table-striped table-hover table-condensed classrooms">
     <tr>
         <th>®job_priority®</th>
@@ -51,9 +29,7 @@ require_once 'config.inc';
             $date = '';
             $threshold1 = 0; // If duration above threshold: display in yellow as a warning
             $threshold2 = 0; // Same as above, except if we go above this threshold it is time to seriously worry
-            if(!empty($job['done']))
-                $date = '';
-            else if(!empty($job['sent'])) {
+            if(!empty($job['sent'])) {
                 $date = $job['sent'];
                 $threshold1 = 18000; // 18000s = 5 hours
                 $threshold2 = 43200; // 43200s = 12 hours
@@ -65,7 +41,6 @@ require_once 'config.inc';
             }
             
             if(!empty($date)) {
-                date_default_timezone_set('Europe/Brussels');
                 $dt = new DateTime();
 
                 $dt = $dt->createFromFormat('Y-m-d H:i:s', $date);
@@ -74,7 +49,7 @@ require_once 'config.inc';
                 
                 $class = 'success';
                 if($duration > $threshold2)
-                    $class = 'error';
+                    $class = 'danger';
                 else if ($duration > $threshold1)
                     $class = 'info';
             }
@@ -93,14 +68,14 @@ require_once 'config.inc';
                 <td><?php echo $job['renderer']; ?></td>
                 <td>
                     <?php if(in_array($job, scheduler_frozen_get())) {
-                        echo '<i class="icon-minus-sign" title="®frozen®"></i> ®frozen®';
+                        echo '<span class="glyphicon glyphicon-minus-sign" title="®frozen®"></span> ®frozen®';
                     }
                     else if(!empty($job['done'])) {
-                        echo '<i class="icon-ok-sign" title="®finished_on® '.$job['done'].'"></i> ®finished®';
+                        echo '<span class="glyphicon glyphicon-ok-sign" title="®finished_on® '.$job['done'].'"></span> ®finished®';
                     } else if(!empty($job['sent'])) {
-                        echo '<i class="icon-refresh" title="®sent_on® '.$job['created'].'"></i> ®processing®';
+                        echo '<span class="glyphicon glyphicon-refresh" title="®sent_on® '.$job['created'].'"></span> ®processing®';
                     } else if(!empty($job['created'])) {
-                        echo '<i class="icon-time" title="®created_on® '.$job['created'].'"></i> ®waiting®';
+                        echo '<span class="glyphicon glyphicon-time" title="®created_on® '.$job['created'].'"></span> ®waiting®';
                     } ?>
                 </td>
                 <td>
@@ -120,17 +95,17 @@ require_once 'config.inc';
                 <td>
                     <?php if(empty($job['done']) && empty($job['sent'])) { ?>
                         <?php if(!in_array($job, scheduler_frozen_get())) { ?>
-                            <a href="index.php?action=job_priority_up&amp;job=<?php echo $job['uid']; ?>"><i class="icon-chevron-up" title="®increase_priority®"></i></a>&nbsp;
-                            <a href="index.php?action=job_priority_down&amp;job=<?php echo $job['uid']; ?>"><i class="icon-chevron-down" title="®decrease_priority®"></i></a>&nbsp;
+                            <a href="index.php?action=job_priority_up&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-chevron-up" title="®increase_priority®"></span></a>&nbsp;
+                            <a href="index.php?action=job_priority_down&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-chevron-down" title="®decrease_priority®"></span></a>&nbsp;
                         <?php } ?>
                         <?php if(in_array($job, scheduler_frozen_get())) { ?>
-                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><i class="icon-repeat" title="®unfreeze_job®"></i></a>
+                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-repeat" title="®unfreeze_job®"></span></a>
                         <?php } else { ?>
-                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><i class="icon-ban-circle" title="®freeze_job®"></i></a>
+                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-ban-circle" title="®freeze_job®"></span></a>
                         <?php } ?>
                     <?php } else if(empty($job['done']) && !empty($job['sent'])) {
                         ?>
-                        <a href="index.php?action=job_kill&amp;job=<?php echo $job['uid']; ?>"><i class="icon-remove" title="®kill_job®"></i></a>
+                        <a href="index.php?action=job_kill&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-remove" title="®kill_job®"></span></a>
                         <?php
                     } ?>
                 </td>

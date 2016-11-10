@@ -3,7 +3,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -29,9 +29,13 @@
  * @package ezcast.ezmanager.cli
  */
 
-include_once 'config.inc';
-include_once 'lib_ezmam.php';
-include_once 'lib_various.php';
+chdir(__DIR__);
+
+include_once __DIR__.'/config.inc';
+include_once __DIR__.'/lib_ezmam.php';
+include_once __DIR__.'/lib_various.php';
+
+Logger::$print_logs = true;
 
 //always initialize repository path before using ezmam library
 ezmam_repository_path($repository_path);
@@ -42,9 +46,8 @@ ezmam_repository_path($repository_path);
  *   This means: asset creation, , add metadata
  * calls renderer to process the movies
  */
-
 if($argc!=2){
-    echo "usage: ".$argv[0].' <directory_of_downloaded_ok_recording>
+    echo "usage: ".$argv[0].' <full_path_to_directory_of_downloaded_ok_recording>
         Where <directory_of_recording> should point to a directory containing metadata.xml description file and movies
         metadata.xml example:
         <?xml version="1.0" standalone="yes"?>
@@ -60,39 +63,45 @@ if($argc!=2){
           <netid>user id</netid>
           <record_date>YYYY_MM_DD_hh\hmm\m</record_date>
          </metadata>
-';
-    die;
+'   ;
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::WARNING, __FILE__ ." called with wrong argc count: $argc. argv: " . json_encode($argv), array("cli_mam_insert"));
+    exit(1);
 }
 
+$recording_dir = $argv[1]; //first (and only) parameter in command line
+$asset = basename($recording_dir);
 
-
-$recording_dir=$argv[1]; //first (and only) parameter in command line
 if(!file_exists($recording_dir)){
- //no
- myerror("could not find recording directory: $recording_dir") ; //log error
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "could not find recording directory: $recording_dir", array("cli_mam_insert"), $asset);
+    exit(2);
 }
 //local log file:
 $local_log_file=$recording_dir."/download.log";
 
 //now get metadata about the recording
 $recording_metadata = metadata2assoc_array($recording_dir."/metadata.xml");
-if($recording_metadata===false)    myerror ("bad xml or read problem on  $recording_dir"."/metadata.xml") ; //log to file
- // 'course_name' 'origin' 'record_date' 'description' 'record_type' 'moderation'
+if($recording_metadata===false) {
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Bad xml or read problem on $recording_dir"."/metadata.xml", array("cli_mam_insert"), $asset);
+    // 'course_name' 'origin' 'record_date' 'description' 'record_type' 'moderation'
+    exit(3);
+}
 
 $record_type=$recording_metadata['record_type'];
 $course_name=$recording_metadata['course_name'];
 $record_date=$recording_metadata['record_date'];
 
-//check for album existance
+//check for album existence
 if($recording_metadata['moderation']=="false")
     $album_name=$course_name."-pub";
   else
     $album_name=$course_name."-priv";
 
 if(!ezmam_album_exists($album_name)){
- print "ERROR: album does not exist! $album_name\n";
- exit(0);
-
+    $ok = ezmam_album_new($album_name);
+    if(!$ok) {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Album $album_name did not exist and creation failed", array("cli_mam_insert"), $asset);
+        exit(4);
+    }
 }
 
 //initialize asset metadata and media metadata
@@ -104,12 +113,13 @@ $asset_meta['record_date']=$recording_metadata['record_date'];
 $asset_meta['record_type']=$recording_metadata['record_type'];
 $asset_meta['status']='processing';
 $asset_meta['tags']="";
-$asset_meta['language']="français";
+$asset_meta['language']="français"; //TODO: this shouldn't be hardcoded
 $asset_meta['super_highres'] = $recording_metadata['super_highres'];
-if(isset($recording_metadata['submitted_cam']))$asset_meta['submitted_cam']=$recording_metadata['submitted_cam'];
-if(isset($recording_metadata['submitted_slide']))$asset_meta['submitted_slide']=$recording_metadata['submitted_slide'];
-if(isset($recording_metadata['intro']))$asset_meta['intro']=$recording_metadata['intro'];
-if(isset($recording_metadata['add_title']))$asset_meta['add_title']=$recording_metadata['add_title'];
+if(isset($recording_metadata['submitted_cam'])) $asset_meta['submitted_cam']=$recording_metadata['submitted_cam'];
+if(isset($recording_metadata['submitted_slide'])) $asset_meta['submitted_slide']=$recording_metadata['submitted_slide'];
+if(isset($recording_metadata['intro'])) $asset_meta['intro']=$recording_metadata['intro'];
+if(isset($recording_metadata['credits'])) $asset_meta['credits']=$recording_metadata['credits'];
+if(isset($recording_metadata['add_title'])) $asset_meta['add_title']=$recording_metadata['add_title'];
 $asset_meta['ratio']= (isset($recording_metadata['ratio'])) ? $recording_metadata['ratio'] : 'auto';
 if(isset($recording_metadata['downloadable'])){ // if the recording has been submitted
     $asset_meta['downloadable']=$recording_metadata['downloadable'];
@@ -121,17 +131,29 @@ if(isset($recording_metadata['downloadable'])){ // if the recording has been sub
 
 //create asset if not exists!
 $asset_name=$record_date;
-if(!ezmam_asset_exists($album_name, $asset_name))ezmam_asset_new($album_name, $asset_name, $asset_meta);
+if(!ezmam_asset_exists($album_name, $asset_name))
+   ezmam_asset_new($album_name, $asset_name, $asset_meta);
 
 //do we have a cam movie?
 if( strpos($record_type,"cam")!==false) {
    //insert original cam media in asset with attention to file extension/mimetype
-  originals_mam_insert_media($album_name,$asset_name,'cam',$recording_metadata,$recording_dir);
+  $ok = originals_mam_insert_media($album_name,$asset_name,'cam',$recording_metadata,$recording_dir);
+  if(!$ok) {
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Cam media insertion failed for album $album_name", array("cli_mam_insert"), $asset);
+    set_asset_status_to_failure();
+    exit(6);
+  }
+      
 }
 //do we have a slide movie?     
 if(strpos($record_type,"slide")!==false){
   //insert original slide media in asset with attention to file extension/mimetype
-  $res1=originals_mam_insert_media($album_name,$asset_name,'slide',$recording_metadata,$recording_dir);
+  $ok = originals_mam_insert_media($album_name,$asset_name,'slide',$recording_metadata,$recording_dir);
+  if(!$ok) {
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Slide media insertion failed for album $album_name", array("cli_mam_insert"), $asset);
+    set_asset_status_to_failure();
+    exit(6);
+  }
 }
 //media(s) inserted into mam, so move the processing directory to mam_inserted
 $inserted_recording_dir=dirname(dirname($recording_dir)).'/mam_inserted/'.basename($recording_dir);
@@ -139,21 +161,23 @@ rename($recording_dir, $inserted_recording_dir );
 //now launch cam and/or slide video processing
 
 
-    //infos neccessaires: quelle intro, info titre , input movie
-    // intro donnees dans les metadata de l'album? ou global semeur?
-    // info titre tirees des meta de l'asset
-    //input movie donnee par le media
-    $cmd="$php_cli_cmd $submit_intro_title_movie_pgm  $album_name $asset_name $super_highres >>/dev/null 2>&1"; // TODO: restore 
-    print "exec command: $cmd\n";
-    exec($cmd, $cmdoutput, $returncode);
-    if($returncode) print "Submit_intro_title_movie failed";
-
-
-
-function myerror($msg){
-    print $msg."\n";
-    exit(1);
-
+//infos neccessaires: quelle intro, info titre , input movie , closing credits
+// intro donnees dans les metadata de l'album? ou global semeur?
+// info titre tirees des meta de l'asset
+//input movie donnee par le media
+$cmd="$php_cli_cmd $submit_intro_title_movie_pgm $album_name $asset_name >> /dev/null 2>&1"; 
+exec($cmd, $cmdoutput, $returncode);
+if($returncode) {
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Command $cmd failed with result $returncode", array("cli_mam_insert"), $asset);
+    set_asset_status_to_failure();
+    exit(7);
+}
+    
+//
+function set_asset_status_to_failure() {
+    global $album_name;
+    global $asset_name;
+    ezmam_asset_status_set_properties($album_name,$asset_name, 'status', 'failed');
 }
 
 /**
@@ -163,7 +187,10 @@ function myerror($msg){
  * @param string $recording_dir
  * @return bool
  */
-function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recording_metadata,$recording_dir){
+function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recording_metadata,$recording_dir) {
+  global $logger;
+  global $asset;
+      
   $media_name='original_'.$camslide;
   //initialize media metadata and media metadata
   $media_meta['author']=$recording_metadata['author'];
@@ -177,10 +204,10 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
   $media_meta['audio_codec']="N/A";
   $media_meta['disposition']='file';
   //check the name of submited file to keep the extension (pcastaction is quite sensitive to extension type)
-  if(isset($recording_metadata['submitted_' . $camslide])){
+  if(isset($recording_metadata['submitted_' . $camslide])) {
     $res=file_get_extension($recording_metadata['submitted_' . $camslide]);
     $ext=$res['ext'];
-    if($ext==''){
+    if($ext=='') {
         //if there wasn't an extension, then check mimetype
         $mimetype=$recording_metadata['submitted_mimetype'];
         list($type,$subtype)=explode('/', $mimetype);
@@ -189,31 +216,44 @@ function originals_mam_insert_media($album_name,$asset_name,$camslide,&$recordin
             $ext=$mimetypes2ext[$subtype];
           else
             $ext='mov';//default extension
-        }
-    if(ctype_alnum($ext)){//an extension should not have bad chars
+    }
+    if(ctype_alnum($ext)) { //an extension should not have bad chars
        $mov_filepath=$recording_dir.'/'.$camslide.'.mov';
        $goodext_filepath=$recording_dir.'/'.$camslide.'.'.$ext;
        //rename cam.mov into cam.mpg if submit was an .mpg file
        rename($mov_filepath,$goodext_filepath);
        $media_file_path=$goodext_filepath;
        $media_meta['filename']="$camslide.$ext";
+    } else {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Submitted filename has bad extension: $ext", array("cli_mam_insert"), $asset);
+        return false;
     }
-    else{
-     print "submitted filename has bad extension: $ext";
-        myerror ("submitted filename has bad extension: $ext");
+  } else {
+    $return_val = 0;
+    $media_file_path = system("ls $recording_dir/$camslide.*", $return_val);
+    if($return_val != 0) {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Could not find media file in $recording_dir/$camslide.*", array("cli_mam_insert"), $asset);
+        return false;
+
+    }
+    $media_meta['filename']= basename($media_file_path);
+    if($media_meta['filename'] == "") {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Invalid file path '$media_file_path' found for media $camslide", array("cli_mam_insert"), $asset);
+        return false;
+    }
   }
- }else{
-  $media_file_path=system("ls $recording_dir/$camslide.*");
-  $media_meta['filename']=  basename($media_file_path);
- }
- $filesize=round(filesize($media_file_path)/1048576);
-  $media_meta['file_size']=$filesize;
-  $res1=ezmam_media_new($album_name, $asset_name, $media_name, $media_meta, $media_file_path);
-  if(!$res1){
-      myerror( "error adding original_$camslide:".  ezmam_last_error()."\n");
-    }
-   else
-    print "$camslide media inserted in repository in $album_name $asset_name $media_name\n";
-  return $res1;
+  
+  $asset_name_with_course = basename($recording_dir);
+  
+  $filesize = round(filesize($media_file_path)/1048576);
+  $media_meta['file_size'] = $filesize;
+  $ok = ezmam_media_new($album_name, $asset_name, $media_name, $media_meta, $media_file_path);
+  if(!$ok){
+      $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Error adding original_$camslide:".  ezmam_last_error(), array("cli_mam_insert"), $asset);
+      return false;
+  } else {
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::NOTICE, "$camslide media inserted in repository in $album_name $asset_name $media_name. Last error:" . ezmam_last_error(), array("cli_mam_insert"), $asset_name_with_course);
+  }
+      
+  return true;
 }
-?>

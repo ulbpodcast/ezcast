@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -24,6 +24,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 ?>
+
+<?php if(!isset($_COOKIE['infos_cookie'])) { ?>
+    <div class="cookie_header">
+        ®cookie_infos®
+        <button onclick="document.cookie='infos_cookie=true';$('.cookie_header').hide()">OK</button>
+    </div>
+<?php } ?>
+
 
 <script>
     settings_form = false;

@@ -1,7 +1,7 @@
 <?php
 /*
 * EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -34,8 +34,8 @@ require_once 'lib_sql_stats.php';
  * Returns an array with all albums
  * @return type
  */
-function stat_album_get_all() {
-    return album_get_all();
+function stat_album_get_all($colOrder = "", $orderSort = "") {
+    return album_get_all($colOrder, $orderSort);
 }
 
 /**
@@ -121,104 +121,25 @@ function stat_get_nb_comments() {
  * Sets a month's stats 
  * @return boolean
  */
-function stat_get_by_month() {
-    $datePicked = $_POST['datePicked'];
-    $year_month = substr($datePicked, 3, 7) . "-" . substr($datePicked, 0, 2);
-
-    $resultTrd = threads_count_by_month($year_month);
-    $resultCmt = comments_count_by_month($year_month);
-
-    $result = array_merge($resultTrd, $resultCmt);
-
-    if ($result[0]['nbTrd'] == "0") {
-        unset($_SESSION['monthStats']);
-        include_once 'month_stats.php';
-        return true;
-    }
-
-    $_SESSION['monthStats']['threadsCount'] = $result[0]['nbTrd'];
-    $_SESSION['monthStats']['commentsCount'] = $result[1]['nbCmt'];
-    $_SESSION['currentMonth'] = $datePicked;
-
-    include_once template_getpath('div_stats_threads_month.php');
-
-    return true;
-}
+//function stat_get_by_month() {
+//    VIEW /controller/stat_get_by_month
+//}
 
 /**
  * Sets the stats from the last n days
  * @global array $input
  * @return boolean
  */
-function stat_get_by_nDays() {
-    global $input;
-
-    $nDays = $input['nDays'];
-
-    $todayTemp = date('Y-m-d H:i:s');
-    $today = $todayTemp;
-
-    $nDaysDate = date('Y-m-d H:i:s', strtotime('-' . $nDays . ' days', strtotime($todayTemp)));
-
-    $resultTrd = threads_count_by_date_interval($nDaysDate, $today);
-    $resultCmt = comments_count_by_date_interval($nDaysDate, $today);
-
-    $result = array_merge($resultTrd, $resultCmt);
-
-    if ($result[0]['nbTrd'] == "0") {
-        unset($_SESSION['nDaysStats']);
-        include_once template_getpath('div_stats_threads_nDays.php');
-        return true;
-    }
-
-    $_SESSION['nDaysStats']['nDaysEarlier'] = $nDaysDate;
-    $_SESSION['nDaysStats']['nDaysLater'] = $today;
-    $_SESSION['nDaysStats']['threadsCount'] = $result[0]['nbTrd'];
-    $_SESSION['nDaysStats']['commentsCount'] = $result[1]['nbCmt'];
-
-    include_once template_getpath('div_stats_threads_nDays.php');
-
-    return true;
-}
+//function stat_get_by_nDays() {
+//    VIEW /controller/stat_get_by_nDays
+//}
 
 /**
  * Makes download the csv file with the stats grouped by asset
  */
-function stat_csv_by_asset() {
-    $filename = "./csv_assets.csv";
-    $header = array('First post datetime', 'Album name', 'Asset', 'Discussions');
-
-    $values = stat_threads_count_all_by_asset();
-    $handle = fopen($filename, 'w');
-    fputcsv($handle, array('sep=,'));
-    fputcsv($handle, $header);
-    foreach ($values as $fields) {
-        fputcsv($handle, $fields);
-    }
-    fclose($handle);
-    if (file_exists($filename)) {   
-        header("Cache-Control: public");
-        header("Content-Description: File Transfer");
-        header("Content-Disposition: attachment; filename=assets.csv");
-        header("Content-Type: application/csv");
-        header("Content-Transfer-Encoding: binary");
-        echo file_get_contents($filename);
-        /*
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . basename($filename));
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filename));
-        ob_clean();
-        flush();
-        readfile($filename);
-         */
-    }
-    unlink($filename);
-}
+//function stat_csv_by_asset() {
+//    VIEW /controller/stat_csv_by_asset
+//}
 
 /**
  * Returns the oldest date saved

@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -44,13 +44,19 @@ function print_info($info, $suffix = '', $htmlspecialchars = true) {
 
 
 function print_search($keywords){
+    
+    if (!isset($keywords) || empty($keywords)) {
+        echo '®Not_available®';
+        return;
+    }
+    
     // split the string
     $keywords_array = explode(",", $keywords);
     $keywords = '';
     // transforms each keyword in a search link
     foreach($keywords_array as $keyword){
     	$comma = ($keywords != '') ? ',' : '';
-    	$tmp = "$comma<a href=\"#\" onclick=\"search_keyword('$keyword');\">$keyword</a>";
+    	$tmp = "$comma<a href=\"#\" onclick=\"keyword_search('$keyword');\">$keyword</a>";
     	$keywords .= $tmp;
     }
     echo $keywords;

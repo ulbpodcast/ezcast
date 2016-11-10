@@ -1,44 +1,54 @@
 <!doctype html>
-
-<!--
-Main template.
-This template is the main frame, the content divs are dynamically filled as the user clicks.
-
-WARNING: Please call template_repository_path() BEFORE including this template
--->
+<?php
+/* Main template.
+ * This template is the main frame, the content divs are dynamically filled as the user clicks.
+ * 
+ * WARNING: Please call template_repository_path() BEFORE including this template
+ */
+?>
 <html lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-        <!-- 
- * EZCAST EZplayer
- *
- * Copyright (C) 2014 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	      Arnaud Wijns <awijns@ulb.ac.be>
- *            Carlos Avidmadjessi
- * UI Design by Julien Di Pietrantonio
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-        -->
+        <?php 
+        /*
+         * EZCAST EZplayer
+         *
+         * Copyright (C) 2016 Université libre de Bruxelles
+         *
+         * Written by Michel Jansens <mjansens@ulb.ac.be>
+         * 	      Arnaud Wijns <awijns@ulb.ac.be>
+         *            Carlos Avidmadjessi
+         * UI Design by Julien Di Pietrantonio
+         *
+         * This software is free software; you can redistribute it and/or
+         * modify it under the terms of the GNU Lesser General Public
+         * License as published by the Free Software Foundation; either
+         * version 3 of the License, or (at your option) any later version.
+         *
+         * This software is distributed in the hope that it will be useful,
+         * but WITHOUT ANY WARRANTY; without even the implied warranty of
+         * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+         * Lesser General Public License for more details.
+         *
+         * You should have received a copy of the GNU Lesser General Public
+         * License along with this software; if not, write to the Free Software
+         * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+         * 
+         */
+        ?>
         <title>®ezplayer_page_title®</title>
+        <meta name="description" content="EZPlayer is a video player to view EZCast video" />
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />
-
+    
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="#EZPlayer" />
+        <meta name="twitter:title" content="EZPlayer (from EZCast)" /> <!-- Personalise with translation -->
+        <meta name="twitter:description" content="EZPlayer is propulsed by EZCast (ULB)" />
+        <meta name="twitter:image" content="./images/Header/LogoEZplayer.png" />
+    
         <script>
 <?php
 global $trace_on;
@@ -77,7 +87,6 @@ if ($trace_on) {
         <script type="text/javascript" src="js/lib_threads.js"></script>
         <script type="text/javascript" src="js/lib_bookmarks.js"></script>
         <script type="text/javascript" src="js/lib_chat.js"></script>
-        <script type="text/javascript" src="js/ZeroClipboard.js"></script>
 
         <script>
             var current_album;
@@ -91,8 +100,6 @@ if ($trace_on) {
             var display_threads_notif = false;
             var thread_to_display = null;
             var ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
-
-            ZeroClipboard.setMoviePath('./swf/ZeroClipboard10.swf');
 
             $(document).ready(function () {
 
@@ -212,6 +219,7 @@ if ($trace_on) {
                     url: 'index.php?action=view_asset_bookmark',
                     data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
                     success: function (response) {
+                        debugger;
                         $('#div_center').html(response);
                         if (commentId != '') {
                             $.scrollTo('#comment_' + commentId);
@@ -321,7 +329,7 @@ if ($trace_on) {
                 $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
                 $.ajax({
                     type: 'POST',
-                    url: 'index.php?action=threads_bookmarks_search&click=true',
+                    url: 'index.php?action=threads_bookmarks_search&click=true&origin=bookmarks',
                     data: $('#search_form').serialize(),
                     success: function (response) {
                         $('#div_popup').html(response);
@@ -386,13 +394,22 @@ if ($trace_on) {
             function bookmark_form_check() {
                 var timecode = document.getElementById('bookmark_timecode');
                 var level = document.getElementById('bookmark_level');
-
+                var bookmark_source = document.getElementById('bookmark_source');
+                
                 if (isNaN(timecode.value)
                         || timecode.value == ''
                         || timecode.value < 0) {
                     window.alert('®Bad_timecode®');
                     return false;
                 }
+                
+                var liste = (bookmark_source.value === 'official') ? official_bookmarks_time_code : personal_bookmarks_time_code;
+                
+                if($.inArray(parseInt(timecode.value), liste) >= 0) {
+                    window.alert("®already_use_timecode®");
+                    return false;
+                }
+                    
 
                 if (isNaN(level.value)
                         || level.value < 1
@@ -647,31 +664,6 @@ if ($trace_on) {
             }
 
             // =============== V A R I O U S ================= //
-
-
-            // Links an instance of clipboard to its position 
-            function copyToClipboard(id, tocopy, width) {
-                if (width == null || width == '' || width == 0)
-                    width = 200;
-                if (id == '#share_clip') {
-                    clippy = new ZeroClipboard.Client();
-                    clip = clippy;
-                } else {
-                    clip = new ZeroClipboard.Client();
-                }
-                clip.setText('');
-                clip.addEventListener('mouseDown', function () {
-                    console.log('Copy done.');
-                    clip.setText(tocopy);
-                });
-                clip.addEventListener('onComplete', function () {
-                    alert("®Content_in_clipboard®");
-                });
-
-                // Set the text to copy in the clipboard
-                clip.setText(tocopy);
-                $(id).html(clip.getHTML(width, 30));
-            }
 
             function nl2br(str, is_xhtml) {
                 var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';

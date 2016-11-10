@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="flowplayer-6/skin/functional.css">
 
 
-    <div id="video_player" class="streaming">
+    <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
         <div class="video_controls streaming">
             <ul>
@@ -52,7 +52,7 @@
 
 <script>
     paused = false;
-    var poster = "images/Generale/poster-streaming.png";
+    var poster = "images/Generale/¤poster-streaming¤.png";
     var is_camslide = <?php echo json_encode($asset_meta['record_type'] == 'camslide'); ?>;
     var main_stream_url = "<?php echo $m3u8_live_stream; ?>";
     var secondary_stream_url = "<?php echo $m3u8_slide; ?>";

@@ -3,7 +3,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -143,12 +143,7 @@ function ezmam_album_new($album_name, $metadata) {
  * @desc tell if thet given album exists
  */
 function ezmam_album_exists($album_name) {
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        return false;
-    }
-    $res = file_exists($repository_path . "/" . $album_name);
-    return $res;
+    return ezmam_asset_exists($album_name, "");
 }
 
 /**
@@ -610,7 +605,11 @@ function ezmam_asset_exists($album_name, $asset_name) {
     if ($repository_path === false) {
         return false;
     }
-    $res = file_exists($repository_path . "/" . $album_name . "/" . $asset_name);
+    $path = $repository_path . "/" . $album_name;
+    if($asset_name != "") {
+        $path .= "/" . $asset_name;
+    }
+    $res = file_exists($path);
     return $res;
 }
 
@@ -741,6 +740,35 @@ function ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array) {
         return false;
     ezmam_rss_generate($album, "low");
 
+    return $res;
+}
+
+/**
+ * 
+ * @param string $album
+ * @param string $asset
+ * @param string $change_key
+ * @param string $value
+ * @return bool success
+ */
+function ezmam_asset_status_set_properties($album, $asset, $change_key, $value) {
+    $metadata_assoc_array = ezmam_asset_metadata_get($album, $asset);
+    if(!$metadata_assoc_array)
+        return false;
+    
+    $found = false;
+    foreach ($metadata_assoc_array as $key => $val) {
+       if($key == $change_key) {
+           $metadata_assoc_array[$key] = $value;
+           $found = true;
+           break;
+       }
+    }
+    
+    if(!$found)
+        return false;
+    
+    $res = ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array);
     return $res;
 }
 
@@ -1816,5 +1844,3 @@ function assoc_array2metadata_file($assoc_array, $file_path) {
 
     return true;
 }
-
-?>

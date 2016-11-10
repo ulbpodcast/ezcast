@@ -3,7 +3,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -103,6 +103,3 @@ ezmam_asset_metadata_set($album, $asset, $asset_meta);
     error_print_message('Publish_unpublish: no operation provided');
     die;
 }
-
-
-?>

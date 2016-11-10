@@ -1,40 +1,44 @@
+<?php 
+/** EZCAST EZmanager 
+ * 
+ *
+ * Copyright (C) 2016 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 		    Arnaud Wijns <awijns@ulb.ac.be>
+ *                   Antoine Dewilde
+ * UI Design by Julien Di Pietrantonio
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+ * Main template.
+ * This template is the main frame, the content divs are dynamically filled as the user clicks.
+ * 
+ * WARNING: Please call template_repository_path() BEFORE including this template
+ * 
+*/
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <!-- 
-        * EZCAST EZmanager 
-        *
-        * Copyright (C) 2014 Université libre de Bruxelles
-        *
-        * Written by Michel Jansens <mjansens@ulb.ac.be>
-        * 		    Arnaud Wijns <awijns@ulb.ac.be>
-        *                   Antoine Dewilde
-        * UI Design by Julien Di Pietrantonio
-        *
-        * This software is free software; you can redistribute it and/or
-        * modify it under the terms of the GNU Lesser General Public
-        * License as published by the Free Software Foundation; either
-        * version 3 of the License, or (at your option) any later version.
-        *
-        * This software is distributed in the hope that it will be useful,
-        * but WITHOUT ANY WARRANTY; without even the implied warranty of
-        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-        * Lesser General Public License for more details.
-        *
-        * You should have received a copy of the GNU Lesser General Public
-        * License along with this software; if not, write to the Free Software
-        * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
-        Main template.
-        This template is the main frame, the content divs are dynamically filled as the user clicks.
-
-        WARNING: Please call template_repository_path() BEFORE including this template
-        -->
 
         <title>®podman_page_title®</title>
+        <meta name="description" content="EZManager is an web application to manage video from EZCast" />
         <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />

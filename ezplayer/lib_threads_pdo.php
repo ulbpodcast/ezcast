@@ -3,7 +3,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  *            Arnaud Wijns <awijns@ulb.ac.be>
@@ -32,7 +32,8 @@
 require_once '../commons/config.inc';
 require_once '../commons/lib_database.php';
 
-db_prepare(threads_statements_get());
+$stmts = threads_statements_get();
+db_prepare($stmts);
 
 function threads_statements_get() {
 
@@ -128,21 +129,35 @@ function threads_statements_get() {
         ' SET score = 0 , upvoteScore = 0, downvoteScore = 0 '
         . 'WHERE id = :id',
         'comment_update_score_up' =>
-        'UPDATE ' . db_gettable('comments') .
-        ' SET score = score+1 , upvoteScore = upvoteScore+1 '
-        . 'WHERE id = :id',
+            'UPDATE ' . db_gettable('comments') .
+            ' SET score = score+1 , upvoteScore = upvoteScore+1 '
+            . 'WHERE id = :id',
         'comment_update_score_down' =>
-        'UPDATE ' . db_gettable('comments') .
-        ' SET score = score-1 , downvoteScore = downvoteScore+1 '
-        . 'WHERE id = :id',
+            'UPDATE ' . db_gettable('comments') .
+            ' SET score = score-1 , downvoteScore = downvoteScore+1 '
+            . 'WHERE id = :id',
+        'comment_update_score_double_up' =>
+            'UPDATE ' . db_gettable('comments') .
+            ' SET score = score+2 , upvoteScore = upvoteScore+2 '
+            . 'WHERE id = :id',
+        'comment_update_score_double_down' =>
+            'UPDATE ' . db_gettable('comments') .
+            ' SET score = score-2 , downvoteScore = downvoteScore+2 '
+            . 'WHERE id = :id',
         /*         * ******* V O T E S ******** */
         'vote_insert' =>
-        'INSERT INTO ' . db_gettable('votes') .
-        ' (login, comment, voteType) ' .
-        'VALUES (:login, :comment, :voteType)',
+            'REPLACE INTO ' . db_gettable('votes') .
+            ' (login, comment, voteType) ' .
+            'VALUES (:login, :comment, :voteType)',
+        'vote_user_get' =>
+            'SELECT COUNT(*) AS row, voteType FROM ' . db_gettable('votes') . ' ' .
+            'WHERE login = :login AND comment = :comment',
+        'vote_cancel' => 
+            'DELETE FROM ' . db_gettable('votes') . ' ' .
+            'WHERE login = :login AND comment = :comment',
         'vote_delete' =>
-        'DELETE FROM ' . db_gettable('votes') .
-        ' WHERE comment = :comment',
+            'DELETE FROM ' . db_gettable('votes') .
+            ' WHERE comment = :comment',
     );
 }
 
@@ -382,9 +397,10 @@ function thread_search($words, $fields, $albums, $asset = '') {
 
     if (in_array('title', $fields)) {
         // search in threads titles
-
+        
+        $where = $where_base;
         if (count($words) > 0) {
-            $where = $where_base . 'AND ( ';
+            $where .= ' AND ( ';
             foreach ($words as $index => $word) {
                 if ($index > 0) {
                     $where .= ' OR ';
@@ -417,8 +433,9 @@ function thread_search($words, $fields, $albums, $asset = '') {
     if (in_array('message', $fields)) {
         // search in threads messages and comments
 
+        $where = $where_base;
         if (count($words) > 0) {
-            $where = $where_base . 'AND ( ';
+            $where .= ' AND ( ';
             foreach ($words as $index => $word) {
                 if ($index > 0) {
                     $where .= ' OR ';
@@ -1045,18 +1062,39 @@ function comment_select_best($thread_id = '') {
  */
 function vote_insert($values) {
     global $statements;
-
-    $statements['vote_insert']->bindParam(":login", $values['login']);
-    $statements['vote_insert']->bindParam(":comment", $values['comment']);
-    $statements['vote_insert']->bindParam(":voteType", $values['voteType']);
-    $res = $statements['vote_insert']->execute();
-    if ($res) {
-        if ($values['voteType'] == '0') {
-            $res2 = comment_update_score($values['comment'], true);
-        } else {
-            $res2 = comment_update_score($values['comment'], false);
+    
+    
+    $statements['vote_user_get']->bindParam(":login", $values['login']);
+    $statements['vote_user_get']->bindParam(":comment", $values['comment']);
+    $statements['vote_user_get']->execute();
+    $votePlayer = $statements['vote_user_get']->fetch();
+    $double = false;
+    
+    // If player already vote and vote same that now
+    if($votePlayer['row'] > 0 && $votePlayer['voteType'] == $values['voteType']) {
+        $values['voteType'] = -$values['voteType'];
+        
+        $res = 0;
+        // cancel vote
+        $statements['vote_cancel']->bindParam(":login", $values['login']);
+        $statements['vote_cancel']->bindParam(":comment", $values['comment']);
+        $statements['vote_cancel']->execute();
+        
+    } else { // else
+        // Change the vote table with the new value
+        $statements['vote_insert']->bindParam(":login", $values['login']);
+        $statements['vote_insert']->bindParam(":comment", $values['comment']);
+        $statements['vote_insert']->bindParam(":voteType", $values['voteType']);
+        $statements['vote_insert']->execute();
+        $res = $values['voteType'];
+        
+        // If already vote, double the value
+        if($votePlayer['row'] > 0) {
+            $double = true;
         }
     }
+    comment_update_score($values['comment'], $values['voteType'] == '1', $double);
+    
     return $res;
 }
 
@@ -1092,16 +1130,22 @@ function comment_score_init($comment_id) {
     return $res;
 }
 
-function comment_update_score($_id, $up) {
+function comment_update_score($_id, $up, $double = false) {
     global $statements;
-    if ($up) {
-        $statements['comment_update_score_up']->bindParam(':id', $_id);
-        $res = $statements['comment_update_score_up']->execute();
-    } else {
-        $statements['comment_update_score_down']->bindParam(':id', $_id);
-        $res = $statements['comment_update_score_down']->execute();
+    
+    $strStatement = 'comment_update_score_';
+    if($double) {
+        $strStatement .= 'double_';
     }
-
+    
+    if ($up) {
+        $strStatement.= 'up';
+    } else {
+        $strStatement.= 'down';
+    }
+    $statements[$strStatement]->bindParam(':id', $_id);
+    $res = $statements[$strStatement]->execute();
+    
     return $res;
 }
 

@@ -1,117 +1,156 @@
-
-<?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+<?php 
+if(isset($pagination)) {
+    $pagination->insert();
+} 
 ?>
-
-<?php if($max > 0) { ?>
-
-<div class="pagination">
-    <ul>
-        <li><a href="#" data-page="<?php echo $input['page']-1 ?>">Prev</a></li>
-        <li <?php echo $input['page'] == 1 ? 'class="active"' : ''?>><a href="#" data-page="1">1</a></li>
-        
-        <?php if($input['page'] > 5) { ?>
-           <li><a href="#" data-page="0">...</a></li>
-        <?php } ?>
-           
-         <?php $start = $input['page'] > 4 ? $input['page']-3 : 2 ?>
-           
-        <?php for($i = $start; $i < $max && $i < $start+7; ++$i){ ?>
-           <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>><a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a></li>
-        <?php } ?>
-        
-        <?php if($input['page']+7 < $max) { ?>
-           <li><a href="#" data-page="0">...</a></li>
-        <?php } ?> 
-           
-        <?php if($max != 1) { ?>
-        <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
-        <?php } ?>
-        <li><a href="#" data-page="<?php echo $input['page']+1 ?>">Next</a></li>
-    </ul>
-</div>
-
-<?php } ?>
 
 <form class="classroom_update" style="display:hidden" method="POST">
     <input type="hidden" name="update" />
-    <input type="hidden" name="room_ID" value=""/>
+    <input type="hidden" name="a_room_ID" value=""/>
     <input type="hidden" name="u_room_ID" value=""/>
     <input type="hidden" name="u_name" value=""/>
     <input type="hidden" name="u_ip" value=""/>
     <input type="hidden" name="u_ip_remote" value=""/>
 </form>
 
-<table class="table table-striped table-hover table-condensed classrooms">
+<table class="table table-striped table-bordered table-hover table-responsive table-condensed classrooms table-left">
     <tr>
         <th></th>
-        <th data-col="room_ID" <?php echo $input['col'] == 'room_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_ID®<?php echo ($input['col'] == 'room_ID') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
-        <th data-col="name" <?php echo $input['col'] == 'name' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®room_name®<?php echo ($input['col'] == 'name') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
-        <th>®room_IP®</th>
-        <th>®room_remote_IP®</th>
+        <?php echo $colOrder->insertThSort("room_ID", "®room_ID®"); ?>
+        <?php echo $colOrder->insertThSort("name", "®room_name®"); ?>
+        <?php echo $colOrder->insertThSort("IP", "®room_IP®"); ?>
+        <?php echo $colOrder->insertThSort("IP_remote", "®room_remote_IP®"); ?>
         <th>®room_enabled®</th>
-        <th>®enable_disable®</th>
+        <th></th>
         <th></th>
     </tr>
     
-    <?php foreach($classrooms as $classroom) {
-     
+    <?php 
+        foreach($listClassrooms as $currClass) {
         ?>
         <tr>
-            <td>
-                <?php exec('ping '.$classroom['IP'] . ' 10', $output, $return_val); if($return_val != 0) echo '<span title="®no_ping®"><i class="icon-warning-sign"></i></span>'; ?>
+            <td style="text-align: center;">
+                <?php 
+                if((!array_key_exists('online', $currClass) || !$currClass['online']) && 
+                        $currClass['enabled']) {
+                    echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
+                }
+                //TODO: move this in javascript, this heavily slow down page loading if some recorders are offline
+                //exec('ping -c 1 -W 1 '.$currClass['IP'], $output, $return_val); if($return_val != 0) 
+                //echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
             </td>
             <td class="room_id">
-                <div class="view"><?php echo $classroom['room_ID'] ?></div>
-                <div class="edit" style="display:none;"><input class="input-small" type="text" name="room_ID" value="<?php echo htmlspecialchars($classroom['room_ID']) ?>"/></div>
+                <a class="view" href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4">
+                    <?php echo $currClass['room_ID']; ?>
+                </a>
+                <div class="edit" style="display:none;">
+                    <input class="form-control input-xsm" type="text" name="new_room_ID" 
+                           value="<?php echo htmlspecialchars($currClass['room_ID']) ?>"/>
+                </div>
             </td>
             <td class="name">
-                <div class="view"><?php echo $classroom['name'] ?></div>
-                <div class="edit" style="display:none;"><input type="text" name="name" value="<?php echo htmlspecialchars($classroom['name']) ?>"/></div>
+                <div class="view">
+                    <?php echo $currClass['name'] ?>
+                </div>
+                <div class="edit" style="display:none;">
+                    <input class="form-control input-xsm" type="text" name="name" 
+                           value="<?php echo htmlspecialchars($currClass['name']) ?>"/>
+                </div>
             </td>
             <td class="ip">
-                <div class="view"><a target="_blank" href="http://<?php echo $classroom['IP']; ?>/ezrecorder/"><?php echo $classroom['IP'] ?></a> <a target="_blank" href="vnc://<?php echo $classroom['IP']; ?>/">(VNC)</a></div>
-                <div class="edit" style="display:none;"><input type="text" name="ip" value="<?php echo htmlspecialchars($classroom['IP']) ?>"/></div>
+                <div class="view">
+                    <a target="_blank" href="http://<?php echo $currClass['IP']; ?>/ezrecorder/">
+                        <?php echo $currClass['IP'] ?>
+                    </a> 
+                    <a target="_blank" href="vnc://<?php echo $currClass['IP']; ?>/">
+                        (VNC)
+                    </a>
+                </div>
+                <div class="edit" style="display:none;">
+                    <input class="form-control input-xsm" type="text" name="ip" 
+                           value="<?php echo htmlspecialchars($currClass['IP']) ?>"/>
+                </div>
             </td>
             <td class="ip_remote">
-                <div class="view"><a target="_blank" href="http://<?php echo $classroom['IP_remote']; ?>/ezrecorder/"><?php echo $classroom['IP_remote'] ?></a> <?php if(isset($classroom['IP_remote']) && $classroom['IP_remote'] != "") { ?><a target="_blank" href="vnc://<?php echo $classroom['IP_remote']; ?>/">(VNC)</a><?php } ?></div>
-                <div class="edit" style="display:none;"><input type="text" name="ip_remote" value="<?php echo htmlspecialchars($classroom['IP_remote']) ?>"/></div>
+                <?php if(array_key_exists('IP_remote', $currClass)) { ?>
+                    <div class="view">
+                        <a target="_blank" href="http://<?php echo $currClass['IP_remote']; ?>/ezrecorder/">
+                            <?php echo $currClass['IP_remote'] ?>
+                        </a> 
+                        <?php if(isset($currClass['IP_remote']) && $currClass['IP_remote'] != "") { ?>
+                            <a target="_blank" href="vnc://<?php echo $currClass['IP_remote']; ?>/">
+                                (VNC)
+                            </a>
+                        <?php } ?>
+                    </div>
+                    <div class="edit" style="display:none;">
+                        <input class="form-control input-xsm" type="text" name="ip_remote" 
+                               value="<?php echo htmlspecialchars($currClass['IP_remote']) ?>" />
+                    </div>
+                <?php } ?>
             </td>
-            <td>
-                <?php echo $classroom['enabled'] ? '<i class="icon-ok"></i>' : '<i></i>'; ?>
+            <td style="text-align: center;">
+                <span class="glyphicon glyphicon-<?php echo $currClass['enabled'] ? 'ok' : 'remove'; ?>"></span>
             </td>
-            <td>
-                <button class="btn btn-small enabled_button <?php echo !$classroom['enabled'] ? 'btn-success' : '' ?>"><?php echo !$classroom['enabled'] ? '®enable®' : '®disable®' ?></button>
+            <td style="text-align: center">
+                <a href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4"
+                   class="btn btn-default btn-xs" role="button">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                </a>
             </td>
-            <td>
-                <button class="btn btn-small edit_button"><i class="icon-edit"></i></button>
-                <button class="btn btn-small cancel_button"><i class="icon-remove"></i></button>
-                <button class="btn btn-small delete_button"><i class="icon-trash"></i></button>
+            <td style="text-align: right;">
+                <button class="btn btn-xs enabled_button <?php echo !$currClass['enabled'] ? 'btn-success' : '' ?>">
+                    <?php echo !$currClass['enabled'] ? '®enable®' : '®disable®' ?>
+                </button>
+                <button class="btn btn-xs edit_button"><span class="glyphicon glyphicon-edit"></span></button>
+                <button class="btn btn-xs btn-danger cancel_button"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-xs btn-danger delete_button"><span class="glyphicon glyphicon-trash"></span></button>
             </td>
         </tr>
-        <?php
+        <?php if(array_key_exists('recording', $currClass) && $currClass['recording']) { ?>
+        <tr class="<?php echo $currClass['loglevel']; ?>">
+            <td></td>
+            <td colspan="7" style="padding-bottom: 12px;">
+                <div class="col-md-3">
+                    <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+                    ®status_record_general®: 
+                    <?php echo $currClass['status_general']; ?><br />
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    ®monit_author®: 
+                    <a href="./index.php?action=view_user_details&user_ID=<?php echo $currClass['author']; ?>">
+                        <?php echo $currClass['author']; ?>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+                    ®classroom_record_cam®: 
+                    <?php echo $currClass['status_cam']; ?><br />
+                    <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+                    ®monit_courses®: 
+                    <a href="./index.php?action=view_course_details&course_code=<?php echo $currClass['course']; ?>">
+                        <?php echo $currClass['course']; ?>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                    ®classroom_record_slide®: 
+                    <?php echo $currClass['status_slides']; ?><br />
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                    Asset: 
+                    <a href="./index.php?action=view_events&post=&startDate=0&asset=<?php echo $currClass['asset']; ?>">
+                        <?php echo $currClass['asset']; ?>
+                        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <br />
+                    <span class="label label-<?php echo $currClass['loglevel']; ?>">
+                    <?php echo ucfirst($currClass['loglevel']); ?>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <?php }
     }
     ?>
 </table>
@@ -119,92 +158,57 @@
 <script>
     
 $(function() {
-    $(".pagination li").click(function() {
-        if($(this).hasClass('active')) return;
-        page($(this).find("a").data("page"));
-    });
-
-    $("table.classrooms th").click(function() {
-        var col = $(this).data('col');
-
-        if(!col) return;
-
-        var order = $(this).data('order');
-
-        if(order == 'ASC') order = 'DESC';
-        else order = 'ASC';
-
-        // remove other col sort
-        $(this).parent().find("th").each(function() {
-            $(this).data('order', '');
-        })
-
-        // update col sort
-        $(this).data('order', order);
-
-        sort(col, order);
-    });
-
-    function page(n) {
-        if(!n || n < 1 || n > <?php echo $max ?>) return;
-        var $form = $("form.search_classroom");
-        $form.find("input[name='page']").first().val(n);
-        $form.submit();
-    }
-
-    function sort(col, order) {
-        var $form = $("form.search_classroom");
-        $form.find("input[name='col']").first().val(col);
-        $form.find("input[name='order']").first().val(order);
-        $form.submit();
-    }
    
     $("table.classrooms .enabled_button").click(function() {
        $this = $(this);
 
         var room = $this.parent().parent().find("td.room_id .view").text();
        
-       if($this.hasClass('btn-success')) {
-           $.ajax("index.php?action=enable_classroom", {
-             type: "post",
-             data: {
-                id: room
-             },
-             success: function(jqXHR, textStatus) {
+        if($this.hasClass('btn-success')) {
+            $.ajax("index.php?action=enable_classroom", {
+                type: "post",
+                data: {
+                    id: room
+                },
+                success: function(jqXHR, textStatus) {
 
-                var data = JSON.parse(jqXHR);
-           
-                if(data.error) {
-                    if(data.error == '1') alert("®room_enable_error®");
-                    return;
+                    var data = JSON.parse(jqXHR);
+
+                    if(data.error) {
+                        if(data.error == '1') alert("®room_enable_error®");
+                        return;
+                    }
+
+                    $this.removeClass('btn-success');
+                    $this.text('®disable®');
+                    var icon = $this.parent().prev().find(".glyphicon");
+                    icon.removeClass('glyphicon-remove');
+                    icon.addClass('glyphicon-ok');
                 }
+            });
+        } else {
+            $.ajax("index.php?action=disable_classroom", {
+                type: "post",
+                data: {
+                    id: room
+                },
+                success: function(jqXHR, textStatus) {
+                    
+                    var data = JSON.parse(jqXHR);
+                    
+                    if(data.error) {
+                        if(data.error == '1') alert("®room_enable_error®");
+                        return;
+                    }
            
-                $this.removeClass('btn-success');
-                $this.text('®disable®');
-                $this.parent().prev().find("i").addClass('icon-ok');
-            }
-          });
-       } else {
-          $.ajax("index.php?action=disable_classroom", {
-             type: "post",
-             data: {
-                id: room
-             },
-             success: function(jqXHR, textStatus) {
-
-                var data = JSON.parse(jqXHR);
-
-                if(data.error) {
-                    if(data.error == '1') alert("®room_enable_error®");
-                    return;
+                    $this.addClass('btn-success');
+                    $this.text('®enable®');
+                    var icon = $this.parent().prev().find(".glyphicon");
+                    icon.removeClass('glyphicon-ok');
+                    icon.addClass('glyphicon-remove');
                 }
-           
-                $this.addClass('btn-success');
-                $this.text('®enable®');
-                $this.parent().prev().find("i").removeClass('icon-ok');
-            }
-          });
-       }
+            });
+        }
     });
     
     $("table.classrooms .edit_button").click(function() {
@@ -214,7 +218,7 @@ $(function() {
             var $tr = $this.parent().parent();
             var $form = $("form.classroom_update");
             
-            $form.find("input[name='room_ID']").val($tr.find('td.room_id .view').text());
+            $form.find("input[name='a_room_ID']").val($tr.find('td.room_id .view').text());
             $form.find("input[name='u_room_ID']").val($tr.find('td.room_id input').val());
             $form.find("input[name='u_name']").val($tr.find('td.name input').val());
             $form.find("input[name='u_ip']").val($tr.find('td.ip input').val());

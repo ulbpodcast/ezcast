@@ -1,35 +1,12 @@
-
-<?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
-
 <?php if($max > 0) { ?>
 
-<div class="pagination">
-    <ul>
-        <li><a href="#" data-page="<?php echo $input['page']-1 ?>">Prev</a></li>
+<div class="text-center">
+    <ul class="pagination">
+        <li <?php if($input['page'] == 1) { echo 'class="disabled"'; } ?>>
+            <a href="#" data-page="<?php echo $input['page']-1 ?>">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
         <li <?php echo $input['page'] == 1 ? 'class="active"' : ''?>><a href="#" data-page="1">1</a></li>
         
         <?php if($input['page'] > 5) { ?>
@@ -39,7 +16,9 @@
          <?php $start = $input['page'] > 4 ? $input['page']-3 : 2 ?>
            
         <?php for($i = $start; $i < $max && $i < $start+7; ++$i){ ?>
-           <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>><a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a></li>
+           <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>>
+               <a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a>
+           </li>
         <?php } ?>
         
         <?php if($input['page']+7 < $max) { ?>
@@ -49,15 +28,19 @@
         <?php if($max != 1) { ?>
         <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
         <?php } ?>
-        <li><a href="#" data-page="<?php echo $input['page']+1 ?>">Next</a></li>
+        <li>
+            <a href="#" data-page="<?php echo $input['page']+1 ?>">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
     </ul>
 </div>
 
 <?php } ?>
 
-<table class="table table-striped table-hover table-condensed users">
+<table class="table table-striped table-hover table-condensed table-responsive users">
     <tr>
-        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®fullname®</th>
         <th>®origin®</th>
         <th>®is_admin_title®</th>
@@ -70,7 +53,7 @@
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['user_ID']; ?></a></td>
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
             <td><span class="label <?php if($user['origin'] == 'internal') echo 'label-info'; ?>"><?php if($user['origin'] == 'internal') echo '®intern®'; else echo '®extern®'; ?></span></td>
-            <td><?php echo ($user['permissions'] != 0) ? '<i class="icon-ok"></i>' : ''; ?></td>
+            <td><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
         </tr>
         <?php
     }

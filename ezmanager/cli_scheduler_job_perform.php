@@ -3,7 +3,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -29,9 +29,9 @@
  * @package ezcast.ezmanager.cli
  */
 
-include_once 'config.inc';
-include_once 'lib_scheduling.php';
-include_once 'lib_ezmam.php';
+include_once __DIR__.'/config.inc';
+include_once __DIR__.'/lib_scheduling.php';
+include_once __DIR__.'/lib_ezmam.php';
 
 ezmam_repository_path($repository_path);
 
@@ -73,7 +73,7 @@ if($err) {
 }
 
 // Launch the rendering
-$cmd= $ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['launch'] . ' ' . $job_dir . ' 2>&1"';
+$cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['launch'] . ' ' . $job_dir . ' 2>&1"';
 $t1=time();
 exec($cmd, $cmdoutput, $returncode);
 $t2=time();
@@ -121,7 +121,7 @@ lib_scheduling_file_move($job['location'], $render_finished_upload_dir . '/' . $
 // Now that the files have been copied on EZcast server, we delete them from EZrenderer
 if ($renderer['processed_dir'] . '/' . $job_dir != '' 
         && $renderer['processed_dir'] . '/' . $job_dir != '/'){
-            $cmd= $ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' " rm -rf  ' . $renderer['processed_dir'] . '/' . $job_dir . ' 2>&1"';
+            $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " rm -rf  ' . $renderer['processed_dir'] . '/' . $job_dir . ' 2>&1"';
             exec($cmd, $out, $err);
         }
 
@@ -130,14 +130,12 @@ if ($renderer['processed_dir'] . '/' . $job_dir != ''
 $cmd="$php_cli_cmd cli_rendered_maminsert.php  $album $asset $render_finished_upload_dir/$job_dir >> $render_finished_upload_dir/$job_dir/rendered_maminsert.log 2>&1";
 exec($cmd, $cmdoutput, $returncode);
 if($returncode) {
- //non zero return code -> something bad happened
- $msg = "Submit_intro_title_movie failed";
- $asset_meta['status']='failed';
- $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
+    //non zero return code -> something bad happened
+    $msg = "Submit_intro_title_movie failed";
+    $asset_meta['status']='failed';
+    $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
 }
 else{
-	lib_scheduling_notice('Scheduler::job_perform[success]{' . $job['uid'] . '}');
-	scheduler_schedule();
+    lib_scheduling_notice('Scheduler::job_perform[success]{' . $job['uid'] . '}');
+    scheduler_schedule();
 }
-
-?>

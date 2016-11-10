@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -43,9 +43,11 @@ include_once 'lib_print.php';
 
     history.pushState({"url": 'index.php?action=view_asset_details&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');
 
-<?php if ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0)) { ?>
+<?php global $show_panel;
+    if ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0)
+        && !isset($show_panel)) { $hiden_side = true; ?>
         show_panel = false;
-<?php } else { ?>
+<?php } else { $hiden_side = false; ?>
         show_panel = true;
 <?php }
 if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (isset($official_bookmarks) && sizeof($official_bookmarks) != 0))) {
@@ -85,7 +87,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
 <?php include_once template_getpath('div_search.php'); ?>
 </div>
 
-<div id="side_wrapper">
+<div id="side_wrapper" <?php if($hiden_side) { echo 'style="right: -232px;"'; } ?>>
     <div id="side_menu">
 
                                                 <?php if ($has_bookmark) { ?>
@@ -129,8 +131,9 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                 <?php if ($has_bookmark) { ?>
                 <div class="side_pane_content" id="asset_bookmarks">
                     <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.bookmark_scroll');"></a></div>
+                    <script>var personal_bookmarks_time_code = new Array();</script>
                     <?php
-                    if (!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) {
+                    if (!isset($personal_bookmarks) || $personal_bookmarks == false || sizeof($personal_bookmarks) == 0) {
                         ?>
                         <div class="no_content">®No_bookmarks®</div>
                         <?php
@@ -140,6 +143,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                             <?php
                             foreach ($personal_bookmarks as $index => $bookmark) {
                                 ?>
+                                <script>personal_bookmarks_time_code.push(<?php echo $bookmark['timecode']; ?>);</script>
                                 <li id="bookmark_<?php echo $index; ?>" class="blue level_<?php echo $bookmark['level']; ?>">
                                     <form action="index.php" method="post" id="submit_bookmark_form_<?php echo $index; ?>" onsubmit="return false">
 
@@ -154,7 +158,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <div class="blue-title">®Description® :</div>
                                                 <?php print_info($bookmark['description']); ?>
                                                 <div class="blue-title" style="margin-top: 6px;">®Keywords® : </div>
-            <?php print_search($bookmark['keywords']); ?>
+                                                <?php print_search($bookmark['keywords']); ?>
                                             </div>
                                             <div class="edit_bookmark_form" id="edit_bookmark_<?php echo $index; ?>">            
                                                 <input type="hidden" name="album" id="bookmark_album_<?php echo $index; ?>" value="<?php echo $bookmark['album']; ?>"/>
@@ -163,7 +167,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <input type="hidden" name="timecode" id="bookmark_timecode_<?php echo $index; ?>" value="<?php echo $bookmark['timecode']; ?>"/>
                                                 <input type="hidden" name="type" id="bookmark_type_<?php echo $index; ?>" value="<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>"/>
                                                 <div class="blue-title">®Description® :</div>
-                                                <textarea name="description" id="bookmark_description_<?php echo $index; ?>" rows="4" ></textarea>
+                                                <textarea name="description" id="bookmark_description_<?php echo $index; ?>" style="resize: vertical;" rows="4" ></textarea>
                                                 <div class="blue-title" style="margin-top: 6px;">®Keywords® : </div>
                                                 <input name="keywords" id="bookmark_keywords_<?php echo $index; ?>" type="text"/>
                                                 <div class="blue-title" style="margin-top: 6px;">®Level® : </div>
@@ -189,7 +193,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
 
                                     </form>
                                 </li>
-                                    <?php if ($timecode == $bookmark['timecode']) { ?>
+                                    <?php if (array_key_exists('timecode', $bookmark) && isset($timecode) && $timecode == $bookmark['timecode']) { ?>
                                     <script>
                                         bookmark_more_toggle('<?php echo $index; ?>', 'bookmark', $("#bookmark_<?php echo $index; ?> .more a"));</script>
                                     <?php
@@ -206,7 +210,8 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                 <?php } ?>
             <div class="side_pane_content" id="album_toc">
                 <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.toc_scroll');"></a></div>
-                <?php if (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0) {
+                <script>var official_bookmarks_time_code = new Array();</script>
+                <?php if (!isset($official_bookmarks) || $official_bookmarks == false || sizeof($official_bookmarks) == 0) {
                     ?>
                     <div class="no_content">®No_toc®</div>
                     <?php
@@ -216,6 +221,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                         <?php
                         foreach ($official_bookmarks as $index => $bookmark) {
                             ?>
+                            <script>official_bookmarks_time_code.push(<?php echo $bookmark['timecode']; ?>);</script>
                             <li id="toc_<?php echo $index; ?>" class="orange level_<?php echo $bookmark['level']; ?>">
                                 <form action="index.php" method="post" id="submit_toc_form_<?php echo $index; ?>" onsubmit="return false">
 
@@ -234,7 +240,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <div class="orange-title">®Description® :</div>
                                                 <?php print_info($bookmark['description']); ?>
                                                 <div class="orange-title" style="margin-top: 6px;">®Keywords® : </div>
-        <?php print_search($bookmark['keywords']); ?>
+                                                <?php print_search($bookmark['keywords']); ?>
                                             </div>
 
                                             <div class="edit_bookmark_form" id="edit_toc_<?php echo $index; ?>">            
@@ -266,7 +272,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                         </div>
                                 </form>
                             </li>
-                            <?php if ($timecode == $bookmark['timecode']) { ?>
+                            <?php if (isset($timecode) && $timecode == $bookmark['timecode']) { ?>
                                 <script>bookmark_more_toggle('<?php echo $index; ?>', 'toc', $("#toc_<?php echo $index; ?> .more a"));</script>
                                 <?php
                             }
@@ -281,4 +287,6 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
     </div>
 </div>
 
-
+<script>
+    $(window).trigger('resize');
+</script>

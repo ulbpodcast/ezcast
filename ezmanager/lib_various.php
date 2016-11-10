@@ -2,7 +2,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -132,7 +132,7 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
     
     $new_date .= $space_char . $matches[1]; // year
     if($long_date)
-        $new_date .= $space_char . $at; // Separator between date and hour
+        $new_date .= $space_char; // Separator between date and hour
     
     $new_date .= $space_char . $matches[4] . 'h' . $matches[5]; // Hours and minutes
     
@@ -343,25 +343,3 @@ function file_get_extension($filename){
  $result_assoc['ext']=$ext_part;
  return $result_assoc;
 }
-
-/**
- * Sets the current language to the one chosen in parameter
- * @param type $lang 
- */
-//function set_lang($lang) {
-//    $_SESSION['lang'] = $lang;
-//}
-//
-///**
-// * Returns current chosen language
-// * @return string(fr|en) 
-// */
-//function get_lang() {
-//    //if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
-//    if(isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
-//        return $_SESSION['lang'];
-//    }
-//    else
-//        return 'en';
-//}
-?>

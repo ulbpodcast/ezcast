@@ -1,33 +1,7 @@
 
-<?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
+<div class="page_title">®admins_list_title®</div>
 
-<h4>®admins_list_title®</h4>
-
-<table class="table table-striped table-bordered table-hover users_table">
+<table class="table table-striped table-bordered table-hover table-responsive users_table">
     <thead>
         <tr>
             <th>®user_ID®</th>
@@ -40,20 +14,20 @@
         <tr data-id="<?php echo $a['user_ID'] ?>">
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $a['user_ID']; ?>"><?php echo $a['user_ID']; ?></a></td>
             <td><?php echo $a['forename'] . ' ' . $a['surname']; ?></td>
-            <td class="unlink" style="cursor: pointer;"><i class="icon-remove"></i>®remove_admin®</td>
+            <td class="unlink" style="cursor: pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_admin®</td>
         </tr>
         <?php } ?>
     </tbody>
 </table>
 
 <div class="create_link form-inline">
-    <input type="text" name="link_to" value="" class="input-medium" placeholder="®user_ID®" data-provide="typeahead" autocomplete="off" />
-    <button name="link" class="btn btn-primary">®add_admin®</button>
+    <input type="text" name="link_to" value="" class="form-control input-medium" placeholder="®user_ID®" data-provide="typeahead" autocomplete="off" />
+    <button name="link" class="btn btn-success">®add_admin®</button>
 </div>
 
 <script>
    
-$(".users_table .unlink").live("click", function() {
+$(".users_table .unlink").click(function() {
     $this = $(this);
     
     //if($this.parent().data('origin') == 'external') alert("®cannot_delete_external®");
@@ -103,7 +77,7 @@ $(".create_link button[name='link']").click(function() {
            var $netid = $('<td></td>');
            $netid.append($('<a href=""></a>').attr("href", 'index.php?action=view_user_details&amp;user_ID='+data.user_ID).text(data.user_ID));
            var $username = $('<td></td>').text(data.forename + ' ' + data.surname);
-           var $delete = $("<td class=\"unlink\" style=\"cursor:pointer;\"><i class=\"icon-remove\"></i>®remove_admin®</td>");
+           var $delete = $("<td class=\"unlink\" style=\"cursor:pointer;\"><span class=\"glyphicon glyphicon-remove\"></span>®remove_admin®</td>");
            
            var $tr = $('<tr data-id="' + data.user_ID + '"></tr>');
            $tr.append($netid);

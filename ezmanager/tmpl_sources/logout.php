@@ -4,7 +4,7 @@
         <!-- 
     * EZCAST EZmanager 
     *
-    * Copyright (C) 2014 Université libre de Bruxelles
+    * Copyright (C) 2016 Université libre de Bruxelles
     *
     * Written by Michel Jansens <mjansens@ulb.ac.be>
     * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -25,7 +25,7 @@
     * License along with this software; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
         -->
-	<title>ULB Podcast</title>
+	<title>¤organization¤</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />

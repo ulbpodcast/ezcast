@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -144,11 +144,12 @@ function acl_update_settings(){
  * @return boolean
  */
 function acl_is_watched($album, $asset) {
-    if (!acl_user_is_logged())
+    if (!acl_user_is_logged()) {
         return true;
+    }
+    
     foreach ($_SESSION['acl_watched_assets'] as $watched) {
-        if ($watched['album'] == $album
-                && in_array($asset, $watched['assets'])) {
+        if ($watched['album'] == $album && in_array($asset, $watched['assets'])) {
             return true;
         }
     }
@@ -194,9 +195,12 @@ function acl_global_count($album){
  * @param string $setting
  * @return boolean
  */
-function acl_value_get($setting){
+function acl_value_get($setting) {
     $settings = $_SESSION["acl_user_settings"];
-    return $settings[$setting];
+    if(is_string($setting) && is_array($settings) && array_key_exists($setting, $settings)) {
+        return $settings[$setting];
+    }
+    return NULL;
 }
 
 /**
@@ -320,7 +324,7 @@ function acl_show_notifications(){
  * @return boolean
  */
 function acl_display_threads(){
-    if (!acl_user_is_logged()) return false;
+    if (!acl_user_is_logged()) return true;
     
     global $default_display_thread;
     
@@ -334,7 +338,7 @@ function acl_display_threads(){
  * @return boolean
  */
 function acl_display_thread_notification(){
-    if (!acl_user_is_logged()) return false;
+    if (!acl_user_is_logged()) return true;
     
     global $default_display_thread_notif;
     $display_thread_notif = acl_value_get('display_thread_notification');
@@ -381,4 +385,3 @@ function acl_is_archived($album, $asset){
         return !ezmam_asset_exists($album, $asset);
     return true;
 }
-?>

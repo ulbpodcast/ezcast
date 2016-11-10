@@ -3,7 +3,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -33,4 +33,3 @@ $podcs_ip[$idx] = "255.255.255.255"; // slide recorder
 $idx+=1;
 
 // Repeat for every recorders ...
-?>

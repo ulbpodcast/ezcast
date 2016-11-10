@@ -1,7 +1,7 @@
 <?php
 /*
 * EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -28,4 +28,3 @@ include '../commons/lib_database.php';
 db_prepare();
 var_dump(db_log('test', 'Test logging', 'test user'));
 var_dump($statements['log_action']->errorInfo());
-?>

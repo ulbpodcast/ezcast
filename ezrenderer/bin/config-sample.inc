@@ -2,7 +2,7 @@
 /*
  * EZCAST EZrenderer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -32,6 +32,7 @@ $processing_dir = "$basedir/queues/processing";
 $processed_dir = "$basedir/queues/processed";
 $failed_dir = "$basedir/queues/failed";
 $intros_dir = "$basedir/intros";
+$credits_dir = "$basedir/credits";
 
 $performance_idx = 1; // Arbitrary number reflecting the performance of the machine. Float number between 0 and 1.
 $num_threads = 4; // Number of threads used for one encoding.
@@ -83,6 +84,18 @@ $intro_movies = array(
     '8:5' => 'N/A',
     'default' => 'original_intro_16_9.mp4',
 );
+
+$credits_movies = array(
+    '16:9' => 'credits_16_9.mp4',
+    '16:10' => 'N/A',
+    '3:2' => 'N/A',
+    '4:3' => 'credits_4_3.mov',
+    '5:3' => 'N/A',
+    '5:4' => 'N/A',
+    '8:5' => 'N/A',
+    'default' => 'original_credits_16_9.mp4',
+);
+
 
 ///////////// LIBGD - Title image generation ////////////////
 // font used to render the title

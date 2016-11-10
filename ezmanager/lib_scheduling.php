@@ -2,7 +2,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -40,6 +40,8 @@
  */
 define('DEBUG', 5);
 
+require_once __DIR__ . '/config.inc';
+
 /*******************************/
 /****** S C H E D U L E R ******/
 /*******************************/
@@ -52,7 +54,7 @@ define('DEBUG', 5);
 function scheduler_schedule() {
     lib_scheduling_notice('Scheduler::schedule[start]');
 
-    // init the queue
+    // init the queue (get all the jobs from the scheduler queue folder)
     $queue = lib_scheduling_queue_init();
 
     $saturate = false;
@@ -70,9 +72,10 @@ function scheduler_schedule() {
         foreach($renderers as $renderer) {
 
             // check the renderer availibility
-            if(!lib_scheduling_renderer_is_available($renderer)) continue;
+            if(!lib_scheduling_renderer_is_available($renderer)) 
+                continue;
 
-            // if no choice, pick the first fit otherwhise find the optimal
+            // if no choice, pick the first fit. Otherwhise find the optimal
             if(!$choice) {
                 $choice = $renderer;
                 continue;
@@ -115,8 +118,10 @@ function scheduler_append($job) {
 
     $status = lib_scheduling_job_write($job, lib_scheduling_config('queue-path'));
 
-    if($status) lib_scheduling_notice('Scheduler::append[success]{' . $job['uid'] . '}');
-    else lib_scheduling_warning('Scheduler::append[fail]{' . $job['uid'] . '}');
+    if($status) 
+        lib_scheduling_notice('Scheduler::append[success]{' . $job['uid'] . '}');
+    else 
+        lib_scheduling_warning('Scheduler::append[fail]{' . $job['uid'] . '}');
 
     return $status;
 }
@@ -324,7 +329,8 @@ function scheduler_job_priority_down($uid) {
 function lib_scheduling_job_read($file) {
     $job = array();
 
-    foreach (simplexml_load_file($file) as $tag => $value) $job[$tag] = (string) $value;
+    foreach (simplexml_load_file($file) as $tag => $value) 
+        $job[$tag] = (string) $value;
 
     $job['basename'] = basename($file);
 
@@ -353,10 +359,12 @@ function lib_scheduling_job_read($file) {
  */
 function lib_scheduling_job_write($job, $dir) {
     // default name
-    if(!$job['name']) $job['name'] = 'no_name';
+    if(!$job['name']) 
+        $job['name'] = 'no_name';
 
     // file name
-    if(!$job['basename']) $job['basename'] = lib_scheduling_file_safe($job['created'] . '_' . $job['sender']  . '_' . $job['name']) . '.xml';
+    if(!$job['basename']) 
+        $job['basename'] = lib_scheduling_file_safe($job['created'] . '_' . $job['sender']  . '_' . $job['name']) . '.xml';
 
     // do not write the basename neither the status(redondant)
     $basename = $job['basename'];
@@ -365,7 +373,8 @@ function lib_scheduling_job_write($job, $dir) {
 
     $xml = new SimpleXMLElement("<job></job>");
 
-    foreach($job as $key => $value) $xml->addChild($key, $value);
+    foreach($job as $key => $value)
+        $xml->addChild($key, $value);
 
     return $xml->asXML($dir . '/' . $basename);
 }
@@ -380,7 +389,8 @@ function lib_scheduling_job_read_all($dir) {
     $files = lib_scheduling_file_ls($dir);
 
     $jobs = array();
-    foreach($files as $file) $jobs[] = lib_scheduling_job_read($file);
+    foreach($files as $file) 
+        $jobs[] = lib_scheduling_job_read($file);
 
     return $jobs;
 
@@ -530,7 +540,7 @@ function lib_scheduling_queue_down($job) {
  * @return array All renderers
  */
 function lib_scheduling_renderer_list() {
-    return require dirname(__FILE__) . '/renderers.inc';
+    return require __DIR__ . '/renderers.inc';
 }
 
 /**
@@ -576,7 +586,8 @@ function lib_scheduling_renderer_generate($renderers) {
  * @return array The associated renderer or null
  */
 function lib_scheduling_renderer_find($renderers, $hostname) {
-    foreach($renderers as $renderer) if($renderer['host'] == $hostname) return $renderer;
+    foreach($renderers as $renderer) 
+        if($renderer['host'] == $hostname) return $renderer;
 
     lib_scheduling_warning('Scheduler::renderer_find[not found]{' . $hostname . '}');
 
@@ -691,9 +702,10 @@ function lib_scheduling_renderer_job_kill($renderer, $job) {
 function lib_scheduling_renderer_ssh($renderer, $cmd) {
     $ssh_pgm=lib_scheduling_config('ssh-path');
 
-    exec($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"', $output, $ret);
+    $ssh_cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"';
+    exec($ssh_cmd, $output, $ret);
     if($ret) {
-        lib_scheduling_alert($ssh_pgm . ' ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"');
+        lib_scheduling_alert($ssh_cmd);
         lib_scheduling_alert('Scheduler::renderer_ssh[fail]{' . $cmd . '} |::>' . implode("\n", $output) . '<::|');
     }
     return implode("\n", $output);
@@ -708,8 +720,14 @@ function lib_scheduling_renderer_ssh($renderer, $cmd) {
 function lib_scheduling_renderer_assign($renderer, $job) {
     $job['sent'] = date('Y-m-d H:i:s');
     $job['renderer'] = $renderer['host'];
-    if(!lib_scheduling_job_write($job, lib_scheduling_config('queue-path'))) return false;
-    if(!lib_scheduling_file_move(lib_scheduling_config('queue-path') . '/' . $job['basename'], lib_scheduling_config('processing-path') . '/' . $job['basename'])) return false;
+    $queue_path = lib_scheduling_config('queue-path');
+    $processing_path = lib_scheduling_config('processing-path');
+    
+    if(!lib_scheduling_job_write($job, $queue_path)) 
+        return false;
+    
+    if(!lib_scheduling_file_move($queue_path . '/' . $job['basename'], $processing_path . '/' . $job['basename'])) 
+        return false;
 
     system('echo "' . lib_scheduling_config('php-path') . ' ' . dirname(__FILE__) . '/cli_scheduler_job_perform.php ' . $job['uid'] . '" | at now');
 
@@ -768,9 +786,17 @@ function lib_scheduling_file_move($from, $to) {
 
 function lib_scheduling_file_ls($dir) {
     $handler = opendir($dir);
-
     $files = array();
-    while(($file = readdir($handler)) !== false) if($file != '.' && $file != '..' && $file[0] != '.') $files[] = $dir . '/' . $file;
+    if($handler === false)
+    {
+        echo "nodir given" . PHP_EOL;
+	lib_scheduling_error('Scheduler::file_ls - Could not open dir "$dir"');
+        return $files;    
+    }
+
+    while(($file = readdir($handler)) !== false) 
+	if($file != '.' && $file != '..' && $file[0] != '.') 
+            $files[] = $dir . '/' . $file;
 
     closedir($handler);
 
@@ -805,8 +831,10 @@ function lib_scheduling_file_safe($filename) {
  * @return string|boolean The config value or false
  */
 function lib_scheduling_config($name) {
-    include 'config.inc';
-
+    global $config;
+    global $ssh_pgm;
+    global $php_cli_cmd;
+    
     switch ($name) {
         case 'scheduler-path':
             return $config['paths']['scheduler'];
@@ -846,7 +874,11 @@ function lib_scheduling_warning($msg) { if(DEBUG > 3) lib_scheduling_log('WARNIN
 function lib_scheduling_alert($msg) { if(DEBUG > 2) lib_scheduling_log('  ALERT', $msg); }
 function lib_scheduling_trace($msg) { if(DEBUG > 1) lib_scheduling_log('  TRACE', $msg); }
 function lib_scheduling_error($msg) { if(DEBUG > 0) lib_scheduling_log('  ERROR', $msg); }
-function lib_scheduling_log($cat, $msg) { file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND); }
+function lib_scheduling_log($cat, $msg) { 
+    file_put_contents(lib_scheduling_config('logs-path'), '' . date('Y-m-d H:i:s') . ' - ' . $cat . ' - ' . $msg . "\n", FILE_APPEND); 
+    //also print it to console in case scheduler was started manually
+    echo $msg . PHP_EOL;
+}
 
 /*******************************/
 /********** M A I N ************/

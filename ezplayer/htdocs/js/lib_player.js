@@ -1,7 +1,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -39,7 +39,7 @@ var panel_width = 231;
 // variable describing which components are displayed on the page
 var fullscreen = false;
 var show_panel = false;
-var bookmark_form = false;
+var bookmark_form = "";
 var thread_form = false;
 var comment_form = false;
 var shortcuts = false;
@@ -48,7 +48,7 @@ var shortcuts = false;
  * Duration of the notification (sec)
  * @type Number
  */
-var notif_display_delay = 10;
+var notif_display_delay = 3;
 /**
  * Number of threads to display at once
  * @type Number
@@ -190,6 +190,8 @@ function player_prepare(currentQuality, currentType, startTime) {
     // get all videos of the page
     var videos = document.getElementsByTagName('video');
     var max = videos.length;
+    var seeked = false;
+    
     // determines whether it's a camslide or not
     camslide = (max === 2);
     // set the current type being played
@@ -215,9 +217,8 @@ function player_prepare(currentQuality, currentType, startTime) {
                 time = Math.round(this.currentTime);
                 document.getElementById('bookmark_timecode').value = time;
                 document.getElementById('thread_timecode').value = time;
-                if (!trace_pause) {
-                    server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
-                } else {
+                seeked = true;
+                if (trace_pause) {
                     trace_pause = false;
                 }
             }
@@ -272,6 +273,12 @@ function player_prepare(currentQuality, currentType, startTime) {
         // --> hides the shortcuts panel
         // --> saves trace
         videos[i].addEventListener('play', function () {
+            if(seeked) {
+                seeked = false;
+                console.log("video_seeked");
+                server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
+            }
+            
             if (!shortcuts)
                 $(".shortcuts_tab").css('display', 'none');
             if (!trace_pause) {
@@ -685,14 +692,14 @@ function player_bookmark_form_show(source) {
     if (camslide)
         (type == 'slide') ? $('#main_video').hide() : $('#secondary_video').hide();
     $('#bookmark_form').slideDown();
-    bookmark_form = true;
+    bookmark_form = source;
 
 }
 
 // hides the bookmark creation form
 function player_bookmark_form_hide(canceled) {
     var window_height = $(window).height() - 39;
-    bookmark_form = false;
+    bookmark_form = "";
     $("#video_shortcuts").css("display", "block");
     $('video').animate({'height': (fullscreen) ? window_height + 'px' : '525px'});
     if (camslide)
@@ -717,15 +724,19 @@ function player_bookmark_form_toggle(source) {
     origin = get_origin();
 
     from_shortcut = false;
-    if (bookmark_form) {
-        server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, source, quality, origin));
-        player_bookmark_form_hide(false);
-
-    } else {
-        server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, time, type, source, quality, origin));
-        player_bookmark_form_show(source);
-        $("#bookmark_title").focus();
+    if (bookmark_form != "") {
+        
+        server_trace(new Array('4', 'bookmark_form_hide', current_album, current_asset, duration, time, type, bookmark_form, quality, origin));
+        if(bookmark_form == source) {
+            player_bookmark_form_hide(false);
+            return;
+        }
     }
+    
+
+    server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, time, type, source, quality, origin));
+    player_bookmark_form_show(source);
+    $("#bookmark_title").focus();   
 }
 
 // ===================== T H R E A D S    A C T I O N S ======================= //
@@ -810,7 +821,7 @@ function player_thread_form_toggle() {
         server_trace(new Array('4', 'thread_form_hide', current_album, current_asset, duration, time, type, quality, origin));
         player_thread_form_hide(false);
         return;
-    } else if (bookmark_form) {
+    } else if (bookmark_form != "") {
         player_bookmark_form_hide(false);
         return;
     }

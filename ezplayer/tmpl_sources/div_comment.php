@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -89,9 +89,9 @@ $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\
         <span class="comment-options">
             <!-- ----- VOTE ------------------------------------ -->
             <div class="inline-block">
-                <div class="upvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, <?php echo '0' ?>);" ></div>
+                <div class="upvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '1');" ></div>
                 <label class="pull-left badge-score"><?php echo sprintf("%02s", $comment['score']); ?></label>
-                <div class="downvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, <?php echo '1' ?>);"></div>
+                <div class="downvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '-1');"></div>
                 <?php if (acl_has_album_moderation($thread['albumName']) || acl_is_admin()) { ?>
                     <div style="padding-top: 5px;" class="copy-button <?php echo ($comment['approval'] == '0') ? '' : 'active' ?> inline-block" title="<?php echo ($comment['approval'] == '0') ? '®Answer_approval®' : '®Withdraw_approval®' ?>" onclick="javascript:thread_comment_approve(<?php echo $comment['id']; ?>)"></div>
                 <?php } ?>

@@ -1,35 +1,14 @@
 
-<?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
 
-    <?php if($max > 0) { ?>
+<?php if($max > 0) { ?>
 
-<div class="pagination">
-    <ul>
-        <li><a href="#" data-page="<?php echo $input['page']-1 ?>">Prev</a></li>
+<div class="text-center">
+    <ul class="pagination">
+        <li <?php if($input['page'] == 1) { echo 'class="disabled"'; } ?>>
+            <a href="#" data-page="<?php echo $input['page']-1 ?>">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
         <li <?php echo $input['page'] == 1 ? 'class="active"' : ''?>><a href="#" data-page="1">1</a></li>
         
         <?php if($input['page'] > 5) { ?>
@@ -49,28 +28,28 @@
         <?php if($max != 1) { ?>
         <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
         <?php } ?>
-        <li><a href="#" data-page="<?php echo $input['page']+1 ?>">Next</a></li>
+        <li>
+            <a href="#" data-page="<?php echo $input['page']+1 ?>"><span aria-hidden="true">&raquo;</span></a>
+        </li>
     </ul>
 </div>
 
 <?php } ?>
 
-<table class="table table-striped table-hover table-condensed courses">
+<table class="table table-striped table-hover table-condensed table-responsive courses">
     <tr>
         <?php global $use_course_name; if($use_course_name) { ?>
-            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_name®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_name®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <?php } else { ?>
-            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_code®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_code®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <?php } ?>
-        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®teacher®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <i class="icon-chevron-down"></i>' : ' <i class="icon-chevron-up"></i>') : ' <i class="icon-chevron-up" style="visibility: hidden;"></i>' ?></th>
+        <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®teacher®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®origin®</th>
         <th>®albums®</th>
         <th>®recorders®</th>
     </tr>
         
-    <?php foreach($courses as $course) {
-     
-        ?>
+    <?php foreach($courses as $course) { ?>
         <tr>
             <?php if($use_course_name) { ?>
                 <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo $course['course_code']; ?>"><?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?></a></span></td>
@@ -83,9 +62,28 @@
             <?php } else { ?>
                 <td><span title="<?php echo $course['forename'].' '.$course['surname']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $course['user_ID']; ?>"><?php echo $course['user_ID']; ?></a></span></td>
             <?php } ?>
-            <td><span class="label <?php if($course['origin'] == 'internal') echo 'label-info'; ?>"><?php if($course['origin'] == 'internal') echo '®intern®'; else echo '®extern®'; ?></span></td>
-            <td><?php echo $course['has_albums'] ? '<i class="icon-ok"></i>' : ''; ?></td>
-            <td><?php echo $course['in_recorders'] ? '<i class="icon-ok"></i>' : ''; ?></td>
+            <td>
+                <span class="label 
+                    <?php if($course['origin'] == 'internal') { 
+                        echo 'label-info'; 
+                    } else if($course['origin'] == 'external') { 
+                        echo 'label-primary'; 
+                    } else {
+                        echo 'label-danger';
+                    } ?>
+                    ">
+                    <?php 
+                    if($course['origin'] == 'internal') {
+                        echo '®intern®';
+                    } else if($course['origin'] == 'external') {
+                        echo '®extern®';
+                    } else {
+                        echo '®error®';
+                    } ?>
+                </span>
+            </td>
+            <td><?php echo $course['has_albums'] ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
+            <td><?php echo $course['in_recorders'] ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
         </tr>
         <?php
     }

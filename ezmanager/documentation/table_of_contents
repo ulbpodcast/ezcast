@@ -19,7 +19,7 @@ pwfile.inc
     Contains a list of login/encrypted passwords that can be used to access EZmanager.
     When logging in, the program will first use LDAP, then use this file if no result were found.
     This file can be generated from the internal users declared in the database,
-    by using the "Push changes" item in the ezadmin interface ("Sauvegarder" in french interface).
+    by using the "Push changes" item in the ezadmin interface ("Envoyer changements" in french interface).
 
 Libraries
 ---------
@@ -62,14 +62,12 @@ cli_recorder_download.php
 cli_mam_insert.php
     Insert the originals (downloaded with cli_recorder_download_pgm.php) in the repository
 cli_submit_intro_title_movie.php
-    Submits original movie to the render hosts to get movies info (resolution, duration,...), add a intro jingle, title and compresses for the 'low'(res) movie.
+    Submits original movie to the render hosts to get movies info (resolution, duration,...), add a intro jingle, title, credits and compresses for the 'low'(res) movie.
 
 Web pages and scripts
 ---------------------
 web_distribute.php
     Distribute RSS files and videos to the students
-web_download_from_recorder.php
-    Allows the classroom recorders to warn that a new recording is waiting to be downloaded.
 web_index.php
     Main podcast manager application
 

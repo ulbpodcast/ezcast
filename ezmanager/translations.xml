@@ -1,38 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- * EZCAST EZmanager 
- *
- * Copyright (C) 2014 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	   Arnaud Wijns <awijns@ulb.ac.be>
- *         Antoine Dewilde
- * UI Design by Julien Di Pietrantonio
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-    Document   : translations.xml
-    Author     : Université libre de Bruxelles
-    Description:
-        Message translations for all the user interface.
+        Message translations for all the user interface
 -->
 
 <data>
     <!-- Labels are keywords that appear in templates 
-         Note: please use the same label name as the keyword between ®'s that appears in the template -->
+         Note: use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff -->
         <label id="service_name" lang="fr">EZmanager</label>
@@ -53,7 +27,7 @@
         <label id="OK" lang="en">OK</label>
         <label id="Next" lang="fr">Suivant</label>
         <label id="Next" lang="en">Next</label>
-        <label id="Type" lang="fr">Type</label>
+        <label id="Type" lang="fr">Type</label> 
         <label id="Type" lang="en">Type</label>
         <label id="cam" lang="fr">Vidéo caméra</label>
         <label id="cam" lang="en">Camera movie file</label>
@@ -101,6 +75,16 @@
         <label id="Jingle_info" lang="en">Animation added before the actual video.</label>
         <label id='None_intro' lang="fr">Aucun</label>
         <label id='None_intro' lang="en">None</label>
+        
+        <label id="Credit" lang="fr">Crédits</label>
+        <label id="Credit" lang="en">Credits</label>
+        <label id="Credits" lang="fr">Générique fin</label>
+        <label id="Credits" lang="en">Closing crédits</label>
+        <label id="Credits_info" lang="fr">Animation visuelle ajoutée en fin de vidéo.</label>
+        <label id="Credits_info" lang="en">Animation added after the actual video.</label>
+        <label id='None_credits' lang="fr">Aucun</label>
+        <label id='None_credits' lang="en">None</label>
+        
         <label id="Title" lang="fr">Titre</label>
         <label id="Title" lang="en">Title</label>
         <label id="Title_info" lang="fr">Max. 70 caractères</label>
@@ -456,4 +440,35 @@
         <message id="write_error" lang="fr">Une erreur est survenue à l'écriture du fichier sur le serveur</message>
         <message id="write_error" lang="en">An error occured while writting the file on the server</message>
     </messages>
+    
+        <!-- update 2016/07/15 -->
+    <!-- information customized by organisation -->   
+    <infos>
+        <info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
+        <info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
+        <info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
+        <info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
+        <info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
+        <info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>		
+
+        <info id="tuto" organization="© Université libre de Bruxelles" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
+        <info id="tuto" organization="© Université libre de Bruxelles" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
+        <info id="tuto" organization="© Université Catholique de Louvain" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
+        <info id="tuto" organization="© Université Catholique de Louvain" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
+        <info id="tuto" organization="© Your organization name" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
+        <info id="tuto" organization="© Your organization name" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>		
+
+        <info id="email" organization="© Université libre de Bruxelles" lang="fr">podcast@ulb.ac.be</info>
+        <info id="email" organization="© Université libre de Bruxelles" lang="en">podcast@ulb.ac.be</info>
+        <info id="email" organization="© Université Catholique de Louvain" lang="fr">podcast@uclouvain.be</info>
+        <info id="email" organization="© Université Catholique de Louvain" lang="en">podcast@uclouvain.be</info>
+        <info id="email" organization="© Your organization name" lang="fr">podcast@ulb.ac.be</info>
+        <info id="email" organization="© Your organization name" lang="en">podcast@ulb.ac.be</info>	
+    </infos>
 </data>

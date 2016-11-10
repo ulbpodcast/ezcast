@@ -1,7 +1,7 @@
 <?php
 /**
  * EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -30,4 +30,3 @@ $user_name = "netid";
 
 remove_admin_from_file($user_name);
 add_admin_to_file($user_name);
-?>

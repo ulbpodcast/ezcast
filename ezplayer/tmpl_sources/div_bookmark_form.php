@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -75,7 +75,7 @@
             <label>®Timecode®&nbsp;:
                 <span class="small">®Timecode_info®</span>
             </label>
-            <input name="timecode" tabindex='15' id="bookmark_timecode" type="text" value="0"/>
+            <input name="timecode" tabindex='15' id="bookmark_timecode" type="number" value="0" required/>
 
             <br/><br/>
             <!-- Submit button -->

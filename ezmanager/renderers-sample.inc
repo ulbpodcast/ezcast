@@ -2,7 +2,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -33,7 +33,7 @@ return array(
     'host' => 'localhost',
     'client' => 'user name',
     'status' => 'enabled',
-    'home' => '/path/to//bin/',
+    'home' => '/path/to/bin/',
     'downloading_dir' => '/path/to/downloading', // typically ~/ezrenderer/queues/downloading
     'downloaded_dir' => '/path/to/downloaded', // typically ~/ezrenderer/queues/downloaded
     'processed_dir' => '/path/to/processed', // typically ~/ezrenderer/queues/processed
@@ -43,5 +43,3 @@ return array(
     'kill' => '/path/to/bin/cli_job_kill.php', // typically ~/ezrenderer/bin/cli_job_kill.php
   ), 
 );
-
-?>

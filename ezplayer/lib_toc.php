@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -110,8 +110,10 @@ function toc_album_bookmarks_list_get($album) {
  */
 function toc_asset_bookmark_list_get($album, $asset) {
     $assoc_album_bookmarks = toc_album_bookmarks_list_get($album);
-    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false)
+    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false ||
+            empty($assoc_album_bookmarks)) {
         return false;
+    }
 
     $assoc_asset_bookmarks = array();
     $index = 0;
@@ -122,7 +124,9 @@ function toc_asset_bookmark_list_get($album, $asset) {
             array_push($assoc_asset_bookmarks, $assoc_album_bookmarks[$index]);
         }
         ++$index;
-        $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        if($index < $count) {
+            $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        }
     }
 
     return $assoc_asset_bookmarks;
@@ -138,14 +142,16 @@ function toc_asset_bookmark_list_get($album, $asset) {
 function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
     $bookmarks_list;
     $selected_bookmarks = array();
-
+    
     if (!isset($album) || $album == '')
         return false;
-    if (!isset($asset) || $asset == '') {
+    
+    if (!isset($asset) || $asset == "") {
         $bookmarks_list = toc_album_bookmarks_list_get($album);
     } else {
         $bookmarks_list = toc_asset_bookmark_list_get($album, $asset);
     }
+    
     if (count($bookmarks_list) > 0) {
         $min_index = 0;
         $max_index = count($bookmarks_list) - 1;
@@ -254,19 +260,17 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
 
     if ($count > 0) {
         $index = -1;
-        $asset_ref = $bookmarks_list[0]['asset'];
-        $timecode_ref = $bookmarks_list[0]['timecode'];
+        
         // loop while the asset is older than the reference asset
-        while ($index < $count && $asset > $asset_ref) {
+        do {
             ++$index;
             $asset_ref = $bookmarks_list[$index]['asset'];
             $timecode_ref = $bookmarks_list[$index]['timecode'];
-        }
+        } while($index < ($count-1) && $asset > $asset_ref);
+        
         // if the asset already contains bookmarks, loop while 
         // timecode is bigger than reference timecode
-        while ($index < $count
-        && $asset == $asset_ref
-        && $timecode > $timecode_ref) {
+        while ($index < ($count-1) && $asset == $asset_ref && $timecode > $timecode_ref) {
             ++$index;
             $timecode_ref = $bookmarks_list[$index]['timecode'];
             $asset_ref = $bookmarks_list[$index]['asset'];
@@ -520,6 +524,3 @@ function toc_album_bookmarks_delete_all($album) {
     unlink($toc_path . "/_bookmarks.xml");
     return true;
 }
-
-
-?>

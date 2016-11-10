@@ -1,138 +1,151 @@
 
-<?php
-/*
- * EZCAST EZadmin 
- * Copyright (C) 2014 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 		    Arnaud Wijns <awijns@ulb.ac.be>
- *                   Antoine Dewilde
- *                   Thibaut Roskam
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-?>
-
 <?php if ($userinfo) { ?>
-    <div class="row">
-        <div class="span8">
-            <form class="form-horizontal" method="POST">
+    <div class="page_title">®user_details_title®: <?php echo $user_ID; ?></div>
+    
+    <div class="col-md-8">
+        <form class="form-horizontal" method="POST">
 
-                <?php if ($error) { ?>
-                    <div class="alert alert-error"><?php echo $error ?></div>
-                <?php } ?>
-
-                <input type="hidden" name="post"/>
-
-                <h4>®user_details_title®: <?php echo $user_ID; ?></h4>
-
-                <!-- User name -->
-                <div class="control-group">
-                    <label class="control-label">®username®</label>
-                    <div class="controls">
-                        <?php if ($origin == 'internal') { ?>
-                            <div class="view"><?php echo $forename . ' ' . $surname; ?></div>
-                            <div class="edit">
-                                <input type="text" name="forename" value="<?php echo htmlspecialchars($forename) ?>" placeholder="®forename®"/>
-                                <input type="text" name="surname" value="<?php echo htmlspecialchars($surname) ?>" placeholder="®surname®"/>
-                            </div>
-                        <?php } else { ?>
-                            <?php echo $forename . ' ' . $surname; ?>
-                            <input type="hidden" name="forename" value="<?php echo htmlspecialchars($forename) ?>"/>
-                            <input type="hidden" name="surname" value="<?php echo htmlspecialchars($surname) ?>"/>
-                        <?php } ?>
-                    </div>
+            <?php if(isset($error)) { ?>
+                <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span></button> 
+                    <?php echo $error; ?>
                 </div>
+            <?php } ?>
 
-                <!-- Origin -->
-                <div class="control-group">
-                    <label class="control-label">®origin®</label>
-                    <div class="controls">
-                        <span class="label <?php if ($origin == 'internal') echo 'label-info'; ?>">
-                            <?php echo ($origin == 'internal') ? '®intern®' : '®extern®'; ?></span>
-                    </div>
-                </div>
+            <input type="hidden" name="post"/>
 
-                <!-- Is EZcast admin -->
-                <div class="control-group">
-                    <label class="control-label">®is_admin_title®</label>
-                    <div class="view">
-                        <?php if ($is_admin) { ?>
-                            <div class="controls"><i class="icon-ok"></i> ®yes®</div>
-                        <?php } else { ?>
-                            <div class="controls"><i class="icon-remove"></i> ®no®</div>
-                        <?php } ?>
-                    </div>
-                    <div class="edit">
-                        <label style="margin-left:160px"><input type="checkbox" name="permissions" <?php echo $is_admin ? 'checked' : '' ?> /></label>
-                    </div>
-                </div>
-
-                <!-- Is EZadmin admin -->
-                <div class="control-group">
-                    <label class="control-label">®ezadmin_access_title®</label>
-                    <div class="view">
-                        <?php if ($is_ezadmin) { ?>
-                            <div class="controls"><i class="icon-ok"></i> ®yes®</div>
-                        <?php } else { ?>
-                            <div class="controls"><i class="icon-remove"></i> ®no®</div>
-                        <?php } ?>
-                    </div>
-                    <div class="edit">
-                        <label style="margin-left:160px"><input type="checkbox" name="is_ezadmin" <?php echo $is_ezadmin ? "checked" : '' ?> /></label>
-                    </div>
-                </div>
-
-                <!-- In recorders -->
-                <div class="control-group">
-                    <label class="control-label">®recorders®</label>
-                    <?php if ($in_classroom) { ?>
-                        <div class="controls"><i class="icon-ok"></i> ®yes®</div>
-                    <?php } else { ?>
-                        <div class="controls"><i class="icon-remove"></i> ®no®</div>
-                    <?php } ?>
-                </div>
-
-                <!-- recorder passwd -->
-                <div class="edit">
-                    <div class="control-group">
-                        <label class="control-label">®recorder_passwd®</label>
-                        <div class="controls">
-                            <input type="password" name="recorder_passwd" placeholder="password"/><label>®leave_empty_field®</label>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="span4">
-            <table>
-                <tr>
-                    <td><button class="btn edit_cancel">®cancel®</button></td>
-                    <td><button class="btn edit_mode">®edit_button®</button></td>
+            <!-- User name -->
+            <div class="form-group">
+                <label class="col-md-3 control-label">®username®</label>
+                <div class="col-sm-8">
                     <?php if ($origin == 'internal') { ?>
-                        <td>
-                            <form action="index.php?action=remove_user" method="POST" style="margin:0px;">
-                                <input type="hidden" name="user_ID" value="<?php echo $user_ID; ?>" />
-                                <input type="submit" name="delete" value="®delete®" onClick="confirm('®delete_confirm®')" class="btn btn-danger delete_button" />
-                            </form>
-                        </td>
+                        <p class="view form-control-static">
+                            <?php echo $forename . ' ' . $surname; ?>
+                        </p>
+                        <div class="edit form-inline" style="display: inline-block;">
+                            <input type="text" class="form-control" style="width: 49%" name="forename" 
+                                   value="<?php echo htmlspecialchars($forename) ?>" placeholder="®forename®"/>
+                            <input type="text" class="form-control" style="width: 49%" name="surname" 
+                                   value="<?php echo htmlspecialchars($surname) ?>" placeholder="®surname®"/>
+                        </div>
+                    <?php } else { ?>
+                        <p class="view form-control-static">
+                            <?php echo $forename . ' ' . $surname; ?>
+                        </p>
+                        <input type="hidden" name="forename" value="<?php echo htmlspecialchars($forename) ?>"/>
+                        <input type="hidden" name="surname" value="<?php echo htmlspecialchars($surname) ?>"/>
                     <?php } ?>
-                </tr>
-            </table>
-        </div>
+                </div>
+            </div>
+
+            <!-- Origin -->
+            <div class="form-group">
+                <label class="col-md-3 control-label">®origin®</label>
+                <div class="col-sm-5">
+                    <span class="label 
+                        <?php if($origin == 'internal') { 
+                            echo 'label-info'; 
+                        } else if($origin == 'external') { 
+                            echo 'label-primary'; 
+                        } else {
+                            echo 'label-danger';
+                        } ?>
+                        ">
+                        <?php 
+                        if($origin == 'internal') {
+                            echo '®intern®';
+                        } else if($origin == 'external') {
+                            echo '®extern®';
+                        } else {
+                            echo '®error®';
+                        } ?>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Is EZcast admin -->
+            <div class="form-group">
+                <label class="col-md-3 control-label">®is_admin_title®</label>
+                <p class="view form-control-static">
+                    <?php if ($is_admin) { ?>
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ®yes®
+                    <?php } else { ?>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ®no®
+                    <?php } ?>
+                </p>
+                <div class="col-md-8">
+                    <label class="edit">
+                        <input type="checkbox" name="permissions" <?php echo $is_admin ? 'checked' : '' ?> />
+                    </label>
+                </div>
+            </div>
+
+            <!-- Is EZadmin admin -->
+            <div class="form-group">
+                <label class="col-md-3 control-label">®ezadmin_access_title®</label>
+                <p class="view form-control-static">
+                    <?php if ($is_ezadmin) { ?>
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ®yes®
+                    <?php } else { ?>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ®no®
+                    <?php } ?>
+                </p>
+                <div class="col-md-8">
+                    <label class="edit">
+                        <input type="checkbox" name="is_ezadmin" <?php echo $is_ezadmin ? "checked" : '' ?> />
+                    </label>
+                </div>
+            </div>
+
+            <!-- In recorders -->
+            <div class="form-group">
+                <label class="col-md-3 control-label">®recorders®</label>
+                <p class="form-control-static">
+                    <?php if ($in_classroom) { ?>
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ®yes®
+                    <?php } else { ?>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ®no®
+                    <?php } ?>
+                </p>
+            </div>
+
+            
+            <?php if ($passNotSet) { ?>
+                <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span></button> 
+                    ®alert_pass_not_defined®
+                </div>
+            <?php } ?>
+
+            <!-- recorder passwd -->
+            <div class="edit form-group">
+                <label class="col-md-3 control-label">®recorder_passwd®</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control" name="recorder_passwd" 
+                           placeholder="password"/>
+                    <span id="helpBlock" class="help-block">®leave_empty_field®</span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    
+    <!-- Button to edit or remove user -->
+    <div class="col-md-2 col-md-offset-2">
+        <form action="index.php?action=remove_user" method="POST" style="margin:0px;">
+            <input type="hidden" name="user_ID" value="<?php echo $user_ID; ?>" />
+
+            <button type="button" class="btn btn-block btn-primary edit_mode">®edit_button®</button>
+            <button type="button" class="btn btn-block edit_cancel">®cancel®</button>
+
+            <?php if($origin == 'internal') { ?>
+                <button type="submit" name="delete" value="®delete®" onClick="confirm('®delete_confirm®')" class="btn btn-block btn-danger delete_button"/>
+                ®delete®
+                </button>
+            <?php } ?>
+        </form>
     </div>
 
     <table class="table table-striped table-bordered table-hover courses_table">
@@ -150,128 +163,135 @@
                 <tr data-id="<?php echo $c['ID'] ?>" data-origin="<?php echo $u['origin'] ?>">
                     <td><?php echo $c['course_code']; ?></td>
                     <td><?php echo $c['course_name']; ?></td>
-                    <td><span class="label <?php if ($c['origin'] == 'internal') echo 'label-info'; ?>"><?php
+                    <td>
+                        <span class="label <?php if ($c['origin'] == 'internal') echo 'label-info'; ?>"><?php
                             if ($c['origin'] == 'internal')
                                 echo '®intern®';
                             else
                                 echo '®extern®';
-                            ?></span></td>
-                    <td><?php echo $c['in_recorders'] ? '<i class="icon-ok"></i> ®yes®' : '<i class="icon-remove"></i> ®no®'; ?></td>
-                    <td class="unlink" style="cursor: pointer;"><?php if ($c['origin'] == 'internal') echo '<i class="icon-remove"></i> ®remove_link®'; ?></td>
+                            ?>
+                        </span>
+                    </td>
+                    <td><?php echo $c['in_recorders'] ? '<span class="glyphicon glyphicon-ok"></span> ®yes®' : '<span class="glyphicon glyphicon-remove"></span> ®no®'; ?></td>
+                    <td class="unlink" style="cursor: pointer;"><?php if ($c['origin'] == 'internal') echo '<span class="glyphicon glyphicon-remove"></span> ®remove_link®'; ?></td>
                 </tr>
-    <?php } ?>
+            <?php } ?>
         </tbody>
     </table>
 
-    <div class="create_link form-inline">
-        <input type="text" name="link_to" value="" class="input-medium" placeholder="®course_code®" data-provide="typeahead" autocomplete="off" />
-        <button name="link" class="btn btn-primary">®add_user_course®</button>
+    <div class="create_link form-inline text-center">
+            <input type="text" class="form-control" name="link_to" value="" class="input-medium" placeholder="®course_code®" data-provide="typeahead" autocomplete="off" />
+            <button name="link" class="btn btn-primary">®add_user_course®</button>
     </div>
 
 
 
     <script>
+    $(function() {
+        $('.edit_cancel').hide();
+        $('.edit').hide();
+        $("button.edit_cancel").click(function() {
+            $this = $(this);
+            $this.hide();
+            $('.edit_mode').addClass('btn-primary');
+            $('.edit_mode').removeClass('btn-success');
+            $('.edit_mode').removeClass('active_edit_mode'); // remove edit mode
+            $('.edit_mode').text("®edit_button®");
+            $('.delete_button').show();
+            $(".edit").hide();
+            $('.view').show();
 
-                                $(function() {
-                                    $('.edit_cancel').hide();
-                                    $('.edit').hide();
-                                    $("button.edit_cancel").click(function() {
-                                        $this = $(this);
-                                        $this.hide();
-                                        $('.edit_mode').removeClass('btn-primary');
-                                        $('.delete_button').show();
-                                        $(".edit").hide();
-                                        $('.view').show();
+        });
 
-                                    });
+        $("button.edit_mode").click(function() {
+            $this = $(this);
+            $('.edit_cancel').show();
+            $('.delete_button').hide();
 
-                                    $("button.edit_mode").click(function() {
-                                        $this = $(this);
-                                        $('.edit_cancel').show();
-                                        $('.delete_button').hide();
-
-                                        if ($this.hasClass("btn-primary")) {
-                                            $("form").first().submit();
-                                        } else {
-                                            $this.addClass('btn-primary');
-                                            $(".edit").show();
-                                            $('.view').hide();
-                                        }
-                                    });
+            if ($this.hasClass("active_edit_mode")) {
+                $("form").first().submit();
+            } else {
+                $this.addClass('active_edit_mode'); // Add edit mode
+                $('.edit_mode').removeClass('btn-primary');
+                $('.edit_mode').addClass('btn-success');
+                $('.edit_mode').text("®submit_button®");
+                $(".edit").show();
+                $('.view').hide();
+            }
+        });
 
 
-                                    $(".courses_table .unlink").live("click", function() {
-                                        $this = $(this);
+        $(".courses_table .unlink").live("click", function() {
+            $this = $(this);
 
-                                        if ($this.parent().data('origin') == 'external')
-                                            alert("®cannot_delete_external®");
-                                        if (!confirm("®unlink_confirm®"))
-                                            return false;
+            if ($this.parent().data('origin') == 'external')
+                alert("®cannot_delete_external®");
+            if (!confirm("®unlink_confirm®"))
+                return false;
 
-                                        var link = $this.parent().data("id");
+            var link = $this.parent().data("id");
 
-                                        $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
-                                            type: "post",
-                                            data: {
-                                                query: "unlink",
-                                                id: link
-                                            },
-                                            success: function(jqXHR, textStatus) {
-                                                var data = JSON.parse(jqXHR);
+            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
+                type: "post",
+                data: {
+                    query: "unlink",
+                    id: link
+                },
+                success: function(jqXHR, textStatus) {
+                    var data = JSON.parse(jqXHR);
 
-                                                if (data.error) {
-                                                    if (data.error == 1)
-                                                        alert("®cannot_delete_external®");
-                                                    return;
-                                                }
+                    if (data.error) {
+                        if (data.error == 1)
+                            alert("®cannot_delete_external®");
+                        return;
+                    }
 
-                                                $this.parent().hide(400, function() {
-                                                    $(this).remove();
-                                                });
-                                            }
-                                        });
-                                    });
+                    $this.parent().hide(400, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+        });
 
-                                    $(".create_link button[name='link']").click(function() {
-                                        $this = $(this);
+        $(".create_link button[name='link']").click(function() {
+            $this = $(this);
 
-                                        var user = $this.prev().val();
-                                        $this.prev().val('');
+            var user = $this.prev().val();
+            $this.prev().val('');
 
-                                        $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
-                                            type: "post",
-                                            data: {
-                                                query: "link",
-                                                id: user
-                                            },
-                                            success: function(jqXHR, textStatus) {
-                                                var data = JSON.parse(jqXHR);
+            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
+                type: "post",
+                data: {
+                    query: "link",
+                    id: user
+                },
+                success: function(jqXHR, textStatus) {
+                    var data = JSON.parse(jqXHR);
 
-                                                if (data.error) {
-                                                    if (data.error == '1')
-                                                        alert("®link_error®");
-                                                    return;
-                                                }
+                    if (data.error) {
+                        if (data.error == '1')
+                            alert("®link_error®");
+                        return;
+                    }
 
-                                                var $course_code = $('<td></td>').text(data.course_code);
-                                                var $course_name = $('<td></td>').text(data.course_name);
-                                                var $delete = $('<td class="unlink" style="cursor:pointer;"><i class="icon-remove"></i>®remove_link®</td>');
+                    var $course_code = $('<td></td>').text(data.course_code);
+                    var $course_name = $('<td></td>').text(data.course_name);
+                    var $delete = $('<td class="unlink" style="cursor:pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_link®</td>');
 
-                                                var $tr = $('<tr data-id="' + data.id + '"></tr>');
-                                                $tr.append($course_code);
-                                                $tr.append($course_name);
-                                                $tr.append($delete);
+                    var $tr = $('<tr data-id="' + data.id + '"></tr>');
+                    $tr.append($course_code);
+                    $tr.append($course_name);
+                    $tr.append($delete);
 
-                                                $tr.hide();
+                    $tr.hide();
 
-                                                $('.courses_table tbody').append($tr);
+                    $('.courses_table tbody').append($tr);
 
-                                                $tr.show(400).css('display', 'table-row');
-                                            }
-                                        });
-                                    });
-                                });
-
+                    $tr.show(400).css('display', 'table-row');
+                }
+            });
+        });
+    });
     </script>
 
 <?php } else { ?>

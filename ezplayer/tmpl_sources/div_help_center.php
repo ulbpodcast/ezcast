@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -30,13 +30,13 @@
         de visualisation des podcasts “EZplayer” et de pouvoir créer des discussions et gérer une liste de signets pour chacune des vidéos.</p>
     <p>Si vous ne trouvez pas l'aide que vous recherchez, contactez : <a href="mailto:<?php global $mailto_alert; echo $mailto_alert; ?>"><?php echo $mailto_alert; ?></a></p>
     <p>Ce tutoriel existe au format .pdf ; vous pouvez le télécharger dans l'espace étudiants du site 
-        "<a href="http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf">ULB Podcast</a>"</p>
+        "<a href="¤tuto¤">¤organization¤</a>"</p>
     <ul id="topics">
         <li>
             <a>1.  PRÉSENTATION & CONCEPTS</a>
             <div>
                 <p>«<b>EZplayer</b>» est une interface vous permettant de visualiser les vidéos enregistrées en auditoire 
-                    ou soumises par vos professeurs au moyen de la solution «<b> ULB Podcast </b>». En plus d’être un lecteur 
+                    ou soumises par vos professeurs au moyen de la solution «<b> ¤organization¤ </b>». En plus d’être un lecteur 
                     de vidéos en ligne, «<b> EZplayer </b>» offre aussi la possibilité d’annoter, de chapitrer et de partager 
                     les vidéos, de consulter une liste de signets soumise par votre professeur (on parle de «<b> signets officiels </b>») 
                     ou encore, de passer facilement d’une vidéo à un diaporama et inversement.</p>
@@ -68,7 +68,7 @@
 
                 <b class="title">Adresse</b>
                 <p>Entrez l’URL suivante dans la barre d’adresse de votre navigateur Internet : 
-                    <a href="https://podcast.ulb.ac.be/ezplayer/" style="text-transform: none;">https://podcast.ulb.ac.be/ezplayer/</a></p>
+                    <a href="¤serveur_player¤" style="text-transform: none;">¤serveur_player¤</a></p>
 
                 <b class="title">Login et mot de passe</b>
                 <p>
@@ -115,7 +115,7 @@
                 </p>
                 <p><img alt="Icônes de l'Université Virtuelle" src="./images/Help_v2/screen_005.png"/></p>
                 <p><b>2.</b> Si vous n’êtes pas encore connecté à l’interface EZplayer, vous devez vous connecter 
-                    (référez vous au point “<i>2. Se connecter</i>” de ce tutroriel). Vous arrivez alors sur la page 
+                    (référez vous au point “<i>2. Se connecter</i>” de ce tutoriel). Vous arrivez alors sur la page 
                     qui vous permet de <b>sélectionner un enregistrement</b> parmi tous ceux disponibles pour le cours. </p>
                 <p><img alt="Sélectionner un enregistrement" src="./images/Help_v2/screen_006.png"/></p>
 

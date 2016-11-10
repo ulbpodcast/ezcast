@@ -3,7 +3,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -40,4 +40,3 @@ template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
 require_once template_getpath('infos.php');
-?>

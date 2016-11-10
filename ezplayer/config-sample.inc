@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -24,8 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
          
-error_reporting(E_PARSE | E_ERROR);
-require "../commons/config.inc";
+require_once "../commons/config.inc";
 
 $appname="ezplayer";
 
@@ -52,5 +51,3 @@ $trace_on = false; // determines whether we want to enable traces on actions or 
 $cache_limit = 5; // number of trending threads that are displayed on level 2 
 
 $streaming_video_player = "flowplayer"; // defines the video player to use for live stream ('momovi' | 'flowplayer')
-
-?>

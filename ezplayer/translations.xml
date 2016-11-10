@@ -4,7 +4,7 @@
 
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -161,6 +161,14 @@
         <label id="Admin_mode_disabled" lang="en">Admin mode disabled </label>
         <label id="Admin_mode_update" lang="fr">Activer/désactiver le mode Admin</label>
         <label id="Admin_mode_update" lang="en">Enable/disable Admin mode</label>
+        <label id="login" lang="fr">Connexion</label>
+        <label id="login" lang="en">Login</label>
+        <label id="tuto_ezplayer" lang="fr">Découvrez EZPlayer</label>
+        <label id="tuto_ezplayer" lang="en">Meet EZPlayer</label>
+        <label id="cookie_infos" lang="fr">Notre site utilise des cookies pour améliorer votre expérience. 
+            En continuant à naviguer sur notre site, vous acceptez leur utilisation.</label>
+        <label id="cookie_infos" lang="en">Our website uses cookies to improve your user experience. 
+            By continuing to browse our website, you are agreeing to our use of cookies.</label>
 
         <label id="Deleted" lang="fr">Supprimé</label>
         <label id="Deleted" lang="en">Deleted</label>
@@ -198,6 +206,8 @@
         <label id="Timecode_info" lang="en">Position in seconds</label>
         <label id="Bad_timecode" lang="fr">Le code temps est incorrect</label>
         <label id="Bad_timecode" lang="en">Incorrect timecode</label>
+        <label id="already_use_timecode" lang="fr">Un signet existe déjà à ce moment</label>
+        <label id="already_use_timecode" lang="en">A bookmarks already exist for this time</label>
         <label id="Visibility" lang="fr">Etudiant uniquement</label>
         <label id="Visibility" lang="en">Student only</label>
         <label id="Visibility_info" lang="fr">Visible uniquement par les étudiants</label>
@@ -222,8 +232,8 @@
         <label id="Level" lang="en">Level</label>
         <label id="Level_info" lang="fr">Niveau hiérarchique du signet</label>
         <label id="Level_info" lang="en">Level of the bookmark</label>
-        <label id="Bad_level" lang="fr">Niveau incorrect. Le niveau doit être compris entre 1 et 5</label>
-        <label id="Bad_level" lang="en">Incorrect level. The level must be a number between 1 and 5</label>
+        <label id="Bad_level" lang="fr">Niveau incorrect. Le niveau doit être compris entre 1 et 3</label>
+        <label id="Bad_level" lang="en">Incorrect level. The level must be a number between 1 and 3</label>
         <label id="optional" lang="fr">Facultatif</label>
         <label id="optional" lang="en">Optional</label>
         <label id="File_info" lang="fr">Max. 2Mo</label>
@@ -838,5 +848,62 @@
         <message id="Inexistant" lang="en">Recording not available</message>    
         <message id="Last_edit" lang="fr">Modifiée le </message>
         <message id="Last_edit" lang="en">Edited on </message>
+        <message id="report_success" lang="fr">Le message suivant a été transmis à l'équipe ULB Podcast et sera traité dans les meilleurs délais</message>
+        <message id="report_success" lang="en">The following message has been sent to the ULB Podcast team and will be processed as soon as possible</message>
     </messages>
+    
+    <!-- update 2016/07/15 -->
+    <!-- information customized by organisation -->   
+    <infos>
+		<info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+		<info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
+		<info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
+		<info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
+		<info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
+		<info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
+		<info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>		
+		
+		<info id="report_success" organization="© Université libre de Bruxelles" lang="fr">Le message suivant a été transmis à l'équipe ULB Podcast et sera traité dans les meilleurs délais</info>
+		<info id="report_success" organization="© Université libre de Bruxelles" lang="en">The following message has been sent to the ULB Podcast team and will be processed as soon as possible</info>
+		<info id="report_success" organization="© Université Catholique de Louvain" lang="fr">Le message suivant a été transmis à l'équipe UCL Podcast et sera traité dans les meilleurs délais</info>
+		<info id="report_success" organization="© Université Catholique de Louvain" lang="en">The following message has been sent to the UCL Podcast team and will be processed as soon as possible</info>
+		<info id="report_success" organization="© Your organization name" lang="fr">Le message suivant a été transmis à l'équipe Podcast de votre organisation et sera traité dans les meilleurs délais</info>
+		<info id="report_success" organization="© Your organization name" lang="en">The following message has been sent to your organization Podcast team and will be processed as soon as possible</info>	
+		
+		
+		<info id="serveur_player" organization="© Université libre de Bruxelles" lang="fr">https://podcast.ulb.ac.be/ezplayer/</info>
+		<info id="serveur_player" organization="© Université libre de Bruxelles" lang="en">https://podcast.ulb.ac.be/ezplayer/</info>
+		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="fr">https://podcast.uclouvain.be/ezplayer/</info>
+		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="en">https://podcast.uclouvain.be/ezplayer/</info>
+		<info id="serveur_player" organization="© Your organization name" lang="fr">https://podcast.ulb.ac.be/ezplayer/</info>
+		<info id="serveur_player" organization="© Your organization name" lang="en">https://podcast.ulb.ac.be/ezplayer/</info>		
+
+		<info id="tuto" organization="© Université libre de Bruxelles" lang="fr">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université libre de Bruxelles" lang="en">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="fr">http://podcast.uclouvain.be/PDF_DOC/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="en">http://podcast.uclouvain.be/PDF_DOC/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Your organization name" lang="fr">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Your organization name" lang="en">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
+		
+		<info id="poster" organization="© Université libre de Bruxelles" lang="fr">poster</info>
+		<info id="poster" organization="© Université libre de Bruxelles" lang="en">poster</info>
+		<info id="poster" organization="© Université Catholique de Louvain" lang="fr">poster-ucl</info>
+		<info id="poster" organization="© Université Catholique de Louvain" lang="en">poster-ucl</info>
+		<info id="poster" organization="© Your organization name" lang="fr">poster</info>
+		<info id="poster" organization="© Your organization name" lang="en">poster</info>
+		
+		<info id="poster-streaming" organization="© Université libre de Bruxelles" lang="fr">poster-streaming</info>
+		<info id="poster-streaming" organization="© Université libre de Bruxelles" lang="en">poster-streaming</info>
+		<info id="poster-streaming" organization="© Université Catholique de Louvain" lang="fr">poster-ucl-streaming</info>
+		<info id="poster-streaming" organization="© Université Catholique de Louvain" lang="en">poster-ucl-streaming</info>
+		<info id="poster-streaming" organization="© Your organization name" lang="fr">poster-streaming</info>
+		<info id="poster-streaming" organization="© Your organization name" lang="en">poster-streaming</info>
+		
+    </infos>
 </data>
+

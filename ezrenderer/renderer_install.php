@@ -3,7 +3,7 @@
 /*
  * EZCAST EZrenderer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -27,6 +27,8 @@
 
 /*
  * This file is part of EZrenderer installation process
+ * This is meant to be executed from ezadmin "Create renderer" menu.
+ * Print 0 on success
  */
 
 if ($argc != 7) {
@@ -72,5 +74,4 @@ file_put_contents($current_dir . "/bin/intro_title_movie.bash", $intro_title_mov
 
 chmod($current_dir . "/bin/intro_title_movie.bash", 0755);
 
-echo "renderer installed";
-?>
+echo "0";

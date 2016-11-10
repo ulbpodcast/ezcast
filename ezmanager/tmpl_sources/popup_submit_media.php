@@ -2,7 +2,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -33,7 +33,7 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 }
 ?>
 
-<div class="popup" id="submit_media" style="width: 415px;height: 575px;">
+<div class="popup" id="submit_media" style="width: 415px;height: 665px;">
     <h2 style="display:inline;">®Submit_record®</h2>
 
     <div id="form">
@@ -130,6 +130,27 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
                 </select>
 
                 <br/><br/>  
+                
+                <!-- Credits dropdown list -->
+                <label>®Credits®&nbsp;: 
+                    <span class="small"><a class="info small">®More_info®<span>®Credits_info®</span></a></span>
+                </label>
+                <select id="credits" name="credits">
+                    <option value="">®None_credits®</option>
+                    <?php
+                    foreach ($credits as $credit) {
+                        if ($credit['value'] == $album_credits) {
+                            ?>                             
+                            <option selected="selected" value="<?php echo $credit['value']; ?>"><?php echo $credit['label']; ?></option>
+                        <?php } else { ?>
+                            <option value="<?php echo $credit['value']; ?>"><?php echo $credit['label']; ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>   
+
+                <br/><br/>
                 <label>®Ratio®&nbsp;:                      
                     <span class="small"><a class="info small">®More_info®<span>®Ratio_info®</span></a></span>
                 </label>    
@@ -357,6 +378,7 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
                 fd.append('description', document.getElementById('description').value);
                 fd.append('intro', document.getElementById('intro').value);
                 fd.append('add_title', document.getElementById('add_title').value);
+                fd.append('credits', document.getElementById('credits').value);
                 fd.append('keepQuality', (document.getElementById('keepQuality').checked) ? document.getElementById('keepQuality').value : '');
                 fd.append('downloadable', (document.getElementById('downloadable').checked) ? true : false);
                 fd.append('ratio', ($('input[name="ratio"]:checked').val()));

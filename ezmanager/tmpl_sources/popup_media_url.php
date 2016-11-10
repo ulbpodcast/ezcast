@@ -2,7 +2,7 @@
 /*
 * EZCAST EZmanager 
 *
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -30,6 +30,7 @@
 This is the popup displaying the URL to the media.
 You should not have to use this file on your own; if you do, make sure the variable $media_url and $media_url_web are defined
 -->
+<?php if(isset($media_url)) { ?>
 <div class="popup" id="popup_media_URL">
     <h2>®Video®</h2>
     ®media_URL_message® <br/><br/>
@@ -55,3 +56,4 @@ You should not have to use this file on your own; if you do, make sure the varia
     // This code allows to copy the ulb_code in the user's clipboard when the user clicks on the button
     copyToClipboard("#zero_clipboard", "<?php echo $media_url_web; ?>");
 </script>
+<?php } ?>

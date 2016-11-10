@@ -1,7 +1,7 @@
 <?php
 /**
  * EZCAST EZadmin 
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -41,4 +41,3 @@ echo "All courses by $user_name ...".PHP_EOL;
 var_dump(db_courses_search_compact('%', $user_name, true, true, false, true));
 echo "All users of $course_name, step 2 ...".PHP_EOL;
 var_dump(db_course_get_users($course_name));
-?>

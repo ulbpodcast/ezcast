@@ -2,7 +2,7 @@
 
 /*
 * EZCAST Commons 
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -34,7 +34,7 @@
  * @return assoc_array|false
  */
 function file_checkauth($login, $passwd) {
-    include "pwfile.inc"; //file containing passwords and info
+    require "pwfile.inc"; //file containing passwords and info
 
     $login = trim($login);
 
@@ -77,5 +77,3 @@ function file_getinfo($login) {
         return false;
     }
 }
-
-?>

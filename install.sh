@@ -2,7 +2,7 @@
 
 # EZCAST 
 #
-# Copyright (C) 2014 Université libre de Bruxelles
+# Copyright (C) 2016 Université libre de Bruxelles
 #
 # Written by Michel Jansens <mjansens@ulb.ac.be>
 # 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -62,6 +62,12 @@ echo "*                    web browser (require html5)                  *";
 echo "*                                                                 *";
 echo "*******************************************************************";
 echo " ";
+
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root (or sudo)" 1>&2
+   exit 1
+fi
+
 echo "Press [Enter] to continue";
 read whatever;
 echo "First of all, this script will verify you have all programs,";
@@ -294,7 +300,7 @@ then
     echo "*************************************************";
     check=1;
     timer=45;
-    echo "echo test > at.tmp " | at now;
+    echo test > at.tmp | at now;
     sleep 1;
     while [ $timer -gt 0 ]; do
     	# Verify that a version of AT is installed
@@ -305,6 +311,7 @@ then
 	    if [ $timer == 0 ]; then
 		check=0;
             	echo -e "${R}AT does not seem to be installed or its path is not set in PATH var${N}";
+                echo -e "You may need to enable it by executing: 'sudo launchctl load -F /System/Library/LaunchDaemons/com.apple.atrun.plist'"
     	    fi;
 	else
 	    timer=0;
@@ -318,33 +325,33 @@ then
         echo "Otherwise, enter 'exit' to quit this script and install AT";
         read at_path;
         if [ "$at_path" == "exit" ]; then exit; fi;
-        echo "echo test > at.tmp | $at_path now";
-    	sleep 1;
-	timer=45;
+        echo test > at.tmp | $at_path now
+    	sleep 1
+	timer=45
    	while [ $timer -gt 0 ]; do
     	    # Verify that a version of AT is installed
     	    if [ ! -f ./at.tmp ]; then
-	        timer=$timer - 1;
-	        echo -n ".";
-	        sleep 1;
+	        timer=`expr $timer - 1`
+	        echo -n "."
+	        sleep 1
 	        if [ $timer == 0 ]; then
-		    check=0;
-            	    echo -e "${R}AT does not seem to be installed at $at_path${N}";
+		    check=0
+            	    echo -e "${R}AT does not seem to be installed at $at_path${N}"
     	        fi;
 	    else
-	        timer=0;
-                rm -rf ./at.tmp;
-	        break;
+	        timer=0
+                rm -rf ./at.tmp
+	        break
     	    fi;
-        done;
-    done;
-    echo " ";
-    echo -e "${G}AT is installed on your machine${N}";
-    echo "";
-    echo "";
-    echo -e "${G}Congratulations, your server is ready to install EZcast and its components${N}";
-    echo "Press [Enter] to install EZcast";
-    read whatever;
+        done
+    done
+    echo " "
+    echo -e "${G}AT is installed on your machine${N}"
+    echo ""
+    echo ""
+    echo -e "${G}Congratulations, your server is ready to install EZcast and its components${N}"
+    echo "Press [Enter] to install EZcast"
+    read whatever
 else 
     # tests have been skipped
 
@@ -408,71 +415,81 @@ ezcast_basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 echo "ezcast_basedir=$ezcast_basedir" >> ./commons/localpaths;
 echo "Enter the path to your webspace (DocumentRoot).";
 default_documentroot=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'DocumentRoot'| awk '{print $3}'`
+# the two next lines remove quotes at begin and end
+default_documentroot="${default_documentroot%\"}"
+default_documentroot="${default_documentroot#\"}"
 if [ "$default_documentroot" == "" ]; then
     if [ -e "/var/www" ]; then
-        default_documentroot="/var/www";
+        default_documentroot="/var/www"
     fi;
 fi;
-while [[ "$webspace_directory" == "" || ( ! -e $webspace_directory ) ]]; do
+while [[ -z $webspace_directory || ( ! -d "$webspace_directory" ) ]]; do
     read -p "[default: $default_documentroot]:" webspace_directory ;
-    if [ "$webspace_directory" == "" ];
+    if [ -z "$webspace_directory" ];
     then
-        webspace_directory=$default_documentroot;
+        webspace_directory=$default_documentroot
+        if [ ! -d "$webspace_directory" ];
+        then
+            echo "Does not exists $webspace_directory"
+        fi
     fi;
 done;
-echo "apache_documentroot=$webspace_directory" >> ./commons/localpaths;
+echo "apache_documentroot=$webspace_directory" >> ./commons/localpaths
 
-echo "EZmanager, EZadmin and EZplayer web interfaces will be placed";
-echo "in subfolders of the $webspace_directory dir to be accessed";
-echo "via a web browser.";
-echo " ";
+echo "EZmanager, EZadmin and EZplayer web interfaces will be placed"
+echo "in subfolders of the $webspace_directory dir to be accessed"
+echo "via a web browser."
+echo " "
 default_apache_username=`$apachectl_path -t -D DUMP_RUN_CFG|grep 'User:' | awk 'BEGIN {FS= "\""}{ print $2}'`
 if [ "$default_apache_username" == "" ]; then
     if [ `grep _www /etc/passwd | wc -l` -ge 1 ]; then default_apache_username="_www"; fi;
     if [ `grep www-data /etc/passwd | wc -l` -ge 1 ]; then default_apache_username="www-data"; fi;
 fi;
-echo "Enter the username for Apache.";
+echo "Enter the username for Apache."
 while [[ "$apache_username" == "" || "$choice" != "continue" ]]; do 
-    read -p "[default: $default_apache_username]:" apache_username ;
+    read -p "[default: $default_apache_username]:" apache_username 
     if [ "$apache_username" == "" ];
     then
-        apache_username=$default_apache_username;
+        apache_username=$default_apache_username
     fi;
     if [ `grep $apache_username /etc/passwd | wc -l` -lt 1 ]; then
         echo -e "${R}$apache_username user is not in /etc/passwd.${N}"
-        read -p "Press [enter] to retry or enter 'continue' to skip this verification: " choice;
+        read -p "Press [enter] to retry or enter 'continue' to skip this verification: " choice
     else 
-        choice=continue;
+        choice=continue
     fi;
 done;
-echo "apache_username=$apache_username" >> ./commons/localpaths;
+echo "apache_username=$apache_username" >> ./commons/localpaths
 
-echo "Enter the path where you want to put the video repository ";
-echo "and the working directories (with trailing '/').";
-echo "We recommend '/var/lib/' as the size of this directory will vary";
-default_repository_path='/var/lib/';
-read -p "[default: $default_repository_path]" repository_basedir;
+echo "Enter the path where you want to put the video repository "
+echo "and the working directories (with trailing '/')."
+echo "We recommend '/var/lib/' as the size of this directory will vary"
+default_repository_path='/var/lib/'
+read -p "[default: $default_repository_path]" repository_basedir
 if [ "$repository_basedir" == "" ] 
 then
-    repository_basedir=$default_repository_path;
+    repository_basedir=$default_repository_path
 fi;
 # moves the different files where they are supposed to be
 # moves repository and working directories 
-mkdir -p $repository_basedir;
-repository_basedir=$repository_basedir/ezcast;
-echo "repository_basedir=$repository_basedir" >> ./commons/localpaths;
-#mv $ezcast_basedir/ezmanager/ezcast_tree $repository_basedir;
-cp -r $ezcast_basedir/ezmanager/ezcast_tree $repository_basedir;
-chown -R $apache_username $repository_basedir;
-#chgrp -R $apache_username $repository_basedir;
-chmod -R 755 $repository_basedir;
-echo "Enter a username and password for the web installer.";
-echo "These information will be requested by the web installer.";
-echo "The user you are now creating will be automatically set as the";
-echo "first EZcast administrator. If you want to add other administrators";
-echo "for EZcast, do it via EZadmin once EZcast is fully installed.";
-registration=0;
-read -p "Username: " username;
+mkdir -p $repository_basedir
+repository_basedir=$repository_basedir/ezcast
+echo "repository_basedir=$repository_basedir" >> ./commons/localpaths
+cp -r $ezcast_basedir/ezmanager/ezcast_tree $repository_basedir
+chown -R $apache_username $repository_basedir
+#chgrp -R $apache_username $repository_basedir
+chmod -R 755 $repository_basedir
+echo "Enter a username and password for the web installer."
+echo "These information will be requested by the web installer."
+echo "The user you are now creating will be automatically set as the"
+echo "first EZcast administrator. If you want to add other administrators"
+echo "for EZcast, do it via EZadmin once EZcast is fully installed."
+registration=0
+while [ -z $username ];
+do
+    read -p "Username: " username
+done
+
 while [ "$registration" != "1" ]; do
     read -s -p "Password: " password;
     echo "";
@@ -481,30 +498,35 @@ while [ "$registration" != "1" ]; do
 	registration=1;
 	echo "";
     else
-	echo " ";
-	echo -e "${R}Password doesn't match, try again.${N}";
-	echo "";
+	echo " "
+	echo -e "${R}Password doesn't match, try again.${N}"
+	echo ""
     fi;
-done;
-echo "";
+done
+echo ""
 while [ "$firstname" == "" ]; do
-    read -p "User's first name: " firstname;
+    read -p "User's first name: " firstname
 done;
 while [ "$lastname" == "" ]; do
-    read -p "User's last name: " lastname; 
+    read -p "User's last name: " lastname;
 done;
 # places web files in the webspace
-cp -rp $ezcast_basedir/commons/htdocs/* $webspace_directory/.;
 cp -rp $ezcast_basedir/ezadmin/htdocs $webspace_directory/ezadmin;
 cp -rp $ezcast_basedir/ezmanager/htdocs $webspace_directory/ezmanager;
 cp -rp $ezcast_basedir/ezplayer/htdocs $webspace_directory/ezplayer;
+
+cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezamin/commons;
+cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezmanager/commons;
+cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezplayer/commons;
+
 $php_path $ezcast_basedir/cli_install.php "$php_path" "$rsync_path" "$webspace_directory" "$ezcast_basedir" "$repository_basedir" "$username" "$password" "$firstname" "$lastname" "$apache_username";
+
 # set permissions for Apache user on EZcast files
 chown -R $apache_username $ezcast_basedir;
 chown -R $apache_username $webspace_directory/ezadmin;
 chown -R $apache_username $webspace_directory/ezmanager;
 chown -R $apache_username $webspace_directory/ezplayer;
-#chgrp -R $apache_username $ezcast_basedir;
+
 chmod -R 755 $ezcast_basedir; 
 echo " ";
 cd commons/;

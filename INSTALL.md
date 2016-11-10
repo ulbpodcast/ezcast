@@ -30,7 +30,7 @@ In order to use EZcast, you need to install / enable several components:
 
 ## Detailed installation 
 
-1. Download the source code
+### 1. Download the source code
 
 Open your terminal and call Git in command line to download the source code of EZcast
 ```
@@ -38,7 +38,7 @@ root# cd <wherever you want to install ezcast>
 root# git clone https://github.com/ulbpodcast/ezcast.git
 ```
 
-2. Create a MySQL database
+### 2. Create a MySQL database
 
 Open your terminal and call mysql in command line to create a user and the database for EZadmin. 
 The database will be used to store users and courses for the EZcast components. 
@@ -73,7 +73,7 @@ Examples of values:
   * ezcast_user_name: ezcast or ezadmin
   * database_name: ezcast
 
-3. Move the EZcast directory
+### 3. Move the EZcast directory
 
 Now you have to decide where you want to install EZcast and its components. We recommend you to install it under « /usr/local/ » directory. 
 
@@ -88,9 +88,9 @@ mkdir –p /usr/local/
 mv ezcast /usr/local
 ```
 
-4. Edit php.ini
+### 4. Configure PHP
 
-Since EZmanager allows you to submit your own video files, it may come handy to increase the max file size for upload.
+Since EZmanager allows you to submit your own video files, you may want to increase the max file size for upload.
 
 ```
 # this depends on your distribution 
@@ -102,34 +102,20 @@ max_execution_time = 300
 max_input_time = 300
 ```
 
-5. Execute the ‘install.sh’ script for installing EZcast
+### 5. Installing EZcast components
 
-Go in the ezcast folder. Make sure the file ‘install.sh’ can be executed. Launch the ‘install.sh’ script as root and follow the instructions written on the screen.
+Go in the ezcast folder. Make sure the file ‘install.sh’ can be executed. 
+Start ‘install.sh’ as root and follow the instructions written on the screen.
 
-```
-#change user to be root (may be ‘sudo’ depending on the distribution)
-su
-#move to the ezcast directory (change the path if you have installed ezcast somewhere else)
-cd /usr/local/ezcast
-#change permissions for install.sh
-chmod 755 install.sh
-#execute install.sh
-./install.sh
-```
+### 6. Configuring EZcast
 
-6. Configure EZcast
+Go to the EZadmin webpage at `http://your.server.address/ezadmin`. At the first visit, you will be redirected to a configuration page before you can run EZcast.
 
-You are now going to configure EZcast and its components. For this part of the installation, please open your favorite web browser.
+You can also configure EZcast by editing the file config manually. To do this, go to the EZcast folder. For each subdirectories (ezmanager / ezadmin / ezplayer / common), copy ‘config-sample.inc’ to ‘config.inc’ and edit it.
 
-Go to the EZadmin webpage. At the first visit, you will be requested to enter some information required by EZcast to run. 
+### 7. Creating your first renderer
 
-```
-http://your.server.address/ezadmin
-``` 
-If you prefere to configure EZcast by editing the file manually, go to the EZcast folder. For each subdirectories (ezmanager / ezadmin / ezplayer / common), edit the ‘config-sample.inc’ file to match your configuration and rename it ‘config.inc’.
-
-7. Create the first renderer for EZcast in EZadmin web interface. 
-
+Create the first renderer for EZcast in EZadmin web interface. 
 Prepare your renderer by installing all dependencies. Refer to EZrenderer's documentation to know what are the required dependencies.
 
 Click on "Create renderer" in the left menu of EZadmin web interface and follow instructions on the screen. 
@@ -145,11 +131,3 @@ http://your.server.address/ezadmin
 http://your.server.address/ezmanager
 http://your.server.address/ezplayer
 ``` 
-
-## About this document
-
-This document is written using [Markdown][] syntax, making it possible to
-provide usable information in both plain text and HTML format. Whenever
-modifying this document please use [Markdown][] syntax.
-
-[markdown]: http://www.daringfireball.net/projects/markdown

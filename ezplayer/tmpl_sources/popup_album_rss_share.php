@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -29,22 +29,30 @@
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
 <p>®EZPLAYER_RSS_feed_URL_message®</p><br/>
-<p style="text-align:center; color: #333333;"><a href="<?php echo $album['rss']; ?>"><?php echo $album['rss']; ?></a></p><br/>
+<br/>
+<textarea readonly class="share_log_asset" onclick="this.select()" id="share_rss_link"><?php echo $album['rss']; ?></textarea>
+<a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
+<br/>
+
+
 <!--[if !IE]><!-->
 <div class="wrapper_clip" style="position:relative; text-align: center;">
-    <span id='share_rss_button' class="copy-to-clipboard-button centered" >®Copy_to_clipboard®</span>
-    <div id="share_clip_rss" 
-         title="®HD_RSS_feed®" 
-         onmouseout="getElementById('share_rss_button').style.background = '#333333'" 
-         onmouseover="getElementById('share_rss_button').style.background = '#11acea'"
-         style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:105; cursor: pointer;">
-    </div>
+    <span id="share_rss" onclick="copy_rss_url();" class="copy-to-clipboard-button">
+        <span id="share_valid" style="display: none">✔</span>
+        ®Copy_to_clipboard®
+    </span>
 </div>
-<script>
-    copyToClipboard('#share_clip_rss', '<?php echo $album['rss']; ?>', 200);
-</script>
 <!--<![endif]-->  
 
 <!--[if IE]>
 <a class="copy-to-clipboard-button" id="share_clip_rss" href="#" onclick="window.clipboardData.setData('Text','<?php echo $album['rss']; ?>');"></a>
 <![endif]-->
+<script>
+    function copy_rss_url() {
+        $('#share_rss_link').select();
+        document.execCommand('copy');
+        $('#share_valid').css('display', 'inline');
+        $('#share_rss').css('background-color', '#2ebb2e');
+    }
+    
+</script>

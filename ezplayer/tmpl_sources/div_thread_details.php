@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -31,7 +31,7 @@ include_once 'lib_print.php';
         threads_array = new Array();
 
     <?php
-    if (is_array($threads) && count($threads) > 0) {
+    if (isset($threads) && is_array($threads) && count($threads) > 0) {
         foreach ($threads as $thread_meta) {
             if (($thread_meta['studentOnly'] == '0') || ($thread_meta['studentOnly'] == '1' && !acl_has_moderated_album()) || acl_is_admin()) {
                 ?>
@@ -112,18 +112,20 @@ $DTZ = new DateTimeZone('Europe/Paris');
     </div>
 </div>
 <div id="thread-options" class="right-options">
+    <?php if (acl_user_is_logged()) { ?>
     <a class="button-empty green2 pull-right inline-block" href="javascript:thread_comment_form_toggle();" >
         ®Reply_discussion®
     </a>
+    <?php } ?>
     <?php if (($_SESSION['user_login'] == $thread['authorId']) || acl_is_admin()) { ?>
         <a class="edit-button green2 pull-right inline-block" title="®Edit_discussion®" onclick="thread_edit_form_prepare(<?php echo $thread['id'] ?>)"></a>
         <?php if (acl_is_admin()) {
             ?>     
             <a class="delete-button green2 pull-right inline-block" title="®Delete_discussion®" href="javascript:popup_thread('<?php echo $thread['id']; ?>', 'delete');" ></a>
-            <?php
+<?php
         }
     }
-    ?>
+?>
 </div>
 
 <br/><br/>

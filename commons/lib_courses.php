@@ -2,7 +2,7 @@
 
 /*
  * EZCAST Commons 
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -127,5 +127,3 @@ function db_user_courses_get($user_ID) {
 
     return $statements['user_courses_get']->fetchAll();
 }
-
-?>

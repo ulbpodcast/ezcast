@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  *            Arnaud Wijns <awijns@ulb.ac.be>
@@ -29,7 +29,7 @@
  * Library for all cache functions
  * @package ezcast.ezplayer.lib.cache
  */
-include '../commons/config.inc';
+include_once '../commons/config.inc';
 
 
 //===== C A C H E   Lv. 2 ======================================================
@@ -82,7 +82,9 @@ function cache_album_threads_unset($album){
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Album threads) ".PHP_EOL, FILE_APPEND);
     
-    unlink($path_cache_album_threads_file);
+    if(file_exists($path_cache_album_threads_file)) {
+        unlink($path_cache_album_threads_file);
+    }
 }
 
 /**
@@ -170,7 +172,9 @@ function cache_asset_threads_unset($album, $asset){
     $path_to_threadsfile = $repository_basedir."/repository/".$album."/".$asset."/_threads.json";
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Asset threads) ".PHP_EOL, FILE_APPEND);
-    unlink($path_to_threadsfile);  
+    if(file_exists($path_to_threadsfile)) {
+        unlink($path_to_threadsfile);  
+    }
 }
 
 /**

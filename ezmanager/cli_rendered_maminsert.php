@@ -1,29 +1,6 @@
 <?php
 
-/*
- * EZCAST EZmanager 
- *
- * Copyright (C) 2014 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	   Arnaud Wijns <awijns@ulb.ac.be>
- *         Antoine Dewilde
- * UI Design by Julien Di Pietrantonio
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+chdir(__DIR__);
 
 /**
  * @package ezcast.ezmanager.cli
@@ -43,7 +20,7 @@ ezmam_repository_path($repository_path);
  *   This means: build a work directory, send it via ssh to the render client , get info  back and finally add/update media
  */
 if ($argc != 4) {
-    echo "\nusage: " . $argv[0] . "<album_name> <asset_name> <processing_dir>\n";
+    echo "\nusage: " . $argv[0] . " <album_name> <asset_name> <full_path_to_processing_dir>\n";
     die;
 }
 
@@ -105,6 +82,13 @@ $asset_meta['status'] = 'processed';
 $res = ezmam_asset_metadata_set($album, $asset, $asset_meta);
 if (!$res)
     print "asset metadata set error:" . ezmam_last_error() . "\n";
+
+$pos = strrpos($album, "-");
+$album_without_mod = substr($album, 0, $pos);
+$asset_name = $asset . '_' . $album_without_mod;
+$logger->log(EventType::ASSET_FINALIZED, LogLevel::NOTICE, "Asset succesfully finalized", array("cli_rendered_maminsert"), $asset_name);
+
+
 
 function high_low_media_mam_insert($album, $asset, $high_low, $cam_slide, $processing_assoc, $render_dir) {
     global $title, $duration;
@@ -180,5 +164,3 @@ function insert_chapterslide_media($album, $asset, $chapter_slide_dir) {
     $res = ezmam_media_new($album, $asset, $media, $media_meta, $chapter_slide_dir, true);
     //unlink($chapter_slide_dir);
 }
-
-?>

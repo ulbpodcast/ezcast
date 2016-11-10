@@ -1,27 +1,6 @@
 <?php
 
-/*
-* EZCAST Commons 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*
-* This softare is free; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+require_once('logger_server.php');
 
 /*
  * This config file contains global config for the server
@@ -31,10 +10,15 @@
  * DO NOT REMOVE ANY OF THEM
  */
 
+// Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in config and common.inc don't match, a warning is triggered.
+$config_version = "20161003"; 
+
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name";
 $organization_url = "http://ulb.ac.be";
-$copyright = 'Your copyright';
+$copyright = "Your copyright";
+$movie_keywords = 'Movie,keywords';
+$timezone = 'Europe/Brussels';
 
 // URL's to EZcast applications
 $application_url = "http://localhost/";
@@ -53,11 +37,7 @@ $distribute_url = "$ezmanager_url/distribute.php";
 
 // Absolute paths 
 $repository_basedir = "/var/lib/ezcast";
-$repository_path="$repository_basedir/repository";
 $basedir = "/usr/local/ezcast";
-
-$ezmanager_basedir = $basedir . '/ezmanager/'; // Path from the root to the source code
-$ezplayer_basedir = $basedir . '/ezplayer/'; // Path from the root to the source code
 
 // Database info
 $db_type = 'mysql';
@@ -81,8 +61,6 @@ $apache_documentroot = "/www/htdocs/"; // used by ezadmin to copy organization l
 $ssh_pub_key_location = ""; // leave empty for default location or enter absolute path to Apache user's ssh public key 
 
 $mailto_alert = "mail@your.organization"; //who to call in case of problem in the processing chain
-
-
 
 $auth_methods = array("file", "ldap");
 
@@ -109,22 +87,26 @@ $ldap_servers_auth_json_file = "$basedir/commons/ldap_servers_auth.json";
  */
 $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
 
+// -- Alternate server as streaming distribution source -- //
 
-/*******************************************************/
-/** S C H E D U L I N G     C O N F I G U R A T I O N **/
-/*******************************************************/
+//enable file syncing (does not redirect user)
+$streaming_video_alternate_server_enable_sync = false;
+// redirect users to given adress (see next options). Requires $streaming_video_alternate_server_enable_sync
+$streaming_video_alternate_server_enable_redirect = false;
+// -- -- //
+    
+$streaming_video_alternate_server_user = "user";
+$streaming_video_alternate_server_keyfile = "";
+$streaming_video_alternate_server_address = "127.0.0.1";
+$streaming_video_alternate_server_document_root = "/var/www/stream/";
+$streaming_video_alternate_server_uri = "stream/";
 
-$config['paths']['scheduler'] = "$repository_basedir/queues/scheduling/";
-$config['paths']['queue'] = $config['paths']['scheduler'] . 'queue/';
-$config['paths']['processing'] = $config['paths']['scheduler'] . 'processing/';
-$config['paths']['processed'] = $config['paths']['scheduler'] . 'processed/';
-$config['paths']['failed'] = $config['paths']['scheduler'] . 'failed/';
-$config['paths']['frozen'] = $config['paths']['scheduler'] . 'frozen/';
-$config['paths']['logs'] = "$repository_basedir/queues/scheduling/logs.log";
-$config['paths']['var'] = "$ezmanager_basedir/var/";
-$config['keys']['sem'] = 82397779218067476;
-$config['scheduler']['priority'] = 10;
-$config['ssh']['timeout'] = 15;
+// -- debugging -- //
+$debug_mode = false; //debug mode print recorder events and php errors to console
+// -- -- //
 
+$common_config_defined = true; //config and common include each other... apparently php does not consider a file already included until he completely finished including it. This variable is a workaround for this problem.
 
-?>
+// load static variables
+require_once(__DIR__ . '/common.inc');
+require_once('logger_server.php');

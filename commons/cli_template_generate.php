@@ -2,7 +2,7 @@
 
 /*
 * EZCAST Commons 
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -30,6 +30,8 @@
  * Note: you can add languages by editing config.inc
  */
 
+$in_install = true;
+
 require_once 'config.inc';
 require_once 'lib_template.php';
 
@@ -37,7 +39,7 @@ require_once 'lib_template.php';
 // Inits and sanity checks
 //
 if($argc < 5) {
-    echo 'Usage: cli_template_generate.php source_folder language output_folder' . PHP_EOL;
+    echo 'Usage: php cli_template_generate.php source_folder language output_folder <path to translations.xml>' . PHP_EOL;
     die;
 }
 
@@ -60,7 +62,7 @@ template_set_errors_visible();
 template_set_warnings_visible();
 
 echo 'Translation of *all* templates in '.$source_folder.' will now start.' . PHP_EOL;
-echo 'Output language: '. $lang . PHP_EOL . PHP_EOL;
+echo 'Output language: '. $lang . PHP_EOL;
 
 $files = template_list_files($source_folder);
 
@@ -75,5 +77,5 @@ foreach($files as $file) {
 
 if(template_last_error() != '' || template_last_warning() != '')
     echo PHP_EOL;
-echo 'Translation finished, you can find your files in \''.$output_folder.'/'.$lang . '\'' . PHP_EOL;
+echo 'Translation finished, you can find your files in \''.$output_folder.'/'.$lang . '\'' . PHP_EOL . PHP_EOL;
 ?>

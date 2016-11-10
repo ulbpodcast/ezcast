@@ -1,33 +1,10 @@
 
 <?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2014 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
-
-<?php
 require_once 'config.inc';
 ?>
+
+<div class="page_title">®renderers_list®</div>
+
 
 <table class="table table-striped table-hover table-condensed renderers">
     <tr>
@@ -47,17 +24,19 @@ require_once 'config.inc';
     <?php
     include_once 'lib_scheduling.php';
     foreach ($renderers as $r) {
-        exec('ping '.$r['host'] . ' 10', $output, $return_val); 
+        //todo, move this in javascript, ping shouldn't lock page loading
+        exec('ping -c 1 '.$r['host'], $output, $return_val); 
         if($return_val != 0){
             $r['no_ping'] = true;
         } else {
-        $r = lib_scheduling_renderer_metadata($r);
+            $r['no_ping'] = false;
+            $r = lib_scheduling_renderer_metadata($r);
         }
         //var_dump($r2);
         ?>
         <tr class="<?php echo $class; ?>">
-            <td><?php if($r['no_ping'] === true) echo '<span title="®no_ping®"><i class="icon-warning-sign"></i></span>';
-                      if($r['ssh_error'] === true) echo '<span title="®ssh_error®"><i class="icon-warning-sign"></i></span>';?></td>
+            <td><?php if($r['no_ping'] === true) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
+                      if(isset($r['ssh_error']) && $r['ssh_error'] === true) echo '<span title="®ssh_error®"><span class="glyphicon glyphicon-warning-sign"></span></span>';?></td>
             <td><?php echo $r['performance_idx']; ?></td>
             <td class="renderer_name"><?php echo $r['name']; ?></td>
             <td><?php echo $r['host']; ?></td>
@@ -65,12 +44,16 @@ require_once 'config.inc';
             <td><?php echo $r['num_jobs'] . '/' . $r['max_num_jobs']; ?></td>
             <td><?php echo $r['load']; ?></td>
             <td><?php echo $r['max_num_threads']; ?></td>
-            <td><?php echo $r['status'] == 'enabled' ? '<i class="icon-ok"></i>' : '<i></i>'; ?></td>
+            <td><?php echo $r['status'] == 'enabled' ? '<span class="glyphicon glyphicon-ok"></span>' : '<span></span>'; ?></td>
             <td>
-                <button class="btn btn-small enabled_button <?php echo $r['status'] != 'enabled' ? 'btn-success' : '' ?>"><?php echo $r['status'] != 'enabled' ? '®enable®' : '®disable®' ?></button>
+                <button class="btn btn-sm enabled_button <?php echo $r['status'] != 'enabled' ? 'btn-success' : '' ?>">
+                    <?php echo $r['status'] != 'enabled' ? '®enable®' : '®disable®' ?>
+                </button>
             </td>
             <td>
-                <button class="btn btn-small delete_button"><i class="icon-trash"></i></button>
+                <button class="btn btn-sm btn-danger delete_button">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
             </td>
         </tr>
         <?php
@@ -105,7 +88,7 @@ require_once 'config.inc';
 
                         $this.removeClass('btn-success');
                         $this.text('®disable®');
-                        $this.parent().prev().find("i").addClass('icon-ok');
+                        $this.parent().prev().find(".glyphicon").addClass('icon-ok');
                     }
                 });
             } else {
@@ -126,7 +109,7 @@ require_once 'config.inc';
 
                         $this.addClass('btn-success');
                         $this.text('®enable®');
-                        $this.parent().prev().find("i").removeClass('icon-ok');
+                        $this.parent().prev().find(".glyphicon").removeClass('icon-ok');
                     }
                 });
             }

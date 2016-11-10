@@ -2,7 +2,7 @@
 /*
 * EZCAST EZmanager 
 *
-* Copyright (C) 2014 Université libre de Bruxelles
+* Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
 * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -28,10 +28,10 @@
 <div class="footer">
     <div class="footer_content">
          <div class="footer_mention">
-             <a href='http://ezcast.ulb.ac.be' >EZcast</a> ®developed_by® <a href="http://podcast.ulb.ac.be">ULB Podcast</a>
+             ¤developed_by¤
         </div>
         <div class="copyright">
-            Copyright © 2015
+            Copyright © 2016
         </div>
     </div>
 </div>

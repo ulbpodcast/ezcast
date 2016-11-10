@@ -2,7 +2,7 @@
 
 /*
  * EZCAST EZadmin 
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -683,8 +683,6 @@ function lib_scheduling_renderer_is_better_than($first, $second, $job) {
  * @return array The renderer with all its meta-data up to date
  */
 function lib_scheduling_renderer_metadata($renderer) {
-    global $php_cli_cmd;
-
     $out = lib_scheduling_renderer_ssh($renderer, $renderer["php"] . " " . $renderer['statistics']);
 
     if ($out !== false) {

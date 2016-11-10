@@ -2,7 +2,7 @@
 
 /*
  * EZCAST EZadmin 
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 		    Arnaud Wijns <awijns@ulb.ac.be>
@@ -27,10 +27,11 @@
 /**
  * @package ezcast.commons.lib.database
  */
-if (file_exists('config.inc'))
-    require_once 'config.inc';
+include_once __DIR__.'/config.inc'; //include instead of require because this file is used in installation where config may not be create yet
 
+// GLOBALS
 $db_object = null;
+//contains all prepared statements. Other libs may add new statement to it.
 $statements = null;
 $db_prepared = false;
 
@@ -54,7 +55,9 @@ function db_ping($type, $host, $login, $passwd, $dbname) {
 
 /*
  * Opens a connection to the DB and prepares the statements.
+ * Will add given statements to global $statements object.
  * Returns a PDO object representing this connection.
+ * Throws an exception if connection failed
  */
 
 function db_prepare(&$stmt_array = array()) {
@@ -66,11 +69,15 @@ function db_prepare(&$stmt_array = array()) {
     global $db_name;
     global $db_prepared;
     global $statements;
-
-    try {
-        $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
-    } catch (PDOException $e) {
-        return false;
+    global $debug_mode;
+    
+    if($db_object == null)
+    {
+        try {
+            $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
+        } catch (PDOException $e) {
+            throw new Exception('Could not connect to database.');
+        }
     }
     
     foreach ($stmt_array as $stmt_name => $stmt) {
@@ -80,6 +87,10 @@ function db_prepare(&$stmt_array = array()) {
     $db_prepared = true;
     $stmt_array = $statements;
 
+    if($debug_mode) {
+        $db_object->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+    
     return $db_object;
 }
 
@@ -127,5 +138,3 @@ function db_gettable($tableID) {
     global $db_prefix;
     return $db_prefix . $tableID;
 }
-
-?>

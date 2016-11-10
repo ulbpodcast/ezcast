@@ -3,7 +3,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -418,7 +418,7 @@ function get_keywords(&$string) {
             // if it ends by '#', it is a keyword
             if ($string[$j] == "#") {
                 // pushes the keyword in the array 
-                $keywords[] = $keyword;
+                $keywords[] = trim($keyword);
                 // removes the '#' tags from the text
                 $string[$i] = ' ';
                 $string[$j] = ' ';

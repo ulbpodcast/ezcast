@@ -2,7 +2,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -112,4 +112,3 @@ function log_append($operation, $message = '') {
     // Then we save the new entry
     file_put_contents($ezmanager_logs, $data, FILE_APPEND | LOCK_EX);
 }
-?>

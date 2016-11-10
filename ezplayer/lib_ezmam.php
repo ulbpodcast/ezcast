@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -144,12 +144,7 @@ function ezmam_album_new($album_name, $metadata) {
  * @desc tell if thet given album exists
  */
 function ezmam_album_exists($album_name) {
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        return false;
-    }
-    $res = file_exists($repository_path . "/" . $album_name);
-    return $res;
+    return ezmam_asset_exists($album_name, "");
 }
 
 /**
@@ -609,7 +604,11 @@ function ezmam_asset_exists($album_name, $asset_name) {
     if ($repository_path === false) {
         return false;
     }
-    $res = file_exists($repository_path . "/" . $album_name . "/" . $asset_name);
+    $path = $repository_path . "/" . $album_name;
+    if($asset_name != "") {
+        $path .= "/" . $asset_name;
+    }
+    $res = file_exists($path);
     return $res;
 }
 
@@ -620,6 +619,9 @@ function ezmam_asset_exists($album_name, $asset_name) {
  */
 function ezmam_asset_count($album) {
     $asset_list = ezmam_asset_list_metadata($album);
+    if($asset_list == "");
+        return 0;
+
     $count = 0;
     foreach ($asset_list as $asset) {
         if ($asset['metadata']['status'] == 'processed')
@@ -1782,5 +1784,3 @@ function assoc_array2metadata_file($assoc_array, $file_path) {
 
     return true;
 }
-
-?>

@@ -2,7 +2,7 @@
 /*
  * EZCAST EZplayer
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -23,33 +23,40 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-?>
-<?php
 include_once 'lib_print.php';
 ?> 
 
 <h2><?php echo print_info($asset_meta['title']); ?></h2>
 <br/><p>®Share_time_message®</p>
-<br/><p style="text-align:center; color: #333333;" id="share_time_link"><?php echo $share_time; ?></p>
+<br/>
+<textarea readonly class="share_log_asset" onclick="this.select()" id="share_time_link"><?php echo $share_time; ?></textarea>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
 
 <!--[if !IE]><!-->
 <div class="wrapper_clip" style="position:relative; text-align: center;">
-    <span id="share_time" class="copy-to-clipboard-button">®Copy_to_clipboard®</span>
-    <div id="share_clip"
-         title="®Share_time®"
-         onmouseout="getElementById('share_time').style.background = '#333333'" 
-         onmouseover="getElementById('share_time').style.background = '#11acea'" 
-         style="position:absolute; left:160px; top:0px; width:200px; height:30px; z-index:105; cursor: pointer;"
-         onclick="server_trace(new Array('4', 'link_copy', current_album, current_asset, duration, time, type, quality));">
-    </div>
+    <span id="share_time" onclick="copy_video_url();" class="copy-to-clipboard-button">
+        <span id="share_valid" style="display: none">✔</span>
+        ®Copy_to_clipboard®
+    </span>
 </div>
-<script>
-    copyToClipboard('#share_clip', '<?php echo $share_time; ?>');</script>
 <!--<![endif]-->  
 
 <!--[if IE]>
 <a class="copy-to-clipboard-button" id="share_clip" href="#" onclick="window.clipboardData.setData('Text','<?php echo $share_time; ?>');"></a>
 <![endif]-->
 
+<script>
+    var copy = false;
+    function copy_video_url() {
+        if(!copy) {
+            server_trace(new Array('4', 'link_copy', current_album, current_asset, duration, time, type, quality))
+            copy = true;
+        }
+        $('#share_time_link').select();
+        document.execCommand('copy');
+        $('#share_valid').css('display', 'inline');
+        $('#share_time').css('background-color', '#2ebb2e');
+    }
+    
+</script>

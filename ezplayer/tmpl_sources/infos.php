@@ -10,7 +10,7 @@
         <!--
         * EZCAST EZplayer
         *
-        * Copyright (C) 2014 Université libre de Bruxelles
+        * Copyright (C) 2016 Université libre de Bruxelles
         *
         * Written by Michel Jansens <mjansens@ulb.ac.be>
         * 	      Arnaud Wijns <awijns@ulb.ac.be>
@@ -35,7 +35,7 @@
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
-        <script type="text/javascript" src="js/jQuery/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="js/jQuery/jquery-2.1.3.min.js"></script>
 
         <script>
             $(document).ready(function () {
@@ -55,7 +55,6 @@
                         <div style="text-align: center; margin-bottom: 30px;">
                         <video width="720" controls src="./videos/discussions.mp4">
                             Les discussions dans EZplayer</video></div>
-                        <h1 style='color: #7bb3b6;'>Nouveauté EZplayer: les discussions</h1>
                         <br/>
                         <p>
                             Pour le deuxième quadrimestre, nous avons mis tous nos efforts dans l'élaboration d'un module de <b>discussions</b>. Cela pour plusieurs raisons: vous offrir un espace 

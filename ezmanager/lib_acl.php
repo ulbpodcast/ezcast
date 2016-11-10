@@ -3,7 +3,7 @@
 /*
  * EZCAST EZmanager 
  *
- * Copyright (C) 2014 Université libre de Bruxelles
+ * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
  * 	   Arnaud Wijns <awijns@ulb.ac.be>
@@ -173,4 +173,3 @@ function acl_authorized_albums_list_not_created($assoc = false) {
 function acl_user_is_logged() {
     return (isset($_SESSION['podman_logged']) && !empty($_SESSION['podman_logged']));
 }
-?>

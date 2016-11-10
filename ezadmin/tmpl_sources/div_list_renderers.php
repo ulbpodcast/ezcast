@@ -25,7 +25,7 @@ require_once 'config.inc';
     include_once 'lib_scheduling.php';
     foreach ($renderers as $r) {
         //todo, move this in javascript, ping shouldn't lock page loading
-        exec('ping -c 1 -W 2 '.$r['host'], $output, $return_val); 
+        exec('ping -c 1 '.$r['host'], $output, $return_val); 
         if($return_val != 0){
             $r['no_ping'] = true;
         } else {

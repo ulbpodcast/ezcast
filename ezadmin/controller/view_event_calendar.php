@@ -7,7 +7,6 @@ require_once '../commons/event_status.php';
 include_once '../commons/view_helpers/helper_pagination.php';
 include_once '../commons/view_helpers/helper_sort_col.php';
 
-
 function index($param = array()) {
     global $input;
     
@@ -23,8 +22,13 @@ function index($param = array()) {
     }
     
     $phpDateEvent = array();
+    $excluded = get_courses_excluded_from_stats();
     foreach($sqlDateEvent as $info) {
         $event = array();
+        
+        if(in_array($info['course'], $excluded))
+            continue;
+        
         $event['asset'] = $info['asset'];
         $event['title'] = "";
         if(!$classRoom) {

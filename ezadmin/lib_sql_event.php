@@ -155,7 +155,7 @@ function db_event_get_event_loglevel_most($asset) {
  * @param String $teacher name of the teacher
  * @return Array all restult
  */
-function db_event_get_record_after_date($start_date, $classroom_id = "", $courses = "", $teacher = "", $cam_slide = "") {
+function db_event_get_record_after_date($start_date, $classroom_id = "", $courses = "", $teacher = "", $cam_slide = "", $not_in_courses = false) {
     global $db_object;
     
     $strSQL = 'SELECT `asset`, `start_time`, `end_time`, `classroom_id`, '
@@ -173,6 +173,20 @@ function db_event_get_record_after_date($start_date, $classroom_id = "", $course
     if($courses != "") {
         $whereParam[] = 'course = :courses';
         $valueWhereParam['courses'] = $courses;
+    }
+    
+    if(is_array($not_in_courses)) {
+        $param = 'course NOT IN(';
+        $count = 1;
+        foreach($not_in_courses as $value) {
+            $bind_variable = "not_in$count";
+            $param .= ":$bind_variable,";
+            $valueWhereParam[$bind_variable] = $value;
+            $count++;
+        }
+        $param = rtrim($param, ","); //remove last comma before ending ( )
+        $param .= ')';
+        $whereParam[] = $param;
     }
     
     if($teacher != "") {
@@ -330,39 +344,51 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
 
 
 function db_event_status_get($firtDate, $endDate, $typeStatus, 
-        $asset, $colOrder = "status_time", $orderSort = "ASC", 
-        $start_elem = "", $max_elem = "") {
+        $asset, $colOrder = "status.status_time", $orderSort = "ASC", 
+        $start_elem = "", $max_elem = "", $not_in_courses = false) {
     
     global $db_object;
     
     $strSQL = 'SELECT SQL_CALC_FOUND_ROWS status.* ' .
-                    'FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME). ' status ';
+                    'FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME). ' status ' .
+                    'JOIN ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME). ' info ON status.asset = info.asset ';
     
     $whereParam = array();
     $valueWhereParam = array();
     
     if($firtDate != "") {
-        $whereParam[] = "status_time >= ?";
+        $whereParam[] = "status.status_time >= ?";
         $valueWhereParam[] = $firtDate;
     }
     
     if($endDate != "") {
-        $whereParam[] = "status_time <= ?";
+        $whereParam[] = "status.status_time <= ?";
         $valueWhereParam[] = $endDate;
     }
     
     if($typeStatus != "" && !empty($typeStatus) && $typeStatus[0] != NULL) {
         $tempWhereParam = array();
         foreach($typeStatus as $status) {
-            $tempWhereParam[] = "status = ?";
+            $tempWhereParam[] = "status.status = ?";
             $valueWhereParam[] = $status;
         }
         $whereParam[] = "(".implode(" OR ", $tempWhereParam).")";
     }
     
+    if(is_array($not_in_courses)) {
+        $param = 'info.course NOT IN(';
+        foreach($not_in_courses as $value) {
+            $param .= "?,";
+            $valueWhereParam[] = $value;
+        }
+        $param = rtrim($param, ","); //remove last comma before ending ( )
+        $param .= ')';
+        $whereParam[] = $param;
+    }
+    
     
     if($asset != "") {
-        $whereParam[] = "asset = ?";
+        $whereParam[] = "status.asset = ?";
         $valueWhereParam[] = $asset;
     }
     
@@ -459,7 +485,7 @@ function db_event_asset_infos_get($classroom = "") {
     $argument = array();
     
     $strSQL = 'SELECT asset_info.asset, asset_info.start_time, asset_info.end_time, 
-                    asset_info.classroom_id, status.status
+                    asset_info.classroom_id, asset_info.author, asset_info.course, status.status
                 FROM '. db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME).' asset_info
                     LEFT JOIN '. db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME).' status
                         ON status.asset = asset_info.asset';
@@ -547,4 +573,9 @@ function db_event_info_camslide_nbr($start_date, $end_date) {
     $statements['asset_info_camslide']->bindParam(':end_date', $end_date);
     $statements['asset_info_camslide']->execute();
     return $statements['asset_info_camslide']->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function get_courses_excluded_from_stats() {
+    global $courses_excluded_from_stats;
+    return $courses_excluded_from_stats;
 }

@@ -29,3 +29,7 @@ $renderers_options = array(
         'ffmpeg' => array('name' => 'ffmpeg', 'description' => 'FFMPEG command line', 'file' => 'lib_ffmpeg.php'),
         'ffmpeg_exp' => array('name' => 'ffmpeg_exp', 'description' => 'FFMPEG command line experimental mode (AAC)', 'file' => 'lib_ffmpeg.php'),
 );
+
+$courses_excluded_from_stats = array(
+    "PODC-I-000",
+);

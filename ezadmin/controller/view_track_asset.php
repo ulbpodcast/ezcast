@@ -45,7 +45,8 @@ function index($param = array()) {
                 empty_str_if_not_def('status', $input), 
                 empty_str_if_not_def('asset', $input),
                 $colOrder->getCurrentSortCol(), $colOrder->getOrderSort(),
-                $pagination->getStartElem(), $pagination->getElemPerPage());
+                $pagination->getStartElem(), $pagination->getElemPerPage(),
+                get_courses_excluded_from_stats());
         $pagination->setTotalItem(db_found_rows());
         
         $view_all = array_key_exists('view_all', $input) && $input['view_all'] == 'on';

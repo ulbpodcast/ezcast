@@ -27,7 +27,8 @@ function index($param = array()) {
                         empty_str_if_not_def('classroom', $input), 
                         empty_str_if_not_def('courses', $input),
                         empty_str_if_not_def('teacher', $input),
-                        empty_str_if_not_def('cam_slide', $input)); //cam_slide not currently in form, add it if you need it
+                        empty_str_if_not_def('cam_slide', $input), //cam_slide not currently in form, add it if you need it
+                        get_courses_excluded_from_stats()); 
             
             $resultRecord = calcul_hour_by_hour($recordRepartition);
             

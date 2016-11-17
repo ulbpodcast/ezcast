@@ -463,6 +463,14 @@ textarea.no_resize {
     cursor: pointer;
 }
 
+.event-lightwarning {
+    background-color:#c5e263
+}
+
+.label-lightwarning {
+    background-color:#c5e263
+}
+
 /* ////////////////// PRINT ////////////////// */
 @media print {
     a.hidden-print-link[href]:after {

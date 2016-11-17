@@ -40,11 +40,13 @@ class EventStatus {
             case EventStatus::MANUAL_OK:
                 return "success";
                 
-            case EventStatus::AUTO_SUCCESS_ERRORS:
+            case EventStatus::AUTO_SUCCESS_WARNINGS:
+                return "lightwarning";
+                
             case EventStatus::MANUAL_FAILURE:
                 return "danger";
                 
-            case EventStatus::AUTO_SUCCESS_WARNINGS:
+            case EventStatus::AUTO_SUCCESS_ERRORS:
             case EventStatus::MANUAL_PARTIAL_OK:
                 return "warning";
                 

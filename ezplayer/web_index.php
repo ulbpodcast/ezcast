@@ -124,9 +124,9 @@ if (!user_logged_in()) {
 else if (isset($_SESSION['ezplayer_logged']) && (!isset($input['action']) || empty($input['action']))) {    
     // Check if player first connexion
     global $first_connexion;
-    $first_connexion = !isset($_COOKIE['is_connect']);
+    $first_connexion = !isset($_COOKIE['has_connected_once']);
     // Cookie life: one year
-    setcookie('is_connect', true, time() + (365 * 24 * 60 * 60));
+    setcookie('has_connected_once', true, time() + (365 * 24 * 60 * 60));
     
     redraw_page();
 }

@@ -129,7 +129,12 @@ function status_listStatus_add($listToAdd, $status, $view_all) {
 function actionFromModal($input) {
     $error = NULL;
     
-    $current_asset = $input['current_asset'];
+    if(!isset($input['current_asset']) || $input['current_asset'] == "") {
+        return "Invalid input asset";
+    }
+    if(!isset($input['modal_action']) || $input['modal_action'] == "") {
+        return "Invalid input asset";
+    }
     if($input['modal_action'] == "new_parent") {
 
         if(array_key_exists('parent_asset', $input)) {

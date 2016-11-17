@@ -438,6 +438,7 @@ function db_event_get_asset_parent($asset = "") {
 function db_event_status_add($asset, $status, $message = "", $author = "system") {
     global $statements;
     
+    error_reporting(E_ALL);
     $statements['status_insert']->bindParam(':asset', $asset);
     $statements['status_insert']->bindParam(':status', $status);
     $statements['status_insert']->bindParam(':author', $author);
@@ -490,14 +491,14 @@ function db_event_asset_infos_get($classroom = "") {
                     LEFT JOIN '. db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME).' status
                         ON status.asset = asset_info.asset';
     
+    $strSQL .= ' WHERE (status IS NULL) OR (';
     if($classroom != "") {
-        $strSQL .= ' WHERE asset_info.classroom_id = :asset_classroom_id';
+        $strSQL .= ' asset_info.classroom_id = :asset_classroom_id AND ';
         $argument['asset_classroom_id'] = $classroom;
     }
-    
-    $strSQL .= ' GROUP BY asset_info.asset
-                HAVING MAX(status.status_time) OR (status IS NULL)';
-    
+    //get only last status
+    $strSQL .= "status.status_time = (SELECT MAX(s2.status_time) FROM ".db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME)." s2 WHERE s2.asset = asset_info.asset)";
+    $strSQL .= ")";
     
     $reqSQL = $db_object->prepare($strSQL);
     $reqSQL->execute($argument);

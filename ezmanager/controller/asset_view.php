@@ -111,6 +111,8 @@ function index_view() {
         $duration = "Error getting duration";
     else
         $duration = get_user_friendly_duration($duration);
+    
+    $record_type = $asset_metadata['record_type'];
 
     // Finally, we set up the URLs and view counts to the different media
     if ($has_cam) {

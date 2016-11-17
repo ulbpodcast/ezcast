@@ -159,6 +159,7 @@ else print_info($origin); ?></p>
     } else {
         ?>
         <p><span class="infospodast">®Length®&nbsp;:</span> <?php print_info($duration); ?></p>
+        <p><span class="infospodast">®Type®&nbsp;:</span> <?php print_info($record_type); ?></p>
         <?php
     }
 

@@ -629,6 +629,7 @@ function create_tables($drop = true) {
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL,".
                 "`origin` enum('ezmanager','ezadmin','ezrecorder','ezrenderer','other') NOT NULL,".
+                "`classroom_id` varchar(50) DEFAULT NULL," .
                 "`classroom_event_id` int(10) unsigned DEFAULT NULL,".
                 "`event_time` datetime NOT NULL,".
                 "`type_id` INT(10) UNSIGNED NOT NULL,".

@@ -448,7 +448,8 @@ function streaming_content_add() {
 	    $asset_token = $streams_array[$course][$asset]['token'];
             $streams_array[$course][$asset][$module_type]['status'] = $input['status'];
             $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $course . '/' . $stream_name . '_' . $asset_token . '/';
-            mkdir($upload_root_dir, 0755, true); // creates the directories if needed
+            if(!is_file($upload_root_dir))
+                mkdir($upload_root_dir, 0755, true); // creates the directories if needed
 
             if($streaming_video_alternate_server_enable_sync)
             {
@@ -458,7 +459,8 @@ function streaming_content_add() {
 
             $upload_type_dir = $upload_root_dir . $input['module_type'] . '/';
 
-            mkdir($upload_type_dir, 0755, true); // creates the directories if needed
+            if(!is_file($upload_type_dir))
+                mkdir($upload_type_dir, 0755, true); // creates the directories if needed
 
             // master playlist file doesn't exist yet
             if (!is_file($upload_type_dir . 'live.m3u8')) {
@@ -470,12 +472,14 @@ function streaming_content_add() {
                     create_m3u8_external($upload_type_dir, $input['module_type'], $asset_token);
                 }
             } else { //else make sure it's removed
-                unlink($upload_type_dir . 'external_live.m3u8');
+                if(is_file($upload_type_dir . 'external_live.m3u8'))
+                    unlink($upload_type_dir . 'external_live.m3u8');    
             }
 
             $upload_quality_dir = $upload_type_dir . $input['quality'] . '/';
             // for instance : /www2/htdocs/dev/ezplayer/videos/ALBUM-NAME/3000_001/cam/high/
-            mkdir($upload_quality_dir, 0755, true); // creates the directories if needed
+            if(!is_file($upload_quality_dir))
+                mkdir($upload_quality_dir, 0755, true); // creates the directories if needed
 
             $uploadfile = $upload_quality_dir . $input['filename'];
             // places the file (.ts segment from HTTP request) in the webspace

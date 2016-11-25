@@ -438,7 +438,6 @@ function db_event_get_asset_parent($asset = "") {
 function db_event_status_add($asset, $status, $message = "", $author = "system") {
     global $statements;
     
-    error_reporting(E_ALL);
     $statements['status_insert']->bindParam(':asset', $asset);
     $statements['status_insert']->bindParam(':status', $status);
     $statements['status_insert']->bindParam(':author', $author);

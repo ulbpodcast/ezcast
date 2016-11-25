@@ -27,9 +27,9 @@ class ServerLogger extends Logger {
         }
         
         $this->statement['insert_log'] = $db_object->prepare(
-          'REPLACE INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `classroom_event_id`, '
+          'REPLACE INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `classroom_id`, `classroom_event_id`, '
                 . '`event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
-          ':asset, :origin, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)');
+          ':asset, :origin, :classroom_id, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)');
         
         $this->statement['insert_asset_info'] = $db_object->prepare(
             'REPLACE INTO ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' (asset, ' .
@@ -105,6 +105,7 @@ class ServerLogger extends Logger {
         
         $this->statement['insert_log']->bindParam(':asset', $asset);
         $this->statement['insert_log']->bindParam(':origin', $origin);
+        $this->statement['insert_log']->bindParam(':classroom_id', $classroom);
         $this->statement['insert_log']->bindParam(':type_id', $type);        
         $this->statement['insert_log']->bindParam(':context', $context);
         $this->statement['insert_log']->bindParam(':loglevel', $level);

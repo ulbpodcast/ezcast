@@ -777,45 +777,58 @@ function ezmam_asset_status_set_properties($album, $asset, $change_key, $value) 
  * @param string $album_name
  * @param string $asset_name
  * @param assoc_array $metadata
- * @return false|error_string
+ * @return asset token, or false|error_string
  * @desc creates an asset container in the given album
  */
 function ezmam_asset_new($album_name, $asset_name, $metadata) {
+    global $logger;
+    
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
     //create directory
     $asset_path = $repository_path . "/" . $album_name . "/" . $asset_name;
-    if (!ezmam_album_exists($album_name))
-        return "album non existant";
-    if (ezmam_asset_exists($album_name, $asset_name))
-        return "asset already exists";
+    if (!ezmam_album_exists($album_name)) {
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Album '$album_name' does not exists", array(__FUNCTION__));
+        return false;
+    }
+    if (ezmam_asset_exists($album_name, $asset_name)) {
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Asset '$asset_name' already exists", array(__FUNCTION__));
+        return false;
+    }
     $res = mkdir($asset_path);
     if (!$res) {
-        ezmam_last_error("ezmam_asset_new could not create $asset_path");
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Could not create asset dir in '$asset_path'", array(__FUNCTION__));
+        $error = "ezmam_asset_new could not create $asset_path";
+        ezmam_last_error($error);
         return false;
     }
 
     //create the metadata
     $res = ezmam_asset_metadata_set($album_name, $asset_name, $metadata);
-    if (!$res)
-        return "could not update metadata for $asset_path";
+    if (!$res) {
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Could not create metadata for asset '$asset_name'", array(__FUNCTION__));
+        return false;
+    }
 
     // Create a token
-    $res = ezmam_asset_token_create($album_name, $asset_name);
-    if (!$res)
-        return "could not create token for $asset_path";
-
-    // Log
-    log_append('asset_new', 'Asset: ' . $asset_name . ', Album: ' . $album_name);
+    $token = ezmam_asset_token_create($album_name, $asset_name);
+    if (!$token) {
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Could not create token for asset '$asset_name'", array(__FUNCTION__));
+        return false;
+    }
 
     // Rebuild RSSes
     ezmam_rss_generate($album_name, 'high');
     ezmam_rss_generate($album_name, 'low');
     ezmam_rss_generate($album_name, 'ezplayer');
 
-    return $res;
+    // Log
+    log_append('asset_new', 'Asset: ' . $asset_name . ', Album: ' . $album_name);
+    $logger->log(EventType::TEST, LogLevel::NOTICE, "Created new asset '$asset_name' in album '$album_name'", array(__FUNCTION__));
+
+    return $token;
 }
 
 /**
@@ -826,7 +839,8 @@ function ezmam_asset_new($album_name, $asset_name, $metadata) {
  * @return type 
  */
 function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
-
+    global $logger;
+    
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
@@ -876,6 +890,7 @@ function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
 
     // And finally we log the operation
     log_append('asset_delete', 'Asset: ' . $asset_name . ', Album: ' . $album_name);
+    $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::NOTICE, 'Deleted asset: ' . $asset_name . ', album: ' . $album_name, array(basename(__FILE__)), $asset_name);
 
     return true;
 }
@@ -888,6 +903,8 @@ function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
  * @return bool error status
  */
 function ezmam_asset_move($asset_name, $album_src, $album_dst) {
+    global $logger;
+    
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
@@ -936,6 +953,7 @@ function ezmam_asset_move($asset_name, $album_src, $album_dst) {
 
     // Logging
     log_append('asset_move', 'Asset: ' . $asset_name . ', From: ' . $album_src . ', To: ' . $album_dst);
+    $logger->log(EventType::MANAGER_ASSET_MOVE, LogLevel::NOTICE, 'Moved asset: ' . $asset_name . ', album: ' . $album_dst, array(basename(__FILE__)), $asset_name);
 
     // rebuilding the RSS feeds
     $res = ezmam_rss_generate($album_src, "high");
@@ -984,7 +1002,8 @@ function ezmam_asset_publish($private_album, $asset_name) {
 
     $public_album = suffix_replace($private_album);
     $res = ezmam_asset_move($asset_name, $private_album, $public_album);
-
+    //logging done in ezmam_asset_move
+    
     return $res;
 }
 
@@ -1007,7 +1026,8 @@ function ezmam_asset_unpublish($public_album, $asset_name) {
 
     $private_album = suffix_replace($public_album);
     $res = ezmam_asset_move($asset_name, $public_album, $private_album);
-
+    //logging done in ezmam_asset_move
+    
     return $res;
 }
 
@@ -1475,6 +1495,8 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '') {
  * @return type 
  */
 function ezmam_media_delete($album_name, $asset_name, $media_name) {
+    global $logger;
+    
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -1522,6 +1544,8 @@ function ezmam_media_delete($album_name, $asset_name, $media_name) {
         ezmam_last_error("Unable to delete folder $path");
         return false;
     }
+    
+    $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::NOTICE, "Deleted media: '$media_name' from asset '$asset_name', album: '$album_name'", array(basename(__FILE__)), $asset_name);
 
     return true;
 }

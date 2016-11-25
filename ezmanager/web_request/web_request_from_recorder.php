@@ -22,14 +22,18 @@ $input = array_merge($_GET, $_POST);
 
 $action = $input['action'];
 
-$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, __FILE__ . " called with action $action. Caller: $caller_ip", array("web_request_from_recorder"));
+//$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, basename(__FILE__) . " called with action $action. Caller: $caller_ip", array("web_request_from_recorder"));
     
 switch ($action) {
     case 'download' :
         download_from_recorder();
         break;
     case 'streaming_init':
-        streaming_init();
+        $ok = streaming_init();
+        if($ok) 
+            echo "OK";
+        else
+             http_response_code(500);
         break;
     case 'streaming_start':
         streaming_start();
@@ -169,7 +173,6 @@ function download_from_recorder() {
     print "OK:$pid";
     
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
-
             
     exit(0);
 }
@@ -186,10 +189,12 @@ function streaming_init() {
     global $caller_ip;
     global $ezmanager_basedir;
     global $repository_path;
-
+    
+    global $logger;
+    
     ezmam_repository_path($repository_path);
 
-    $album = $input['album']; // current album
+    $course = $input['course']; // current $course
     $asset = $input['asset']; // current asset
     $record_type = $input['record_type']; // camslide | cam | slide
     $module_type = $input['module_type']; // cam | slide
@@ -197,6 +202,8 @@ function streaming_init() {
     $classroom = $input['classroom'];
     $netid = $input['netid']; // user's netid
     //
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::INFO, "Received streaming init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
+    
     // gets information about current streams
     if (file_exists("$ezmanager_basedir/var/streams.php")) {
         $streams_array = require_once "$ezmanager_basedir/var/streams.php";
@@ -204,19 +211,19 @@ function streaming_init() {
         $streams_array = array();
     }
 
-    if (!isset($streams_array[$album][$asset])) {
+    if (!isset($streams_array[$course][$asset])) {
         // creates a new entry in the streams array for the current stream
-        $streams_array[$album][$asset]['classroom'] = $classroom;
-        $streams_array[$album][$asset]['netid'] = $netid;
+        $streams_array[$course][$asset]['classroom'] = $classroom;
+        $streams_array[$course][$asset]['netid'] = $netid;
         // at first, we consider the record_type is the module_type 
         // (ex: record_type = camslide / module_type = slide)
         // This way, if the cam module is not set for streaming, EZplayer 
         // knows that the streaming video is of type slide only
-        $streams_array[$album][$asset]['record_type'] = $module_type;
-        $streams_array[$album][$asset]['stream_name'] = sprintf('3000_%03d', count($streams_array[$album]));
+        $streams_array[$course][$asset]['record_type'] = $module_type;
+        $streams_array[$course][$asset]['stream_name'] = sprintf('3000_%03d', count($streams_array[$course]));
 
         // prepares asset metadata
-        $asset_meta = $streams_array[$album][$asset];
+        $asset_meta = $streams_array[$course][$asset];
         $asset_meta['origin'] = 'streaming';
         $asset_meta['record_date'] = $asset;
         $asset_meta['status'] = 'open';
@@ -224,28 +231,32 @@ function streaming_init() {
         $asset_meta['title'] = $input['title'];
 
         // creates a new (streaming) asset in the public album
-        $token = ezmam_asset_new($album . '-pub', $streams_array[$album][$asset]['stream_name'], $asset_meta);
-
-        $streams_array[$album][$asset]['token'] = $token;
+        $token = ezmam_asset_new($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
+        if($token == false) {
+             $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create asset.", array(__FUNCTION__));
+             return false;
+        }
+        
+        $streams_array[$course][$asset]['token'] = $token;
     }
 
     switch ($protocol) {
         case 'udp':
             // the streaming has already been init, return the info for the current asset
-            if (isset($streams_array[$album][$asset][$module_type])) {
-                $port = $streams_array[$album][$asset][$module_type]['port'];
-                $server = $streams_array[$album][$asset][$module_type]['server'];
+            if (isset($streams_array[$course][$asset][$module_type])) {
+                $port = $streams_array[$course][$asset][$module_type]['port'];
+                $server = $streams_array[$course][$asset][$module_type]['server'];
             } else {
                 // we save information about the current stream and return server and port for EZrecorder
-                $streams_array[$album][$asset][$module_type] = array();
-                $streams_array[$album][$asset][$module_type]['ip'] = $caller_ip;
-                $streams_array[$album][$asset][$module_type]['status'] = 'open';
-                $streams_array[$album][$asset][$module_type]['protocol'] = $protocol;
-                $streams_array[$album][$asset][$module_type]['server'] = server_get();
-                $streams_array[$album][$asset][$module_type]['port'] = port_get();
+                $streams_array[$course][$asset][$module_type] = array();
+                $streams_array[$course][$asset][$module_type]['ip'] = $caller_ip;
+                $streams_array[$course][$asset][$module_type]['status'] = 'open';
+                $streams_array[$course][$asset][$module_type]['protocol'] = $protocol;
+                $streams_array[$course][$asset][$module_type]['server'] = server_get();
+                $streams_array[$course][$asset][$module_type]['port'] = port_get();
 
-                $server = $streams_array[$album][$asset][$module_type]['server'];
-                $port = $streams_array[$album][$asset][$module_type]['port'];
+                $server = $streams_array[$course][$asset][$module_type]['server'];
+                $port = $streams_array[$course][$asset][$module_type]['port'];
             }
 
             $result = array("port" => $port, "server" => $server);
@@ -253,22 +264,22 @@ function streaming_init() {
             break;
 
         case 'http':
-            if (!isset($streams_array[$album][$asset][$module_type])) {
+            if (!isset($streams_array[$course][$asset][$module_type])) {
                 // we save information about the current stream 
-                $streams_array[$album][$asset][$module_type] = array();
-                $streams_array[$album][$asset][$module_type]['ip'] = $caller_ip;
-                $streams_array[$album][$asset][$module_type]['status'] = 'open';
-                $streams_array[$album][$asset][$module_type]['quality'] = $input['module_quality'];
-                $streams_array[$album][$asset][$module_type]['protocol'] = $protocol;
+                $streams_array[$course][$asset][$module_type] = array();
+                $streams_array[$course][$asset][$module_type]['ip'] = $caller_ip;
+                $streams_array[$course][$asset][$module_type]['status'] = 'open';
+                $streams_array[$course][$asset][$module_type]['quality'] = $input['module_quality'];
+                $streams_array[$course][$asset][$module_type]['protocol'] = $protocol;
             }
             $other_type = ($module_type == 'cam') ? 'slide' : 'cam';
-            if (isset($streams_array[$album][$asset][$other_type])) {
+            if (isset($streams_array[$course][$asset][$other_type])) {
                 // record_type is camslide and we know that both modules
                 // are set for streaming
-                $streams_array[$album][$asset]['record_type'] = $record_type;
-                $asset_meta = ezmam_asset_metadata_get($album . '-pub', $streams_array[$album][$asset]['stream_name']);
+                $streams_array[$course][$asset]['record_type'] = $record_type;
+                $asset_meta = ezmam_asset_metadata_get($course . '-pub', $streams_array[$course][$asset]['stream_name']);
                 $asset_meta['record_type'] = $record_type;
-                ezmam_asset_metadata_set($album . '-pub', $streams_array[$album][$asset]['stream_name'], $asset_meta);
+                ezmam_asset_metadata_set($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
             }
             break;
     }
@@ -278,6 +289,10 @@ function streaming_init() {
     $string .= PHP_EOL . "?>";
 
     file_put_contents("$ezmanager_basedir/var/streams.php", $string);
+    
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
+    
+    return true;
 }
 
 /**
@@ -294,7 +309,7 @@ function streaming_start() {
 
     ezmam_repository_path($repository_path);
 
-    $album = $input['album'];
+    $course = $input['$course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
@@ -307,31 +322,31 @@ function streaming_start() {
         return false;
     }
 
-    $asset_meta = ezmam_asset_metadata_get($album . '-pub', $streams_array[$album][$asset]['stream_name']);
+    $asset_meta = ezmam_asset_metadata_get($course . '-pub', $streams_array[$course][$asset]['stream_name']);
     $asset_meta['status'] = 'streaming';
-    ezmam_asset_metadata_set($album . '-pub', $streams_array[$album][$asset]['stream_name'], $asset_meta);
+    ezmam_asset_metadata_set($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
 
     switch ($protocol) {
         case 'udp':
             // the streaming has already been init, return the info for the current asset
-            if (isset($streams_array[$album][$asset][$module_type])) {
-                $port = $streams_array[$album][$asset][$module_type]['port'];
-                $server = $streams_array[$album][$asset][$module_type]['server'];
+            if (isset($streams_array[$course][$asset][$module_type])) {
+                $port = $streams_array[$course][$asset][$module_type]['port'];
+                $server = $streams_array[$course][$asset][$module_type]['server'];
 
                 // experimental: launches FFMPEG on remote EZrenderer to stream in EZmanager's webspace and saves the pid
-                $cmd = "ssh ezrenderer@$server '/usr/local/sbin/ffmpeg -i udp://localhost:$port -threads 0 -s 960x540 -f hls -hls_time 3 -hls_list_size 0 -hls_wrap 5 -y /var/www/hls/video/demo.m3u8 </dev/null >/dev/null 2> /var/www/hls/video/ffmpeg.log & echo $! ' > $ezmanager_basedir/var/pid_${album}_$asset & ";
+                $cmd = "ssh ezrenderer@$server '/usr/local/sbin/ffmpeg -i udp://localhost:$port -threads 0 -s 960x540 -f hls -hls_time 3 -hls_list_size 0 -hls_wrap 5 -y /var/www/hls/video/demo.m3u8 </dev/null >/dev/null 2> /var/www/hls/video/ffmpeg.log & echo $! ' > $ezmanager_basedir/var/pid_${$course}_$asset & ";
                 exec($cmd);
                 $stream_pid = '';
                 $count = 0;
                 while ($stream_pid == '' && $count < 10) {
-                    $stream_pid = file_get_contents("$ezmanager_basedir/var/pid_${album}_$asset");
+                    $stream_pid = file_get_contents("$ezmanager_basedir/var/pid_${$course}_$asset");
                     $count++;
                     sleep(1);
                 }
                 // saves the pid in the streams array
-                $streams_array[$album][$asset][$module_type]['pid'] = $stream_pid;
-                $streams_array[$album][$asset][$module_type]['status'] = 'streaming';
-                unlink("$ezmanager_basedir/var/pid_${album}_$asset");
+                $streams_array[$course][$asset][$module_type]['pid'] = $stream_pid;
+                $streams_array[$course][$asset][$module_type]['status'] = 'streaming';
+                unlink("$ezmanager_basedir/var/pid_${$course}_$asset");
             } else {
                 // no information found for the stream
                 print 'error - no information found for the current stream';
@@ -398,10 +413,11 @@ function streaming_content_add() {
     global $apache_documentroot;
     global $streaming_video_alternate_server_enable_sync;
     global $streaming_video_alternate_server_enable_redirect;
+    global $logger;
      
     ezmam_repository_path($repository_path);
 
-    $album = $input['album'];
+    $course = $input['course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
@@ -414,20 +430,24 @@ function streaming_content_add() {
         return false;
     }
 
-    $stream_name = $streams_array[$album][$asset]['stream_name'];
+    $stream_name = $streams_array[$course][$asset]['stream_name'];
 
     switch ($protocol) {
         case 'http':
+            /*
+            $logger->log(EventType::MANAGER_STREAMING, LogLevel::DEBUG, print_r($input, true), array(__FUNCTION__));
+            $logger->log(EventType::MANAGER_STREAMING, LogLevel::DEBUG, "$course : $asset : $module_type", array(__FUNCTION__));
+              */  
             // the streaming has already been init, saves the m3u8 file and segments
-            if (!isset($streams_array[$album][$asset][$module_type])) {
+            if (!isset($streams_array[$course][$asset][$module_type])) {
                  // no information found for the stream
                 print 'error - no information found for the current stream';
                 return false;
             }
 
-	    $asset_token = $streams_array[$album][$asset]['token'];
-            $streams_array[$album][$asset][$module_type]['status'] = $input['status'];
-            $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $album . '/' . $stream_name . '_' . $asset_token . '/';
+	    $asset_token = $streams_array[$course][$asset]['token'];
+            $streams_array[$course][$asset][$module_type]['status'] = $input['status'];
+            $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $course . '/' . $stream_name . '_' . $asset_token . '/';
             mkdir($upload_root_dir, 0755, true); // creates the directories if needed
 
             if($streaming_video_alternate_server_enable_sync)
@@ -442,7 +462,7 @@ function streaming_content_add() {
 
             // master playlist file doesn't exist yet
             if (!is_file($upload_type_dir . 'live.m3u8')) {
-                create_m3u8_master($upload_type_dir, $streams_array[$album][$asset][$module_type]['quality']);
+                create_m3u8_master($upload_type_dir, $streams_array[$course][$asset][$module_type]['quality']);
             }
             //also create external source if needed
             if($streaming_video_alternate_server_enable_redirect) {
@@ -505,7 +525,7 @@ function streaming_stop() {
     
     ezmam_repository_path($repository_path);
 
-    $album = $input['album'];
+    $course = $input['$course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
@@ -518,23 +538,23 @@ function streaming_stop() {
         return false;
     }
 
-    $asset_meta = ezmam_asset_metadata_get($album . '-pub', $streams_array[$album][$asset]['stream_name']);
+    $asset_meta = ezmam_asset_metadata_get($course . '-pub', $streams_array[$course][$asset]['stream_name']);
     $asset_meta['status'] = 'stopped';
-    ezmam_asset_metadata_set($album . '-pub', $streams_array[$album][$asset]['stream_name'], $asset_meta);
+    ezmam_asset_metadata_set($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
 
     switch ($protocol) {
         case 'udp':
             // the streaming has already been init, return the info for the current asset
-            if (isset($streams_array[$album][$asset][$module_type])) {
-                $server = $streams_array[$album][$asset][$module_type]['server'];
-                $pid = $streams_array[$album][$asset][$module_type]['pid'];
+            if (isset($streams_array[$course][$asset][$module_type])) {
+                $server = $streams_array[$course][$asset][$module_type]['server'];
+                $pid = $streams_array[$course][$asset][$module_type]['pid'];
                 // kills the ffmpeg process on EZrenderer
                 $cmd = "ssh ezrenderer@$server 'kill $pid' &";
                 exec($cmd);
                 // deletes the HLS video files in the webspace
-                system("rm -rf /www2/htdocs/dev/ezplayer/videos/" . $streams_array[$album][$asset]['stream_name']);
-                $streams_array[$album][$asset][$module_type]['pid'] = '';
-                $streams_array[$album][$asset][$module_type]['status'] = 'stopped';
+                system("rm -rf /www2/htdocs/dev/ezplayer/videos/" . $streams_array[$course][$asset]['stream_name']);
+                $streams_array[$course][$asset][$module_type]['pid'] = '';
+                $streams_array[$course][$asset][$module_type]['status'] = 'stopped';
             } else {
                 // no information found for the stream
                 print 'error - no information found for the current stream';
@@ -569,7 +589,7 @@ function streaming_close() {
 
     ezmam_repository_path($repository_path);
 
-    $album = $input['album'];
+    $course = $input['$course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
@@ -585,32 +605,32 @@ function streaming_close() {
     switch ($protocol) {
         case 'udp':
             // removes the stream from the streams files
-            if (isset($streams_array[$album][$asset][$module_type])) {
-                $server = $streams_array[$album][$asset][$module_type]['server'];
-                $status = $streams_array[$album][$asset][$module_type]['status'];
+            if (isset($streams_array[$course][$asset][$module_type])) {
+                $server = $streams_array[$course][$asset][$module_type]['server'];
+                $status = $streams_array[$course][$asset][$module_type]['status'];
                 if ($status === 'streaming') {
-                    $pid = $streams_array[$album][$asset][$module_type]['pid'];
+                    $pid = $streams_array[$course][$asset][$module_type]['pid'];
                     $cmd = "ssh ezrenderer@$server 'kill $pid' &";
                     exec($cmd);
                 }
                 $cmd = "ssh ezrenderer@$server 'rm -f /var/www/hls/video/demo*' &";
                 exec($cmd);
-                system("rm -rf /www2/htdocs/dev/ezplayer/videos/" . $streams_array[$album][$asset]['stream_name']);
+                system("rm -rf /www2/htdocs/dev/ezplayer/videos/" . $streams_array[$course][$asset]['stream_name']);
 
-                ezmam_asset_delete($album . '-pub', $streams_array[$album][$asset]['stream_name']);
-                if ($streams_array[$album][$asset]['record_type'] == 'camslide') {
+                ezmam_asset_delete($course . '-pub', $streams_array[$course][$asset]['stream_name']);
+                if ($streams_array[$course][$asset]['record_type'] == 'camslide') {
                     $other_type = ($module_type == 'cam') ? 'slide' : 'cam';
-                    if (isset($streams_array[$album][$asset][$other_type])) {
-                        unset($streams_array[$album][$asset][$module_type]);
+                    if (isset($streams_array[$course][$asset][$other_type])) {
+                        unset($streams_array[$course][$asset][$module_type]);
                     } else {
                         // other module has already been closed
-                        unset($streams_array[$album][$asset]);
+                        unset($streams_array[$course][$asset]);
                     }
                 } else {
-                    unset($streams_array[$album][$asset]);
+                    unset($streams_array[$course][$asset]);
                 }
-                if (count($streams_array[$album]) == 0) {
-                    unset($streams_array[$album]);
+                if (count($streams_array[$course]) == 0) {
+                    unset($streams_array[$course]);
                 }
             } else {
                 // no information found for the stream
@@ -623,18 +643,18 @@ function streaming_close() {
 
         case 'http':
             // removes the stream from the streams files
-            if (isset($streams_array[$album][$asset])) {
+            if (isset($streams_array[$course][$asset])) {
 
-                $stream_name = $streams_array[$album][$asset]['stream_name'];
-                $token = $streams_array[$album][$asset]['token'];
+                $stream_name = $streams_array[$course][$asset]['stream_name'];
+                $token = $streams_array[$course][$asset]['token'];
 
-                ezmam_asset_delete($album . '-pub', $stream_name);
-                unset($streams_array[$album][$asset]);
-                if (count($streams_array[$album]) == 0) {
-                    unset($streams_array[$album]);
+                ezmam_asset_delete($course . '-pub', $stream_name);
+                unset($streams_array[$course][$asset]);
+                if (count($streams_array[$course]) == 0) {
+                    unset($streams_array[$course]);
                 }
 
-                $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $album ${stream_name}_$token\" | at now + 1 hour";
+                $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $course ${stream_name}_$token\" | at now + 1 hour";
                 $pid = shell_exec($cmd);
             }
 

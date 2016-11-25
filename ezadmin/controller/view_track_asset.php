@@ -107,9 +107,6 @@ function status_listStatus_add($listToAdd, $status, $view_all) {
         array_push($listToAdd, $status);
     } else {
         
-        
-        
-        
         // If not in array or if newer than the old saved
         if(!array_key_exists($status['asset'], $listToAdd) || 
                 strtotime($listToAdd[$status['asset']]['status_time']) < strtotime($status['status_time'])) {

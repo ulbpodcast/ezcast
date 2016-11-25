@@ -66,7 +66,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
                 <?php
-                if(isset($input) && array_key_exists('startDate', $input)) {
+                if(isset($input) && array_key_exists('startDate', $input) && $input['startDate'] != 0) {
                     echo "defaultDate: new Date('".$input['startDate']."')";
                 } else {
                     echo 'defaultDate: moment().subtract(4, \'month\')';
@@ -80,7 +80,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
                 <?php
-                if(isset($input) && array_key_exists('endDate', $input)) {
+                if(isset($input) && array_key_exists('endDate', $input) && $input['endDate'] != 0) {
                     echo "defaultDate: new Date('".$input['endDate']."')";
                 } else {
                     echo 'defaultDate: moment().add(1, \'days\')';

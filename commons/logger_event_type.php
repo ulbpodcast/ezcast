@@ -38,6 +38,9 @@ class EventType {
     const RECORDER_SET_STATUS                = "recorder_set_status";
     const RECORDER_REMOTE_CALL               = "recorder_remote_call";
     const RECORDER_TIMEOUT_MONITORING        = "recorder_timeout_monitoring";
+    const RECORDER_CAM_MANAGEMENT            = "recorder_cam_management";
+    const RECORDER_STREAMING                 = "recorder_streaming";
+    
     //
     // EZAdmin
     
@@ -48,6 +51,10 @@ class EventType {
     const MANAGER_MAM_INSERT                 = "manager_mam_insert";
     const MANAGER_SUBMIT_RENDERING           = "manager_submit_rendering";
     const MANAGER_FILL_STATUS                = "manager_fill_status";
+    const MANAGER_ASSET_DELETE               = "manager_asset_delete";
+    const MANAGER_ASSET_MOVE                 = "manager_asset_move";
+    const MANAGER_STREAMING                  = "manager_streaming";
+    const MANAGER_BOOKMARKS                  = "manager_bookmarks";
     
     // EZRenderer
     
@@ -90,6 +97,8 @@ class EventType {
        EventType::RECORDER_SET_STATUS                        => 1022,
        EventType::RECORDER_REMOTE_CALL                       => 1023,
        EventType::RECORDER_TIMEOUT_MONITORING                => 1024,
+       EventType::RECORDER_CAM_MANAGEMENT                    => 1025,
+       EventType::RECORDER_STREAMING                         => 1026,
         
        // EZAdmin: 2000->2999
        
@@ -100,6 +109,10 @@ class EventType {
        EventType::MANAGER_MAM_INSERT                         => 3003,
        EventType::MANAGER_SUBMIT_RENDERING                   => 3004,
        EventType::MANAGER_FILL_STATUS                        => 3005,
+       EventType::MANAGER_ASSET_DELETE                       => 3006,
+       EventType::MANAGER_ASSET_MOVE                         => 3007,
+       EventType::MANAGER_STREAMING                          => 3008,
+       EventType::MANAGER_BOOKMARKS                          => 3009,
         
        // EZRenderer: 4000->4999
         

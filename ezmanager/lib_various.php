@@ -149,7 +149,7 @@ function get_RFC822_date($date) {
     list($hours, $minutes) = explode('h', $hourandminutes);
     
     //$date_array = date_parse('Y_m_d_H:i', $date);
-    return date(DATE_RFC822, mktime($hours, $minutes, '0', $month, $day, $year));
+    return date(DATE_RFC822, mktime(intval($hours), intval($minutes), '0', intval($month), intval($day), intval($year)));
 }
 
 /**

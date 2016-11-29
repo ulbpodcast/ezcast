@@ -244,7 +244,7 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     
     $strSQL = 'SELECT SQL_CALC_FOUND_ROWS events.asset, events.origin, events.event_time,'
             . ' events.type_id, events.context, events.loglevel, events.message, infos.start_time, '
-            . 'infos.end_time, infos.classroom_id, infos.course, infos.author, infos.cam_slide ' .
+            . 'infos.end_time, events.classroom_id, infos.course, infos.author, infos.cam_slide ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' events ' .
                 ' LEFT JOIN ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' infos ' .
                     ' on events.asset = infos.asset';
@@ -265,7 +265,7 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     }
     
     if($asset_classroom_id != "") {
-        $whereParam[] = "infos.classroom_id LIKE ?";
+        $whereParam[] = "events.classroom_id LIKE ?";
         $valueWhereParam[] = db_sanitize($asset_classroom_id);
     }
     

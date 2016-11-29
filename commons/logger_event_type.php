@@ -40,7 +40,7 @@ class EventType {
     const RECORDER_TIMEOUT_MONITORING        = "recorder_timeout_monitoring";
     const RECORDER_CAM_MANAGEMENT            = "recorder_cam_management";
     const RECORDER_STREAMING                 = "recorder_streaming";
-    
+    const RECORDER_SOUND_DETECTION           = "recorder_sound_detection";
     //
     // EZAdmin
     
@@ -99,6 +99,7 @@ class EventType {
        EventType::RECORDER_TIMEOUT_MONITORING                => 1024,
        EventType::RECORDER_CAM_MANAGEMENT                    => 1025,
        EventType::RECORDER_STREAMING                         => 1026,
+       EventType::RECORDER_SOUND_DETECTION                   => 1027,
         
        // EZAdmin: 2000->2999
        

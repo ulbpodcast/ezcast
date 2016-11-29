@@ -97,3 +97,7 @@ function redirectToController($controller_name) {
     $input['action'] = $controller_name;
     header('Location: index.php?'.http_build_query($input));
 }
+
+function get_asset_name($course_name, $record_date) {
+    return $record_date . '_' . $course_name;
+}

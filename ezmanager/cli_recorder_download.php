@@ -34,7 +34,7 @@ if (!file_exists($destrecording_path)) {
 
 //local log file:
 $local_log_file = $destrecording_path . "/download.log";
-$local_pid_file = $destrecording_path ; "/download.pid";
+$local_pid_file = $destrecording_path . "/download.pid";
 file_put_contents($local_pid_file, getmypid());
 
 //now get download data to start downloading
@@ -140,7 +140,7 @@ do {
                     if (!$slide_ok)
                         mail($mailto_alert, $title, "Could not rsync file slide.mov from $podcs_ip (first try)");
                 } else {
-                    $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync failed (meta ok: $meta_ok, cam ok: $cam_ok, slide ok: $slide_ok).", array(basename(__FILE__)), $asset);
+                    //$logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "Rsync failed (meta ok: $meta_ok, cam ok: $cam_ok, slide ok: $slide_ok).", array(basename(__FILE__)), $asset);
                     if (!$meta_ok)
                         echo "could not rsync file metadata from $podcv_ip";
                     if (!$cam_ok)

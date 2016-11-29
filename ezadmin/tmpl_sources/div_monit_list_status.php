@@ -47,17 +47,17 @@ if(isset($pagination)) {
                     </button>
                 </td>
                 <td style="text-align: left;">
-                    <a href="./index.php?action=view_track_asset&post=&startDate=0&view_all=on&asset=<?php echo $status['asset']; ?>">
+                    <a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset=<?php echo $status['asset']; ?>">
                         <?php echo $status['asset']; ?>
                     </a>
-                    <a style="float: right;" href="./index.php?action=view_events&post=&startDate=0&asset=<?php echo $status['asset']; ?>">
+                    <a style="float: right;" href="./index.php?action=view_events&post=&startDate=1970-01-01+00%3A00&asset=<?php echo $status['asset']; ?>">
                         <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
                     </a>
                     <?php if(array_key_exists($status['asset'], $listChildren)) {
                         foreach($listChildren[$status['asset']] as $children) {
                             echo '<br />';
                             echo '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ';
-                            echo '<a href="./index.php?action=view_track_asset&post=&startDate=0&view_all=on&asset='.
+                            echo '<a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset='.
                                     $children.'">';
                             echo $children . '  ';
                             echo '</a>';

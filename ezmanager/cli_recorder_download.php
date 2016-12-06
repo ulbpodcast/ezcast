@@ -129,7 +129,7 @@ do {
 
             if (!$meta_ok || !$cam_ok || !$slide_ok) {
                 $sleep_time = 600;
-                $title = "Error downloading from recorder (retrying)";
+                $title = "Error downloading asset $asset from recorder (retrying)";
                 $first_try = $repeat == $max_download_retries - 1;
                 if ($first_try) {
                     $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::WARNING, "First try rsync failed (meta ok: $meta_ok, cam ok: $cam_ok, slide ok: $slide_ok). Will try again in $sleep_time seconds.", array(basename(__FILE__)), $asset);
@@ -157,7 +157,7 @@ do {
 if (!$meta_ok || !$cam_ok || !$slide_ok) {
     $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Record download failed after $max_download_retries retries. Sending alert mail.", array(basename(__FILE__)), $asset);
 
-    $title = "FINAL Error downloading from recorder";
+    $title = "FINAL Error downloading asset $asset from recorder";
     if (!$meta_ok)
         mail($mailto_alert, $title, "could not rsync file metadata from $podcv_ip");
     if (!$cam_ok)

@@ -452,14 +452,14 @@ function push_users_courses_to_recorder() {
     }
     $courselist .= '?>';
     file_put_contents('var/courselist.php', $courselist);
-
+    
     // Upload all this on server
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
-            $cmd = 'scp -o ConnectTimeout=10 ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
         }
     }
@@ -507,7 +507,7 @@ function push_classrooms_to_ezmanager() {
         // Remote copy
         exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 ./var/classroom_recorder_ip.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/classroom_recorder_ip.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
         }
 
@@ -540,7 +540,7 @@ function push_renderers_to_ezmanager() {
         // Remote copy
         exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 ./renderers.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./renderers.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
         }
 
@@ -588,7 +588,7 @@ function push_users_to_ezmanager() {
     }
     else {
         // Remote copy
-        $cmd = 'scp -o ConnectTimeout=10 ./var/pwfile.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
+        $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/pwfile.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
         exec($cmd, $output, $return_var);
 
         if ($return_var != 0) {

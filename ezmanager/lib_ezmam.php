@@ -1047,6 +1047,22 @@ function ezmam_media_exists($album_name, $asset_name, $media_name) {
     return $res;
 }
 
+function ezmam_backup_media($album_name, $asset_name, $media_name) {
+     $repository_path = ezmam_repository_path();
+    if ($repository_path === false) {
+        return false;
+    }
+    $media_dir = $repository_path . "/" . $album_name . "/" . $asset_name . "/" . $media_name;
+    $media_dir_backup = $media_dir . "." . time();
+    
+    $exists = file_exists($repository_path . "/" . $album_name . "/" . $asset_name . "/" . $media_name);
+    if(!$exists)
+        return false;
+    
+    $rename = rename($media_dir, $media_dir_backup);
+    return $rename;
+}
+
 /**
  *
  * @param string $album
@@ -1233,8 +1249,10 @@ function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $medi
         return false;
     }
     if (ezmam_media_exists($album_name, $asset_name, $media_name)) {
-        ezmam_last_error('ezmam_media_new media ' . $media_name . ' already exists');
-        return false;
+        if(!ezmam_backup_media($album_name, $asset_name, $media_name)) {
+            ezmam_last_error('ezmam_media_new media ' . $media_name . ' already exists and could not be backup-ed');
+            return false;
+        }
     }
     $res = mkdir($media_path);
     if (!$res) {

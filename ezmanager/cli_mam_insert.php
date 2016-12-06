@@ -157,7 +157,19 @@ if(strpos($record_type,"slide")!==false){
 }
 //media(s) inserted into mam, so move the processing directory to mam_inserted
 $inserted_recording_dir=dirname(dirname($recording_dir)).'/mam_inserted/'.basename($recording_dir);
-rename($recording_dir, $inserted_recording_dir );
+if(file_exists($inserted_recording_dir)) { //This may happen if we re process an already processed asset
+    $new_name = $inserted_recording_dir .'.'.time();
+    $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::WARNING, "mam_inserted folder already existed, rename old one to $new_name", array("cli_mam_insert"), $asset);
+    $ok = rename($inserted_recording_dir, $inserted_recording_dir.'.'.time());
+    if(!$ok) {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::ERROR, "Could not move old mam_inserted folder to $new_name, the folder will be left over in its current location ($recording_dir)", array("cli_mam_insert"), $asset);
+    } else {
+        rename($recording_dir, $inserted_recording_dir );
+    }
+} else {
+    rename($recording_dir, $inserted_recording_dir );
+}
+
 //now launch cam and/or slide video processing
 
 

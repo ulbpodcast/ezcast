@@ -78,6 +78,7 @@ $asset_meta = ezmam_asset_metadata_get($album, $asset);
 //if we found the duration of the encoded videos set the asset's duration
 if (isset($duration) && is_numeric($duration))
     $asset_meta['duration'] = round($duration);
+
 $asset_meta['status'] = 'processed';
 $res = ezmam_asset_metadata_set($album, $asset, $asset_meta);
 if (!$res)
@@ -86,7 +87,7 @@ if (!$res)
 $pos = strrpos($album, "-");
 $album_without_mod = substr($album, 0, $pos);
 $asset_name = $asset . '_' . $album_without_mod;
-$logger->log(EventType::ASSET_FINALIZED, LogLevel::NOTICE, "Asset succesfully finalized", array("cli_rendered_maminsert"), $asset_name);
+$logger->log(EventType::ASSET_FINALIZED, LogLevel::NOTICE, "Asset succesfully finalized", array(basename(__FILE__)), $asset_name);
 
 
 

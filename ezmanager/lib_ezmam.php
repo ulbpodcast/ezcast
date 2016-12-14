@@ -838,7 +838,7 @@ function ezmam_asset_new($album_name, $asset_name, $metadata) {
  * @param bool $rebuild_rss(true) Set to false if you don't want the RSS to be regenerated
  * @return type 
  */
-function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
+function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true) {
     global $logger;
     
     // Sanity checks
@@ -852,12 +852,12 @@ function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
         return false;
     }
 
-    if (!ezmam_asset_exists($album_name, $asset_name)) {
-        ezmam_last_error("Trying to delete $asset_name which doesn't exist!");
+    if (!ezmam_asset_exists($album_name, $asset_time)) {
+        ezmam_last_error("Trying to delete $asset_time which doesn't exist!");
         return false;
     }
 
-    $path = $repository_path . '/' . $album_name . '/' . $asset_name;
+    $path = $repository_path . '/' . $album_name . '/' . $asset_time;
 
     // First we empty the directory
     $dir = opendir($path);
@@ -869,7 +869,7 @@ function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
     while (($file = readdir($dir)) !== false) {
         if ($file != "." && $file != "..") {
             if (is_dir($path . '/' . $file))
-                ezmam_media_delete($album_name, $asset_name, $file);
+                ezmam_media_delete($album_name, $asset_time, $file);
             else
                 unlink($path . '/' . $file);
         }
@@ -888,21 +888,25 @@ function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
         ezmam_rss_generate($album_name, "ezplayer");
     }
 
+    $album_meta = ezmam_album_metadata_get($album_name);
+    $course = trim($album_meta['name']);
+    $asset_name = get_asset_name($course, $asset_time);
+    
     // And finally we log the operation
-    log_append('asset_delete', 'Asset: ' . $asset_name . ', Album: ' . $album_name);
-    $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::NOTICE, 'Deleted asset: ' . $asset_name . ', album: ' . $album_name, array(basename(__FILE__)), $asset_name);
+    log_append('asset_delete', 'Asset: ' . $asset_time . ', Album: ' . $album_name);
+    $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::NOTICE, 'Deleted asset: ' . $asset_time . ', album: ' . $album_name, array(basename(__FILE__)), $asset_name);
 
     return true;
 }
 
 /**
  * Moves an asset from $album_src to $album_dst. Warning: this function doesn't do any permissions check.
- * @param type $asset_name
+ * @param type $asset_time
  * @param type $album_src
  * @param type $album_dst
  * @return bool error status
  */
-function ezmam_asset_move($asset_name, $album_src, $album_dst) {
+function ezmam_asset_move($asset_time, $album_src, $album_dst) {
     global $logger;
     
     // Sanity checks
@@ -922,16 +926,20 @@ function ezmam_asset_move($asset_name, $album_src, $album_dst) {
         return false;
     }
 
-    if (!ezmam_asset_exists($album_src, $asset_name)) {
+    if (!ezmam_asset_exists($album_src, $asset_time)) {
         ezmam_last_error("ezmam_asset_move: asset does not exist");
         return false;
     }
 
-    if (ezmam_asset_exists($album_dst, $asset_name)) {
+    if (ezmam_asset_exists($album_dst, $asset_time)) {
         ezmam_last_error("ezmam_asset_move: there is already an asset with that name in dest album");
         return false;
     }
-
+    
+    $album_meta = ezmam_album_metadata_get($album_src);
+    $course = trim($album_meta['name']);
+    $asset_name = get_asset_name($course, $asset_time);
+           
     // moving the asset
     $src_path = $repository_path . '/' . $album_src;
     $dst_path = $repository_path . '/' . $album_dst;
@@ -945,15 +953,15 @@ function ezmam_asset_move($asset_name, $album_src, $album_dst) {
         return false;
     }
 
-    $res = rename($src_path . '/' . $asset_name, $dst_path . '/' . $asset_name);
+    $res = rename($src_path . '/' . $asset_time, $dst_path . '/' . $asset_time);
     if (!$res) {
         ezmam_last_error("could not move asset");
         return false;
     }
 
     // Logging
-    log_append('asset_move', 'Asset: ' . $asset_name . ', From: ' . $album_src . ', To: ' . $album_dst);
-    $logger->log(EventType::MANAGER_ASSET_MOVE, LogLevel::NOTICE, 'Moved asset: ' . $asset_name . ', album: ' . $album_dst, array(basename(__FILE__)), $asset_name);
+    log_append('asset_move', 'Asset: ' . $asset_time . ', From: ' . $album_src . ', To: ' . $album_dst);
+    $logger->log(EventType::MANAGER_ASSET_MOVE, LogLevel::NOTICE, 'Moved asset: ' . $asset_time . ', album: ' . $album_dst, array(basename(__FILE__)), $asset_name);
 
     // rebuilding the RSS feeds
     $res = ezmam_rss_generate($album_src, "high");

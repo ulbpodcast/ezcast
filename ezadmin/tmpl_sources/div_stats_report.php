@@ -546,8 +546,8 @@
         <div class="progress-bar progress-bar-success" style="width: <?php echo $percentSubmit; ?>%">
             <?php echo $percentSubmit; ?>% ®report_video_submit®
         </div>
-        <div class="progress-bar progress-bar-info" style="width: <?php echo $percentAuditoir; ?>%">
-            <?php echo $percentAuditoir; ?>% ®report_video_record®
+        <div class="progress-bar progress-bar-info" style="width: <?php echo $percentClassrooms; ?>%">
+            <?php echo $percentClassrooms; ?>% ®report_video_record®
         </div>
     </div>
 </div>

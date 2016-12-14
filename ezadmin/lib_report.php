@@ -109,7 +109,7 @@ class Report {
                     'time' => 0)
             );
         
-        
+       
         $this->repository_get_all();
         if($this->param_ezplayer) {
             $this->ezplayer_trace_get_all();
@@ -298,10 +298,10 @@ class Report {
         $newEntryTrace['infos'] = $traceInfo; // DEBUG
         
         $isInDate = false;
-        $nbrDate = $this->utils_date_to_number($newEntryTrace['date']);
+        $nbrDate = $this->utils_date_to_number_alt($newEntryTrace['date']);
         if($this->param_start_date <= $nbrDate && $nbrDate <= $this->param_end_date) {
             $isInDate = true;
-            
+        
         // If no general data
         } else if(!$this->param_general) {
             return;
@@ -310,12 +310,12 @@ class Report {
         if(count($traceInfo) >= 6) {
             $newEntryTrace['action'] = trim($traceInfo[5]);
             $this->ezplayer_treat_trace_action($traceInfo, $newEntryTrace, $isInDate);
-
         }
 
     }
     
     private function ezplayer_treat_trace_action(&$traceInfo, &$newEntryTrace, $isInDate) {
+        
         switch($newEntryTrace['action']) { 
             case 'asset_bookmark_add':
                 $this->trace_info_bookmark_add($traceInfo, $newEntryTrace, $isInDate);
@@ -507,9 +507,16 @@ class Report {
     private function utils_date_to_number($date) {
         $nbrDate = preg_replace("/([0-9]{4})_([0-9]{2})_([0-9]{2})_[0-9]{2}h[0-9]{2}/", 
                     "$1$2$3", $date);
+
         return str_replace(' ', '', $nbrDate);
     }
     
+    private function utils_date_to_number_alt($date) {
+        $nbrDate = preg_replace("/([0-9]{4})-([0-9]{2})-([0-9]{2})-[0-9]{2}:[0-9]{2}:[0-9]{2}/", 
+                    "$1$2$3", $date);
+        
+        return str_replace(' ', '', $nbrDate);
+    }
     
     private function utils_sortAllList() {
         arsort($this->list_all_author);

@@ -1,33 +1,8 @@
 <?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2016 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-*            Detobel Rémy <rdetobel@ulb.ac.be>
-* 	     Arnaud Wijns <awijns@ulb.ac.be>
-*            Antoine Dewilde
-*            Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
-
 
 require_once '../commons/lib_database.php';
-
+require_once '../commons/event_status.php';
+    
 if(file_exists('config.inc')) {
     include_once 'config.inc';
 
@@ -37,6 +12,11 @@ if(file_exists('config.inc')) {
  
 
 function event_statements_get() {
+    $table_event_status = db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME);
+    $table_asset_infos = db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME);
+    
+    $excludes = get_courses_excluded_from_stats(true);
+    
     return array(
             'get_all_event' =>
                     'SELECT (`asset`, `origin`, `classroom_event_id`, `event_time`, ' .
@@ -52,7 +32,7 @@ function event_statements_get() {
             'get_record_after_date' =>
                     'SELECT `asset`, `start_time`, `end_time`, `classroom_id`, '
                         . '`course`, `author`, `cam_slide` ' .
-                    'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' ' .
+                    "FROM $table_asset_infos " .
                     'WHERE classroom_id = :asset_classroom_id AND '
                         . 'start_time >= :time_limit AND end_time IS NOT NULL',
         
@@ -83,32 +63,40 @@ function event_statements_get() {
         
             'status_nbr_success' =>
                 'SELECT COUNT(*) AS total ' .
-                'FROM ' .  db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
-                'WHERE (status = "auto_success" OR status = "auto_success_errors" ' .
-                'OR status = "auto_success_warnings" OR status = "manual_ok" OR ' .
-                'status = "manual_partial_ok") AND status_time >= :start_date AND ' .
-                'status_time <= :end_date',
+                "FROM $table_event_status s1 ".
+                "JOIN $table_asset_infos info ON s1.asset = info.asset AND info.course NOT IN ($excludes) ".
+                'WHERE (s1.status = "auto_success" OR s1.status = "auto_success_errors" ' .
+                'OR s1.status = "auto_success_warnings" OR s1.status = "manual_ok" OR ' .
+                's1.status = "manual_partial_ok") AND ' .
+                's1.status_time >= :start_date AND ' .
+                's1.status_time <= :end_date AND ' . 
+                "s1.status_time = (SELECT MAX(s2.status_time) FROM $table_event_status s2 WHERE s2.asset = s1.asset)",
         
             'status_nbr_error' =>
                 'SELECT COUNT(*) AS total ' .
-                'FROM ' .  db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
-                'WHERE (status = "auto_failure" OR status = "manual_failure") '. 
-                'AND status_time >= :start_date AND ' .
-                'status_time <= :end_date',
+                "FROM $table_event_status s1 ".
+                "JOIN $table_asset_infos info ON s1.asset = info.asset AND info.course NOT IN ($excludes) ".
+                'WHERE (s1.status = "auto_failure" OR s1.status = "manual_failure") AND '. 
+                's1.status_time >= :start_date AND ' .
+                's1.status_time <= :end_date AND ' . 
+                "s1.status_time = (SELECT MAX(s2.status_time) FROM $table_event_status s2 WHERE s2.asset = s1.asset)",
         
-            'status_date_asset' =>
+            //get all last status between given dates. (Note that a record started during this period but with status set after it will be ignored)
+            'all_last_status_for_dates' =>
                 'SELECT status, status_time ' .
-                'FROM ' .  db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME) . ' '.
-                'WHERE status_time >= :start_date AND ' .
-                'status_time <= :end_date',
+                "FROM $table_event_status s1 " .
+                "JOIN $table_asset_infos info ON s1.asset = info.asset AND info.course NOT IN ($excludes) ".
+                'WHERE s1.status_time >= :start_date AND ' .
+                's1.status_time <= :end_date AND '.
+                "s1.status_time = (SELECT MAX(s2.status_time) FROM $table_event_status s2 WHERE s2.asset = s1.asset)",
         
             'asset_info_camslide' => 
                 'SELECT cam_slide, COUNT(cam_slide) AS total_type '.
-                'FROM ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' ' .
+                "FROM $table_asset_infos " .
                 'WHERE start_time >= :start_date AND end_time <= :end_date ' .
                 ' AND cam_slide != "" '.
-                'GROUP BY cam_slide'
-        
+                " AND course NOT IN ($excludes) ".
+                'GROUP BY cam_slide',
         );
 }
 
@@ -248,8 +236,6 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
                     'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME). ' events ' .
                 ' LEFT JOIN ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' infos ' .
                     ' on events.asset = infos.asset';
-    
-    
     
     $whereParam = array();
     $valueWhereParam = array();
@@ -520,19 +506,35 @@ function db_event_status_last_insert() {
 function db_event_status_get_nbr($start_date, $end_date) {
     global $statements;
     
+    //echo "START $start_date END $end_date EXCLUDES $excludes </br>";
+    
     $statements['status_nbr_success']->bindParam(':start_date', $start_date);
     $statements['status_nbr_success']->bindParam(':end_date', $end_date);
+    //$statements['status_nbr_success']->debugDumpParams();
     $statements['status_nbr_success']->execute();
     $reqResSuccess = $statements['status_nbr_success']->fetch(PDO::FETCH_NUM);
     $success = $reqResSuccess[0];
     
+    echo "</br>";
     $statements['status_nbr_error']->bindParam(':start_date', $start_date);
     $statements['status_nbr_error']->bindParam(':end_date', $end_date);
+    //$statements['status_nbr_error']->debugDumpParams();
     $statements['status_nbr_error']->execute();
     $reqResError = $statements['status_nbr_error']->fetch(PDO::FETCH_NUM);
     $error = $reqResError[0];
-    
+     echo "</br>";
+     
     return array($success, $error);
+}
+
+function db_event_get_last_status_for_period($start_date, $end_date) {
+    global $statements;
+    
+    $statements['all_last_status_for_dates']->bindParam(':start_date', $start_date);
+    $statements['all_last_status_for_dates']->bindParam(':end_date', $end_date);
+    $statements['all_last_status_for_dates']->execute();
+    
+    return $statements['all_last_status_for_dates']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -542,27 +544,23 @@ function db_event_status_get_nbr($start_date, $end_date) {
  * @param String $end_date limit of the date
  * @return Array with the number of success first and error after
  */
-function db_event_status_get_date($start_date, $end_date) {
+function db_event_get_success_error_status_for_dates($start_date, $end_date) {
     global $statements;
     $res = array('success' => array(),
                 'error' => array());
     
-    $valide_status = array('auto_success', 'auto_success_errors', 'auto_success_warnings', 
-                    'manual_ok', 'manual_partial_ok');
-    
-    $statements['status_date_asset']->bindParam(':start_date', $start_date);
-    $statements['status_date_asset']->bindParam(':end_date', $end_date);
-    $statements['status_date_asset']->execute();
-    
-    foreach($statements['status_date_asset']->fetchAll(PDO::FETCH_ASSOC) as $line) {
-        if(in_array($line['status'], $valide_status)) {
+    $statements['all_last_status_for_dates']->bindParam(':start_date', $start_date);
+    $statements['all_last_status_for_dates']->bindParam(':end_date', $end_date);
+    $statements['all_last_status_for_dates']->execute();
+
+    foreach($statements['all_last_status_for_dates']->fetchAll(PDO::FETCH_ASSOC) as $line) {
+        if(EventStatus::isSuccessStatus($line['status'])) {
             $type = 'success';
         } else {
             $type = 'error';
         }
         array_increment_or_init_static($res[$type], strtotime($line['status_time']).'000');
     }
-    
     return $res;
 }
 
@@ -575,7 +573,19 @@ function db_event_info_camslide_nbr($start_date, $end_date) {
     return $statements['asset_info_camslide']->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function get_courses_excluded_from_stats() {
+/* Return excluded course array or as string under the form (example):
+ *  "PODC-I-000", "AUTO_TESTS" 
+ */
+function get_courses_excluded_from_stats($as_string = false) {
     global $courses_excluded_from_stats;
-    return $courses_excluded_from_stats;
+    if($as_string) {
+        $str = "";
+        foreach($courses_excluded_from_stats as $value) {
+            $str .= "\"".$value . "\",";
+        }
+        $str = rtrim($str, ","); //remove last comma before ending ( )
+        return $str;
+    } else {
+        return $courses_excluded_from_stats;
+    }
 }

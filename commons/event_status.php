@@ -62,6 +62,19 @@ class EventStatus {
                 
         }
     }
+           
+    static function isSuccessStatus($status) {
+        $status = strtoupper($status);
+        switch($status) {
+            case EventStatus::AUTO_SUCCESS:
+            case EventStatus::AUTO_SUCCESS_ERRORS:
+            case EventStatus::AUTO_SUCCESS_WARNINGS:
+            case EventStatus::MANUAL_OK:
+            case EventStatus::MANUAL_PARTIAL_OK:
+                return true;
+            default:
+                return false;
+        }
+    }
     
-    
-}
+};

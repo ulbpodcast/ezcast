@@ -4,7 +4,7 @@ require_once 'lib_sql_management.php';
 require_once 'lib_sql_event.php';
 require_once 'lib_report.php';
 
-
+ 
 function index($param = array()) {
     global $input;
     
@@ -33,6 +33,7 @@ function index($param = array()) {
         // Generate report
         $report = new Report($start_date, $end_date, $general, $ezplayer);
         
+        
         // get all classroom, number and time record
         $allClassRoom = $report->get_date_classroom_record_time();
         $totalSubmit = $allClassRoom['SUBMIT'];
@@ -44,17 +45,16 @@ function index($param = array()) {
         $nbrSubmit = $totalSubmit['nbr'];
         $totalNbrClassroom = $nbrSubmit + $totalClassroom['nbr'];
         $percentSubmit = calcul_percent($nbrSubmit, $totalNbrClassroom);
-        $percentAuditoir = round((100-$percentSubmit), 2);
+        $percentClassrooms = round((100-$percentSubmit), 2);
 
         // Browser
         $totalBrowser = array_sum($report->get_ezplayer_date_list_user_browser());
         
         $json_view_asset_data = date_to_json_highcharts($report->get_ezplayer_asset_view_date());
-        
-        $data_status_date = db_event_status_get_date($str_start_date, $str_end_date);
+        $data_status_date = db_event_get_success_error_status_for_dates($str_start_date, $str_end_date);
+        //print_r($data_status_date);
         $json_status_date_success = date_to_json_highcharts($data_status_date['success']);
         $json_status_date_error = date_to_json_highcharts($data_status_date['error']);
-        
         
         list($success, $error) = db_event_status_get_nbr($str_start_date, $str_end_date);
         $totalStatus = $success+$error;
@@ -66,9 +66,18 @@ function index($param = array()) {
         foreach ($nbr_camslide as $infos) {
             $total_nbr_camslide += $infos['total_type'];
         }
-        
+        /*
+        $all_last_status_for_period = db_event_get_last_status_for_period($str_start_date, $str_end_date);
+        $count_for_status = array();
+        foreach($all_last_status_for_period as $last_status) {
+            if(isset( $count_for_status[$last_status['status']]))
+                $count_for_status[$last_status['status']]++;
+            else
+                $count_for_status[$last_status['status']] = 1;
+        }
+        var_dump($count_for_status);
+         */
         $MAX_DETAILS_LIST = 20;
-        
     }
         
     // DEBUG TIME

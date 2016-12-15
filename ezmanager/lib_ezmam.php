@@ -1061,7 +1061,7 @@ function ezmam_backup_media($album_name, $asset_name, $media_name) {
         return false;
     }
     $media_dir = $repository_path . "/" . $album_name . "/" . $asset_name . "/" . $media_name;
-    $media_dir_backup = $media_dir . "." . time();
+    $media_dir_backup = $repository_path . "/" . $album_name . "/" . $asset_name . "/." . $media_name . "." . time(); //add a . before it so that its ignored in submit_itm_get_medias
     
     $exists = file_exists($repository_path . "/" . $album_name . "/" . $asset_name . "/" . $media_name);
     if(!$exists)

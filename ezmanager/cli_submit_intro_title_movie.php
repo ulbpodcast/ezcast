@@ -22,7 +22,7 @@ Logger::$print_logs = true;
 ezmam_repository_path($repository_path);
 
 if($argc!=3){
-    echo "Usage: ".$argv[0]." <album_name> <asset_name>" . PHP_EOL;
+    echo "Usage: ".$argv[0]." <album_name> <asset_time>" . PHP_EOL;
     echo "Example php cli_submit_intro_title_movie.php MOOC-G3-pub 2016_09_26_10h40" . PHP_EOL;
 
     $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::WARNING, __FILE__ ." called with wrong argc count: $argc. argv: " . json_encode($argv), array("cli_submit_intro_title_movie"));
@@ -41,8 +41,10 @@ if(!ezmam_asset_exists($album, $asset)){
 //create directory used to transmit the (video) rendering/processing work to one of the Macs
 $processing_dir_name=$asset."_".$album."_intro_title_movie";
 $render_dir=$render_root_path."/processing/".$processing_dir_name;
-mkdir($render_dir);
-chmod($render_dir, 0777);
+if(!file_exists($render_dir)) {
+    mkdir($render_dir);
+    chmod($render_dir, 0777);
+}
 
 $path_to_videos = $repository_path.'/'.$album.'/'.$asset;
 $medias = submit_itm_get_medias($album, $asset);
@@ -204,8 +206,7 @@ function submit_itm_get_medias($album,$asset){
           $medias[$media]=ezmam_media_getpath($album, $asset, $media, true);
           $file_path = $repository_path."/".$medias[$media];
           if(!(file_exists($file_path))) {
-                  $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "File/dir $file_path does not exists", array("cli_submit_intro_title_movie"));
-                  exit(5);
+            $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::ERROR, "File/dir $file_path does not exists", array("cli_submit_intro_title_movie"));
           }
         }//endif original
     }//end foreach media

@@ -164,10 +164,10 @@ if(file_exists($inserted_recording_dir)) { //This may happen if we re process an
     if(!$ok) {
         $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::ERROR, "Could not move old mam_inserted folder to $new_name, the folder will be left over in its current location ($recording_dir)", array("cli_mam_insert"), $asset);
     } else {
-        rename($recording_dir, $inserted_recording_dir );
+        rename($recording_dir, $inserted_recording_dir);
     }
 } else {
-    rename($recording_dir, $inserted_recording_dir );
+    rename($recording_dir, $inserted_recording_dir);
 }
 
 //now launch cam and/or slide video processing
@@ -177,8 +177,8 @@ if(file_exists($inserted_recording_dir)) { //This may happen if we re process an
 // intro donnees dans les metadata de l'album? ou global semeur?
 // info titre tirees des meta de l'asset
 //input movie donnee par le media
-$cmd="$php_cli_cmd $submit_intro_title_movie_pgm $album_name $asset_name >> /dev/null 2>&1"; 
-exec($cmd, $cmdoutput, $returncode);
+$cmd="$php_cli_cmd $submit_intro_title_movie_pgm $album_name $asset_name"; 
+system($cmd, $returncode);
 if($returncode) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Command $cmd failed with result $returncode", array("cli_mam_insert"), $asset);
     set_asset_status_to_failure();

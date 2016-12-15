@@ -622,7 +622,7 @@ function checkipsyntax($ipstr) {
  * @desc converts ip string to 4 numbers
  */
 function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node) {
-    $res = ereg("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$", $ipstr, $regs);
+    $res = preg_match("/^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/", $ipstr, $regs);
     if (!$res)
         return 1;
     $returncode = 0;

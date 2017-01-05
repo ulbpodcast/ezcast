@@ -855,7 +855,7 @@
     if ($.fn.delegate) {
         $(document).delegate('.' + boxElement, 'click', handler);
     } else {
-        $('.' + boxElement).live('click', handler);
+        $('.' + boxElement).click(handler);
     }
     
 	// Initializes ColorBox when the DOM has loaded

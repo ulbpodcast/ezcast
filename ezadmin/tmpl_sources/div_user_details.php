@@ -221,7 +221,7 @@
         });
 
 
-        $(".courses_table .unlink").live("click", function() {
+        $(".courses_table .unlink").click(function() {
             $this = $(this);
 
             if ($this.parent().data('origin') == 'external')

@@ -14,7 +14,7 @@
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';
-include_once 'lib_scheduling.php';
+require_once __DIR__.'/../commons/lib_scheduling.php';
 
 Logger::$print_logs = true;
 

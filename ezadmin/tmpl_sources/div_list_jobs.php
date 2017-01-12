@@ -22,7 +22,8 @@ require_once 'config.inc';
         <th>®job_actions®</th>
     </tr>
     
-    <?php include_once 'lib_scheduling.php';
+    <?php 
+    require_once '../commons/lib_scheduling.php';
     
     foreach($jobs as $job) {
         if(empty($job['done'])) {

@@ -137,7 +137,7 @@ if(!ezmam_asset_exists($album_name, $asset_name))
 //do we have a cam movie?
 if( strpos($record_type,"cam")!==false) {
    //insert original cam media in asset with attention to file extension/mimetype
-  $ok = originals_mam_insert_media($album_name,$asset_name,'cam',$recording_metadata,$recording_dir);
+  $ok = originals_mam_insert_media($album_name, $asset_name, 'cam', $recording_metadata, $recording_dir);
   if(!$ok) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Cam media insertion failed for album $album_name", array("cli_mam_insert"), $asset);
     set_asset_status_to_failure();
@@ -148,7 +148,7 @@ if( strpos($record_type,"cam")!==false) {
 //do we have a slide movie?     
 if(strpos($record_type,"slide")!==false){
   //insert original slide media in asset with attention to file extension/mimetype
-  $ok = originals_mam_insert_media($album_name,$asset_name,'slide',$recording_metadata,$recording_dir);
+  $ok = originals_mam_insert_media($album_name,$asset_name, 'slide', $recording_metadata, $recording_dir);
   if(!$ok) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Slide media insertion failed for album $album_name", array("cli_mam_insert"), $asset);
     set_asset_status_to_failure();

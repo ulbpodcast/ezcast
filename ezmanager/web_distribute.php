@@ -272,7 +272,6 @@ function view_media() {
         //readfile($media_handle);
         //fpassthru($fh);
         passthru('/bin/cat ' . escapeshellarg($media_handle));
-        fclose($fh);
     }
 }
 

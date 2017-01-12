@@ -63,7 +63,7 @@ function index($param = array()) {
             
             // Get JSON informations
             
-            $json = @url_get_contents('http://'.$classroom['IP'].URL_ADR, 1);
+            $json = @url_get_contents('http://'.$classroom['IP'].URL_ADR, 5);
             $data = json_decode($json);
             if($data == null) {
                 $classroom['online'] = false;

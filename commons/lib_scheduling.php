@@ -97,9 +97,9 @@ function scheduler_schedule() {
  * @return Whehter the job has been successfully added
  */
 function scheduler_append($job) {
-    if(!$job['created']) 
+    if(!isset($job['created'])) 
         $job['created'] = date('Y-m-d H:i:s');
-    if(!$job['priority']) 
+    if(!isset($job['priority']))
         $job['priority'] = lib_scheduling_config('default-priority');
 
     $job['uid'] = sha1($job['sender'] . strtotime($job['created']));
@@ -360,11 +360,11 @@ function lib_scheduling_job_read($file) {
  */
 function lib_scheduling_job_write($job, $dir) {
     // default name
-    if(!$job['name']) 
+    if(!isset($job['name']))
         $job['name'] = 'no_name';
 
     // file name
-    if(!$job['basename']) 
+    if(!isset($job['basename']))
         $job['basename'] = lib_scheduling_file_safe($job['created'] . '_' . $job['sender']  . '_' . $job['name']) . '.xml';
 
     // do not write the basename neither the status(redondant)

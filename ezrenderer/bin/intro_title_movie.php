@@ -12,8 +12,8 @@ include_once __DIR__ . "/lib_metadata.php";
 include_once __DIR__ . "/lib_gd.php";
 
 if ($argc != 2) {
-    echo "usage: " . $argv[0] . " <directory_path>\n";
-    echo "        where <directory_path> is the path to a directory containing toprocess.xml and titlemeta.xml xml description files\n";
+    echo "usage: " . $argv[0] . " <directory_name>\n";
+    echo "        where <directory_name> is the directory name in $downloaded_dir containing toprocess.xml and titlemeta.xml xml description files\n";
     echo "        The command generates a movie with the right intro (given in toprocess.xml), a custom title (info in titlemeta.xml), the video itself (from toprocess.xml) and a closing credits (from toprocess.xml)\n";
     exit(1);
 }
@@ -238,14 +238,18 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
 
             processing_status("title $camslide");
             $res = gd_image_create($title_assoc, $width, $height, $title_image);
-            if (!$res || !file_exists($title_image))
-                myerror("couldn't generate title $title_image");
+            if (!$res || !file_exists($title_image)) {
+                myerror("couldn't generate title $title_image", false);
+                $title_image = false;
+            }
+            if($title_image) {
             //   $res = movie_title($title_movieout, $title_assoc, $encoder, 8); //duration is hardcoded to 8
-            $res = movie_title_from_image($title_movieout, $title_image, $encoder);
-            if ($res)
-                myerror("couldn't generate title $title_movieout");
-
-            array_push($movies_to_join, $title_movieout);
+                $res = movie_title_from_image($title_movieout, $title_image, $encoder);
+                if ($res)
+                    myerror("couldn't generate title $title_movieout", false);
+                else
+                    array_push($movies_to_join, $title_movieout);
+            }
         }
         
         //join main movie

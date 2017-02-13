@@ -64,17 +64,17 @@ function assoc_array2metadata($assoc_array){
  *
  */
 function assoc_array2metadata_file($assoc_array,$file_path){
- $xmlstr="<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
- $xml = new SimpleXMLElement($xmlstr);
- foreach ($assoc_array as $key => $value) {
-  $xml->addChild($key,$value);
- }
- $xml_txt=$xml->asXML();
- $res=file_put_contents($file_path,$xml_txt,LOCK_EX);
- //did we write all the characters
- if($res!=strlen($xml_txt))return false;//no
+    $xmlstr="<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
+    $xml = new SimpleXMLElement($xmlstr);
+    foreach ($assoc_array as $key => $value) {
+        $xml->addChild($key,$value);
+    }
+    $xml_txt=$xml->asXML();
+    $res=file_put_contents($file_path,$xml_txt,LOCK_EX);
+    
+    //did we write all the characters
+    if($res!=strlen($xml_txt))
+        return false;//no
 
- return true;
+    return true;
 }
-
-?>

@@ -1075,10 +1075,10 @@
         <message id="ffprobe_not_found" lang="en">FFPROBE binary could not be found on the remote server (renderer).</message>
         <message id="ssh_keyscan_error" lang="fr">Impossible de retrouver la clé publique SSH du serveur distant (renderer).</message>
         <message id="ssh_keyscan_error" lang="en">Could not retrieve SSH public key from remote server (renderer).</message>
-        <message id="cannot_ssh_recorder" lang="fr">Impossible d'ouvrir une connection ssh avec le renderer. Vérifiez authorized_keys 
+        <message id="cannot_ssh_recorder" lang="fr">Impossible d'ouvrir une connection ssh avec le recorder. Vérifiez authorized_keys 
             sur le recorder 
             et $recorder_user dans le fichier de configuration commun du serveur</message>
-        <message id="cannot_ssh_recorder" lang="en">Cannot open ssh connection with renderer. Check authorized_keys file in recorder 
+        <message id="cannot_ssh_recorder" lang="en">Cannot open ssh connection with the recorder. Check authorized_keys file in recorder 
             and $recorder_user in server common config file.</message>
         <message id="ssh_known_hosts_error" lang="fr">Impossible d'ajouter la clé publique SSH du serveur distant (renderer) au fichier 
             'known_hosts'.</message>

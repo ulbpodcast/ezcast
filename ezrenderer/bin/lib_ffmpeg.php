@@ -1,32 +1,6 @@
 <?php
 
 /*
- * EZCAST EZrenderer
- *
- * Copyright (C) 2016 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	      Arnaud Wijns <awijns@ulb.ac.be>
- *            Antoine Dewilde
- *            Thibaut Roskam
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
-
-/*
  * interfaces ffmpeg commandline tool 
  * All path should be absolute
  */
@@ -40,7 +14,7 @@ if ($encoding_pgm['name'] == 'ffmpeg_exp')
  * @global string $ffmpegpath 
  * @param type $movie_array an array containing movies to concatenate (requires absolute paths)
  * @param type $output name of the output video
- * @return boolean
+ * @return 0 on success, else an error message
  */
 function movie_join_array($movie_array, $output) {
     global $ffmpegpath;
@@ -49,7 +23,7 @@ function movie_join_array($movie_array, $output) {
     $filename_list = '';
     for ($i = 0; $i < count($movie_array); $i++) {
         if (!is_file($movie_array[$i])) {
-            return false;
+            return "movie_join_array:" . $movie_array[$i] . " is not a file";
         }
         $filename_list .= "file '" . $movie_array[$i] . "'" . PHP_EOL;
     }
@@ -74,7 +48,7 @@ function movie_join_array($movie_array, $output) {
     if ($returncode) {
         return join("\n", $cmdoutput);
     }
-    return false;
+    return 0;
 }
 
 /**

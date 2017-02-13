@@ -1,32 +1,5 @@
 <?php
 
-/*
- * EZCAST EZrenderer
- *
- * Copyright (C) 2016 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 	      Arnaud Wijns <awijns@ulb.ac.be>
- *            Antoine Dewilde
- *            Thibaut Roskam
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
-
-
 /**
  * This program processes a recording
  */
@@ -42,7 +15,7 @@ if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_path>\n";
     echo "        where <directory_path> is the path to a directory containing toprocess.xml and titlemeta.xml xml description files\n";
     echo "        The command generates a movie with the right intro (given in toprocess.xml), a custom title (info in titlemeta.xml), the video itself (from toprocess.xml) and a closing credits (from toprocess.xml)\n";
-    die;
+    exit(1);
 }
 
 // move from download to processing
@@ -127,29 +100,35 @@ print "\nRendering took $t0 seconds \n";
 
 print "\n//////////////////////////////// MOVE TO PROCESSED /////////////////////////////////////////////\n";
 if (!rename($processing, $processed)) {
-    // already processed ? something like that
-    rename($processing, $fail);
-} else {
-    $blacklist = array(
-        'annotated_movie.mov',
-        'cam_transcoded.mov',
-        'slide_transcoded.mov',
-        'output_ref_movie.mov',
-        'title.mov',
-        'title.jpg',
-        'transcoded_intro.mov',
-        'transcoded_credits.mov',
-    );
+    // already processed? Rename old one and replace it
+    $ok = rename($processed, $processed . uniqid());
+    $ok = $ok && rename($processing, $processed);
+    if(!$ok)
+        exit(2);
+}
 
-    foreach ($blacklist as $file) {
-        unlink($processed . '/' . $file);
-    }
+//cleanup
+$blacklist = array(
+    'annotated_movie.mov',
+    'cam_transcoded.mov',
+    'slide_transcoded.mov',
+    'output_ref_movie.mov',
+    'title.mov',
+    'title.jpg',
+    'transcoded_intro.mov',
+    'transcoded_credits.mov',
+);
+
+foreach ($blacklist as $file) {
+    unlink($processed . '/' . $file);
 }
 
 exit(0); //quit successfully
 
 // choose intro or outro movie
+//returns false on failure
 function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $width, $height) {
+
     switch ($aspectRatio) {
         case "16:9":
         case "16:10":
@@ -169,8 +148,10 @@ function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $wid
             break;
     }
     
-    if (!file_exists($movie))
+    if (!is_file($movie)) {
+        print "choose_movie: file $movie did not exists, use default instead" . PHP_EOL;
         $movie = $movies_dir . "/$movie_name" . "/" . $movies_list['default'];
+    }
      
     return $movie;
 }
@@ -229,9 +210,12 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
             $transcoded_intro = $processing . "/transcoded_intro.mov";
 
             print "\n----------------- transcoding intro with encoder $encoder ---------------------\n\n";
-            if(safe_movie_encode($intro_movie, $transcoded_intro, $encoder, false) == 0)
+            $res = safe_movie_encode($intro_movie, $transcoded_intro, $encoder, false);
+            if($res == false)
+            {
+                print "Adding intro $intro_movie to join array. Res: $res" . PHP_EOL;
                 array_push($movies_to_join, $transcoded_intro);
-            else
+            } else
                 print "\n\nSkipping $quality intro encoder: $encoder\n";
                 
             print "\n\n$quality intro encoder: $encoder\n";
@@ -274,7 +258,7 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
             $transcoded_credits = $processing . "/transcoded_credits.mov";
 
             print "\n----------------- transcoding credits with encoder $encoder ---------------------\n\n";
-            if(safe_movie_encode($credits_movie, $transcoded_credits, $encoder, false) == 0)
+            if(safe_movie_encode($credits_movie, $transcoded_credits, $encoder, false) == false)
                 array_push($movies_to_join, $transcoded_credits);
             else
                 print "\n\nSkipping $quality credits encoder: $encoder\n";
@@ -287,9 +271,10 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
             //var_dump($movies_to_join);
             $outputrefmovie = $processing . "/output_ref_movie.mov";
             print "\n------------------------ joining intro title movie parts ---------------------\n";
+            var_dump($movies_to_join);
             $res = movie_join_array($movies_to_join, $outputrefmovie);
             if ($res)
-                myerror("couldn't join movie $outputrefmovie");
+                myerror("couldn't join movie $outputrefmovie. Result: $res");
         } else {
             //movie without intro nor title so no join needed
             $outputrefmovie = $transcoded_movie;
@@ -298,8 +283,10 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         //set title, author,... in movie
         print "\n\n------------------------ Annotate $quality $camslide ---------------------\n";
         $res = movie_annotate($outputrefmovie, $annotated_movie, $title_assoc['title'], $title_assoc['date'], $title_assoc['description'], $title_assoc['author'], $title_assoc['keywords'], $title_assoc['copyright']);
-        if ($res)
-            myerror("couldn't annotate movie $outputrefmovie");
+        if ($res) {
+            myerror("couldn't annotate movie $outputrefmovie. Res: $res", false);
+            $annotated_movie = $outputrefmovie; //skip and try to continue anyway with the previous video file
+        }
         
         print "\n\n------------------------ Relocate MOOV atom $quality $camslide ---------------------\n";
         if ($quality != 'low') {
@@ -474,20 +461,22 @@ function itm_handle_movie($movie, $camslide, $quality, $ratio, &$encoder) {
     print "\n----------------- [START] transcoding $camslide ---------------------\n\n";
     $movieout = $processing . "/{$camslide}_transcoded.mov";
     $res = safe_movie_encode($movie, $movieout, $encoder, $qtinfo, $letterboxing);
-    if ($res)
+    if ($res != false)
         myerror("transcoding error with movie $movie encoder $encoder\n");
     print "\n----------------- [END] transcoding $camslide ---------------------\n";
     return $movieout;
 }
 
-function myerror($msg) {
+function myerror($msg, $exit = true) {
 
     global $procdirpath;
 
     processing_status("ERROR");
     print "\n******************************** ERROR ********************************\n";
     fprintf(STDERR, "%s", $msg);
-    exit(1); //return error code
+    print PHP_EOL;
+    if($exit)
+        exit(1); //return error code
 }
 
 /**
@@ -539,8 +528,11 @@ function safe_copy($from, $to, $recursif = false) {
     return (!$returncode ? true : false);
 }
 
+//return false on success, else an error message
 function safe_movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = true) {
     $repeat = 1;
+    
+    $res = false;
     do {
         $res = movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing);
         if ($res) {
@@ -554,5 +546,7 @@ function safe_movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing
         }
         $repeat+=1;
     } while ($res && $repeat < 10);
+       
+    print PHP_EOL . "safe_movie_encode returns $res" . PHP_EOL;
     return $res;
 }

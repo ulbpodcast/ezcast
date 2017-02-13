@@ -45,7 +45,7 @@ function push_log() {
     $infoJSON = json_decode($input['log_data']);
 
     if(json_last_error() != JSON_ERROR_NONE) {
-        echo "ERROR 1";
+        echo "ERROR 1: " . json_last_error() ;
         die;
     }
     
@@ -234,7 +234,7 @@ function last_log_sent() {
     global $input;
     
     if(!array_key_exists('source', $input)) {
-        echo "ERROR 1";
+        echo "ERROR 1 (invalid arguments)";
         die;
     }
 

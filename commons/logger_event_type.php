@@ -41,6 +41,8 @@ class EventType {
     const RECORDER_CAM_MANAGEMENT            = "recorder_cam_management";
     const RECORDER_STREAMING                 = "recorder_streaming";
     const RECORDER_SOUND_DETECTION           = "recorder_sound_detection";
+    const RECORDER_FFMPEG_CUTLIST            = "recorder_ffmpeg_cutlist";
+    
     //
     // EZAdmin
     
@@ -102,6 +104,7 @@ class EventType {
        EventType::RECORDER_CAM_MANAGEMENT                    => 1025,
        EventType::RECORDER_STREAMING                         => 1026,
        EventType::RECORDER_SOUND_DETECTION                   => 1027,
+       EventType::RECORDER_FFMPEG_CUTLIST                    => 1028,
         
        // EZAdmin: 2000->2999
        

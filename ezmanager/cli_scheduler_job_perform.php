@@ -65,22 +65,23 @@ echo $cmd . PHP_EOL;
 exec($cmd, $cmdoutput, $returncode);
 $t2=time();
 $dt=$t2-$t1;
-
 echo "Output result in " .$job['location'] . PHP_EOL;
 file_put_contents($job['location']. '/renderer.log', implode("\n", $cmdoutput));
 
 // Rendering fail
 if($returncode) {
- $asset_meta['status']='failed';
- $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
- lib_scheduling_error('Scheduler::job_perform[fail]{encode: ' . $cmd . '}('  . $returncode . ')[' . $dt .' sec]');
- $from_dir = lib_scheduling_config('processing-path') . '/' . $job['basename'];
- $to_dir = lib_scheduling_config('failed-path') . '/' . $job['basename'];
- lib_scheduling_file_move($from_dir, $to_dir);
- $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Rendering failed for job $uid. Album $album. Asset: $asset. Moving job file from dir $from_dir to dir $to_dir. Cmd was $cmd", array(basename(__FILE__)));
- die;
+    $asset_meta['status']='failed';
+    $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
+    lib_scheduling_error('Scheduler::job_perform[fail]{encode: ' . $cmd . '}('  . $returncode . ')[' . $dt .' sec]');
+    $from_dir = lib_scheduling_config('processing-path') . '/' . $job['basename'];
+    $to_dir = lib_scheduling_config('failed-path') . '/' . $job['basename'];
+    lib_scheduling_file_move($from_dir, $to_dir);
+    $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Rendering failed for job $uid. Album $album. Asset: $asset. Moving job file from dir $from_dir to dir $to_dir. Cmd was $cmd", array(basename(__FILE__)));
+    die;
 }
 $logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "Successfully rendered job $uid. Album $album. Asset: $asset", array(basename(__FILE__)));
+
+echo "Retrieving from renderer..." . PHP_EOL;
 
 // Retrieve the video from the renderer
 $asset_meta['status']='encoded';

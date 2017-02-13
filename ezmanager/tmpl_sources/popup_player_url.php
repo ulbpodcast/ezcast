@@ -32,6 +32,11 @@ You should not have to use this file on your own; if you do, make sure the varia
 -->
 <div class="popup" id="player_url_box" style="width:600px;">
     <h2>®Player_url®</h2>
+    <?php 
+    if(!$public_album) {
+        echo "<span style='color: red'><p><strong>®Player_url_private_alert®</strong></p></span>";
+    }
+    ?>
     ®Player_url_message® <br/><br/>
     <strong><a href="<?php echo $player_full_url; ?>" target="_blank"><?php echo $player_full_url; ?></a><br/><br/></strong>
         

@@ -31,7 +31,7 @@
              ¤developed_by¤
         </div>
         <div class="copyright">
-            Copyright © 2017
+            Copyright © <?php echo date('Y'); ?>
         </div>
     </div>
 </div>

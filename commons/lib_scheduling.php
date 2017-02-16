@@ -764,6 +764,7 @@ function lib_scheduling_renderer_assign($renderer, $job) {
         return false;
     }
     
+    $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::DEBUG, "Assigned job ".$job['uid']." to renderer ".$renderer['host'], array(__FUNCTION__)); 
     $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::DEBUG, "Call to cli_scheduler_job_perform with cmd: $cmd", array(__FUNCTION__)); 
     
     return true;

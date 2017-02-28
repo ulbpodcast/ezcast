@@ -10,6 +10,8 @@ class EventStatus {
     const AUTO_SUCCESS_WARNINGS = "AUTO_SUCCESS_WARNINGS";
     // Fail treatment
     const AUTO_FAILURE = "AUTO_FAILURE";
+    // Canceled
+    const AUTO_IGNORE = "AUTO_IGNORE";
     
     // All is ok
     const MANUAL_OK = "MANUAL_OK";

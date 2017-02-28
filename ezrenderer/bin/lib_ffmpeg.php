@@ -39,7 +39,7 @@ function movie_join_array($movie_array, $output) {
     // -i file : input file is the list containing the video files to concat
     // -c copy : keep the current codecs (no reencoding)
     // output : the name and extension for the output file
-    $cmd = "$ffmpegpath -f concat -i ./$tmp_file -c copy -y $output";
+    $cmd = "$ffmpegpath -f concat -safe 0 -i ./$tmp_file -c copy -y $output";
     print $cmd;
     exec($cmd, $cmdoutput, $returncode);
     // deletes the temporary text file

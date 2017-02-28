@@ -10,9 +10,13 @@ include_once __DIR__.'/lib_ezmam.php';
 
 if($argc != 2) {
     echo "Usage: cli_scheduler_job_perform <job_uid>" . PHP_EOL;
+    $logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "cli_scheduler_job_perform called with wrong arg count $argc", array(basename(__FILE__)));
     exit(1);
 }
 Logger::$print_logs = true;
+
+//overwrite shutdown function: log and set rendering to failure in share of php shutdown
+register_shutdown_function('job_perform_shutdown_function');
 
 $uid = $argv[1];
 $logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "cli_scheduler_job_perform called with uid $uid", array(basename(__FILE__)));
@@ -130,11 +134,49 @@ if($returncode != 0) {
     //non zero return code -> something bad happened
     $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Call to cli_rendered_maminsert failed. Cmd was $cmd", array(basename(__FILE__)));
     $msg = "Submit_intro_title_movie failed";
-    $asset_meta['status']='failed';
-    $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
+    set_rendering_failure($album, $asset, $asset_meta);
+    exit(2);
 }
-else{
-    $logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "Job perform finished with success for job $uid. Album $album. Asset: $asset", array(basename(__FILE__)));
-    lib_scheduling_notice('Scheduler::job_perform[success]{' . $job['uid'] . '}');
-    scheduler_schedule();
+
+$logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "Job perform finished with success for job $uid. Album $album. Asset: $asset", array(basename(__FILE__)));
+lib_scheduling_notice('Scheduler::job_perform[success]{' . $job['uid'] . '}');
+scheduler_schedule();
+
+exit(0);
+
+function set_rendering_failure($album, $asset, $asset_meta) {
+    $asset_meta['status']='failed';
+    ezmam_asset_metadata_set($album, $asset, $asset_meta);
+}
+
+function job_perform_shutdown_function() { 
+    global $job;
+    global $cmd;
+    global $logger;
+    
+    //include if not already
+    require_once(__DIR__.'/../commons/custom_error_handling.php');
+    
+    $error = error_get_last();
+    // fatal error, E_ERROR === 1
+    if (is_critical_error($error['type'])) {
+        $file = $job['location']."/job_perform_crashed.txt";
+        $content =  $error["file"].':'.$error["line"] . PHP_EOL;
+        $content .= $error['message'] . PHP_EOL;
+        $content .= "Last command:".PHP_EOL;
+        $content .= $cmd.PHP_EOL;
+        file_put_contents($file, $content);
+
+        global $asset_meta;
+        global $album;
+        global $asset;
+        set_rendering_failure($album, $asset, $asset_meta);
+
+        global $uid;
+        $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Rendering script crashed for job $uid. More completed output in $file", array(basename(__FILE__)));
+
+    }
+    
+    //call default shutdown_handler
+    shutdown_handler();
 }

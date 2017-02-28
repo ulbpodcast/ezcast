@@ -241,6 +241,7 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
     if (!is_file($encoder))
         return "encoder not found $encoder";
 
+    $aac_codec = "";
     if ($aac_experimental) {
         $aac_codec = ' -acodec aac -strict experimental ';
         // overwrites audio codec from encoders file
@@ -383,6 +384,7 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8) {
         $drawtext_filter = substr($drawtext_filter, 0, -2);
     }
 
+     $aac_codec = "";
     if ($aac_experimental) {
         $aac_codec = ' -acodec aac -strict experimental ';
         // overwrites audio codec from encoders file
@@ -446,6 +448,7 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
 
     $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
 
+     $aac_codec = "";
     if ($aac_experimental) {
         $aac_codec = ' -acodec aac -strict experimental ';
         // overwrites audio codec from encoders file

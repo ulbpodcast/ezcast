@@ -60,7 +60,7 @@ Before calling this template, please define the following variables:
                 <img src="images/page4/PictoRss.png" style="display:inline"/> ®HD_RSS_feed®</a> 
             <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#SD_RSS_box'); copyToClipboard('#zero_clipboard_sd_rss','<?php echo $sd_rss_url_web; ?>');">
                 <img src="images/page4/PictoRss.png" style="display:inline"/> ®SD_RSS_feed®</a> 
-            <a class="greyLink ezplayer" style="font-size:0.75em;<?php if(!$public_album) echo "color: darkred !important;"?>" href="javascript:show_popup_from_inner_div('#player_url_box'); copyToClipboard('#zero_clipboard_player_url','<?php echo $player_full_url; ?>');">
+            <a class="greyLink ezplayer" style="font-size:0.75em;<?php if(!$public_album) echo "color: red !important;"?>" href="javascript:show_popup_from_inner_div('#player_url_box'); copyToClipboard('#zero_clipboard_player_url','<?php echo $player_full_url; ?>');">
                     <img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®</a>
 
     </div>

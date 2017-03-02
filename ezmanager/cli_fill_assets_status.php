@@ -157,7 +157,7 @@ function select_asset_to_check($check_all) {
         if($event['type_id'] == EventType::$event_type_id[EventType::ASSET_FINALIZED]) {
             $listAsset[$asset] = "final";
             $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found finalization event for asset $asset", array(__FUNCTION__), $asset);
-        } else if ($event['type_id'] == EventType::$event_type_id[EventType::ASSET_RECORD_END]) {
+        } else if ($event['type_id'] == EventType::$event_type_id[EventType::ASSET_CANCELED]) {
             $listAsset[$asset] = "cancel";
             $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found cancel event for asset $asset", array(__FUNCTION__), $asset);
         } else if(time()-strtotime($event['event_time']) > TIME_LIMIT) {

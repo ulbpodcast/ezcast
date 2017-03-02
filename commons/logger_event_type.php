@@ -1,8 +1,8 @@
 <?php
 
 // This file is shared between server and recorder and should be kept identical in both projects.
+// !!! When adding a new type, add a class member + add it's ID into the $event_type_id array
 
-// When adding a new type, add a class member + add it's ID into the $event_type_id array
 class EventType {
     // Commons
     const TEST                               = "test";
@@ -11,6 +11,7 @@ class EventType {
     const ASSET_FINALIZED                    = "asset_finalized";
     const ASSET_RECORD_END                   = "asset_record_end";
     const PHP                                = "php";
+    const ASSET_CANCELED                     = "asset_canceled";
     
     // Recorder
     const RECORDER_DB                        = "recorder_recorder_db";
@@ -42,6 +43,7 @@ class EventType {
     const RECORDER_STREAMING                 = "recorder_streaming";
     const RECORDER_SOUND_DETECTION           = "recorder_sound_detection";
     const RECORDER_FFMPEG_CUTLIST            = "recorder_ffmpeg_cutlist";
+    const RECORDER_FFMPEG_PROCESS            = "recorder_ffmpeg_process";
     
     //
     // EZAdmin
@@ -74,6 +76,7 @@ class EventType {
        EventType::ASSET_FINALIZED                            => 3,
        EventType::ASSET_RECORD_END                           => 4,
        EventType::PHP                                        => 5,
+       EventType::ASSET_CANCELED                             => 6,
         
        // Recorder: 1000->1999
        EventType::RECORDER_DB                                => 1000,
@@ -105,6 +108,7 @@ class EventType {
        EventType::RECORDER_STREAMING                         => 1026,
        EventType::RECORDER_SOUND_DETECTION                   => 1027,
        EventType::RECORDER_FFMPEG_CUTLIST                    => 1028,
+       EventType::RECORDER_FFMPEG_PROCESS                    => 1029,
         
        // EZAdmin: 2000->2999
        

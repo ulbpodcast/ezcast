@@ -241,8 +241,8 @@ function db_event_get($asset, $origin, $asset_classroom_id, $asset_course, $asse
     $valueWhereParam = array();
     
     if($asset != "") {
-        $whereParam[] = "events.asset = ?";
-        $valueWhereParam[] = $asset;
+        $whereParam[] = "events.asset LIKE ?";
+        $valueWhereParam[] = db_sanitize($asset);
     }
     
     if($origin != "") {

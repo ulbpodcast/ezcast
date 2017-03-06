@@ -644,7 +644,7 @@ function create_tables($drop = true) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_STATUS_TABLE_NAME .'`;');
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_STATUS_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
-                "`status` enum('auto_success', 'auto_success_errors', 'auto_success_warnings', 'auto_failure', 'manual_ok', 'manual_partial_ok', 'manual_failure', 'manual_ignore') NOT NULL," .
+                "`status` enum('auto_success', 'auto_success_errors', 'auto_success_warnings', 'auto_failure', 'auto_ignore', 'manual_ok', 'manual_partial_ok', 'manual_failure', 'manual_ignore') NOT NULL," .
                 "`author` varchar(50) DEFAULT 'system'," .
                 "`status_time` datetime DEFAULT NULL," .
                 "`description` text" .

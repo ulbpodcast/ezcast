@@ -10,6 +10,8 @@ class EventStatus {
     const AUTO_SUCCESS_WARNINGS = "AUTO_SUCCESS_WARNINGS";
     // Fail treatment
     const AUTO_FAILURE = "AUTO_FAILURE";
+    // Canceled
+    const AUTO_IGNORE = "AUTO_IGNORE";
     
     // All is ok
     const MANUAL_OK = "MANUAL_OK";
@@ -43,14 +45,14 @@ class EventStatus {
             case EventStatus::AUTO_SUCCESS_WARNINGS:
                 return "lightwarning";
                 
-            case EventStatus::MANUAL_FAILURE:
-                return "danger";
+                //return "danger";
                 
             case EventStatus::AUTO_SUCCESS_ERRORS:
             case EventStatus::MANUAL_PARTIAL_OK:
                 return "warning";
                 
             case EventStatus::AUTO_FAILURE:
+            case EventStatus::MANUAL_FAILURE:
                 return "alert";
                 
                 

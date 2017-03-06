@@ -157,7 +157,9 @@ function select_asset_to_check($check_all) {
         if($event['type_id'] == EventType::$event_type_id[EventType::ASSET_FINALIZED]) {
             $listAsset[$asset] = "final";
             $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found finalization event for asset $asset", array(__FUNCTION__), $asset);
-
+        } else if ($event['type_id'] == EventType::$event_type_id[EventType::ASSET_CANCELED]) {
+            $listAsset[$asset] = "cancel";
+            $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found cancel event for asset $asset", array(__FUNCTION__), $asset);
         } else if(time()-strtotime($event['event_time']) > TIME_LIMIT) {
             $listAsset[$asset] = "timeout";
         }
@@ -178,33 +180,34 @@ function write_asset_status() {
     
     foreach($listAsset as $asset => $inListBecause) {
 
-        if($inListBecause == "timeout") { 
-            // End with an time out
-            add_db_event_status($asset, EventStatus::AUTO_FAILURE, 'Time out after: ' . 
-                    TIME_LIMIT . ' seconds');
-
-        } else {
-            $maxLogLevel = 7;
-            foreach($resListAsset[$asset] as $assetInfo) {
-                if($assetInfo['loglevel'] < $maxLogLevel) {
-                    $maxLogLevel = $assetInfo['loglevel'];
+        switch($inListBecause) {
+            case "timeout":
+                 // End with an time out
+                add_db_event_status($asset, EventStatus::AUTO_FAILURE, 'Time out after: ' . 
+                        TIME_LIMIT . ' seconds');
+                break;
+            case "cancel":
+                add_db_event_status($asset, EventStatus::AUTO_IGNORE, "Canceled by user");
+                break;
+            case "final":
+                 $maxLogLevel = 7;
+                foreach($resListAsset[$asset] as $assetInfo) {
+                    if($assetInfo['loglevel'] < $maxLogLevel) {
+                        $maxLogLevel = $assetInfo['loglevel'];
+                    }
                 }
-            }
 
+                if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_ERROR_THRESHOLD]) {
+                    $eventStatus = EventStatus::AUTO_SUCCESS_ERRORS;
+                } else if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_WARNING_THRESHOLD]) {
+                    $eventStatus = EventStatus::AUTO_SUCCESS_WARNINGS;
+                } else {
+                    $eventStatus = EventStatus::AUTO_SUCCESS;
+                }
 
-            if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_ERROR_THRESHOLD]) {
-                $eventStatus = EventStatus::AUTO_SUCCESS_ERRORS;
-
-            } else if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_WARNING_THRESHOLD]) {
-                $eventStatus = EventStatus::AUTO_SUCCESS_WARNINGS;
-
-            } else {
-                $eventStatus = EventStatus::AUTO_SUCCESS;
-
-            }
-            
-            add_db_event_status($asset, $eventStatus, "");
-        }   
+                add_db_event_status($asset, $eventStatus, "");
+                break;
+        }
     }
 }
 

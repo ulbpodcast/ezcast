@@ -10,6 +10,7 @@ include_once __DIR__ . "/config.inc";
 include_once __DIR__ .'/'.$encoding_pgm['file'];
 include_once __DIR__ . "/lib_metadata.php";
 include_once __DIR__ . "/lib_gd.php";
+include_once __DIR__ . "/lib_audio_sync.php";
 
 if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_name>\n";
@@ -60,6 +61,11 @@ if (isset($toprocess_assoc['original_cam'])) {
     $originals['cam'] = $processing . substr($toprocess_assoc['original_cam'], strrpos($toprocess_assoc['original_cam'], '/'));
 }
 
+
+if($enable_audio_sync){
+	print "\n------------------------ Audio Syncronisation ----------------------\n";
+	sync_video($processing);
+}	
 
 if (!file_exists($originals['cam']))
     unset($originals['cam']);

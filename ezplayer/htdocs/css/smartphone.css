@@ -1,6 +1,8 @@
 
 
+    /* ---  SMARTPHONE Interface ----------------------------------------------------------*/
 
+@media only screen and (min-device-width: 300px) and (max-device-width: 736px){ 
 	/*Header*/
 	.header_content span{
 		font-size:30px !important;

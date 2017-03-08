@@ -319,11 +319,27 @@
 		word-wrap: break-word;
 	}
 	
-	#div_center {
-		min-height: 100%;
-		width: 934px;
-		margin: auto;
-		word-wrap: break-word;
+	/*streaming*/
+
+	#streaming_config_wrapper {
+		width: 100% !important;
 	}
+	
+	#chat_help, #chat_questions,#chat_menu {
+		display: none;
+	}
+	
+	#chat_container,#chat,#chat_text,#chat_text,#chat_wrapper,#chat_messages,#chat_scrollable_area, #chat_header {
+		width:100% !important;
+		font-size:20px;
+	}
+	#chat{
+		margin-bottom:200px !important;
+	}
+	
+	.chat_msg, .chat_msg_info, #chat_message,#chat_header span {
+		font-size:20px;
+	}
+	
 	
 }

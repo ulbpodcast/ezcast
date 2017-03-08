@@ -27,7 +27,13 @@
 <div id="streaming_config">
     <link rel="stylesheet" href="flowplayer-6/skin/functional.css">
 
-
+	<?php
+			global $enable_css_phone;
+			if ($enable_css_phone) {
+	?>
+			 <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
+	<?php }  ?>
+		
     <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
         <div class="video_controls streaming">

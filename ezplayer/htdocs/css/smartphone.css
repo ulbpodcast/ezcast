@@ -1,6 +1,6 @@
 
 
-    /* ---  SMARTPHONE Interface ----------------------------------------------------------*/
+    /* --- SMARTPHONE Interface  ----------------------------------------------------------*/
 
 @media only screen and (min-device-width: 300px) and (max-device-width: 736px){ 
 	/*Header*/
@@ -85,8 +85,9 @@
 	#assets {
 		width: 940px;
 		font-size: 35px;
+		word-wrap: break-word;
 	}
-
+	
 	#div_right {
 		height: 15px !important;
 	}
@@ -114,6 +115,8 @@
 	}
 	.asset_title {
 		font-size: 35px;
+		word-wrap: break-word;
+			width:100%;
 	}
 	
 	.threads_header {
@@ -302,5 +305,25 @@
 		font-size: 15px;
 	}
 	
+	.video_controls {
+		height: 40px;
+	}
+	
+	.video_controls ul li a, .video_controls ul li div {
+		width:30px;
+		height:30px;
+		background-size:30px !important;
+	}
+	
+	#main_player{
+		word-wrap: break-word;
+	}
+	
+	#div_center {
+		min-height: 100%;
+		width: 934px;
+		margin: auto;
+		word-wrap: break-word;
+	}
 	
 }

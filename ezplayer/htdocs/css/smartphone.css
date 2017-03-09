@@ -350,10 +350,7 @@
 	.edit_bookmark_form {
 		width: 100%;
 	}
-	.form label {
-		font-size: 25px;	
-		width: 175px;
-	}
+	
 	.full-width label, .full-width span{
 		width: 110;
 		text-align:left !important;

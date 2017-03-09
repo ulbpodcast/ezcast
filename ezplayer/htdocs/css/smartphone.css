@@ -2,7 +2,7 @@
 
     /* --- SMARTPHONE Interface  ----------------------------------------------------------*/
 
-@media only screen and (min-device-width: 300px) and (max-device-width: 736px){ 
+@media only screen and (max-device-width: 736px){ 
 	/*Header*/
 	.header_content span{
 		font-size:30px !important;
@@ -350,7 +350,6 @@
 	.edit_bookmark_form {
 		width: 100%;
 	}
-	
 	.full-width label, .full-width span{
 		width: 110;
 		text-align:left !important;

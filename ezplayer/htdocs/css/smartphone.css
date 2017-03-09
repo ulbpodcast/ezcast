@@ -264,7 +264,7 @@
 		width: 85%;
 		font-size: 25px;
 	}
-	.refresh-button {
+	.refresh-button,.more-button,.more-button.active,.delete-button,.edit-button.active,.edit-button {
 		height: 30px;
 		width: 30px;
 		background-size: 30px;
@@ -282,6 +282,7 @@
 
 	.form .small {
 		font-size: 10px !important;
+		width: 175px;
 	}
 	#contact_form_wrapper,#contact_form_wrapper form label{
 		font-size:25px;
@@ -340,6 +341,41 @@
 	.chat_msg, .chat_msg_info, #chat_message,#chat_header span {
 		font-size:20px;
 	}
+	.side_pane_content input, .side_pane_content textarea {
+		border-width: 3px;
+		font-size: 25px;
+		width:90%;
+			
+	}
+	.edit_bookmark_form {
+		width: 100%;
+	}
+	.form label {
+		font-size: 25px;	
+		width: 175px;
+	}
+	.full-width label, .full-width span{
+		width: 110;
+		text-align:left !important;
+	}
+	#thread_form_wrapper {
+		max-width: 100%;
+	}
 	
+	.form input, .form textarea, .form select {
+		font-size: 25px !important;
+	}
+	
+	.mce-container-body {
+		width: 100% !important;
+	}
+
+	.message-input.edit_msg {
+		width: 100%;
+		margin: 5px 5px;
+	}
+	#comment_form_wrapper,#answer_comment_form_wrapper {
+    margin: 15px 15px;
+}
 	
 }

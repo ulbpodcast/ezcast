@@ -44,6 +44,12 @@ function popup_asset_move_callback(from, to, asset) {
     $.colorbox.close();
 }
 
+function popup_asset_copy_callback(from, to, asset) {
+    show_popup_from_outer_div('index.php?action=copy_asset&from='+from+'&to='+to+'&&asset='+asset);
+    show_album_details(from);
+    $.colorbox.close();
+}
+
 function popup_asset_publish_callback(album, asset) {
     show_popup_from_outer_div('index.php?action=publish_asset&album='+album+'&asset='+asset);
     show_album_details(album);

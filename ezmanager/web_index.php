@@ -215,6 +215,11 @@ else {
             $service = true;
             requireController('asset_move.php');
             break;
+			
+        case 'copy_asset':
+            $service = true;
+            requireController('asset_copy.php');
+            break;
 
         //move asset from album -priv to -pub
         case 'publish_asset':

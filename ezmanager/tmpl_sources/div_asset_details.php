@@ -83,6 +83,20 @@ function print_info($info, $suffix = '') {
                     }
                     ?>
                 </span></li>
+				
+
+				<li><span class="BoutonCopier">
+                    <?php if ($status != 'processing' && $status != 'error') { ?>
+                        <a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®Copy®</a>
+                        <?php
+                    } else {
+                        ?>
+                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Copy®</a>
+                        <?php
+                    }
+                    ?>
+                </span></li>
+				
             <?php if ($public_album) { ?>
                 <li><span class="BoutonDeplacerAlbumPrive">
                         <?php
@@ -220,6 +234,7 @@ if ($status != 'processing' && $status != 'failed' && strtolower($origin) !== 's
 <div style="display: none;">
 <?php include 'popup_delete_asset.php'; ?>
 <?php include 'popup_move_asset.php'; ?>
+<?php include 'popup_copy_asset.php'; ?>
 <?php include 'popup_publish_asset.php'; ?>
     <?php include 'popup_unpublish_asset.php'; ?>
     <?php include 'popup_schedule.php' ?>

@@ -210,6 +210,8 @@
         <label id="Delete" lang="en">Delete</label>
         <label id="Edit" lang="fr">Editer</label>
         <label id="Edit" lang="en">Edit</label>
+        <label id="Copy" lang="fr">Copier</label>
+        <label id="Copy" lang="en">Copy</label>
         <label id="Move" lang="fr">Déplacer</label>
         <label id="Move" lang="en">Move</label>
         <label id="view" lang="fr">afficher</label>
@@ -352,8 +354,12 @@
         <label id="Asset_publishing_succeeded_message" lang="en">Your record has been successfully moved to the public album. People who subscribed to your feed will now have access to it.</label>
         <label id="Asset_unpublishing_succeeded_message" lang="fr">Votre enregistrement a bien été déplacé dans l'album privé. Il n'est désormais plus disponible pour les personnes abonnées à votre album public.</label>
         <label id="Asset_unpublishing_succeeded_message" lang="en">Your record has been successfully moved to the private album. People who subscribed to your public feed will no longer have access to it.</label>
+        <label id="Copy_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
+        <label id="Copy_asset_message" lang="en">Please select the destination album in the following list:</label>
         <label id="Move_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
         <label id="Move_asset_message" lang="en">Please select the destination album in the following list:</label>
+        <label id="®No_albums_to_copy_asset_to®" lang="fr">Aucun album disponible</label>
+        <label id="®No_albums_to_copy_asset_to®" lang="en">No album available</label>
         <label id="No_albums_to_move_asset_to" lang="fr">Aucun album disponible</label>
         <label id="No_albums_to_move_asset_to" lang="en">No album available</label>
         <label id="Asset_moving_succeeded_message" lang="fr">Votre enregistrement a été correctement déplacé.</label>

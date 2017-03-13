@@ -991,6 +991,106 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst) {
     return true;
 }
 
+
+
+
+/**
+ * Copy an asset from $album_src to $album_dst. Warning: this function doesn't do any permissions check.
+ * @param type $asset_time
+ * @param type $album_src
+ * @param type $album_dst
+ * @return bool error status
+ */
+function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
+    global $logger;
+    
+    // Sanity checks
+    $repository_path = ezmam_repository_path();
+    if ($repository_path === false) {
+        ezmam_last_error("ezmam_asset_copy: ezmam not initialized");
+        return false;
+    }
+
+    if (!ezmam_album_exists($album_src)) {
+        ezmam_last_error("ezmam_asset_copy: source album does not exist");
+        return false;
+    }
+
+    if (!ezmam_album_exists($album_dst)) {
+        ezmam_last_error("ezmam_asset_copy: dest album does not exist");
+        return false;
+    }
+
+    if (!ezmam_asset_exists($album_src, $asset_time)) {
+        ezmam_last_error("ezmam_asset_copy: asset does not exist");
+        return false;
+    }
+
+    if (ezmam_asset_exists($album_dst, $asset_time)) {
+        ezmam_last_error("ezmam_asset_copy: there is already an asset with that name in dest album");
+        return false;
+    }
+    
+    $album_meta = ezmam_album_metadata_get($album_src);
+    $course = trim($album_meta['name']);
+    $asset_name = get_asset_name($course, $asset_time);
+           
+    // moving the asset
+    $src_path = $repository_path . '/' . $album_src;
+    $dst_path = $repository_path . '/' . $album_dst;
+
+    if (!is_dir($src_path)) {
+        ezmam_last_error("ezmam_asset_copy: $src_path is not a directory");
+        return false;
+    }
+    if (!is_dir($dst_path)) {
+        ezmam_last_error("ezmam_asset_copy: $dst_path is not a directory");
+        return false;
+    }
+
+    exec('cp -r '. $src_path . '/' . $asset_time.' '.$dst_path . '/' . $asset_time, $output, $res);
+	
+    if ($res) {
+        ezmam_last_error("could not copy asset".$res.$src_path . '/' . $asset_time."   to : ".$dst_path . '/' . $asset_time);
+        return false;
+    }
+
+    // Logging
+    log_append('asset_copy', 'Asset: ' . $asset_time . ', From: ' . $album_src . ', To: ' . $album_dst);
+    $logger->log(EventType::MANAGER_ASSET_MOVE, LogLevel::NOTICE, 'Copied asset: ' . $asset_time . ', album: ' . $album_dst, array(basename(__FILE__)), $asset_name);
+
+    // rebuilding the RSS feeds
+    $res = ezmam_rss_generate($album_src, "high");
+    if (!$res)
+        return false;
+
+    $res = ezmam_rss_generate($album_src, "low");
+    if (!$res)
+        return false;
+
+    $res = ezmam_rss_generate($album_src, "ezplayer");
+    if (!$res)
+        return false;
+
+    $res = ezmam_rss_generate($album_dst, "high");
+    if (!$res)
+        return false;
+
+    $res = ezmam_rss_generate($album_dst, "low");
+    if (!$res)
+        return false;
+
+    $res = ezmam_rss_generate($album_dst, "ezplayer");
+    if (!$res)
+        return false;
+
+    return true;
+}
+
+
+
+
+
 /**
  * Publishes an asset, i.e. moves it from private album to public
  * @param type $asset_name $the asset to move

@@ -1047,8 +1047,13 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
         ezmam_last_error("ezmam_asset_copy: $dst_path is not a directory");
         return false;
     }
+	
+	// just copy in background
+    // exec('cp -r '. $src_path . '/' . $asset_time.' '.$dst_path . '/' . $asset_time. " > /dev/null &", $output, $res);
 
-    exec('cp -r '. $src_path . '/' . $asset_time.' '.$dst_path . '/' . $asset_time, $output, $res);
+	//Copy Asset in background, and pass the metadata status to processing during the copy.  
+	$cmd='( mkdir '.$dst_path . '/' . $asset_time.' && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml && sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml && rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/  && rm '.$dst_path . '/' . $asset_time.'/_metadata.xml  && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml ) > /dev/null &';
+	exec($cmd,$output,$res);
 	
     if ($res) {
         ezmam_last_error("could not copy asset".$res.$src_path . '/' . $asset_time."   to : ".$dst_path . '/' . $asset_time);

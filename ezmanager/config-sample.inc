@@ -42,6 +42,7 @@ $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (def
                 //   array('value' => 'RevealTitle', 'label' => 'Reveal'));
 $default_downloadable = true;
 
+$enable_copy_asset=false; //copy asset into other albums
 
 // used by lib_ezmam (ezmanager)
 $accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script

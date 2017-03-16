@@ -35,7 +35,8 @@ function index($param = array()) {
     // 2) We set the variables used in the template with the correct values
     //
     $album_name_full = $album; // complete album name, used for div identification
-	$album_id = $metadata['id'];
+    if(isset($metadata['id']))	$album_id = $metadata['id'];
+	else $album_id = $metadata['name'];
     $album_name = $metadata['name']; // "user-friendly" album name, used for display
     $description = $metadata['description'];
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options

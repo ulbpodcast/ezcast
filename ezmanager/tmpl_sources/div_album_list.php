@@ -46,7 +46,8 @@ if(empty($created_albums)) {
 }
 else {
     foreach($created_albums as $album) {
-        $stylePriv = '';
+		$metadata = ezmam_album_metadata_get($album."-pub"); //get album name and not id for display
+		$stylePriv = '';
         $stylePrivClic = 'display: none;';
         $stylePub = '';
         $stylePubClic = 'display: none;';
@@ -62,10 +63,10 @@ else {
             }
         }
         ?>
-            <div class="button_private_album" id="album_<?php echo $album.'-priv'; ?>" style="<?php echo $stylePriv; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');"><?php echo $album; ?> (®Private_album®)</a> </div>
-            <div class="button_private_album_selected" id="album_<?php echo $album.'-priv' ?>_clic" style="<?php echo $stylePrivClic; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');"><?php echo $album; ?> (®Private_album®)</a></div>
-            <div class="button_public_album" id="album_<?php echo $album.'-pub'; ?>" style="<?php echo $stylePub; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');"><?php echo $album; ?> (®Public_album®)</a> </div>
-            <div class="button_public_album_selected" id="album_<?php echo $album.'-pub' ?>_clic" style="<?php echo $stylePubClic; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');"><?php echo $album; ?> (®Public_album®)</a></div>
+            <div class="button_private_album" id="album_<?php echo $album.'-priv'; ?>" style="<?php echo $stylePriv; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');"><?php echo $metadata['name']; ?> (®Private_album®)</a> </div>
+            <div class="button_private_album_selected" id="album_<?php echo $album.'-priv' ?>_clic" style="<?php echo $stylePrivClic; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');"><?php echo $metadata['name']; ?> (®Private_album®)</a></div>
+            <div class="button_public_album" id="album_<?php echo $album.'-pub'; ?>" style="<?php echo $stylePub; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');"><?php echo $metadata['name']; ?> (®Public_album®)</a> </div>
+            <div class="button_public_album_selected" id="album_<?php echo $album.'-pub' ?>_clic" style="<?php echo $stylePubClic; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');"><?php echo $metadata['name']; ?> (®Public_album®)</a></div>
         <?php
     }
 }

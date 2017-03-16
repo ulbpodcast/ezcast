@@ -38,14 +38,8 @@ for every album the user can create.
 <div class="popup" id="popup_new_album">
     <h2>®Create_album®</h2>
     <!-- If all albums have already been created, we display a message explaining the situation -->
-    <?php if(empty($not_created_albums_with_descriptions)) {
-        ?>
-        ®All_albums_already_created®
-        <?php
-    }
-    
-    //Else, we display the album list
-    else { ?>
+  <?php if(!empty($not_created_albums_with_descriptions)) { ?>
+  
         ®Create_album_message®<br/>
         <table>
         <?php 
@@ -64,8 +58,46 @@ for every album the user can create.
             <?php
         }
         ?>
-        </table>   
+               </table>   
+		
+	
         <?php
     }
+	global $enable_course_creation;
+	if($enable_course_creation){
     ?>
+		<form id="form_new_ablbum" action="" method="post">
+			<table>
+				<tr>
+				  <td>®Album_type® </td>
+				  <td><select id="selectType">
+					  <option value="officialcourse">®Official_course® </option>
+					  <option value="unofficialcourse">®Unoffical_course®</option>
+					  <option value="channel">®Channel®</option>
+					</select>	
+				  </td>
+				</tr>
+				<tr>
+				  <td id="labelIdCours">®Album_name®</td>
+				  <td>	<input  id="album" type="text" name="album">		  
+						<input id="postUrl" type="submit" value="Créer">
+				  </td>
+				</tr>			  
+			</table>
+		</form> 
+
+		<script>
+		
+		 $( "#form_new_ablbum" ).submit(function() {    			 
+		  $.post(
+            'index.php', 
+            {
+				action : "create_courseAndAlbum",
+                album : $("#album").val(),
+				albumtype: $('#selectType').val()
+            }
+         );		 
+		});	
+	</script>
+		 <?php } ?>
 </div>

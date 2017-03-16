@@ -263,6 +263,12 @@ else {
         case 'login':
             redraw_page();
             break;
+			
+		case 'create_courseAndAlbum':
+			include "../ezadmin/lib_sql_management.php";
+			 $service = true;
+			requireController('album_create.php');
+		break;
 
         //debugging should be removed in prod
         // No action selected: we choose to display the homepage again

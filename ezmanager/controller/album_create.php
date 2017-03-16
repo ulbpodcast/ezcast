@@ -50,7 +50,7 @@ function index($param = array()) {
     $not_created_albums = acl_authorized_albums_list_not_created(true);
     $description = $not_created_albums[$input['album']];
 	if($description =='' && isset($albumName) )$description=$albumName;
-	if(!isset( $input['albumtype'])) $input['albumtype']='profcreated';
+	if(!isset( $input['albumtype'])) $input['albumtype']='not_defined';
     $anac = get_anac(date('Y'), date('m'));
     $metadata = array(
         'name' => $input['album'],

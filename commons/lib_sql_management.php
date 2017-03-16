@@ -61,7 +61,7 @@ function statements_get(){
 		
 		'course_create' =>
 			'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
-			'VALUES (:course_code, :course_name, :shortname, 0, 0, NOW(), \'internal\')',
+			'VALUES (:course_code, :course_name, :shortname, :in_recorders, 0, NOW(), \'internal\')',
 		
 		'course_read' =>
 			'SELECT ' . 
@@ -371,7 +371,8 @@ function db_course_create($course_code, $course_name, $shortname) {
 	
 	$statements['course_create']->bindParam(':course_code', $course_code);
 	$statements['course_create']->bindParam(':course_name', $course_name);
-	$statements['course_create']->bindParam(':shortname', $shortname);
+	$statements['course_create']->bindParam(':shortname', $shortname);	
+	$statements['course_create']->bindParam(':in_recorders', $in_recorders); 
 	
 	return $statements['course_create']->execute();
 }

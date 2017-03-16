@@ -17,6 +17,24 @@ function index($param = array()) {
     global $default_add_title;
     global $default_downloadable;
     global $default_credits;
+	
+	if($input['action']=='create_courseAndAlbum'){
+		$idAlbum=str_replace(" ", '_', $input['album']).rand(100000,999999);
+		$course = db_course_read($idAlbum);
+		if(!$course){ 
+			$albumName=$input['album'];
+			 $input['album']=$idAlbum;
+			db_course_create($input['album'],$albumName,$albumName,0);
+			db_users_courses_create($input['album'], $_SESSION['user_login']);
+		}
+		else{ 
+			error_print_message(template_get_message('course_exist', get_lang()));
+			log_append('warning', 'album name already ' . $idAlbum . ' exist ');
+			
+		}
+    }
+	else $albumName=$input['album'];
+	
     //
     // Sanity checks
     //
@@ -31,6 +49,8 @@ function index($param = array()) {
     //
     $not_created_albums = acl_authorized_albums_list_not_created(true);
     $description = $not_created_albums[$input['album']];
+	if($description =='' && isset($albumName) )$description=$albumName;
+	if(!isset( $input['albumtype'])) $input['albumtype']='profcreated';
     $anac = get_anac(date('Y'), date('m'));
     $metadata = array(
         'name' => $input['album'],
@@ -40,7 +60,8 @@ function index($param = array()) {
         'intro' => $default_intro,
         'credits' => $default_credits,
         'add_title' => $default_add_title,
-        'downloadable' => $default_downloadable
+        'downloadable' => $default_downloadable,
+        'type' => $input['albumtype']
     );
 
     //

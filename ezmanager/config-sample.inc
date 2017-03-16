@@ -41,6 +41,7 @@ $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (def
 $default_downloadable = true;
 
 $enable_copy_asset=false; //copy asset into other albums
+$enable_course_creation = false; //enable the possibility to create album from manager
 
 // used by lib_ezmam (ezmanager)
 $accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script

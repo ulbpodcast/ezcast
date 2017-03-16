@@ -199,6 +199,16 @@
         <label id="schedule_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l'enregistrement soit publié / archivé</label>
         <label id="schedule_at" lang="en">Select the date and hour you want the recording to be published / archived</label>
         
+        <label id="Album_type" lang="fr">Type d'album : </label>
+        <label id="Album_type" lang="en">Album type : </label>
+        <label id="Official_course" lang="fr">Cours officiel</label>
+        <label id="Official_course" lang="en">Official course</label>
+        <label id="Unoffical_course" lang="fr">Cours non officiel</label>
+        <label id="Unoffical_course" lang="en">Unofficial course</label>
+        <label id="Channel" lang="fr">Chaine</label>
+        <label id="Channel" lang="en">Channel</label>
+        <label id="Album_name" lang="fr">Nom album : </label>
+        <label id="Album_name" lang="en">Album name : </label>
         
 
 

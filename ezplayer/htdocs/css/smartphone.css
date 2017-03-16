@@ -132,7 +132,7 @@
 	}
 	
 	#main_video, #secondary_video {
-		height: 100%;
+		/*height: 100%;*/
 		width: 100% !important;
 	}
 	.video_controls{

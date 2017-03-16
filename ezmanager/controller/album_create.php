@@ -18,19 +18,15 @@ function index($param = array()) {
     global $default_downloadable;
     global $default_credits;
 	
-	if($input['action']=='create_courseAndAlbum'){
-		$idAlbum=str_replace(" ", '_', $input['album']).rand(100000,999999);
-		$course = db_course_read($idAlbum);
-		if(!$course){ 
+	if($input['action']=='create_courseAndAlbum'){		
+		$course=true;
+		while($course){
+			$idAlbum=str_replace(" ", '_', $input['album']).rand(100000,999999);
+			$course = db_course_read($idAlbum);				
 			$albumName=$input['album'];
-			 $input['album']=$idAlbum;
+			$input['album']=$idAlbum;
 			db_course_create($input['album'],$albumName,$albumName,0);
-			db_users_courses_create($input['album'], $_SESSION['user_login']);
-		}
-		else{ 
-			error_print_message(template_get_message('course_exist', get_lang()));
-			log_append('warning', 'album name already ' . $idAlbum . ' exist ');
-			
+			db_users_courses_create($input['album'], $_SESSION['user_login']);			
 		}
     }
 	else{

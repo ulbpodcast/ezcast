@@ -33,8 +33,11 @@ function index($param = array()) {
 			
 		}
     }
-	else $albumName=$input['album'];
-	
+	else{
+		$albumName=$input['album'];
+		$idAlbum=$input['album'];
+		
+	}
     //
     // Sanity checks
     //
@@ -50,9 +53,11 @@ function index($param = array()) {
     $not_created_albums = acl_authorized_albums_list_not_created(true);
     $description = $not_created_albums[$input['album']];
 	if($description =='' && isset($albumName) )$description=$albumName;
+	if($albumName==$idAlbum)$albumName=$description;
 	if(!isset( $input['albumtype'])) $input['albumtype']='not_defined';
     $anac = get_anac(date('Y'), date('m'));
     $metadata = array(
+		'id' => $idAlbum,
         'name' => $input['album'],
         'description' => $description,
         'date' => date($dir_date_format),

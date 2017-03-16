@@ -4,7 +4,7 @@ function index($param = array()) {
     global $input;
 
     if (isset($input['create']) && $input['create']) {
-        $course_code = $input['course_code'];
+		$course_code=str_replace(" ", '_', $input['course_code']).rand(100000,999999);
         $course_name = $input['course_name'];
         $shortname = $input['shortname'];
 

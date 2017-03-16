@@ -38,5 +38,5 @@ You should not have to include this file yourself (included in div_album_header.
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="Bouton"> <a href="javascript:close_popup();"><span>®Cancel®</span></a></span>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span class="Bouton"> <a href="javascript:show_popup_from_outer_div('index.php?action=delete_album&amp;album=<?php echo $album_name; ?>', true);"><span>®OK®</span></a></span>
+    <span class="Bouton"> <a href="javascript:show_popup_from_outer_div('index.php?action=delete_album&amp;album=<?php echo $album_id; ?>', true);"><span>®OK®</span></a></span>
 </div>

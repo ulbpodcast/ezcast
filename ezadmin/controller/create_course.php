@@ -4,6 +4,8 @@ function index($param = array()) {
     global $input;
 
     if (isset($input['create']) && $input['create']) {
+		$input['course_code']=preg_replace("#[^a-zA-Z]#", "", $input['course_code']);
+		if(strlen($input['course_code'])>=50) $input['course_code']=substr($input['course_code'], 0, 43) ;
 		$course_code=str_replace(" ", '_', $input['course_code']).rand(100000,999999);
         $course_name = $input['course_name'];
         $shortname = $input['shortname'];

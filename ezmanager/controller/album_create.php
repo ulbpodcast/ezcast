@@ -18,10 +18,12 @@ function index($param = array()) {
     global $default_downloadable;
     global $default_credits;
 	
-	if($input['action']=='create_courseAndAlbum'){		
+	if($input['action']=='create_courseAndAlbum'){	
+	if(strlen($input['album'])>=50) $input['album']=substr($input['album'], 0, 43) ;	
 		$course=true;
 		while($course){
 			$idAlbum=str_replace(" ", '_', $input['album']).rand(100000,999999);
+			$idAlbum = preg_replace("#[^a-zA-Z]#", "", $idAlbum);
 			$course = db_course_read($idAlbum);				
 			$albumName=$input['album'];
 			$input['album']=$idAlbum;

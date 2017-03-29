@@ -36,6 +36,12 @@ function index($param = array()) {
     } else { // personal bookmarks
         $bookmarks = user_prefs_asset_bookmarks_selection_get($_SESSION['user_login'], $album, $asset, $selection);
     }
+    
+    if($bookmarks == false) {
+        echo "Failed to export bookmarks";
+        return;
+    }
+    
     header("Cache-Control: public");
     header("Content-Description: File Transfer");
     header("Content-Disposition: attachment; filename=$filename");

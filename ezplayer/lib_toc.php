@@ -112,6 +112,7 @@ function toc_asset_bookmark_list_get($album, $asset) {
     $assoc_album_bookmarks = toc_album_bookmarks_list_get($album);
     if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false ||
             empty($assoc_album_bookmarks)) {
+        echo '(3)';
         return false;
     }
 
@@ -124,6 +125,7 @@ function toc_asset_bookmark_list_get($album, $asset) {
             array_push($assoc_asset_bookmarks, $assoc_album_bookmarks[$index]);
         }
         ++$index;
+        //update ref_asset for next loop
         if($index < $count) {
             $ref_asset = $assoc_album_bookmarks[$index]['asset'];
         }
@@ -143,15 +145,22 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
     $bookmarks_list;
     $selected_bookmarks = array();
     
-    if (!isset($album) || $album == '')
+    if (!isset($album) || $album == '') {
+        echo "(1)";
         return false;
-    
+    }
+
     if (!isset($asset) || $asset == "") {
         $bookmarks_list = toc_album_bookmarks_list_get($album);
     } else {
         $bookmarks_list = toc_asset_bookmark_list_get($album, $asset);
     }
     
+    if($bookmarks_list == false) {
+        echo "(2)";
+        return false;
+    }
+
     if (count($bookmarks_list) > 0) {
         $min_index = 0;
         $max_index = count($bookmarks_list) - 1;
@@ -162,6 +171,7 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
         }
         return $selected_bookmarks;
     } else {
+        echo "(3)";
         return false;
     }
 }

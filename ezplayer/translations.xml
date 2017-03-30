@@ -883,12 +883,12 @@
 		<info id="serveur_player" organization="© Your organization name" lang="fr">https://podcast.ulb.ac.be/ezplayer/</info>
 		<info id="serveur_player" organization="© Your organization name" lang="en">https://podcast.ulb.ac.be/ezplayer/</info>		
 
-		<info id="tuto" organization="© Université libre de Bruxelles" lang="fr">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Université libre de Bruxelles" lang="en">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Université Catholique de Louvain" lang="fr">http://podcast.uclouvain.be/PDF_DOC/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Université Catholique de Louvain" lang="en">http://podcast.uclouvain.be/PDF_DOC/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Your organization name" lang="fr">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Your organization name" lang="en">http://podcast.ulb.ac.be/site/PDF_DOC/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université libre de Bruxelles" lang="fr">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université libre de Bruxelles" lang="en">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="fr">http://podcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="en">http://podcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Your organization name" lang="fr">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Your organization name" lang="en">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
 		
 		<info id="poster" organization="© Université libre de Bruxelles" lang="fr">poster</info>
 		<info id="poster" organization="© Université libre de Bruxelles" lang="en">poster</info>

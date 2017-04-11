@@ -179,4 +179,3 @@ foreach ($files_to_edit as $key => $file) {
 $rendered_dir = $processed_dir . '/' . $new_asset_array['new_asset'] . '_' . $new_asset_array['new_album'];
 $cmd = "mv $rendering_dir $rendered_dir";
 exec($cmd);
-?>

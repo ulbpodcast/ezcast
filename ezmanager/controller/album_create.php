@@ -82,7 +82,7 @@ function index($param = array()) {
 
     //
     // All we have to do now is call ezmam twice to create both the private and public album
-    // (remember that $input['album'] only contains the album's base name, /not/ the suffix
+    // (remember that $input['album'] only contains the album's base name, /not/ the suffix    test
     //
     ezmam_repository_path($repository_path);
     $res = ezmam_album_new($input['album'] . '-priv', $metadata);

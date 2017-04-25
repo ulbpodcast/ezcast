@@ -18,18 +18,30 @@ function index($param = array()) {
     global $default_downloadable;
     global $default_credits;
 	
-	if($input['action']=='create_courseAndAlbum'){	
-	if(strlen($input['album'])>=50) $input['album']=substr($input['album'], 0, 43) ;	
+	
+	
+	
+	if($input['action']=='create_courseAndAlbum'){		
+	
+		if(strlen($input['album'])>=50) $input['album']=substr($input['album'], 0, 43) ;
 		$course=true;
 		while($course){
-			$idAlbum=str_replace(" ", '_', $input['album']).rand(100000,999999);
-			$idAlbum = preg_replace("#[^a-zA-Z]#", "", $idAlbum);
+																	   
+			$idAlbum = preg_replace("#[^a-zA-Z]#", "", $input['album']);
+			$idAlbum=str_replace(" ", '_',$idAlbum).rand(100000,999999);
 			$course = db_course_read($idAlbum);				
-			$albumName=$input['album'];
-			$input['album']=$idAlbum;
-			db_course_create($input['album'],$albumName,$albumName,0);
-			db_users_courses_create($input['album'], $_SESSION['user_login']);			
+							  
+							
+															 
+																		
 		}
+		$albumName=$input['album'];
+		$input['album']=$idAlbum;
+		db_course_create($input['album'],$albumName,$albumName,0);
+		db_users_courses_create($input['album'], $_SESSION['user_login']);
+
+			
+		
     }
 	else{
 		$albumName=$input['album'];
@@ -39,7 +51,7 @@ function index($param = array()) {
     //
     // Sanity checks
     //
-    if (!isset($input['album']) || !acl_has_album_permissions($input['album'])) {
+    if (!isset($input['album']) || (!acl_has_album_permissions($input['album']) && $input['action']!='create_courseAndAlbum' )) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
         log_append('warning', 'create_album: tried to access album ' . $input['album'] . ' without permission');
         die;
@@ -56,7 +68,7 @@ function index($param = array()) {
     $anac = get_anac(date('Y'), date('m'));
     $metadata = array(
 		'id' => $idAlbum,
-        'name' => $input['album'],
+        'name' => $albumName,
         'description' => $description,
         'date' => date($dir_date_format),
         'anac' => $anac,
@@ -64,7 +76,8 @@ function index($param = array()) {
         'credits' => $default_credits,
         'add_title' => $default_add_title,
         'downloadable' => $default_downloadable,
-        'type' => $input['albumtype']
+        'type' => $input['albumtype'],
+		'official' => 'false'
     );
 
     //

@@ -352,7 +352,7 @@ function db_courses_list($course_code, $course_name, $shortname, $in_recorders, 
  * @param integer $has_albums
  * @param Stirng $origin
  */
-function db_course_create($course_code, $course_name, $shortname) {
+function db_course_create($course_code, $course_name, $shortname,$in_recorders) {
 	global $statements;
 	
 	$statements['course_create']->bindParam(':course_code', $course_code);

@@ -236,6 +236,7 @@ function view_media() {
         $media_name = $quality . '_' . $type;
 
         $media_handle = ezmam_media_getpath($input['album'], $input['asset'], $media_name, false);
+		
 
         // If we still can't find a file, we just tell the users so
         if (!$media_handle) {
@@ -266,6 +267,7 @@ function view_media() {
     $filename .= '_' . $type_fn_part;
 
   //  header('Content-Type: video/x-m4v');
+	file_put_contents('/home/arwillame/test2/media.txt',$media_handle. PHP_EOL ." fileName:  ".$filename.  PHP_EOL ."  size:  ".filesize($media_handle));
     header('Content-Type: video/mp4');
     if (isset($_SERVER['HTTP_RANGE'])) {
         rangeDownload($media_handle);
@@ -276,9 +278,15 @@ function view_media() {
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Length: ' . filesize($media_handle));
         header('Accept-Ranges: bytes');
-        //readfile($media_handle);
+		
         //fpassthru($fh);
+		// flush();
+		// readfile($file);
+        // readfile($media_handle);
+
+		ob_clean();
         passthru('/bin/cat ' . escapeshellarg($media_handle));
+        fclose($fh);
     }
 }
 

@@ -8,8 +8,11 @@
  * @global type $dir_date_format
  * @global type $default_intro 
  * @global type $default_credits
+ 
  */
-function index($param = array()) {
+
+ 
+ function index($param = array()) {
     global $input;
     global $repository_path;
     global $dir_date_format;
@@ -17,6 +20,11 @@ function index($param = array()) {
     global $default_add_title;
     global $default_downloadable;
     global $default_credits;
+    //
+    // Sanity checks
+    //
+	
+	
 	
 	
 	
@@ -26,14 +34,9 @@ function index($param = array()) {
 		if(strlen($input['album'])>=50) $input['album']=substr($input['album'], 0, 43) ;
 		$course=true;
 		while($course){
-																	   
 			$idAlbum = preg_replace("#[^a-zA-Z]#", "", $input['album']);
 			$idAlbum=str_replace(" ", '_',$idAlbum).rand(100000,999999);
 			$course = db_course_read($idAlbum);				
-							  
-							
-															 
-																		
 		}
 		$albumName=$input['album'];
 		$input['album']=$idAlbum;
@@ -46,17 +49,13 @@ function index($param = array()) {
 	else{
 		$albumName=$input['album'];
 		$idAlbum=$input['album'];
-		
+		// preg_replace("#[^a-zA-Z]#", "", $input['album']);
 	}
-    //
-    // Sanity checks
-    //
     if (!isset($input['album']) || (!acl_has_album_permissions($input['album']) && $input['action']!='create_courseAndAlbum' )) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
         log_append('warning', 'create_album: tried to access album ' . $input['album'] . ' without permission');
         die;
     }
-
     //
     // First of all, we have to set up the metada for the albums we're going to create
     //
@@ -66,6 +65,9 @@ function index($param = array()) {
 	if($albumName==$idAlbum)$albumName=$description;
 	if(!isset( $input['albumtype'])) $input['albumtype']='not_defined';
     $anac = get_anac(date('Y'), date('m'));
+	
+	// if(!isset( $input['isofficial'])) $input['isofficial']='true';
+	
     $metadata = array(
 		'id' => $idAlbum,
         'name' => $albumName,
@@ -82,7 +84,7 @@ function index($param = array()) {
 
     //
     // All we have to do now is call ezmam twice to create both the private and public album
-    // (remember that $input['album'] only contains the album's base name, /not/ the suffix    test
+    // (remember that $input['album'] only contains the album's base name, /not/ the suffix
     //
     ezmam_repository_path($repository_path);
     $res = ezmam_album_new($input['album'] . '-priv', $metadata);

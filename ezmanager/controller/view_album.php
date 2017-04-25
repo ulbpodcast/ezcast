@@ -11,7 +11,18 @@ function index($param = array()) {
     global $ezmanager_url; // Website URL, defined in config.inc
     global $distribute_url;
     global $ezplayer_url;
+	global $enable_moderator;
+	global $enable_anon_access_control;
+    // global $ezmanager_url;
 
+    if (isset($input['tokenmanager'])){
+		// add course to user in DB
+		
+		
+	}
+	
+	
+	
     if (isset($input['album']))
         $album = $input['album'];
     else
@@ -37,7 +48,7 @@ function index($param = array()) {
     $album_name_full = $album; // complete album name, used for div identification
     if(isset($metadata['id']))	$album_id = $metadata['id'];
 	else $album_id = $metadata['name'];
-    $album_name = $metadata['name']; // "user-friendly" album name, used for display
+    $album_name = $metadata['name'];
     $description = $metadata['description'];
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
     $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album);
@@ -45,6 +56,8 @@ function index($param = array()) {
     $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=high&token=' . ezmam_album_token_get($album);
     $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=low&token=' . ezmam_album_token_get($album);
     $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
+	ezmam_album_token_manager_set($album);	
+    $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $album . "&tokenmanager=" . ezmam_album_token_manager_get($album);
     $assets = ezmam_asset_list_metadata($album_name_full);
 
     //

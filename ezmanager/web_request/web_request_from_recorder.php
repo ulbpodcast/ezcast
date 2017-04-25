@@ -23,7 +23,8 @@ $input = array_merge($_GET, $_POST);
 
 $action = $input['action'];
 
-//$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, basename(__FILE__) . " called with action $action. Caller: $caller_ip", array("web_request_from_recorder"));
+//$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, basename(__FILE__) . " called with action 
+// $action. Caller: $caller_ip", array("web_request_from_recorder"));
     
 switch ($action) {
     case 'download' :
@@ -73,8 +74,8 @@ function download_from_recorder() {
     global $php_cli_cmd;
     global $recorder_download_pgm;
     global $logger;
-    
-            
+
+			
     //get input parameters
     $record_type = $input['record_type']; // cam|slide|camslide
     $record_date = $input['record_date'];
@@ -84,12 +85,14 @@ function download_from_recorder() {
     $recorder_version = $input['recorder_version']; //if empty, we can still recover by using default protocol version
     
     if(!$record_type || !$record_date || !$course_name || !$meta_file) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, __FILE__ . " called invalid input (missing parameters). input dump:" . json_encode($input), array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, __FILE__ . " called invalid input "
+                . "(missing parameters). input dump:" . json_encode($input), array(__FUNCTION__));
         exit(1);
     }
     
     if (!isset($recorder_php_cli) || $recorder_php_cli == '') {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::WARNING, "Recorder did not provide its php_cli, trying to get it (or default to 'php')", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::WARNING, "Recorder did not provide its php_cli, "
+                . "trying to get it (or default to 'php')", array(__FUNCTION__));
 
         $cmd = "$ssh_pgm -o BatchMode=yes $recorder_user@$caller_ip \"which php\"";
         $recorder_php_cli = exec($cmd);
@@ -107,7 +110,8 @@ function download_from_recorder() {
         $slide_info = unserialize($input['slide_info']);
 
     if(!$cam_info && !$slide_info) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Neither cam_info or slide_info provided, nothing we can do.", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Neither cam_info or slide_info "
+                . "provided, nothing we can do.", array(__FUNCTION__));
         exit(2);
     }
     
@@ -126,7 +130,8 @@ function download_from_recorder() {
     if(    (strpos($record_type, "cam" != false) && strpos($download_info_xml, "cam_protocol") == false) 
         || (strpos($record_type, "slide" != false) && strpos($download_info_xml, "slide_protocol") == false) 
         ) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Download data has record type $record_type but cam or slide infos are missing.", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Download data has record type "
+                . "$record_type but cam or slide infos are missing.", array(__FUNCTION__));
         exit(3);
     }
 
@@ -156,7 +161,8 @@ function download_from_recorder() {
 
     $ok = file_put_contents($record_dir . "/download_data.xml", $downloadxml);
     if(!$ok) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml file to $record_dir, can't recover.", array(__FUNCTION__), $record_name_sanitized);
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Could not write download_data.xml "
+                . "file to $record_dir, can't recover.", array(__FUNCTION__), $record_name_sanitized);
         exit(4);
     }
     
@@ -165,13 +171,15 @@ function download_from_recorder() {
     $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1' | at now";
     $pid = system($cmd, $return_val);
     if($return_val != 0) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Received valid download request, but download failed to start. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Received valid download request, 
+            but download failed to start. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
         exit(1);
     }
 //print "will execute command: '$cmd'\n<br>";
     print "OK:$pid";
     
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download has been succesfully started in background. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received valid download request, download 
+        has been succesfully started in background. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
             
     exit(0);
 }
@@ -189,8 +197,36 @@ function streaming_init() {
     global $repository_path;
     
     global $logger;
-    
+        
+	
+	 
     ezmam_repository_path($repository_path);
+	
+	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+	 
+	 "--------------------------" . PHP_EOL . date("h:i:s") . " " . PHP_EOL
+	 . "input['course'] :  " .($input['course']) . PHP_EOL
+	 . "caller_ip :  " .$caller_ip . PHP_EOL
+	 . "ezmanager_basedir :  " .$ezmanager_basedir . PHP_EOL
+	 . "repository_path :  " .$repository_path . PHP_EOL
+	 
+	 
+	 , FILE_APPEND);	
+	 
+	 
+	 
+	 foreach ($input as $key2 => $value2){
+		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		 
+		
+		  $key2 ." : ". $value2 . PHP_EOL
+		 
+		 
+		 
+		 , FILE_APPEND);
+	}
+	
+	
 
     $course = $input['course']; // current $course
     $asset = $input['asset']; // current asset
@@ -201,7 +237,8 @@ function streaming_init() {
     $netid = $input['netid']; // user's netid
     $quality = $input['module_quality'];
     //
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::INFO, "Received streaming init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::INFO, "Received streaming init request for course "
+            . "$course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     
     $stream_name = 'stream_'.$asset;
     $status = 'open';
@@ -232,7 +269,8 @@ function streaming_init() {
         // creates a new (streaming) asset in the public album
         $token = ezmam_asset_new($course . '-pub', $stream_name, $asset_meta);
         if($token == false) {
-             $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create streaming asset.", array(__FUNCTION__));
+             $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create streaming asset.", 
+                     array(__FUNCTION__));
              return false;
         }
     }
@@ -259,13 +297,16 @@ function streaming_init() {
     $port   = isset( $streams_array[$course][$asset][$module_type]['port'])  ? 
             $streams_array[$course][$asset][$module_type]['port']   : null;
     
-    $res = db_stream_create($course, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $caller_ip, $status, $quality, $protocol, $server, $port);
+    $res = db_stream_create($course, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, 
+                $caller_ip, $status, $quality, $protocol, $server, $port);
     if(!$res) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create stream in database for course $course, asset $asset, classroom $classroom, module $module_type", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create stream in database for "
+                . "course $course, asset $asset, classroom $classroom, module $module_type", array(__FUNCTION__));
         return false;
     }
     
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed stream init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed stream init request "
+            . "for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     return true;
 }
 
@@ -298,9 +339,11 @@ function create_m3u8_external($targetDir, $type, $asset_token) {
     $external_m3u8 = '#EXTM3U' . PHP_EOL .
             '#EXT-X-VERSION:3' . PHP_EOL . 
             '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-           // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' .  $type . $m3u8_master_filename;
-		//not working. For now, hack instead, redirect to the high
-            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' . $type . '/low/'. $m3u8_quality_filename;
+            // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . 
+                // $asset_token . '/' .  $type . $m3u8_master_filename;
+            // not working. For now, hack instead, redirect to the high
+            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . 
+                $asset_token . '/' . $type . '/low/'. $m3u8_quality_filename;
     
     file_put_contents($targetDir . '/' . $m3u8_external_master_filename, $external_m3u8);
 }
@@ -328,6 +371,17 @@ function streaming_content_add() {
     
 
     ezmam_repository_path($repository_path);
+	
+	
+		
+	// DEBUG	
+	
+	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "INPUT VALUES : " . PHP_EOL , FILE_APPEND);
+	foreach ($input as $key => $value){
+		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		$key ." : ". $value . PHP_EOL
+		, FILE_APPEND);
+	}
 
     $course = $input['course'];
     $asset = $input['asset'];
@@ -335,12 +389,14 @@ function streaming_content_add() {
     $module_type = $input['module_type'];
     $status = $input['status'];
     
-//    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received stream content add for asset $asset in course $course ", array(__FUNCTION__), $asset);
+//    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received stream content add for asset 
+//    $asset in course $course ", array(__FUNCTION__), $asset);
      
     // gets information about current streams
     $streams_array = db_get_stream_info($course,$asset);
     if($streams_array == null || !isset($streams_array[$course][$asset])) { 
-       $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Requested stream info for asset $asset in course $course was not found", array(__FUNCTION__), $asset);
+       $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Requested stream info for asset $asset "
+               . "in course $course was not found", array(__FUNCTION__), $asset);
        return false;
     }
     
@@ -353,7 +409,8 @@ function streaming_content_add() {
               */  
             // the streaming has already been init, saves the m3u8 file and segments
             if (!isset($streams_array[$course][$asset][$module_type])) {
-                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "No current stream info found for module type $module_type, asset $asset, course $course", array(__FUNCTION__), $asset);
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "No current stream info found for "
+                        . "module type $module_type, asset $asset, course $course", array(__FUNCTION__), $asset);
                  // no information found for the stream
                 print 'error - no information found for the current stream';
                 return false;
@@ -364,7 +421,8 @@ function streaming_content_add() {
                 $streams_array[$course][$asset][$module_type]['status'] = $status;																				
                 $res = db_stream_update_status($course,$asset,$module_type,$status);
                 if(!$res) {
-                    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream status in database.", array(__FUNCTION__), $asset);
+                    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream status "
+                            . "in database.", array(__FUNCTION__), $asset);
                     //do not return, we can still recover from a status update failure
                 }
             }
@@ -373,7 +431,8 @@ function streaming_content_add() {
                 mkdir($upload_root_dir, 0755, true); // creates the directories if needed
        
             if(!is_dir($upload_root_dir)) {
-                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload root dir (path: $upload_root_dir)", array(__FUNCTION__), $asset);
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload root "
+                        . "dir (path: $upload_root_dir)", array(__FUNCTION__), $asset);
                 return false;
             }
             if($streaming_video_alternate_server_enable_sync) {
@@ -386,7 +445,8 @@ function streaming_content_add() {
             if(!is_dir($upload_type_dir))
                 mkdir($upload_type_dir, 0755, true); // creates the directories if needed
             if(!is_dir($upload_type_dir)) {
-                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload type dir (path: $upload_type_dir)", array(__FUNCTION__), $asset);
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload type "
+                        . "dir (path: $upload_type_dir)", array(__FUNCTION__), $asset);
                 return false;
             }
             
@@ -409,7 +469,8 @@ function streaming_content_add() {
             if(!is_dir($upload_quality_dir))
                 mkdir($upload_quality_dir, 0755, true); // creates the directories if needed
             if(!is_dir($upload_quality_dir)) {
-                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload quality dir (path: $upload_quality_dir)", array(__FUNCTION__), $asset);
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload "
+                        . "quality dir (path: $upload_quality_dir)", array(__FUNCTION__), $asset);
                 return false;
             }
             
@@ -418,14 +479,25 @@ function streaming_content_add() {
             if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
                 echo "File is valid, and was successfully uploaded.\n";
             }
-
+            
+            file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", "UPLOADFILE22222 VALUES : " .
+                    $uploadfile. PHP_EOL , FILE_APPEND);
+            file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+                    "FILES['m3u8_segment']['tmp_name']22222 VALUES : " .$_FILES['m3u8_segment']['tmp_name']. PHP_EOL, 
+                    FILE_APPEND);
+            foreach ($_FILES['m3u8_segment'] as $key => $value){
+                file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+                    $key ."888 : ". $value . PHP_EOL, FILE_APPEND);
+            }
+            
             // appends the m3u8 file
             $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
             if (!is_file($m3u8_quality_path)) {
                 $m3u8_header = explode(PHP_EOL, $input['m3u8_string']);
                 // array_splice($m3u8_header, 4, 0, array('#EXT-X-PLAYLIST-TYPE:EVENT'));
                 // Adds an extra line in m3u8 header: #EXT-X-PLAYLIST-TYPE:EVENT
-                // This type of playlist allows the players to navigate freely (backward and forward) from the beginning of the program
+                // This type of playlist allows the players to navigate freely (backward and forward) from the beginning 
+                // of the program
                 file_put_contents($m3u8_quality_path, implode(PHP_EOL, $m3u8_header));
             } else {
                 file_put_contents($m3u8_quality_path, $input['m3u8_string'], FILE_APPEND);
@@ -433,10 +505,9 @@ function streaming_content_add() {
             
             if($streaming_video_alternate_server_enable_sync)
                 ExternalStreamDaemon::unlock($asset_token);
-            
-            
             print "OK";
             break;
+            
         default:
             print "Unknown protocol $protocol";
             return false;
@@ -467,12 +538,14 @@ function streaming_close() {
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
 
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE, "Received stream close request for asset $asset in course $course, module type $module_type", array(__FUNCTION__), $asset);
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE, "Received stream close request for asset "
+            . "$asset in course $course, module type $module_type", array(__FUNCTION__), $asset);
 
     // gets information about current streams
     $streams_array = db_get_stream_info($course,$asset);
     if($streams_array == null || !isset($streams_array[$course][$asset])) { 
-       $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Requested stream info for asset $asset in course $course was not found", array(__FUNCTION__), $asset);
+       $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Requested stream info for asset $asset "
+               . "in course $course was not found", array(__FUNCTION__), $asset);
        return false;
     }
 
@@ -484,7 +557,8 @@ function streaming_close() {
             $token = $streams_array[$course][$asset]['token'];
             $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $course ${stream_name}_$token\" | at now + 1 hour";
             shell_exec($cmd);
-            $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE, "Scheduled stream deletion in one hour. Cmd: $cmd", array(__FUNCTION__), $asset);
+            $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE, "Scheduled stream deletion in one "
+                    . "hour. Cmd: $cmd", array(__FUNCTION__), $asset);
             print "OK";
             break;
     }
@@ -492,7 +566,8 @@ function streaming_close() {
     $status = 'closed';
     $res = db_stream_update_status($course,$asset,$module_type,$status);
     if(!$res) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", 
+                array(__FUNCTION__));
         return false;
     }
     return true;

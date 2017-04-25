@@ -42,6 +42,8 @@ require_once 'lib_upload.php';
 require_once 'lib_toc.php';
 $input = array_merge($_GET, $_POST);
 
+// print_r($_SESSION);
+// die;
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
@@ -64,7 +66,17 @@ if (!user_logged_in()) {
 
         user_login($input['login'], $input['passwd']);
     }
-    // This is a tricky case:
+	//if not connected and the user click on a link to partage album management -> put arg in session variable to 
+        // add it when he is connected
+	else if(isset($input['action']) && $input['action'] == 'add_moderator' && isset($input['album']) && 
+                isset($input['tokenmanager']) ){
+		$_SESSION['add_moderator']='true';
+		$_SESSION['add_moderator_album']=$input['album'];
+		$_SESSION['add_moderator_token']=$input['tokenmanager'];
+		view_login_form();
+	}
+
+   // This is a tricky case:
     // If we do not have a session, but we have an action, that means we lost the
     // session somehow and are trying to load part of a page through AJAX call.
     // We do not want the login page to be displayed randomly inside a div,
@@ -81,21 +93,36 @@ if (!user_logged_in()) {
 
 // At this point of the code, the user is supposed to be logged in.
 // We check whether they specified an action to perform. If not, it means they landed
-// here through a page reload, so we check the session variables to restore the page as it was.
-else if (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) {
+// here through a page reload, so we check the session variables to restore the page as it was. 
+else if (
+        ( (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) &&  
+            ( !isset($_SESSION['add_moderator']) || $_SESSION['add_moderator']!='true')) ||  
+        ( (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) && 
+                isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']!='true') 
+        ) {
     redraw_page();
 }
 
 // At this point of the code, the user is logged in and explicitly specified an action.
 // We perform the action specified.
 else {
+	
+	
+	if(isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']=='true'){
+		$input['action']='add_moderator';
+		$input['album']=$_SESSION['add_moderator_album'];
+		$input['tokenmanager']=$_SESSION['add_moderator_token'];
+		$_SESSION['add_moderator']='false';		
+	}
+	
+	
     $action = $input['action'];
     $redraw = false;
-
     /**
      * Until pages and services are divided, mark some action as services
      * A service = action not returning a page.
-     * A lot of these services actually return presentation too (in the form on popups), presentation should be moved to calling page
+     * A lot of these services actually return presentation too (in the form on popups), presentation should be moved 
+     * to calling page
      */
     global $service; //true if we're currently running a service. 
     $service = false;
@@ -159,6 +186,10 @@ else {
         case 'view_edit_album':
             requireController('view_edit_album.php');
             break;
+			
+        case 'view_list_moderator':
+            requireController('view_list_moderator.php');
+            break;
 
         // users has filled in the edit album form and has confirmed
         case 'edit_album':
@@ -211,11 +242,12 @@ else {
             requireController('asset_delete.php');
             break;
 
+
         case 'move_asset':
             $service = true;
             requireController('asset_move.php');
             break;
-			
+
         case 'copy_asset':
             $service = true;
             requireController('asset_copy.php');
@@ -262,13 +294,30 @@ else {
         // we redraw the page with the last information saved in the session variables.
         case 'login':
             redraw_page();
+            break;     
+
+
+		case 'add_moderator':
+            requireController('album_add_moderator.php');
+			// redraw_page();
             break;
 			
-		case 'create_courseAndAlbum':
+			
+        case 'create_courseAndAlbum':
 			include "../ezadmin/lib_sql_management.php";
 			 $service = true;
 			requireController('album_create.php');
-		break;
+            break;
+			
+					
+        case 'regen_title':
+            $service = true;
+            requireController('asset_title_regen.php');
+            break;	
+			
+        case 'delete_user_course':
+            requireController('user_course_delete.php');
+            break;
 
         //debugging should be removed in prod
         // No action selected: we choose to display the homepage again
@@ -330,6 +379,7 @@ function albums_view() {
     global $hd_rss_url_web;
     global $sd_rss_url_web;
     global $player_full_url;
+    global $manager_full_url;
     global $head_code; // Optional code we want to append in the HTML header
     // List of all the albums a user has created
     $created_albums = acl_authorized_albums_list_created(); // Used to display the albums list
@@ -365,6 +415,7 @@ function redraw_page() {
     global $player_full_url;
     global $distribute_url;
     global $ezplayer_safe_url;
+    global $ezmanager_safe_url;
     ezmam_repository_path($repository_path);
 
     $action = $_SESSION['podman_mode'];
@@ -374,17 +425,29 @@ function redraw_page() {
         $current_album_is_public = album_is_public($_SESSION['podman_album']);
 
         $album_name = suffix_remove($_SESSION['podman_album']);
-        
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
-        $description = $metadata['description'];
+        $title = choose_title_from_metadata($metadata);
+        
+        if(isset($metadata['id'])) {
+            $album_id = $metadata['id'];
+        } else {
+            $album_id = $metadata['name'];
+        }
+        
+        if(isset($metadata['course_code_public']) && $metadata['course_code_public']!="") {
+            $course_code_public = $metadata['course_code_public'];
+        }
         $public_album = $current_album_is_public;
         $assets = ezmam_asset_list_metadata($_SESSION['podman_album']);
-        $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album_name_full);
-        $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . ezmam_album_token_get($album_name_full);
-        $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=high&token=' . ezmam_album_token_get($album_name_full);
-        $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=low&token=' . ezmam_album_token_get($album_name_full);
-        $player_full_url = $ezplayer_safe_url . "?action=view_album_assets&album=" . $current_album . "&token=" . ezmam_album_token_get($album_name_full);
+        $token = ezmam_album_token_get($album_name_full);
+        $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' .$token;
+        $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . $token;
+        $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=high&token=' . $token;
+        $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=low&token=' . $token;
+        $player_full_url = $ezplayer_safe_url . "?action=view_album_assets&album=" . $current_album . "&token=" . $token;
+        $manager_full_url = $ezmanager_safe_url . "?action=add_moderator&album=" . $current_album . "&tokenmanager=" . 
+                    ezmam_album_token_manager_get($album_name_full);
     }
 
     // Whatever happens, the first thing to do is display the whole page.
@@ -466,8 +529,9 @@ function user_login($login, $passwd) {
     acl_init($login);
 
     // 3) Setting correct language
-    set_lang($input['lang']);
-    if (count(acl_authorized_albums_list()) == 0) {
+    set_lang($input['lang']);  
+    if (count(acl_authorized_albums_list()) == 0 && ( !isset($res['ismanager']) || $res['ismanager']!='true' )) {
+    // if (count(acl_authorized_albums_list()) == 0) {
         error_print_message(template_get_message('not_registered', get_lang()), false);
         log_append('warning', $res['login'] . ' tried to access ezmanager but doesn\'t have permission to manage any album.');
         session_destroy();

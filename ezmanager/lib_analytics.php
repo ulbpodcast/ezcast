@@ -118,4 +118,3 @@ function analytics_album_access_count($album, $start_date = 0, $end_date = 99999
     return $access_count;
     
 }
-?>

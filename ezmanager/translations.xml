@@ -199,17 +199,16 @@
         <label id="schedule_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l'enregistrement soit publié / archivé</label>
         <label id="schedule_at" lang="en">Select the date and hour you want the recording to be published / archived</label>
         
-        <label id="Album_type" lang="fr">Type d'album : </label>
-        <label id="Album_type" lang="en">Album type : </label>
-        <label id="Official_course" lang="fr">Cours officiel</label>
-        <label id="Official_course" lang="en">Official course</label>
-        <label id="Unoffical_course" lang="fr">Cours non officiel</label>
-        <label id="Unoffical_course" lang="en">Unofficial course</label>
-        <label id="Channel" lang="fr">Chaine</label>
-        <label id="Channel" lang="en">Channel</label>
-        <label id="Album_name" lang="fr">Nom album : </label>
-        <label id="Album_name" lang="en">Album name : </label>
-        
+		<label id="Album_type" lang="fr">  Type d'album : </label>
+        <label id="Album_type" lang="en"> Album Type : </label>	
+		<label id="Cours_officiel" lang="fr">  Cours officiel </label>
+        <label id="Cours_officiel" lang="en">  Official Course </label>
+		<label id="Cours_non_officiel" lang="fr">  Cours non officiel </label>
+        <label id="Cours_non_officiel" lang="en">  Unofficial course </label>
+		<label id="Chaine" lang="fr"> Chaîne </label>
+        <label id="Chaine" lang="en"> Channel </label>
+		<label id="Album_Name" lang="fr"> Nom d'album :  </label>
+        <label id="Album_Name" lang="en"> Album Name :  </label>
 
 
         
@@ -220,8 +219,6 @@
         <label id="Delete" lang="en">Delete</label>
         <label id="Edit" lang="fr">Editer</label>
         <label id="Edit" lang="en">Edit</label>
-        <label id="Copy" lang="fr">Copier</label>
-        <label id="Copy" lang="en">Copy</label>
         <label id="Move" lang="fr">Déplacer</label>
         <label id="Move" lang="en">Move</label>
         <label id="view" lang="fr">afficher</label>
@@ -322,8 +319,6 @@
         <label id="SD_RSS_feed_URL_message" lang="en">You can watch or broadcast this album in low definition by using the following link:</label>
         <label id="Player_url_message" lang="fr">Pour consulter ou distribuer cet album via le lecteur enrichi "EZplayer", veuillez utiliser le lien suivant :</label>
         <label id="Player_url_message" lang="en">You can watch or broadcast this album via EZplayer, the rich media player, by using the following link:</label>
-        <label id="Player_url_private_alert" lang="fr">CECI EST UN LIEN VERS L'ALBUM PRIVE. Il ne devrait pas être partagé aux étudiants.</label>
-        <label id="Player_url_private_alert" lang="en">THIS IS THE PRIVATE ALBUM LINK. It should not be shared to students.</label>
         <label id="media_URL_message" lang="fr">Pour regarder ou distribuer cette vidéo, veuillez utiliser le lien suivant :</label>
         <label id="media_URL_message" lang="en">You can watch or distribute this video by using the following link:</label>
         <label id="embed_code_message" lang="fr">Vous pouvez inclure cette vidéo dans une autre page en copiant/collant le code suivant : </label>
@@ -364,12 +359,8 @@
         <label id="Asset_publishing_succeeded_message" lang="en">Your record has been successfully moved to the public album. People who subscribed to your feed will now have access to it.</label>
         <label id="Asset_unpublishing_succeeded_message" lang="fr">Votre enregistrement a bien été déplacé dans l'album privé. Il n'est désormais plus disponible pour les personnes abonnées à votre album public.</label>
         <label id="Asset_unpublishing_succeeded_message" lang="en">Your record has been successfully moved to the private album. People who subscribed to your public feed will no longer have access to it.</label>
-        <label id="Copy_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
-        <label id="Copy_asset_message" lang="en">Please select the destination album in the following list:</label>
         <label id="Move_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
         <label id="Move_asset_message" lang="en">Please select the destination album in the following list:</label>
-        <label id="®No_albums_to_copy_asset_to®" lang="fr">Aucun album disponible</label>
-        <label id="®No_albums_to_copy_asset_to®" lang="en">No album available</label>
         <label id="No_albums_to_move_asset_to" lang="fr">Aucun album disponible</label>
         <label id="No_albums_to_move_asset_to" lang="en">No album available</label>
         <label id="Asset_moving_succeeded_message" lang="fr">Votre enregistrement a été correctement déplacé.</label>
@@ -429,6 +420,8 @@
         <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, please contact the system administrator</message>
         <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
         <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
+        <message id="course_exist" lang="fr">Ce nom d'album existe déjà, choisissez un autre nom.</message>
+        <message id="course_exist" lang="en">This album name already exist, please change.</message>
         <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
         <message id="Non-existant_album" lang="en">Access denied: the album does not exist</message>
         <message id="Non-existant_asset" lang="fr">Accès refusé: enregistrement inexistant</message>

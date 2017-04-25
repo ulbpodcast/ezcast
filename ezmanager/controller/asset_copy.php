@@ -8,6 +8,7 @@
 function index($param = array()) {
     global $input;
     global $repository_path;
+	global $update_title;
     ezmam_repository_path($repository_path);
 
     //
@@ -43,5 +44,12 @@ function index($param = array()) {
     }
     toc_album_bookmarks_add($bookmarks);
 
-    include_once template_getpath('popup_asset_successfully_copied.php');
+	// view_main();
+    require_once template_getpath('popup_asset_successfully_copied.php');
+	// echo"<script>
+		// show_popup_from_inner_div('#popup_asset_successfully_copied');
+	// </script>";
+
+	if ($update_title=='auto')	update_title($input['to'],$input['asset']);
+
 }

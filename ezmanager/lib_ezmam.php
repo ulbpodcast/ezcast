@@ -32,6 +32,7 @@
 include_once dirname(__FILE__) . '/config.inc';
 include_once dirname(__FILE__) . '/lib_error.php';
 include_once dirname(__FILE__) . '/lib_various.php';
+// include_once dirname(__FILE__) . '../commons/common.inc';
 
 /**
  *
@@ -41,7 +42,8 @@ include_once dirname(__FILE__) . '/lib_various.php';
  * @desc if called without parameter, returns current repository
  */
 function ezmam_repository_path($path = "") {
-    static $repository_path = false;
+    // static $repository_path = false;
+    global $repository_path;
 
     if ($path == "") {
         if ($repository_path === false) {
@@ -210,9 +212,39 @@ function ezmam_album_metadata_get($album) {
         return false;
     $album_path = $repository_path . "/" . $album;
     $assoc_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
-    return $assoc_metadata;
+  
+  return $assoc_metadata;
 }
 
+
+function ezmam_asset_meta_set($asset, $metadata_assoc_array) {
+    $repository_path = ezmam_repository_path();
+    // Sanity checks
+    if ($repository_path === false) {
+        return false;
+    }
+    // if (!ezmam_album_exists($album))
+        // return false;
+
+    // Updating the metadata
+    $album_path = $repository_path . "/" . $asset;
+    $metadata_xml = assoc_array2metadata($metadata_assoc_array);
+    $res = file_put_contents($album_path . "/_metadata.xml", $metadata_xml);
+
+    if (!$res)
+        return false;
+
+    // Logging the operation
+    $metadata_str = '';
+    if ($logging) {
+        foreach ($metadata_assoc_array as $key => $val) {
+            $metadata_str .= '[' . $key . ']' . $val . ' ';
+        }
+        log_append('asset_meta_set', 'Asset: ' . $asset . ', New metadata: ' . $metadata_str);
+    }
+
+    return $res;
+}
 /**
  *
  * @param string $album
@@ -994,8 +1026,11 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst) {
 
 
 
+
+
 /**
- * Copy an asset from $album_src to $album_dst. Warning: this function doesn't do any permissions check.
+AJOUTARNAUDs
+ * Moves an asset from $album_src to $album_dst. Warning: this function doesn't do any permissions check.
  * @param type $asset_time
  * @param type $album_src
  * @param type $album_dst
@@ -1053,10 +1088,13 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
 
 	//Copy Asset in background, and pass the metadata status to processing during the copy.  
 	$cmd='( mkdir '.$dst_path . '/' . $asset_time.' && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml && sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml && rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/  && rm '.$dst_path . '/' . $asset_time.'/_metadata.xml  && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml ) > /dev/null &';
+	
 	exec($cmd,$output,$res);
 	
+	
+	
     if ($res) {
-        ezmam_last_error("could not copy asset".$res.$src_path . '/' . $asset_time."   to : ".$dst_path . '/' . $asset_time);
+        ezmam_last_error("could not copy asset");
         return false;
     }
 
@@ -1091,6 +1129,8 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
 
     return true;
 }
+
+
 
 
 
@@ -1771,6 +1811,30 @@ function ezmam_album_token_get($album) {
     }
     return(trim($res));
 }
+
+
+function ezmam_album_token_manager_get($album) {
+    if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager')) {
+        ezmam_last_error('Access denied: token does not exist');
+        return false;
+    }
+
+    $res = file_get_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager');
+    if ($res === false) {
+        ezmam_last_error("Access denied: token does not exist");
+        return false;
+    }
+    return(trim($res));
+}
+function ezmam_album_token_manager_set($album) {
+	if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager') || file_get_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager') =='' ) {
+		$token =ezmam_token_generate_random();
+		file_put_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager',$token);
+	}
+}
+
+
+
 
 function ezmam_asset_token_get($album, $asset) {
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/' . $asset . '/_token')) {

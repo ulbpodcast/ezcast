@@ -75,9 +75,16 @@ function download_from_recorder() {
     global $php_cli_cmd;
     global $recorder_download_pgm;
     global $logger;
-    
-            
-    //get input parameters
+
+	
+	 // file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+	 
+	 // "------------DOWNLOAD FROM RECORDER BEGIN--------------". PHP_EOL
+	 
+	 
+	 // , FILE_APPEND);	
+			
+	 //get input parameters
     $record_type = $input['record_type']; // cam|slide|camslide
     $record_date = $input['record_date'];
     $course_name = $input['course_name'];
@@ -163,6 +170,7 @@ function download_from_recorder() {
     }
     
     //start download in background. Can't check return value with at, replace by background process ?
+	// file_put_contents("/usr/local/ezcast/ezmanager/web_request/watchlogs.log",  "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1 '| at now" . PHP_EOL , FILE_APPEND);
     $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1 '| at now";
     $pid = system($cmd, $return_val);
     if($return_val != 0) {
@@ -191,8 +199,36 @@ function streaming_init() {
     global $repository_path;
     
     global $logger;
-    
+        
+	
+	 
     ezmam_repository_path($repository_path);
+	
+	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+	 
+	 "--------------------------" . PHP_EOL . date("h:i:s") . " " . PHP_EOL
+	 . "input['course'] :  " .($input['course']) . PHP_EOL
+	 . "caller_ip :  " .$caller_ip . PHP_EOL
+	 . "ezmanager_basedir :  " .$ezmanager_basedir . PHP_EOL
+	 . "repository_path :  " .$repository_path . PHP_EOL
+	 
+	 
+	 , FILE_APPEND);	
+	 
+	 
+	 
+	 foreach ($input as $key2 => $value2){
+		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		 
+		
+		  $key2 ." : ". $value2 . PHP_EOL
+		 
+		 
+		 
+		 , FILE_APPEND);
+	}
+	
+	
 
     $course = $input['course']; // current $course
     $asset = $input['asset']; // current asset
@@ -309,6 +345,17 @@ function streaming_start() {
 
     ezmam_repository_path($repository_path);
 
+	
+	// DEBUG	
+	
+	// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "INPUT VALUES : " . PHP_EOL , FILE_APPEND);
+	// foreach ($input as $key => $value){
+		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		// $key ." : ". $value . PHP_EOL
+		// , FILE_APPEND);
+	// }
+	
+	
     $course = $input['$course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
@@ -416,6 +463,17 @@ function streaming_content_add() {
     global $logger;
      
     ezmam_repository_path($repository_path);
+	
+	
+		
+	// DEBUG	
+	
+	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "INPUT VALUES : " . PHP_EOL , FILE_APPEND);
+	foreach ($input as $key => $value){
+		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		$key ." : ". $value . PHP_EOL
+		, FILE_APPEND);
+	}
 
     $course = $input['course'];
     $asset = $input['asset'];
@@ -429,6 +487,15 @@ function streaming_content_add() {
         print 'error - streams array not found';
         return false;
     }
+		
+		
+	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "STREAM VALUES : " . PHP_EOL , FILE_APPEND);
+	foreach ($streams_array[$course][$asset] as $key => $value){
+		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		$key ." : ". $value . PHP_EOL
+		, FILE_APPEND);
+	}
+
 
     $stream_name = $streams_array[$course][$asset]['stream_name'];
 
@@ -486,6 +553,16 @@ function streaming_content_add() {
             if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
                 echo "File is valid, and was successfully uploaded.\n";
             }
+			file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "UPLOADFILE22222 VALUES : " .$uploadfile. PHP_EOL , FILE_APPEND);
+			file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "FILES['m3u8_segment']['tmp_name']22222 VALUES : " .$_FILES['m3u8_segment']['tmp_name']. PHP_EOL , FILE_APPEND);
+			foreach ($_FILES['m3u8_segment'] as $key => $value){
+				file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+				$key ."888 : ". $value . PHP_EOL
+				, FILE_APPEND);
+			}
+			
+			
+			
 
             // appends the m3u8 file
             if (!is_file("$upload_quality_dir/live.m3u8")) {
@@ -505,11 +582,34 @@ function streaming_content_add() {
             break;
     }
 
+	
+	//debug
+		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "STREAM22222 VALUES : " . PHP_EOL , FILE_APPEND);
+	// foreach ($streams_array[$course][$asset] as $key => $value){
+		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		// $key ." : ". $value . PHP_EOL
+		// , FILE_APPEND);
+	// }
+		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "CAM22222 VALUES : " . PHP_EOL , FILE_APPEND);
+	// foreach ($streams_array[$course][$asset]['cam'] as $key => $value){
+		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		// $key ." : ". $value . PHP_EOL
+		// , FILE_APPEND);
+	// }
+		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "SLIDE22222 VALUES : " . PHP_EOL , FILE_APPEND);
+	// foreach ($streams_array[$course][$asset]['slide'] as $key => $value){
+		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
+		// $key ." : ". $value . PHP_EOL
+		// , FILE_APPEND);
+	// }
+	//findebug
+	
+	
     $string = "<?php" . PHP_EOL . "return ";
     $string .= var_export($streams_array, true) . ';';
     $string .= PHP_EOL . "?>";
 
-    file_put_contents("$ezmanager_basedir/var/streams.php", $string);
+    // file_put_contents("$ezmanager_basedir/var/streams.php", $string);
 }
 
 /**

@@ -6,9 +6,11 @@ function index($param = array()) {
     global $credits;
     global $titlings;
     global $downloadable;
+    global $anon_access;
     global $repository_path;
     global $default_add_title;
     global $default_downloadable;
+    global $default_anon_access;
 
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);
@@ -29,6 +31,7 @@ function index($param = array()) {
 
     // for the checkbox in the form
     $downloadable = (isset($album_meta['downloadable']) ? $album_meta['downloadable'] : $default_downloadable);
+    $anon_access = (isset($album_meta['anon_access']) ? $album_meta['anon_access'] : $default_anon_access);
 
     require_once template_getpath('popup_edit_album.php');
 

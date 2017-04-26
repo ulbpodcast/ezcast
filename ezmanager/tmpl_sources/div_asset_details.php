@@ -156,6 +156,7 @@ function print_info($info, $suffix = '') {
                     ?>
 
                 </span></li>
+				<?php } ?>
         </ul>
     </div>
 <?php } ?>

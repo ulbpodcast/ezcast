@@ -40,6 +40,7 @@ require_once 'lib_ezmam.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
+require_once '../commons/common.inc';
 require_once 'lib_various.php';
 require_once 'lib_user_prefs.php';
 include_once 'lib_toc.php';
@@ -76,11 +77,34 @@ if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) ||
 }
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
-    // if the url contains the parameter 'anon' the session is assumed as anonymous
-
+	 // global $repository_path;
+    // if the url contains the parameter 'anon' the session is assumsed as anonymous
+/*
     if (isset($input['anon']) && $input['anon'] == true) {
         user_anonymous_session();
-    }
+    }*/
+	
+	
+	// if album or asset is public
+	 if (isset($input['album'])){
+		$selected_meta=metadata2assoc_array($repository_path.'/'.$input['album']."/_metadata.xml");
+		
+/*		
+		 // peut etre pas necessaire si on ne rend que les albums publics
+		if(isset($input['asset'])){			 
+			// gets metadata for the selected asset
+			// $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
+			$selected_meta=metadata2assoc_array($repository_path.'/'.$input['album'].'/'.$input['asset']."/_metadata.xml");
+			
+			
+			// AJOUT ARNAUD
+			// if anonym
+			file_put_contents('/home/arwillame/test2/indexlog.txt','Metadata : '. json_encode($selected_meta). PHP_EOL . '  INPUT  :  '.json_encode($input));
+		}
+		*/
+	 }
+	if (isset($selected_meta['anon_access']) && $selected_meta['anon_access'] == 'true') user_anonymous_session();
+	
     // Step 2: Logging in a user who already submitted the form
     // The user can continue without any authentication. Then, it'll be an anonymous session.
     else if (isset($input['action']) && $input['action'] == 'login') {

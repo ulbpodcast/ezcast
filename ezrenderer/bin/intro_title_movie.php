@@ -404,38 +404,6 @@ function get_processing_info($processing_info_path, $processing_filename, &$proc
     return true;
 }
 
-/**
- *
- * @param string_path $title_meta_path
- * @param assoc_array $title_assoc
- * @return bool true on success
- * @desc load the title (xml) info and validate it. parameters should be in title,author,date,organization,copyright
- */
-function get_title_info($title_meta_path, $title_filename, &$title_assoc) {
-    if (!file_exists($title_meta_path . "/" . $title_filename)) {
-        $title_assoc = false;
-        return true; //no title file means no title to generate
-    }
-    $title_assoc = metadata2assoc_array($title_meta_path . "/" . $title_filename);
-    if (!is_array($title_assoc))
-        myerror("Title metadata file read error $title_meta_path/$title_filename\n");
-
-    //check if we dont have any invalid properties
-    $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright", "keywords");
-    $badmeta = "";
-    foreach ($title_assoc as $key => $value) {
-        if (!in_array($key, $valid_title_elems)) {
-            $badmeta.="'$key',";
-        }
-    }
-
-    if ($badmeta != "") {
-        $badmeta = "Error with metadata elements: " . $badmeta . "\n";
-        myerror($badmeta);
-    }
-
-    return true;
-}
 
 /**
  * look at the movies, transcode them and return path to transcoded movies

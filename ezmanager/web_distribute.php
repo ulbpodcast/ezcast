@@ -267,7 +267,6 @@ function view_media() {
     $filename .= '_' . $type_fn_part;
 
   //  header('Content-Type: video/x-m4v');
-	file_put_contents('/home/arwillame/test2/media.txt',$media_handle. PHP_EOL ." fileName:  ".$filename.  PHP_EOL ."  size:  ".filesize($media_handle));
     header('Content-Type: video/mp4');
     if (isset($_SERVER['HTTP_RANGE'])) {
         rangeDownload($media_handle);

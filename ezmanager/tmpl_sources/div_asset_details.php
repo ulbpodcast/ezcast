@@ -89,11 +89,11 @@ function print_info($info, $suffix = '') {
 					if($enable_copy_asset){?>
 						<li><span class="BoutonCopier">
 							<?php if ($status != 'processing' && $status != 'error') { ?>
-								<a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®Copy®</a>
+								<a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®copy®</a>
 								<?php
 							} else {
 								?>
-								<a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Copy®</a>
+								<a href="javascript:show_popup_from_inner_div('#popup_not_available');">®copy®</a>
 								<?php
 							}
 							?>

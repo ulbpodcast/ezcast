@@ -313,8 +313,8 @@
         <label id="Login" lang="en">Netid</label>
         <label id="Password" lang="fr">Mot de passe</label>
         <label id="Password" lang="en">Password</label>
-        <label id="®Anonym_Access®" lang="fr">Accès anonyme</label>
-        <label id="®Anonym_Access®" lang="en">Anonymous Access</label>
+        <label id="Anonym_Access" lang="fr">Accès anonyme</label>
+        <label id="Anonym_Access" lang="en">Anonymous Access</label>
         <label id="Delete_Modo" lang="en">Delete Moderator</label>
         <label id="Delete_Modo" lang="fr">Supprimer modérateur</label>
         

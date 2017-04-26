@@ -190,5 +190,69 @@ function split_title($string, $line_length = 35) {
     }
     return $result;
 }
+function get_title_info($title_meta_path, $title_filename, &$title_assoc) {
+    if (!file_exists($title_meta_path . "/" . $title_filename)) {
+        $title_assoc = false;
+        return true; //no title file means no title to generate
+    }
+    $title_assoc = metadata2assoc_array($title_meta_path . "/" . $title_filename);
+    if (!is_array($title_assoc))
+        myerror("Title metadata file read error $title_meta_path/$title_filename\n");
+
+    //check if we dont have any invalid properties
+    $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright", "keywords");
+    $badmeta = "";
+    foreach ($title_assoc as $key => $value) {
+        if (!in_array($key, $valid_title_elems)) {
+            $badmeta.="'$key',";
+        }
+    }
+
+    if ($badmeta != "") {
+        $badmeta = "Error with metadata elements: " . $badmeta . "\n";
+        // myerror($badmeta);
+    }
+
+    return true;
+}
+/*
+function generate_title($repo,$encoder,$title_assoc){
+	
+	$title_movieout = $repo . "/title.mov";
+	$title_image = $repo . "/title.jpg";
+	// file_put_contents('/home/arwillame/test2/encoder.txt',$encoder);
+	file_put_contents('/home/arwillame/changeintro/encoder.txt',$encoder);
+	$encoder_values = explode('_', $encoder);
+	$resolution_values = explode('x', $encoder_values[2]);
+	$width = $resolution_values[0];
+	$height = $resolution_values[1];
+	$ratio = explode(":", $qtinfo["aspectRatio"]);
+	if ($ratio[0] > 0 && $ratio[1] > 0)
+		$height = $resolution_values[0] * $ratio[1] / $ratio[0];
+
+	processing_status("title $camslide");
+	$res = gd_image_create($title_assoc, $width, $height, $title_image);
+	if (!$res || !file_exists($title_image))
+		myerror("couldn't generate title $title_image");
+	//   $res = movie_title($title_movieout, $title_assoc, $encoder, 8); //duration is hardcoded to 8
+	$res = movie_title_from_image($title_movieout, $title_image, $encoder);
+	if ($res)
+		myerror("couldn't generate title $title_movieout");
+
+	return $title_movieout;
+}*/
+function generate_new_title($repo,$encoder,$title_assoc){ //rendre compatible avec l'autre ( generate_title())
+	
+	$title_movieout = $repo . "/title.mov";
+	$title_image = $repo . "/title.jpg";
+	$encoder_values = explode('_', $encoder);
+	$resolution_values = explode('x', $encoder_values[2]);
+	$width = $resolution_values[0];
+	$height = $resolution_values[1];
+	$res = gd_image_create($title_assoc, $width, $height, $title_image);
+	$res = movie_title_from_image($title_movieout, $title_image, $encoder);
+
+	return $title_movieout;
+}
 
 ?>

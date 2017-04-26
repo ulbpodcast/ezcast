@@ -66,13 +66,12 @@ for every album the user can create.
 	global $enable_course_creation;
 	if($enable_course_creation){
     ?>
-		<form id="form_new_ablbum" action="" method="post">
+		<form id="form_new_ablbum" action="index.php" method="post">
 			<table>
 				<tr>
 				  <td>®Album_type® </td>
 				  <td><select id="selectType">
-					  <option value="officialcourse">®Official_course® </option>
-					  <option value="unofficialcourse">®Unoffical_course®</option>
+					  <option value="course">®Course®</option>
 					  <option value="channel">®Channel®</option>
 					</select>	
 				  </td>
@@ -86,18 +85,16 @@ for every album the user can create.
 			</table>
 		</form> 
 
-		<script>
-		
-		 $( "#form_new_ablbum" ).submit(function() {    			 
-		  $.post(
-            'index.php', 
-            {
-				action : "create_courseAndAlbum",
-                album : $("#album").val(),
-				albumtype: $('#selectType').val()
-            }
-         );		 
-		});	
+		<script>		
+	
+			$('#form_new_ablbum').submit(function(e) {
+				e.preventDefault();
+				var album=encodeURIComponent($('#album').val());
+				var selectType=encodeURIComponent($('#selectType').val());
+				show_popup_from_outer_div("index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+selectType+"",true);
+
+			}); 
+	
 	</script>
 		 <?php } ?>
 </div>

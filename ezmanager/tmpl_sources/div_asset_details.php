@@ -78,7 +78,7 @@ function print_info($info, $suffix = '') {
                         <?php
                     } else {
                         ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Move®</a>
+                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Move®</a>		  
                         <?php
                     }
                     ?>
@@ -137,6 +137,24 @@ function print_info($info, $suffix = '') {
                         <?php
                     }
                     ?>
+                </span></li>       
+				<?php 
+				// add un flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
+				global $update_title;				
+				if($update_title=='manual' && isset($asset_metadata['add_title'])){?>
+
+				  <li><span class="BoutonRegenTitle">
+                    <?php if ($status != 'processing' && $status != 'error') {
+                        ?>
+                        <a href="javascript:show_popup_from_inner_div('#popup_regen_title_<?php echo $asset_name; ?>');">®Regen_Intro®</a>
+                        <?php
+                    } else {
+                        ?>
+                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Regen_Intro®</a>
+                        <?php
+                    }
+                    ?>
+
                 </span></li>
         </ul>
     </div>
@@ -236,6 +254,7 @@ if ($status != 'processing' && $status != 'failed' && strtolower($origin) !== 's
 <!-- Popup -->
 <div style="display: none;">
 <?php include 'popup_delete_asset.php'; ?>
+<?php include 'popup_regen_title.php'; ?>										 
 <?php include 'popup_move_asset.php'; ?>
 <?php include 'popup_copy_asset.php'; ?>
 <?php include 'popup_publish_asset.php'; ?>

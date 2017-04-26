@@ -163,6 +163,8 @@
         <label id="RSS_feed" lang="en">RSS feed</label>
         <label id="Player_url" lang="fr">Lien EZplayer</label>
         <label id="Player_url" lang="en">EZplayer link</label>
+        <label id="Ezmanager_url" lang="fr">Lien EZmanager</label>
+        <label id="Ezmanager_url" lang="en">EZmanager Link</label>
         <label id="Processing" lang="fr">en cours de traitement</label>
         <label id="Processing" lang="en">processing</label>
         <label id="Manual_submit" lang="fr">Soumission manuelle</label>
@@ -203,12 +205,16 @@
         <label id="Album_type" lang="en"> Album Type : </label>	
 		<label id="Cours_officiel" lang="fr">  Cours officiel </label>
         <label id="Cours_officiel" lang="en">  Official Course </label>
+        <label id="Course" lang="en">Course </label>
+        <label id="Course" lang="fr">Cours </label>
 		<label id="Cours_non_officiel" lang="fr">  Cours non officiel </label>
         <label id="Cours_non_officiel" lang="en">  Unofficial course </label>
 		<label id="Chaine" lang="fr"> Chaîne </label>
         <label id="Chaine" lang="en"> Channel </label>
 		<label id="Album_Name" lang="fr"> Nom d'album :  </label>
         <label id="Album_Name" lang="en"> Album Name :  </label>
+        <label id="album_copy_success" lang="fr"> Album copié avec succès :  </label>
+        <label id="album_copy_success" lang="en"> Album copied successfully :  </label>
 
 
         
@@ -261,6 +267,10 @@
         <label id="Keep_quality" lang="en">Keep the original video quality</label>
         <label id="Add_title_album" lang="fr">Ajouter un titre aux vidéos publiées dans cet album</label>
         <label id="Add_title_album" lang="en">Add a title to videos published in this album</label>
+        <label id="Moderator_List" lang="en">Moderator List</label>
+        <label id="Moderator_List" lang="fr">Liste des modérateurs</label>
+        <label id="Regen_Intro" lang="fr">Regénérer l'intro</label>
+        <label id="Regen_Intro" lang="en">Regen Intro</label>
         
         <!-- Titles -->
         <label id="Asset_sched_succeeded_title" lang="fr">Programmation d'asset terminée</label>
@@ -303,6 +313,10 @@
         <label id="Login" lang="en">Netid</label>
         <label id="Password" lang="fr">Mot de passe</label>
         <label id="Password" lang="en">Password</label>
+        <label id="®Anonym_Access®" lang="fr">Accès anonyme</label>
+        <label id="®Anonym_Access®" lang="en">Anonymous Access</label>
+        <label id="Delete_Modo" lang="en">Delete Moderator</label>
+        <label id="Delete_Modo" lang="fr">Supprimer modérateur</label>
         
         <!-- Long texts -->
         <label id="Destructive_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération destructive non-réversible.</label>
@@ -313,6 +327,8 @@
         <label id="Do_you_wish_to_continue" lang="en">Do you wish to continue?</label>
         <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, et à bientôt.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php">Revenir à la page de connexion&lt;/a&gt;</label>
         <label id="Logout_confirmation_message" lang="en">You are now logged out.&lt;br /&gt;Thanks for using our services, see you soon.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
+        <label id="Manager_URL_message" lang="fr">Pour partager cet album sur "EZmanager", veuillez fournir le lien suivant : </label>
+        <label id="Manager_URL_message" lang="en">You can share this album to other users by giving them the following link:</label>
         <label id="HD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer cet album en haute définition, veuillez utiliser le lien suivant :</label>
         <label id="HD_RSS_feed_URL_message" lang="en">You can watch or broadcast this album in high definition by using the following link:</label>
         <label id="SD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer cet album en basse définition, veuillez utiliser le lien suivant :</label>
@@ -339,7 +355,10 @@
         <label id="Album_creation_succeeded_message" lang="en">Your album has been successfully created.</label>
         <label id="Delete_album_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer l'album &lt;?php echo $album_name; ?&gt;. En faisant ainsi, vous supprimerez définitivement l'&lt;strong&gt;album public&lt;/strong&gt; &lt;i&gt;et&lt;/i&gt; l'&lt;strong&gt;album privé&lt;/strong&gt; de ce cours, ainsi que tout leur contenu. Les autres titulaires de l'album n'y auront plus accès non plus</label>
         <label id="Delete_album_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete the albums for &lt;?php echo $album_name; ?&gt;. By doing so, you will delete both the &lt;strong&gt;public&lt;/strong&gt; &lt;i&gt;and&lt;/i&gt; &lt;strong&gt;private&lt;/strong&gt; albums, as well as all of their content. The other owners of the album will also lose access to this album.</label>
-        <label id="Album_deletion_succeeded_message" lang="fr">Albums public et privé supprimés.</label>
+        <label id="Delete_modo_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un modérateur. En faisant ainsi, vous supprimerez définitivement l'accès à l'album pour cette personne.</label>
+        <label id="Delete_modo_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete a moderator. He will loose the access to the album</label>
+       
+	   <label id="Album_deletion_succeeded_message" lang="fr">Albums public et privé supprimés.</label>
         <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
         <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>
         <label id="Album_edition_succeeded_message" lang="en">Album properties have been updated.</label>

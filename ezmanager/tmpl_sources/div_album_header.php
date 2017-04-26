@@ -46,6 +46,7 @@ Before calling this template, please define the following variables:
                             <ul class="submenu">
                                 <li><span class="BoutonSuppAlbum"><a href="javascript:show_popup_from_inner_div('#popup_delete_album')">®Delete_album®</a></span></li>
                                 <li><span class="BoutonEditer"><a href="javascript:show_popup_from_outer_div('index.php?action=view_edit_album')">®Edit_album®</a></span></li>
+                               <?php if($enable_moderator){ ?> <li><span class="BoutonEditer"><a href="javascript:show_popup_from_outer_div('index.php?action=view_list_moderator')">®Moderator_List®</a></span></li> <?php } ?>																																																									 
                                 <li><span class="BoutonRSS"><a href="javascript:show_popup_from_inner_div('#popup_reset_rss_feed')">®Regenerate_RSS®</a></span></li>
                             </ul>
                         </li>
@@ -62,12 +63,17 @@ Before calling this template, please define the following variables:
                 <img src="images/page4/PictoRss.png" style="display:inline"/> ®SD_RSS_feed®</a> 
             <a class="greyLink ezplayer" style="font-size:0.75em;<?php if(!$public_album) echo "color: red !important;"?>" href="javascript:show_popup_from_inner_div('#player_url_box'); copyToClipboard('#zero_clipboard_player_url','<?php echo $player_full_url; ?>');">
                     <img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®</a>
+			<?php if($enable_moderator){ ?><a class="greyLink ezmanager" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#manager_url_box'); copyToClipboard('#zero_clipboard_manager_url','<?php echo $manager_full_url; ?>');"><img src="images/page4/PictoEZ.png" style="display:inline"/>®Ezmanager_url®</a> <?php } ?>
 
+					
+					
+					
     </div>
 
     <!-- Popups -->
     <div style="display: none;">
         <?php include_once 'popup_player_url.php'; ?>
+        <?php include_once 'popup_manager_url.php'; ?>								
         <?php include_once 'popup_hd_rss_feed.php'; ?>
         <?php include_once 'popup_sd_rss_feed.php'; ?>
         <?php include_once 'popup_delete_album.php'; ?>

@@ -67,3 +67,9 @@ function popup_regenerate_rss_callback(album) {
     show_album_details(album);
     //$.colorbox.close();
 }
+
+function popup_asset_regentitle_callback(album, asset) {
+    show_popup_from_outer_div('index.php?action=regen_title&album='+album+'&asset='+asset);
+    show_album_details(album);
+    $.colorbox.close();
+}

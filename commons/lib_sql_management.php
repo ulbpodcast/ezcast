@@ -90,6 +90,11 @@ function statements_get(){
 			'UPDATE ' . db_gettable('courses') . ' ' .
 			'SET course_name = :course_name, shortname = :shortname, in_recorders = :in_recorders ' .        
 			'WHERE course_code = :course_code',
+			
+		'course_update_anon' =>
+			'UPDATE ' . db_gettable('courses') . ' ' .
+			'SET anon_access = :anon_access ' .        
+			'WHERE course_code = :course_code',
 		
 		'course_delete' =>
 			'DELETE FROM ' . db_gettable('courses') . ' ' .
@@ -176,10 +181,19 @@ function statements_get(){
 			'DELETE FROM ' . db_gettable('users_courses') . ' ' .
 			'WHERE ID = :user_course_ID AND origin=\'internal\'',
 		
+		'users_courses_delete_row' =>
+			'DELETE FROM ' . db_gettable('users_courses') . ' ' .
+			'WHERE course_code=:course_code AND user_ID=:user_ID',
+		
 		'users_courses_get' =>
 			'SELECT * ' .
 			'FROM ' . db_gettable('users_courses') . ' ' .
 			'WHERE course_code=:course_code AND user_ID=:user_ID',
+	
+		'users_courses_get_users' =>
+			'SELECT user_ID ' .
+			'FROM ' . db_gettable('users_courses') . ' ' .
+			'WHERE course_code=:course_code',
 		
 		'found_rows' => 
 			'SELECT  FOUND_ROWS();',
@@ -367,13 +381,15 @@ function db_courses_list($course_code, $course_name, $shortname, $in_recorders, 
  * @param Stirng $origin
  */
 function db_course_create($course_code, $course_name, $shortname,$in_recorders) {
+	
 	global $statements;
 	
 	$statements['course_create']->bindParam(':course_code', $course_code);
 	$statements['course_create']->bindParam(':course_name', $course_name);
-	$statements['course_create']->bindParam(':shortname', $shortname);	
-	$statements['course_create']->bindParam(':in_recorders', $in_recorders); 
-	
+	$statements['course_create']->bindParam(':shortname', $shortname);
+	$statements['course_create']->bindParam(':in_recorders', $in_recorders); 	
+	// print_r($course_name);
+	// die();
 	return $statements['course_create']->execute();
 }
 
@@ -416,6 +432,18 @@ function db_course_update($course_code, $course_name, $shortname, $in_recorders)
 	$statements['course_update']->bindParam(':in_recorders', $in_recorders);
 	
 	return $statements['course_update']->execute();
+}
+
+function course_update_anon($course_code, $anon_access) {
+	global $statements;
+
+	$statements['course_update_anon']->bindParam(':anon_access', $anon_access);
+	$statements['course_update_anon']->bindParam(':course_code', $course_code);
+	
+	file_put_contents('/home/arwillame/test2/indexlog2222223.txt','ANON ACCES : '.$anon_access. PHP_EOL . 'course_code : '.$course_code. PHP_EOL . 'requete  : '.json_encode(statements_get()));
+	
+	
+	return $statements['course_update_anon']->execute();
 }
 
 /**
@@ -496,6 +524,14 @@ function db_users_courses_get($course_code, $user_ID) {
 	
 	$statements['users_courses_get']->execute();
 	return $statements['users_courses_get']->fetch(); 
+	
+}
+function users_courses_get_users($course_code) {
+	global $statements;
+	
+	$statements['users_courses_get_users']->bindParam(':course_code', $course_code);	
+	$statements['users_courses_get_users']->execute();
+	return $statements['users_courses_get_users']->fetchAll(); 
 	
 }
 
@@ -661,6 +697,14 @@ function db_users_courses_delete($user_course_ID) {
 	$statements['users_courses_delete']->bindParam(':user_course_ID', $user_course_ID);
 	
 	return $statements['users_courses_delete']->execute();
+}
+function db_users_courses_delete_row($album,$user_course_ID) {
+	global $statements;
+		
+	$statements['users_courses_delete_row']->bindParam(':user_ID', $user_course_ID);
+	$statements['users_courses_delete_row']->bindParam(':course_code', $album);
+	
+	return $statements['users_courses_delete_row']->execute();
 }
 
 function db_unlink_user($user_ID) {

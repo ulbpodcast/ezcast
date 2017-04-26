@@ -361,6 +361,7 @@ function view_login_form() {
 function albums_view() {
     global $url;
     // Used in redraw mode only
+	global $enable_moderator;
     global $album_name;
     global $album_name_full;
     global $description;

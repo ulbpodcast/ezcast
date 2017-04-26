@@ -72,6 +72,16 @@ function ldap_checkauth($login, $password) {
     $userinfo = array();
     if (isset($info[0]['cn'][0]))
         $userinfo['full_name'] = $info[0]['cn'][0];
+	
+		
+	// AJOUT UCL
+	if(isset($info[0]['uclressource'])){
+		for($i=0;$i<count($info[0]['uclressource']);$i++){   
+			if (isset($info[0]['uclressource'][$i]) && $info[0]['uclressource'][$i] =='podcast.role.manager' ) $userinfo['ismanager'] = 'true';		
+		}
+	}
+	
+	
     if (isset($info[0]['mail'][0]))
         $userinfo['email'] = $info[0]['mail'][0];
     if ($userinfo) {

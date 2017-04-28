@@ -38,13 +38,13 @@ if(isset($asset_metadata['add_title']) && $asset_metadata['status']=='processed'
 	// put the status of the asset to "processing"
 	$cmd1='sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$repository_basedir.'/repository/'.$album.'/'.$asset.'/_metadata.xml';
 	// Copy asset in ezrenderer
-	$cmd2='rsync -avhp '.$repository_basedir.'/repository/'.$album.'/'.$asset.'/  '.$ezrenderer_list[0]['name'].'@'.$ezrenderer_list[0]['host'].':'.$repository_basedir.'/ezrenderer/queues/processing/'.$album.'_'.$asset;
+	$cmd2='rsync -avhp '.$repository_basedir.'/repository/'.$album.'/'.$asset.'/  '.$ezrenderer_list[0]['client'].'@'.$ezrenderer_list[0]['host'].':'.$ezrenderer_list[0]['processed_dir'].'/../processing/'.$album.'_'.$asset;
 	// launch the rendering
-	$cmd3='ssh '.$ezrenderer_list[0]['name'].'@'.$ezrenderer_list[0]['host'].' "'.$php_cli_cmd.' '.$repository_basedir.'/ezrenderer/bin/gen_new_intro.php '.$repository_basedir.'/ezrenderer/queues/processing/'.$album.'_'.$asset.' \"'.base64_encode($album_metadata['name']).'\"  \''.base64_encode($copyright).'\'  \''.base64_encode($organization_name).'\'   \''.base64_encode($album_metadata['id']).'\'  \''.base64_encode(suffix_remove($album)).'\' "';
+	$cmd3='ssh '.$ezrenderer_list[0]['client'].'@'.$ezrenderer_list[0]['host'].' "'.$php_cli_cmd.' '.$ezrenderer_list[0]['processed_dir'].'/../../bin/gen_new_intro.php '.$ezrenderer_list[0]['processed_dir'].'/../processing/'.$album.'_'.$asset.' \"'.base64_encode($album_metadata['name']).'\"  \''.base64_encode($copyright).'\'  \''.base64_encode($organization_name).'\'   \''.base64_encode($album_metadata['id']).'\'  \''.base64_encode(suffix_remove($album)).'\' "';
 	// get new files with good title
-	$cmd4='rsync -avhp '.$ezrenderer_list[0]['name'].'@'.$ezrenderer_list[0]['host'].':'.$repository_basedir.'/ezrenderer/queues/processing/'.$album.'_'.$asset.'/'.' '.$repository_basedir.'/repository/'.$album.'/'.$asset;
+	$cmd4='rsync -avhp '.$ezrenderer_list[0]['client'].'@'.$ezrenderer_list[0]['host'].':'.$ezrenderer_list[0]['processed_dir'].'/../processing/'.$album.'_'.$asset.'/'.' '.$repository_basedir.'/repository/'.$album.'/'.$asset;
 	// delete proccessifile         
-	$cmd5='ssh '.$ezrenderer_list[0]['name'].'@'.$ezrenderer_list[0]['host'].' "rm -rf '.$repository_basedir.'/ezrenderer/queues/processing/'.$album.'_'.$asset.'"';
+	$cmd5='ssh '.$ezrenderer_list[0]['client'].'@'.$ezrenderer_list[0]['host'].' "rm -rf '.$ezrenderer_list[0]['processed_dir'].'/../processing/'.$album.'_'.$asset.'"';
 	// put status of the asset to processed 
 	$cmd6='sed -i "s/<status>processing<\/status>/<status>processed<\/status>/g" '.$repository_basedir.'/repository/'.$album.'/'.$asset.'/_metadata.xml ';
 	
@@ -54,15 +54,15 @@ if(isset($asset_metadata['add_title']) && $asset_metadata['status']=='processed'
 	exec($cmd4, $cmdoutput4, $returncode4 );
 	exec($cmd5, $cmdoutput5, $returncode5 );
 	exec($cmd6 , $cmdoutput6, $returncode6 );
-	
-	file_put_contents($log_path, implode("\n", $cmdoutput1)."\n".implode("\n", $cmdoutput2)."\n".implode("\n", $cmdoutput3)."\n".implode("\n", $cmdoutput4)."\n".implode("\n", $cmdoutput5)."\n".implode("\n", $cmdoutput6)."\n");
+		
+	file_put_contents($log_path, implode("\n", $cmdoutput1)."\n".implode("\n", $cmdoutput2)."\n".implode("\n", $cmdoutput3)."\n".implode("\n", $cmdoutput4)."\n".implode("\n", $cmdoutput5)."\n".implode("\n", $cmdoutput6)."\n",FILE_APPEND );
 
 	
 	// Debug
-	file_put_contents('/home/arwillame/test2/info.txt','REPO :  '.$repository_path. PHP_EOL .'FROM  : '.$input['from']. PHP_EOL .'TO  : '.$album. PHP_EOL .'ASSET : '.$asset);
-	file_put_contents('/home/arwillame/test2/info2.txt','cmd1 :  '.$cmd1. PHP_EOL .'cmd2  : '.$cmd2. PHP_EOL .'cmd3  : '.$cmd3. PHP_EOL .'cmd4  : '.$cmd4. PHP_EOL .'cmd5  : '.$cmd5. PHP_EOL .'cmd6  : '.$cmd6. PHP_EOL .'output : '.$cmdoutput. PHP_EOL .'returnval : '.$returncode. PHP_EOL .'return : '.$return);
-	file_put_contents('/home/arwillame/test2/info3.txt','return : '.$assoc_metadata['name']);
-	file_put_contents('/home/arwillame/test2/info4.txt','return : '.$ezrenderer_list[0]['name']);
+																																										   
+	// file_put_contents($log_path,'cmd1 :  '.$cmd1. PHP_EOL .'cmd2  : '.$cmd2. PHP_EOL .'cmd3  : '.$cmd3. PHP_EOL .'cmd4  : '.$cmd4. PHP_EOL .'cmd5  : '.$cmd5. PHP_EOL .'cmd6  : '.$cmd6. PHP_EOL .'output : '.$cmdoutput. PHP_EOL .'returnval : '.$returncode. PHP_EOL .'return : '.$return,FILE_APPEND);
+	// file_put_contents($log_path,'return : '.$assoc_metadata['name'],FILE_APPEND);
+	// file_put_contents($log_path,'return : '.$ezrenderer_list[0]['name'],FILE_APPEND);
 
 }
 

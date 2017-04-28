@@ -31,7 +31,7 @@
     </div>
 	
 	<div class="form-group">
-        <label for="course_name" class="col-md-2 control-label">®recorders®/label>
+        <label for="course_name" class="col-md-2 control-label">®recorders®</label>
         <div class="col-sm-5">
             <input type="checkbox" name="in_recorders" />
         </div>

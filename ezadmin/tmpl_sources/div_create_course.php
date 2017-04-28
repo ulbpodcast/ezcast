@@ -29,7 +29,15 @@
             <input type="text" class="form-control" name="shortname" value="<?php if(isset($input['shortname'])) echo $input['shortname'] ?>"/>
         </div>
     </div>
-    
+	
+	<div class="form-group">
+        <label for="course_name" class="col-md-2 control-label">®recorders®/label>
+        <div class="col-sm-5">
+            <input type="checkbox" name="in_recorders" />
+        </div>
+    </div>
+	
+	
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-5">
             <input type="submit" class="btn btn-success" name="create" value="®create®"/>

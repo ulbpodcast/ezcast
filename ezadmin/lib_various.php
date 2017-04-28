@@ -421,6 +421,7 @@ function push_users_courses_to_recorder() {
     global $recorder_user;
     global $recorder_basedir;
     global $recorder_subdir;
+	global $recorder_password_storage_enabled;										  
 
     if (!db_ready()) {
         $statements = statements_get();

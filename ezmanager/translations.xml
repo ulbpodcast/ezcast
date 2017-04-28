@@ -221,6 +221,8 @@
         <!-- Actions and buttons -->
         <label id="Browse" lang="fr">Parcourir</label>
         <label id="Browse" lang="en">Browse</label>
+		<label id="Copy" lang="fr">Copier</label>
+        <label id="Copy" lang="en">Copy</label>
         <label id="Delete" lang="fr">Supprimer</label>
         <label id="Delete" lang="en">Delete</label>
         <label id="Edit" lang="fr">Editer</label>
@@ -319,6 +321,8 @@
         <label id="Delete_Modo" lang="fr">Supprimer modérateur</label>
         
         <!-- Long texts -->
+		<label id="Player_url_private_alert" lang="fr">CECI EST UN LIEN VERS L'ALBUM PRIVE. Il ne devrait pas être partagé aux étudiants.</label>
+        <label id="Player_url_private_alert" lang="en">THIS IS THE PRIVATE ALBUM LINK. It should not be shared to students.</label>
         <label id="Destructive_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération destructive non-réversible.</label>
         <label id="Destructive_operation" lang="en">&lt;strong&gt;Caution: &lt;/strong&gt;destructive, non-reversible operation.</label>
         <label id="Non_reversible_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération non-réversible.</label>
@@ -362,6 +366,10 @@
         <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
         <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>
         <label id="Album_edition_succeeded_message" lang="en">Album properties have been updated.</label>
+		<label id="Copy_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
+        <label id="Copy_asset_message" lang="en">Please select the destination album in the following list:</label>
+		<label id="®No_albums_to_copy_asset_to®" lang="fr">Aucun album disponible</label>
+        <label id="®No_albums_to_copy_asset_to®" lang="en">No album available</label>
         <label id="Delete_asset_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un enregistrement. Cette opération est irréversible.</label>
         <label id="Delete_asset_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;You are about to delete a record. This operation can't be reverted</label>
         <label id="Asset_deletion_succeeded_message" lang="fr">Votre enregistrement a bien été supprimé.</label>

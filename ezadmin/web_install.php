@@ -647,7 +647,7 @@ function create_tables($drop = true) {
                 "`status` enum('auto_success', 'auto_success_errors', 'auto_success_warnings', 'auto_failure', 'auto_ignore', 'manual_ok', 'manual_partial_ok', 'manual_failure', 'manual_ignore') NOT NULL," .
                 "`author` varchar(50) DEFAULT 'system'," .
                 "`status_time` datetime DEFAULT NULL," .
-                "`description` text" .
+                "`description` text," .
                 "KEY `asset` (`asset`)" .
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
         
@@ -655,7 +655,7 @@ function create_tables($drop = true) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_LAST_INDEXES_TABLE_NAME .'`;');
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_LAST_INDEXES_TABLE_NAME . '` (' .
                 "`source` varchar(20) NOT NULL," .
-                "`id` int(10) unsigned NOT NULL" .
+                "`id` int(10) unsigned NOT NULL," .
                 " PRIMARY KEY (`source`) " .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         

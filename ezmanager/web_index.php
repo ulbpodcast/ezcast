@@ -296,7 +296,7 @@ else {
 			
 			
         case 'create_courseAndAlbum':
-			include "../ezadmin/lib_sql_management.php";
+			// include "../ezadmin/lib_sql_management.php";
 			 $service = true;
 			requireController('album_create.php');
             break;

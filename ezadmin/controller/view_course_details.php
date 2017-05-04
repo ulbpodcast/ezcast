@@ -8,6 +8,7 @@ function index($param = array()) {
 
     if (isset($input['post'])) {
         $course_code = $input['course_code'];
+        $course_code_public = $input['course_code_public'];											 
         $course_name = $input['course_name'];
         $shortname = $input['shortname'];
         $in_recorders = $input['in_recorders'] ? 1 : 0;
@@ -26,6 +27,7 @@ function index($param = array()) {
 
     // Manipulate info
     $course_code = $courseinfo['course_code'];
+    $course_code_public = $courseinfo['course_code_public'];															
     $course_name = $courseinfo['course_name'];
     $shortname = $courseinfo['shortname'];
     $origin = $courseinfo['origin'];

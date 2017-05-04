@@ -54,7 +54,7 @@
             <?php if($use_course_name) { ?>
                 <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?></a></span></td>
             <?php } else { ?>
-                <td><span title="<?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo $course['course_code']; ?></a></span></td>
+                <td><span title="<?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php if(isset($course['course_code_public']) && $course['course_code_public']!="") echo $course['course_code_public']; else echo $course['course_code']; ?></a></span></td>
             <?php } ?>
                 
             <?php global $use_user_name; if($use_user_name) { ?>

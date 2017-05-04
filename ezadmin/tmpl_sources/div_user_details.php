@@ -161,7 +161,7 @@
         <tbody>
             <?php foreach ($courses as $c) { ?>
                 <tr data-id="<?php echo $c['ID'] ?>" data-origin="<?php echo $u['origin'] ?>">
-                    <td><?php echo $c['course_code']; ?></td>
+                    <td><?php if(isset($c['course_code_public']) && $c['course_code_public']!="") echo $c['course_code_public']; else echo $c['course_code'];?></td>
                     <td><?php echo $c['course_name']; ?></td>
                     <td>
                         <span class="label <?php if ($c['origin'] == 'internal') echo 'label-info'; ?>"><?php

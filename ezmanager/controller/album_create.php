@@ -23,14 +23,15 @@
     //
     // Sanity checks
     //
-	
+	include "../ezadmin/lib_sql_management.php";
+
 	
 	
 	
 	
 	
 	if($input['action']=='create_courseAndAlbum'){		
-	
+	     $course_code_public=$input['album'];	
 		if(strlen($input['album'])>=50) $input['album']=substr($input['album'], 0, 43) ;
 		$course=true;
 		while($course){
@@ -40,7 +41,7 @@
 		}
 		$albumName=$input['album'];
 		$input['album']=$idAlbum;
-		db_course_create($input['album'],$albumName,$albumName,0);
+		db_course_create($input['album'],$course_code_public,$albumName,$albumName,0);
 		db_users_courses_create($input['album'], $_SESSION['user_login']);
 
 			
@@ -67,9 +68,12 @@
     $anac = get_anac(date('Y'), date('m'));
 	
 	// if(!isset( $input['isofficial'])) $input['isofficial']='true';
+ 	$courseinfo = db_course_read($input['album']);
+
 	
     $metadata = array(
 		'id' => $idAlbum,
+		'course_code_public' => $courseinfo['course_code_public'],							 
         'name' => $albumName,
         'description' => $description,
         'date' => date($dir_date_format),

@@ -207,6 +207,8 @@
         <label id="Cours_officiel" lang="en">  Official Course </label>
         <label id="Course" lang="en">Course </label>
         <label id="Course" lang="fr">Cours </label>
+        <label id="Course_code" lang="en">Code Cours : </label>
+        <label id="Course_code" lang="fr">Code Cours : </label>
 		<label id="Cours_non_officiel" lang="fr">  Cours non officiel </label>
         <label id="Cours_non_officiel" lang="en">  Unofficial course </label>
 		<label id="Channel" lang="fr"> Chaîne </label>

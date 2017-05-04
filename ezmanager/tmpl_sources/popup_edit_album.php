@@ -38,7 +38,7 @@ You should not have to include this file yourself.
             <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
             <input type="hidden" id="moderation" name="moderation" value="<?php echo $moderation; ?>"/>
             <p>
-                Album&nbsp;: <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
+                Album&nbsp;: <?php if(isset($album_meta['course_code_public']) && $album_meta['course_code_public']!="" )echo $album_meta['course_code_public']; else echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
                 <br/><br/>
 
                 <!-- Jingle dropdown list -->

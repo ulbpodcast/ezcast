@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . '/includes/asset_view.php');
+
 /**
  * Edits asset data and re-draws the asset details
  * @global type $input 
@@ -47,6 +49,5 @@ function index($param = array()) {
     //
     // And we display the (new) asset details
     //
-    require_once 'asset_view.php';
-    index_view();
+    asset_view();
 }

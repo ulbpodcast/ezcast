@@ -149,8 +149,8 @@ function select_asset_to_check($check_all) {
             $resListAsset[$asset] = array($event);
         }
 
-
-        if(array_key_exists($asset, $listAsset) && $listAsset[$asset] == "final") {
+        //stop looking if we already got a status for this asset
+        if(array_key_exists($asset, $listAsset) && ($listAsset[$asset] == "final" || $listAsset[$asset] == "cancel")) {
             continue;
         }
 

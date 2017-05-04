@@ -46,6 +46,7 @@ function statements_get(){
 		'course_list' =>
 			'SELECT ' . 
 				'courses.course_code, ' .
+				'courses.course_code_public, ' .									
 				'courses.course_name, ' .
 				'courses.in_recorders, ' .
 				'courses.has_albums, ' .
@@ -66,6 +67,7 @@ function statements_get(){
 		'course_read' =>
 			'SELECT ' . 
 				db_gettable('courses') . '.course_code, ' .
+				db_gettable('courses') . '.course_code_public, ' .													  
 				db_gettable('courses') . '.course_name, ' .
 				db_gettable('courses') . '.shortname, ' .
 				db_gettable('courses') . '.in_recorders, ' .
@@ -116,6 +118,7 @@ function statements_get(){
 			'SELECT DISTINCT ' .
 				db_gettable('users_courses').'.ID, '.
 				db_gettable('courses').'.course_code, '.
+				db_gettable('courses').'.course_code_public, '.												   
 				db_gettable('courses').'.shortname, '.
 				db_gettable('courses').'.course_name, '.
 				db_gettable('courses').'.in_recorders, '.
@@ -273,7 +276,7 @@ function statements_get(){
  * @param String $order the order condition
  * @param String $limit the limit condition
  */
-function db_courses_search($course_code, $user_ID, $include_external, $include_internal, $has_albums, 
+function db_courses_search($course_code, $course_code_public, $user_ID, $include_external, $include_internal, $has_albums, 
         $in_classrooms, $with_teacher, $order, $limit) {   
 	global $db_object;
 	
@@ -286,6 +289,7 @@ function db_courses_search($course_code, $user_ID, $include_external, $include_i
 	$query = 
 		'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .  
 			' table_courses.course_code, ' .
+			' table_courses.course_code_public, ' .										  
 			' table_users.user_ID AS user_ID, ' .
 			' table_courses.origin, ' .
 			' table_courses.in_recorders, ' .
@@ -380,11 +384,12 @@ function db_courses_list($course_code, $course_name, $shortname, $in_recorders, 
  * @param integer $has_albums
  * @param Stirng $origin
  */
-function db_course_create($course_code, $course_name, $shortname,$in_recorders) {
+function db_course_create($course_code,$course_code_public, $course_name, $shortname,$in_recorders) {
 	
 	global $statements;
 	
 	$statements['course_create']->bindParam(':course_code', $course_code);
+	$statements['course_create']->bindParam(':course_code_public', $course_code_public);																					 
 	$statements['course_create']->bindParam(':course_name', $course_name);
 	$statements['course_create']->bindParam(':shortname', $shortname);
 	$statements['course_create']->bindParam(':in_recorders', $in_recorders); 	

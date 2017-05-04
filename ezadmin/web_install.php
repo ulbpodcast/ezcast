@@ -525,6 +525,7 @@ function create_tables($drop = true) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'courses`;');
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'courses` (' .
                 '`course_code` varchar(50) NOT NULL COMMENT \'At ULB: mnémonique\',' .
+                '`course_code_public` varchar(50) NOT NULL,' .
                 '`course_name` varchar(255) DEFAULT NULL,' .
                 '`shortname` varchar(100) DEFAULT NULL COMMENT \'Optional, shorter name displayed in recorders\',' .
                 '`in_recorders` tinyint(1) NOT NULL DEFAULT \'1\' COMMENT \'Set to FALSE to disable classroom recording\',' .

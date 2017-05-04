@@ -76,7 +76,10 @@ for every album the user can create.
 					</select>	
 				  </td>
 				</tr>
-				<tr>
+				<tr id="course_code_line">
+				  <td id="labelcodeCours"> ®Course_code®  </td>
+				  <td>	<input  id="course_code" type="text" name="course_code">  </td>
+				</tr>	
 				  <td id="labelIdCours">®Album_name®</td>
 				  <td>	<input  id="album" type="text" name="album">		  
 						<input id="postUrl" type="submit" value="Créer">
@@ -86,12 +89,26 @@ for every album the user can create.
 		</form> 
 
 		<script>		
-	
+		
+			$("#selectType").change(function(){
+			  var id = $(this).find("option:selected").attr("id");
+
+			  switch (id){
+				case "opt_course":
+				  $('#course_code_line').show();
+				  break;
+				case "opt_channel":
+				  $('#course_code_line').hide();
+				  break;
+			  }
+			});
+		
 			$('#form_new_ablbum').submit(function(e) {
 				e.preventDefault();
 				var album=encodeURIComponent($('#album').val());
+				var course_code=encodeURIComponent($('#course_code').val());																
 				var selectType=encodeURIComponent($('#selectType').val());
-				show_popup_from_outer_div("index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+selectType+"",true);
+				show_popup_from_outer_div("index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+selectType+"&course_code="+course_code+"",true);
 
 			}); 
 	

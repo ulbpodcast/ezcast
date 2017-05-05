@@ -41,6 +41,7 @@ require_once 'lib_various.php';
 require_once 'lib_upload.php';
 require_once 'lib_toc.php';
 $input = array_merge($_GET, $_POST);
+require_once '../ezadmin/lib_sql_management.php';
 
 // print_r($_SESSION);
 // die;

@@ -44,12 +44,14 @@ for every album the user can create.
         <table>
         <?php 
         foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
-            ?>
+			$cours_info=db_course_read($album_name);
+			if(isset($cours_info['course_code_public']) && $cours_info['course_code_public']!='')$course_code_public=$cours_info['course_code_public']; else $course_code_public=$album_name;
+       ?>
             <tr>
             <!-- Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
                  with an action "create_album". Once the processing is over, this div will be updated with the confirmation message. -->
                 <td class="album_name">
-                    <a href="javascript:show_popup_from_outer_div('index.php?action=create_album&amp;album=<?php echo $album_name; ?>', true);"><?php echo $album_name; ?></a>
+                    <a href="javascript:show_popup_from_outer_div('index.php?action=create_album&amp;album=<?php echo $album_name; ?>', true);"><?php if(isset($course_code_public) && $course_code_public!="") echo $course_code_public; else echo $album_name; ?></a>
                 </td>
                 <td class="album_description">
                     <a href="javascript:show_popup_from_outer_div('index.php?action=create_album&amp;album=<?php echo $album_name; ?>', true);"><?php echo $album_description; ?></a>

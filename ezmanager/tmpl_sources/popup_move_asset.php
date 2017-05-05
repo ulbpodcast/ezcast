@@ -50,12 +50,16 @@ for every album the user can create.
         <table>
         <?php 
         foreach($created_albums_list_with_descriptions as $destination_name => $destination_description) {
+			$course_code_public='';
+			$album_path = $repository_path . "/" . $destination_name."-pub";
+			$album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
+			if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='')$course_code_public=$album_metadata['course_code_public']; else $course_code_public=$destination_name;
             ?>
             <tr>
             <!-- Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
                  with an action "create_album". Once the processing is over, this div will be updated with the confirmation message. -->
                 <td class="album_name">
-                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-priv'; ?>', '<?php echo $asset_name; ?>');"><?php echo $destination_name; ?> (®private®)</a>
+                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-priv'; ?>', '<?php echo $asset_name; ?>');"><?php echo $course_code_public; ?> (®private®)</a>
                 </td>
                 <td class="album_description">
                     <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-priv'; ?>', '<?php echo $asset_name; ?>');"><?php echo $destination_description; ?> (®Private_album®)</a>
@@ -65,7 +69,7 @@ for every album the user can create.
             <!-- Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
                  with an action "create_album". Once the processing is over, this div will be updated with the confirmation message. -->
                 <td class="album_name">
-                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-pub'; ?>', '<?php echo $asset_name; ?>');"><?php echo $destination_name; ?> (®public®)</a>
+                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-pub'; ?>', '<?php echo $asset_name; ?>');"><?php echo $course_code_public; ?> (®public®)</a>
                 </td>
                 <td class="album_description">
                     <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-pub'; ?>', '<?php echo $asset_name; ?>');"><?php echo $destination_description; ?> (®Public_album®)</a>

@@ -25,6 +25,8 @@ $organization_name= base64_decode($argv[4]);
 $id_album= base64_decode($argv[5]);
 if(!isset($id_album) || $id_album=='') $id_album= base64_decode($argv[6]); 
 if(!isset($id_album) || $id_album=='') $id_album='';
+$course_code_public= base64_decode($argv[7]);
+if(!isset($course_code_public) || $course_code_public=="") $course_code_public=$id_album;																					 
 
 // Debug / Logs
 print "\n------------------------ Data passed ------------------------\n";
@@ -60,8 +62,8 @@ if(isset($title_assoc['add_title']) && $title_assoc['add_title'] !='false' && $t
 	$title_assoc['date']=$date_formated;
 		
 	$title_assoc['organization']=$organization_name;
-	$title_assoc['album']="[".$id_album."]".$new_album;
-	$title_assoc['title']=$id_album.' '.$title_assoc['title'];
+	$title_assoc['album']="[".$course_code_public."]".$new_album;  
+	$title_assoc['title']=$course_code_public.' '.$title_assoc['title'];
 	$title_assoc['copyright']=$copyright;
 	
 	print "\n final title assoc : \n" ;	print ("\n".var_dump($title_assoc)."\n");

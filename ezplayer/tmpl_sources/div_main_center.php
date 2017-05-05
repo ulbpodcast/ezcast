@@ -64,7 +64,7 @@ global $first_connexion;
                 ?>
                 <li>    
                     <a class="item <?php if ($private) echo 'private' ?>" href="javascript:show_album_assets('<?php echo $album['album']; ?>', '<?php echo $album['token']; ?>');">
-                        <b style="text-transform:uppercase;"><?php echo suffix_remove($album['album']); ?></b> 
+                        <b style="text-transform:uppercase;"><?php if(isset($album['course_code_public']) && $album['course_code_public']!="") echo $album['course_code_public']; else echo suffix_remove($album['album']); ?></b> 
                         <?php if ($private) echo '(®Private_album®)' ?>
                         <br/><?php print_info($album['title']); ?>
 

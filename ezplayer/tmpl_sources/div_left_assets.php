@@ -31,7 +31,7 @@
 <div id="site_map">
     <a class="home-link" href="index.php" title="®Back_to_home®">®Home®</a>
     <div class="right-arrow"></div>
-    (<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?>
+    (<?php if(isset($course_code_public) && $course_code_public!="") echo $course_code_public; else  echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?>
 </div>
 
 

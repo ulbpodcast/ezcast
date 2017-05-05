@@ -683,6 +683,9 @@ function albums_view($refresh_page = true) {
             $moderated_tokens[$index]['album'] = $album . '-pub';
             $moderated_tokens[$index]['title'] = get_album_title($album . '-pub');
             $moderated_tokens[$index]['token'] = ezmam_album_token_get($album . '-pub');
+			  
+			$album_title = ezmam_album_metadata_get($album . '-pub');
+			if(isset($album_title['course_code_public'])) $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
         }
         // add the list of moderated public albums 
         user_prefs_tokens_add($_SESSION['user_login'], $moderated_tokens);

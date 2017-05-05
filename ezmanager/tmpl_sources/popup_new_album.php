@@ -44,6 +44,7 @@ for every album the user can create.
         <table>
         <?php 
         foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
+			// sortir des template...
 			$cours_info=db_course_read($album_name);
 			if(isset($cours_info['course_code_public']) && $cours_info['course_code_public']!='')$course_code_public=$cours_info['course_code_public']; else $course_code_public=$album_name;
        ?>

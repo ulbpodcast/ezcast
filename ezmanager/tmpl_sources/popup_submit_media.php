@@ -31,6 +31,10 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
     global $ezmanager_url;
     $domain_name = $ezmanager_url;
 }
+
+$album_path = $repository_path . "/" . $album."-pub";
+$album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
+if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='')$course_code_public=$album_metadata['course_code_public']; else $course_code_public=$album;
 ?>
 
 <div class="popup" id="submit_media" style="width: 415px;height: 665px;">
@@ -50,7 +54,7 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
                 initFileUploads()
             </script>
 
-            <p>Album&nbsp;: <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)</p>
+            <p>Album&nbsp;: <?php echo $course_code_public; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)</p>
 
             <br/>
 

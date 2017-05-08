@@ -372,6 +372,8 @@ function albums_view() {
     // Used in redraw mode only
 	global $enable_moderator;
     global $album_name;
+    global $album_id;
+    global $course_code_public;
     global $album_name_full;
     global $description;
     global $public_album;
@@ -406,6 +408,8 @@ function redraw_page() {
     global $current_album;
     global $current_album_is_public;
     global $album_name;
+    global $album_id;
+    global $course_code_public;						   
     global $album_name_full;
     global $description;
     global $public_album;

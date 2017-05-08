@@ -19,7 +19,7 @@
 
 		if(strcmp ( $input['tokenmanager'] , file_get_contents($repository_basedir. '/repository/' . $input['album'].'/_tokenmanager') )==0){   
 			$tbcours=db_user_get_courses($iduser);
-			file_put_contents('/home/arwillame/test2/addmoderator.txt','INPUT:    '.json_encode($tbcours). PHP_EOL . PHP_EOL , FILE_APPEND);
+			// file_put_contents($logpath,'INPUT:    '.json_encode($tbcours). PHP_EOL . PHP_EOL , FILE_APPEND);
 			$exist=0;
 			for($i=0;$i<count($tbcours);$i++){
 				if(suffix_remove($input['album'])==$tbcours[$i]['course_code']){

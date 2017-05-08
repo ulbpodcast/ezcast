@@ -47,6 +47,9 @@ switch ($action) {
     case 'streaming_close':
         streaming_close();
         break;
+    default:
+        print 'no action provided';
+        break;
 }
 
 /**
@@ -421,7 +424,8 @@ function streaming_content_add() {
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
-
+    $status = $input['status'];
+    
     // gets information about current streams
     if (file_exists("$ezmanager_basedir/var/streams.php")) {
         $streams_array = require_once "$ezmanager_basedir/var/streams.php";
@@ -446,7 +450,15 @@ function streaming_content_add() {
             }
 
 	    $asset_token = $streams_array[$course][$asset]['token'];
-            $streams_array[$course][$asset][$module_type]['status'] = $input['status'];
+            if($streams_array[$course][$asset][$module_type]['status'] != $status)
+            {
+                $streams_array[$course][$asset][$module_type]['status'] = $status;
+                $string = "<?php" . PHP_EOL . "return ";
+                $string .= var_export($streams_array, true) . ';';
+                $string .= PHP_EOL . "?>";
+
+                file_put_contents("$ezmanager_basedir/var/streams.php", $string);
+            }
             $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $course . '/' . $stream_name . '_' . $asset_token . '/';
             if(!is_file($upload_root_dir))
                 mkdir($upload_root_dir, 0755, true); // creates the directories if needed
@@ -504,12 +516,6 @@ function streaming_content_add() {
             print "OK";
             break;
     }
-
-    $string = "<?php" . PHP_EOL . "return ";
-    $string .= var_export($streams_array, true) . ';';
-    $string .= PHP_EOL . "?>";
-
-    file_put_contents("$ezmanager_basedir/var/streams.php", $string);
 }
 
 /**

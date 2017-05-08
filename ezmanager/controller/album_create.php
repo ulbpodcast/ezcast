@@ -23,7 +23,7 @@
     //
     // Sanity checks
     //
-	include "../ezadmin/lib_sql_management.php";
+	// include "../ezadmin/lib_sql_management.php";
 
 	
 	
@@ -31,7 +31,7 @@
 	
 	
 	if($input['action']=='create_courseAndAlbum'){		
-	     $course_code_public=$input['album'];	
+	     $course_code_public=$input['course_code'];	
 		if(strlen($input['album'])>=50) $input['album']=substr($input['album'], 0, 43) ;
 		$course=true;
 		while($course){

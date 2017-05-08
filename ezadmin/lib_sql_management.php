@@ -61,8 +61,8 @@ function statements_get(){
 				'courses.origin = :origin',
 		
 		'course_create' =>
-			'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
-			'VALUES (:course_code, :course_name, :shortname, :in_recorders, 0, NOW(), \'internal\')',
+			'INSERT INTO ' . db_gettable('courses') . '(course_code,course_code_public, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
+			'VALUES (:course_code,:course_code_public, :course_name, :shortname, :in_recorders, 0, NOW(), \'internal\')',
 		
 		'course_read' =>
 			'SELECT ' . 

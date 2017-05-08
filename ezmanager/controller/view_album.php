@@ -48,6 +48,7 @@ function index($param = array()) {
     $album_name_full = $album; // complete album name, used for div identification
     if(isset($metadata['id']))	$album_id = $metadata['id'];
 	else $album_id = $metadata['name'];
+	if(isset($metadata['course_code_public']) && $metadata['course_code_public']!="") $course_code_public=$metadata['course_code_public'];
     $album_name = $metadata['name'];
     $description = $metadata['description'];
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options

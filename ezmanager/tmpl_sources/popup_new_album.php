@@ -111,7 +111,7 @@ for every album the user can create.
 				var album=encodeURIComponent($('#album').val());
 				var course_code=encodeURIComponent($('#course_code').val());																
 				var selectType=encodeURIComponent($('#selectType').val());
-				show_popup_from_outer_div("index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+selectType+"&course_code="+course_code+"",true);
+				show_popup_from_outer_div("index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+selectType+"&course_code="+course_code,true);
 
 			}); 
 	

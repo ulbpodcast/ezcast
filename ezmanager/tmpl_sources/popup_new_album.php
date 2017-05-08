@@ -74,8 +74,8 @@ for every album the user can create.
 				<tr>
 				  <td>®Album_type® </td>
 				  <td><select id="selectType">
-					  <option value="course">®Course®</option>
-					  <option value="channel">®Channel®</option>
+					  <option id="opt_course" value="course">®Course®</option>
+					  <option id="opt_channel" value="channel">®Channel®</option>
 					</select>	
 				  </td>
 				</tr>

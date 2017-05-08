@@ -364,6 +364,8 @@ function albums_view() {
     // Used in redraw mode only
 	global $enable_moderator;
     global $album_name;
+    global $album_id;
+    global $course_code_public;
     global $album_name_full;
     global $description;
     global $public_album;
@@ -398,6 +400,8 @@ function redraw_page() {
     global $current_album;
     global $current_album_is_public;
     global $album_name;
+	global $album_id;
+    global $course_code_public;						   
     global $album_name_full;
     global $description;
     global $public_album;
@@ -424,6 +428,9 @@ function redraw_page() {
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
         $description = $metadata['description'];
+		if(isset($metadata['id']))	$album_id = $metadata['id'];
+		else $album_id = $metadata['name'];
+		if(isset($metadata['course_code_public']) && $metadata['course_code_public']!="") $course_code_public=$metadata['course_code_public'];
         $public_album = $current_album_is_public;
         $assets = ezmam_asset_list_metadata($_SESSION['podman_album']);
         $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album_name_full);

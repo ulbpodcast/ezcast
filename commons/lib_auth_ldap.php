@@ -28,6 +28,7 @@
  */
 
 include dirname(__FILE__).'/lib_various.php';
+include dirname(__FILE__).'/config.inc';										
 /**
  * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login'] (['real_login']) of the user. failure returns false. Error message can be received via checkauth_last_error()
  * @global string $ldap_servers_auth_json_file path to the json file containing list of ldap servers for authentication
@@ -37,6 +38,7 @@ include dirname(__FILE__).'/lib_various.php';
  */
 function ldap_checkauth($login, $password) {
     global $ldap_servers_auth_json_file;
+    global $ldap_institution;							 
     
     $ldap_servers_auth = json_to_array($ldap_servers_auth_json_file);
 
@@ -47,7 +49,11 @@ function ldap_checkauth($login, $password) {
     if (!ctype_alnum($login))
         return false; //sanity check
 
-    $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, $password);
+   	if($ldap_institution=="ucl") $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, "");
+	else $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, $password);
+	
+ 
+ 
     // bind to ldap failed
     if ($link_identifier === false) {
         return false;
@@ -65,6 +71,14 @@ function ldap_checkauth($login, $password) {
     }
     //retrieve the result of the search
     $info = ldap_get_entries($link_identifier, $search_res);
+	if($ldap_institution=="ucl"){
+		$employeeNumber=$info[0]['employeenumber'][0];
+		$ldap_servers_auth[$index]["rdn"]="employeenumber=".$employeeNumber.",ou=personne,o=universite catholique de louvain,c=be";
+		$link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, $password);
+		 $search_res = ldap_search($link_identifier, $treepath, $filter);
+		$info = ldap_get_entries($link_identifier, $search_res);
+	}															   
+	
     if ($info['count'] != 1) {
         checkauth_last_error("wrong search result count:" . $info['count']);
         return false;

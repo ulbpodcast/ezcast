@@ -63,6 +63,7 @@ $mailto_alert = "mail@your.organization"; //who to call in case of problem in th
 
 $auth_methods = array("file", "ldap");
 
+$ldap_institution="";	//empty by default   "ucl" for ucl.					
 # JSON FILES FOR LDAP
 /*
  * For each ldap_server:

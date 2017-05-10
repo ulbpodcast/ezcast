@@ -337,7 +337,7 @@ function db_event_status_get($firtDate, $endDate, $typeStatus,
     
     $strSQL = 'SELECT SQL_CALC_FOUND_ROWS status.* ' .
                     'FROM ' . db_gettable(ServerLogger::EVENT_STATUS_TABLE_NAME). ' status ' .
-                    'JOIN ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME). ' info ON status.asset = info.asset ';
+                    'LEFT JOIN ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME). ' info ON status.asset = info.asset '; //left join, just in case we don't have any info for this asset
     
     $whereParam = array();
     $valueWhereParam = array();
@@ -362,13 +362,13 @@ function db_event_status_get($firtDate, $endDate, $typeStatus,
     }
     
     if(is_array($not_in_courses)) {
-        $param = 'info.course NOT IN(';
+        $param = '(info.course IS NULL OR info.course NOT IN(';
         foreach($not_in_courses as $value) {
             $param .= "?,";
             $valueWhereParam[] = $value;
         }
         $param = rtrim($param, ","); //remove last comma before ending ( )
-        $param .= ')';
+        $param .= '))';
         $whereParam[] = $param;
     }
     
@@ -400,8 +400,8 @@ function db_event_status_get($firtDate, $endDate, $typeStatus,
     
     $reqSQL = $db_object->prepare($strSQL);
     $reqSQL->execute($valueWhereParam);
-    
-    return $reqSQL->fetchAll();
+    $result = $reqSQL->fetchAll();
+    return $result;
     
 }
 

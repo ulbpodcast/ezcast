@@ -323,11 +323,7 @@ function streaming_init() {
             break;
     }
 
-    $string = "<?php" . PHP_EOL . "return ";
-    $string .= var_export($streams_array, true) . ';';
-    $string .= PHP_EOL . "?>";
-
-    file_put_contents("$ezmanager_basedir/var/streams.php", $string);
+    write_streams_file($streams_array);
     
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     
@@ -502,7 +498,6 @@ function streaming_content_add() {
 
 
     $stream_name = $streams_array[$course][$asset]['stream_name'];
-
     switch ($protocol) {
         case 'http':
             /*
@@ -520,11 +515,8 @@ function streaming_content_add() {
             if($streams_array[$course][$asset][$module_type]['status'] != $status)
             {
                 $streams_array[$course][$asset][$module_type]['status'] = $status;
-                $string = "<?php" . PHP_EOL . "return ";
-                $string .= var_export($streams_array, true) . ';';
-                $string .= PHP_EOL . "?>";
-
-                file_put_contents("$ezmanager_basedir/var/streams.php", $string);
+                
+                write_streams_file($streams_array);
             }
             $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $course . '/' . $stream_name . '_' . $asset_token . '/';
             if(!is_file($upload_root_dir))
@@ -684,11 +676,7 @@ function streaming_stop() {
             break;
     }
 
-    $string = "<?php" . PHP_EOL . "return ";
-    $string .= var_export($streams_array, true) . ';';
-    $string .= PHP_EOL . "?>";
-
-    file_put_contents("$ezmanager_basedir/var/streams.php", $string);
+    write_streams_file($streams_array);
 }
 
 /**
@@ -781,11 +769,7 @@ function streaming_close() {
             break;
     }
 
-    $string = "<?php" . PHP_EOL . "return ";
-    $string .= var_export($streams_array, true) . ';';
-    $string .= PHP_EOL . "?>";
-
-    file_put_contents("$ezmanager_basedir/var/streams.php", $string);
+    write_streams_file($streams_array);
 }
 
 /**
@@ -810,4 +794,25 @@ function port_get() {
 
 function server_get() {
     return "164.15.128.144";
+}
+
+function write_streams_file(&$stream_array) {
+    global $ezmanager_basedir;
+    global $logger;
+    
+    $file_path = "$ezmanager_basedir/var/streams.php";
+    $file_path_temp = $file_path . '_';
+    
+    $string = "<?php" . PHP_EOL . "return ";
+    $string .= var_export($streams_array, true) . ';';
+    $string .= PHP_EOL . "?>";
+
+    $ok = file_put_contents($file_path_temp, $string);
+    if($ok !== false) {
+        $ok = rename($file_path_temp, $file_path);
+        if($ok === false)
+            $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to move streams file $file_path_temp to  $file_path", array(__FUNCTION__));
+    } else {
+          $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to write streams file $file_path_temp", array(__FUNCTION__));
+    }
 }

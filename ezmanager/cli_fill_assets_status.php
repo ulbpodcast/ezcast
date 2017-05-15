@@ -2,7 +2,7 @@
 
 /*
  * This CLI will check assets logs from the last two weeks and set a status for those having none.
- * Usage: php cli_fill_assets_status [all]
+ * Usage: php cli_fill_assets_status [all]/[asset_name]
  * If 'all' arg is set, this will check all assets not yet processed for all time.
  */
 
@@ -75,13 +75,15 @@ const LOG_LEVEL_WARNING_THRESHOLD = LogLevel::ERROR; //if an event of this level
  * @global PDO $db_object
  * @return Array with the result
  */
-function get_db_event_status_not_check($check_all) {
+function get_db_event_status_not_check($check_all, $specific_asset) {
     global $db_object;
 
     $strSQL = 'SELECT event.asset, event.event_time, event.loglevel, event.type_id '
             . 'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' event ' .
             ' WHERE ';
-    if(!$check_all) {
+    if($specific_asset != null) {
+        $strSQL .= "event.asset = '$specific_asset' AND";
+    } else  if(!$check_all) {
         $strSQL .= 'event.event_time >= DATE_SUB(curdate(), INTERVAL 1 WEEK) AND';
     }
     $strSQL .= ' NOT EXISTS ('.
@@ -129,14 +131,21 @@ function add_db_event_status($asset, $status, $description) {
  * @global Array $resListAsset dictionnary with asset in key and array with info in value
  * @global Array $listAsset List of the asset who must be check (timeout in value if it's timeout)
  */
-function select_asset_to_check($check_all) {
+function select_asset_to_check($check_all, $specific_asset) {
     global $resListAsset;
     global $listAsset;
     global $logger;
     
-    $allEvent = get_db_event_status_not_check($check_all);
-    if($check_all) {
+    if($specific_asset) {
+        echo "Checking asset $specific_asset" . PHP_EOL;
+    } else if ($check_all) {
         echo 'Check all event'.PHP_EOL;
+    }
+    
+    $allEvent = get_db_event_status_not_check($check_all, $specific_asset);
+
+    if($specific_asset && empty($allEvent)) {
+        echo "Could not find any event for asset $specific_asset" . PHP_EOL;
     }
     
     
@@ -161,9 +170,8 @@ function select_asset_to_check($check_all) {
             $listAsset[$asset] = "cancel";
             $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found cancel event for asset $asset", array(__FUNCTION__), $asset);
         } else if(time()-strtotime($event['event_time']) > TIME_LIMIT) {
-            $listAsset[$asset] = "timeout";
+            $listAsset[$asset] = "timeout"; //Default to timeout, may be overwritten in the next loops
         }
-
     }
 }
 
@@ -218,6 +226,14 @@ $resListAsset = array();
 // For each asset 'final' or 'timeout' status 
 $listAsset = array();
 
-$fill_all = $argc > 1 && $argv[1] == 'all';
-select_asset_to_check($fill_all);
+$fill_all = false;
+$specific_asset = null;
+if($argc > 1 )
+{
+    if($argv[1] == 'all')
+        $fill_all = true;
+    else
+        $specific_asset = trim($argv[1]);
+}
+select_asset_to_check($fill_all, $specific_asset);
 write_asset_status();

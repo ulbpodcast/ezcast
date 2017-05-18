@@ -678,7 +678,7 @@ function streaming_close() {
 
     ezmam_repository_path($repository_path);
 
-    $course = $input['$course'];
+    $course = $input['course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];

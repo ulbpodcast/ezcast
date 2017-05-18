@@ -242,7 +242,22 @@ function statements_get(){
 		
 		'classroom_delete' =>
 			'DELETE FROM ' . db_gettable('classrooms') . ' ' .
-			'WHERE room_ID = :room_ID'       
+			'WHERE room_ID = :room_ID',
+			
+		'stream_create' =>
+			'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`,`module_type`, `ip`, `status`, `pid`, `quality`, `protocol`, `server`, `port`) ' .
+			'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, :ip, :status, :pid, :quality, :protocol, :server, :port)',      
+		
+		'stream_update_statusPid' =>
+			'UPDATE ' . db_gettable('streams') . ' ' .
+			'SET pid = :pid, status = :status' . ' ' .
+			'WHERE cours_id = :course AND asset = :asset AND module_type = :module_type ',
+
+		'get_stream_info' =>
+			'SELECT  * ' .  
+			'FROM ' . db_gettable('streams') . ' ' .
+			'WHERE cours_id=:cours_id AND asset=:asset '	
+			
 	);
 }
 
@@ -861,3 +876,66 @@ function db_classroom_delete($room_ID) {
     return $statements['classroom_delete']->execute();
 }
 
+
+function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token,$module_type, $ip, $status,$pid, $quality, $protocol, $server, $port) {
+    global $statements;
+
+    $statements['stream_create']->bindParam(':cours_id', $cours_id);
+    $statements['stream_create']->bindParam(':asset', $asset);
+    $statements['stream_create']->bindParam(':classroom', $classroom);
+    $statements['stream_create']->bindParam(':record_type', $record_type);
+    $statements['stream_create']->bindParam(':netid', $netid);
+    $statements['stream_create']->bindParam(':stream_name', $stream_name);
+    $statements['stream_create']->bindParam(':token', $token);
+    $statements['stream_create']->bindParam(':module_type', $module_type);
+    $statements['stream_create']->bindParam(':ip', $ip);
+    $statements['stream_create']->bindParam(':status', $status);
+    $statements['stream_create']->bindParam(':pid', $pid);
+    $statements['stream_create']->bindParam(':quality', $quality);
+    $statements['stream_create']->bindParam(':protocol', $protocol);
+    $statements['stream_create']->bindParam(':server', $server);
+    $statements['stream_create']->bindParam(':port', $port);
+
+    return $statements['stream_create']->execute();
+}
+
+
+function db_stream_update_statusPid($course,$asset,$module_type,$pid,$status){
+	global $statements;
+
+    $statements['stream_update_statusPid']->bindParam(':course', $course);
+    $statements['stream_update_statusPid']->bindParam(':asset', $asset);
+    $statements['stream_update_statusPid']->bindParam(':module_type', $module_type);
+    $statements['stream_update_statusPid']->bindParam(':pid', $pid);
+    $statements['stream_update_statusPid']->bindParam(':status', $status);
+	
+	return $statements['stream_update_statusPid']->execute();	
+}
+
+function db_get_stream_info($cours_id,$asset){
+	global $statements;
+
+	$statements['get_stream_info']->bindParam(':cours_id', $cours_id);
+	$statements['get_stream_info']->bindParam(':asset', $asset);
+	
+	$statements['get_stream_info']->execute();
+	$res2=$statements['get_stream_info']->fetchAll();
+	
+	// generate a formated table 
+	for($i=0;$i<count($res2);$i++){
+		$infos[$cours_id][$asset]['classroom']=$res2[$i]['classroom'];
+		$infos[$cours_id][$asset]['netid']=$res2[$i]['netid'];
+		$infos[$cours_id][$asset]['record_type']=$res2[$i]['record_type'];
+		$infos[$cours_id][$asset]['stream_name']=$res2[$i]['stream_name'];
+		if(isset($res2[$i]['token']) && $res2[$i]['token']!='') $infos[$cours_id][$asset]['token']=$res2[$i]['token'];
+	
+		$infos[$cours_id][$asset][$res2[$i]['module_type']]['ip']=$res2[$i]['ip'];
+		$infos[$cours_id][$asset][$res2[$i]['module_type']]['status']=$res2[$i]['status'];
+		$infos[$cours_id][$asset][$res2[$i]['module_type']]['quality']=$res2[$i]['quality'];
+		$infos[$cours_id][$asset][$res2[$i]['module_type']]['protocol']=$res2[$i]['protocol'];
+		if(isset($res2[$i]['server']) && $res2[$i]['server']!='') $infos[$cours_id][$asset][$res2[$i]['module_type']]['server']=$res2[$i]['server'];
+		if(isset($res2[$i]['port']) && $res2[$i]['port']!='' && $res2[$i]['port']!= 0) $infos[$cours_id][$asset][$res2[$i]['module_type']]['port']=$res2[$i]['port'];
+	}
+	if(!isset($infos))$infos=null;
+	return $infos;	
+}

@@ -680,6 +680,26 @@ function create_tables($drop = true) {
                 "`cam_slide` enum('cam','slide','camslide') NOT NULL," .
                 "PRIMARY KEY (`asset`)" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	   if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'streams`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'streams` (' .
+               "`id` int(11) NOT NULL," .
+				 "`cours_id` varchar(255) NOT NULL," .
+				  "`asset` varchar(255) NOT NULL," .
+				  "`module_type` varchar(15) NOT NULL," .
+				  "`classroom` varchar(255) NOT NULL," .
+				  "`record_type` varchar(10) NOT NULL COMMENT 'cam/slide'," .
+				  "`netid` varchar(255) NOT NULL," .
+				  "`stream_name` varchar(255) NOT NULL," .
+				  "`token` varchar(255) NOT NULL," .
+				  "`ip` varchar(255) NOT NULL," .
+				  "`status` varchar(20) NOT NULL," .
+				  "`pid` varchar(50) NOT NULL," .
+				  "`quality` varchar(10) NOT NULL," .
+				  "`protocol` varchar(10) NOT NULL," .
+				  "`server` varchar(255) NOT NULL," .
+				  "`port` int(10) NOT NULL" .
+                " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");								  
         
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .

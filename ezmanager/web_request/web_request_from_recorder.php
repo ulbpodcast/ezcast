@@ -738,8 +738,7 @@ function streaming_close() {
                     unset($streams_array[$course]);
                 }
 
-				$dir_name= $stream_name.'_'.$token;														  
-                $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $course $dir_name\" | at now + 1 hour";
+                $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $course ${stream_name}_$token\" | at now + 1 hour";
                 $pid = shell_exec($cmd);
             }
 

@@ -9,6 +9,7 @@ function index($param = array()) {
 		if(strlen($input['course_code'])>=50) $input['course_code']=substr($input['course_code'], 0, 43) ;
 		$course_code=str_replace(" ", '_', $input['course_code']).rand(100000,999999);
         $course_name = $input['course_name'];
+		if(!isset($course_code_public) || $course_code_public=="") $course_code_public=$course_name;
         $shortname = $input['shortname'];
         if(isset($input['in_recorders'])) $in_recorders = '1';
 		else $in_recorders='0';

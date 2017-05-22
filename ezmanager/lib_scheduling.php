@@ -540,7 +540,8 @@ function lib_scheduling_queue_down($job) {
  * @return array All renderers
  */
 function lib_scheduling_renderer_list() {
-    return require __DIR__ . '/renderers.inc';
+    // return require __DIR__ . '/renderers.inc';
+	return require __DIR__ . '/../ezmanager/renderers.inc';
 }
 
 /**

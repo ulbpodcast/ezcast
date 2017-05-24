@@ -114,7 +114,16 @@ if (!user_logged_in()) {
     // Step 1: Displaying the login form
     // (happens if no "action" is provided)
     else {
-        view_login_form();
+//        view_login_form();
+		if (isset($_GET["sso"])){
+			if (in_array("sso",$auth_methods)){
+				user_login(trim('login'), trim('passwd'));
+			}
+		/*if (in_array("sso",$auth_methods)){
+			user_login(trim('login'), trim('passwd'));*/
+		}else{
+			view_login_form();
+		}
     }
 }
 
@@ -607,6 +616,7 @@ function view_login_form() {
     global $ezplayer_url;
     global $error, $input;
     global $template_folder;
+    global $auth_methods;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash']))
@@ -619,7 +629,15 @@ function view_login_form() {
     template_repository_path($template_folder . get_lang());
     
     // template include goes here
-    require_once template_getpath('login.php');
+
+    /* require_once template_getpath('login.php');*/
+	
+	if (in_array("sso",$auth_methods)){
+		include_once template_getpath('login_w_sso.php');
+	}else{
+		include_once template_getpath('login.php');
+	}
+
 }
 
 /**

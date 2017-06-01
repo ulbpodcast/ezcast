@@ -41,9 +41,6 @@ function index($param = array()) {
     $album_meta['anon_access'] = $input['anon_access'];
 
     $res = ezmam_album_metadata_set($album, $album_meta);
-	// if($album_meta['anon_access'] == 'true') $anon_access=1; else $anon_access=0; 
-	// course_update_anon($input['album'], $anon_access);
-	
 
     if (!$res) {
         error_print_message(ezmam_last_error());

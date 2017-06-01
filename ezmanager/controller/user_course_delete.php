@@ -18,11 +18,6 @@ function index($param = array()) {
 	$album=$input['album'];
 	$iduser=$input['iduser'];
 	
-	file_put_contents('/home/arwillame/test2/info55.txt','INPUT :  '.json_encode($input));
-	file_put_contents('/home/arwillame/test2/info55.txt','album :  '.$album. PHP_EOL .' iduser  : '. $iduser. PHP_EOL, FILE_APPEND);
-
-	
-	
 	db_users_courses_delete_row($album,$iduser);
 	
 	// $album = suffix_remove($_SESSION['podman_album']);

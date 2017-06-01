@@ -97,9 +97,7 @@ if (!user_logged_in()) {
 			$selected_meta=metadata2assoc_array($repository_path.'/'.$input['album'].'/'.$input['asset']."/_metadata.xml");
 			
 			
-			// AJOUT ARNAUD
-			// if anonym
-			file_put_contents('/home/arwillame/test2/indexlog.txt','Metadata : '. json_encode($selected_meta). PHP_EOL . '  INPUT  :  '.json_encode($input));
+			
 		}
 		*/
 	 }

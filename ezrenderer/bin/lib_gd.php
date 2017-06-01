@@ -220,8 +220,6 @@ function generate_title($repo,$encoder,$title_assoc){
 	
 	$title_movieout = $repo . "/title.mov";
 	$title_image = $repo . "/title.jpg";
-	// file_put_contents('/home/arwillame/test2/encoder.txt',$encoder);
-	file_put_contents('/home/arwillame/changeintro/encoder.txt',$encoder);
 	$encoder_values = explode('_', $encoder);
 	$resolution_values = explode('x', $encoder_values[2]);
 	$width = $resolution_values[0];

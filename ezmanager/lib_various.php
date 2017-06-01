@@ -354,7 +354,6 @@ function update_title($album,$asset){
 	
 	$cmd=$php_cli_cmd.' '.$ezmanager_basedir.'/cli_update_title.php '.$album.' '.$asset.' > /dev/null 2>&1 &';
 	exec($cmd, $cmdoutput, $returncode );
-	// file_put_contents('/home/arwillame/test2/info55.txt','CMD :  '.$cmd. PHP_EOL .' cmdoutput  : '. $cmdoutput. PHP_EOL .'returncode  : '.$returncode);
 
 }
 

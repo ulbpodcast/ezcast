@@ -93,10 +93,6 @@ function statements_get(){
 			'SET course_name = :course_name, shortname = :shortname, in_recorders = :in_recorders ' .        
 			'WHERE course_code = :course_code',
 			
-		'course_update_anon' =>
-			'UPDATE ' . db_gettable('courses') . ' ' .
-			'SET anon_access = :anon_access ' .        
-			'WHERE course_code = :course_code',
 		
 		'course_delete' =>
 			'DELETE FROM ' . db_gettable('courses') . ' ' .
@@ -438,18 +434,6 @@ function db_course_update($course_code, $course_name, $shortname, $in_recorders)
 	$statements['course_update']->bindParam(':in_recorders', $in_recorders);
 	
 	return $statements['course_update']->execute();
-}
-
-function course_update_anon($course_code, $anon_access) {
-	global $statements;
-
-	$statements['course_update_anon']->bindParam(':anon_access', $anon_access);
-	$statements['course_update_anon']->bindParam(':course_code', $course_code);
-	
-	file_put_contents('/home/arwillame/test2/indexlog2222223.txt','ANON ACCES : '.$anon_access. PHP_EOL . 'course_code : '.$course_code. PHP_EOL . 'requete  : '.json_encode(statements_get()));
-	
-	
-	return $statements['course_update_anon']->execute();
 }
 
 /**

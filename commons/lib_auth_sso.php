@@ -117,7 +117,7 @@ $_SESSION['sso_ssp_auth'] = $sso_ssp_auth;
  
 // Do something with assertion data.
 /* initialization of userinfo based on sso attributes */
-$userinfo['fullname']=$attributes[$sso_ssp_att_name][0]." ".$attributes[$sso_ssp_att_firstname][0];
+$userinfo['full_name']=$attributes[$sso_ssp_att_name][0]." ".$attributes[$sso_ssp_att_firstname][0];
 $userinfo['email']=$attributes[$sso_ssp_att_email][0];
 $userinfo['login']=$attributes[$sso_ssp_att_login][0];
 $userinfo['real_login']=$userinfo['login'];
@@ -207,7 +207,7 @@ function sso_getinfo($login) {
 	  { 
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
 		
-		$userinfo['fullname']=$row['surname']." ".$row['forename'];
+		$userinfo['full_name']=$row['surname']." ".$row['forename'];
 		$userinfo['email']=$row['email'];
 		$userinfo['login']=$row['user_ID'];
 		$userinfo['real_login']=$userinfo['login'];

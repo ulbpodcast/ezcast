@@ -112,7 +112,7 @@ function toc_asset_bookmark_list_get($album, $asset) {
     $assoc_album_bookmarks = toc_album_bookmarks_list_get($album);
     if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false ||
             empty($assoc_album_bookmarks)) {
-        echo '(3)';
+        //echo '(3)';
         return false;
     }
 
@@ -146,7 +146,7 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
     $selected_bookmarks = array();
     
     if (!isset($album) || $album == '') {
-        echo "(1)";
+        //echo "(1)";
         return false;
     }
 
@@ -157,7 +157,7 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
     }
     
     if($bookmarks_list == false) {
-        echo "(2)";
+        //echo "(2)";
         return false;
     }
 
@@ -171,7 +171,7 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
         }
         return $selected_bookmarks;
     } else {
-        echo "(3)";
+        //echo "(3)";
         return false;
     }
 }

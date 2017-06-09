@@ -91,7 +91,6 @@ if($slide_download_info)
 var_dump($recorder_version);
 
 $asset = $record_date . "_" . $course_name;
-$download_dir = $recorder_upload_to_server . "/" . $asset;
 //download metadata at all times
 $meta_ok = true;
 $cam_ok = true;

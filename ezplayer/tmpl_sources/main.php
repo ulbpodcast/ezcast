@@ -763,8 +763,6 @@ if ($trace_on) {
             }
 
 
-
-
         </script>
 
         <?php if (isset($head_code)) echo $head_code; ?>

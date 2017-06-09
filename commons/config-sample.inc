@@ -51,7 +51,6 @@ $db_prefix = "ezcast_";
 $recorder_user = "ezrecorder";
 $recorder_basedir = '/Library/ezrecorder/'; // Path from the root to the recorder
 $recorder_subdir = '/etc/users/'; // Path from basedir to the admin.inc file
-$recorder_recorddir = "~$recorder_user/"; // Path from the root to the recorder local repository 
 
 $php_cli_cmd = "/opt/csw/bin/php";//locate php cli to use
 $rsync_pgm = "/opt/sfw/bin/rsync";

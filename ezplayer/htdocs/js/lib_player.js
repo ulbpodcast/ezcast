@@ -235,38 +235,62 @@ function player_prepare(currentQuality, currentType, startTime) {
 
             time = currentTime;
 
-            if (!display_threads_notif)
-                return;
-            var html_value = "<ul>";
-            var i = 0;
-            var timecode = currentTime - notif_display_delay;
+            if (display_threads_notif)
+            {
+                var html_value = "<ul>";
+                var i = 0;
+                var timecode = currentTime - notif_display_delay;
 
-            if ((time % 3) == 0 && !mouseDown) {
-                player_range_count_update(time, type);
-            }
-            // loads the thread notifications
-            while (i < notif_display_number && timecode <= currentTime) {
-                if (timecode >= 0 && typeof threads_array[timecode] !== 'undefined') {
-                    for (var id in threads_array[timecode]) {
-                        i++;
-                        if (i > notif_display_number)
-                            break;
-                        html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
-                                "<span class='span-link red' onclick='javascript:player_thread_notification_remove(" + timecode + ", " + id + ")' >x</span>" +
-                                "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " +
-                                threads_array[timecode][id] + "</span>" +
-                                "</li>";
-                    }
+                if ((time % 3) == 0 && !mouseDown) {
+                    player_range_count_update(time, type);
                 }
-                timecode++;
-            }
+                // loads the thread notifications
+                while (i < notif_display_number && timecode <= currentTime) {
+                    if (timecode >= 0 && typeof threads_array[timecode] !== 'undefined') {
+                        for (var id in threads_array[timecode]) {
+                            i++;
+                            if (i > notif_display_number)
+                                break;
+                            html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
+                                    "<span class='span-link red' onclick='javascript:player_thread_notification_remove(" + timecode + ", " + id + ")' >x</span>" +
+                                    "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " +
+                                    threads_array[timecode][id] + "</span>" +
+                                    "</li>";
+                        }
+                    }
+                    timecode++;
+                }
 
-            html_value += "</ul>";
-            $('#notifications').html(html_value);
-            if (i > 0)
-                $('#video_notifications').slideDown();
-            else
-                $('#video_notifications').slideUp();
+                html_value += "</ul>";
+                $('#notifications').html(html_value);
+                if (i > 0)
+                    $('#video_notifications').slideDown();
+                else
+                    $('#video_notifications').slideUp();
+            }
+            
+            // -- Log "currently playing" action
+            let log_playing_interval = 30;
+            let timestamp = Math.floor(Date.now() / 1000);
+            
+            if (typeof this.last_playing_log == 'undefined')
+                this.last_playing_log = 0;
+            if (typeof this.last_playing_log_play_time == 'undefined')
+                this.last_playing_log_play_time = -999;
+                
+            let a = videos;
+                
+            //log if: last log is more than log_playing_interval ago OR if play time has significantly changed since last log
+            if( /* this.paused !== false && this api param seems buggy, fix me if can */
+                ( timestamp > this.last_playing_log + log_playing_interval || time > this.last_playing_log_play_time + log_playing_interval ) 
+              )
+            {
+                this.last_playing_log = timestamp;
+                this.last_playing_log_play_time = time;
+                server_trace(new Array('4', 'video_playing', current_album, current_asset, type, time));
+                //console.log("video_playing");
+            }
+            // --
         });
 
         // when the video is played
@@ -275,7 +299,7 @@ function player_prepare(currentQuality, currentType, startTime) {
         videos[i].addEventListener('play', function () {
             if(seeked) {
                 seeked = false;
-                console.log("video_seeked");
+                //console.log("video_seeked");
                 server_trace(new Array('4', 'video_seeked', current_album, current_asset, duration, previous_time, time, type, quality));
             }
             

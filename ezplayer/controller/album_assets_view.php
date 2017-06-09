@@ -54,6 +54,7 @@ function index_asset_view($param) {
     // 0) Sanity checks
 
     if (!ezmam_album_exists($album)) {
+        
         if ($input['click']) // refresh a part of the page
             include_once template_getpath('error_album_not_found.php');
         else { // refresh the whole page
@@ -76,8 +77,7 @@ function index_asset_view($param) {
         log_append('warning', 'view_album_assets: tried to access album ' . $input['album'] . ' with invalid token ' . $input['token']);
         die;
     }
-
-
+    
     // 1) Retrieving all assets' metadata
 
     $assets_list = ezmam_asset_list_metadata($album);

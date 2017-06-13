@@ -39,9 +39,6 @@ switch ($action) {
     case 'streaming_content_add':
         streaming_content_add();
         break;
-    case 'streaming_stop':
-        streaming_stop();
-        break;
     case 'streaming_close':
         streaming_close();
         break;
@@ -431,50 +428,6 @@ function streaming_content_add() {
         default:
             print "Unknown protocol $protocol";
             return false;
-    }
-    return true;
-}
-
-/**
- * Stops the streaming on EZmanager
- * @global type $input
- * @global type $ezmanager_basedir
- * @global type $repository_path
- * @return boolean
- */
-function streaming_stop() {
-    global $input;
-    global $repository_path;
-    global $logger;
-    
-    ezmam_repository_path($repository_path);
-
-    $course = $input['$course'];
-    $asset = $input['asset'];
-    //$protocol = $input['protocol'];
-    $module_type = $input['module_type'];
-
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE, "Received stream stop request for asset $asset in course $course, module type $module_type", array(__FUNCTION__), $asset);
-
-    // gets information about current streams
-    $streams_array = db_get_stream_info($course,$asset);
-    if($streams_array == null || !isset($streams_array[$course][$asset])) { 
-       $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Requested stream info for asset $asset in course $course was not found", array(__FUNCTION__), $asset);
-       return false;
-    }
-    
-    //stop external stream daemon if it's enabled
-    ExternalStreamDaemon::stop($streams_array[$course][$asset]['asset_token']);
-
-    $asset_meta = ezmam_asset_metadata_get($course . '-pub', $streams_array[$course][$asset]['stream_name']);
-    $asset_meta['status'] = 'stopped';
-    ezmam_asset_metadata_set($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
-    
-    $status= $streams_array[$course][$asset][$module_type]['status'];
-    $res = db_stream_update_status($course, $asset, $module_type, $status);
-    if(!$res) {
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));
-        return false;
     }
     return true;
 }

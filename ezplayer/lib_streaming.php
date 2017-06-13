@@ -160,7 +160,7 @@ function asset_streaming_view($refresh_center = true) {
     
     global $login_error; // used to display error when anonymous user login
     // the session has expired, the whole page has to be refreshed
-    if ($_SESSION['reloaded']) {
+    if (isset($_SESSION['reloaded']) && $_SESSION['reloaded']) {
         unset($input['click']);
         unset($_SESSION['reloaded']);
         $refresh_center = true;

@@ -55,7 +55,6 @@
     var poster = "images/Generale/¤poster-streaming¤.png";
     var is_camslide = <?php echo json_encode($asset_meta['record_type'] == 'camslide'); ?>;
     var main_stream_url = "<?php echo $m3u8_live_stream; ?>";
-    var secondary_stream_url = "<?php echo $m3u8_slide; ?>";
     var current_type = "<?php echo $_SESSION['current_type']; ?>";
     time = 0;
 

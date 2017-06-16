@@ -67,7 +67,7 @@ class EventType {
     // EZRenderer
     
     // EZPlayer
-    
+    const EZPLAYER_STREAMING                 = "ezplayer_external_stream";
     
     // index by EventType. Do NOT change already existing values unless you're ready to loose the EventType of all previous logs
     public static $event_type_id = array(
@@ -134,5 +134,6 @@ class EventType {
        // EZRenderer: 4000->4999
         
        // EZPlayer: 5000->5999
+       EventType::EZPLAYER_STREAMING                         => 5000,
     );
 }

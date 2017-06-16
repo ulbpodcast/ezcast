@@ -270,6 +270,8 @@ function streaming_init() {
 }
 
 function create_m3u8_master($targetDir, $quality) {
+   global $m3u8_master_filename;
+   global $m3u8_quality_filename;
    
     $master_m3u8 = '#EXTM3U' . PHP_EOL .
             '#EXT-X-VERSION:3' . PHP_EOL;
@@ -277,28 +279,30 @@ function create_m3u8_master($targetDir, $quality) {
     // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
     if (strpos($quality, 'low') !== false) {
         $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'low/live.m3u8' . PHP_EOL;
+                'low/'. $m3u8_quality_filename . PHP_EOL; //same name but not actually the master file so... let's not use $m3u8_master_filename
     }
     if (strpos($quality, 'high') !== false) {
         $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'high/live.m3u8' . PHP_EOL;
+                'high/'. $m3u8_quality_filename . PHP_EOL; //same name but not actually the master file so... let's not use $m3u8_master_filename
     }
 
-    file_put_contents($targetDir . 'live.m3u8', $master_m3u8);
+    file_put_contents($targetDir . $m3u8_master_filename, $master_m3u8);
 }
 
 function create_m3u8_external($targetDir, $type, $asset_token) {
     global $streaming_video_alternate_server_address;
     global $streaming_video_alternate_server_uri;
+    global $m3u8_external_master_filename;
+    global $m3u8_quality_filename;
     
     $external_m3u8 = '#EXTM3U' . PHP_EOL .
             '#EXT-X-VERSION:3' . PHP_EOL . 
             '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-           // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' .  $type . '/live.m3u8';
-		//temp hack instead, redirect to the low
-            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' . $type . '/high/live.m3u8';
+           // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' .  $type . $m3u8_master_filename;
+		//not working. For now, hack instead, redirect to the high
+            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' . $type . '/high/'. $m3u8_quality_filename;
     
-    file_put_contents($targetDir . '/external_live.m3u8', $external_m3u8);
+    file_put_contents($targetDir . '/' . $m3u8_external_master_filename, $external_m3u8);
 }
 
 /**
@@ -317,6 +321,9 @@ function streaming_content_add() {
     global $apache_documentroot;
     global $streaming_video_alternate_server_enable_sync;
     global $streaming_video_alternate_server_enable_redirect;
+    global $m3u8_master_filename;
+    global $m3u8_external_master_filename;
+    global $m3u8_quality_filename;
     global $logger;
     
 
@@ -384,17 +391,17 @@ function streaming_content_add() {
             }
             
             // master playlist file doesn't exist yet
-            if (!is_file($upload_type_dir . 'live.m3u8')) {
+            if (!is_file($upload_type_dir . $m3u8_master_filename)) {
                 create_m3u8_master($upload_type_dir, $streams_array[$course][$asset][$module_type]['quality']);
             }
             //also create external source if needed
             if($streaming_video_alternate_server_enable_redirect) {
-                if (!is_file($upload_type_dir . 'external_live.m3u8')) {
+                if (!is_file($upload_type_dir . $m3u8_external_master_filename)) {
                     create_m3u8_external($upload_type_dir, $input['module_type'], $asset_token);
                 }
             } else { //else make sure it's removed
-                if(is_file($upload_type_dir . 'external_live.m3u8'))
-                    unlink($upload_type_dir . 'external_live.m3u8');    
+                if(is_file($upload_type_dir . $m3u8_external_master_filename))
+                    unlink($upload_type_dir . $m3u8_external_master_filename);    
             }
 
             $upload_quality_dir = $upload_type_dir . $input['quality'] . '/';
@@ -413,14 +420,15 @@ function streaming_content_add() {
             }
 
             // appends the m3u8 file
-            if (!is_file("$upload_quality_dir/live.m3u8")) {
+            $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
+            if (!is_file($m3u8_quality_path)) {
                 $m3u8_header = explode(PHP_EOL, $input['m3u8_string']);
                 // array_splice($m3u8_header, 4, 0, array('#EXT-X-PLAYLIST-TYPE:EVENT'));
                 // Adds an extra line in m3u8 header: #EXT-X-PLAYLIST-TYPE:EVENT
                 // This type of playlist allows the players to navigate freely (backward and forward) from the beginning of the program
-                file_put_contents("$upload_quality_dir/live.m3u8", implode(PHP_EOL, $m3u8_header));
+                file_put_contents($m3u8_quality_path, implode(PHP_EOL, $m3u8_header));
             } else {
-                file_put_contents("$upload_quality_dir/live.m3u8", $input['m3u8_string'], FILE_APPEND);
+                file_put_contents($m3u8_quality_path, $input['m3u8_string'], FILE_APPEND);
             }
             
             if($streaming_video_alternate_server_enable_sync)

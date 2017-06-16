@@ -260,8 +260,8 @@ function streaming_init() {
             $streams_array[$course][$asset][$module_type]['port']   : null;
     
     $res = db_stream_create($course, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $caller_ip, $status, $quality, $protocol, $server, $port);
-    if(!$res){
-        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create stream in database.", array(__FUNCTION__));
+    if(!$res) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create stream in database for course $course, asset $asset, classroom $classroom, module $module_type", array(__FUNCTION__));
         return false;
     }
 
@@ -318,7 +318,8 @@ function streaming_content_add() {
     global $streaming_video_alternate_server_enable_sync;
     global $streaming_video_alternate_server_enable_redirect;
     global $logger;
-     
+    
+
     ezmam_repository_path($repository_path);
 
     $course = $input['course'];
@@ -327,6 +328,8 @@ function streaming_content_add() {
     $module_type = $input['module_type'];
     $status = $input['status'];
     
+//    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received stream content add for asset $asset in course $course ", array(__FUNCTION__), $asset);
+     
     // gets information about current streams
     $streams_array = db_get_stream_info($course,$asset);
     if($streams_array == null || !isset($streams_array[$course][$asset])) { 
@@ -367,7 +370,7 @@ function streaming_content_add() {
                 return false;
             }
             if($streaming_video_alternate_server_enable_sync) {
-               ExternalStreamDaemon::pause($asset_token);
+               ExternalStreamDaemon::lock($asset_token);
                ensure_external_stream_daemon_is_running($upload_root_dir, $asset_token);
             }
 
@@ -421,7 +424,7 @@ function streaming_content_add() {
             }
             
             if($streaming_video_alternate_server_enable_sync)
-                ExternalStreamDaemon::resume($asset_token);
+                ExternalStreamDaemon::unlock($asset_token);
             
             print "OK";
             break;

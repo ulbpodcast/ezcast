@@ -62,6 +62,7 @@ class EventType {
     const MANAGER_BOOKMARKS                  = "manager_bookmarks";
     const MANAGER_SCHEDULING                 = "manager_scheduling";
     const MANAGER_RENDERING                  = "manager_rendering";
+    const MANAGER_EXTERNAL_STREAM            = "manager_external_stream";
     
     // EZRenderer
     
@@ -128,6 +129,7 @@ class EventType {
        EventType::MANAGER_BOOKMARKS                          => 3009,
        EventType::MANAGER_SCHEDULING                         => 3010,
        EventType::MANAGER_RENDERING                          => 3011,
+       EventType::MANAGER_EXTERNAL_STREAM                    => 3012,
         
        // EZRenderer: 4000->4999
         

@@ -228,7 +228,7 @@ function statements_get(){
 			'WHERE room_ID = :room_ID',
             
                 'stream_create' =>
-                            'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`,`module_type`, `ip`, `status`, `quality`, `protocol`, `server`, `port`) ' .
+                            'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`, `module_type`, `ip`, `status`, `quality`, `protocol`, `server`, `port`) ' .
                             'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, :ip, :status, :quality, :protocol, :server, :port)',      
 
 		'stream_update_status' =>
@@ -825,7 +825,7 @@ function db_classroom_delete($room_ID) {
     return $statements['classroom_delete']->execute();
 }
 
-function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token,$module_type, $ip, $status, $quality, $protocol, $server, $port) {
+function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $ip, $status, $quality, $protocol, $server, $port) {
     global $statements;
 
     $statements['stream_create']->bindParam(':cours_id', $cours_id);
@@ -895,7 +895,5 @@ function db_get_stream_info($cours_id,$asset){
             $infos[$cours_id][$asset][$res[$i]['module_type']]['port']    = null;
     }
     
-    var_dump($infos);
-
     return $infos;	
 }

@@ -11,6 +11,9 @@ function ensure_external_stream_daemon_is_running($video_root_dir, $asset_token)
     if(ExternalStreamDaemon::is_running($asset_token))
         return;
    
+    global $logger;
+    $logger->log(EventType::MANAGER_EXTERNAL_STREAM, LogLevel::NOTICE, "Started external stream deamon for asset token $asset_token with video_root_dir $video_root_dir", array(__FUNCTION__));   
+    
     // Start daemon in background
     $command = $php_cli_cmd . ' ' .__DIR__."/cli_external_stream_daemon.php $video_root_dir $asset_token > /dev/null &";
     //file_put_contents("/var/lib/ezcast/external_stream/FOMXFAVE/sync_command", $command . PHP_EOL);
@@ -139,7 +142,7 @@ class ExternalStreamDaemon {
    }
    
    // pause syncing
-   static function pause($asset_token) {
+   static function lock($asset_token) {
        $lock_file = self::get_lock_file_path($asset_token);
        if(!file_exists(dirname($lock_file)))
            mkdir(dirname($lock_file), 0777, true);
@@ -147,13 +150,14 @@ class ExternalStreamDaemon {
    }
    
    // resume syncing if paused
-   static function resume($asset_token) {
+   static function unlock($asset_token) {
        $lock_file = self::get_lock_file_path($asset_token);
        if(file_exists($lock_file))
            unlink($lock_file);
    }
    
-   static function is_paused($asset_token) {
+   // is syncing currently paused
+   static function is_locked($asset_token) {
        $lock_file = self::get_lock_file_path($asset_token);
        return file_exists($lock_file);
    }
@@ -198,18 +202,18 @@ class ExternalStreamDaemon {
        
        $temp_folder = self::get_temp_folder($this->asset_token) . '/m3u8/';
        unlink($temp_folder);
-       /* echo "copy m3u8" . PHP_EOL; */
+       //echo "copy m3u8" . PHP_EOL;
        echo system("rsync -rP --delete --exclude='*.ts' $this->local_root_path $temp_folder");
-       /* echo "send ts" . PHP_EOL; */
-       //--size-only for speed up
+       //echo "send ts" . PHP_EOL;
+       // --size-only for speed up
        echo system("rsync -rP --delete --size-only --exclude='*.m3u8' $command_key_part $this->local_root_path $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
-       /* echo "Send m3u8" . PHP_EOL; */
+       //echo "Send m3u8" . PHP_EOL;
        echo system("rsync -rP $command_key_part $temp_folder $this->ssh_user@$this->ssh_address:$this->ssh_remote_root_path");
    }
    
    // main loop, sync files until told to stop (with stop() function)
    public function run() {
-       $this->Write_PID();
+       $this->write_PID();
        // make sure stop and ready files from previous run do not exist anymore
        $this->delete_stop_file();
        $this->set_ready(false);
@@ -219,7 +223,7 @@ class ExternalStreamDaemon {
        $this->set_ready(true);
        
        while(true) {
-           if(self::is_paused($this->asset_token)) { // do nothing and wait if daemon is paused
+           if(self::is_locked($this->asset_token)) { // do nothing and wait if daemon is paused
                sleep(1);
                continue;
            }

@@ -10,7 +10,7 @@
     global $repository_basedir;
     global $default_credits;
 	
-	require_once $basedir.'/ezadmin/lib_sql_management.php';
+	require_once $basedir.'/commons/lib_sql_management.php';
 	include_once $basedir.'/ezmanager/lib_ezmam.php';
 	
 	$iduser=$_SESSION['user_login'];

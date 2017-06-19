@@ -5,7 +5,7 @@ function index($param = array()) {
     global $input;
     global $repository_path;
     global $basedir;
-	require_once($basedir.'/ezadmin/lib_sql_management.php');
+	require_once($basedir.'/commons/lib_sql_management.php');
 
     //
     // Usual sanity checks

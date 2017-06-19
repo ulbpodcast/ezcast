@@ -23,7 +23,7 @@
     //
     // Sanity checks
     //
-	// include "../ezadmin/lib_sql_management.php";
+	// include "../commons/lib_sql_management.php";
 
 	
 	

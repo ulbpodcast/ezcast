@@ -9,7 +9,7 @@ require_once __DIR__."/../config.inc";
 require_once __DIR__."/../lib_ezmam.php";
 require_once "web_request.php";
 require_once __DIR__."/../../commons/lib_external_stream_daemon.php";
-require_once __DIR__."/../../ezadmin/lib_sql_management.php";
+require_once __DIR__."/../../commons/lib_sql_management.php";
 
 if(!is_authorized_caller()) {
     print "not talking to you ($caller_ip)";

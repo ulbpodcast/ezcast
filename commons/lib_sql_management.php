@@ -22,16 +22,12 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
 /**
  * @package ezcast.commons.lib.sql
  */
-
-require_once '../commons/lib_database.php';
-
+require_once __DIR__ . '/lib_database.php';
 if(file_exists('config.inc')) {
     include_once 'config.inc';
-
     $stmt_array = statements_get();
     db_prepare($stmt_array);
 }
@@ -46,7 +42,6 @@ function statements_get(){
 		'course_list' =>
 			'SELECT ' . 
 				'courses.course_code, ' .
-				'courses.course_code_public, ' .									
 				'courses.course_name, ' .
 				'courses.in_recorders, ' .
 				'courses.has_albums, ' .
@@ -61,13 +56,12 @@ function statements_get(){
 				'courses.origin = :origin',
 		
 		'course_create' =>
-			'INSERT INTO ' . db_gettable('courses') . '(course_code,course_code_public, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
-			'VALUES (:course_code,:course_code_public, :course_name, :shortname, :in_recorders, 0, NOW(), \'internal\')',
+			'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
+			'VALUES (:course_code, :course_name, :shortname, 0, 0, NOW(), \'internal\')',
 		
 		'course_read' =>
 			'SELECT ' . 
 				db_gettable('courses') . '.course_code, ' .
-				db_gettable('courses') . '.course_code_public, ' .													  
 				db_gettable('courses') . '.course_name, ' .
 				db_gettable('courses') . '.shortname, ' .
 				db_gettable('courses') . '.in_recorders, ' .
@@ -92,7 +86,6 @@ function statements_get(){
 			'UPDATE ' . db_gettable('courses') . ' ' .
 			'SET course_name = :course_name, shortname = :shortname, in_recorders = :in_recorders ' .        
 			'WHERE course_code = :course_code',
-			
 		
 		'course_delete' =>
 			'DELETE FROM ' . db_gettable('courses') . ' ' .
@@ -114,7 +107,6 @@ function statements_get(){
 			'SELECT DISTINCT ' .
 				db_gettable('users_courses').'.ID, '.
 				db_gettable('courses').'.course_code, '.
-				db_gettable('courses').'.course_code_public, '.												   
 				db_gettable('courses').'.shortname, '.
 				db_gettable('courses').'.course_name, '.
 				db_gettable('courses').'.in_recorders, '.
@@ -180,19 +172,10 @@ function statements_get(){
 			'DELETE FROM ' . db_gettable('users_courses') . ' ' .
 			'WHERE ID = :user_course_ID AND origin=\'internal\'',
 		
-		'users_courses_delete_row' =>
-			'DELETE FROM ' . db_gettable('users_courses') . ' ' .
-			'WHERE course_code=:course_code AND user_ID=:user_ID',
-		
 		'users_courses_get' =>
 			'SELECT * ' .
 			'FROM ' . db_gettable('users_courses') . ' ' .
 			'WHERE course_code=:course_code AND user_ID=:user_ID',
-	
-		'users_courses_get_users' =>
-			'SELECT user_ID ' .
-			'FROM ' . db_gettable('users_courses') . ' ' .
-			'WHERE course_code=:course_code',
 		
 		'found_rows' => 
 			'SELECT  FOUND_ROWS();',
@@ -239,28 +222,23 @@ function statements_get(){
 		'classroom_delete' =>
 			'DELETE FROM ' . db_gettable('classrooms') . ' ' .
 			'WHERE room_ID = :room_ID',
-			
-		'stream_create' =>
-			'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`,`module_type`, `ip`, `status`, `pid`, `quality`, `protocol`, `server`, `port`) ' .
-			'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, :ip, :status, :pid, :quality, :protocol, :server, :port)',      
-		
-		'stream_update_statusPid' =>
+            
+                'stream_create' =>
+                            'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`,`module_type`, `ip`, `status`, `quality`, `protocol`, `server`, `port`) ' .
+                            'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, :ip, :status, :quality, :protocol, :server, :port)',      
+		'stream_update_status' =>
 			'UPDATE ' . db_gettable('streams') . ' ' .
-			'SET pid = :pid, status = :status' . ' ' .
+			'SET status = :status' . ' ' .
 			'WHERE cours_id = :course AND asset = :asset AND module_type = :module_type ',
-
 		'get_stream_info' =>
 			'SELECT  * ' .  
 			'FROM ' . db_gettable('streams') . ' ' .
 			'WHERE cours_id=:cours_id AND asset=:asset '	
-			
 	);
 }
-
 //---------------------------
 // PAGE-SPECIFIC FUNCTIONS
 //---------------------------
-
 /**
  * Returns the courses corresponding the the following criteria
  * @param String $course_code
@@ -273,7 +251,7 @@ function statements_get(){
  * @param String $order the order condition
  * @param String $limit the limit condition
  */
-function db_courses_search($course_code, $course_code_public, $user_ID, $include_external, $include_internal, $has_albums, 
+function db_courses_search($course_code, $user_ID, $include_external, $include_internal, $has_albums, 
         $in_classrooms, $with_teacher, $order, $limit) {   
 	global $db_object;
 	
@@ -286,7 +264,6 @@ function db_courses_search($course_code, $course_code_public, $user_ID, $include
 	$query = 
 		'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .  
 			' table_courses.course_code, ' .
-			' table_courses.course_code_public, ' .										  
 			' table_users.user_ID AS user_ID, ' .
 			' table_courses.origin, ' .
 			' table_courses.in_recorders, ' .
@@ -315,7 +292,6 @@ function db_courses_search($course_code, $course_code_public, $user_ID, $include
 		
 	return $res;
 }
-
 /**
  * Updates the "has_albums" field in the DB. Scans the content of the repo and updates the fields that have changed.
  * @param type $repo_content 
@@ -347,7 +323,6 @@ function db_courses_update_hasalbums($repo_content) {
 	
 	$db_object->commit();
 }
-
 /**
  * Retrieve all courses
  * @param String $course_code
@@ -371,7 +346,6 @@ function db_courses_list($course_code, $course_name, $shortname, $in_recorders, 
 	$statements['course_list']->execute();
 	return $statements['course_list']->fetchAll();  
 }
-
 /**
  * Create a new course
  * @param String $course_code
@@ -381,20 +355,15 @@ function db_courses_list($course_code, $course_name, $shortname, $in_recorders, 
  * @param integer $has_albums
  * @param Stirng $origin
  */
-function db_course_create($course_code,$course_code_public, $course_name, $shortname,$in_recorders) {
-	
+function db_course_create($course_code, $course_name, $shortname) {
 	global $statements;
 	
 	$statements['course_create']->bindParam(':course_code', $course_code);
-	$statements['course_create']->bindParam(':course_code_public', $course_code_public);																					 
 	$statements['course_create']->bindParam(':course_name', $course_name);
 	$statements['course_create']->bindParam(':shortname', $shortname);
-	$statements['course_create']->bindParam(':in_recorders', $in_recorders); 	
-	// print_r($course_name);
-	// die();
+	
 	return $statements['course_create']->execute();
 }
-
 /**
  * Returns the info related to a course
  * @param String $course_code
@@ -407,7 +376,6 @@ function db_course_read($course_code) {
 	$statements['course_read']->execute();
 	return $statements['course_read']->fetch();
 }
-
 /**
  * Returns the users associated to a course
  * @param String $course_code 
@@ -420,14 +388,12 @@ function db_course_get_users($course_code) {
 	
 	return $statements['course_get_users']->fetchAll();
 }
-
 /**
  * Update a course
  * @param String $course_code
  */
 function db_course_update($course_code, $course_name, $shortname, $in_recorders) {
 	global $statements;
-
 	$statements['course_update']->bindParam(':course_code', $course_code);
 	$statements['course_update']->bindParam(':course_name', $course_name);
 	$statements['course_update']->bindParam(':shortname', $shortname);
@@ -435,7 +401,6 @@ function db_course_update($course_code, $course_name, $shortname, $in_recorders)
 	
 	return $statements['course_update']->execute();
 }
-
 /**
  * Delete course
  * @param $course_code
@@ -447,7 +412,6 @@ function db_course_delete($course_code) {
 	
 	return $statements['course_delete']->execute();
 }
-
 /**
  * Returns the list of (recorder/ezmanager) admins
  */
@@ -457,7 +421,6 @@ function db_admins_list() {
 	$statements['users_get_admins']->execute();
 	return $statements['users_get_admins']->fetchAll();
 }
-
 function db_users_list($user_ID, $surname, $forename, $origin, $is_admin, $order, $limit) {    
 	global $db_object;
 	   
@@ -481,7 +444,6 @@ function db_users_list($user_ID, $surname, $forename, $origin, $is_admin, $order
 		   
 	return $res;
 }
-
 /**
  * Return infos about a user (user_ID, forename, surname, permissions and origin)
  * @global array $statements
@@ -496,7 +458,6 @@ function db_user_read($user_ID) {
 	
 	return $statements['user_read']->fetch();
 }
-
 function db_user_get_courses($user_ID) {
 	global $statements;
 	
@@ -505,7 +466,6 @@ function db_user_get_courses($user_ID) {
 	
 	return $statements['user_courses_get']->fetchAll();
 }
-
 function db_users_courses_get($course_code, $user_ID) {
 	global $statements;
 	
@@ -516,15 +476,6 @@ function db_users_courses_get($course_code, $user_ID) {
 	return $statements['users_courses_get']->fetch(); 
 	
 }
-function users_courses_get_users($course_code) {
-	global $statements;
-	
-	$statements['users_courses_get_users']->bindParam(':course_code', $course_code);	
-	$statements['users_courses_get_users']->execute();
-	return $statements['users_courses_get_users']->fetchAll(); 
-	
-}
-
 /**
  * Search classroom
  * 
@@ -542,7 +493,6 @@ function users_courses_get_users($course_code) {
 function db_classrooms_search($room_ID, $name, $ip, $enabled, $colOrder, $orderSort, 
         $start_elem, $max_elem) {
     global $db_object;
-
     
     $strSQL =
        'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .
@@ -601,7 +551,6 @@ function db_classrooms_search($room_ID, $name, $ip, $enabled, $colOrder, $orderS
     
     return $reqSQL->fetchAll();
 }
-
 /**
  * Returns the name, ID and IP of all the recorders
  */
@@ -611,7 +560,6 @@ function db_classrooms_list() {
 	$statements['classrooms_list']->execute();
 	return $statements['classrooms_list']->fetchAll();
 }
-
 /**
  * Returns the name, ID and IP of all the enabled recorders
  */
@@ -621,7 +569,6 @@ function db_classrooms_list_enabled() {
 	$statements['classrooms_list_enabled']->execute();
 	return $statements['classrooms_list_enabled']->fetchAll();
 }
-
 /**
  * Sets the "enabled" bit to true or false
  * @global array $statements
@@ -639,14 +586,12 @@ function db_classroom_update_enabled($room_ID, $enabled) {
 	
 	return $res;
 }
-
 function db_users_in_recorder_get() {
 	global $statements;
 	
 	$statements['get_users_in_recorder']->execute();
 	return $statements['get_users_in_recorder']->fetchAll();
 }
-
 /**
  * Returns the list of users created manually
  */
@@ -656,8 +601,6 @@ function db_users_internal_get() {
 	$statements['get_internal_users']->execute();
 	return $statements['get_internal_users']->fetchAll();
 }
-
-
 function db_users_courses_create($course_code, $user_ID) {
 	global $statements;
 	
@@ -680,7 +623,6 @@ function db_users_courses_create($course_code, $user_ID) {
 	
 	return array('user' => $user, 'course' => $course, 'id' => $db_object->lastInsertId());
 }
-
 function db_users_courses_delete($user_course_ID) {
 	global $statements;
 		
@@ -688,15 +630,6 @@ function db_users_courses_delete($user_course_ID) {
 	
 	return $statements['users_courses_delete']->execute();
 }
-function db_users_courses_delete_row($album,$user_course_ID) {
-	global $statements;
-		
-	$statements['users_courses_delete_row']->bindParam(':user_ID', $user_course_ID);
-	$statements['users_courses_delete_row']->bindParam(':course_code', $album);
-	
-	return $statements['users_courses_delete_row']->execute();
-}
-
 function db_unlink_user($user_ID) {
 	global $statements;
 		
@@ -704,65 +637,47 @@ function db_unlink_user($user_ID) {
 	
 	return $statements['unlink_user']->execute();
 }
-
 function db_unlink_course($course_code) {
     global $statements;
-
     $statements['unlink_course']->bindParam(':course_code', $course_code);
-
     return $statements['unlink_course']->execute();
 }
-
 function db_found_rows() {
     global $statements;
-
     $statements['found_rows']->execute(); 
-
     $res = $statements['found_rows']->fetch();   
     return intval($res[0]);
 }
-
 function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions) {
     global $statements;
-
     $statements['user_create']->bindParam(':user_ID', strtolower($user_ID));
     $statements['user_create']->bindParam(':surname', $surname);
     $statements['user_create']->bindParam(':forename', $forename);
     $statements['user_create']->bindParam(':recorder_passwd', $recorder_passwd);
     $statements['user_create']->bindParam(':permissions', $permissions);
-
     return $statements['user_create']->execute();
 }
-
 function db_user_delete($user_ID) {
     global $statements;
-
     $statements['user_delete']->bindParam(':user_ID', $user_ID);
-
     return $statements['user_delete']->execute();
 }
-
 function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permissions) {
     global $statements;
-
     if(empty($recorder_passwd)) {
             $statements['user_update_short']->bindParam(':user_ID', $user_ID);
             $statements['user_update_short']->bindParam(':surname', $surname);
             $statements['user_update_short']->bindParam(':forename', $forename);
             $statements['user_update_short']->bindParam(':permissions', $permissions);
-
             return $statements['user_update_short']->execute();     
     }
-
     $statements['user_update']->bindParam(':user_ID', $user_ID);
     $statements['user_update']->bindParam(':surname', $surname);
     $statements['user_update']->bindParam(':forename', $forename);
     $statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
     $statements['user_update']->bindParam(':permissions', $permissions);
-
     return $statements['user_update']->execute();
 }
-
 /**
  * Logs the action 'action' performed on table 'table'
  * @param type $table
@@ -770,31 +685,24 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
  */
 function db_log($table, $action, $author) {
     global $statements;
-
     $statements['log_action']->bindParam(':table', $table);
     $statements['log_action']->bindParam(':message', $action);
     $statements['log_action']->bindParam(':author', $author);
-
     return $statements['log_action']->execute();
 }
-
 function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $limit = -1) {
     global $db_object;
-
     $query = 'SELECT DISTINCT SQL_CALC_FOUND_ROWS `time`, `table`, message, author FROM '.  db_gettable('admin_logs');
-
     $where = '';
     if(!empty($date_start)) {
         $where .= 'time >= \''.$date_start.' 00:00:00\'';
     }
-
     if(!empty($date_end)) {
         if(!empty($where)) {
             $where .= ' AND ';
         }
         $where .= 'time <= \''.$date_end.' 00:00:00\'';
     }
-
     if(!empty($table)) {
         if($table != 'all') {
             if(!empty($where)) {
@@ -802,18 +710,14 @@ function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $
             }
             $where .= '`table` LIKE \''.db_gettable($table).'\'';
         }
-
     }
-
     if(!empty($author)) {
         if(!empty($where)) {
             $where .= ' AND ';
         }
         $where .= 'author LIKE %'.$author.'%';
     }
-
     $fullQuery = $query;
-
     if(!empty($where)) {
         $fullQuery .= ' WHERE ' . $where;
     }
@@ -827,43 +731,31 @@ function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $
     
     return $db_object->query($fullQuery);
 }
-
 function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled) {
     global $statements;
-
     $statements['classroom_create']->bindParam(':room_ID', $room_ID);
     $statements['classroom_create']->bindParam(':name', $name);
     $statements['classroom_create']->bindParam(':ip', $ip);
     $statements['classroom_create']->bindParam(':ip_remote', $ip_remote);
     $statements['classroom_create']->bindParam(':enabled', $enabled);
-
     return $statements['classroom_create']->execute();
 }
-
 function db_classroom_update($ID, $room_ID, $name, $ip, $ip_remote) {
     global $statements;
-
     $statements['classroom_update']->bindParam(':ID', $ID);
     $statements['classroom_update']->bindParam(':room_ID', $room_ID);
     $statements['classroom_update']->bindParam(':name', $name);
     $statements['classroom_update']->bindParam(':ip', $ip);
     $statements['classroom_update']->bindParam(':ip_remote', $ip_remote);
-
     return $statements['classroom_update']->execute();
 }
-
 function db_classroom_delete($room_ID) {    
     global $statements;
-
     $statements['classroom_delete']->bindParam(':room_ID', $room_ID);
-
     return $statements['classroom_delete']->execute();
 }
-
-
-function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token,$module_type, $ip, $status,$pid, $quality, $protocol, $server, $port) {
+function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token,$module_type, $ip, $status, $quality, $protocol, $server, $port) {
     global $statements;
-
     $statements['stream_create']->bindParam(':cours_id', $cours_id);
     $statements['stream_create']->bindParam(':asset', $asset);
     $statements['stream_create']->bindParam(':classroom', $classroom);
@@ -874,52 +766,54 @@ function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $
     $statements['stream_create']->bindParam(':module_type', $module_type);
     $statements['stream_create']->bindParam(':ip', $ip);
     $statements['stream_create']->bindParam(':status', $status);
-    $statements['stream_create']->bindParam(':pid', $pid);
     $statements['stream_create']->bindParam(':quality', $quality);
     $statements['stream_create']->bindParam(':protocol', $protocol);
     $statements['stream_create']->bindParam(':server', $server);
     $statements['stream_create']->bindParam(':port', $port);
-
     return $statements['stream_create']->execute();
 }
-
-
-function db_stream_update_statusPid($course,$asset,$module_type,$pid,$status){
-	global $statements;
-
-    $statements['stream_update_statusPid']->bindParam(':course', $course);
-    $statements['stream_update_statusPid']->bindParam(':asset', $asset);
-    $statements['stream_update_statusPid']->bindParam(':module_type', $module_type);
-    $statements['stream_update_statusPid']->bindParam(':pid', $pid);
-    $statements['stream_update_statusPid']->bindParam(':status', $status);
+function db_stream_update_status($course,$asset,$module_type,$status){
+    global $statements;
+    $statements['stream_update_status']->bindParam(':course', $course);
+    $statements['stream_update_status']->bindParam(':asset', $asset);
+    $statements['stream_update_status']->bindParam(':module_type', $module_type);
+    $statements['stream_update_status']->bindParam(':status', $status);
 	
-	return $statements['stream_update_statusPid']->execute();	
+    return $statements['stream_update_status']->execute();	
 }
-
+/* return an array in the form if ... ?
+ * Return null of no streams were found
+ */
 function db_get_stream_info($cours_id,$asset){
-	global $statements;
-
-	$statements['get_stream_info']->bindParam(':cours_id', $cours_id);
-	$statements['get_stream_info']->bindParam(':asset', $asset);
-	
-	$statements['get_stream_info']->execute();
-	$res2=$statements['get_stream_info']->fetchAll();
-	
-	// generate a formated table 
-	for($i=0;$i<count($res2);$i++){
-		$infos[$cours_id][$asset]['classroom']=$res2[$i]['classroom'];
-		$infos[$cours_id][$asset]['netid']=$res2[$i]['netid'];
-		$infos[$cours_id][$asset]['record_type']=$res2[$i]['record_type'];
-		$infos[$cours_id][$asset]['stream_name']=$res2[$i]['stream_name'];
-		if(isset($res2[$i]['token']) && $res2[$i]['token']!='') $infos[$cours_id][$asset]['token']=$res2[$i]['token'];
-	
-		$infos[$cours_id][$asset][$res2[$i]['module_type']]['ip']=$res2[$i]['ip'];
-		$infos[$cours_id][$asset][$res2[$i]['module_type']]['status']=$res2[$i]['status'];
-		$infos[$cours_id][$asset][$res2[$i]['module_type']]['quality']=$res2[$i]['quality'];
-		$infos[$cours_id][$asset][$res2[$i]['module_type']]['protocol']=$res2[$i]['protocol'];
-		if(isset($res2[$i]['server']) && $res2[$i]['server']!='') $infos[$cours_id][$asset][$res2[$i]['module_type']]['server']=$res2[$i]['server'];
-		if(isset($res2[$i]['port']) && $res2[$i]['port']!='' && $res2[$i]['port']!= 0) $infos[$cours_id][$asset][$res2[$i]['module_type']]['port']=$res2[$i]['port'];
-	}
-	if(!isset($infos))$infos=null;
-	return $infos;	
+    global $statements;
+    $statements['get_stream_info']->bindParam(':cours_id', $cours_id);
+    $statements['get_stream_info']->bindParam(':asset', $asset);
+    $statements['get_stream_info']->execute();
+    $res = $statements['get_stream_info']->fetchAll();
+    // generate a formated table 
+    $infos = null;
+    for($i=0; $i < count($res); $i++) {
+        $infos[$cours_id][$asset]['classroom']                            = $res[$i]['classroom'];
+        $infos[$cours_id][$asset]['netid']                                = $res[$i]['netid'];
+        $infos[$cours_id][$asset]['record_type']                          = $res[$i]['record_type'];
+        $infos[$cours_id][$asset]['stream_name']                          = $res[$i]['stream_name'];
+        if(isset($res[$i]['token']) && $res[$i]['token'] != '') 
+            $infos[$cours_id][$asset]['token']                            = $res[$i]['token'];
+        $infos[$cours_id][$asset][$res[$i]['module_type']]['ip']          = $res[$i]['ip'];
+        $infos[$cours_id][$asset][$res[$i]['module_type']]['status']      = $res[$i]['status'];
+        $infos[$cours_id][$asset][$res[$i]['module_type']]['quality']     = $res[$i]['quality'];
+        $infos[$cours_id][$asset][$res[$i]['module_type']]['protocol']    = $res[$i]['protocol'];
+        if(isset($res[$i]['server']))
+            $infos[$cours_id][$asset][$res[$i]['module_type']]['server']  = $res[$i]['server'];
+        else
+            $infos[$cours_id][$asset][$res[$i]['module_type']]['server'] = null;
+        
+        if(isset($res[$i]['port']))
+            $infos[$cours_id][$asset][$res[$i]['module_type']]['port']    = $res[$i]['port'];
+        else
+            $infos[$cours_id][$asset][$res[$i]['module_type']]['port']    = null;
+    }
+    
+    var_dump($infos);
+    return $infos;	
 }

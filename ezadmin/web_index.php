@@ -18,7 +18,7 @@ require_once 'config.inc';
 session_name($appname);
 session_start();
 require_once 'lib_statistics.php';
-require_once 'lib_sql_management.php'; 
+require_once __DIR__ . '/../commons/lib_sql_management.php';
 require_once 'lib_error.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';

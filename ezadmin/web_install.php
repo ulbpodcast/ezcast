@@ -10,11 +10,11 @@
  */
 $in_install = true;
 
-require_once '../commons/lib_template.php';
-require_once 'lib_sql_management.php';
-require_once 'lib_various.php';
-require_once 'lib_error.php';
-require_once '../commons/common.inc'; //for logger access
+require_once __DIR__ . '/../commons/lib_template.php';
+require_once __DIR__ . '/../commons/lib_sql_management.php';
+require_once __DIR__ . '/lib_various.php';
+require_once __DIR__ . '/lib_error.php';
+require_once __DIR__ . '/../commons/common.inc'; //for logger access
 
 $template_folder = __DIR__. '/tmpl/' . get_lang();
 date_default_timezone_set("Europe/Brussels"); //TODO: allow to change this
@@ -700,6 +700,26 @@ function create_tables($drop = true) {
 				  "`server` varchar(255) NOT NULL," .
 				  "`port` int(10) NOT NULL" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");								  
+        
+         if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'streams`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'streams` (' .
+            "`id` int(11) NOT NULL," .
+            "`cours_id` varchar(50) NOT NULL," .
+            "`asset` varchar(50) NOT NULL," .
+            "`module_type` varchar(15) NOT NULL," .
+            "`classroom` varchar(50) NOT NULL," .
+            "`record_type` varchar(10) NOT NULL COMMENT 'cam/slide'," .
+            "`netid` varchar(50) NOT NULL," .
+            "`stream_name` varchar(255) NOT NULL," .
+            "`token` varchar(50) NOT NULL," .
+            "`ip` varchar(50) NOT NULL," .
+            "`status` varchar(20) NOT NULL," .
+            "`quality` varchar(10) NOT NULL," .
+            "`protocol` varchar(10) NOT NULL," .
+            "`server` varchar(50)," .
+            "`port` int(5)" .
+            " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");	
         
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .

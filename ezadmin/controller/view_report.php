@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib_sql_management.php';
+require_once __DIR__ . '/../../commons/lib_sql_management.php';
 require_once 'lib_sql_event.php';
 require_once 'lib_report.php';
 

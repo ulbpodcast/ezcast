@@ -362,7 +362,7 @@ function push_admins_to_recorders_ezmanager() {
     global $ezplayer_subdir;
 
     if (!db_ready()) {
-        require_once("lib_sql_management.php");
+        require_once __DIR__ . '/../commons/lib_sql_management.php';
         $stmts = statements_get();
         db_prepare($stmts);
     }

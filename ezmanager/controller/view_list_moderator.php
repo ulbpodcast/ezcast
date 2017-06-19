@@ -11,7 +11,8 @@ function index($param = array()) {
     global $default_downloadable;
     global $default_anon_access;
     global $basedir;
-	require_once $basedir.'/ezadmin/lib_sql_management.php';
+	require_once $basedir.'/commons/lib_sql_management.php';
+
 	
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);

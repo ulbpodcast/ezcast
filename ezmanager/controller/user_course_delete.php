@@ -13,7 +13,8 @@ function index($param = array()) {
     global $basedir;
    global $input;
 	   
-	require_once $basedir.'/ezadmin/lib_sql_management.php';
+	require_once $basedir.'/commons/lib_sql_management.php';
+
 	
 	$album=$input['album'];
 	$iduser=$input['iduser'];

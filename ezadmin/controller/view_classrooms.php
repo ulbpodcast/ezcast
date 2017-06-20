@@ -21,6 +21,7 @@ function index($param = array()) {
     
     if (isset($input['update'])) {
         db_classroom_update(trim($input['a_room_ID']), $input['u_room_ID'], $input['u_name'], $input['u_ip'], $input['u_ip_remote']);
+        notify_changes(); //we must write new allowed classrooms IP's
     }
     
     if(array_key_exists('page', $input)) {

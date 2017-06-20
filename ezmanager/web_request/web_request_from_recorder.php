@@ -300,7 +300,7 @@ function create_m3u8_external($targetDir, $type, $asset_token) {
             '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
            // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' .  $type . $m3u8_master_filename;
 		//not working. For now, hack instead, redirect to the high
-            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' . $type . '/high/'. $m3u8_quality_filename;
+            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' . $type . '/low/'. $m3u8_quality_filename;
     
     file_put_contents($targetDir . '/' . $m3u8_external_master_filename, $external_m3u8);
 }
@@ -476,44 +476,6 @@ function streaming_close() {
     }
 
     switch ($protocol) {
-        case 'udp':
-            // removes the stream from the streams files
-            if (isset($streams_array[$course][$asset][$module_type])) {
-                $server = $streams_array[$course][$asset][$module_type]['server'];
-                $status = $streams_array[$course][$asset][$module_type]['status'];
-                if ($status === 'streaming') {
-                    $pid = $streams_array[$course][$asset][$module_type]['pid'];
-                    $cmd = "ssh ezrenderer@$server 'kill $pid' &";
-                    exec($cmd);
-                }
-                $cmd = "ssh ezrenderer@$server 'rm -f /var/www/hls/video/demo*' &";
-                exec($cmd);
-                system("rm -rf /www2/htdocs/dev/ezplayer/videos/" . $streams_array[$course][$asset]['stream_name']);
-
-                ezmam_asset_delete($course . '-pub', $streams_array[$course][$asset]['stream_name']);
-                if ($streams_array[$course][$asset]['record_type'] == 'camslide') {
-                    $other_type = ($module_type == 'cam') ? 'slide' : 'cam';
-                    if (isset($streams_array[$course][$asset][$other_type])) {
-                        unset($streams_array[$course][$asset][$module_type]);
-                    } else {
-                        // other module has already been closed
-                        unset($streams_array[$course][$asset]);
-                    }
-                } else {
-                    unset($streams_array[$course][$asset]);
-                }
-                if (count($streams_array[$course]) == 0) {
-                    unset($streams_array[$course]);
-                }
-            } else {
-                // no information found for the stream
-                print 'error - no information found for the current stream';
-                return false;
-            }
-
-            print "OK";
-            break;
-
         case 'http':
             // delete stream asset in one hour
             $stream_name = $streams_array[$course][$asset]['stream_name'];
@@ -526,7 +488,7 @@ function streaming_close() {
             break;
     }
 
-    $status= $streams_array[$course][$asset][$module_type]['status'];
+    $status = 'closed';
     $res = db_stream_update_status($course,$asset,$module_type,$status);
     if(!$res) {
         $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));

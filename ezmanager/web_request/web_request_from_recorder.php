@@ -321,6 +321,22 @@ function streaming_init() {
 	}
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     
+<<<<<<< HEAD
+=======
+    //default to NULL in db
+    $server = isset($streams_array[$course][$asset][$module_type]['server']) ? 
+            $streams_array[$course][$asset][$module_type]['server'] : null;
+    $port   = isset( $streams_array[$course][$asset][$module_type]['port'])  ? 
+            $streams_array[$course][$asset][$module_type]['port']   : null;
+    
+    $res = db_stream_create($course, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $caller_ip, $status, $quality, $protocol, $server, $port);
+    if(!$res) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create stream in database for course $course, asset $asset, classroom $classroom, module $module_type", array(__FUNCTION__));
+        return false;
+    }
+
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed stream init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
+>>>>>>> refs/remotes/ulbpodcast/master
     return true;
 }
 
@@ -401,6 +417,8 @@ function streaming_start() {
 }
 
 function create_m3u8_master($targetDir, $quality) {
+   global $m3u8_master_filename;
+   global $m3u8_quality_filename;
    
     $master_m3u8 = '#EXTM3U' . PHP_EOL .
             '#EXT-X-VERSION:3' . PHP_EOL;
@@ -408,28 +426,30 @@ function create_m3u8_master($targetDir, $quality) {
     // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
     if (strpos($quality, 'low') !== false) {
         $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'low/live.m3u8' . PHP_EOL;
+                'low/'. $m3u8_quality_filename . PHP_EOL; //same name but not actually the master file so... let's not use $m3u8_master_filename
     }
     if (strpos($quality, 'high') !== false) {
         $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'high/live.m3u8' . PHP_EOL;
+                'high/'. $m3u8_quality_filename . PHP_EOL; //same name but not actually the master file so... let's not use $m3u8_master_filename
     }
 
-    file_put_contents($targetDir . 'live.m3u8', $master_m3u8);
+    file_put_contents($targetDir . $m3u8_master_filename, $master_m3u8);
 }
 
 function create_m3u8_external($targetDir, $type, $asset_token) {
     global $streaming_video_alternate_server_address;
     global $streaming_video_alternate_server_uri;
+    global $m3u8_external_master_filename;
+    global $m3u8_quality_filename;
     
     $external_m3u8 = '#EXTM3U' . PHP_EOL .
             '#EXT-X-VERSION:3' . PHP_EOL . 
             '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-           // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' .  $type . '/live.m3u8';
-		//temp hack instead, redirect to the low
-            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' . $type . '/high/live.m3u8';
+           // 'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' .  $type . $m3u8_master_filename;
+		//not working. For now, hack instead, redirect to the high
+            'http://' . $streaming_video_alternate_server_address . '/' . $streaming_video_alternate_server_uri . '/' . $asset_token . '/' . $type . '/low/'. $m3u8_quality_filename;
     
-    file_put_contents($targetDir . '/external_live.m3u8', $external_m3u8);
+    file_put_contents($targetDir . '/' . $m3u8_external_master_filename, $external_m3u8);
 }
 
 /**
@@ -449,7 +469,11 @@ function streaming_content_add() {
     global $apache_documentroot;
     global $streaming_video_alternate_server_enable_sync;
     global $streaming_video_alternate_server_enable_redirect;
+    global $m3u8_master_filename;
+    global $m3u8_external_master_filename;
+    global $m3u8_quality_filename;
     global $logger;
+<<<<<<< HEAD
      
     ezmam_repository_path($repository_path);		
 	// DEBUG	
@@ -460,6 +484,11 @@ function streaming_content_add() {
 		$key ." : ". $value . PHP_EOL
 		, FILE_APPEND);
 	}
+=======
+    
+
+    ezmam_repository_path($repository_path);
+>>>>>>> refs/remotes/ulbpodcast/master
 
     $course = $input['course'];
     $asset = $input['asset'];
@@ -467,6 +496,8 @@ function streaming_content_add() {
     $module_type = $input['module_type'];
     $status = $input['status'];
     
+//    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received stream content add for asset $asset in course $course ", array(__FUNCTION__), $asset);
+     
     // gets information about current streams
 	$streams_array=db_get_stream_info($course,$asset);
 	if(!isset($streams_array) || $streams_array==null ) $streams_array = array();
@@ -507,10 +538,20 @@ function streaming_content_add() {
             $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $course . '/' . $stream_name . '_' . $asset_token . '/';
             if(!is_file($upload_root_dir))
                 mkdir($upload_root_dir, 0755, true); // creates the directories if needed
+<<<<<<< HEAD
 
             if($streaming_video_alternate_server_enable_sync)
             {
                ExternalStreamDaemon::pause($asset_token);
+=======
+       
+            if(!is_dir($upload_root_dir)) {
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload root dir (path: $upload_root_dir)", array(__FUNCTION__), $asset);
+                return false;
+            }
+            if($streaming_video_alternate_server_enable_sync) {
+               ExternalStreamDaemon::lock($asset_token);
+>>>>>>> refs/remotes/ulbpodcast/master
                ensure_external_stream_daemon_is_running($upload_root_dir, $asset_token);
             }
 
@@ -520,17 +561,17 @@ function streaming_content_add() {
                 mkdir($upload_type_dir, 0755, true); // creates the directories if needed
 
             // master playlist file doesn't exist yet
-            if (!is_file($upload_type_dir . 'live.m3u8')) {
+            if (!is_file($upload_type_dir . $m3u8_master_filename)) {
                 create_m3u8_master($upload_type_dir, $streams_array[$course][$asset][$module_type]['quality']);
             }
             //also create external source if needed
             if($streaming_video_alternate_server_enable_redirect) {
-                if (!is_file($upload_type_dir . 'external_live.m3u8')) {
+                if (!is_file($upload_type_dir . $m3u8_external_master_filename)) {
                     create_m3u8_external($upload_type_dir, $input['module_type'], $asset_token);
                 }
             } else { //else make sure it's removed
-                if(is_file($upload_type_dir . 'external_live.m3u8'))
-                    unlink($upload_type_dir . 'external_live.m3u8');    
+                if(is_file($upload_type_dir . $m3u8_external_master_filename))
+                    unlink($upload_type_dir . $m3u8_external_master_filename);    
             }
 
             $upload_quality_dir = $upload_type_dir . $input['quality'] . '/';
@@ -552,18 +593,19 @@ function streaming_content_add() {
 			}	
 
             // appends the m3u8 file
-            if (!is_file("$upload_quality_dir/live.m3u8")) {
+            $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
+            if (!is_file($m3u8_quality_path)) {
                 $m3u8_header = explode(PHP_EOL, $input['m3u8_string']);
                 // array_splice($m3u8_header, 4, 0, array('#EXT-X-PLAYLIST-TYPE:EVENT'));
                 // Adds an extra line in m3u8 header: #EXT-X-PLAYLIST-TYPE:EVENT
                 // This type of playlist allows the players to navigate freely (backward and forward) from the beginning of the program
-                file_put_contents("$upload_quality_dir/live.m3u8", implode(PHP_EOL, $m3u8_header));
+                file_put_contents($m3u8_quality_path, implode(PHP_EOL, $m3u8_header));
             } else {
-                file_put_contents("$upload_quality_dir/live.m3u8", $input['m3u8_string'], FILE_APPEND);
+                file_put_contents($m3u8_quality_path, $input['m3u8_string'], FILE_APPEND);
             }
             
             if($streaming_video_alternate_server_enable_sync)
-                ExternalStreamDaemon::resume($asset_token);
+                ExternalStreamDaemon::unlock($asset_token);
             
             print "OK";
             break;
@@ -687,44 +729,6 @@ function streaming_close() {
 	$streams_array=db_get_stream_info($course,$asset);
 	if(!isset($streams_array) || $streams_array==null ) $streams_array = array();
     switch ($protocol) {
-        case 'udp':
-            // removes the stream from the streams files
-            if (isset($streams_array[$course][$asset][$module_type])) {
-                $server = $streams_array[$course][$asset][$module_type]['server'];
-                $status = $streams_array[$course][$asset][$module_type]['status'];
-                if ($status === 'streaming') {
-                    $pid = $streams_array[$course][$asset][$module_type]['pid'];
-                    $cmd = "ssh ezrenderer@$server 'kill $pid' &";
-                    exec($cmd);
-                }
-                $cmd = "ssh ezrenderer@$server 'rm -f /var/www/hls/video/demo*' &";
-                exec($cmd);
-                system("rm -rf /www2/htdocs/dev/ezplayer/videos/" . $streams_array[$course][$asset]['stream_name']);
-
-                ezmam_asset_delete($course . '-pub', $streams_array[$course][$asset]['stream_name']);
-                if ($streams_array[$course][$asset]['record_type'] == 'camslide') {
-                    $other_type = ($module_type == 'cam') ? 'slide' : 'cam';
-                    if (isset($streams_array[$course][$asset][$other_type])) {
-                        unset($streams_array[$course][$asset][$module_type]);
-                    } else {
-                        // other module has already been closed
-                        unset($streams_array[$course][$asset]);
-                    }
-                } else {
-                    unset($streams_array[$course][$asset]);
-                }
-                if (count($streams_array[$course]) == 0) {
-                    unset($streams_array[$course]);
-                }
-            } else {
-                // no information found for the stream
-                print 'error - no information found for the current stream';
-                return false;
-            }
-
-            print "OK";
-            break;
-
         case 'http':
             // removes the stream from the streams files
             if (isset($streams_array[$course][$asset])) {
@@ -746,7 +750,17 @@ function streaming_close() {
             break;
     }
 
+<<<<<<< HEAD
     // write_streams_file($streams_array);
+=======
+    $status = 'closed';
+    $res = db_stream_update_status($course,$asset,$module_type,$status);
+    if(!$res) {
+        $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));
+        return false;
+    }
+    return true;
+>>>>>>> refs/remotes/ulbpodcast/master
 }
 
 /**

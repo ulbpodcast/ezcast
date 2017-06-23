@@ -51,4 +51,8 @@ if($streaming_video_alternate_server_enable_redirect && !$streaming_video_altern
     trigger_error('Possible wrong configuration ($streaming_video_alternate_server_enable_redirect enabled while $streaming_video_alternate_server_enable_sync disabled)', E_USER_WARNING);
 }
 
+$m3u8_master_filename = "master.m3u8";
+$m3u8_external_master_filename = "external_master.m3u8";
+$m3u8_quality_filename = "live.m3u8";
+
 require_once("custom_error_handling.php");

@@ -96,10 +96,13 @@ $streaming_video_alternate_server_enable_redirect = false;
 // -- -- //
     
 $streaming_video_alternate_server_user = "user";
-$streaming_video_alternate_server_keyfile = "";
+$streaming_video_alternate_server_keyfile_private = "";
+$streaming_video_alternate_server_keyfile_pub = "";
+$streaming_video_alternate_server_keyfile_password = "";
 $streaming_video_alternate_server_address = "127.0.0.1";
 $streaming_video_alternate_server_document_root = "/var/www/stream/";
 $streaming_video_alternate_server_uri = "stream/";
+//!! The remote server must have crossdomain allowed
 
 // -- debugging -- //
 $debug_mode = false; //debug mode print recorder events and php errors to console

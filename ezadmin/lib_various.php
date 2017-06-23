@@ -417,12 +417,16 @@ function push_admins_to_recorders_ezmanager() {
 /**
  * Pushes users (htpasswd) and associations between users and courses (courselist.php)
  */
-function push_users_courses_to_recorder() {
+function push_users_courses_to_recorder(&$failed_cmd) {
     global $recorder_user;
     global $recorder_basedir;
     global $recorder_subdir;
+<<<<<<< HEAD
 	global $recorder_password_storage_enabled;										  
 
+=======
+    
+>>>>>>> refs/remotes/ulbpodcast/master
     if (!db_ready()) {
         $statements = statements_get();
         db_prepare($statements);
@@ -454,17 +458,30 @@ function push_users_courses_to_recorder() {
     file_put_contents('var/courselist.php', $courselist);
     
     // Upload all this on server
+    $return_var = 0;
+    $error = false;
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
             $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
+            if($return_var != 0) {
+                array_push($failed_cmd, $cmd);
+                $error = true;
+            }
             $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
+            if($return_var != 0) {
+                array_push($failed_cmd, $cmd);
+                $error = true;
+            }
+        } else {
+            array_push($failed_cmd, "Failed to ping ". $c['IP']);
+            $error = true;
         }
     }
 
-    return true;
+    return $error === false;
 }
 
 /**

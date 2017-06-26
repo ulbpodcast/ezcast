@@ -114,8 +114,16 @@ body{
     background-color:#ffffff;
 }
 
+#global.install {
+    width: 1024px;
+}
+
 #global_login {
     width:1024px;
+}
+
+#global.install .row {
+    padding: 5px;
 }
 
 

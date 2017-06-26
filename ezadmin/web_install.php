@@ -169,13 +169,24 @@ function view_login_form() {
 }
 
 function check_php_extensions() {
-    $php_extensions = array('ldap', 'curl', "PDO", "pdo_mysql", "mysql", "json"); // , "apc");
+    // extension name => php version
+    //      POSITIVE: extension must be here if php have this version or grreter
+    //      NEGATIVE: extension could miss if php have this version or greeter
+    $php_extensions = array(
+            'ldap' => '*', 
+            'curl' => '*', 
+            'PDO' => '*', 
+            'pdo_mysql' => '*', 
+            'mysql' => '-7', 
+            'json' => '*'); 
+            // , 'apc' => '*');
 
     $all_dependences = true;
 
     $display = "";
-    foreach ($php_extensions as $extension) {
-        if (extension_loaded($extension)) {
+    foreach ($php_extensions as $extension => $phpVersion) {
+        if (extension_loaded($extension) || ($phpVersion != '*' && 
+                version_compare(PHP_VERSION, $phpVersion, ($phpVersion > 0) ? "<=" : ">="))) {
             $display .= "<div class=\"green\">$extension extension loaded ...</div>";
             $all_dependences = $all_dependences && true;
         } else {

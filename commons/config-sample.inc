@@ -14,7 +14,7 @@ require_once('logger_server.php');
 $config_version = "20161003"; 
 
 // Name of the organization hosting EZcast or providing the service
-$organization_name = "© Your organization name";
+$organization_name = "© Your organization name"; //this will also affect choosen translations when generating templates
 $organization_url = "http://ulb.ac.be";
 $copyright = "Your copyright";
 $movie_keywords = 'Movie,keywords';

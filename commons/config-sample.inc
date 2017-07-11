@@ -92,6 +92,8 @@ $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
 $streaming_video_alternate_server_enable_sync = false;
 // redirect users to given adress (see next options). Requires $streaming_video_alternate_server_enable_sync
 $streaming_video_alternate_server_enable_redirect = false;
+// when redirect is enabled, redirect with X percent chance (default to 100%)
+$streaming_video_alternate_server_redirect_chance = 100; //%
 // -- -- //
     
 $streaming_video_alternate_server_user = "user";

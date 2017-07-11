@@ -264,7 +264,7 @@ function streaming_init() {
         $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create stream in database for course $course, asset $asset, classroom $classroom, module $module_type", array(__FUNCTION__));
         return false;
     }
-
+    
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed stream init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     return true;
 }
@@ -279,11 +279,11 @@ function create_m3u8_master($targetDir, $quality) {
     // module_quality can be high | low | highlow (according to the module configuration file on EZrecorder)
     if (strpos($quality, 'low') !== false) {
         $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=256000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'low/'. $m3u8_quality_filename . PHP_EOL; //same name but not actually the master file so... let's not use $m3u8_master_filename
+                'low/'. $m3u8_quality_filename . PHP_EOL;
     }
     if (strpos($quality, 'high') !== false) {
         $master_m3u8 .= '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1000000,CODECS="avc1.66.30,mp4a.40.2"' . PHP_EOL .
-                'high/'. $m3u8_quality_filename . PHP_EOL; //same name but not actually the master file so... let's not use $m3u8_master_filename
+                'high/'. $m3u8_quality_filename . PHP_EOL;
     }
 
     file_put_contents($targetDir . $m3u8_master_filename, $master_m3u8);
@@ -433,6 +433,7 @@ function streaming_content_add() {
             
             if($streaming_video_alternate_server_enable_sync)
                 ExternalStreamDaemon::unlock($asset_token);
+            
             
             print "OK";
             break;

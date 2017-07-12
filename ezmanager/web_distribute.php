@@ -372,7 +372,7 @@ function view_embed() {
     // And finally we display the player through a template!
     // If the user wanted to have the player in an iframe, we must change the code a little bit
     if (isset($input['iframe']) && $input['iframe'] == 'true') {
-    $origin = ($input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
+        $origin = ($input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
         echo '<iframe style="padding: 0; z-index: 100;" frameborder="0" scrolling="no" src="distribute.php?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' . $input['type'] . '&amp;quality=' . $input['quality'] . '&amp;token=' . $input['token'] . '&amp;width=' . $width . '&amp;height=' . $height . '&amp;origin=' . $origin . '" width="' . $width . '" height="' . $height . '"></iframe>';
     } else {
         template_repository_path($template_folder . 'en');
@@ -382,7 +382,7 @@ function view_embed() {
         // It's a Flash browser IIF
         // UA includes 'Firefox' OR UA includes 'MSIE' BUT UA does not include 'MSIE 9.'
         // TODO: prepare for future revisions of MSIE
-        if ((strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox') !== false) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 8.') !== false))) {
+        if (((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 8.') !== false))) {
             require_once template_getpath('embed_flash.php');
             require_once template_getpath('embed_footer.php');
             die;

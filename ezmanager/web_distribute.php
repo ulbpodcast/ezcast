@@ -79,7 +79,6 @@ switch ($input['action']) {
     case 'embed':
         view_embed();
         break;
-
     case 'player':
         view_player();
         break;
@@ -238,8 +237,7 @@ function view_media() {
     }
 
     // 2) Then we save some statistics on it
-
-        ezmam_media_viewcount_increment($input['album'], $input['asset'], $media_name, $input['origin']);
+    ezmam_media_viewcount_increment($input['album'], $input['asset'], $media_name, $input['origin']);
 
     // 3) And finally, we deliver it!
     $filename = suffix_remove($input['album']);
@@ -315,26 +313,30 @@ function view_embed() {
     // Sanity checks
     if (!isset($input['album']) || !isset($input['asset']) || !isset($input['quality']) || !isset($input['type']) || !isset($input['token'])) {
         echo "Usage: distribute.php?action=embed&amp;album=ALBUM&amp;asset=ASSET&amp;type=TYPE&amp;quality=QUALITY&amp;token=TOKEN<br/>";
-        echo "Optional parameters: width: Video width in pixels. height: video height in pixels. iframe: set to true if you want the return code to be an iframe instead of a full HTML page";
+        echo "Optional parameters: <br/>";
+        echo "    width: Video width in pixels.  <br/>";
+        echo "    height: video height in pixels.  <br/>";
+        echo "    iframe: set to true if you want the return code to be an iframe instead of a full HTML page <br/>";
+        echo "    time: set video at this time <br/<";
         die;
     }
 
     if (!ezmam_album_exists($input['album'])) {
         error_print_http(404);
         log_append('warning', 'view_embed: tried to access non-existant album ' . $input['album']);
-        die;
+        return;
     }
 
     if (!ezmam_asset_exists($input['album'], $input['asset'])) {
         error_print_http(404);
         log_append('warning', 'tried to access non-existant asset ' . $input['asset'] . ' of album ' . $input['album']);
-        die;
+        return;
     }
 
     if (!ezmam_album_token_check($input['album'], $input['token']) && !ezmam_asset_token_check($input['album'], $input['asset'], $input['token'])) {
         error_print_http(403);
         log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . $input['album'] . ' with invalid token ' . $input['token']);
-        die;
+        return;
     }
 
     // Then we retrieve the useful information, i.e. the media path and the dimensions
@@ -350,7 +352,7 @@ function view_embed() {
         // If no quality is available, we tell that to the user.
         if (!ezmam_media_exists($input['album'], $input['asset'], $media_name)) {
             error_print_http(404);
-            die;
+            return;
         }
     }
 
@@ -366,8 +368,14 @@ function view_embed() {
 
     $origin = ($input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
 
-    $media_url = urlencode(ezmam_media_geturl($input['album'], $input['asset'], $media_name) . '&origin=' . $origin);
+    $pre_media_url = ezmam_media_geturl($input['album'], $input['asset'], $media_name) . '&origin=' . $origin;
+    //handle &time=? argument
+    if(isset($input['time'])) {
+        $pre_media_url .= '#t=' . $input['time'];
+    }
+    $media_url = urlencode($pre_media_url);
     $player_url = $ezmanager_url . '/swf/bugatti.swf';
+    $video_id = $input['asset'];
 
     // And finally we display the player through a template!
     // If the user wanted to have the player in an iframe, we must change the code a little bit
@@ -380,12 +388,12 @@ function view_embed() {
 
         // We check if the user's browser is a flash-only browser or if it accepts HTML5
         // It's a Flash browser IIF
-        // UA includes 'Firefox' OR UA includes 'MSIE' BUT UA does not include 'MSIE 9.'
+        // UA includes 'MSIE' BUT UA does not include 'MSIE 9.'
         // TODO: prepare for future revisions of MSIE
         if (((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 8.') !== false))) {
             require_once template_getpath('embed_flash.php');
             require_once template_getpath('embed_footer.php');
-            die;
+            return;
         }
 
         // Otherwise, if it accepts HTML5, we display the HTML5 browser

@@ -99,7 +99,7 @@ function popup_embed_code() {
     $iframe_width = $metadata['width'] + 30;
     // Embed code
     $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
-    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height . '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed_link&album=' . $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' . $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() . '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';
+    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height . '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' . $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' . $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() . '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';
     $embed_code = htmlentities($embed_code_web, ENT_COMPAT, 'UTF-8');
 
     // Displaying the popup

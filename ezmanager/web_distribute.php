@@ -71,17 +71,24 @@ switch ($input['action']) {
         view_media();
         break;
 
-    // The user wants to view a media in streaming show him a still picture first
+    // The user wants to view a media in streaming. Send an iframe showing him a still picture first, which when clicked load the video.
     case 'embed_link':
         view_embed_link();
         break;
-    // The user wants to view a media in streaming
+    
+    // The user wants to view a media in streaming. Send an iframe containing the videos.
     case 'embed':
         view_embed();
         break;
-    case 'player':
-        view_player();
+    
+    case 'embed_player':
+        view_embed_player();
         break;
+    
+    default:
+        error_print_http(400);
+        break;
+    
 }
 
 //
@@ -124,54 +131,56 @@ function view_rss() {
     readfile($feed_handle);
 }
 
-function view_player() {
+function view_embed_player() {
+    /* Not working at all 
     global $input;
     global $template_folder;
     global $appname;
 
+    //todo: check for $input sanity
+    $asset = $input['asset'];
+    $album = $input['album'];
+    $token = $input['token'];
+    
     // 0) Sanity checks
-    if (!ezmam_album_exists($input['album'])) {
+    if (!ezmam_album_exists($album)) {
         error_print_http(404);
-        log_append('warning', 'view_player: tried to access non-existant album ' . $input['album']);
+        log_append('warning', 'view_player: tried to access non-existant album ' . $album);
         exit;
     }
-
-    if (!ezmam_album_token_check($input['album'], $input['token'])) {
+    
+    if (!ezmam_album_token_check($input['album'], $token)) {
         error_print_http(403);
         log_append('warning', 'view_player: tried to acces album ' . $input['album'] . ' with invalid token ' . $input['token']);
         die;
     }
+    
 
-    // 1) Retrieving all assets' metadata
-    $asset_list = ezmam_asset_list_metadata($input['album']);
-
-    // 2) Add links to each asset
-    foreach ($asset_list as &$asset) {
-        $high_cam_link = '';
-        $low_cam_link = '';
-        $high_slide_link = '';
-        $low_slide_link = '';
-
-        if ($asset['metadata']['record_type'] == 'camslide' || $asset['metadata']['record_type'] == 'cam') {
-            $high_cam_link = get_link_to_media($input['album'], $asset['name'], 'high_cam') . "&origin=" . $appname ;
-            $low_cam_link = get_link_to_media($input['album'], $asset['name'], 'low_cam') . "&origin=" . $appname ;
-        }
-
-        if ($asset['metadata']['record_type'] == 'camslide' || $asset['metadata']['record_type'] == 'slide') {
-            $high_slide_link = get_link_to_media($input['album'], $asset['name'], 'high_slide') . "&origin=" . $appname;
-            $low_slide_link = get_link_to_media($input['album'], $asset['name'], 'low_slide') . "&origin=" . $appname;
-        }
-
-        $asset['links'] = array(
-            'high_cam' => $high_cam_link,
-            'low_cam' => $low_cam_link,
-            'high_slide' => $high_slide_link,
-            'low_slide' => $low_slide_link);
+    error_reporting(E_ALL); 
+    ini_set("display_errors", 1);
+    
+    $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+    $media_metadata = ezmam_media_list_metadata_assoc($album, $asset);
+    
+     // prepares the different sources for the video HTML5 tag
+    if ($asset_metadata['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {
+        $asset_metadata['high_cam_src'] = get_link_to_media($album, $asset, 'high_cam');
+        $asset_metadata['low_cam_src'] = get_link_to_media($album, $asset, 'low_cam');
+        // #t=$timecode stands for W3C temporal Media Fragments URI (working in Firefox and Chrome)
+        $video_src = $asset_metadata['low_cam_src'] . '&origin=' . $appname . "#t=" . $timecode;
     }
+
+    if ($asset_metadata['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') {
+        $asset_metadata['high_slide_src'] = get_link_to_media($album, $asset, 'high_slide');
+        $asset_metadata['low_slide_src'] = get_link_to_media($album, $asset, 'low_slide');
+        if ($asset_metadata['record_type'] == 'slide') {
+            $video_src = $asset_metadata['low_slide_src'] . '&origin=' . $appname . "#t=" . $timecode;
+        }
+    }
+    
     template_repository_path($template_folder . get_lang());
-    require_once template_getpath('player_header.php');
-    require_once template_getpath('player_content.php');
-    require_once template_getpath('player_footer.php');
+    require_once template_getpath('embed_player.php');
+     */
 }
 
 function view_media() {

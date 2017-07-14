@@ -35,21 +35,8 @@ You should not have to use this file on your own; if you do, make sure the varia
     ®embed_code_message® <br/><br/>
     <strong><a href="<?php echo $link_target; ?>" target="_blank"><?php echo $embed_code; ?></a></strong><br/><br/>
     
-    <!-- Copy to clipboard button 
-    All browsers use flash + javascript except Internet explorer which has an access to the clipboard -->
-    <!--[if !IE]><!-->
     <div id="wrapper_clip" style="position:relative">
         <span id="copy_button" class="Bouton"><a><span id="copy_button_text">®Copy_to_clipboard®</span></a></span>
-        <div id="zero_clipboard" onmouseout="getElementById('copy_button_text').style.color='#797676'" onmouseover="getElementById('copy_button_text').style.color='#004B93'" style="position:absolute; left:300px; top:0px; width:200px; height:30px; z-index:99"></div>
+        <div class="clipboard" id="zero_clipboard" data-clipboard-text="<?php echo $embed_code; ?>" onmouseout="getElementById('copy_button_text').style.color='#797676'" onmouseover="getElementById('copy_button_text').style.color='#004B93'" style="position:absolute; left:300px; top:0px; width:200px; height:30px; z-index:99"></div>
     </div>
-    <!--<![endif]-->  
-    
-    <!--[if IE]>
-    <span id="copy_button" class="Bouton"><a href="#" onclick="window.clipboardData.setData('Text','<?php echo $embed_code; ?>');"><span>®Copy_to_clipboard®</span></a></span>
-    <![endif]-->
 </div>
-
-
-<script>
-    copyToClipboard("#zero_clipboard", '<?php echo $embed_code_web ?>');
-</script>

@@ -1,36 +1,4 @@
-<?php 
-/** EZCAST EZmanager 
- * 
- *
- * Copyright (C) 2016 Université libre de Bruxelles
- *
- * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 		    Arnaud Wijns <awijns@ulb.ac.be>
- *                   Antoine Dewilde
- * UI Design by Julien Di Pietrantonio
- *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
- * Main template.
- * This template is the main frame, the content divs are dynamically filled as the user clicks.
- * 
- * WARNING: Please call template_repository_path() BEFORE including this template
- * 
-*/
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,9 +16,9 @@
         <script type="text/javascript" src="js/hover.js"></script>
         <script type="text/javascript" src="js/httpRequest.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery-1.7.2.min.js"></script>
-        <script type="text/javascript" src="js/ZeroClipboard.js"></script>
         <script src="js/jquery.colorbox.js"></script>
         <script type="text/javascript" src="js/upload.js"></script>
+        <script type="text/javascript" src="js/clipboard.js"></script>
         
         <script type="text/javascript" src="jQuery-DateTimePicker/jquery.simple-dtpicker.js"></script>
         <link type="text/css" href="jQuery-DateTimePicker/jquery.simple-dtpicker.css" rel="stylesheet" />
@@ -59,26 +27,7 @@
              * Retrieves album header and displays it in div_album_header
              */
             var current_album = '<?php if (isset($_SESSION['podman_album'])) echo $_SESSION['podman_album']; ?>';
-            ZeroClipboard.setMoviePath('./swf/ZeroClipboard10.swf');
-
-
-            // Links an instance of clipboard to its position in the rss pop-up
-            function copyToClipboard(album, tocopy) {
-                var clip = new ZeroClipboard.Client();
-                clip.setText('');
-                clip.addEventListener('mouseDown', function () {
-                    // window.alert("copy ok");        
-                    clip.setText(tocopy);
-                });
-                clip.addEventListener('onComplete', function () {
-                    alert("®Content_in_clipboard®");
-                });
-
-                // Set the text to copy in the clipboard
-                clip.setText(tocopy);
-                $(album).html(clip.getHTML(200, 30));
-            }
-
+            
             // Render a styled file input in the submit form
             function initFileUploads() {
                 var W3CDOM = (document.createElement && document.getElementsByTagName
@@ -257,4 +206,14 @@ echo $title_max_length;
             </div>
         </div><!-- Container fin -->
     </body>
+    <!-- scripts that must be loaded after document -->
+    <script type="text/javascript">
+        var clipboard = new Clipboard('.clipboard');
+
+        clipboard.on('success', function(e) {
+            alert("®Content_in_clipboard®");
+            //todo: proper tooltip instead (or green coloring)
+        });
+        
+    </script>
 </html>

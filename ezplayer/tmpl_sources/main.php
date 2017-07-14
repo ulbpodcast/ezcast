@@ -60,6 +60,7 @@ if ($trace_on) {
         <script type="text/javascript" src="js/lib_threads.js"></script>
         <script type="text/javascript" src="js/lib_bookmarks.js"></script>
         <script type="text/javascript" src="js/lib_chat.js"></script>
+        <script type="text/javascript" src="js/clipboard.js"></script>
 
         <script>
             var current_album;
@@ -73,7 +74,7 @@ if ($trace_on) {
             var display_threads_notif = false;
             var thread_to_display = null;
             var ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
-
+            
             $(document).ready(function () {
 
                 $('#assets_button, .bookmarks_button, .toc_button').localScroll({
@@ -808,7 +809,7 @@ if ($trace_on) {
                 </script>           
             <?php } ?>
             <!-- FOOTER - INFOS COPYRIGHT -->
-<?php include_once template_getpath('div_main_footer.php'); ?>
+            <?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
         </div><!-- Container fin -->
 
@@ -818,4 +819,13 @@ if ($trace_on) {
         <div id="div_popup" class="reveal-modal"></div>
 
     </body>
+    <!-- scripts that must be loaded after document -->
+    <script>
+         var clipboard = new Clipboard('.clipboard');
+
+        clipboard.on('success', function(e) {
+            alert("®Content_in_clipboard®");
+            //todo: proper tooltip instead
+        });
+    </script>
 </html>

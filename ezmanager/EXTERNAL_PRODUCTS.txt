@@ -24,8 +24,5 @@ Each product remains the entire property of its original author and keeps its or
 * EASING EQUATION under the BSD license, copyright Robert Penner <http://gsgd.co.uk/sandbox/jquery/easing/>
 --> ./htdocs/js/jQuery/function.js
 
-* ZEROCLIPBOARD v1.0.7 under the LGPL license, copyright Joseph Huckaby 
---> ./htdocs/js/ZeroClipboard.js
-
 * SWFOBJECT under the MIT license, copyright <http://code.google.com/p/swfobject/>  
 --> ./htdocs/js/swfobject.js

@@ -15,7 +15,7 @@ $ezadmin_basedir = $basedir . '/ezadmin/';
 
 if($debug_mode) {
     error_reporting(E_ALL); 
- //   ini_set("display_errors", 1);
+    ini_set("display_errors", 1);
 }
 
 if($config_version != "20161003")

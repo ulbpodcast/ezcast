@@ -130,8 +130,6 @@ window.addEventListener("keyup", function (e) {
                     if (is_lecturer == true)
                         player_bookmark_form_toggle('official');
                     break;
-                case 8:  // 'backspace' TODO wut ?
-                    break;
             }
             
         } else if (e.keyCode == 27) {
@@ -297,7 +295,7 @@ function video_event_seeked() {
     } else if (!mouseDown) {
         time = Math.round(this.currentTime);
         time_code_update();
-        seeked = true; // TODO check ici qu'il ne faut pas remettre "trace_pause"
+        seeked = true;
     }
 }
 

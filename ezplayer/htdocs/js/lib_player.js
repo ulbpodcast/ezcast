@@ -208,7 +208,7 @@ function player_prepare(currentQuality, currentType, startTime) {
     };
 
     for (var i = 0; i < max; i++) {
-        addListenerForVideo(videos[i], startTime);
+        video_listener_add(videos[i], startTime);
     }
 
     // Browser fullscreen event
@@ -217,7 +217,7 @@ function player_prepare(currentQuality, currentType, startTime) {
         var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
         var fullscreen = state ? true : false;
         var action = fullscreen ? 'browser_fullscreen_enter' : 'browser_fullscreen_exit';
-        videoTrace('4', action, false);
+        video_trace('4', action, false);
     });
 
     // if camslide and current type is slide, display the slide video player
@@ -228,10 +228,10 @@ function player_prepare(currentQuality, currentType, startTime) {
     }
 }
 
-function addListenerForVideo(video, startTime) {
+function video_listener_add(video, startTime) {
     
     video.addEventListener("seeked", function () {
-        onSeeked();
+        video_event_seeked();
     }, false);
     
     // when the video is being played
@@ -239,32 +239,32 @@ function addListenerForVideo(video, startTime) {
     // --> loads the thread notifications to be displayed over the player
     video.addEventListener("timeupdate", function () {
         var currentTime = Math.round(this.currentTime);
-        onTimeUpdate(currentTime);
+        video_event_update_time(currentTime);
     });
     
     // when the video is played
     // --> hides the shortcuts panel
     // --> saves trace
     video.addEventListener('play', function () {
-        onVideoPlay();
+        video_event_play();
     }, false);
     
     // when the video is played
     // --> shows the shortcuts panel
     // --> saves trace
     video.addEventListener('pause', function () {
-        onVideoPause();        
+        video_event_pause();        
     }, false);
     
     video.addEventListener("error", function (e) {
-        onVideoError();
+        video_event_error();
     }, true);
     
     // When data are loaded
     // --> Sets a variable that states the video is loaded (for iOS and Android)
     // --> Saves the duration of the video
     video.addEventListener('loadeddata', function () {
-        onLoadedData(this);
+        video_event_data_loaded(this);
     }, false);
     
     // If accessed from bookmark / thread
@@ -289,25 +289,25 @@ function addListenerForVideo(video, startTime) {
  * 
  * @returns {undefined}
  */
-function onSeeked() {
+function video_event_seeked() {
     // checks if the mouse is up. If not, the user is still seeking so 
     // we don't need to save this trace
     if(trace_pause > 0) {
         --trace_pause;
     } else if (!mouseDown) {
         time = Math.round(this.currentTime);
-        updateTimeCode();
+        time_code_update();
         seeked = true; // TODO check ici qu'il ne faut pas remettre "trace_pause"
     }
 }
 
-function onTimeUpdate(currentTime) {
+function video_event_update_time(currentTime) {
     if(currentTime == time)
         return;
 
     time = currentTime;
     
-    displayThreadsNotif();
+    threads_notif_display();
 
     // -- Log "currently playing" action
     let timestamp = Math.floor(Date.now() / 1000);
@@ -330,7 +330,7 @@ function onTimeUpdate(currentTime) {
     // --
 }
 
-function onVideoPlay() {
+function video_event_play() {
     if(seeked) {
         seeked = false;
         //console.log("video_seeked");
@@ -346,20 +346,20 @@ function onVideoPlay() {
         $(".shortcuts_tab").css('display', 'none');
     
     if (trace_pause <= 0) {
-        videoTrace('4', 'video_play');
+        video_trace('4', 'video_play');
     } else {
         --trace_pause;
     }
 }
 
-function onVideoPause() {
+function video_event_pause() {
     paused = ($('video')[1]) ? $('video')[1].paused : true;
     
     if (($('video')[0].paused && paused) || shortcuts)
         $(".shortcuts_tab").css('display', 'block');
 
     if (trace_pause <= 0) {
-        videoTrace('4', 'video_pause');
+        video_trace('4', 'video_pause');
     } else {
         --trace_pause;
     }
@@ -370,13 +370,13 @@ function onVideoPause() {
 // 2) pause the video
 // 3) wait for ~5 min
 // 4) play the video >> ERR_CONTENT_LENGTH_MISMATCH
-function onVideoError() {
+function video_event_error() {
     this.load();
     this.currentTime = time;
     this.play();
 }
 
-function onLoadedData(event) {
+function video_event_data_loaded(event) {
     duration = Math.round(event.duration);
     (event.getAttribute('id') == "main_video") ? cam_loaded = true : slide_loaded = true;
     document.getElementById("load_warn").style.display = 'none';
@@ -384,7 +384,7 @@ function onLoadedData(event) {
 
 
 
-function displayThreadsNotif() {
+function threads_notif_display() {
     if (display_threads_notif) {
         var html_value = "<ul>";
         var i = 0;
@@ -660,7 +660,7 @@ function player_video_link() {
     document.getElementById('main_video').pause();
     if (camslide)
         document.getElementById('secondary_video').pause();
-    videoTrace('4', 'link_open');
+    video_trace('4', 'link_open');
 }
 
 // plays/pauses the current video
@@ -691,7 +691,7 @@ function player_video_navigate(forwardRewind) {
 
     video.currentTime = (forwardRewind == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
     paused ? video.pause() : video.play();
-    videoTrace('4', 'video_' + forwardRewind);
+    video_trace('4', 'video_' + forwardRewind);
 }
 
 // increase/decrease volume
@@ -709,7 +709,7 @@ function player_video_volume_set(upDown) {
         document.getElementById('secondary_video').volume = volume;
     }
     video.volume = volume;
-    videoTrace('4', 'video_volume_' + upDown);
+    video_trace('4', 'video_volume_' + upDown);
 
 }
 
@@ -744,7 +744,7 @@ function player_bookmark_form_show(source) {
     }
 
     video.pause();
-    updateTimeCode();
+    time_code_update();
     document.getElementById('bookmark_type').value = type;
     // sets the form style according to the source (official | personal bookmarks)
     if (source == 'official') {
@@ -799,14 +799,14 @@ function player_bookmark_form_toggle(source) {
     from_shortcut = false;
     if (bookmark_form != "") {
         
-        videoTrace('4', 'bookmark_form_hide');
+        video_trace('4', 'bookmark_form_hide');
         if(bookmark_form == source) {
             player_bookmark_form_hide(false);
             return;
         }
     }
     
-    videoTrace('4', 'bookmark_form_show');
+    video_trace('4', 'bookmark_form_show');
     player_bookmark_form_show(source);
     $("#bookmark_title").focus();   
 }
@@ -888,14 +888,14 @@ function player_thread_form_toggle() {
 
     from_shortcut = false;
     if (thread_form) {
-        videoTrace('4', 'thread_form_hide');
+        video_trace('4', 'thread_form_hide');
         player_thread_form_hide(false);
         
     } else if (bookmark_form != "") {
         player_bookmark_form_hide(false);
         
     } else {
-        videoTrace('4', 'thread_form_show');
+        video_trace('4', 'thread_form_show');
         player_thread_form_show();
         $("#thread_title").focus();
     }
@@ -970,7 +970,7 @@ function player_video_fullscreen(on) {
     } else {
         $('.fullscreen-button').removeClass("active");
     }
-    videoTrace('4', action);
+    video_trace('4', action);
     player_resize();
 }
 
@@ -1111,7 +1111,7 @@ function player_bookmarks_panel_toggle() {
     } else {
         player_bookmarks_panel_show();
     }
-    videoTrace('3', action);
+    video_trace('3', action);
 }
 
 // modifies the css values of the bookmarks panel for fullscreen mode
@@ -1157,10 +1157,10 @@ function player_shortcuts_toggle() {
             $('#video_shortcuts').css('height', '10%');
     });
     action = (shortcuts) ? 'show' : 'hide';
-    videoTrace('4', 'shortcuts_' + action);
+    video_trace('4', 'shortcuts_' + action);
 }
 
-function videoTrace(lvl, action, addOrigin) {
+function video_trace(lvl, action, addOrigin) {
     addOrigin = typeof addOrigin !== 'undefined' ? addOrigin : true;
     if(addOrigin) {
         origin = get_origin();
@@ -1175,7 +1175,7 @@ function videoTrace(lvl, action, addOrigin) {
 /**
  * Update the time code of bookmark, thread, ... when the time is change
  */
-function updateTimeCode() {
+function time_code_update() {
     document.getElementById('bookmark_timecode').value = time;
     document.getElementById('thread_timecode').value = time;
 }

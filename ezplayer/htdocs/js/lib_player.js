@@ -33,7 +33,7 @@ var time = 0;   // current timecode of the video
 var duration = 0; // duration of the video
 var from_shortcut = false; // determines if the action has been done from keyboard shortcut
 var trace_pause = 0; // pauses the traces on the server for a specific duration
-var mouseDown = 0; // 0 when mouseUp / 1 when mouseDown - Used for the video seeked event
+var mouse_down = 0; // 0 when mouseUp / 1 when mouseDown - Used for the video seeked event
 var panel_width = 231;
 var seeked = false;
 
@@ -178,12 +178,12 @@ $(window).bind('resize', function (e) {
 /**
  * Adds all the listeners on the videos to handle various events
  * This function should be called immediately after the video tags have been created
- * @param {type} currentQuality
- * @param {type} currentType
- * @param {type} startTime
+ * @param {type} current_quality
+ * @param {type} current_type
+ * @param {type} start_time
  * @returns {undefined}
  */
-function player_prepare(currentQuality, currentType, startTime) {
+function player_prepare(current_quality, current_type, start_time) {
     // Notification panel starts hidden
     $('#video_notifications').hide();
 
@@ -194,19 +194,19 @@ function player_prepare(currentQuality, currentType, startTime) {
     // determines whether it's a camslide or not
     camslide = (max === 2);
     // set the current type being played
-    type = (currentType !== '') ? currentType : 'cam';
-    quality = (currentQuality !== '') ? currentQuality : 'low';
+    type = (current_type !== '') ? current_type : 'cam';
+    quality = (current_quality !== '') ? current_quality : 'low';
 
     document.getElementById('video_player').onmousedown = function () {
         previous_time = time;
-        ++mouseDown;
+        ++mouse_down;
     };
     document.getElementById('video_player').onmouseup = function () {
-        --mouseDown;
+        --mouse_down;
     };
 
     for (var i = 0; i < max; i++) {
-        video_listener_add(videos[i], startTime);
+        video_listener_add(videos[i], start_time);
     }
 
     // Browser fullscreen event
@@ -226,7 +226,7 @@ function player_prepare(currentQuality, currentType, startTime) {
     }
 }
 
-function video_listener_add(video, startTime) {
+function video_listener_add(video, start_time) {
     
     video.addEventListener("seeked", function () {
         video_event_seeked();
@@ -236,8 +236,8 @@ function video_listener_add(video, startTime) {
     // --> saves the current time
     // --> loads the thread notifications to be displayed over the player
     video.addEventListener("timeupdate", function () {
-        var currentTime = Math.round(this.currentTime);
-        video_event_update_time(currentTime);
+        var current_time = Math.round(this.currentTime);
+        video_event_update_time(current_time);
     });
     
     // when the video is played
@@ -266,8 +266,8 @@ function video_listener_add(video, startTime) {
     }, false);
     
     // If accessed from bookmark / thread
-    if (startTime != 0) {
-        time = startTime; // Update time
+    if (start_time != 0) {
+        time = start_time; // Update time
         // And add event when metaData is load to move at the good time
         video.addEventListener('loadedmetadata', function () {
             // Seek the video the the given start time
@@ -292,18 +292,18 @@ function video_event_seeked() {
     // we don't need to save this trace
     if(trace_pause > 0) {
         --trace_pause;
-    } else if (!mouseDown) {
+    } else if (!mouse_down) {
         time = Math.round(this.currentTime);
         time_code_update();
         seeked = true;
     }
 }
 
-function video_event_update_time(currentTime) {
-    if(currentTime == time)
+function video_event_update_time(current_time) {
+    if(current_time == time)
         return;
 
-    time = currentTime;
+    time = current_time;
     
     threads_notif_display();
 
@@ -388,7 +388,7 @@ function threads_notif_display() {
         var i = 0;
         var timecode = time - notif_display_delay;
 
-        if ((time % 3) == 0 && !mouseDown) {
+        if ((time % 3) == 0 && !mouse_down) {
             player_range_count_update(time, type);
         }
         // loads the thread notifications
@@ -460,17 +460,17 @@ function player_video_type_set(media_type) {
     if (/webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
         ++trace_pause;
         to_hide.pause();
-        var loadWarnDisplay;
+        var load_warn_display;
         if ((media_type == 'cam' && cam_loaded) || (media_type == 'slide' && slide_loaded)) {
             ++trace_pause;
             to_show.currentTime = time;
             ++trace_pause;
             to_show.play();
-            loadWarnDisplay = 'none';
+            load_warn_display = 'none';
         } else {
-            loadWarnDisplay = 'block';
+            load_warn_display = 'block';
         }
-        document.getElementById("load_warn").style.display = loadWarnDisplay;
+        document.getElementById("load_warn").style.display = load_warn_display;
         
     // specific case for Android
     } else if (/Android/i.test(navigator.userAgent)) {
@@ -522,7 +522,7 @@ function player_video_quality_set(media_quality) {
 
     var source = document.getElementById('main_video_source');
     var paused = video.paused;
-    var oldCurrentTime = video.currentTime;
+    var old_current_time = video.currentTime;
     // doesn't work in Safari 5
     // source.setAttribute('src', source.getAttribute(media + '_src')); 
 
@@ -536,7 +536,7 @@ function player_video_quality_set(media_quality) {
         video.load();
     }
     video.addEventListener('loadedmetadata', function () {
-        this.currentTime = oldCurrentTime;
+        this.currentTime = old_current_time;
     }, false);
     ++trace_pause;
     paused ? video.pause() : video.play();
@@ -583,40 +583,40 @@ function player_video_playbackspeed_set(rate) {
     origin = get_origin();
 
     var video = document.getElementById('main_video');
-    var playbackSpeed = video.playbackRate;
+    var playback_speed = video.playbackRate;
     if (rate == 'up') {
-        switch (playbackSpeed) {
+        switch (playback_speed) {
             case 0.5 :
-                playbackSpeed = 1.0;
+                playback_speed = 1.0;
                 break;
             case 2 :
                 return;
             default:
-                playbackSpeed += 0.2;
+                playback_speed += 0.2;
                 break;
         }
     } else {
-        switch (playbackSpeed) {
+        switch (playback_speed) {
             case 0.5 :
                 return;
             case 1 :
-                playbackSpeed = 0.5;
+                playback_speed = 0.5;
                 break;
             default:
-                playbackSpeed -= 0.2;
+                playback_speed -= 0.2;
                 break;
         }
     }
-    playbackSpeed = playbackSpeed.toFixed(1);
+    playback_speed = playback_speed.toFixed(1);
 
     server_trace(new Array('4', 'playback_speed_' + rate, current_album, current_asset, 
-            duration, time, type, quality, playbackSpeed, origin));
+            duration, time, type, quality, playback_speed, origin));
 
     if (camslide) {
-        document.getElementById('secondary_video').playbackRate = playbackSpeed;
+        document.getElementById('secondary_video').playbackRate = playback_speed;
     }
-    video.playbackRate = playbackSpeed;
-    document.getElementById('toggleRate').innerHTML = (playbackSpeed + 'x');
+    video.playbackRate = playback_speed;
+    document.getElementById('toggleRate').innerHTML = (playback_speed + 'x');
 }
 /**
  * Click on the playback speed button
@@ -625,29 +625,29 @@ function player_video_playbackspeed_set(rate) {
 function player_playbackspeed_toggle() {
     origin = get_origin();
     var video = document.getElementById('main_video');
-    var playbackSpeed = video.playbackRate;
+    var playback_speed = video.playbackRate;
     var rate;
 
-    if (playbackSpeed == 0.5) {
-        playbackSpeed = 1.0;
+    if (playback_speed == 0.5) {
+        playback_speed = 1.0;
         rate = 'up';
-    } else if (playbackSpeed < 2) {
-        playbackSpeed += 0.2;
+    } else if (playback_speed < 2) {
+        playback_speed += 0.2;
         rate = 'up';
     } else {
-        playbackSpeed = 0.5;
+        playback_speed = 0.5;
         rate = 'down';
     }
-    playbackSpeed = playbackSpeed.toFixed(1);
+    playback_speed = playback_speed.toFixed(1);
     server_trace(new Array('4', 'playback_speed_' + rate, current_album, current_asset, 
-            duration, time, type, quality, playbackSpeed, origin));
+            duration, time, type, quality, playback_speed, origin));
 
     if (camslide) {
-        document.getElementById('secondary_video').playbackRate = playbackSpeed;
+        document.getElementById('secondary_video').playbackRate = playback_speed;
     }
-    video.playbackRate = playbackSpeed;
-    document.getElementById('toggleRate').innerHTML = (playbackSpeed + 'x');
-    if (playbackSpeed != 1) {
+    video.playbackRate = playback_speed;
+    document.getElementById('toggleRate').innerHTML = (playback_speed + 'x');
+    if (playback_speed != 1) {
         document.getElementById('toggleRate').classList.add('active');
     } else {
         document.getElementById('toggleRate').classList.remove('active');
@@ -678,7 +678,7 @@ function player_video_play_toggle() {
 }
 
 // goes 15 seconds back/forward in the video
-function player_video_navigate(forwardRewind) {
+function player_video_navigate(forward_rewind) {
     origin = get_origin();
     if (camslide && type == 'slide') {
         var video = document.getElementById('secondary_video');
@@ -687,19 +687,19 @@ function player_video_navigate(forwardRewind) {
     }
     var paused = video.paused;
 
-    video.currentTime = (forwardRewind == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
+    video.currentTime = (forward_rewind == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
     paused ? video.pause() : video.play();
-    video_trace('4', 'video_' + forwardRewind);
+    video_trace('4', 'video_' + forward_rewind);
 }
 
 // increase/decrease volume
-function player_video_volume_set(upDown) {
+function player_video_volume_set(up_down) {
     origin = get_origin();
     var video = document.getElementById('main_video');
     var volume = video.volume;
-    if (volume < 1 && upDown == 'up') {
+    if (volume < 1 && up_down == 'up') {
         volume = volume + 0.05;
-    } else if (volume > 0 && upDown == 'down') {
+    } else if (volume > 0 && up_down == 'down') {
         volume = volume - 0.05;
     }
 
@@ -707,7 +707,7 @@ function player_video_volume_set(upDown) {
         document.getElementById('secondary_video').volume = volume;
     }
     video.volume = volume;
-    video_trace('4', 'video_volume_' + upDown);
+    video_trace('4', 'video_volume_' + up_down);
 
 }
 
@@ -1158,9 +1158,9 @@ function player_shortcuts_toggle() {
     video_trace('4', 'shortcuts_' + action);
 }
 
-function video_trace(lvl, action, addOrigin) {
-    addOrigin = typeof addOrigin !== 'undefined' ? addOrigin : true;
-    if(addOrigin) {
+function video_trace(lvl, action, add_origin) {
+    add_origin = typeof add_origin !== 'undefined' ? add_origin : true;
+    if(add_origin) {
         origin = get_origin();
         server_trace(new Array(lvl, action, current_album, current_asset, duration, 
                 time, type, quality, origin));

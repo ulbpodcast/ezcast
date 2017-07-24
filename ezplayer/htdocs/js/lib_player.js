@@ -960,7 +960,7 @@ function player_streaming_fullscreen(on) {
 
 // Enters/exits fullscreen
 function player_video_fullscreen(on) {
-    fullscreen = (on == 'true'); // check that 'on' is only a boolean
+    fullscreen = (on == true); // check that 'on' is only a boolean
     var action = fullscreen ? 'video_fullscreen_enter' : 'video_fullscreen_exit';
     
     if (fullscreen) {

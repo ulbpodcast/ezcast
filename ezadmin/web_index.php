@@ -10,7 +10,7 @@
 // Check whether the product has been installed
 //
 if (!file_exists('config.inc')) {
-    header('Location: install.php');
+    header('Location: install.php' . (isset($_GET['lang']) ? '?lang='. $_GET['lang'] : ''));
     return;
 }
 

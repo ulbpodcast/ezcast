@@ -55,9 +55,14 @@ echo $ezadmin_url;
                                 <label>®Password®:&nbsp;&nbsp;</label><input type="password" name="passwd" autocapitalize="off" autocorrect="off" tabindex="2" />
                             </div>
 
-                            <select name="lang" style="width: 240px; padding: 0px; margin-bottom: 15px;" tabindex="3">
-                                <option value="en">English</option>
-                                <option value="fr" selected="selected">Français</option>
+                            <select name="lang" style="width: 240px; padding: 0px; margin-bottom: 15px;" tabindex="3"
+                                    onchange="document.location.href = './index.php?lang='+this.value;">
+                                <option value="en" <?php if(array_key_exists('lang', $input) && $input['lang'] == 'en') { echo 'selected="selected"'; } ?>>
+                                    English
+                                </option>
+                                <option value="fr" <?php if(!array_key_exists('lang', $input) || $input['lang'] == 'fr') { echo 'selected="selected"'; } ?>>
+                                    Français
+                                </option>
                             </select>
                             <br/>
                             <a style="font-size: 0.8em;" href="javascript:unsafe_connection();" title="®Unsafe_connection®">®Unencrypted_connection®</a>

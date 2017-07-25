@@ -30,7 +30,7 @@ if(isset($pagination)) {
         ?>
         <tr class="line_classroom <?php echo $currClass['enabled'] ? 'enable' : ''; ?>" 
             id="<?php echo preg_replace('/[\s.]+/', '', $currClass['room_ID']); ?>">
-            <td style="text-align: center;" class="status"> <?php echo $currClass['enabled'] ? '?' : ''; ?></td>
+            <td style="text-align: center;" class="status"> <?php echo $currClass['enabled'] ? "<img style='height: 16px;' src='img/loading_transparent.gif'/>" : ''; ?></td>
             <td class="room_id">
                 <a class="view" href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4">
                     <?php echo $currClass['room_ID']; ?>
@@ -253,7 +253,7 @@ $(function() {
 <script async>
 $(function() {
     function classroom_online(classroom, data) {
-        $('#' + classroom + ' .status').text("");
+        $('#' + classroom + ' .status').html('<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>');
         
         if(data.recording && data.recording == '1') {
             $('#' + classroom + '_recording').show();
@@ -288,7 +288,6 @@ $(function() {
    
     function updateStatus(classroom) {
         $.ajax("index.php?action=get_classrooms_status", {
-            async: true,
             type: "post",
             data: {
                 classroomId: classroom

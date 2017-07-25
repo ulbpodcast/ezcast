@@ -1,4 +1,4 @@
-# How to install EZcast ?
+# How to install EZcast ? 
 
 ## Requirements
 

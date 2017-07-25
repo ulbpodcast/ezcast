@@ -77,7 +77,7 @@ echo "You can skip the tests if you want.";
 echo -e "${R}Warning ! Skipping this verification may have critical repercussions${N}";
 echo -e "${R}          on the use of EZcast after its installation.${N}";
 echo " ";
-read -p "Would you like to verify your server ? [y/n]: " choice;
+read -p "Would you like to verify your server ? [Y/n]: " choice;
 if [ "$choice" != "n" ];
 then
     check=1;
@@ -187,7 +187,7 @@ then
     echo "*************************************************";
     echo "Verification of extensions for PHP ...";
     echo "*************************************************";
-    read -p "Do you want to check PHP extensions ? [y/n]: " choice;
+    read -p "Do you want to check PHP extensions ? [Y/n]: " choice;
     if [ "$choice" != "n" ]; then
         # Verification for CURL
         check=0;

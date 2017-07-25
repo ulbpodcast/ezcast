@@ -65,10 +65,12 @@
         <script src="bootstrap/js/bootstrap-dropdown.js"></script>
     </head>
 
-    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && $GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
+    <body link="#000088" vlink="#000044" alink="#0000ff">
         <div class="container_ezplayer">
+            <!-- Before header -->
             <?php include_once template_getpath('div_header.php'); ?>
-            <div id="global">
+            <!-- after header -->
+            <div id="global" class="install">
             <h1>®install_title®</h1>
             <?php foreach ($errors as $e) {
                 ?>
@@ -86,7 +88,7 @@
 
                         <div class="panel-body well" style="margin-bottom:0;">
                             <div class="row">
-                                    <div class="col-md-6" style='width: 75%;'>
+                                    <div class="col-md-12">
 
                                     <div class="control-group">
                                         <label class="control-label">®settings_application_url®</label>

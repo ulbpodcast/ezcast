@@ -28,17 +28,9 @@ if(isset($pagination)) {
     <?php 
         foreach($listClassrooms as $currClass) {
         ?>
-        <tr>
-            <td style="text-align: center;">
-                <?php 
-                if((!array_key_exists('online', $currClass) || !$currClass['online']) && 
-                        $currClass['enabled']) {
-                    echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
-                }
-                //TODO: move this in javascript, this heavily slow down page loading if some recorders are offline
-                //exec('ping -c 1 -W 1 '.$currClass['IP'], $output, $return_val); if($return_val != 0) 
-                //echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>'; ?>
-            </td>
+        <tr class="line_classroom <?php echo $currClass['enabled'] ? 'enable' : ''; ?>" 
+            id="<?php echo preg_replace('/[\s.]+/', '', $currClass['room_ID']); ?>">
+            <td style="text-align: center;" class="status"> <?php echo $currClass['enabled'] ? "<img style='height: 16px;' src='img/loading_transparent.gif'/>" : ''; ?></td>
             <td class="room_id">
                 <a class="view" href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4">
                     <?php echo $currClass['room_ID']; ?>
@@ -99,58 +91,45 @@ if(isset($pagination)) {
                 </a>
             </td>
             <td style="text-align: right;">
-                <button class="btn btn-xs enabled_button <?php echo !$currClass['enabled'] ? 'btn-success' : '' ?>">
-                    <?php echo !$currClass['enabled'] ? '®enable®' : '®disable®' ?>
+                <button class="btn btn-xs enabled_button <?php echo !$currClass['enabled'] ? 'btn-success' : ''; ?>">
+                    <?php echo !$currClass['enabled'] ? '®enable®' : '®disable®'; ?>
                 </button>
                 <button class="btn btn-xs edit_button"><span class="glyphicon glyphicon-edit"></span></button>
                 <button class="btn btn-xs btn-danger cancel_button"><span class="glyphicon glyphicon-remove"></span></button>
                 <button class="btn btn-xs btn-danger delete_button"><span class="glyphicon glyphicon-trash"></span></button>
             </td>
         </tr>
-        <?php if(array_key_exists('recording', $currClass) && $currClass['recording']) { ?>
-        <tr class="<?php echo $currClass['loglevel']; ?>">
+        <tr class="recording" id="<?php echo preg_replace('/[\s.]+/', '', $currClass['room_ID']); ?>_recording" 
+            style="display: none;">
             <td></td>
             <td colspan="7" style="padding-bottom: 12px;">
                 <div class="col-md-3">
                     <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
-                    ®status_record_general®: 
-                    <?php echo $currClass['status_general']; ?><br />
+                    ®status_record_general®: <span class="status_general" ></span><br />
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     ®monit_author®: 
-                    <a href="./index.php?action=view_user_details&user_ID=<?php echo $currClass['author']; ?>">
-                        <?php echo $currClass['author']; ?>
-                    </a>
+                    <a class="author" href="#"></a>
                 </div>
                 <div class="col-md-3">
                     <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
-                    ®classroom_record_cam®: 
-                    <?php echo $currClass['status_cam']; ?><br />
+                    ®classroom_record_cam®: <span class="status_cam" ></span><br />
                     <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
                     ®monit_courses®: 
-                    <a href="./index.php?action=view_course_details&course_code=<?php echo $currClass['course']; ?>">
-                        <?php echo $currClass['course']; ?>
-                    </a>
+                    <a class="course" href="#"></a>
                 </div>
                 <div class="col-md-3">
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                    ®classroom_record_slide®: 
-                    <?php echo $currClass['status_slides']; ?><br />
+                    ®classroom_record_slide®: <span class="status_slides" ></span><br /><br />
                     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                     Asset: 
-                    <a href="./index.php?action=view_events&post=&startDate=0&asset=<?php echo $currClass['asset']; ?>">
-                        <?php echo $currClass['asset']; ?>
-                        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
-                    </a>
+                    <a class="asset" href="#"></a>
                 </div>
-                <div class="col-md-3">
-                    <br />
-                    <span class="label label-<?php echo $currClass['loglevel']; ?>">
-                    <?php echo ucfirst($currClass['loglevel']); ?>
-                    </span>
+                <div class="col-md-3"><br />
+                    <span class="label loglevel"></span>
                 </div>
             </td>
         </tr>
-        <?php }
+        <?php 
     }
     ?>
 </table>
@@ -268,6 +247,76 @@ $(function() {
             }
        });
     });
+});
+</script>
+
+<script async>
+$(function() {
+    function classroom_online(classroom, data) {
+        $('#' + classroom + ' .status').html('<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>');
+        
+        if(data.recording && data.recording == '1') {
+            $('#' + classroom + '_recording').show();
+            $('#' + classroom + '_recording .status_general').text(data.status_general);
+            $('#' + classroom + '_recording .status_cam').text(data.status_cam);
+            $('#' + classroom + '_recording .status_slides').text(data.status_slides);
+            $('#' + classroom + '_recording .author').text(data.author);
+            $('#' + classroom + '_recording .author').attr("href", "./index.php?action=view_user_details&user_ID=" + data.author);
+            $('#' + classroom + '_recording.recording').addClass(data.loglevel);
+            
+            $('#' + classroom + '_recording .loglevel').addClass('label-' + data.loglevel);
+            $('#' + classroom + '_recording .loglevel').text((data.loglevel).charAt(0).toUpperCase() + (data.loglevel).slice(1));
+            $('#' + classroom + '_recording .course').text(data.course);
+            $('#' + classroom + '_recording .course').attr("href", './index.php?action=view_course_details&course_code=' + data.course);
+            $('#' + classroom + '_recording .asset').html(data.asset + ' <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>');
+            $('#' + classroom + '_recording .asset').attr("href", './index.php?action=view_events&post=&startDate=0&asset=' + data.asset);
+        } else {
+            <?php if($onlyRecording) { ?>
+                $('#' + classroom).hide();
+            <?php } ?>
+        }
+    }
+    
+    function classroom_offline(classroom) {
+        <?php if($onlyOnline) { ?>
+            $('#' + classroom).hide();
+        <?php } else { ?>
+            $('#' + classroom + ' .status').html("<span title=\"®no_ping®\"><span class=" + 
+                        "\"glyphicon glyphicon-warning-sign\"></span></span>");
+        <?php } ?>
+    }
+   
+    function updateStatus(classroom) {
+        $.ajax("index.php?action=get_classrooms_status", {
+            type: "post",
+            data: {
+                classroomId: classroom
+            },
+            success: function(jqXHR, textStatus) {
+
+                var data = JSON.parse(jqXHR);
+                classroomWithoutSpace = classroom.replace(/[\s.]/g,'');
+                
+                if(data.status && data.status == '1') {
+                    classroom_online(classroomWithoutSpace, data);
+                } else {
+                    classroom_offline(classroomWithoutSpace);
+                }
+            }
+        });
+    }
+    
+    var globalIndex = 0;
+    var allClassroom = $('.line_classroom.enable');
+    for(var i = 0; i < allClassroom.length; ++i) {
+        setTimeout(function() {
+            var classroom = $(allClassroom[globalIndex]);
+            ++globalIndex;
+            var classRoomId = classroom.find($(".room_id"));
+            var strClassRoomId = classRoomId.text().trim();
+            updateStatus(strClassRoomId);
+        }, 0);
+    }
     
 });
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-        <!-- 
+<?php /*
     * EZCAST EZmanager 
     *
     * Copyright (C) 2016 Université libre de Bruxelles
@@ -24,7 +24,7 @@
     * You should have received a copy of the GNU Lesser General Public
     * License along with this software; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-        -->
+    */ ?>
 	<title>¤organization¤</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 

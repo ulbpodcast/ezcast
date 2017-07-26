@@ -384,7 +384,8 @@ function validate_form() {
     $errors = array();
     $res = db_ping($input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name']);
     if (!$res) {
-        $errors['db_error'] = 'Could not connect to database ' . $input['db_host'];
+        $errors['db_error'] = 'Could not connect to '. $input['db_type'] .' database ' . $input['db_host'] . ' ' .
+                        'with user: '.$input['db_login'];
     }
 
     if (count($errors) > 0) {

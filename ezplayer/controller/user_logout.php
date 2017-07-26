@@ -8,7 +8,6 @@ function index($param = array()) {
     global $ezplayer_safe_url;
    
     // Displaying the logout message
-
     include_once template_getpath('logout.php');
 
     unset($_SESSION['lang']);

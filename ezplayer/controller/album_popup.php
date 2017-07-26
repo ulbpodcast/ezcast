@@ -5,17 +5,17 @@
  * This window is displayed according to specific actions (delete | rss feed | ...)
  * @global array $input
  * @global type $repository_path
- * @global type $ezmanager_url
+ * @global type $ezmanager_safe_url
  */
 function index($param = array()) {
     global $input;
     global $repository_path;
-    global $ezmanager_url;
+    global $ezmanager_safe_url;
 
     ezmam_repository_path($repository_path);
     $album = acl_token_get($input['album']);
 
-    $album['rss'] = $ezmanager_url . "/distribute.php?action=rss&album=" . $album['album'] . "&quality=ezplayer&token=" . $album['token'];
+    $album['rss'] = $ezmanager_safe_url . "/distribute.php?action=rss&album=" . $album['album'] . "&quality=ezplayer&token=" . $album['token'];
 
     switch ($input['display']) {
         case 'delete' :

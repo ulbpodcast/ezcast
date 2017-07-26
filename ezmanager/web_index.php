@@ -291,13 +291,13 @@ function user_logged_in() {
  * Displays the login form
  */
 function view_login_form() {
-    global $ezmanager_url;
+    global $ezmanager_safe_url;
     global $error, $input;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash']))
         $_SESSION['has_flash'] = false;
-    $url = $ezmanager_url;
+    $url = $ezmanager_safe_url;
     // template include goes here
     include_once template_getpath('login.php');
     //include_once "tmpl/fr/login.php";
@@ -352,9 +352,8 @@ function redraw_page() {
     global $hd_rss_url_web;
     global $sd_rss_url_web;
     global $player_full_url;
-    global $ezmanager_url;
     global $distribute_url;
-    global $ezplayer_url;
+    global $ezplayer_safe_url;
     ezmam_repository_path($repository_path);
 
     $action = $_SESSION['podman_mode'];
@@ -364,7 +363,7 @@ function redraw_page() {
         $current_album_is_public = album_is_public($_SESSION['podman_album']);
 
         $album_name = suffix_remove($_SESSION['podman_album']);
-        ;
+        
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
         $description = $metadata['description'];
@@ -374,7 +373,7 @@ function redraw_page() {
         $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . ezmam_album_token_get($album_name_full);
         $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=high&token=' . ezmam_album_token_get($album_name_full);
         $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=low&token=' . ezmam_album_token_get($album_name_full);
-        $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $current_album . "&token=" . ezmam_album_token_get($album_name_full);
+        $player_full_url = $ezplayer_safe_url . "?action=view_album_assets&album=" . $current_album . "&token=" . ezmam_album_token_get($album_name_full);
     }
 
     // Whatever happens, the first thing to do is display the whole page.
@@ -385,7 +384,6 @@ function redraw_page() {
  * Reloads the whole page
  */
 function refresh_page() {
-    global $ezmanager_url;
     // reload the page
     echo '<script>window.location.reload();</script>';
     die;
@@ -405,7 +403,7 @@ function user_login($login, $passwd) {
     global $input;
     global $template_folder;
     global $error;
-    global $ezmanager_url;
+    global $ezmanager_safe_url;
 
     // 0) Sanity checks
     if (empty($login) || empty($passwd)) {
@@ -474,7 +472,7 @@ function user_login($login, $passwd) {
 
     // 6) Displaying the page
 
-    header("Location: " . $ezmanager_url);
+    header("Location: " . $ezmanager_safe_url);
     albums_view();
 }
 

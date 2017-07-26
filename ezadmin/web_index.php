@@ -296,11 +296,11 @@ function user_logged_in() {
  * Displays the login form
  */
 function view_login_form() {
-    global $ezadmin_url;
+    global $ezadmin_safe_url;
     global $error, $input;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
-    $url = $ezadmin_url;
+    $url = $ezadmin_safe_url;
     // template include goes here
     include_once template_getpath('login.php');
     //include_once "tmpl/fr/login.php";
@@ -352,7 +352,7 @@ function user_login($login, $passwd) {
     global $input;
     global $template_folder;
     global $error;
-    global $ezadmin_url;
+    global $ezadmin_safe_url;
 
     // 0) Sanity checks
     if (empty($login) || empty($passwd)) {
@@ -407,7 +407,7 @@ function user_login($login, $passwd) {
 
     // 6) Displaying the page
 
-    header("Location: " . $ezadmin_url);
+    header("Location: " . $ezadmin_safe_url);
     albums_view();
 }
 

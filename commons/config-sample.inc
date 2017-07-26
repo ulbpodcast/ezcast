@@ -23,7 +23,7 @@ $timezone = 'Europe/Brussels';
 // URL's to EZcast applications
 $application_url = "http://localhost/";
 $https_ready = false;
-$application_safe_url = $https_ready ? str_replace('http', 'https', $application_url) : $application_url;
+$application_safe_url = $https_ready ? preg_replace("/^(http:\/\/)?/", "https://", $application_url); : $application_url;
 // Adapt these URL's according to the name of each application in your webspace
 // Warning ! If you modify the name of an application, you should also
 // edit its location in the files (index.php, ...) located in your webspace

@@ -19,8 +19,8 @@
             <br/>
             Before using EZcast and its components, create - at least - one renderer.<br/><br/>
             <ol>
-                    <li>Connect as administrator in <a target="_blank" href="<?php global $ezadmin_url;
-            echo $ezadmin_url; ?>">EZadmin</a></li>
+                    <li>Connect as administrator in <a target="_blank" href="<?php global $ezadmin_safe_url;
+            echo $ezadmin_safe_url; ?>">EZadmin</a></li>
                 <li>Select "create renderer" in the menu, on the left</li>
                 <li>Follow instruction on the screen</li>
             </ol>

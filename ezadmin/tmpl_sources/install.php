@@ -32,7 +32,7 @@
 
                         <div class="panel-body well" style="margin-bottom:0;">
                             <div class="row">
-                                    <div class="col-md-12">
+                                <div class="col-md-6">
 
                                     <div class="control-group">
                                         <label class="control-label">®settings_application_url®</label>

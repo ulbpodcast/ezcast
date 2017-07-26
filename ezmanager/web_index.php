@@ -360,6 +360,7 @@ function user_logged_in() {
  * Displays the login form
  */
 function view_login_form() {
+    global $lang;
     global $ezmanager_safe_url;
     global $error, $input;
 
@@ -453,6 +454,7 @@ function redraw_page() {
         }
         $public_album = $current_album_is_public;
         $assets = ezmam_asset_list_metadata($_SESSION['podman_album']);
+<<<<<<< HEAD
         $token = ezmam_album_token_get($album_name_full);
         $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' .$token;
         $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . $token;
@@ -461,6 +463,21 @@ function redraw_page() {
         $player_full_url = $ezplayer_safe_url . "?action=view_album_assets&album=" . $current_album . "&token=" . $token;
         $manager_full_url = $ezmanager_safe_url . "?action=add_moderator&album=" . $current_album . "&tokenmanager=" . 
                     ezmam_album_token_manager_get($album_name_full);
+=======
+        $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' . 
+                ezmam_album_token_get($album_name_full);
+        $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . 
+                ezmam_album_token_get($album_name_full);
+        $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=high&token=' . 
+                ezmam_album_token_get($album_name_full);
+        $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=low&token=' .
+                ezmam_album_token_get($album_name_full);
+        $player_full_url = $ezplayer_safe_url . "?action=view_album_assets&album=" . $current_album . "&token=" . 
+                ezmam_album_token_get($album_name_full);
+        ezmam_album_token_manager_set($current_album);
+        $manager_full_url = $ezmanager_safe_url . "?action=add_moderator&album=" . $current_album . "&tokenmanager=" . 
+                ezmam_album_token_manager_get($album_name_full);
+>>>>>>> Update "<service>_url" to "<service>_safe_url"
     }
 
     // Whatever happens, the first thing to do is display the whole page.

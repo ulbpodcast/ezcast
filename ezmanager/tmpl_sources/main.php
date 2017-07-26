@@ -156,7 +156,7 @@ echo $title_max_length;
             <div id="global">
                 <!-- "New album" button -->
                 <span class="CreerAlbum"><a href="javascript:show_popup_from_inner_div('#popup_new_album');">®Create_album®</a></span>
-                <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php echo get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php echo get_lang(); ?>.png" name="Image5" width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div> -->
+                <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php // echo get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang(); ?>.png" name="Image5" width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div> -->
                 <!-- "New album" button, END -->          
 
                 <div id="div_center">

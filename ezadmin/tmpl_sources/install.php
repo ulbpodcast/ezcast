@@ -26,7 +26,7 @@
                 <form method="POST" class="form-horizontal" enctype="multipart/form-data" >
                 <div class="wizard">
                     <div class="panel">
-                        <div class="panel-heading btn input-block-level">
+                        <div class="panel-heading">
                             <h4>®settings_panel_general®</h4>
                         </div>
 
@@ -136,7 +136,7 @@
                     </div>
 
                     <div class="panel">
-                        <div class="panel-heading btn input-block-level">
+                        <div class="panel-heading">
                             <h4>®settings_panel_db®</h4>
                         </div>    
 
@@ -202,7 +202,7 @@
                     </div>
 
                     <div class="panel">
-                        <div class="panel-heading btn input-block-level">
+                        <div class="panel-heading">
                             <h4>®settings_panel_recorder®</h4>
                         </div>    
 
@@ -234,7 +234,7 @@
                     </div>
 
                     <div class="panel">
-                        <div class="panel-heading btn input-block-level">
+                        <div class="panel-heading">
                             <h4>®settings_panel_ezmanager®</h4>
                         </div>
 
@@ -266,7 +266,7 @@
                     </div>
 
                     <div class="panel">
-                        <div class="panel-heading btn input-block-level">
+                        <div class="panel-heading">
                             <h4>®settings_panel_user®</h4>
                         </div>
 
@@ -333,7 +333,7 @@
                 </div>
                 <div class="form-actions">
                     <input type="submit" name="install" value="®install®" class="btn btn-primary"/>
-                    <input type="reset" name="install" value="®reset®" class="btn"/>
+                    <button type="reset" class="btn">®reset®</button>
                 </div>
             </form>
         </div>
@@ -341,7 +341,6 @@
         </div>
 
         <script>
-
             $(function() {
                 $(".help-block").hide();
 
@@ -354,25 +353,7 @@
                 }).blur(function() {
                     $(this).closest('.panel-body').find('.help-body').first().text('');
                 });
-
-                $(".wizard .panel").each(function() {
-                    var $this = $(this);
-
-                    $this.find(".panel-heading").click(function() {
-                        var $next = $(this).next(".panel-body");
-
-                        if ($next.is(':visible'))
-                            return;
-
-                        $('.panel-body').slideUp();
-                        $next.slideDown();
-                    });
-                });
-
-                $(".panel-body").hide();
-                $(".panel-heading").first().click();
             });
-
         </script>
     </body>
 </html>

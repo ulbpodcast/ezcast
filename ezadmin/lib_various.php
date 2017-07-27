@@ -65,11 +65,11 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
     $conf4 = ($use_course_name_option) ? 'true' : 'false';
     $conf5 = ($use_user_name_option) ? 'true' : 'false';
 
-    $config = preg_replace('/\$classrooms_category_enabled = (.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
-    $config = preg_replace('/\$add_users_enabled = (.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
-    $config = preg_replace('/\$recorder_password_storage_enabled = (.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
-    $config = preg_replace('/\$use_course_name = (.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
-    $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
+    $config = preg_replace('/\$classrooms_category_enabled *= *(.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
+    $config = preg_replace('/\$add_users_enabled *= *(.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
+    $config = preg_replace('/\$recorder_password_storage_enabled *= *(.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
+    $config = preg_replace('/\$use_course_name *= *(.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
+    $config = preg_replace('/\$use_user_name *= *(.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
     
     file_put_contents('config.inc', $config);
 }
@@ -106,24 +106,24 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
 
     $conf = ($https_ready) ? 'true' : 'false';
 
-    $global_config = preg_replace('/\$php_cli_cmd = (.+);/', '\$php_cli_cmd = "' . $php_cli_cmd . '";', $global_config);
-    $global_config = preg_replace('/\$rsync_pgm = (.+);/', '\$rsync_pgm = "' . $rsync_pgm . '";', $global_config);
-    $global_config = preg_replace('/\$https_ready = (.+);/', '\$https_ready = ' . $conf . ';', $global_config);
-    $global_config = preg_replace('/\$organization_name = (.+);/', '\$organization_name = "' . $organization_name . '";', $global_config);
-    $global_config = preg_replace('/\$organization_url = (.+);/', '\$organization_url = "' . $organization_url . '";', $global_config);
-    $global_config = preg_replace('/\$copyright = (.+);/', '\$copyright = "' . $copyright . '";', $global_config);
-    $global_config = preg_replace('/\$mailto_alert = (.+);/', '\$mailto_alert = "' . $mailto_alert . '";', $global_config);
-    $global_config = preg_replace('/\$application_url = (.+);/', '\$application_url = "' . $application_url . '";', $global_config);
-    $global_config = preg_replace('/\$repository_basedir = (.+);/', '\$repository_basedir = "' . $repository_basedir . '";', $global_config);
-    $global_config = preg_replace('/\$basedir = (.+);/', '\$basedir = "' . $basedir . '";', $global_config);
-    $global_config = preg_replace('/\$db_type = (.+);/', '\$db_type = "' . $db_type . '";', $global_config);
-    $global_config = preg_replace('/\$db_host = (.+);/', '\$db_host = "' . $db_host . '";', $global_config);
-    $global_config = preg_replace('/\$db_login = (.+);/', '\$db_login = "' . $db_login . '";', $global_config);
-    $global_config = preg_replace('/\$db_passwd = (.+);/', '\$db_passwd = "' . $db_passwd . '";', $global_config);
-    $global_config = preg_replace('/\$db_name = (.+);/', '\$db_name = "' . $db_name . '";', $global_config);
-    $global_config = preg_replace('/\$db_prefix = (.+);/', '\$db_prefix = "' . $db_prefix . '";', $global_config);
-    $global_config = preg_replace('/\$recorder_user = (.+);/', '\$recorder_user = "' . $recorder_user . '";', $global_config);
-    $global_config = preg_replace('/\$recorder_basedir = (.+);/', '\$recorder_basedir = "' . $recorder_basedir . '";', $global_config);
+    $global_config = preg_replace('/\$php_cli_cmd *= *(.+);/', '\$php_cli_cmd = "' . $php_cli_cmd . '";', $global_config);
+    $global_config = preg_replace('/\$rsync_pgm *= *(.+);/', '\$rsync_pgm = "' . $rsync_pgm . '";', $global_config);
+    $global_config = preg_replace('/\$https_ready *= *(.+);/', '\$https_ready = ' . $conf . ';', $global_config);
+    $global_config = preg_replace('/\$organization_name *= *(.+);/', '\$organization_name = "' . $organization_name . '";', $global_config);
+    $global_config = preg_replace('/\$organization_url *= *(.+);/', '\$organization_url = "' . $organization_url . '";', $global_config);
+    $global_config = preg_replace('/\$copyright *= *(.+);/', '\$copyright = "' . $copyright . '";', $global_config);
+    $global_config = preg_replace('/\$mailto_alert *= *(.+);/', '\$mailto_alert = "' . $mailto_alert . '";', $global_config);
+    $global_config = preg_replace('/\$application_url *= *(.+);/', '\$application_url = "' . $application_url . '";', $global_config);
+    $global_config = preg_replace('/\$repository_basedir *= *(.+);/', '\$repository_basedir = "' . $repository_basedir . '";', $global_config);
+    $global_config = preg_replace('/\$basedir *= *(.+);/', '\$basedir = "' . $basedir . '";', $global_config);
+    $global_config = preg_replace('/\$db_type *= *(.+);/', '\$db_type = "' . $db_type . '";', $global_config);
+    $global_config = preg_replace('/\$db_host *= *(.+);/', '\$db_host = "' . $db_host . '";', $global_config);
+    $global_config = preg_replace('/\$db_login *= *(.+);/', '\$db_login = "' . $db_login . '";', $global_config);
+    $global_config = preg_replace('/\$db_passwd *= *(.+);/', '\$db_passwd = "' . $db_passwd . '";', $global_config);
+    $global_config = preg_replace('/\$db_name *= *(.+);/', '\$db_name = "' . $db_name . '";', $global_config);
+    $global_config = preg_replace('/\$db_prefix *= *(.+);/', '\$db_prefix = "' . $db_prefix . '";', $global_config);
+    $global_config = preg_replace('/\$recorder_user *= *(.+);/', '\$recorder_user = "' . $recorder_user . '";', $global_config);
+    $global_config = preg_replace('/\$recorder_basedir *= *(.+);/', '\$recorder_basedir = "' . $recorder_basedir . '";', $global_config);
 
     file_put_contents('../commons/config.inc', $global_config);
 
@@ -135,11 +135,11 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
     $conf4 = ($use_course_name) ? 'true' : 'false';
     $conf5 = ($use_user_name) ? 'true' : 'false';
 
-    $config = preg_replace('/\$classrooms_category_enabled = (.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
-    $config = preg_replace('/\$add_users_enabled = (.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
-    $config = preg_replace('/\$recorder_password_storage_enabled = (.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
-    $config = preg_replace('/\$use_course_name = (.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
-    $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
+    $config = preg_replace('/\$classrooms_category_enabled *= *(.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
+    $config = preg_replace('/\$add_users_enabled *= *(.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
+    $config = preg_replace('/\$recorder_password_storage_enabled *= *(.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
+    $config = preg_replace('/\$use_course_name *= *(.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
+    $config = preg_replace('/\$use_user_name *= *(.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
 
     file_put_contents('config.inc', $config);
     copy("../ezmanager/config-sample.inc", "../ezmanager/config.inc");
@@ -578,7 +578,6 @@ function push_users_to_ezmanager() {
     global $ezmanager_user;
     global $ezmanager_basedir;
     global $ezmanager_subdir;
-    global $basedir;
 
     $users = db_users_internal_get();
 
@@ -594,7 +593,7 @@ function push_users_to_ezmanager() {
     // Copying on ezmanager
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
         // Local copy
-        $res = file_put_contents($basedir . '/commons/pwfile.inc', $pwfile);
+        $res = file_put_contents('../commons/pwfile.inc', $pwfile);
         if ($res === false)
             return false;
     }

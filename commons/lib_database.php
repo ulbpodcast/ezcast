@@ -70,7 +70,7 @@ function db_prepare(&$stmt_array = array()) {
     global $db_prepared;
     global $statements;
     global $debug_mode;
-    
+
     if($db_object == null)
     {
         try {

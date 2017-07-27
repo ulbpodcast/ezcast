@@ -10,10 +10,10 @@
 
     </head>
 
-    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if ($GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
+    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if(isset($GLOBALS['debugmode']) && $GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
         <div class="container_ezplayer">
             <?php include_once template_getpath("div_header.php"); ?>
-            <div id="global">
+            <div id="global" class="install">
             <h2 style="text-align: center; padding: 10px 0px;">®install_success_title®</h2>
             <div class="alert alert-success">Install successful. For improved security, we advise you to delete or rename the "install.php".</div>
             <br/>

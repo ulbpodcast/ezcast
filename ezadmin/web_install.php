@@ -38,7 +38,6 @@ if(template_repository_path() == "") {
 }
 template_load_dictionnary('translations.xml');
 
-
 $_SESSION['install'] = true;
 $errors = array();
 $input = array_merge($_GET, $_POST);
@@ -88,7 +87,6 @@ if (isset($input['install']) && !empty($input['install'])) {
     // installation form has been submitted and we verify the db to create the tables
     validate_form();
     create_config_files();
-    require_once 'config.inc';
     add_first_user();
 // submitted form but database already exists
 } else if (isset($input['db_choice_submit']) && !empty($input['db_choice_submit'])) {
@@ -114,7 +112,6 @@ if (isset($input['install']) && !empty($input['install'])) {
             break;
     }
     create_config_files();
-    require_once 'config.inc';
     add_first_user();
 } else {
     // display the installation form
@@ -129,6 +126,7 @@ if (isset($input['install']) && !empty($input['install'])) {
 
     if (!(isset($input['skip_srv']) && $input['skip_srv']))
         check_server_config();
+
 
     //get configs from already existing config if any to fill the form
     $input['php_cli_cmd'] = $php_cli_cmd;
@@ -750,6 +748,21 @@ function create_config_files() {
 }
 
 function add_first_user() {
+    global $input;
+    global $db_type;
+    global $db_host;
+    global $db_login;
+    global $db_passwd;
+    global $db_name;
+    global $db_prefix;
+
+    $db_type = $input['db_type'];
+    $db_host = $input['db_host'];
+    $db_login = $input['db_login'];
+    $db_passwd = $input['db_passwd'];
+    $db_name = $input['db_name'];
+    $db_prefix = $input['db_prefix'];
+
     // Add the first user in database 
     $first_user = file_get_contents("../first_user");
     $first_user = explode(" , ", $first_user);

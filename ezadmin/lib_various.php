@@ -62,14 +62,12 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
     $conf1 = ($recorder_option) ? 'true' : 'false';
     $conf2 = ($add_users_option) ? 'true' : 'false';
     $conf3 = ($recorder_password_storage_option) ? 'true' : 'false';
-    $conf4 = ($use_course_name_option) ? 'true' : 'false';
-    $conf5 = ($use_user_name_option) ? 'true' : 'false';
+    $conf4 = ($use_user_name_option) ? 'true' : 'false';
 
     $config = preg_replace('/\$classrooms_category_enabled *= *(.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
     $config = preg_replace('/\$add_users_enabled *= *(.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
     $config = preg_replace('/\$recorder_password_storage_enabled *= *(.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
-    $config = preg_replace('/\$use_course_name *= *(.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
-    $config = preg_replace('/\$use_user_name *= *(.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
+    $config = preg_replace('/\$use_user_name *= *(.+);/', '\$use_user_name = ' . $conf4 . ';', $config);
     
     file_put_contents('config.inc', $config);
 }
@@ -109,12 +107,25 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
     $global_config = preg_replace('/\$php_cli_cmd *= *(.+);/', '\$php_cli_cmd = "' . $php_cli_cmd . '";', $global_config);
     $global_config = preg_replace('/\$rsync_pgm *= *(.+);/', '\$rsync_pgm = "' . $rsync_pgm . '";', $global_config);
     $global_config = preg_replace('/\$https_ready *= *(.+);/', '\$https_ready = ' . $conf . ';', $global_config);
+<<<<<<< HEAD
     $global_config = preg_replace('/\$organization_name *= *(.+);/', '\$organization_name = "' . $organization_name . '";', $global_config);
     $global_config = preg_replace('/\$organization_url *= *(.+);/', '\$organization_url = "' . $organization_url . '";', $global_config);
     $global_config = preg_replace('/\$copyright *= *(.+);/', '\$copyright = "' . $copyright . '";', $global_config);
     $global_config = preg_replace('/\$mailto_alert *= *(.+);/', '\$mailto_alert = "' . $mailto_alert . '";', $global_config);
     $global_config = preg_replace('/\$application_url *= *(.+);/', '\$application_url = "' . $application_url . '";', $global_config);
     $global_config = preg_replace('/\$repository_basedir *= *(.+);/', '\$repository_basedir = "' . $repository_basedir . '";', $global_config);
+=======
+    $global_config = preg_replace('/\$organization_name *= *(.+);/', '\$organization_name = "' . $organization_name . '";', 
+            $global_config);
+    $global_config = preg_replace('/\$organization_url *= *(.+);/', '\$organization_url = "' . $organization_url . '";', 
+            $global_config);
+    $global_config = preg_replace('/\$copyright *= *(.+);/', '\$copyright = "' . $copyright . '";', $global_config);
+    $global_config = preg_replace('/\$mailto_alert *= *(.+);/', '\$mailto_alert = "' . $mailto_alert . '";', $global_config);
+    $global_config = preg_replace('/\$application_url *= *(.+);/', '\$application_url = "' . $application_url . '";', 
+            $global_config);
+    $global_config = preg_replace('/\$repository_basedir *= *(.+);/', '\$repository_basedir = "' . 
+            $repository_basedir . '";', $global_config);
+>>>>>>> Add config flexibility (update regex to add 'infinite' space between `=`, key and value)
     $global_config = preg_replace('/\$basedir *= *(.+);/', '\$basedir = "' . $basedir . '";', $global_config);
     $global_config = preg_replace('/\$db_type *= *(.+);/', '\$db_type = "' . $db_type . '";', $global_config);
     $global_config = preg_replace('/\$db_host *= *(.+);/', '\$db_host = "' . $db_host . '";', $global_config);
@@ -122,8 +133,15 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
     $global_config = preg_replace('/\$db_passwd *= *(.+);/', '\$db_passwd = "' . $db_passwd . '";', $global_config);
     $global_config = preg_replace('/\$db_name *= *(.+);/', '\$db_name = "' . $db_name . '";', $global_config);
     $global_config = preg_replace('/\$db_prefix *= *(.+);/', '\$db_prefix = "' . $db_prefix . '";', $global_config);
+<<<<<<< HEAD
     $global_config = preg_replace('/\$recorder_user *= *(.+);/', '\$recorder_user = "' . $recorder_user . '";', $global_config);
     $global_config = preg_replace('/\$recorder_basedir *= *(.+);/', '\$recorder_basedir = "' . $recorder_basedir . '";', $global_config);
+=======
+    $global_config = preg_replace('/\$recorder_user *= *(.+);/', '\$recorder_user = "' . $recorder_user . '";', 
+            $global_config);
+    $global_config = preg_replace('/\$recorder_basedir *= *(.+);/', '\$recorder_basedir = "' . $recorder_basedir . '";', 
+            $global_config);
+>>>>>>> Add config flexibility (update regex to add 'infinite' space between `=`, key and value)
 
     file_put_contents('../commons/config.inc', $global_config);
 
@@ -135,11 +153,20 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
     $conf4 = ($use_course_name) ? 'true' : 'false';
     $conf5 = ($use_user_name) ? 'true' : 'false';
 
+<<<<<<< HEAD
     $config = preg_replace('/\$classrooms_category_enabled *= *(.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
     $config = preg_replace('/\$add_users_enabled *= *(.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
     $config = preg_replace('/\$recorder_password_storage_enabled *= *(.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
     $config = preg_replace('/\$use_course_name *= *(.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
     $config = preg_replace('/\$use_user_name *= *(.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
+=======
+    $config = preg_replace('/\$classrooms_category_enabled *= *(.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', 
+            $config);
+    $config = preg_replace('/\$add_users_enabled *= *(.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
+    $config = preg_replace('/\$recorder_password_storage_enabled *= *(.+);/', '\$recorder_password_storage_enabled = ' . 
+            $conf3 . ';', $config);
+    $config = preg_replace('/\$use_user_name *= *(.+);/', '\$use_user_name = ' . $conf4 . ';', $config);
+>>>>>>> Add config flexibility (update regex to add 'infinite' space between `=`, key and value)
 
     file_put_contents('config.inc', $config);
     copy("../ezmanager/config-sample.inc", "../ezmanager/config.inc");
@@ -723,7 +750,8 @@ function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
                     return "php_missing_gd";
                 }
                 unset($output);
-                exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes $ssh_user@$ssh_host \"$remote_php -r 'echo serialize(gd_info());'\"", $output, $returncode);
+                exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes $ssh_user@$ssh_host \"$remote_php -r "
+                        . "'echo serialize(gd_info());'\"", $output, $returncode);
                 $gd_info = unserialize(implode($output));
                 if (!$gd_info['FreeType Support']) {
                     return "gd_missing_freetype";

@@ -164,6 +164,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <input type="hidden" name="album" id="bookmark_album_<?php echo $index; ?>" value="<?php echo $bookmark['album']; ?>"/>
                                                 <input type="hidden" name="asset" id="bookmark_asset_<?php echo $index; ?>" value="<?php echo $bookmark['asset']; ?>"/>
                                                 <input type="hidden" name="source" id="bookmark_source_<?php echo $index; ?>" value="personal"/><br/>
+                                                <input type="hidden" name="edit" id="bookmark_edit_<?php echo $index; ?>" value="1"/>
                                                 <input type="hidden" name="timecode" id="bookmark_timecode_<?php echo $index; ?>" value="<?php echo $bookmark['timecode']; ?>"/>
                                                 <input type="hidden" name="type" id="bookmark_type_<?php echo $index; ?>" value="<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>"/>
                                                 <div class="blue-title">®Description® :</div>

@@ -263,6 +263,11 @@ else {
             requireController('view_event_calendar.php');
             break;
         
+        // Service ping classroom
+        case 'get_classrooms_status':
+            requireController('get_classrooms_status.php');
+            break;
+        
         
         // No action selected: we choose to display the homepage again
         default:

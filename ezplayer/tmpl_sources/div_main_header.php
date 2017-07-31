@@ -28,7 +28,7 @@
 <?php if(!isset($_COOKIE['infos_cookie'])) { ?>
     <div class="cookie_header">
         ®cookie_infos®
-        <button onclick="document.cookie='infos_cookie=true';$('.cookie_header').hide()">OK</button>
+        <button onclick="document.cookie='infos_cookie=true;expires=Fri, 31 Dec 9999 23:59:59 GMT';$('.cookie_header').hide()">OK</button>
     </div>
 <?php } ?>
 
@@ -45,7 +45,7 @@
                 global $organization_url;
                 echo $organization_url;
                 ?>"><img src="./images/Header/organization-logo.png"/></a>
-<?php } ?>
+            <?php } ?>
             <a href="index.php" title="®Back_to_home®"><img src="./images/Header/LogoEZplayer.png" alt="" /></a>
         </div>
         <!-- S E T T I N G S -->

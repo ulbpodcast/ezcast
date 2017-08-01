@@ -831,8 +831,9 @@ function trace_append($array) {
     global $ezplayer_trace_path;
     global $trace_on;
 
-    if (!$trace_on)
+    if (!$trace_on) {
         return false;
+    }
 
     // 1) Date/time at which the event occurred
     $data = date('Y-m-d-H:i:s');

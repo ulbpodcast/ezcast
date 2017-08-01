@@ -77,37 +77,37 @@ function checkauth($login, $passwd) {
         $real_login = $login_parts[0];
         $runas_login = $login_parts[1];
         
+        $index = 0;
+        $auth_admin = false;
+        // loops on every available methods to authenticate the admin
+        while ($index < $auth_methods_length && $auth_admin === false) {
+            $check_auth = $auth_methods[$index] . "_checkauth";
+            $auth_admin = $check_auth($real_login, $passwd);
+            $index++;
+        }
+        // admin has not been authenticated
+        if ($auth_admin === false) {
+            checkauth_last_error("Authentication failure");
+            return false;
+        // admin has been authenticated
+        } else {
             $index = 0;
-            $auth_admin = false;
-            // loops on every available methods to authenticate the admin
-            while ($index < $auth_methods_length && $auth_admin === false) {
-                $check_auth = $auth_methods[$index] . "_checkauth";
-                $auth_admin = $check_auth($real_login, $passwd);
+            $auth_user = false;
+            // loops on every available methods to get user info
+            while ($index < $auth_methods_length && $auth_user === false) {
+                $getinfo = $auth_methods[$index] . "_getinfo";
+                $auth_user = $getinfo($runas_login);
                 $index++;
             }
-            // admin has not been authenticated
-            if ($auth_admin === false) {
+            // user does not exit
+            if ($auth_user === false) {
                 checkauth_last_error("Authentication failure");
-                return false;
-            // admin has been authenticated
             } else {
-                $index = 0;
-                $auth_user = false;
-                // loops on every available methods to get user info
-                while ($index < $auth_methods_length && $auth_user === false) {
-                    $getinfo = $auth_methods[$index] . "_getinfo";
-                    $auth_user = $getinfo($runas_login);
-                    $index++;
-                }
-                // user does not exit
-                if ($auth_user === false) {
-                    checkauth_last_error("Authentication failure");
-                } else {
-                    $auth_user["real_login"] = $real_login;
-                }
-                // returns user info or false if user has not been found
-                return $auth_user;
+                $auth_user["real_login"] = $real_login;
             }
+            // returns user info or false if user has not been found
+            return $auth_user;
+        }
     }
 }
 
@@ -120,9 +120,9 @@ function checkauth($login, $passwd) {
 function checkauth_last_error($msg = "") {
     static $last_error = "";
 
-    if ($msg == "")
+    if ($msg == "") {
         return $last_error;
-    else {
+    } else {
         $last_error = $msg;
         return true;
     }

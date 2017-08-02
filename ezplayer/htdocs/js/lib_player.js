@@ -743,6 +743,7 @@ function player_bookmark_form_show(source) {
     video.pause();
     time_code_update();
     document.getElementById('bookmark_type').value = type;
+    document.getElementById('bookmark_source').value = source;
     // sets the form style according to the source (official | personal bookmarks)
     if (source == 'official') {
         $('.bookmark-color').hide();

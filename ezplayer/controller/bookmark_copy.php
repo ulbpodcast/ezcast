@@ -35,25 +35,23 @@ function index($param = array()) {
         log_append('copy_bookmark', 'bookmark copied from official to personal : album -' . $bookmark_album .
                 ' asset - ' . $bookmark_asset .
                 ' timecode - ' . $bookmark_timecode);
-    } else { // copies from personal bookmarks to table of contents 
-        if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
-            toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, 
-                    $bookmark_description, $bookmark_keywords, $bookmark_level);
+        
+    // copies from personal bookmarks to table of contents 
+    } else if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
+        toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, 
+                $bookmark_description, $bookmark_keywords, $bookmark_level);
 
-            trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'official', 
-                $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
-            log_append('copy_bookmark', 'bookmark copied from personal to official : album -' . $bookmark_album .
-                    ' asset - ' . $bookmark_asset .
-                    ' timecode - ' . $bookmark_timecode);
-        }
+        trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'official', 
+            $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
+        log_append('copy_bookmark', 'bookmark copied from personal to official : album -' . $bookmark_album .
+                ' asset - ' . $bookmark_asset .
+                ' timecode - ' . $bookmark_timecode);
     }
 
     if ($input['source'] == 'assets') {
         // refreshes the right_div (lvl 2)
         $input['token'] = ezmam_album_token_get($bookmark_album);
-        bookmarks_list_update();
-    } else {
-        // refreshes the right_div (lvl 3)
-        bookmarks_list_update();
     }
+    // refreshes the right_div (lvl 2 (if source = assets else 3))
+    bookmarks_list_update();
 }

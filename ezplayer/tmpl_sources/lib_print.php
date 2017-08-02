@@ -180,13 +180,18 @@ function replace_links($string) {
             // there is a url
             if ($link != '') {
                 // makes sure the url starts by 'http://' or 'mailto:'
+                // TODO why not replace with regex ?
                 $http = (substr($link, 0, 7) != 'http://' && substr($link, 0, 8) != 'https://' && substr($link, 0, 7) != 'mailto:') ? 'http://' : '';
                 // uses the alias in the html tag
+                $full_link = "<a href=\"$http$link\" "
+                            . "onclick=\"server_trace(new Array('3', 'description_link', current_album, current_asset, current_tab));"
+                            . "\" target=\"_blank\">";
                 if ($alias != '') {
-                    $full_link = "<a href=\"$http$link\" onclick=\"server_trace(new Array('3', 'description_link', current_album, current_asset, current_tab));\" target=\"_blank\">$alias</a>";
+                    $full_link .= $alias;
                 } else {
-                    $full_link = "<a href=\"$http$link\" onclick=\"server_trace(new Array('3', 'description_link', current_album, current_asset, current_tab));\" target=\"_blank\">$link</a>";
+                    $full_link .= $link;
                 }
+                $full_link .= "</a>";
 
                 // replaces the previous syntax with the adequate html tag (*url alias* ==> <a href="url">alias</a>)
                 // in the original text

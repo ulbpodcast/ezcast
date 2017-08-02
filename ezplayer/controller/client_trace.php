@@ -117,6 +117,28 @@ function index($param = array()) {
             $nbr_param = 5;
             break;
         
+        case 'slide_download_open':
+        case 'cam_download_open':
+            $nbr_param = 8;
+            break;
+        
+        case 'cam_download':
+        case 'slide_download':
+            $nbr_param = 6;
+            break;
+        
+        case 'description_link':
+            $nbr_param = 5;
+            break;
+        
+        case 'hashtag_click':
+            $nbr_param = 5;
+            break;
+        
+        case 'link_copy':
+            $nbr_param = 8;
+            break;
+        
     }
     
     if(count($infos) == $nbr_param) {

@@ -79,7 +79,7 @@ window.addEventListener("keyup", function (e) {
                     break;
                 case 78:  // 'n'
                     if (is_logged)
-                        player_bookmark_form_toggle('custom');
+                        player_bookmark_form_toggle('personal');
                     break;
                 case 107:
                 case 187: // '+'
@@ -400,7 +400,8 @@ function threads_notif_display() {
                         break;
                     
                     html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
-                            "<span class='span-link red' onclick='javascript:player_thread_notification_remove(" + timecode + ", " + id + ")' >x</span>" +
+                            "<span class='span-link red' onclick='javascript:player_thread_notification_remove(" + 
+                                timecode + ", " + id + ")' >x</span>" +
                             "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " +
                             threads_array[timecode][id] + "</span>" +
                             "</li>";
@@ -563,15 +564,14 @@ function player_video_seek(bookmark_time, bookmark_type) {
     if (bookmark_type != '' && type != bookmark_type) {
         player_video_type_set(bookmark_type);
     }
+    var video;
     if (camslide && type == 'slide') {
-        var video = document.getElementById('secondary_video');
+        video = document.getElementById('secondary_video');
     } else {
-        var video = document.getElementById('main_video');
+        video = document.getElementById('main_video');
     }
-    var paused = video.paused;
-
     video.currentTime = bookmark_time;
-    paused ? video.pause() : video.play();
+    video.paused ? video.pause() : video.play();
 }
 
 /**
@@ -679,16 +679,15 @@ function player_video_play_toggle() {
 
 // goes 15 seconds back/forward in the video
 function player_video_navigate(forward_rewind) {
-    origin = get_origin();
+    var video;
     if (camslide && type == 'slide') {
-        var video = document.getElementById('secondary_video');
+        video = document.getElementById('secondary_video');
     } else {
-        var video = document.getElementById('main_video');
+        video = document.getElementById('main_video');
     }
-    var paused = video.paused;
-
+    
     video.currentTime = (forward_rewind == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
-    paused ? video.pause() : video.play();
+    video.paused ? video.pause() : video.play();
     video_trace('4', 'video_' + forward_rewind);
 }
 
@@ -804,7 +803,9 @@ function player_bookmark_form_toggle(source) {
         }
     }
     
-    video_trace('4', 'bookmark_form_show');
+    origin = get_origin();
+    server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, 
+        time, type, source, quality, origin));
     player_bookmark_form_show(source);
     $("#bookmark_title").focus();   
 }

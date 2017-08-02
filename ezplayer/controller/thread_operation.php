@@ -103,13 +103,15 @@ function thread_delete() {
     $album = $input['thread_album'];
     $asset = $input['thread_asset'];
 
-    if (!acl_is_admin())
+    if (!acl_is_admin()) {
         return false;
-    
-    if (!isset($album) || $album == '')
+    }
+    if (!isset($album) || $album == '') {
         $album = $_SESSION['album'];
-    if (!isset($asset) || $asset == '')
+    }
+    if (!isset($asset) || $asset == '') {
         $asset = $_SESSION['asset'];
+    }
 
     thread_delete_by_id($id, $album, $asset);
     cache_asset_threads_unset($album, $asset);

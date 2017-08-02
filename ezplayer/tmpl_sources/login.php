@@ -43,15 +43,6 @@
                     document.form_login.has_flash.value = 'Y';
                 }
             }
-
-            function login_server_trace(array) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'index.php?action=client_trace',
-                        data: {info: array}
-                    });
-                return true;
-            }
         </script>
     </head>
     <body>
@@ -132,10 +123,12 @@
                         <div class="col-sm-9 col-sm-offset-3">
                             <select class="lang form-control" name="lang" tabindex="3" 
                                     onchange="document.location.href = './index.php?lang='+this.value;">
-                                <option value="en" <?php if(array_key_exists('lang', $input) && $input['lang'] == 'en') { echo 'selected="selected"'; } ?>>
+                                <option value="en" <?php if(array_key_exists('lang', $input) && $input['lang'] == 'en') { 
+                                    echo 'selected="selected"'; } ?>>
                                     English
                                 </option>
-                                <option value="fr" <?php if(!array_key_exists('lang', $input) || $input['lang'] == 'fr') { echo 'selected="selected"'; } ?>>
+                                <option value="fr" <?php if(!array_key_exists('lang', $input) || $input['lang'] == 'fr') { 
+                                    echo 'selected="selected"'; } ?>>
                                     Français
                                 </option>
                             </select>

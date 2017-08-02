@@ -83,10 +83,12 @@ if ($trace_on) {
                 });
                 // import/export menu closes when click outside
                 $("*", document.body).click(function (e) {
-                    if ((e.target.id != "bookmarks_actions") && !$(e.target).hasClass("menu-button") && ($("#bookmarks_actions").css("display") != "none")) {
+                    if ((e.target.id != "bookmarks_actions") && !$(e.target).hasClass("menu-button") && 
+                            ($("#bookmarks_actions").css("display") != "none")) {
                         $("#bookmarks_actions").css("display", "none");
                         $(".settings.bookmarks a.menu-button").toggleClass('active')
-                    } else if ((e.target.id != "tocs_actions") && !$(e.target).hasClass("menu-button") && ($("#tocs_actions").css("display") != "none")) {
+                    } else if ((e.target.id != "tocs_actions") && !$(e.target).hasClass("menu-button") && 
+                            ($("#tocs_actions").css("display") != "none")) {
                         $("#tocs_actions").css("display", "none");
                         $(".settings.toc a.menu-button").toggleClass('active')
                     }
@@ -133,10 +135,13 @@ if ($trace_on) {
                 current_token = token;
 
                 // Getting the content from the server, and filling the div_album_header with it
-                document.getElementById('div_center').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
+                document.getElementById('div_center').innerHTML = '<div style="text-align: center;">'.
+                        '<img src="images/loading_white.gif" alt="loading..." /></div>';
                 tinymce.remove();
                 makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true', 'div_center');
-                // history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 'index.php?action=view_album_assets');
+                // history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", 
+                //      "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 
+                //      'index.php?action=view_album_assets');
             }
 
             /**
@@ -151,8 +156,11 @@ if ($trace_on) {
                 current_asset = asset;
                 display_thread_details = false;
 
-                makeRequest('index.php', '?action=view_asset_details&album=' + album + '&asset=' + asset + '&asset_token=' + asset_token + '&click=true', 'div_center');
-                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
+                makeRequest('index.php', '?action=view_asset_details&album=' + album + '&asset=' + asset + '&asset_token=' + 
+                        asset_token + '&click=true', 'div_center');
+                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + 
+                //      asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + 
+                //      "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
             }
 
             /**
@@ -167,8 +175,11 @@ if ($trace_on) {
                 current_asset = asset;
                 display_thread_details = false;
 
-                makeRequest('index.php', '?action=view_asset_streaming&album=' + album + '&asset=' + asset + '&asset_token=' + asset_token + '&click=true', 'div_center');
-                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
+                makeRequest('index.php', '?action=view_asset_streaming&album=' + album + '&asset=' + asset + '&asset_token=' + 
+                        asset_token + '&click=true', 'div_center');
+                //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + 
+                //      asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + 
+                //      "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
             }
 
             /**
@@ -237,7 +248,8 @@ if ($trace_on) {
                 if (ezplayer_mode == 'view_asset_streaming')
                     player_kill();
 
-                makeRequest('index.php', '?action=view_asset_bookmark&album=' + album + '&asset=' + asset + '&t=' + timecode + '&type=' + type + '&click=true', 'div_center');
+                makeRequest('index.php', '?action=view_asset_bookmark&album=' + album + '&asset=' + asset + '&t=' + 
+                        timecode + '&type=' + type + '&click=true', 'div_center');
                 close_popup();
             }
 
@@ -482,7 +494,8 @@ if ($trace_on) {
              * @param {type} id
              * @returns {undefined}             */
             function thread_edit_form_check(threadId) {
-                $("#edit_thread_message_" + threadId + "_tinyeditor").html(tinymce.get("edit_thread_message_" + threadId + "_tinyeditor").getContent());
+                $("#edit_thread_message_" + threadId + "_tinyeditor").html(tinymce.get("edit_thread_message_" + 
+                        threadId + "_tinyeditor").getContent());
                 var message = document.getElementById("edit_thread_message_" + threadId + "_tinyeditor").value;
                 var title = document.getElementById('edit_thread_title_' + threadId).value;
                 if (message === '') {
@@ -585,13 +598,15 @@ if ($trace_on) {
             }
             // shows/hides the settings / contact form
             function header_form_toggle(src) {
+                var show_hide;
                 if ((settings_form && src == "settings") || (contact_form && src == "contact")) {
-                    server_trace(new Array('4', src + '_hide', current_album, current_asset));
+                    show_hide = '_hide';
                     header_form_hide(src);
                 } else {
-                    server_trace(new Array('4', src + '_show', current_album, current_asset));
+                    show_hide = '_show';
                     header_form_show(src);
                 }
+                server_trace(new Array('4', src + show_hide, current_album, current_asset));
             }
 
             // =============== P O P - U P  ================ //
@@ -663,7 +678,6 @@ if ($trace_on) {
 
             // sends an array to the server containing the action trace to be saved
             function server_trace(array) {
-
                 if (trace_on) { // from main.php
                     $.ajax({
                         type: 'POST',
@@ -757,7 +771,8 @@ if ($trace_on) {
                     $warning = false;
                 break;
             case 'firefox' :
-                if (($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || $_SESSION['user_os'] == "Android")) || $_SESSION['browser_version'] >= 35)
+                if (($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || 
+                        $_SESSION['user_os'] == "Android")) || $_SESSION['browser_version'] >= 35)
                     $warning = false;
                 break;
         }

@@ -167,14 +167,16 @@ function thread_comment_form_hide() {
  * Hide or show comment form depending on its current state.
  */
 function thread_comment_form_toggle() {
+    var trace_action;
     if (comment_form) { // from lib_player.js
-        server_trace(new Array('4', 'comment_form_hide', current_album, current_asset, duration, time, type));
+        trace_action = 'comment_form_hide';
         thread_comment_form_hide();
     } else {
-        server_trace(new Array('4', 'comment_form_show', current_album, current_asset, duration, time, type));
+        trace_action = 'comment_form_show';
         thread_comment_form_show();
         $("#comment_message").focus();
     }
+    server_trace(new Array('4', trace_action, current_album, current_asset, duration, time, type));
 }
 
 /**
@@ -357,11 +359,13 @@ function comment_answer_form_submit(id) {
  * @returns {undefined}
  */
 function threads_list_update(refresh) {
+    var trace_action;
     if (refresh) {
-        server_trace(new Array('3', 'thread_list_refresh', current_album, current_asset));
+        trace_action = 'thread_list_refresh';
     } else {
-        server_trace(new Array('3', 'thread_list_back', current_album, current_asset));
+        trace_action = 'thread_list_back';
     }
+    server_trace(new Array('3', trace_action, current_album, current_asset));
     $.ajax({
         type: 'POST',
         url: 'index.php?action=view_threads_list&click=true',
@@ -380,11 +384,13 @@ function threads_list_update(refresh) {
  * @returns {undefined}
  */
 function thread_details_update(thread_id, from_notif) {
+    var trace_action;
     if (from_notif) {
-        server_trace(new Array('3', 'thread_detail_from_notif', current_album, current_asset, thread_id));
+        trace_action = 'thread_detail_from_notif';
     } else {
-        server_trace(new Array('3', 'thread_detail_refresh', current_album, current_asset, thread_id));
+        trace_action = 'thread_detail_refresh';
     }
+    server_trace(new Array('3', trace_action, current_album, current_asset, thread_id));
     $.ajax({
         type: 'POST',
         url: 'index.php?action=view_thread_details&click=true',

@@ -26,18 +26,22 @@ function index($param = array()) {
     user_prefs_repository_path($user_files_path);
 
     if ($input['tab'] == 'official') { // copies from table of contents to personal bookmarks
-        user_prefs_asset_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
+        user_prefs_asset_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, $bookmark_timecode, 
+                $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
 
         // lvl, action, album, asset, timecode, target (to official|personal), title, description keywords, bookmark_lvl
-        trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'custom', $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
+        trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'custom', 
+            $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
         log_append('copy_bookmark', 'bookmark copied from official to personal : album -' . $bookmark_album .
                 ' asset - ' . $bookmark_asset .
                 ' timecode - ' . $bookmark_timecode);
     } else { // copies from personal bookmarks to table of contents 
         if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
-            toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level);
+            toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, 
+                    $bookmark_description, $bookmark_keywords, $bookmark_level);
 
-            trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'official', $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
+            trace_append(array('3', 'asset_bookmark_copy', $bookmark_album, $bookmark_asset, $bookmark_timecode, 'official', 
+                $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
             log_append('copy_bookmark', 'bookmark copied from personal to official : album -' . $bookmark_album .
                     ' asset - ' . $bookmark_asset .
                     ' timecode - ' . $bookmark_timecode);

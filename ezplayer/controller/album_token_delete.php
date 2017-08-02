@@ -10,7 +10,10 @@ function index($param = array()) {
     global $input;
     global $repository_path;
     global $user_files_path;
-
+    
+    if(!isset($input['album'])) {
+        return false;
+    }
     $album = $input['album'];
 
     ezmam_repository_path($repository_path);

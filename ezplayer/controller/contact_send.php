@@ -10,8 +10,10 @@ function index($param = array()) {
     global $ezplayer_url;
     global $mailto_alert;
 
-    if (!isset($input['message']) || rtrim($input['message'] == ''))
+    if (!isset($input['message']) || rtrim($input['message']) == '' ||
+            !isset($input['subject']) || rtrim($input['subject']) == '') {
         return false;
+    }
 
     $message = $input['message'];
     $subject = $input['subject'];

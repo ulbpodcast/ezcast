@@ -135,7 +135,7 @@ if ($trace_on) {
                 current_token = token;
 
                 // Getting the content from the server, and filling the div_album_header with it
-                document.getElementById('div_center').innerHTML = '<div style="text-align: center;">'.
+                document.getElementById('div_center').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
                 tinymce.remove();
                 makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true', 'div_center');

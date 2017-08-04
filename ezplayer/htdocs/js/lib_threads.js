@@ -151,6 +151,8 @@ function thread_comment_form_show() {
     $('#comment_form').slideDown();
     $("html, body").animate({scrollTop: $(document).height()}, 1000);
     comment_form = true;
+    
+    server_trace(new Array('4', 'comment_form_show', current_album, current_asset, duration, time, type));
 }
 
 /**
@@ -161,22 +163,20 @@ function thread_comment_form_hide() {
     comment_form = false; // declared in lib_player.js
     $('#comment_form').slideUp();
     document.getElementById('comment_message_tinyeditor').value = '';
+    
+    server_trace(new Array('4', 'comment_form_hide', current_album, current_asset, duration, time, type));
 }
 
 /*
  * Hide or show comment form depending on its current state.
  */
 function thread_comment_form_toggle() {
-    var trace_action;
     if (comment_form) { // from lib_player.js
-        trace_action = 'comment_form_hide';
         thread_comment_form_hide();
     } else {
-        trace_action = 'comment_form_show';
         thread_comment_form_show();
         $("#comment_message").focus();
     }
-    server_trace(new Array('4', trace_action, current_album, current_asset, duration, time, type));
 }
 
 /**

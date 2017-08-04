@@ -666,7 +666,10 @@ function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode) {
  * @return the bookmark if it exists; false otherwise
  */
 function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode) {
-    $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get($user, $album, $asset);
+    $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get(trim($user), trim($album), trim($asset));
+    if($assoc_asset_bookmarks == false || !is_array($assoc_asset_bookmarks)) {
+        return false;
+    }
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['timecode'] == $timecode) {
             return $bookmark;

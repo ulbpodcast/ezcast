@@ -40,14 +40,6 @@
                     document.login_form.has_flash.value = 'Y';
                 }
             }
-
-            function unsafe_connection() {
-                document.forms['login_form'].action = "<?php
-global $ezmanager_url;
-echo $ezmanager_url;
-?>/index.php";
-                document.forms['login_form'].submit();
-            }
         </script>
     </head>
     <body>
@@ -75,7 +67,6 @@ echo $ezmanager_url;
                             <option value="fr" selected="selected">Français</option>
                         </select>
                         <br/>
-                        <a style="font-size: 0.8em;" href="javascript:unsafe_connection();" title="®Unsafe_connection®">®Unencrypted_connection®</a>
                         <input type="submit" style="width: 100px;" tabindex="4" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" />
 
                 </form>

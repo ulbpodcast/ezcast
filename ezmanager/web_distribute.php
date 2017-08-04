@@ -203,7 +203,8 @@ function view_media() {
 
     if (!ezmam_album_token_check($input['album'], $input['token']) && !ezmam_asset_token_check($input['album'], $input['asset'], $input['token'])) {
         error_print_http(404);
-        log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . $input['album'] . ' with invalid token ' . $input['token']);
+        log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . $input['album'] . 
+                ' with invalid token ' . $input['token']);
         die;
     }
 
@@ -294,14 +295,18 @@ function view_embed_link() {
     global $template_folder;
     // Sanity checks
     if (!isset($input['album']) || !isset($input['asset']) || !isset($input['quality']) || !isset($input['type']) || !isset($input['token'])) {
-        echo "Usage: distribute.php?action=embed&amp;album=ALBUM&amp;asset=ASSET&amp;type=TYPE&amp;quality=QUALITY&amp;token=TOKEN<br/>";
-        echo "Optional parameters: width: Video width in pixels. height: video height in pixels. iframe: set to true if you want the return code to be an iframe instead of a full HTML page";
+        echo "Usage: distribute.php?action=embed&amp;album=ALBUM&amp;asset=ASSET&amp;type=TYPE&amp;".
+                "quality=QUALITY&amp;token=TOKEN<br/>";
+        echo "Optional parameters: width: Video width in pixels. height: video height in pixels. iframe: set to true ".
+                "if you want the return code to be an iframe instead of a full HTML page";
         die;
     }
     $lang = $input['lang'];
     $imgsrc = $ezmanager_url . "/images/embed_link_$lang.png";
     $width = $input['width'];
-    $href = $distribute_url . '?action=embed&album=' . $input['album'] . '&asset=' . $input['asset'] . '&type=' . $input['type'] . '&quality=' . $input['quality'] . '&token=' . $input['token'] . '&width=' . $input['width'] . '&height=' . $input['height'] . '&lang=' . $lang;
+    $href = $distribute_url . '?action=embed&album=' . $input['album'] . '&asset=' . $input['asset'] . '&type=' . 
+            $input['type'] . '&quality=' . $input['quality'] . '&token=' . $input['token'] . '&width=' . $input['width'] . 
+            '&height=' . $input['height'] . '&lang=' . $lang;
     template_repository_path($template_folder . 'fr');
     require_once template_getpath('embed_header.php');
     require_once template_getpath('embed_link.php');
@@ -320,7 +325,8 @@ function view_embed() {
     global $ezmanager_url;
 
     // Sanity checks
-    if (!isset($input['album']) || !isset($input['asset']) || !isset($input['quality']) || !isset($input['type']) || !isset($input['token'])) {
+    if (!isset($input['album']) || !isset($input['asset']) || !isset($input['quality']) || 
+            !isset($input['type']) || !isset($input['token'])) {
         echo "Usage: distribute.php?action=embed&amp;album=ALBUM&amp;asset=ASSET&amp;type=TYPE&amp;quality=QUALITY&amp;token=TOKEN<br/>";
         echo "Optional parameters: <br/>";
         echo "    width: Video width in pixels.  <br/>";
@@ -342,9 +348,11 @@ function view_embed() {
         return;
     }
 
-    if (!ezmam_album_token_check($input['album'], $input['token']) && !ezmam_asset_token_check($input['album'], $input['asset'], $input['token'])) {
+    if (!ezmam_album_token_check($input['album'], $input['token']) && 
+            !ezmam_asset_token_check($input['album'], $input['asset'], $input['token'])) {
         error_print_http(403);
-        log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . $input['album'] . ' with invalid token ' . $input['token']);
+        log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . $input['album'] . 
+                ' with invalid token ' . $input['token']);
         return;
     }
 
@@ -375,7 +383,7 @@ function view_embed() {
     if (isset($input['height']) && !empty($input['height']))
         $height = $input['height'] - 5;
 
-    $origin = ($input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
+    $origin = (isset($input['origin']) && $input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
 
     $pre_media_url = ezmam_media_geturl($input['album'], $input['asset'], $media_name) . '&origin=' . $origin;
     //handle &time=? argument
@@ -389,8 +397,12 @@ function view_embed() {
     // And finally we display the player through a template!
     // If the user wanted to have the player in an iframe, we must change the code a little bit
     if (isset($input['iframe']) && $input['iframe'] == 'true') {
-        $origin = ($input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
-        echo '<iframe style="padding: 0; z-index: 100;" frameborder="0" scrolling="no" src="distribute.php?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' . $input['type'] . '&amp;quality=' . $input['quality'] . '&amp;token=' . $input['token'] . '&amp;width=' . $width . '&amp;height=' . $height . '&amp;origin=' . $origin . '" width="' . $width . '" height="' . $height . '"></iframe>';
+        $origin = (isset($input['origin']) && $input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
+        echo '<iframe style="padding: 0; z-index: 100;" frameborder="0" scrolling="no" src="distribute.php?' .
+                'action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' . 
+                $input['type'] . '&amp;quality=' . $input['quality'] . '&amp;token=' . $input['token'] . '&amp;width=' . 
+                $width . '&amp;height=' . $height . '&amp;origin=' . $origin . '" width="' . $width . '" height="' . 
+                $height . '"></iframe>';
     } else {
         template_repository_path($template_folder . 'en');
         require_once template_getpath('embed_header.php');
@@ -399,14 +411,15 @@ function view_embed() {
         // It's a Flash browser IIF
         // UA includes 'MSIE' BUT UA does not include 'MSIE 9.'
         // TODO: prepare for future revisions of MSIE
-        if (((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7.') !== false)) || ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 8.') !== false))) {
+        if (((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false)) || 
+                ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7.') !== false)) || 
+                ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 8.') !== false))) {
             require_once template_getpath('embed_flash.php');
-            require_once template_getpath('embed_footer.php');
-            return;
+            
+        } else { // Otherwise, if it accepts HTML5, we display the HTML5 browser
+            require_once template_getpath('embed_html5.php');
         }
-
-        // Otherwise, if it accepts HTML5, we display the HTML5 browser
-        require_once template_getpath('embed_html5.php');
+        
         require_once template_getpath('embed_footer.php');
     }
 }

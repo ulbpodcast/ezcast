@@ -309,10 +309,6 @@
         <label id="No_file" lang="en">Please select a file</label>
         <label id="bad_extension" lang="fr">Type de fichier non reconnu</label>
         <label id="bad_extension" lang="en">Bad extension</label>
-        <label id="Unsafe_connection" lang="fr">Connexion non sécurisée</label>
-        <label id="Unsafe_connection" lang="en">Unsafe connection</label>
-        <label id="Unencrypted_connection" lang="fr">Se connecter en mode non encrypté</label>
-        <label id="Unencrypted_connection" lang="en">Connect in unencrypted mode</label>
         <label id="Login" lang="fr">Netid</label>
         <label id="Login" lang="en">Netid</label>
         <label id="Password" lang="fr">Mot de passe</label>

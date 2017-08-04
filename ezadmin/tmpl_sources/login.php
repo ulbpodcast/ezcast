@@ -17,14 +17,6 @@
                     document.login_form.has_flash.value = 'Y';
                 }
             }
-
-            function unsafe_connection() {
-                document.forms['login_form'].action = "<?php
-global $ezadmin_url;
-echo $ezadmin_url;
-?>/index.php";
-                document.forms['login_form'].submit();
-            }
         </script>
     </head>
     <body>
@@ -65,7 +57,6 @@ echo $ezadmin_url;
                                 </option>
                             </select>
                             <br/>
-                            <a style="font-size: 0.8em;" href="javascript:unsafe_connection();" title="®Unsafe_connection®">®Unencrypted_connection®</a>
                             <input type="submit" style="width: 100px; margin-left: 30px;" tabindex="4" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" />
 
                         </form>

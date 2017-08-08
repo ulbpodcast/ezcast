@@ -126,7 +126,16 @@ echo $title_max_length;
                     }
                 });
             }
-
+            
+            function show_stats_descriptives(album) {
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
+                makeRequest('index.php', '?action=view_stats&album=' + album, 'div_content');
+            }
+            
+            function show_ezplayer_link(album) {
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
+                makeRequest('index.php', '?action=view_ezplayer_link&album=' + album, 'div_content');
+            }
 
         </script>
         <script type="text/javascript" src="js/popup_general.js"></script>

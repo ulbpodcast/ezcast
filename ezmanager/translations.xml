@@ -161,8 +161,8 @@
         <label id="SD_RSS_feed" lang="en">Low resolution RSS feed</label>
         <label id="RSS_feed" lang="fr">Flux RSS</label>
         <label id="RSS_feed" lang="en">RSS feed</label>
-        <label id="Player_url" lang="fr">Lien EZplayer</label>
-        <label id="Player_url" lang="en">EZplayer link</label>
+        <label id="Player_url" lang="fr">Lien de diffusion</label>
+        <label id="Player_url" lang="en">Broadcast link</label>
         <label id="Ezmanager_url" lang="fr">Lien EZmanager</label>
         <label id="Ezmanager_url" lang="en">EZmanager Link</label>
         <label id="Processing" lang="fr">en cours de traitement</label>
@@ -402,7 +402,10 @@
         <label id="Only_small_files_message" lang="en">Please only use with short videos.</label>
         <label id="update" lang="fr">Suite à une importante mise-à-jour du site, il se peut que vous rencontriez des problèmes d'affichage. Veuillez suivre &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;ce lien&lt;/a&gt; pour en savoir plus.</label>
         <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
-
+        <label id="Stats_Descriptives" lang="fr">Statistiques</label>
+        <label id="Stats_Descriptives" lang="en">Statistics</label>
+        <label id="Assets_list" lang="fr">Liste des vidéos</label>
+        <label id="Assets_list" lang="en">List of videos</label>
     </labels>
     
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->

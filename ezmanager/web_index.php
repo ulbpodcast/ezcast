@@ -173,7 +173,15 @@ else {
             $service = true;
             requireController('reset_rss.php');
             break;
-
+        
+        case 'view_stats':
+            requireController('view_stats.php');
+            break;
+        
+        case 'view_ezplayer_link':
+            requireController('view_ezplayer_link.php');
+            break;
+        
         //The users wants to upload an asset into the current album, show lets show him the upload form
         case 'submit_media_progress_bar':
             $service = true;

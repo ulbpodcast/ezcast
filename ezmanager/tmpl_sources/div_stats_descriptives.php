@@ -25,19 +25,22 @@
 */
 ?>
 
-
-<!-- 
-This is the popup displaying the URL to the HD RSS feed.
-You should not have to use this file on your own; if you do, make sure the variable $hd_rss_url is defined
--->
-<!--<div class="popup" id="HD_RSS_box" style="width:600px;">
-    <h2>®HD_RSS_feed®</h2>
-    ®HD_RSS_feed_URL_message® <br/><br/>
-    <strong><a href="<?php // echo $hd_rss_url; ?>"><?php // echo $hd_rss_url; ?></a><br/><br/></strong>
-        
-    <div id="wrapper_clip" style="position:relative">
-        <span id="copy_button_hd_rss" class="Bouton"><a><span id="copy_button_text_hd_rss">®Copy_to_clipboard®</span></a></span>
-        <div class="clipboard" id="zero_clipboard_hd_rss" data-clipboard-text="<?php // echo $hd_rss_url; ?>" onmouseout="getElementById('copy_button_text_hd_rss').style.color='#797676'" onmouseover="getElementById('copy_button_text_hd_rss').style.color='#004B93'" style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99"></div>
+<div id="div_stats_descriptives">
+    <div class="BlocPodcastMenu">
+        <h2 style="text-align: center;">®Stats_Descriptives®</h2>
+        <ul style="list-style: none;">
+            <li>Nombre d'accès aux vidéos: <b>?</b></li>
+            <li>Nombre de signets déposés sur les vidéos: <b>?</b></li>
+            <li>Nombre de discussions sur les vidéos: <b>?</b></li>
+            <li>Durée moyenne de visionnage: <b>?</b></li>
+            <li>
+                Top vidéos:
+                <ul style="padding: 0px 25px;">
+                    <li>Vidéo 1 <span class="badge">10 vues</span></li>
+                    <li>Vidéo 2 <span class="badge">5 vues</span></li>
+                    <li>Vidéo Test <span class="badge">1 vue</span></li>
+                </ul>
+            </li>
+        </ul>
     </div>
-</div>-->
-
+</div>

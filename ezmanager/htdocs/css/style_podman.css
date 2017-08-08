@@ -938,6 +938,12 @@ body{
         border-right: 1px solid #CFCFCF;
 }
 
+#div_album_header {
+    border-bottom-width: thin;
+    border-bottom-style: dotted;
+    border-bottom-color: #CFCFCF;
+}
+
 .TitreCour{
    /*     color:#004B93; */
         color: #004C93;
@@ -953,12 +959,15 @@ body{
 }
 
 .BlocPodcastMenu{
-	/*position:absolute;*/
-	border-top-width: thin;
-	border-top-style: dotted;
-	border-top-color: #CFCFCF;
-	width:643px;
-	margin-left:1px;
+    /*position:absolute;*/
+    margin-left:1px;
+}
+
+#div_asset_list .BlocPodcastMenu {
+    border-top-width: thin;
+    border-top-style: dotted;
+    border-top-color: #CFCFCF;
+    width:643px;
 }
 
 .BlocPodcastMenu h1{
@@ -1490,7 +1499,7 @@ a.info:hover span{
 .Bouton{
 	background:transparent url(../images/page4/BoutonRight.png) no-repeat scroll top right;
 	line-height:25px;
-        padding-top: 3px;
+        padding-top: 5px;
 	padding-bottom: 7px;
 	padding-right:11px;
 	font-size:14px;
@@ -1591,3 +1600,21 @@ a.greyLink.ezplayer:hover {
     padding: 3px; 
 }
 
+#div_ezplayer_url, #div_stats_descriptives {
+    padding: 10px;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #777;
+    border-radius: 10px;
+}

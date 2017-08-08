@@ -36,7 +36,12 @@ Before calling this template, please define the following variables:
 -->
 <div id="div_album_header">
     <div class="BlocInfoAlbum">
-            <div class="BoutonInfoAlbum"> <span class="TitreCour"><?php echo $album_name; ?> | <?php echo $description; ?> | <?php if($public_album) echo '®Public_album®'; else echo '®Private_album®'; ?></span>
+            <div class="BoutonInfoAlbum"> 
+                <span class="TitreCour">
+                    <?php echo $album_name; ?> | 
+                    <?php echo $description; ?> | 
+                    <?php ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
+                </span>
                 
                 <!-- drop-down menu -->
                 <div id="advanced_menu">
@@ -44,33 +49,67 @@ Before calling this template, please define the following variables:
                         <li>
                             <div onclick="show_advanced_menu()"></div>
                             <ul class="submenu">
-                                <li><span class="BoutonSuppAlbum"><a href="javascript:show_popup_from_inner_div('#popup_delete_album')">®Delete_album®</a></span></li>
-                                <li><span class="BoutonEditer"><a href="javascript:show_popup_from_outer_div('index.php?action=view_edit_album')">®Edit_album®</a></span></li>
-                                <li><span class="BoutonRSS"><a href="javascript:show_popup_from_inner_div('#popup_reset_rss_feed')">®Regenerate_RSS®</a></span></li>
+                                <li>
+                                    <span class="BoutonSuppAlbum">
+                                        <a href="javascript:show_popup_from_inner_div('#popup_delete_album')">
+                                            ®Delete_album®
+                                        </a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="BoutonEditer">
+                                        <a href="javascript:show_popup_from_outer_div('index.php?action=view_edit_album')">
+                                            ®Edit_album®
+                                        </a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="BoutonRSS">
+                                        <a href="javascript:show_popup_from_inner_div('#popup_reset_rss_feed')">
+                                            ®Regenerate_RSS®
+                                        </a>
+                                    </span>
+                                </li>
                             </ul>
                         </li>
                     </ul>
                 </div>
                 
                 <ul>
-                    <li><span class="BoutonSoumettreAlbum"><a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');">®Submit_record®</a></span></li>
+                    <li>
+                        <span class="BoutonSoumettreAlbum">
+                            <a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');">
+                                ®Submit_record®
+                            </a>
+                        </span>
+                    </li>
                 </ul>
             </div>
-            <a class="greyLink" style="padding-left: 15px; border: none; font-size: 0.75em" href="javascript:show_popup_from_inner_div('#HD_RSS_box'); ">
-                <img src="images/page4/PictoRss.png" style="display:inline"/> ®HD_RSS_feed®</a> 
-            <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#SD_RSS_box'); ">
-                <img src="images/page4/PictoRss.png" style="display:inline"/> ®SD_RSS_feed®</a> 
-            <a class="greyLink ezplayer" style="font-size:0.75em;<?php if(!$public_album) echo "color: red !important;"?>" href="javascript:show_popup_from_inner_div('#player_url_box');">
-                    <img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®</a>
-
+            <a class="greyLink" style="padding-left: 15px; border: none; font-size:0.75em;"
+               href="javascript:show_album_details('<?php echo $album; ?>');">
+                    <img src="images/page4/list.png" style="display:inline"/> ®Assets_list®
+            </a>
+            <a class="greyLink ezplayer" style="font-size:0.75em;
+                <?php if(!$public_album) echo "color: red !important;" ?>" 
+               href="javascript:show_ezplayer_link('<?php echo $album; ?>');">
+                    <img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®
+            </a>
+            <a class="greyLink" style="font-size: 0.75em" 
+               href="javascript:show_stats_descriptives('<?php echo $album; ?>'); ">
+                <img src="images/page4/stats.png" style="display:inline"/>  ®Stats_Descriptives®
+            </a> 
+            <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#RSS_box'); ">
+                <img src="images/page4/PictoRss.png" style="display:inline"/> ®RSS_feed®
+            </a>
     </div>
 
     <!-- Popups -->
     <div style="display: none;">
         <?php include_once 'popup_player_url.php'; ?>
-        <?php include_once 'popup_hd_rss_feed.php'; ?>
+        <?php // include_once 'popup_hd_rss_feed.php'; ?>
         <?php include_once 'popup_sd_rss_feed.php'; ?>
         <?php include_once 'popup_delete_album.php'; ?>
         <?php include_once 'popup_reset_rss_feed.php'; ?>
+        <?php include_once 'popup_stats_descriptives.php'; ?>
     </div>
 </div>

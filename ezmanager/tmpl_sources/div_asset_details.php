@@ -135,19 +135,26 @@ function print_info($info, $suffix = '') {
         <span class="infospodast">®Title®&nbsp;:</span> 
         <span id="title_<?php echo $asset; ?>"><?php print_info($title); ?></span>
         <!-- Edit form -->
-        <span id="title_<?php echo $asset; ?>_edit" style="display: none;"><input type="text" name="title" id="title_<?php echo $asset; ?>_input" value="<?php echo htmlentities($title, ENT_COMPAT, "UTF-8"); ?>" /></span>
+        <span id="title_<?php echo $asset; ?>_edit" style="display: none;">
+            <input type="text" name="title" id="title_<?php echo $asset; ?>_input" 
+                   value="<?php echo htmlentities($title, ENT_COMPAT, "UTF-8"); ?>" />
+        </span>
     </p>
     <p>
         <span class="infospodast">®Description®&nbsp;:</span> 
         <span id="description_<?php echo $asset; ?>"><?php print_info($description); ?></span>
         <!-- Edit form -->
-        <span id="description_<?php echo $asset; ?>_edit" style="display: none;"><textarea name="description" id="description_<?php echo $asset; ?>_input"><?php echo htmlentities($description, ENT_COMPAT, "UTF-8"); ?></textarea></span>
+        <span id="description_<?php echo $asset; ?>_edit" style="display: none;">
+            <textarea name="description" 
+                      id="description_<?php echo $asset; ?>_input"><?php echo htmlentities($description, ENT_COMPAT, "UTF-8"); ?>
+            </textarea>
+        </span>
 
     </p>
     <p><span class="infospodast">®Author®&nbsp;:</span> <?php print_info($author); ?></p>
     <p><span class="infospodast">®Date®&nbsp;:</span> <?php print_info($date); ?></p>
     <p><span class="infospodast">®Origin®&nbsp;:</span> <?php if ($origin == 'SUBMIT') echo '®Manual_submit®';
-else print_info($origin); ?></p>
+    else print_info($origin); ?></p>
 <?php if ($status == 'processing') {
     ?>
         <p><span class="infospodast">®Status®&nbsp;:</span> <span style="color: #75940a;">®Processing®</span></p>

@@ -97,17 +97,12 @@ Before calling this template, please define the following variables:
             <a class="greyLink" style="font-size: 0.75em" 
                href="javascript:show_stats_descriptives('<?php echo $album; ?>'); ">
                 <img src="images/page4/stats.png" style="display:inline"/>  ®Stats_Descriptives®
-            </a> 
-            <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#RSS_box'); ">
-                <img src="images/page4/PictoRss.png" style="display:inline"/> ®RSS_feed®
             </a>
     </div>
 
     <!-- Popups -->
     <div style="display: none;">
         <?php include_once 'popup_player_url.php'; ?>
-        <?php // include_once 'popup_hd_rss_feed.php'; ?>
-        <?php include_once 'popup_sd_rss_feed.php'; ?>
         <?php include_once 'popup_delete_album.php'; ?>
         <?php include_once 'popup_reset_rss_feed.php'; ?>
         <?php include_once 'popup_stats_descriptives.php'; ?>

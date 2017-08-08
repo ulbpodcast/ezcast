@@ -40,7 +40,7 @@
                 </a>
             </strong>
         </center>
-        <br/><br/>
+        <br/>
 
         <div id="wrapper_clip" style="position:relative;text-align: center;">
             <span id="copy_player_url" class="Bouton">
@@ -54,5 +54,56 @@
                  style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99">
             </div>
         </div>
+        <br/><br/><br/>
+        
+        <h2 style="text-align: center;">®SD_RSS_feed®</h2>
+        ®SD_RSS_feed_URL_message® <br/><br/>
+        <center>
+            <strong>
+                <a href="<?php echo $sd_rss_url; ?>"><?php echo $sd_rss_url; ?></a>
+            </strong>
+        </center>
+        <br/>
+
+        <div id="wrapper_clip" style="position:relative;text-align: center;">
+            <span id="copy_button_sd_rss" class="Bouton">
+                <a>
+                    <span id="copy_button_text_sd_rss">
+                        ®Copy_to_clipboard®
+                    </span>
+                </a>
+            </span>
+            <div class="clipboard" id="zero_clipboard_sd_rss" data-clipboard-text="<?php echo $sd_rss_url; ?>" 
+                 onmouseout="getElementById('copy_button_text_sd_rss').style.color='#797676'" 
+                 onmouseover="getElementById('copy_button_text_sd_rss').style.color='#004B93'" 
+                 style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99">
+            </div>
+        </div>
+        <br/><br/><br/>
+
+        <h2 style="text-align: center;">®HD_RSS_feed®</h2>
+        ®HD_RSS_feed_URL_message® <br/><br/>
+        <center>
+            <strong>
+                <a href="<?php echo $hd_rss_url; ?>"><?php echo $hd_rss_url; ?></a>
+            </strong>
+        </center>
+        <br/>
+
+        <div id="wrapper_clip" style="position:relative;text-align: center;">
+            <span id="copy_button_hd_rss" class="Bouton">
+                <a>
+                    <span id="copy_button_text_hd_rss">
+                        ®Copy_to_clipboard®
+                    </span>
+                </a>
+            </span>
+            <div class="clipboard" id="zero_clipboard_hd_rss" data-clipboard-text="<?php echo $hd_rss_url; ?>" 
+                 onmouseout="getElementById('copy_button_text_hd_rss').style.color='#797676'" 
+                 onmouseover="getElementById('copy_button_text_hd_rss').style.color='#004B93'" 
+                 style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99">
+            </div>
+        </div>
+        
     </div>
 </div>

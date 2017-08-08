@@ -161,8 +161,8 @@
         <label id="SD_RSS_feed" lang="en">Low resolution RSS feed</label>
         <label id="RSS_feed" lang="fr">Flux RSS</label>
         <label id="RSS_feed" lang="en">RSS feed</label>
-        <label id="Player_url" lang="fr">Lien de diffusion</label>
-        <label id="Player_url" lang="en">Broadcast link</label>
+        <label id="Player_url" lang="fr">Diffusion</label>
+        <label id="Player_url" lang="en">Broadcast</label>
         <label id="Processing" lang="fr">en cours de traitement</label>
         <label id="Processing" lang="en">processing</label>
         <label id="Manual_submit" lang="fr">Soumission manuelle</label>

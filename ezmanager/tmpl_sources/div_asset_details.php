@@ -216,8 +216,6 @@ function print_info($info, $suffix = '') {
                data-remote="false" data-toggle="modal" data-target="#modal">
                 EZplayer
             </a>
-            
-            <a href="javascript:show_popup_from_outer_div('');"></a> 
         </span>
     <?php }
     ?>

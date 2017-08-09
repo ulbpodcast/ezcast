@@ -27,20 +27,24 @@
 
 <div id="div_stats_descriptives">
     <div class="BlocPodcastMenu">
+        
         <h2 style="text-align: center;">®Stats_Descriptives®</h2>
-        <ul style="list-style: none;">
-            <li>Nombre d'accès aux vidéos: <b>?</b></li>
-            <li>Nombre de signets déposés sur les vidéos: <b>?</b></li>
-            <li>Nombre de discussions sur les vidéos: <b>?</b></li>
-            <li>Durée moyenne de visionnage: <b>?</b></li>
-            <li>
-                Top vidéos:
-                <ul style="padding: 0px 25px;">
-                    <li>Vidéo 1 <span class="badge">10 vues</span></li>
-                    <li>Vidéo 2 <span class="badge">5 vues</span></li>
-                    <li>Vidéo Test <span class="badge">1 vue</span></li>
-                </ul>
-            </li>
-        </ul>
+        <br />
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>Nombre d'accès aux vidéos</td>
+                    <td>6561</td> 
+                </tr>
+                <tr>
+                    <td>Nombre de signets déposés sur les vidéos</td>
+                    <td>2</td> 
+                </tr>
+                <tr>
+                    <td>Nombre de discussions sur les vidéos</td>
+                    <td>9</td> 
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

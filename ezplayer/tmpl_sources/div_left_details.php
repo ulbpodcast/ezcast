@@ -111,8 +111,9 @@ switch (strtolower($_SESSION['browser_name'])) {
         </video>
 
         <?php if ($asset_meta['record_type'] == 'camslide') { ?>
-
-            <video id="secondary_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" preload="metadata" type="video/mp4">
+            <video id="secondary_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls 
+                   controlsList="nodownload" src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" 
+                   preload="metadata" type="video/mp4">
             </video>
         <?php } ?>
 

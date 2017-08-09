@@ -34,8 +34,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
         <div>
             <div class="ListButon BoutonSoumettreAlbum">
                 <a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');"> 
-                    <?php echo $date; ?> 
-                    <span class="TitrePodcast" id="Add"> 
+                    <span class="TitrePodcast"> 
                         ®Submit_record®
                     </span> 
                 </a> 

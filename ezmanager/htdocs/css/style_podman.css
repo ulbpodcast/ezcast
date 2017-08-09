@@ -995,6 +995,7 @@ body{
 .BlocPodcastMenu{
     /*position:absolute;*/
     margin-left:1px;
+    font-size: 0.85em;
 }
 
 #div_asset_list .BlocPodcastMenu {
@@ -1018,6 +1019,19 @@ body{
 	color:#000000;
 	margin-left:10px;
 	line-height:15px;
+}
+
+.BlocPodcastMenu table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 #div_content {

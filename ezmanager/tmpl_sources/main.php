@@ -60,10 +60,6 @@
                 }
             }
 
-            function show_advanced_menu() {
-                $('#dropdown_menu .submenu').toggle();
-            }
-
             function is_touch_device() {
                 return !!('ontouchstart' in window) // works on most browsers 
                         || !!('onmsgesturechange' in window); // works on ie10

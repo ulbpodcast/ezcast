@@ -45,35 +45,31 @@ Before calling this template, please define the following variables:
                 
                 <!-- drop-down menu -->
                 <div id="advanced_menu">
-                    <ul id="dropdown_menu">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
                         <li>
-                            <div onclick="show_advanced_menu()"></div>
-                            <ul class="submenu">
-                                <li>
-                                    <span class="BoutonSuppAlbum">
-                                        <a href="javascript:show_popup_from_inner_div('#popup_delete_album')">
-                                            ®Delete_album®
-                                        </a>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span class="BoutonEditer">
-                                        <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
-                                           data-target="#modal">
-                                            ®Edit_album®
-                                        </a>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span class="BoutonRSS">
-                                        <a href="javascript:show_popup_from_inner_div('#popup_reset_rss_feed')">
-                                            ®Regenerate_RSS®
-                                        </a>
-                                    </span>
-                                </li>
-                            </ul>
+                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php echo $album_name; ?>" 
+                                data-remote="false" data-toggle="modal" data-target="#modal">
+                                <img src="images/page4/iconSuppBackg.png"> ®Delete_album®
+                            </a>
                         </li>
-                    </ul>
+                        <li>
+                            <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
+                                data-target="#modal">
+                                <img src="images/page4/iconEditerBackg.png"> ®Edit_album®
+                             </a>
+                        </li>
+                        <li>
+                            <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php echo $album_name; ?>" 
+                                data-remote="false" data-toggle="modal" data-target="#modal">
+                                <img src="images/page4/iconRssBackg.png"> ®Regenerate_RSS®
+                            </a>
+                        </li>
+                      </ul>
+                    </div>
                 </div>
             </div>
             <ul class="nav nav-tabs">
@@ -104,7 +100,6 @@ Before calling this template, please define the following variables:
 
     <!-- Popups -->
     <div style="display: none;">
-        <?php include_once 'popup_delete_album.php'; ?>
         <?php include_once 'popup_reset_rss_feed.php'; ?>
         <?php include_once 'popup_stats_descriptives.php'; ?>
     </div>

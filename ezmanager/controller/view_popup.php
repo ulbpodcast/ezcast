@@ -33,6 +33,14 @@ function index($param = array()) {
             popup_new_album();
             break;
 
+        case 'delete_album':
+            popup_delete_album();
+            break;
+        
+        case 'reset_rss_feed':
+            reset_rss_feed();
+            break;
+        
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
             die;
@@ -102,8 +110,13 @@ function popup_embed_code() {
     $iframe_height = $metadata['height'] + 40;
     $iframe_width = $metadata['width'] + 30;
     // Embed code
-    $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
-    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height . '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' . $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' . $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() . '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';
+    $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . 
+            '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
+    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height . 
+            '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' . 
+            $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' . 
+            $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() . 
+            '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';
     $embed_code = htmlentities($embed_code_web, ENT_COMPAT, 'UTF-8');
 
     // Displaying the popup
@@ -190,4 +203,24 @@ function popup_ulb_code() {
 function popup_new_album() {
     $not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
     require_once template_getpath('popup_new_album.php');
+}
+
+function popup_delete_album() {
+    global $input;
+    if(!isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=delete_album&amp;album=ALBUM';
+        die;
+    }
+    $album_name = $input['album'];
+    require_once template_getpath('popup_delete_album.php');
+}
+
+function reset_rss_feed() {
+    global $input;
+    if(!isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=ALBUM';
+        die;
+    }
+    $album = $input['album'];
+    require_once template_getpath('popup_reset_rss_feed.php');
 }

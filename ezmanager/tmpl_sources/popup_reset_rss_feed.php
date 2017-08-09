@@ -31,13 +31,13 @@ DEPRECATED
 Pops up for resetting RSS feed
 You should not have to include this file yourself.
 -->
-<div class="popup" id="popup_reset_rss_feed">
-    <h2>®Regenerate_RSS®?</h2>
-    <span class="warning">®Non_reversible_operation®</span><br/><br/>
-    <div>®Regenerate_RSS_message®</div><br/>
-     <span class="Bouton"><a href="?action=view_help" target="_blank"><span>®Help®</span></a></span>
-         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <span class="Bouton"><a href="javascript:close_popup();"><span>®Cancel®</span></a></span>
-         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <span class="Bouton"><a href="javascript:popup_regenerate_rss_callback('<?php echo $album; ?>');"><span>®OK®</span></a></span>
+<div class="modal-header">®Regenerate_RSS®</div>
+<div class="modal-body">
+    <div class="alert alert-warning" role="alert">®Non_reversible_operation®</div>
+    <p>®Regenerate_RSS_message®</p><br />
+    <center>
+        <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
+        <a class="btn btn-default" href="javascript:popup_regenerate_rss_callback('<?php echo $album; ?>');" >®OK®</a>
+    </center>
 </div>

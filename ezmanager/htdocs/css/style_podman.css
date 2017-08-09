@@ -380,14 +380,6 @@ body{
 
 }
 
-.BoutonInfoAlbum ul{
-    margin-top:10px;
-}
-
-.BoutonInfoAlbum li{
-    display:inline-block;
-}
-
 .BoutonSuppAlbum a{
     display:block;
     background-image:url(../images/page4/ASuppBackg.png);
@@ -1479,53 +1471,7 @@ a.greyLink.ezplayer:hover {
 /* Menu déroulant - album header */
 #advanced_menu {
     float: right;
-}
-
-#dropdown_menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
-
-#dropdown_menu li {
-    float: left;
-    width: 170px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
-
-#dropdown_menu li div, .settings{
-    float: right;
-    display: inline;
-    padding-right: 10px;
-    cursor: pointer;
-    background:transparent url(../images/page4/ASettings.png) no-repeat;  
-    width: 25px;
-    height: 25px;
-    margin-top: -5px;
-}
-
-#dropdown_menu li div:hover, .settings:hover{
-    background:transparent url(../images/page4/BSettings.png) no-repeat;  
-}
-
-#dropdown_menu .submenu {
-    display: none;
-    list-style-type: none;
-    margin-top: 20px;
-    position: absolute;
-    background-color: white;
-    border: dotted;
-    border-width: 1px;
-    border-color: #797676;
-}
-
-#dropdown_menu .submenu li {
-    float: none;
-    margin: 0;
-    padding: 3px; 
+    margin-right: 4px;
 }
 
 #div_ezplayer_url, #div_stats_descriptives {
@@ -1562,4 +1508,5 @@ a.greyLink.ezplayer:hover {
     text-align: center;
     word-wrap: normal;
     word-break: break-all;
+    resize: none;
 }

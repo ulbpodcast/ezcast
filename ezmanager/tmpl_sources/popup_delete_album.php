@@ -29,14 +29,14 @@
 Asks confirmation before deleting an album.
 You should not have to include this file yourself (included in div_album_header.php), but if you do, make sure that $album_name is correctly defined
 -->
-<div class="popup" id="popup_delete_album">
-    <h2>®Delete_album® <?php echo $album_name; ?>?</h2>
-    <span class="warning">®Destructive_operation®<br/><br/></span>
-    <div>®Delete_album_message®</div><br/>
-    
-    <span class="Bouton"> <a href="?action=view_help" target="_blank"><span>®Help®</span></a></span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span class="Bouton"> <a href="javascript:close_popup();"><span>®Cancel®</span></a></span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span class="Bouton"> <a href="javascript:show_popup_from_outer_div('index.php?action=delete_album&amp;album=<?php echo $album_name; ?>', true);"><span>®OK®</span></a></span>
+<div class="modal-header">®Delete_album® <?php echo $album_name; ?> ?</div>
+<div class="modal-body">
+    <div class="alert alert-warning" role="alert">®Destructive_operation®</div>
+    <p>®Delete_album_message®</p><br />
+    <center>
+        <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
+        <a class="btn btn-default" href="index.php?action=delete_album&amp;album=<?php echo $album_name; ?>" role="button"
+            data-remote="false" data-toggle="modal" data-target="#modal" >®OK®</a>
+    </center>
 </div>

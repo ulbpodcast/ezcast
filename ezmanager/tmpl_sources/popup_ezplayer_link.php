@@ -37,7 +37,7 @@ You should not have to use this file on your own; if you do, make sure the varia
         <?php echo $ezplayer_link; ?>
     </textarea><br />
     <div class="wrapper_clip" style="position:relative; text-align: center;">
-        <span id="share_time" onclick="copy_video_url();" class="copy-to-clipboard-button">
+        <span id="share_time" onclick="copy_video_url();" class="btn btn-default">
             <span id="share_valid" style="display: none">✔</span>
             ®Copy_to_clipboard®
         </span>

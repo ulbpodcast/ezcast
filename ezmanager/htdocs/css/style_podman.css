@@ -544,126 +544,65 @@ body{
 
 /*--Bouton triangle--*/
 
+.ListButon a {
+    display:block;
+    border-bottom-width: thin;
+    border-bottom-style: dotted;
+    border-bottom-color: #CFCFCF;
+    color:#444444;
+    height:20px;
+    background-repeat:no-repeat;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:bold;
+    padding-left:30px;
+    padding-top:3px;
+}
 
-.BoutonTriangle a{
-	display:block;
-	background-image:url(../images/page4/ATriangleBackg.png);
-	background-repeat:no-repeat;
-        border-bottom-width: thin;
-	border-bottom-style: dotted;
-	border-bottom-color: #CFCFCF;
-	color:#444444;
-	height:20px;
-	text-decoration:none;
-	font-size:14px;
-	font-weight:bold;
-	padding-left:30px;
-	padding-top:3px;
+.BoutonTriangle a{	
+    background-image:url(../images/page4/ATriangleBackg.png);
 }
 
 .BoutonTriangleProcessing a{
-	display:block;
-	background-image:url(../images/page4/TriangleVert.png);
-	background-repeat:no-repeat;
-        border-bottom-width: thin;
-	border-bottom-style: dotted;
-	border-bottom-color: #CFCFCF;
-	color:#444444;
-	height:20px;
-	text-decoration:none;
-	font-size:14px;
-	font-weight:bold;
-	padding-left:30px;
-	padding-top:3px;
+    background-image:url(../images/page4/TriangleVert.png);
 }
 
 .BoutonTriangleError a{
-	display:block;
-	background-image:url(../images/page4/TriangleRouge.png);
-	background-repeat:no-repeat;
-        border-bottom-width: thin;
-	border-bottom-style: dotted;
-	border-bottom-color: #CFCFCF;
-	color:#444444;
-	height:20px;
-	text-decoration:none;
-	font-size:14px;
-	font-weight:bold;
-	padding-left:30px;
-	padding-top:3px;
+    background-image:url(../images/page4/TriangleRouge.png);
 }
 
 .BoutonTriangle a:hover{
-	display:block;
-	background-image:url(../images/page4/BTriangleBackg.png);
-	background-repeat:no-repeat;
-	color:#004C93;
+    display:block;
+    background-image:url(../images/page4/BTriangleBackg.png);
+    background-repeat:no-repeat;
+    color:#004C93;
 }
 
 .BoutonTriangleProcessing a:hover{
-	display:block;
+    display:block;
     background-image:url(../images/page4/TriangleVert.png);
-	background-repeat:no-repeat;
-	color:#75940a;
+    background-repeat:no-repeat;
+    color:#75940a;
 }
 
 .BoutonTriangleError a:hover{
-	display:block;
+    display:block;
     background-image:url(../images/page4/TriangleRouge.png);
-	background-repeat:no-repeat;
-	color:#ff0000;
+    background-repeat:no-repeat;
+    color:#ff0000;
 }
 
 
 .BoutonTriangleClic a{
-	display:block;
     background-image:url(../images/page4/CTriangleBackg.png);
-    background-color:#004C93;
-	background-repeat:no-repeat;
-        border-bottom-width: thin;
-	border-bottom-style: dotted;
-	border-bottom-color: #CFCFCF;
-	color:#FFFFFF;
-	height:20px;
-	text-decoration:none;
-	font-size:14px;
-	font-weight:bold;
-	padding-left:30px;
-	padding-top:3px;
 }
 
 .BoutonTriangleClicProcessing a{
-	display:block;
-	background-image:url(../images/page4/TriangleVertBas.png);
-    background-color:#004C93;
-	background-repeat:no-repeat;
-        border-bottom-width: thin;
-	border-bottom-style: dotted;
-	border-bottom-color: #CFCFCF;
-	color:#75940a;
-	height:20px;
-	text-decoration:none;
-	font-size:14px;
-	font-weight:bold;
-	padding-left:30px;
-	padding-top:3px;
+    background-image:url(../images/page4/TriangleVertBas.png);
 }
 
 .BoutonTriangleClicError a{
-	display:block;
-	background-image:url(../images/page4/TriangleRougeBas.png);
-    background-color:#004C93;
-	background-repeat:no-repeat;
-        border-bottom-width: thin;
-	border-bottom-style: dotted;
-	border-bottom-color: #CFCFCF;
-	color:#ff0000;
-	height:20px;
-	text-decoration:none;
-	font-size:14px;
-	font-weight:bold;
-	padding-left:30px;
-	padding-top:3px;
+    background-image:url(../images/page4/TriangleRougeBas.png);
 }
 
 

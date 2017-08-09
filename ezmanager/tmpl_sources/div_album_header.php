@@ -74,16 +74,6 @@ Before calling this template, please define the following variables:
                         </li>
                     </ul>
                 </div>
-                
-                <ul>
-                    <li>
-                        <span class="BoutonSoumettreAlbum">
-                            <a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');">
-                                ®Submit_record®
-                            </a>
-                        </span>
-                    </li>
-                </ul>
             </div>
             <a class="greyLink" style="padding-left: 15px; border: none; font-size:0.75em;"
                href="javascript:show_album_details('<?php echo $album; ?>');">

@@ -31,6 +31,17 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
 -->
 <div id="div_asset_list">
     <div class="BlocPodcastMenu">
+        <div>
+            <div class="ListButon BoutonSoumettreAlbum">
+                <a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');"> 
+                    <?php echo $date; ?> 
+                    <span class="TitrePodcast" id="Add"> 
+                        ®Submit_record®
+                    </span> 
+                </a> 
+            </div>
+        </div>
+        
         <?php
         require_once 'lib_various.php';
         // Note: we can't use foreach() here because assets are ordered by date, oldest first,
@@ -49,75 +60,72 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 $date = get_user_friendly_date($metadata['record_date'], '-', false);
                 $date = substr($date, 0, -6);
                 if ($metadata['origin'] === 'streaming'){ ?>
-                                    <div>
-                  
-                    <div id="asset_<?php echo $asset_name; ?>" 
-                         class="BoutonTriangleProcessing"> 
-                        <a href="javascript:show_asset_details('<?php echo $album_name_full; ?>', '<?php echo $asset_name; ?>');"> 
-                            LIVE
-                            <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
-                                | <?php echo htmlspecialchars($title); ?>
-                            </span> 
-                        </a> 
+                    <div>
+                        <div id="asset_<?php echo $asset_name; ?>" class="ListButon BoutonTriangleProcessing"> 
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 
+                                LIVE
+                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
+                                    | <?php echo htmlspecialchars($title); ?>
+                                </span> 
+                            </a> 
+                        </div>
+                        <div id="asset_<?php echo $asset_name ?>_clic" class="ListButon BoutonTriangleClicProcessing" style="display:none"> 
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');" >
+                                LIVE
+                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic"> 
+                                    | <?php echo htmlspecialchars($title); ?>
+                                </span> 
+                            </a>
+                        </div>
+                        <div id="asset_<?php echo $asset_name; ?>_details" class="asset_details" style="display: none;">
+                            <!-- Asset details go here -->
+                        </div>
                     </div>
-                    <div id="asset_<?php echo $asset_name ?>_clic" 
-                         class="BoutonTriangleClicProcessing" style="display:none"> 
-                        <a href="javascript:show_asset_details('<?php echo $album_name_full; ?>', '<?php echo $asset_name; ?>');" >
-                            LIVE
-                            <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic"> 
-                                | <?php echo htmlspecialchars($title); ?>
-                            </span> 
-                        </a>
+                <?php } else { ?>
+                    <div>
+                        <input class="custom-checkbox" name="asset_downloadable" id="is_downloadable_<?php echo $asset_name; ?>" 
+                            title="®Allow_download®" type="checkbox" 
+                            onchange="asset_downloadable_set('<?php echo $album_name . (($public_album) ? '-pub' : '-priv') . "', '" .
+                                $asset_name; ?>')" 
+                            <?php echo ($metadata['downloadable'] !== 'false') ? 'checked' : '' ?> >                    
+                        <label onclick="$('#is_downloadable_<?php echo $asset_name; ?>').click();" title="®Allow_download®" >
+                        </label>
+                        <?php if(isset($metadata['scheduled']) && $metadata["scheduled"] == true){ ?>
+                            <img src="images/page4/sched.png" style="float: right; width: 15px; padding: 3px;" 
+                                title="<?php echo $metadata['schedule_date']; ?>">
+                        <?php } ?>
+                        <div id="asset_<?php echo $asset_name; ?>" class="ListButon BoutonTriangle<?php 
+                            if ($status == 'failed') {
+                                echo 'Error';
+                            } else if ($status == 'processing') {
+                                echo 'Processing';
+                            } ?>"> 
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 
+                                <?php echo $date; ?> 
+                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
+                                    | <?php echo htmlspecialchars($title); ?>
+                                </span> 
+                            </a> 
+                        </div>
+                        <div id="asset_<?php echo $asset_name ?>_clic" style="display:none" class="ListButon BoutonTriangleClic<?php 
+                            if ($status == 'failed') {
+                                echo 'Error';
+                            } else if ($status == 'processing') {
+                                echo 'Processing';
+                            } ?>"> 
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');" >
+                                <?php echo $date; ?>
+                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic"> 
+                                    | <?php echo htmlspecialchars($title); ?>
+                                </span> 
+                            </a>
+                        </div>
+                        <div id="asset_<?php echo $asset_name; ?>_details" class="asset_details" style="display: none;">
+                            <!-- Asset details go here -->
+                        </div>
                     </div>
-                    <div id="asset_<?php echo $asset_name; ?>_details" class="asset_details" style="display: none;">
-                        <!-- Asset details go here -->
-                    </div>
-                </div>
-                <?php } else {
-                ?>
-                <div>
-                    <input class="custom-checkbox" name="asset_downloadable" id="is_downloadable_<?php echo $asset_name; ?>" title="®Allow_download®" type="checkbox" 
-                           onchange="asset_downloadable_set('<?php echo $album_name . (($public_album) ? '-pub' : '-priv'); ?>', '<?php echo $asset_name; ?>')" <?php echo ($metadata['downloadable'] !== 'false') ? 'checked' : '' ?>
-                           >                    
-                    <label onclick="$('#is_downloadable_<?php echo $asset_name; ?>').click();" title="®Allow_download®" >
-                    </label>
-                    <?php if(isset($metadata['scheduled']) && $metadata["scheduled"] == true){ ?>
-                    <img src="images/page4/sched.png" style="float: right; width: 15px; padding: 3px;" title="<?php echo $metadata['schedule_date']; ?>">
-                    <?php } ?>
-                    <div id="asset_<?php echo $asset_name; ?>" 
-                         class="BoutonTriangle<?php if ($status == 'failed')
-                       echo 'Error';
-                   else if ($status == 'processing')
-                       echo 'Processing';
-                           ?>"> 
-                        <a href="javascript:show_asset_details('<?php echo $album_name_full; ?>', '<?php echo $asset_name; ?>');"> 
-        <?php echo $date; ?> 
-                            <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
-                                | <?php echo htmlspecialchars($title); ?>
-                            </span> 
-                        </a> 
-                    </div>
-                    <div id="asset_<?php echo $asset_name ?>_clic" 
-                         class="BoutonTriangleClic<?php if ($status == 'failed')
-            echo 'Error';
-        else if ($status == 'processing')
-            echo 'Processing';
-        ?>" style="display:none"> 
-                        <a href="javascript:show_asset_details('<?php echo $album_name_full; ?>', '<?php echo $asset_name; ?>');" >
-        <?php echo $date; ?>
-                            <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic"> 
-                                | <?php echo htmlspecialchars($title); ?>
-                            </span> 
-                        </a>
-                    </div>
-                    <div id="asset_<?php echo $asset_name; ?>_details" class="asset_details" style="display: none;">
-                        <!-- Asset details go here -->
-                    </div>
-                </div>
-        <?php
-        }
-    }
-}
-?>
+                <?php }
+            } // Foreach
+        } // If asset ?>
     </div>
 </div>

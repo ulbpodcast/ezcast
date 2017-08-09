@@ -31,13 +31,15 @@ This is the popup displaying the embed code for the video
 You should not have to use this file on your own; if you do, make sure the variables $embed_code and $link_target are defined
 -->
 
-<div class="modal-header">®Embed®</div>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Embed®</h4>
+</div>
 <div class="modal-body">
     <p>®embed_code_message®</p>
 
-    <textarea readonly="" class="form-control" onclick="this.select()" id="share_time_link">
-        <?php echo $link_target; ?>
-    </textarea><br />
+    <textarea readonly="" class="form-control" onclick="this.select()" id="share_time_link"><?php echo $link_target; ?></textarea>
+    <br />
     <div class="wrapper_clip" style="position:relative; text-align: center;">
         <span id="share_time" onclick="copy_video_url();" class="btn btn-default">
             <span id="share_valid" style="display: none">✔</span>

@@ -35,7 +35,10 @@ make sure $not_created_albums_with_descriptions is initialized and is an array c
 for every album the user can create.
 -->
 
-<div class="modal-header">®Create_album®</div>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Create_album®</h4>
+</div>
 <div class="modal-body">
     <?php if(empty($not_created_albums_with_descriptions)) {
         echo "<p>®All_albums_already_created®</p>";
@@ -43,24 +46,25 @@ for every album the user can create.
         echo "<p>®Create_album_message®</p>";
     }
     ?>
-    <table>
-        <?php foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
-            // Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
-            // with an action "create_album". Once the processing is over, this div will be updated with the confirmation message.
-            echo '<tr>';
-                echo '<td class="album_name">';
-                    echo '<a href="index.php?action=create_album&amp;album' . $album_name . '" '
-                            . 'data-remote="false" data-toggle="modal" data-target="#modal" >';
-                    echo $album_name;
-                    echo '</a>';
-                echo '</td>';
-                echo '<td class="album_description">';
-                    echo '<a href="index.php?action=create_album&amp;album=' . $album_name .'" '
-                            . 'data-remote="false" data-toggle="modal" data-target="#modal">';
-                    echo $album_description;
-                    echo '</a>';
-                echo '</td>';
-            echo '</tr>';
-        } ?>
-    </table>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <table class="table table-hover text-center" >
+                <?php foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
+                    // Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
+                    // with an action "create_album". Once the processing is over, this div will be updated with the confirmation message.
+                    echo '<tr>';
+                        echo '<td class="album_name" style="font-weight: bold;">';
+                            echo '<a href="index.php?action=create_album&amp;album' . $album_name . '" '
+                                    . 'data-remote="false" data-toggle="modal" data-target="#modal" >';
+                            echo $album_name;
+                            echo '</a>';
+                        echo '</td>';
+                        echo '<td class="album_description">';
+                            echo $album_description;
+                        echo '</td>';
+                    echo '</tr>';
+                } ?>
+            </table>
+        </div>
+    </div>
 </div>

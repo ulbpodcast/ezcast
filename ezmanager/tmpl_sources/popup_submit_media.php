@@ -33,24 +33,73 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 }
 ?>
 
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Submit_record®</h4>
+</div>
+<form action="<?php echo $domain_name; ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" onsubmit="return false" target="uploadFrame">
+    <div class="modal-body form-horizontal">
+        <input type="hidden" id="action" name="action" value="submit_media"/>
+        <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
+        <input type="hidden" id="moderation" name="moderation" value="<?php echo ($moderation) ? 'true' : 'false'; ?>"/>
+        <script> // Render and style the file input 
+            initFileUploads()
+        </script>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label">®Album®</label>
+            <div class="col-sm-9">
+                <p class="form-control-static">
+                    <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
+                </p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="type" id="submit_type" class="col-sm-3 control-label">®Type®</label>
+            <div class="col-sm-9">
+                <select class="form-control" name="type" id="type" onchange="show_file_input();">
+                    <option selected="selected"  value="cam">®cam®</option>
+                    <option value="slide">®slide®</option>
+                    <option value="camslide">®camslide®</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">
+                ®Title®
+                <p class="help-block">®Title_info®</p>
+            </label>
+            <div class="col-sm-9">
+                <input id="title" name="title" class="form-control" type="text" maxlength="70"/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">
+                ®Description®
+                <p class="help-block">®Description_info®</p>
+            </label>
+            <div class="col-sm-9">
+                <textarea id="description" class="form-control" name="description" rows="4" style="resize: vertical;"></textarea>
+            </div>
+        </div>
+        
+    </div>
+</form>
+    
+    
+
 <div class="popup" id="submit_media" style="width: 415px;height: 665px;">
     <h2 style="display:inline;">®Submit_record®</h2>
 
     <div id="form">
-        <form action="<?php
-        echo $domain_name;
-        ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" onsubmit="return false" target="uploadFrame">
+        <form action="<?php echo $domain_name; ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" onsubmit="return false" target="uploadFrame">
             <input type="hidden" id="action" name="action" value="submit_media"/>
             <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
             <input type="hidden" id="moderation" name="moderation" value="<?php echo ($moderation) ? 'true' : 'false'; ?>"/>
             <!--input type="hidden" name="MAX_FILE_SIZE" value="1999999999" /-->
-
-            <script>
-                // Render and style the file input 
-                initFileUploads()
-            </script>
-
-            <p>Album&nbsp;: <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)</p>
 
             <br/>
 
@@ -83,7 +132,14 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 
             <div class="spacer"></div>
 
-            <span id="more_options_button" class="BoutonMoreOptions"><a onclick="getElementById('more_options_button').className == 'BoutonMoreOptionsClic' ? getElementById('more_options_button').className = 'BoutonMoreOptions' : getElementById('more_options_button').className = 'BoutonMoreOptionsClic'" href="javascript:show_div('more_options_div')">®More_options®</a></span>
+            <span id="more_options_button" class="BoutonMoreOptions">
+                <a onclick="getElementById('more_options_button').className == 'BoutonMoreOptionsClic' ? 
+                    getElementById('more_options_button').className = 'BoutonMoreOptions' : 
+                    getElementById('more_options_button').className = 'BoutonMoreOptionsClic'" 
+                    href="javascript:show_div('more_options_div')">
+                    ®More_options®
+                </a>
+            </span>
             <br />
             <div class="spacer"></div>
 

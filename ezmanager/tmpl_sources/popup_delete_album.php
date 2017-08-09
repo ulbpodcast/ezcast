@@ -29,7 +29,10 @@
 Asks confirmation before deleting an album.
 You should not have to include this file yourself (included in div_album_header.php), but if you do, make sure that $album_name is correctly defined
 -->
-<div class="modal-header">®Delete_album® <?php echo $album_name; ?> ?</div>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Delete_album® <?php echo $album_name; ?> ?</h4>
+</div>
 <div class="modal-body">
     <div class="alert alert-warning" role="alert">®Destructive_operation®</div>
     <p>®Delete_album_message®</p><br />

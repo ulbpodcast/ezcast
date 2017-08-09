@@ -33,9 +33,9 @@ You should not have to use this file on your own; if you do, make sure the varia
 <div class="modal-body">
     <p>®EZplayer_link_message®</p>
 
-    <textarea readonly="" class="share_log_asset" onclick="this.select()" id="share_time_link">
+    <textarea readonly="" class="form-control" onclick="this.select()" id="share_time_link">
         <?php echo $ezplayer_link; ?>
-    </textarea>
+    </textarea><br />
     <div class="wrapper_clip" style="position:relative; text-align: center;">
         <span id="share_time" onclick="copy_video_url();" class="copy-to-clipboard-button">
             <span id="share_valid" style="display: none">✔</span>

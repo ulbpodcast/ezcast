@@ -104,7 +104,6 @@ Before calling this template, please define the following variables:
 
     <!-- Popups -->
     <div style="display: none;">
-        <?php include_once 'popup_player_url.php'; ?>
         <?php include_once 'popup_delete_album.php'; ?>
         <?php include_once 'popup_reset_rss_feed.php'; ?>
         <?php include_once 'popup_stats_descriptives.php'; ?>

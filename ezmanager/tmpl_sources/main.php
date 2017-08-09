@@ -146,13 +146,7 @@
 
         <script type="text/javascript" src="js/swfobject.js"></script>
         <script type="text/javascript" src="js/jquery.uploadify.v2.1.4.js"></script>
-
-
-
-
         <!-- End script submit -->
-
-
 
         <?php if (isset($head_code)) echo $head_code; ?>
     </head>
@@ -162,14 +156,15 @@
             <div id="global" class="row">
                 <!-- "New album" button -->
                 <div class="col-md-12 btn-new-album">
-                    <a class="btn btn-default" type="button" href="javascript:show_popup_from_inner_div('#popup_new_album');">
+                    <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=new_album"
+                       data-remote="false" data-toggle="modal" data-target="#modal" >
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         ®Create_album®
                     </a>
                 </div>
                 <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" 
-                    onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php echo 
-                    get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php echo get_lang(); ?>.png" name="Image5" 
+                    onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php 
+                    // echo get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang(); ?>.png" name="Image5" 
                     width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div> -->
                 <!-- "New album" button, END -->          
 
@@ -207,8 +202,6 @@
 
             <!-- Popups -->
             <div style="display: none;">
-                <?php include_once 'popup_new_album.php'; ?>
-
                 <!-- This popup gets automatically filled with messages, depending on the situation -->
                 <div class="popup" id="popup_messages"></div>
 

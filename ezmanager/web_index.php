@@ -331,7 +331,6 @@ function albums_view() {
     // List of all the albums a user has created
     $created_albums = acl_authorized_albums_list_created(); // Used to display the albums list
     $allowed_albums = acl_authorized_albums_list();
-    $not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
 
     $_SESSION['podman_mode'] = 'view_main';
 

@@ -33,7 +33,8 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
     <div class="BlocPodcastMenu">
         <div>
             <div class="ListButon BoutonSoumettreAlbum">
-                <a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');"> 
+                <a href="index.php?action=view_submit_media"
+                   data-remote="false" data-toggle="modal" data-target="#modal" > 
                     <span class="TitrePodcast"> 
                         ®Submit_record®
                     </span> 

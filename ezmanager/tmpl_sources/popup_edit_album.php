@@ -29,83 +29,121 @@
 Allows user to edit settings of an album
 You should not have to include this file yourself.
 -->
-<div class="popup" id="popup_edit_album" style="width: 415px; height: 300px;">
-    <h2>®Edit_album®</h2>
-    <div id="form">
-        <form  action="index.php" onsubmit="return false;" method="post" id="edit_form">
-            <input type="hidden" name="action" value="edit_album"/>
-            <input type="hidden" name="session_id" value="<?php echo session_id(); ?>" />
-            <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
-            <input type="hidden" id="moderation" name="moderation" value="<?php echo $moderation; ?>"/>
-            <p>
-                Album&nbsp;: <?php if(isset($album_meta['course_code_public']) && $album_meta['course_code_public']!="" )echo $album_meta['course_code_public']; else echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
-                <br/><br/>
-
-                <!-- Jingle dropdown list -->
-                <label>®Jingle®&nbsp;:
-                    <span class="small"><a class="info small">®More_info®<span>®Jingle_info®</span></a></span></label>   
-                <select name="intro" id="intro" style="width: 200px;">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Edit_album®</h4>
+</div>
+<form  action="index.php" onsubmit="return false;" method="post">
+    <div class="modal-body form-horizontal">
+        <input type="hidden" name="action" value="edit_album"/>
+        <input type="hidden" name="session_id" value="<?php echo session_id(); ?>" />
+        <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
+        <input type="hidden" id="moderation" name="moderation" value="<?php echo $moderation; ?>"/>
+        
+        <div class="form-group">
+            <label class="col-sm-2 control-label">®Album®</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <?php if(isset($album_meta['course_code_public']) && $album_meta['course_code_public']!="") {
+                        echo $album_meta['course_code_public']; 
+                    } else {
+                        echo $album; 
+                    } 
+                    echo '(';
+                    echo (($moderation) ? '®Private_album®' : '®Public_album®');
+                    ?>)
+                </p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="jingle" class="col-sm-2 control-label">®Jingle®</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="intro" id="intro">
                     <option value="">®None_intro®</option>
                     <?php
                     foreach ($intros as $intro) {
+                        echo '<option ';
                         if ($intro['value'] == $album_intro) {
-                            ?>                             
-                            <option selected="selected" value="<?php echo $intro['value']; ?>"><?php echo $intro['label']; ?></option>
-                        <?php } else { ?>
-                            <option value="<?php echo $intro['value']; ?>"><?php echo $intro['label']; ?></option>
-                        <?php
+                            echo 'selected="selected" ';
                         }
+                        echo 'value="'. $intro['value'] . '">' . $intro['label']. '</option>';
                     }
                     ?>
-                </select>    
-
-                <br/><br />
-
-                <!-- Titling dropdown list -->
-                <label>®Titling®&nbsp;:
-                    <span class="small"><a class="info small">®More_info®<span>®Titling_info®</span></a></span></label>
-                <select name="add_title" id="add_title" style="width: 200px;">
+                </select>
+                <p class="help-block"><a class="info small">®More_info®<span>®Jingle_info®</span></a></p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="add_title" class="col-sm-2 control-label">®Titling®</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="add_title" id="add_title">
                     <option value="false">®None_titling®</option>
                     <?php
                     foreach ($titlings as $titling) {
+                        echo '<option ';
                         if ($titling['value'] == $add_title) {
-                            ?>                             
-                            <option selected="selected" value="<?php echo $titling['value']; ?>"><?php echo $titling['label']; ?></option>
-                        <?php } else { ?>
-                            <option value="<?php echo $titling['value']; ?>"><?php echo $titling['label']; ?></option>
-    <?php
-    }
-}
-?>
+                            echo 'selected="selected" ';
+                        }
+                        echo 'value="'. $titling['value'] . '">' . $titling['label']. '</option>';
+                    }
+                    ?>
                 </select>
-
-                <br/><br/>
-                <input type="checkbox" id="downloadable" name="downloadable" <?php if($downloadable !== 'false') echo 'checked'; ?> style="width: 13px; clear:left; margin: 0px 10px 0px 82px; padding: 0px;"/>
-                <label class="labelcb" for="downloadable"><span><a class="info">®Downloadable®<span style="font-weight: normal; font-size: 10px;">®Download_info®</span></a></span></label>
-					<?php global $enable_anon_access_control; if($enable_anon_access_control){ ?>
-				<br/><br/>
-                <input type="checkbox" id="anon_access" name="anon_access" <?php if($anon_access !== 'false') echo 'checked'; ?> style="width: 13px; clear:left; margin: 0px 10px 0px 82px; padding: 0px;"/>
-                <label class="labelcb" for="anon_access"><span><a class="info">®Anonym_Access®<span style="font-weight: normal; font-size: 10px;">Si cette case est cochée, les vidéos soumises dans l'album pourront être accèssible sans authentification via EZplayer. </span></a></span></label>
-				<?php } ?>			 
-				
-            <div class="spacer"></div>
-
-            <br/><br/>
-            <div id="submitButton">
-                <!-- <span class="Bouton"><span><input type="submit" value="®Submit®" /></span></span> -->
-                <!--span class="Bouton"><a href="javascript:document.forms['edit_form'].submit();"><span>®Update®</span></a></span-->
-                <span class="Bouton"><a href="javascript:submit_edit_form();"><span>®Update®</span></a></span>
+                <p class="help-block"><a class="info small">®More_info®<span>®Titling_info®</span></a></p>
             </div>
-            <script >
-                function submit_edit_form() {
-                    var intro = encodeURIComponent(document.getElementById('intro').value);
-                    var add_title = encodeURIComponent(document.getElementById('add_title').value);
-                    var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
-					var anon_access = encodeURIComponent(document.getElementById('anon_access').checked);
-																					 
-                    show_popup_from_outer_div('index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + add_title + '&downloadable=' + downloadable + '&anon_access=' + anon_access, true);
-                }
-            </script>
-        </form>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="downloadable" name="downloadable"
+                            <?php if($downloadable !== 'false') { echo 'checked'; } ?>> 
+                        <a class="info">
+                            ®Downloadable®
+                            <span style="font-weight: normal; font-size: 10px;">
+                                ®Download_info®
+                            </span>
+                        </a>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <label>
+                    <input type="checkbox" id="anon_access" name="anon_access" 
+                        <?php if($anon_access !== 'false') { echo 'checked'; } ?>>
+                    <a class="info">
+                        ®Anonym_Access®
+                        <span style="font-weight: normal; font-size: 10px;">
+                            ®warningAnon®
+                        </span>
+                    </a>
+                </label>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <a role="button" href="javascript:submit_edit_form();" class="btn btn-primary">®Update®</a>
+        </div>
+        <script>
+            function submit_edit_form() {
+                var intro = encodeURIComponent(document.getElementById('intro').value);
+                var add_title = encodeURIComponent(document.getElementById('add_title').value);
+                var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
+                var anon_access = encodeURIComponent(document.getElementById('anon_access').checked);
+
+                $('#modal').modal('hide');
+                setTimeout(function(){ 
+                    display_bootstrap_modal_url($('#modal'), 'index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php 
+                    echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + 
+                    add_title + '&downloadable=' + downloadable + '&anon_access=' + anon_access);
+                    $('#modal').modal('show'); 
+                }, 500);
+            }
+        </script>
     </div>
-</div>
+</form>

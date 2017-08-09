@@ -71,6 +71,7 @@ function index($param = array()) {
     // 4) Then we display the album
     //
 
+    $current_tab = 'list';
     include template_getpath('div_album_header.php');
     include template_getpath('div_asset_list.php');
 }

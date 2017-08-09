@@ -39,6 +39,7 @@ function index($param = array()) {
     $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=low&token=' . ezmam_album_token_get($album);
     $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
     
+    $current_tab = 'url';
     include template_getpath('div_album_header.php');
     include template_getpath('div_ezplayer_link.php');
 }

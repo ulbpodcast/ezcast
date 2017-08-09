@@ -1,3 +1,4 @@
+<?php 
 /*
 * EZCAST EZmanager 
 *
@@ -22,22 +23,23 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+?>
+ 
+<!-- 
+This is the popup displaying the ULB code for the video
+You should not have to use this file on your own; if you do, make sure the variables $ulb_code are defined
+-->
+<div class="modal-header">®Player_url®</div>
+<div class="modal-body">
+    <p>®EZplayer_link_message®</p>
 
-/**
- * Takes the content of a div INCLUDED INSIDE THE PAGE (in a hidden div for instance), and displays it in a new popup on top of the page
- */
-function show_popup_from_inner_div(destination) {
-    $.colorbox({opacity: 0.50, inline: true, overlayClose: false, href: destination});
-}
-
-/**
- * Calls the destination page given as a parameter, and displays its result in a new popupon top of the page.
- */
-function show_popup_from_outer_div(destination) {
-    console.log('show_popup_from_outer_div Dest: ' + destination);
-    $.colorbox({opacity: 0.50, overlayClose: false, href: destination});
-}
-
-function close_popup() {
-    $.colorbox.close();
-}
+    <textarea readonly="" class="share_log_asset" onclick="this.select()" id="share_time_link">
+        <?php echo $ezplayer_link; ?>
+    </textarea>
+    <div class="wrapper_clip" style="position:relative; text-align: center;">
+        <span id="share_time" onclick="copy_video_url();" class="copy-to-clipboard-button">
+            <span id="share_valid" style="display: none">✔</span>
+            ®Copy_to_clipboard®
+        </span>
+    </div>
+</div>

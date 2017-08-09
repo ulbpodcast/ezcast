@@ -234,8 +234,8 @@
         <label id="Regenerate_RSS" lang="en">Reset RSS</label>
         <label id="Submit" lang="fr">Soumettre</label>
         <label id="Submit" lang="en">Submit</label>
-        <label id="Submit_record" lang="fr">Soumettre un enregistrement</label>
-        <label id="Submit_record" lang="en">Submit a new record</label>
+        <label id="Submit_record" lang="fr">Ajouter une vidéo</label>
+        <label id="Submit_record" lang="en">Add a new record</label>
         <label id="Delete_asset" lang="fr">Supprimer l'enregistrement</label>
         <label id="Delete_asset" lang="en">Delete</label>
         <label id="Watch_video" lang="fr">Regarder la vidéo</label>

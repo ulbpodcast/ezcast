@@ -58,7 +58,8 @@ Before calling this template, please define the following variables:
                                 </li>
                                 <li>
                                     <span class="BoutonEditer">
-                                        <a href="javascript:show_popup_from_outer_div('index.php?action=view_edit_album')">
+                                        <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
+                                           data-target="#modal">
                                             ®Edit_album®
                                         </a>
                                     </span>
@@ -75,19 +76,30 @@ Before calling this template, please define the following variables:
                     </ul>
                 </div>
             </div>
-            <a class="greyLink" style="padding-left: 15px; border: none; font-size:0.75em;"
-               href="javascript:show_album_details('<?php echo $album; ?>');">
-                    <img src="images/page4/list.png" style="display:inline"/> ®Assets_list®
-            </a>
-            <a class="greyLink ezplayer" style="font-size:0.75em;
-                <?php if(!$public_album) echo "color: red !important;" ?>" 
-               href="javascript:show_ezplayer_link('<?php echo $album; ?>');">
-                    <img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®
-            </a>
-            <a class="greyLink" style="font-size: 0.75em" 
-               href="javascript:show_stats_descriptives('<?php echo $album; ?>'); ">
-                <img src="images/page4/stats.png" style="display:inline"/>  ®Stats_Descriptives®
-            </a>
+            <ul class="nav nav-tabs">
+                <li role="presentation" id="list" style="padding-left: 5px;"
+                    <?php if(!isset($current_tab) || $current_tab == 'list' ) { echo 'class="active"'; } ?> >
+                    <a href="javascript:show_album_details('<?php echo $album; ?>');">
+                        <img src="images/page4/list.png" style="display:inline"/> 
+                        ®Assets_list®
+                    </a>
+                </li>
+                <li role="presentation" id="url" 
+                    <?php if(isset($current_tab) && $current_tab == 'url' ) { echo 'class="active"'; } ?>>
+                    <a <?php if(!$public_album) { echo 'style="color: red !important;"'; } ?>
+                        href="javascript:show_ezplayer_link('<?php echo $album; ?>');">
+                        <img src="images/page4/PictoEZ.png" style="display:inline"/> 
+                        ®Player_url®
+                    </a>
+                </li>
+                <li role="presentation" id="stats"
+                    <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
+                    <a href="javascript:show_stats_descriptives('<?php echo $album; ?>'); ">
+                        <img src="images/page4/stats.png" style="display:inline"/>
+                        ®Stats_Descriptives®
+                    </a>
+                </li>
+            </ul>
     </div>
 
     <!-- Popups -->

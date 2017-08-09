@@ -35,6 +35,7 @@ function index($param = array()) {
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
     $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
     
+    $current_tab = 'stats';
     include template_getpath('div_album_header.php');
     include template_getpath('div_stats_descriptives.php');
 }

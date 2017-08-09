@@ -175,7 +175,14 @@ function print_info($info, $suffix = '') {
         <p><span class="infospodast">®Filename®&nbsp;:</span> <?php print_info($file_name); ?></p>
         <?php } else if (strtolower($origin) === 'streaming') {
         ?>
-        <span class="BoutonEZplayer"> <a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>');">EZplayer</a> </span>
+        <span class="BoutonEZplayer"> 
+            <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>" 
+               data-remote="false" data-toggle="modal" data-target="#modal">
+                EZplayer
+            </a>
+            
+            <a href="javascript:show_popup_from_outer_div('');"></a> 
+        </span>
     <?php }
     ?>
     <!-- Edit form (submit/cancel buttons) -->

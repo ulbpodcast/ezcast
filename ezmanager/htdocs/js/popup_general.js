@@ -35,7 +35,7 @@ function show_popup_from_inner_div(destination) {
  */
 function show_popup_from_outer_div(destination) {
     console.log('show_popup_from_outer_div Dest: ' + destination);
-    $.colorbox({opacity: 0.50, overlayClose: false, href: destination});
+    // $.colorbox({opacity: 0.50, overlayClose: false, href: destination});
 }
 
 function close_popup() {

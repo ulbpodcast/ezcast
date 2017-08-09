@@ -28,6 +28,10 @@ function index($param = array()) {
         case 'ulb_code':
             popup_ulb_code();
             break;
+        
+        case 'new_album':
+            popup_new_album();
+            break;
 
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
@@ -180,4 +184,9 @@ function popup_ulb_code() {
 
     // Displaying the popup
     require_once template_getpath('popup_ulb_code.php');
+}
+
+function popup_new_album() {
+    $not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
+    require_once template_getpath('popup_new_album.php');
 }

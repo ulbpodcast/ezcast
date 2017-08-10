@@ -437,7 +437,7 @@ function push_users_courses_to_recorder(&$failed_cmd) {
     //courselist.php
     $courselist = '<?php' . PHP_EOL;
     foreach ($users as $u) {
-        $title = (isset($u['shortname']) && !empty($u['shortname'])) ? $u['shortname'] : $u['course_name'];
+        $title = $u['course_name'];
         $courselist .= '$course[\'' . $u['user_ID'] . '\'][\'' . $u['course_code'] . '\'] = "' . $title . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL;

@@ -23,13 +23,7 @@
         </div>
     </div>
     
-    <div class="form-group">
-        <label for="shortname" class="col-md-2 control-label">®shortname®</label>
-        <div class="col-sm-5">
-            <input type="text" class="form-control" name="shortname" value="<?php if(isset($input['shortname'])) echo $input['shortname'] ?>"/>
-        </div>
     </div>
-	
 	<div class="form-group">
         <label for="course_name" class="col-md-2 control-label">®recorders®</label>
         <div class="col-sm-5">

@@ -56,14 +56,13 @@ function statements_get(){
                             'courses.origin = :origin',
 
             'course_create' =>
-                    'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
-                    'VALUES (:course_code, :course_name, :shortname, 0, 0, NOW(), \'internal\')',
+                    'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, in_recorders, has_albums, date_created, origin) ' .
+                    'VALUES (:course_code, :course_name, 0, 0, NOW(), \'internal\')',
 
             'course_read' =>
                     'SELECT ' . 
                             db_gettable('courses') . '.course_code, ' .
                             db_gettable('courses') . '.course_name, ' .
-                            db_gettable('courses') . '.shortname, ' .
                             db_gettable('courses') . '.in_recorders, ' .
                             db_gettable('courses') . '.has_albums, ' .
                             db_gettable('courses') . '.origin, ' .
@@ -84,7 +83,7 @@ function statements_get(){
 
             'course_update' =>
                     'UPDATE ' . db_gettable('courses') . ' ' .
-                    'SET course_name = :course_name, shortname = :shortname, in_recorders = :in_recorders ' .        
+                    'SET course_name = :course_name, in_recorders = :in_recorders ' .        
                     'WHERE course_code = :course_code',
 
             'course_delete' =>
@@ -107,7 +106,6 @@ function statements_get(){
                     'SELECT DISTINCT ' .
                             db_gettable('users_courses').'.ID, '.
                             db_gettable('courses').'.course_code, '.
-                            db_gettable('courses').'.shortname, '.
                             db_gettable('courses').'.course_name, '.
                             db_gettable('courses').'.in_recorders, '.
                             db_gettable('users_courses').'.origin '.
@@ -128,7 +126,6 @@ function statements_get(){
                             db_gettable('users').'.forename, '.
                             db_gettable('users').'.surname, '.
                             db_gettable('courses').'.course_code, '.
-                            db_gettable('courses').'.shortname, '.
                             db_gettable('courses').'.course_name '.
                     'FROM '.db_gettable('users').' '.
                     'INNER JOIN '.db_gettable('users_courses').' '.
@@ -275,7 +272,6 @@ function db_courses_search($course_code, $user_ID, $include_external, $include_i
                     ' table_courses.origin, ' .
                     ' table_courses.in_recorders, ' .
                     ' table_courses.has_albums, ' .
-                    ' table_courses.shortname, ' .
                     ' table_courses.course_name, ' .
                     ' table_users.forename, ' .
                     ' table_users.surname ' .
@@ -334,18 +330,16 @@ function db_courses_update_hasalbums($repo_content) {
  * Retrieve all courses
  * @param String $course_code
  * @param String $course_name
- * @param String $shortname
  * @param boolean $in_recorders
  * @param integer $has_albums
  * @param Stirng $origin
  * 
  */
-function db_courses_list($course_code, $course_name, $shortname, $in_recorders, $has_albums, $origin) {
+function db_courses_list($course_code, $course_name, $in_recorders, $has_albums, $origin) {
 	global $statements;
 	
 	$statements['course_list']->bindParam(':course_code', $course_code);
 	$statements['course_list']->bindParam(':course_name', $course_name);
-	$statements['course_list']->bindParam(':shortname', $shortname);
 	$statements['course_list']->bindParam(':in_recorders', $in_recorders);
 	$statements['course_list']->bindParam(':has_albums', $has_albums);
 	$statements['course_list']->bindParam(':origin', $origin);
@@ -357,17 +351,15 @@ function db_courses_list($course_code, $course_name, $shortname, $in_recorders, 
  * Create a new course
  * @param String $course_code
  * @param String $course_name
- * @param String $shortname
  * @param boolean $in_recorders
  * @param integer $has_albums
  * @param Stirng $origin
  */
-function db_course_create($course_code, $course_name, $shortname) {
+function db_course_create($course_code, $course_name) {
 	global $statements;
 	
 	$statements['course_create']->bindParam(':course_code', $course_code);
 	$statements['course_create']->bindParam(':course_name', $course_name);
-	$statements['course_create']->bindParam(':shortname', $shortname);
 	
 	return $statements['course_create']->execute();
 }
@@ -399,11 +391,11 @@ function db_course_get_users($course_code) {
  * Update a course
  * @param String $course_code
  */
-function db_course_update($course_code, $course_name, $shortname, $in_recorders) {
+function db_course_update($course_code, $course_name, $in_recorders) {
 	global $statements;
+        
 	$statements['course_update']->bindParam(':course_code', $course_code);
 	$statements['course_update']->bindParam(':course_name', $course_name);
-	$statements['course_update']->bindParam(':shortname', $shortname);
 	$statements['course_update']->bindParam(':in_recorders', $in_recorders);
 	
 	return $statements['course_update']->execute();

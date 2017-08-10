@@ -34,18 +34,6 @@
             </div>
         </div>
 
-        <!-- Shortname -->
-        <div class="form-group <?php echo empty($shortname) ? 'edit' : '' ?>">
-            <label class="col-md-3 control-label">®course_short_name®</label>
-            <div class="col-sm-5">
-                <p class="view form-control-static"><?php echo $shortname; ?></p>
-                <div class="edit">
-                    <input type="text" class="form-control" name="shortname" 
-                           value="<?php echo htmlspecialchars($shortname) ?>" />
-                </div>
-            </div>
-        </div>
-
         <!-- Origin -->
         <div class="form-group">
             <label class="col-md-3 control-label">®origin®</label>

@@ -530,7 +530,7 @@ function create_tables($drop = true) {
                 '`message` varchar(255) DEFAULT NULL,' .
                 '`author` varchar(20) NOT NULL,' .
                 'PRIMARY KEY (`ID`)' .
-                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;');
+                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8;');
 
         if ($drop)
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users`;');
@@ -553,7 +553,7 @@ function create_tables($drop = true) {
                 '`user_ID` varchar(50) NOT NULL COMMENT \'user ID as referred in ezcast_users\',' .
                 '`origin` varchar(255) NOT NULL DEFAULT \'external\' COMMENT \'Either "external" or "internal"\',' .
                 'PRIMARY KEY (`ID`)' .
-                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=\'Joint of Courses and Users\' AUTO_INCREMENT=45013 ;');
+                ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=\'Joint of Courses and Users\';');
 
         if ($drop)
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'threads`;');

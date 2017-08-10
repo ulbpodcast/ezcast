@@ -274,8 +274,12 @@ function template_get_info($id, $organization, $lang) {
     $res = $dictionnary_xml->xpath("/data/infos/info[@id='$id' and @organization='$organization' and @lang='$lang']");
     
     if(!$res) {
-        template_last_warning('Information '.$id.' not found for lang '.$lang.' and organization '.$organization);
-        return '';
+        //return first translation found instead
+        $res = $dictionnary_xml->xpath("/data/infos/info[@id='$id' and @lang='$lang']");
+        if(!$res)
+            template_last_warning('Information '.$id.' not found for lang '.$lang.' and organization '.$organization. '.');
+        else
+            template_last_warning('Information '.$id.' not found for lang '.$lang.' and organization '.$organization. '. Returning first translation found instead');
     }
     
     $res = $res[0];

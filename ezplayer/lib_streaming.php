@@ -16,6 +16,7 @@ function asset_streaming_player_update($display = true) {
     global $repository_path;
     global $is_android;
     global $streaming_video_alternate_server_enable_redirect;
+    global $streaming_video_alternate_server_redirect_chance;
     global $m3u8_external_master_filename;
     global $m3u8_master_filename;
     global $logger;
@@ -29,7 +30,12 @@ function asset_streaming_player_update($display = true) {
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
     $asset_token = ezmam_asset_token_get($album, $asset);
 
-    $m3u8_file = $streaming_video_alternate_server_enable_redirect ? $m3u8_external_master_filename : $m3u8_master_filename;
+    $m3u8_file = $m3u8_master_filename;
+    if($streaming_video_alternate_server_enable_redirect) {
+        $random = rand() % 100;
+        if($random < $streaming_video_alternate_server_redirect_chance)
+            $m3u8_file = $m3u8_external_master_filename;
+    }
     
     //should contain cam or slide
     $type = $asset_meta['record_type'] == 'camslide' ? $input['type'] : $asset_meta['record_type'];

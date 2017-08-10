@@ -9,33 +9,6 @@
 <html lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-        <?php 
-        /*
-         * EZCAST EZplayer
-         *
-         * Copyright (C) 2016 Université libre de Bruxelles
-         *
-         * Written by Michel Jansens <mjansens@ulb.ac.be>
-         * 	      Arnaud Wijns <awijns@ulb.ac.be>
-         *            Carlos Avidmadjessi
-         * UI Design by Julien Di Pietrantonio
-         *
-         * This software is free software; you can redistribute it and/or
-         * modify it under the terms of the GNU Lesser General Public
-         * License as published by the Free Software Foundation; either
-         * version 3 of the License, or (at your option) any later version.
-         *
-         * This software is distributed in the hope that it will be useful,
-         * but WITHOUT ANY WARRANTY; without even the implied warranty of
-         * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-         * Lesser General Public License for more details.
-         *
-         * You should have received a copy of the GNU Lesser General Public
-         * License along with this software; if not, write to the Free Software
-         * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-         * 
-         */
-        ?>
         <title>®ezplayer_page_title®</title>
         <meta name="description" content="EZPlayer is a video player to view EZCast video" />
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
@@ -93,6 +66,7 @@ if ($trace_on) {
         <script type="text/javascript" src="js/lib_threads.js"></script>
         <script type="text/javascript" src="js/lib_bookmarks.js"></script>
         <script type="text/javascript" src="js/lib_chat.js"></script>
+        <script type="text/javascript" src="js/clipboard.js"></script>
 
         <script>
             var current_album;
@@ -106,7 +80,7 @@ if ($trace_on) {
             var display_threads_notif = false;
             var thread_to_display = null;
             var ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
-
+            
             $(document).ready(function () {
 
                 $('#assets_button, .bookmarks_button, .toc_button').localScroll({
@@ -841,7 +815,7 @@ if ($trace_on) {
                 </script>           
             <?php } ?>
             <!-- FOOTER - INFOS COPYRIGHT -->
-<?php include_once template_getpath('div_main_footer.php'); ?>
+            <?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
         </div><!-- Container fin -->
 
@@ -851,4 +825,13 @@ if ($trace_on) {
         <div id="div_popup" class="reveal-modal"></div>
 
     </body>
+    <!-- scripts that must be loaded after document -->
+    <script>
+         var clipboard = new Clipboard('.clipboard');
+
+        clipboard.on('success', function(e) {
+            alert("®Content_in_clipboard®");
+            //todo: proper tooltip instead
+        });
+    </script>
 </html>

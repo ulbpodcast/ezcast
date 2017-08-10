@@ -14,7 +14,7 @@ require_once('logger_server.php');
 $config_version = "20161003"; 
 
 // Name of the organization hosting EZcast or providing the service
-$organization_name = "© Your organization name";
+$organization_name = "© Your organization name"; //this will also affect choosen translations when generating templates
 $organization_url = "http://ulb.ac.be";
 $copyright = "Your copyright";
 $movie_keywords = 'Movie,keywords';
@@ -93,6 +93,8 @@ $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
 $streaming_video_alternate_server_enable_sync = false;
 // redirect users to given adress (see next options). Requires $streaming_video_alternate_server_enable_sync
 $streaming_video_alternate_server_enable_redirect = false;
+// when redirect is enabled, redirect with X percent chance (default to 100%)
+$streaming_video_alternate_server_redirect_chance = 100; //%
 // -- -- //
     
 $streaming_video_alternate_server_user = "user";

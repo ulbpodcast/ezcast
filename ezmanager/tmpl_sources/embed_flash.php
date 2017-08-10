@@ -19,8 +19,8 @@ Also, make sure the file swf/bugatti.swf exists in your web root.
                 <param name="salign" value="" />
                 <param name="allowScriptAccess" value="always" />
                 <param name="allowFullScreen" value="true" />
-            <!--[if !IE]>-->
-            <object type="application/x-shockwave-flash" data="<?php echo $player_url; ?>?url=<?php echo $media_url; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
+                <!--[if !IE]>-->
+                <object type="application/x-shockwave-flash" data="<?php echo $player_url; ?>?url=<?php echo $media_url; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
                 <param name="movie" value="<?php echo $player_url; ?>?url=<?php echo $media_url; ?>" />
 
                 <param name="quality" value="high" />

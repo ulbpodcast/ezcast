@@ -25,6 +25,12 @@
 */
 ?>
 
-<video src="<?php echo urldecode($media_url); ?>" type="video/h264" width="<?php echo $width; ?>" height="<?php echo $height; ?>" controls>
+<video src="<?php echo urldecode($media_url); ?>" 
+       type="video/h264" 
+       width="<?php echo $width; ?>" 
+       height="<?php echo $height; ?>" 
+       id="<?php echo $video_id; ?>" 
+       controls
+>
 <?php include_once 'embed_flash.php'; ?>    
 </video>

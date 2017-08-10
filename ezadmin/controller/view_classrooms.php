@@ -5,8 +5,6 @@ require_once 'lib_sql_event.php';
 include_once '../commons/view_helpers/helper_pagination.php';
 include_once '../commons/view_helpers/helper_sort_col.php';
 
-const URL_ADR = '/ezrecorder/services/state.php';
-
 
 function index($param = array()) {
     global $input;
@@ -21,6 +19,7 @@ function index($param = array()) {
     
     if (isset($input['update'])) {
         db_classroom_update(trim($input['a_room_ID']), $input['u_room_ID'], $input['u_name'], $input['u_ip'], $input['u_ip_remote']);
+        notify_changes(); //we must write new allowed classrooms IP's
     }
     
     if(array_key_exists('page', $input)) {
@@ -55,70 +54,12 @@ function index($param = array()) {
         
         $listClassrooms = array();
         foreach($sqlListClassrooms as &$classroom) {
-            
-            if(!$classroom['enabled'] && !$onlyOnline && !$onlyRecording) {
-                $listClassrooms[] = $classroom;
-                continue;
-            }
-            
-            // Get JSON informations
-            
-            $json = @url_get_contents('http://'.$classroom['IP'].URL_ADR, 5);
-            $data = json_decode($json);
-            if($data == null) {
-                $classroom['online'] = false;
-                if(!must_be_removed($classroom)) {
-                    //echo "add: ".$classroom;
-                    $listClassrooms[] = $classroom;
-                }
-                continue;
-            }
-            $classroom['online'] = true;
-            
-            
-            $classroom['recording'] = isset($data->recording) && $data->recording == 1;
-            if(!$classroom['recording'] && !must_be_removed($classroom)) {
+            if(!$onlyOnline || $classroom['enabled']) {
                 $listClassrooms[] = $classroom;
             }
-            
-            
-            if(!$classroom['recording']) {
-                continue;
-            }
-            
-            if(isset($data->status_general)) {
-                $classroom['status_general'] = $data->status_general;
-            }
-            
-            if(isset($data->status_cam)) {
-                $classroom['status_cam'] = $data->status_cam;
-            }
-            
-            if(isset($data->status_slides)) {
-                $classroom['status_slides'] = $data->status_cam;
-            }
-            
-            if(isset($data->author)) {
-                $classroom['author'] = $data->author;
-            }
-            
-            if(isset($data->asset)) {
-                $classroom['asset'] = $data->asset;
-                $loglevel = db_event_get_event_loglevel_most($data->asset);
-                if($loglevel >= 0) {
-                    $classroom['loglevel'] = $logger->get_log_level_name($loglevel);
-                }
-            }
-            
-            if(isset($data->course)) {
-                $classroom['course'] = $data->course;
-            }
-            
-            $listClassrooms[] = $classroom;
         }
         
         $pagination->setTotalItem(db_found_rows());
-        
     }
 
     // Display page
@@ -128,26 +69,5 @@ function index($param = array()) {
         include template_getpath('div_list_classrooms.php');
     }
     include template_getpath('div_main_footer.php');
-}
-
-function url_get_contents($url, $timeout) {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout); //timeout in seconds
-    $output = curl_exec($ch);
-    curl_close($ch);
-    return $output;
-}
-
-function must_be_removed($element) {
-    global $onlyOnline;
-    global $onlyRecording;
-    
-    return ($element['online'] == false && $onlyOnline) || 
-            (array_key_exists('recording', $element) && 
-            $onlyRecording &&
-            $element['recording']);
-    
 }
 

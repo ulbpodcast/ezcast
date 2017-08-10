@@ -33,208 +33,215 @@ if(file_exists('config.inc')) {
 }
  
 function statements_get(){
-	return array(
-		'update_courses_hasalbums' =>
-			'UPDATE '.  db_gettable('courses'). ' ' .
-			'SET has_albums = 1 '.
-			'WHERE course_code = :course_code',
-		
-		'course_list' =>
-			'SELECT ' . 
-				'courses.course_code, ' .
-				'courses.course_name, ' .
-				'courses.in_recorders, ' .
-				'courses.has_albums, ' .
-				'courses.origin, ' .
-				'courses.date_created ' .
-			'FROM ' . db_gettable('courses') . ' courses ' .
-			'WHERE ' .
-				'courses.course_code LIKE :course_code AND ' . 
-				'courses.course_name LIKE :course_name AND ' .
-				'courses.in_recorders = :in_recorders AND ' .
-				'courses.has_albums = :has_albums AND ' .
-				'courses.origin = :origin',
-		
-		'course_create' =>
-			'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
-			'VALUES (:course_code, :course_name, :shortname, 0, 0, NOW(), \'internal\')',
-		
-		'course_read' =>
-			'SELECT ' . 
-				db_gettable('courses') . '.course_code, ' .
-				db_gettable('courses') . '.course_name, ' .
-				db_gettable('courses') . '.shortname, ' .
-				db_gettable('courses') . '.in_recorders, ' .
-				db_gettable('courses') . '.has_albums, ' .
-				db_gettable('courses') . '.origin, ' .
-				db_gettable('courses') . '.date_created ' .
-			'FROM ' . db_gettable('courses') . ' ' .
-			'WHERE course_code = :course_code',
-		
-		'course_get_users' =>
-			'SELECT ' .
-				db_gettable('users_courses').'.ID, '.
-				db_gettable('users').'.user_ID, '.
-				db_gettable('users').'.surname, '.
-				db_gettable('users').'.forename, '.
-				db_gettable('users_courses').'.origin '.
-			'FROM '.  db_gettable('users').' ' .
-			'INNER JOIN '.  db_gettable('users_courses').' ON '.  db_gettable('users').'.user_ID = '.  db_gettable('users_courses').'.user_ID '.
-			'WHERE course_code = :course_code',
-		
-		'course_update' =>
-			'UPDATE ' . db_gettable('courses') . ' ' .
-			'SET course_name = :course_name, shortname = :shortname, in_recorders = :in_recorders ' .        
-			'WHERE course_code = :course_code',
-		
-		'course_delete' =>
-			'DELETE FROM ' . db_gettable('courses') . ' ' .
-			'WHERE course_code = :course_code AND origin = \'internal\'',
-		
-		'user_read' =>
-			'SELECT ' . 
-				db_gettable('users') . '.user_ID, ' .
-				db_gettable('users') . '.surname, ' .
-				db_gettable('users') . '.forename, ' .
-			  '(' . db_gettable('users') . '.recorder_passwd = "") as passNotSet, ' .
-				db_gettable('users') . '.permissions, ' .
-				db_gettable('users') . '.origin ' .
-				//db_gettable('users') . '.date_created ' .
-			'FROM ' . db_gettable('users') . ' ' .
-			'WHERE user_ID = :user_ID',
-				
-		'user_courses_get' =>
-			'SELECT DISTINCT ' .
-				db_gettable('users_courses').'.ID, '.
-				db_gettable('courses').'.course_code, '.
-				db_gettable('courses').'.shortname, '.
-				db_gettable('courses').'.course_name, '.
-				db_gettable('courses').'.in_recorders, '.
-				db_gettable('users_courses').'.origin '.
-			'FROM '.  db_gettable('courses').' ' .
-			'INNER JOIN '.  db_gettable('users_courses').
-			' ON '.  db_gettable('courses').'.course_code = '.  db_gettable('users_courses').'.course_code '.
-			'WHERE user_ID = :user_ID',
-		
-		'users_get_admins' =>
-			'SELECT user_ID '.
-			'FROM ' .  db_gettable('users').' ' .
-			'WHERE permissions > 0',
-		
-		'get_users_in_recorder' =>
-			'SELECT DISTINCT '.
-				db_gettable('users').'.user_ID, '.
-				db_gettable('users').'.recorder_passwd, '.
-				db_gettable('users').'.forename, '.
-				db_gettable('users').'.surname, '.
-				db_gettable('courses').'.course_code, '.
-				db_gettable('courses').'.shortname, '.
-				db_gettable('courses').'.course_name '.
-			'FROM '.db_gettable('users').' '.
-			'INNER JOIN '.db_gettable('users_courses').' '.
-				'ON '.db_gettable('users').'.user_ID = '.db_gettable('users_courses').'.user_ID '.
-			'INNER JOIN '.db_gettable('courses').' '.
-				'ON '.db_gettable('users_courses').'.course_code = '.db_gettable('courses').'.course_code '.
-			'WHERE '.db_gettable('courses').'.in_recorders != 0 '.
-				'AND '.db_gettable('users').'.recorder_passwd IS NOT NULL '.
-				'AND '.db_gettable('users').'.recorder_passwd != \'\'',
-		
-		'get_internal_users' =>
-			'SELECT ' . 
-				db_gettable('users') . '.user_ID, ' .
-				db_gettable('users') . '.surname, ' .
-				db_gettable('users') . '.forename, ' .
-				db_gettable('users') . '.recorder_passwd ' .
-			'FROM ' . db_gettable('users') . ' ' .
-			'WHERE origin = \'internal\' ' .
-			'AND recorder_passwd IS NOT NULL '.
-			'AND recorder_passwd != \'\' ',
-		
-		'classrooms_list_enabled' =>
-			'SELECT room_ID, name, IP ' .
-			'FROM ' . db_gettable('classrooms').' '.
-			'WHERE enabled = 1',
-		
-		'classrooms_list' =>
-			'SELECT room_ID, name, IP, IP_remote ' .
-			'FROM ' . db_gettable('classrooms'),
-		
-		'classroom_update_enabled' =>
-			'UPDATE ' . db_gettable('classrooms') . ' ' .
-			'SET enabled = :enabled ' .
-			'WHERE room_ID = :room_ID',
-		
-		'users_courses_create' =>
-			'INSERT INTO ' . db_gettable('users_courses') . '(course_code, user_ID, origin) ' .
-			'VALUES (:course_code, :user_ID, \'internal\')',
-		
-		'users_courses_delete' =>
-			'DELETE FROM ' . db_gettable('users_courses') . ' ' .
-			'WHERE ID = :user_course_ID AND origin=\'internal\'',
-		
-		'users_courses_get' =>
-			'SELECT * ' .
-			'FROM ' . db_gettable('users_courses') . ' ' .
-			'WHERE course_code=:course_code AND user_ID=:user_ID',
-		
-		'found_rows' => 
-			'SELECT  FOUND_ROWS();',
-		
-		'user_create' =>
-			'INSERT INTO ' . db_gettable('users') . '(user_ID, surname, forename, recorder_passwd, permissions, origin) ' .
-			'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, \'internal\')',
-		
-		'user_delete' => 
-			'DELETE FROM ' . db_gettable('users') . ' ' .
-			'WHERE user_ID = :user_ID AND origin=\'internal\'',
-		
-		'user_update' =>
-			'UPDATE ' . db_gettable('users') . ' ' .
-			'SET surname = :surname, forename = :forename, recorder_passwd = :recorder_passwd, permissions = :permissions' . ' ' .
-			'WHERE user_ID = :user_ID',
-		
-		'user_update_short' =>
-			'UPDATE ' . db_gettable('users') . ' ' .
-			'SET surname = :surname, forename = :forename,  permissions = :permissions' . ' ' .
-			'WHERE user_ID = :user_ID',
-		
-		'log_action' =>
-			'INSERT INTO ' . db_gettable('admin_logs') . ' (`time`, `table`, message, author) ' .
-			'VALUES (NOW(), :table, :message, :author)',
-		
-		'classroom_create' =>
-			'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, ip_remote, enabled) ' .
-			'VALUES (:room_ID, :name, :ip, :ip_remote, :enabled)',
-		
-		'unlink_course' =>
-			'DELETE FROM ' . db_gettable('users_courses') . ' ' .
-			'WHERE course_code = :course_code AND origin=\'internal\'',
-		
-		'unlink_user' =>
-			'DELETE FROM ' . db_gettable('users_courses') . ' ' .
-			'WHERE user_ID = :user_ID AND origin=\'internal\'',
-		
-		'classroom_update' => 
-			'UPDATE ' . db_gettable('classrooms') . ' ' .
-			'SET room_ID = :room_ID, name = :name,  ip = :ip,  ip_remote = :ip_remote' . ' ' .
-			'WHERE room_ID = :ID',
-		
-		'classroom_delete' =>
-			'DELETE FROM ' . db_gettable('classrooms') . ' ' .
-			'WHERE room_ID = :room_ID',
-            
-                'stream_create' =>
-                            'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`, `module_type`, `ip`, `status`, `quality`, `protocol`, `server`, `port`) ' .
-                            'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, :ip, :status, :quality, :protocol, :server, :port)',      
-		'stream_update_status' =>
-			'UPDATE ' . db_gettable('streams') . ' ' .
-			'SET status = :status' . ' ' .
-			'WHERE cours_id = :course AND asset = :asset AND module_type = :module_type ',
-		'get_stream_info' =>
-			'SELECT  * ' .  
-			'FROM ' . db_gettable('streams') . ' ' .
-			'WHERE cours_id=:cours_id AND asset=:asset '	
-	);
+    return array(
+            'update_courses_hasalbums' =>
+                    'UPDATE '.  db_gettable('courses'). ' ' .
+                    'SET has_albums = 1 '.
+                    'WHERE course_code = :course_code',
+
+            'course_list' =>
+                    'SELECT ' . 
+                            'courses.course_code, ' .
+                            'courses.course_name, ' .
+                            'courses.in_recorders, ' .
+                            'courses.has_albums, ' .
+                            'courses.origin, ' .
+                            'courses.date_created ' .
+                    'FROM ' . db_gettable('courses') . ' courses ' .
+                    'WHERE ' .
+                            'courses.course_code LIKE :course_code AND ' . 
+                            'courses.course_name LIKE :course_name AND ' .
+                            'courses.in_recorders = :in_recorders AND ' .
+                            'courses.has_albums = :has_albums AND ' .
+                            'courses.origin = :origin',
+
+            'course_create' =>
+                    'INSERT INTO ' . db_gettable('courses') . '(course_code, course_name, shortname, in_recorders, has_albums, date_created, origin) ' .
+                    'VALUES (:course_code, :course_name, :shortname, 0, 0, NOW(), \'internal\')',
+
+            'course_read' =>
+                    'SELECT ' . 
+                            db_gettable('courses') . '.course_code, ' .
+                            db_gettable('courses') . '.course_name, ' .
+                            db_gettable('courses') . '.shortname, ' .
+                            db_gettable('courses') . '.in_recorders, ' .
+                            db_gettable('courses') . '.has_albums, ' .
+                            db_gettable('courses') . '.origin, ' .
+                            db_gettable('courses') . '.date_created ' .
+                    'FROM ' . db_gettable('courses') . ' ' .
+                    'WHERE course_code = :course_code',
+
+            'course_get_users' =>
+                    'SELECT ' .
+                            db_gettable('users_courses').'.ID, '.
+                            db_gettable('users').'.user_ID, '.
+                            db_gettable('users').'.surname, '.
+                            db_gettable('users').'.forename, '.
+                            db_gettable('users_courses').'.origin '.
+                    'FROM '.  db_gettable('users').' ' .
+                    'INNER JOIN '.  db_gettable('users_courses').' ON '.  db_gettable('users').'.user_ID = '.  db_gettable('users_courses').'.user_ID '.
+                    'WHERE course_code = :course_code',
+
+            'course_update' =>
+                    'UPDATE ' . db_gettable('courses') . ' ' .
+                    'SET course_name = :course_name, shortname = :shortname, in_recorders = :in_recorders ' .        
+                    'WHERE course_code = :course_code',
+
+            'course_delete' =>
+                    'DELETE FROM ' . db_gettable('courses') . ' ' .
+                    'WHERE course_code = :course_code AND origin = \'internal\'',
+
+            'user_read' =>
+                    'SELECT ' . 
+                            db_gettable('users') . '.user_ID, ' .
+                            db_gettable('users') . '.surname, ' .
+                            db_gettable('users') . '.forename, ' .
+                      '(' . db_gettable('users') . '.recorder_passwd = "") as passNotSet, ' .
+                            db_gettable('users') . '.permissions, ' .
+                            db_gettable('users') . '.origin ' .
+                            //db_gettable('users') . '.date_created ' .
+                    'FROM ' . db_gettable('users') . ' ' .
+                    'WHERE user_ID = :user_ID',
+
+            'user_courses_get' =>
+                    'SELECT DISTINCT ' .
+                            db_gettable('users_courses').'.ID, '.
+                            db_gettable('courses').'.course_code, '.
+                            db_gettable('courses').'.shortname, '.
+                            db_gettable('courses').'.course_name, '.
+                            db_gettable('courses').'.in_recorders, '.
+                            db_gettable('users_courses').'.origin '.
+                    'FROM '.  db_gettable('courses').' ' .
+                    'INNER JOIN '.  db_gettable('users_courses').
+                    ' ON '.  db_gettable('courses').'.course_code = '.  db_gettable('users_courses').'.course_code '.
+                    'WHERE user_ID = :user_ID',
+
+            'users_get_admins' =>
+                    'SELECT user_ID '.
+                    'FROM ' .  db_gettable('users').' ' .
+                    'WHERE permissions > 0',
+
+            'get_users_in_recorder' =>
+                    'SELECT DISTINCT '.
+                            db_gettable('users').'.user_ID, '.
+                            db_gettable('users').'.recorder_passwd, '.
+                            db_gettable('users').'.forename, '.
+                            db_gettable('users').'.surname, '.
+                            db_gettable('courses').'.course_code, '.
+                            db_gettable('courses').'.shortname, '.
+                            db_gettable('courses').'.course_name '.
+                    'FROM '.db_gettable('users').' '.
+                    'INNER JOIN '.db_gettable('users_courses').' '.
+                            'ON '.db_gettable('users').'.user_ID = '.db_gettable('users_courses').'.user_ID '.
+                    'INNER JOIN '.db_gettable('courses').' '.
+                            'ON '.db_gettable('users_courses').'.course_code = '.db_gettable('courses').'.course_code '.
+                    'WHERE '.db_gettable('courses').'.in_recorders != 0 '.
+                            'AND '.db_gettable('users').'.recorder_passwd IS NOT NULL '.
+                            'AND '.db_gettable('users').'.recorder_passwd != \'\'',
+
+            'get_internal_users' =>
+                    'SELECT ' . 
+                            db_gettable('users') . '.user_ID, ' .
+                            db_gettable('users') . '.surname, ' .
+                            db_gettable('users') . '.forename, ' .
+                            db_gettable('users') . '.recorder_passwd ' .
+                    'FROM ' . db_gettable('users') . ' ' .
+                    'WHERE origin = \'internal\' ' .
+                    'AND recorder_passwd IS NOT NULL '.
+                    'AND recorder_passwd != \'\' ',
+
+            'classrooms_list_enabled' =>
+                    'SELECT room_ID, name, IP ' .
+                    'FROM ' . db_gettable('classrooms').' '.
+                    'WHERE enabled = 1',
+
+            'classrooms_list' =>
+                    'SELECT room_ID, name, IP, IP_remote ' .
+                    'FROM ' . db_gettable('classrooms'),
+        
+            'classrooms_from_name_get_ip' => 
+                    'SELECT IP ' .
+                    'FROM ' . db_gettable('classrooms') . ' ' .
+                    'WHERE room_ID = :room_ID',
+
+            'classroom_update_enabled' =>
+                    'UPDATE ' . db_gettable('classrooms') . ' ' .
+                    'SET enabled = :enabled ' .
+                    'WHERE room_ID = :room_ID',
+
+            'users_courses_create' =>
+                    'INSERT INTO ' . db_gettable('users_courses') . '(course_code, user_ID, origin) ' .
+                    'VALUES (:course_code, :user_ID, \'internal\')',
+
+            'users_courses_delete' =>
+                    'DELETE FROM ' . db_gettable('users_courses') . ' ' .
+                    'WHERE ID = :user_course_ID AND origin=\'internal\'',
+
+            'users_courses_get' =>
+                    'SELECT * ' .
+                    'FROM ' . db_gettable('users_courses') . ' ' .
+                    'WHERE course_code=:course_code AND user_ID=:user_ID',
+
+            'found_rows' => 
+                    'SELECT  FOUND_ROWS();',
+
+            'user_create' =>
+                    'INSERT INTO ' . db_gettable('users') . '(user_ID, surname, forename, recorder_passwd, permissions, origin) ' .
+                    'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, \'internal\')',
+
+            'user_delete' => 
+                    'DELETE FROM ' . db_gettable('users') . ' ' .
+                    'WHERE user_ID = :user_ID AND origin=\'internal\'',
+
+            'user_update' =>
+                    'UPDATE ' . db_gettable('users') . ' ' .
+                    'SET surname = :surname, forename = :forename, recorder_passwd = :recorder_passwd, permissions = :permissions' . ' ' .
+                    'WHERE user_ID = :user_ID',
+
+            'user_update_short' =>
+                    'UPDATE ' . db_gettable('users') . ' ' .
+                    'SET surname = :surname, forename = :forename,  permissions = :permissions' . ' ' .
+                    'WHERE user_ID = :user_ID',
+
+            'log_action' =>
+                    'INSERT INTO ' . db_gettable('admin_logs') . ' (`time`, `table`, message, author) ' .
+                    'VALUES (NOW(), :table, :message, :author)',
+
+            'classroom_create' =>
+                    'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, ip_remote, enabled) ' .
+                    'VALUES (:room_ID, :name, :ip, :ip_remote, :enabled)',
+
+            'unlink_course' =>
+                    'DELETE FROM ' . db_gettable('users_courses') . ' ' .
+                    'WHERE course_code = :course_code AND origin=\'internal\'',
+
+            'unlink_user' =>
+                    'DELETE FROM ' . db_gettable('users_courses') . ' ' .
+                    'WHERE user_ID = :user_ID AND origin=\'internal\'',
+
+            'classroom_update' => 
+                    'UPDATE ' . db_gettable('classrooms') . ' ' .
+                    'SET room_ID = :room_ID, name = :name,  ip = :ip,  ip_remote = :ip_remote' . ' ' .
+                    'WHERE room_ID = :ID',
+
+            'classroom_delete' =>
+                    'DELETE FROM ' . db_gettable('classrooms') . ' ' .
+                    'WHERE room_ID = :room_ID',
+
+            'stream_create' =>
+                        'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`, `module_type`, `ip`, `status`, `quality`, `protocol`, `server`, `port`) ' .
+                        'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, :ip, :status, :quality, :protocol, :server, :port)',      
+
+            'stream_update_status' =>
+                    'UPDATE ' . db_gettable('streams') . ' ' .
+                    'SET status = :status' . ' ' .
+                    'WHERE cours_id = :course AND asset = :asset AND module_type = :module_type ',
+
+            'get_stream_info' =>
+                    'SELECT  * ' .  
+                    'FROM ' . db_gettable('streams') . ' ' .
+                    'WHERE cours_id=:cours_id AND asset=:asset '	
+    );
 }
 //---------------------------
 // PAGE-SPECIFIC FUNCTIONS
@@ -252,76 +259,76 @@ function statements_get(){
  * @param String $limit the limit condition
  */
 function db_courses_search($course_code, $user_ID, $include_external, $include_internal, $has_albums, 
-        $in_classrooms, $with_teacher, $order, $limit) {   
-	global $db_object;
-	
-	$origin = $include_external && $include_internal ? '%' : ($include_external ? 'external' : 'internal');
-	
-	$join = 'LEFT';
-	if($with_teacher == 1) $join = 'INNER';
-	
-        // will have origin = NULL when no user is yet added to course
-	$query = 
-		'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .  
-			' table_courses.course_code, ' .
-			' table_users.user_ID AS user_ID, ' .
-			' table_courses.origin, ' .
-			' table_courses.in_recorders, ' .
-			' table_courses.has_albums, ' .
-			' table_courses.shortname, ' .
-			' table_courses.course_name, ' .
-			' table_users.forename, ' .
-			' table_users.surname ' .
-			'FROM ' . db_gettable('users_courses') . ' users_courses ' .
-			'RIGHT JOIN ' . db_gettable('courses') . ' table_courses ' .
-				'ON ' . ' table_courses.course_code = users_courses.course_code ' .
-			$join . ' JOIN ' . db_gettable('users') . ' table_users ' .
-				'ON table_users.user_ID = users_courses.user_ID ' .
-			'WHERE ' .
-				' table_courses.course_code LIKE "' . addslashes($course_code) . '"' .
-				($origin != "%" ? ' AND users_courses.origin LIKE "' . addslashes($origin) . '"' : '') .
-				($user_ID != "%" ? ' AND table_users.user_ID LIKE "' . $user_ID . '"': '') .
-				($has_albums != -1 ? ' AND ' . ' table_courses.has_albums = "' . $has_albums . '"': '') .
-				($in_classrooms != -1 ? ' AND ' . ' table_courses.in_recorders = "' . $in_classrooms . '"': '') .
-				($with_teacher == 0 ? ' AND table_users.user_ID IS NULL': '') .
-                        ' GROUP BY course_code ' .    
-			($order ? ' ORDER BY ' . $order : '') .
-			($limit ? ' LIMIT ' . $limit : '');
-	  
-	$res = $db_object->query($query);
-		
-	return $res;
+    $in_classrooms, $with_teacher, $order, $limit) {   
+    global $db_object;
+
+    $origin = $include_external && $include_internal ? '%' : ($include_external ? 'external' : 'internal');
+
+    $join = 'LEFT';
+    if($with_teacher == 1) $join = 'INNER';
+
+    // will have origin = NULL when no user is yet added to course
+    $query = 
+            'SELECT DISTINCT SQL_CALC_FOUND_ROWS ' .  
+                    ' table_courses.course_code, ' .
+                    ' table_users.user_ID AS user_ID, ' .
+                    ' table_courses.origin, ' .
+                    ' table_courses.in_recorders, ' .
+                    ' table_courses.has_albums, ' .
+                    ' table_courses.shortname, ' .
+                    ' table_courses.course_name, ' .
+                    ' table_users.forename, ' .
+                    ' table_users.surname ' .
+                    'FROM ' . db_gettable('users_courses') . ' users_courses ' .
+                    'RIGHT JOIN ' . db_gettable('courses') . ' table_courses ' .
+                            'ON ' . ' table_courses.course_code = users_courses.course_code ' .
+                    $join . ' JOIN ' . db_gettable('users') . ' table_users ' .
+                            'ON table_users.user_ID = users_courses.user_ID ' .
+                    'WHERE ' .
+                            ' table_courses.course_code LIKE "' . addslashes($course_code) . '"' .
+                            ($origin != "%" ? ' AND users_courses.origin LIKE "' . addslashes($origin) . '"' : '') .
+                            ($user_ID != "%" ? ' AND table_users.user_ID LIKE "' . $user_ID . '"': '') .
+                            ($has_albums != -1 ? ' AND ' . ' table_courses.has_albums = "' . $has_albums . '"': '') .
+                            ($in_classrooms != -1 ? ' AND ' . ' table_courses.in_recorders = "' . $in_classrooms . '"': '') .
+                            ($with_teacher == 0 ? ' AND table_users.user_ID IS NULL': '') .
+                    ' GROUP BY course_code ' .    
+                    ($order ? ' ORDER BY ' . $order : '') .
+                    ($limit ? ' LIMIT ' . $limit : '');
+
+    $res = $db_object->query($query);
+
+    return $res;
 }
 /**
  * Updates the "has_albums" field in the DB. Scans the content of the repo and updates the fields that have changed.
  * @param type $repo_content 
  */
 function db_courses_update_hasalbums($repo_content) {
-	global $db_object;
-	global $statements;
-	
-	$course_code = '';
-	$db_object->beginTransaction();
-	$statements['update_courses_hasalbums']->bindParam(':course_code', $course_code);
-	
-	$updated_courses = array(); // To prevent double update
-	foreach($repo_content as $album) {
-		if($album == '.' || $album == '..')
-			continue;
-		
-		if($course_code_str = strstr($album, '-ppub', true)) {
-			$course_code = $course_code_str;
-			$statements['update_courses_hasalbums']->execute();
-			$updated_courses[] = $course_code;
-		}
-		else if(($course_code_str = strstr($album, '-priv', true)) && !in_array($course_code_str, $updated_courses)) {
-			$course_code = $course_code_str;
-			$statements['update_courses_hasalbums']->execute();
-			$updated_courses[] = $course_code;
-		}
-	}
-	
-	$db_object->commit();
+    global $db_object;
+    global $statements;
+
+    $course_code = '';
+    $db_object->beginTransaction();
+    $statements['update_courses_hasalbums']->bindParam(':course_code', $course_code);
+
+    $updated_courses = array(); // To prevent double update
+    foreach($repo_content as $album) {
+            if($album == '.' || $album == '..')
+                    continue;
+
+            if($course_code_str = strstr($album, '-pub', true)) {
+                    $course_code = $course_code_str;
+                    $statements['update_courses_hasalbums']->execute();
+                    $updated_courses[] = $course_code;
+            }
+            else if(($course_code_str = strstr($album, '-priv', true)) && !in_array($course_code_str, $updated_courses)) {
+                    $course_code = $course_code_str;
+                    $statements['update_courses_hasalbums']->execute();
+                    $updated_courses[] = $course_code;
+            }
+    }
+
+    $db_object->commit();
 }
 /**
  * Retrieve all courses
@@ -555,20 +562,37 @@ function db_classrooms_search($room_ID, $name, $ip, $enabled, $colOrder, $orderS
  * Returns the name, ID and IP of all the recorders
  */
 function db_classrooms_list() {
-	global $statements;
-	
-	$statements['classrooms_list']->execute();
-	return $statements['classrooms_list']->fetchAll();
+    global $statements;
+
+    $statements['classrooms_list']->execute();
+    return $statements['classrooms_list']->fetchAll();
 }
 /**
  * Returns the name, ID and IP of all the enabled recorders
  */
 function db_classrooms_list_enabled() {
-	global $statements;
-	
-	$statements['classrooms_list_enabled']->execute();
-	return $statements['classrooms_list_enabled']->fetchAll();
+    global $statements;
+
+    $statements['classrooms_list_enabled']->execute();
+    return $statements['classrooms_list_enabled']->fetchAll();
 }
+/**
+ * Return the IP of a specific room_ID
+ * 
+ * @global array $statements
+ * @param string $room_ID
+ * @return string ip
+ */
+function db_classroom_from_name_get_ip($room_ID) {
+    global $statements;
+
+    $statements['classrooms_from_name_get_ip']->bindParam(':room_ID', $room_ID);
+    $statements['classrooms_from_name_get_ip']->execute();
+
+    return $statements['classrooms_from_name_get_ip']->fetchAll(PDO::FETCH_COLUMN);
+}
+
+
 /**
  * Sets the "enabled" bit to true or false
  * @global array $statements
@@ -577,65 +601,65 @@ function db_classrooms_list_enabled() {
  * @return type 
  */
 function db_classroom_update_enabled($room_ID, $enabled) {
-	global $statements;
-	
-	$statements['classroom_update_enabled']->bindParam(':room_ID', $room_ID);
-	$statements['classroom_update_enabled']->bindParam(':enabled', $enabled, PDO::PARAM_INT);
-	
-	$res = $statements['classroom_update_enabled']->execute();
-	
-	return $res;
+    global $statements;
+
+    $statements['classroom_update_enabled']->bindParam(':room_ID', $room_ID);
+    $statements['classroom_update_enabled']->bindParam(':enabled', $enabled, PDO::PARAM_INT);
+
+    $res = $statements['classroom_update_enabled']->execute();
+
+    return $res;
 }
 function db_users_in_recorder_get() {
-	global $statements;
-	
-	$statements['get_users_in_recorder']->execute();
-	return $statements['get_users_in_recorder']->fetchAll();
+    global $statements;
+
+    $statements['get_users_in_recorder']->execute();
+    return $statements['get_users_in_recorder']->fetchAll();
 }
 /**
  * Returns the list of users created manually
  */
 function db_users_internal_get() {
-	global $statements;
-	
-	$statements['get_internal_users']->execute();
-	return $statements['get_internal_users']->fetchAll();
+    global $statements;
+
+    $statements['get_internal_users']->execute();
+    return $statements['get_internal_users']->fetchAll();
 }
 function db_users_courses_create($course_code, $user_ID) {
-	global $statements;
-	
-	if(db_users_courses_get($course_code, $user_ID)) return false;
-	
-	$statements['users_courses_create']->bindParam(':course_code', $course_code);
-	$statements['users_courses_create']->bindParam(':user_ID', $user_ID);
-	
-	if(!$statements['users_courses_create']->execute()) return false;
-	
-	// return informations
-	global $db_object;
-	$user = db_user_read($user_ID);
-	if(!$user) 
-            return false;
-	
-	$course = db_course_read($course_code);
-	if(!$course) 
-            return false;
-	
-	return array('user' => $user, 'course' => $course, 'id' => $db_object->lastInsertId());
+    global $statements;
+
+    if(db_users_courses_get($course_code, $user_ID)) return false;
+
+    $statements['users_courses_create']->bindParam(':course_code', $course_code);
+    $statements['users_courses_create']->bindParam(':user_ID', $user_ID);
+
+    if(!$statements['users_courses_create']->execute()) return false;
+
+    // return informations
+    global $db_object;
+    $user = db_user_read($user_ID);
+    if(!$user) 
+        return false;
+
+    $course = db_course_read($course_code);
+    if(!$course) 
+        return false;
+
+    return array('user' => $user, 'course' => $course, 'id' => $db_object->lastInsertId());
 }
 function db_users_courses_delete($user_course_ID) {
-	global $statements;
-		
-	$statements['users_courses_delete']->bindParam(':user_course_ID', $user_course_ID);
-	
-	return $statements['users_courses_delete']->execute();
+    global $statements;
+
+    $statements['users_courses_delete']->bindParam(':user_course_ID', $user_course_ID);
+
+    return $statements['users_courses_delete']->execute();
 }
 function db_unlink_user($user_ID) {
-	global $statements;
-		
-	$statements['unlink_user']->bindParam(':user_ID', $user_ID);
-	
-	return $statements['unlink_user']->execute();
+    global $statements;
+
+    $statements['unlink_user']->bindParam(':user_ID', $user_ID);
+
+    return $statements['unlink_user']->execute();
 }
 function db_unlink_course($course_code) {
     global $statements;

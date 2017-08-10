@@ -57,11 +57,11 @@ Before calling this template, please define the following variables:
                     <li><span class="BoutonSoumettreAlbum"><a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');">®Submit_record®</a></span></li>
                 </ul>
             </div>
-            <a class="greyLink" style="padding-left: 15px; border: none; font-size: 0.75em" href="javascript:show_popup_from_inner_div('#HD_RSS_box'); copyToClipboard('#zero_clipboard_hd_rss','<?php echo $hd_rss_url_web; ?>');">
+            <a class="greyLink" style="padding-left: 15px; border: none; font-size: 0.75em" href="javascript:show_popup_from_inner_div('#HD_RSS_box'); ">
                 <img src="images/page4/PictoRss.png" style="display:inline"/> ®HD_RSS_feed®</a> 
-            <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#SD_RSS_box'); copyToClipboard('#zero_clipboard_sd_rss','<?php echo $sd_rss_url_web; ?>');">
+            <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#SD_RSS_box'); ">
                 <img src="images/page4/PictoRss.png" style="display:inline"/> ®SD_RSS_feed®</a> 
-            <a class="greyLink ezplayer" style="font-size:0.75em;<?php if(!$public_album) echo "color: red !important;"?>" href="javascript:show_popup_from_inner_div('#player_url_box'); copyToClipboard('#zero_clipboard_player_url','<?php echo $player_full_url; ?>');">
+            <a class="greyLink ezplayer" style="font-size:0.75em;<?php if(!$public_album) echo "color: red !important;"?>" href="javascript:show_popup_from_inner_div('#player_url_box');">
                     <img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®</a>
 			<?php if($enable_moderator){ ?><a class="greyLink ezmanager" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#manager_url_box'); copyToClipboard('#zero_clipboard_manager_url','<?php echo $manager_full_url; ?>');"><img src="images/page4/PictoEZ.png" style="display:inline"/>®Ezmanager_url®</a> <?php } ?>
 

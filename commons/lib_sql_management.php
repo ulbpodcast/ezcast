@@ -778,12 +778,8 @@ function db_classroom_delete($room_ID) {
     $statements['classroom_delete']->bindParam(':room_ID', $room_ID);
     return $statements['classroom_delete']->execute();
 }
-<<<<<<< HEAD
-function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token,$module_type, $ip, $status, $quality, $protocol, $server, $port) {
-=======
 
 function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $ip, $status, $quality, $protocol, $server, $port) {
->>>>>>> refs/remotes/ulbpodcast/master
     global $statements;
     $statements['stream_create']->bindParam(':cours_id', $cours_id);
     $statements['stream_create']->bindParam(':asset', $asset);
@@ -835,7 +831,7 @@ function db_get_stream_info($cours_id,$asset){
         if(isset($res[$i]['server']))
             $infos[$cours_id][$asset][$res[$i]['module_type']]['server']  = $res[$i]['server'];
         else
-            $infos[$cours_id][$asset][$res[$i]['module_type']]['server'] = null;
+            $infos[$cours_id][$asset][$res[$i]['module_type']]['server']  = null;
         
         if(isset($res[$i]['port']))
             $infos[$cours_id][$asset][$res[$i]['module_type']]['port']    = $res[$i]['port'];
@@ -843,9 +839,5 @@ function db_get_stream_info($cours_id,$asset){
             $infos[$cours_id][$asset][$res[$i]['module_type']]['port']    = null;
     }
     
-<<<<<<< HEAD
-    var_dump($infos);
-=======
->>>>>>> refs/remotes/ulbpodcast/master
     return $infos;	
 }

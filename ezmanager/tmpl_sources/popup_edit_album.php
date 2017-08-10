@@ -80,6 +80,29 @@ You should not have to include this file yourself.
                 </select>
 
                 <br/><br/>
+
+                <!-- Credits dropdown list -->
+                <label>®Credits®&nbsp;:
+                    <span class="small"><a class="info small">®More_info®<span>®Credits_info®</span></a></span></label>   
+                <select name="credits" id="credits" style="width: 200px;">
+                    <option value="">®None_credits®</option>
+                    <?php
+                    foreach ($credits as $credit) {
+                        if ($credit['value'] == $album_credits) {
+                            ?>                             
+                            <option selected="selected" value="<?php echo $credit['value']; ?>"><?php echo $credit['label']; ?></option>
+                        <?php } else { ?>
+                            <option value="<?php echo $credit['value']; ?>"><?php echo $credit['label']; ?></option>
+                        <?php
+                        }
+                    }
+                    ?>
+                </select>    
+
+                <br/><br />
+
+
+
                 <input type="checkbox" id="downloadable" name="downloadable" <?php if($downloadable !== 'false') echo 'checked'; ?> style="width: 13px; clear:left; margin: 0px 10px 0px 82px; padding: 0px;"/>
                 <label class="labelcb" for="downloadable"><span><a class="info">®Downloadable®<span style="font-weight: normal; font-size: 10px;">®Download_info®</span></a></span></label>
             <div class="spacer"></div>
@@ -94,10 +117,12 @@ You should not have to include this file yourself.
                 function submit_edit_form() {
                     var intro = encodeURIComponent(document.getElementById('intro').value);
                     var add_title = encodeURIComponent(document.getElementById('add_title').value);
+                    var credits = encodeURIComponent(document.getElementById('credits').value);
                     var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
-                    show_popup_from_outer_div('index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + add_title + '&downloadable=' + downloadable, true);
+                    show_popup_from_outer_div('index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + add_title + '&credits=' + credits + '&downloadable=' + downloadable, true);
                 }
             </script>
         </form>
     </div>
 </div>
+

@@ -121,7 +121,8 @@ body{
 	color:#666666;
 	font-size:12px;
 	max-width: 800px;
-        z-index: 9999;
+    z-index: 9999;
+    width: 820px;    
 }
 
 .popup a {
@@ -170,7 +171,7 @@ body{
 /* ----------------- MAIN HEADER ---------------------- */
 
 .header {
-    background-color: #F9F8F8;
+    background-color: #032f5d;
     margin: auto;
     padding: 15px 0px;
     height: 40px;
@@ -512,7 +513,26 @@ body{
 	background-repeat:no-repeat;
 	color:#004C93;
 }
+.BoutonVignette a{
+	display:block;
+	background-image:url(../images/page4/AProgrammer.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
+}
 
+.BoutonVignette a:hover{
+	display:block;
+	background-image:url(../images/page4/BProgrammer.png);
+	background-repeat:no-repeat;
+	color:#004C93;
+}   
 .BoutonSoumettreAlbum a{
 	display:block;
 	background-image:url(../images/page4/AUp.png);
@@ -1625,3 +1645,21 @@ a.greyLink.ezplayer:hover {
     padding: 3px; 
 }
 
+
+
+.imgThumb{
+   /* float: left;*/
+    border : 2px solid white;
+    line-height: 1px;
+}
+
+.thumbnail_list{
+    position: relative;
+    background-color: white;
+}
+
+.imgThumb:hover{
+border: 2px solid blue;
+cursor:pointer;	
+	
+}

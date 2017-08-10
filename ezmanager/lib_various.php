@@ -32,6 +32,7 @@
 require_once dirname(__FILE__) . '/config.inc';
 require_once dirname(__FILE__) . '/lib_ezmam.php';
 require_once dirname(__FILE__) . '/../commons/lib_template.php';
+require_once dirname(__FILE__) . '/../ezadmin/lib_sql_management.php';
 
 /**
  * Trims the '-priv' or '-pub' suffix from an album name
@@ -354,7 +355,29 @@ function update_title($album,$asset){
 	
 	$cmd=$php_cli_cmd.' '.$ezmanager_basedir.'/cli_update_title.php '.$album.' '.$asset.' > /dev/null 2>&1 &';
 	exec($cmd, $cmdoutput, $returncode );
+}
 
+function asset_add_alter_db($album){
+	
+	// get album info
+	$album_meta = ezmam_album_metadata_get($album);
+	if(isset($album_meta['anon_access']) && $album_meta['anon_access']=='true') $anon="1"; else $anon="0";
+	$asset_list=ezmam_asset_list($album);
+
+	for($i=0;$i<count($asset_list);$i++){
+		//get asset info
+		$asset_meta=ezmam_asset_metadata_get($album,$asset_list[$i]);		
+		$token = ezmam_asset_token_get($album, $asset_list[$i]);		
+		$asset_info_db=db_get_asset_info($album,$asset_list[$i]);
+		
+		// add/alter in db
+		if(isset($asset_info_db) && count($asset_info_db)>0 && $asset_info_db[0]['anon_access']!=$anon ){
+			db_alter_asset($album,$asset_list[$i],$asset_meta['title'],$asset_meta['description'],$token,$anon);
+		}
+		else if (!isset($asset_info_db) || count($asset_info_db)==0){
+			db_insert_asset($album,$asset_list[$i],$asset_meta['title'],$asset_meta['description'],$token,$anon);
+		}
+	}
 }
 
 

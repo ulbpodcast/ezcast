@@ -8,6 +8,7 @@ chdir(__DIR__);
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';
+require_once dirname(__FILE__) . '/../ezadmin/lib_sql_management.php';
 
 //always initialize repository path before using ezmam library
 ezmam_repository_path($repository_path);
@@ -84,6 +85,11 @@ $res = ezmam_asset_metadata_set($album, $asset, $asset_meta);
 if (!$res)
     print "asset metadata set error:" . ezmam_last_error() . "\n";
 
+/*manage anonymous access ( add in db after processing) */
+$token = ezmam_asset_token_get($album, $asset);
+$album_meta = ezmam_album_metadata_get($album);
+if(isset($album_meta['anon_access']) && $album_meta['anon_access']=='true') $anon="1"; else $anon="0";
+db_insert_asset($album,$asset,$asset_meta['title'],$asset_meta['description'],$token,$anon);
 $pos = strrpos($album, "-");
 $album_without_mod = substr($album, 0, $pos);
 $asset_name = $asset . '_' . $album_without_mod;

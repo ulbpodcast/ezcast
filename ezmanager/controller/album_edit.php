@@ -46,6 +46,8 @@ function index($param = array()) {
         error_print_message(ezmam_last_error());
         die;
     }
+    /*---add anon info in DB----*/                   
+	asset_add_alter_db($album);
 
     //  view_main();
     require_once template_getpath('popup_album_successfully_edited.php');

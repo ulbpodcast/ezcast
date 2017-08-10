@@ -40,6 +40,6 @@
         </div>
     <?php } ?>
     <div style="margin-top: 18px;">
-        <a class="button" style="width:250px;" href="index.php">®Back_to_home®</a>
+        <a class="button" style="width:250px;" href="index.php?action=album_view""index.php">®Back_to_home®</a>
     </div>
 </div>

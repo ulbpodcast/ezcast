@@ -43,6 +43,27 @@
 <?php
 include_once 'lib_print.php';
 ?> 
+ <div class="backgrey section">
+				  <div class="container_home">
+					<div class="row">
+
+					  <div class="col-md-9">
+						<ul class="backgrey nav nav-pills">
+						<?php
+						  if (isset($_SESSION['ezplayer_logged'])){ ?>
+						  <li class="active">
+							<a href="index.php?action=home">®Home®</a>
+						  </li>
+						  <?php
+						  if (isset($_SESSION['ezplayer_logged'])){ ?>
+						  <li class="active">
+							<a href="index.php?action=album_view">®myalbum® </a>
+						  </li>
+						  <?php } ?>
+						</ul>
+					  </div>
+					</div>
+				  </div>
 <div class="search_wrapper streaming regular">
     <div id="search">
         <?php include_once template_getpath('div_search.php'); ?>

@@ -46,14 +46,28 @@ switch (strtolower($_SESSION['browser_name'])) {
         break;
 }
 ?> 
-
+<div>
+		<ul class="backgrey nav nav-pills container_home">
+		  <?php if (isset($_SESSION['ezplayer_logged'])){ ?>
+						  <li class="">
+						  <?php } else { ?>  <li class="active">   <?php }?>
+			<a href="index.php?action=home">Home</a>
+		  </li>
+		  <?php
+		  if (isset($_SESSION['ezplayer_logged'])){ ?>
+		  <li class="active">
+			<a href="index.php?action=album_view">Mes Albums </a>
+		  </li>
+		  <?php } ?>
+		</ul>
+</div>  
 <div id="main_player">
     <!-- #player_header : contains album title and asset title 
         If the current view is the home page, the header is empty
         If the current view is the album page, the header contains album title only
         If the current view is the asset page, the header contains album title and asset title -->
     <div id="site_map">
-        <a class="home-link" href="index.php" title="®Back_to_home®">®Home®</a>    
+        <a class="home-link" href="index.php?action=album_view" title="®Back_to_home®">®Home®</a>    
         <?php
         if (acl_has_album_permissions($album)) {
             $token = acl_token_get($album);

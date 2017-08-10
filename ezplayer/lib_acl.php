@@ -196,9 +196,11 @@ function acl_global_count($album){
  * @return boolean
  */
 function acl_value_get($setting) {
-    $settings = $_SESSION["acl_user_settings"];
-    if(is_string($setting) && is_array($settings) && array_key_exists($setting, $settings)) {
-        return $settings[$setting];
+	if(isset($_SESSION["acl_user_settings"])){
+		$settings = $_SESSION["acl_user_settings"];
+		if(is_string($setting) && is_array($settings) && array_key_exists($setting, $settings)) {
+			return $settings[$setting];
+		}
     }
     return NULL;
 }

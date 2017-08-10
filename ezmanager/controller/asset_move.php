@@ -64,7 +64,8 @@ function index($param = array()) {
 	// regegerate intro	
 	if ($update_title=='auto')	update_title($input['to'],$input['asset']);
 	
-	
+	asset_add_alter_db($input['to']);
+	db_delete_asset($input['from'],$input['asset']);                                              
 	
 
 }

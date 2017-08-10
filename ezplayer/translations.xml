@@ -79,6 +79,8 @@
         <label id="General" lang="en">General</label>
         <label id="General" lang="fr">Général</label>
         <label id="Home" lang="en">Home</label>
+        <label id="myalbum" lang="en">My Albums</label>
+        <label id="myalbum" lang="fr">Mes Albums</label>
         <label id="Toc" lang="fr">Signets officiels</label>
         <label id="Toc" lang="en">Official bookmarks</label>
         <label id="Personal" lang="fr">Signets personnels</label>

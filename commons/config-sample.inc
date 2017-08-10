@@ -62,6 +62,12 @@ $ssh_pub_key_location = ""; // leave empty for default location or enter absolut
 
 $mailto_alert = "mail@your.organization"; //who to call in case of problem in the processing chain
 
+/*
+ * Available identification type
+ * - file
+ * - ldap
+ * - sso : SimpleSAMLphp
+ */
 $auth_methods = array("file", "ldap");
 
 $ldap_institution="";	//empty by default   "ucl" for ucl.					
@@ -88,7 +94,31 @@ $ldap_servers_auth_json_file = "$basedir/commons/ldap_servers_auth.json";
  */
 $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
 
+/* Setup for SSO Use
+ * 
+ * SimpleSAML must be installed and setup first
+ * update db for sso with: php cli_install_sso.php
+ * 
+ * Parameter for SimpleSAMLphp 1.4.6
+ * - lib           : localization of SSP library
+ * - sp            : name of Service Provider profil name
+ * 
+ * Mapping between sso attribute and userinfo
+ * - att_name      : user name
+ * - att_firstname : user first name
+ * - att_email     : user email
+ * - login         : user uid
+ */
+$sso_ssp_lib = "/var/www/simplesamlphp/lib";
+$sso_ssp_sp = "default-sp";
+$sso_ssp_att_name = "givenName";
+$sso_ssp_att_firstname = "sn";
+$sso_ssp_att_email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+$sso_ssp_att_login = "uid";
+
+//
 // -- Alternate server as streaming distribution source -- //
+//
 
 //enable file syncing (does not redirect user)
 $streaming_video_alternate_server_enable_sync = false;

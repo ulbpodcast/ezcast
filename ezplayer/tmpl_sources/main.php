@@ -40,6 +40,8 @@
         <meta name="description" content="EZPlayer is a video player to view EZCast video" />
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
+        <!--  <?php if ($_SESSION['ezplayer_mode'] == 'home') {?>    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" /> <?php } ?>-->
+         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />
 		<?php
@@ -823,6 +825,8 @@ if ($trace_on) {
                     <?php
                     if (isset($error_path) && !empty($error_path)) {
                         include_once $error_path;
+                    } else if ($_SESSION['ezplayer_mode'] == 'home') {
+                        include_once template_getpath('div_home.php');                                              
                     } else if ($_SESSION['ezplayer_mode'] == 'view_main') {
                         include_once template_getpath('div_main_center.php');
                     } else if ($_SESSION['ezplayer_mode'] == 'view_asset_streaming') {
@@ -835,7 +839,7 @@ if ($trace_on) {
             </div><!-- global -->
 
             <?php
-            if ($_SESSION["show_message"]) {
+            if (isset($_SESSION["show_message"]) && $_SESSION["show_message"]) {
                 include_once template_getpath('popup_message_of_day.php');
                 ?>
                 <script>

@@ -32,6 +32,7 @@
 include_once dirname(__FILE__) . '/config.inc';
 include_once dirname(__FILE__) . '/lib_error.php';
 include_once dirname(__FILE__) . '/lib_various.php';
+require_once dirname(__FILE__) . '/../ezadmin/lib_sql_management.php';
 // include_once dirname(__FILE__) . '../commons/common.inc';
 
 /**
@@ -1038,6 +1039,7 @@ AJOUTARNAUDs
  */
 function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
     global $logger;
+    global $ezmanager_basedir;
     
     // Sanity checks
     $repository_path = ezmam_repository_path();
@@ -1086,8 +1088,8 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
 	// just copy in background
     // exec('cp -r '. $src_path . '/' . $asset_time.' '.$dst_path . '/' . $asset_time. " > /dev/null &", $output, $res);
 
-	//Copy Asset in background, and pass the metadata status to processing during the copy.  
-	$cmd='( mkdir '.$dst_path . '/' . $asset_time.' && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml && sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml && rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/  && rm '.$dst_path . '/' . $asset_time.'/_metadata.xml  && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml ) > /dev/null &';
+	//Copy Asset in background, and pass the metadata status to processing during the copy. ++add in db for anon check  
+	$cmd='( mkdir '.$dst_path . '/' . $asset_time.' && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml && sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml && rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/  && rm '.$dst_path . '/' . $asset_time.'/_metadata.xml  && cp '.$src_path . '/' . $asset_time.'/_metadata.xml'.' '.$dst_path . '/' . $asset_time.'/_metadata.xml  && php -f '.$ezmanager_basedir.'/controller/asset_copy.php \''.$album_dst.'\' ) > /dev/null &';
 	
 	exec($cmd,$output,$res);
 	
@@ -1157,6 +1159,10 @@ function ezmam_asset_publish($private_album, $asset_name) {
     $res = ezmam_asset_move($asset_name, $private_album, $public_album);
     //logging done in ezmam_asset_move
     
+     //manage anonym access
+    asset_add_alter_db($public_album);
+    db_delete_asset($private_album,$asset_name);
+    
     return $res;
 }
 
@@ -1180,6 +1186,10 @@ function ezmam_asset_unpublish($public_album, $asset_name) {
     $private_album = suffix_replace($public_album);
     $res = ezmam_asset_move($asset_name, $public_album, $private_album);
     //logging done in ezmam_asset_move
+    
+       //manage anonym access
+    asset_add_alter_db($private_album);
+    db_delete_asset($public_album,$asset_name);
     
     return $res;
 }
@@ -1941,6 +1951,7 @@ function ezmam_asset_token_reset($album, $asset, $logging = true) {
     // Logging
     if ($logging)
         log_append('asset_token_reset', 'Asset: ' . $asset . ', Album: ' . $album . ', Old token: ' . $old_token . ', New token: ' . $res);
+	asset_add_alter_db($album);
 }
 
 /* Create the folder for submit before metadata because for the progress bar in flash. 

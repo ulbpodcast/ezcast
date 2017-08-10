@@ -28,8 +28,27 @@
         If the current view is the home page, the site map is empty
         If the current view is the album page, the site map contains album title only
         If the current view is the asset page, the site map contains album title and asset title -->
+<div>
+		<ul class="backgrey nav nav-pills container_home">
+		  <li class="">
+			<a href="index.php?action=home">®Home®</a>
+		  </li>
+		  <?php
+		  if (isset($_SESSION['ezplayer_logged'])){ ?>
+		  <li class="active">
+			<a href="index.php?action=album_view">®myalbum®</a>
+		  </li>
+		  <?php } ?>
+		</ul>
+</div>	
+		
 <div id="site_map">
-    <a class="home-link" href="index.php" title="®Back_to_home®">®Home®</a>
+  
+  <?php if(isset($_SESSION['ezplayer_logged'])){ ?>
+   <a class="home-link" href="index.php?action=album_view" title="Retour à l'accueil">®Home®</a>
+   <?php }  else { ?>
+    <a class="home-link" href="index.php?action=home" title="Retour à l'accueil">®Home®</a>
+	 <?php }  ?>
     <div class="right-arrow"></div>
     (<?php if(isset($course_code_public) && $course_code_public!="") echo $course_code_public; else  echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?>
 </div>

@@ -68,7 +68,8 @@
         } else {
             require_once template_getpath('popup_login.php');
             ?>
-            <a onclick="javascript:$('#popup_login').reveal($(this).data());" title="®Login_title®"><span class="logout">®Login®</span></a>
+            <a href="index.php?action=view_login_form" title="®Login_title®"><span class="logout">®Login®</span></a>			 
+
 <?php } ?>       
         <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
         <a href="index.php?action=view_help" target="_blank" title="®Help_title®"><span class="logout green">®Help®</span></a>

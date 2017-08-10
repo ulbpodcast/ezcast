@@ -310,9 +310,16 @@ function streaming_init() {
             break;
     }
 	
-	if(!isset($streams_array[$course][$asset][$module_type]['server']))$server="";
-	if(!isset($streams_array[$course][$asset][$module_type]['port'])) $port="";
-	if(!isset($streams_array[$course][$asset][$module_type]['pid']))  $pid="";
+	if(isset($streams_array[$course][$asset][$module_type]['ip'])) $ip=$streams_array[$course][$asset][$module_type]['ip']; else $ip="";
+	if(isset($streams_array[$course][$asset][$module_type]['status'])) $status=$streams_array[$course][$asset][$module_type]['status']; else $status="";
+	if(isset($streams_array[$course][$asset][$module_type]['quality'])) $quality=$streams_array[$course][$asset][$module_type]['quality']; else $quality="";
+	if(isset($streams_array[$course][$asset][$module_type]['server'])) $server=$streams_array[$course][$asset][$module_type]['server']; else $server="";
+	if(isset($streams_array[$course][$asset][$module_type]['port'])) $port=$streams_array[$course][$asset][$module_type]['port']; else $port="";
+	if(isset($streams_array[$course][$asset][$module_type]['pid'])) $pid=$streams_array[$course][$asset][$module_type]['pid']; else $pid="";
+	if(isset($streams_array[$course][$asset]['stream_name'])) $stream_name=$streams_array[$course][$asset]['stream_name']; else $stream_name="";
+	if(isset($streams_array[$course][$asset]['token'])) $token=$streams_array[$course][$asset]['token']; else $token="";	
+	
+    file_put_contents("/home/arwillame/test2/streamTest.txt","Course : ". $course. PHP_EOL ."asset : ". $asset. PHP_EOL ."classroom : ". $classroom. PHP_EOL ."module_type : ". $module_type.PHP_EOL ."record_type : ". $record_type. PHP_EOL ."netid : ". $netid. PHP_EOL ."stream_name : ". $stream_name. PHP_EOL ."token : ". $token. PHP_EOL ."ip : ". $ip. PHP_EOL ."status : ". $status. PHP_EOL ."quality : ". $quality. PHP_EOL ."protocol : ". $protocol. PHP_EOL ."server : ". $server. PHP_EOL ."port : ". $port. PHP_EOL ,FILE_APPEND);
 	
 	$res=db_stream_create($course, $asset, $classroom, $record_type, $netid, $stream_name, $token,$module_type, $ip, $status,$pid, $quality, $protocol, $server, $port);
 	if(!$res){
@@ -320,7 +327,7 @@ function streaming_init() {
 		return false;
 	}
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
-    
+    file_put_contents('/usr/local/ezcast/ezmanager/web_request/MEGADEBUG.txt', 'THERE');
     return true;
 }
 
@@ -347,7 +354,7 @@ function streaming_start() {
 		// , FILE_APPEND);
 	// }
 		
-    $course = $input['$course'];
+    $course = $input['course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
@@ -617,7 +624,7 @@ function streaming_stop() {
     
     ezmam_repository_path($repository_path);
 
-    $course = $input['$course'];
+    $course = $input['course'];
     $asset = $input['asset'];
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
@@ -737,6 +744,7 @@ function streaming_close() {
                 if (count($streams_array[$course]) == 0) {
                     unset($streams_array[$course]);
                 }
+				$dir_name= $stream_name.'_'.$token;
 
                 $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $course ${stream_name}_$token\" | at now + 1 hour";
                 $pid = shell_exec($cmd);

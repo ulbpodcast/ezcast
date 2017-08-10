@@ -157,6 +157,21 @@ function print_info($info, $suffix = '') {
 
                 </span></li>
 				<?php } ?>
+                
+                  <li><span class="BoutonVignette">
+                    <?php if ($status != 'processing' && $status != 'error') {
+                        ?>
+                        <a href="javascript:show_popup_from_inner_div('#popup_thumbnails_<?php echo $asset_name; ?>');">®thumbnail®</a>
+                        <?php
+                    } else {
+                        ?>
+                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®thumbnail®</a>
+                        <?php
+                    }
+                    ?>
+
+                </span></li>
+                
         </ul>
     </div>
 <?php } ?>
@@ -212,6 +227,26 @@ else print_info($origin); ?></p>
         <input type="button" id="<?php echo $asset; ?>_cancel_button" onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
         <input type="button" id="<?php echo $asset ?>_submit_button" onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Update®" />
     </div>
+          
+    <div id="image_preview" class="thumbnail thumbnail_<?php echo $album.'_'.$asset; ?>">              
+        <p> <img src='<?php echo("index.php?action=get_asset_thumbnails&album=".$album."&asset=".$asset."&image=thumbnail.png"); ?>' name="Image10" width="187" height="109"  border="2" id="Image10"></p>             
+    </div>            
+
+   <?php global $repository_basedir;
+        if(!file_exists ( $repository_basedir.'/repository/'.$album.'/'.$asset.'/thumbnails/thumbnail.png' )){ ?>
+       <script>
+        $('.thumbnail_<?php echo $album.'_'.$asset; ?>').hide();
+        $('#my_form_supp_<?php echo $album.'_'.$asset; ?>').hide();
+            
+       </script>
+   <?php }  ?>    
+    
+    <script>
+    function getfile(asset){
+        document.getElementById('hiddenfile_'+asset).click();
+    }    
+    
+    </script>      
 </div>
 
 <!-- Colonne 1 information podcast [Fin] -->
@@ -256,6 +291,7 @@ if ($status != 'processing' && $status != 'failed' && strtolower($origin) !== 's
 <div style="display: none;">
 <?php include 'popup_delete_asset.php'; ?>
 <?php include 'popup_regen_title.php'; ?>										 
+<?php include 'popup_thumbnails.php'; ?>										 
 <?php include 'popup_move_asset.php'; ?>
 <?php include 'popup_copy_asset.php'; ?>
 <?php include 'popup_publish_asset.php'; ?>

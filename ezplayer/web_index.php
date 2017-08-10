@@ -45,6 +45,7 @@ require_once 'lib_various.php';
 require_once 'lib_user_prefs.php';
 include_once 'lib_toc.php';
 require_once './Browser/Autoloader.php';
+require_once './Browser/OS.php';
 require_once 'lib_threads_pdo.php';
 require_once 'lib_chat_pdo.php';
 require_once 'lib_cache.php';
@@ -130,14 +131,15 @@ if (!user_logged_in()) {
     // so we refresh the whole page to get a full-page login form.
     //
     // $input['click'] indicates that the action comes from a link in the application
-    else if (isset($input['action']) && $input['click']) {
+    else if (isset($input['action']) && $input['action']!='view_login_form' && (isset($input['click'])&& $input['click'])) {
         refresh_page();
     }
     // Step 1: Displaying the login form
     // (happens if no "action" is provided)
-    else {
+    else if( isset($input['action']) && $input['action']=='view_login_form') {
         view_login_form();
-    }
+    }   
+	else load_page(); 
 }
 
 // At this point of the code, the user is supposed to be logged in.
@@ -169,7 +171,8 @@ else {
  */
 function load_page() {
     global $input;
-    $action = $input['action'];
+    if(isset($input['action'])) $action = $input['action'];
+    else $action='home';                 
     $redraw = false;
     
     /**
@@ -456,7 +459,15 @@ function load_page() {
         case 'client_trace':
             requireController('client_trace.php');
             break;
-
+		case 'home':
+            requireController('home.php');
+		break;	
+		case 'album_view':
+            albums_view();
+		break;	
+		case 'view_login_form':
+           view_login_form();
+		break;	
         // No action selected: we choose to display the homepage again
         default:
             albums_view();
@@ -490,7 +501,7 @@ function user_anonymous_session() {
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
-        if ($input['has_flash'] == 'N')
+        if (isset($input['has_flash']) && $input['has_flash']== 'N')
             $_SESSION['has_flash'] = false;
         else
             $_SESSION['has_flash'] = true;
@@ -630,6 +641,7 @@ function view_login_form() {
     global $error, $input;
     global $template_folder;
 
+    session_destroy();              
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash']))
         $_SESSION['has_flash'] = false;
@@ -725,7 +737,8 @@ function redraw_page() {
     $redraw = true;
 
     // Whatever happens, the first thing to do is display the whole page.
-    albums_view();
+	requireController('home.php');
+	index();
 }
 
 /**

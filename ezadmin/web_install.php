@@ -683,7 +683,7 @@ function create_tables($drop = true) {
 	   if ($drop)
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'streams`;');
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'streams` (' .
-               "`id` int(11) NOT NULL," .
+               "`id` int(11) NOT NULL AUTO_INCREMENT," .
 				 "`cours_id` varchar(255) NOT NULL," .
 				  "`asset` varchar(255) NOT NULL," .
 				  "`module_type` varchar(15) NOT NULL," .
@@ -700,6 +700,24 @@ function create_tables($drop = true) {
 				  "`server` varchar(255) NOT NULL," .
 				  "`port` int(10) NOT NULL" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");								  
+        
+             if ($drop)
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'assets`;');
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'assets` (' .
+               "`id` int(11) NOT NULL AUTO_INCREMENT," .
+				 "`cours_id` varchar(255) NOT NULL," .
+				  "`name` varchar(255) NOT NULL," .
+				  "`title` varchar(255) NOT NULL," .
+				  "`description` longtext NOT NULL," .
+				  "`token` varchar(25) NOT NULL ," .
+				  "`anon` int(11) NOT NULL," .
+				  "`date_modif` datetime NOT NULL," .
+                " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+                
+                ALTER TABLE `' . $input['db_prefix'] . 'assets` ADD FULLTEXT KEY `index_full_text` (`title`,`description`);
+                ");								  
+        
+            
         
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .

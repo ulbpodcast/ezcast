@@ -86,7 +86,14 @@ if (!user_logged_in()) {
     // Step 1: Displaying the login form
     // (happens if no "action" is provided)
     else {
-        view_login_form();
+             //  view_login_form();
+    	if (isset($_GET["sso"])){
+			if (in_array("sso",$auth_methods)){
+				user_login(trim('login'), trim('passwd'));
+			}
+		}else{
+			view_login_form();
+		}
     }
 }
 
@@ -112,6 +119,7 @@ else {
 	
     $action = $input['action'];
     $redraw = false;
+
     /**
      * Until pages and services are divided, mark some action as services
      * A service = action not returning a page.
@@ -311,6 +319,18 @@ else {
         case 'delete_user_course':
             requireController('user_course_delete.php');
             break;
+            
+        case 'asset_thumbnail':
+            requireController('asset_thumbnail.php');
+            break;
+            
+        case 'asset_thumbnail_delete':
+            requireController('asset_thumbnail_delete.php');
+            break;
+            
+        case 'get_asset_thumbnails':
+            requireController('get_asset_thumbnails.php');
+            break;
 
         //debugging should be removed in prod
         // No action selected: we choose to display the homepage again
@@ -346,13 +366,23 @@ function user_logged_in() {
 function view_login_form() {
     global $ezmanager_url;
     global $error, $input;
+    global $auth_methods;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash']))
         $_SESSION['has_flash'] = false;
     $url = $ezmanager_url;
     // template include goes here
-    include_once template_getpath('login.php');
+  
+    
+   if (in_array("sso",$auth_methods)){
+		// include_once template_getpath('login_w_sso.php');
+        include_once "tmpl/fr/login_w_sso.php";
+	}else{
+		// include_once template_getpath('login.php');
+        include_once "tmpl/fr/login.php";
+	}    
+    
     //include_once "tmpl/fr/login.php";
 }
 

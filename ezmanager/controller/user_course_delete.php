@@ -11,7 +11,7 @@ function index($param = array()) {
     global $default_downloadable;
     global $default_anon_access;
     global $basedir;
-   global $input;
+    global $input;
 	   
 	require_once $basedir.'/commons/lib_sql_management.php';
 

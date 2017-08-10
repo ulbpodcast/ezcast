@@ -54,3 +54,5 @@ $cache_limit = 5; // number of trending threads that are displayed on level 2
 $streaming_video_player = "flowplayer"; // defines the video player to use for live stream ('momovi' | 'flowplayer')
 
 $antispam_filter_words = array(); //contact message with words in this array will be ignored
+
+$custom_css_filename = false; // Specify a custome filename from the css/custom folder to include

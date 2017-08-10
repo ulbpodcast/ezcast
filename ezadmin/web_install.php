@@ -154,7 +154,6 @@ if (isset($input['install']) && !empty($input['install'])) {
     $input['classrooms_category_enabled'] = $classrooms_category_enabled;
     $input['add_users_enabled'] = $add_users_enabled;
     $input['recorder_password_storage_enabled'] = $recorder_password_storage_enabled;
-    $input['use_course_name'] = $use_course_name;
     $input['use_user_name'] = $use_user_name;
 
     require template_getpath('install.php');

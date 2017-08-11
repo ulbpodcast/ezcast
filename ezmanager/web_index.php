@@ -42,6 +42,10 @@ require_once 'lib_upload.php';
 require_once 'lib_toc.php';
 $input = array_merge($_GET, $_POST);
 
+if(isset($input['lang'])) {
+    set_lang($input['lang']);
+}
+
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
@@ -75,6 +79,7 @@ if (!user_logged_in()) {
     // Step 1: Displaying the login form
     // (happens if no "action" is provided)
     else {
+        $lang = get_lang();
         view_login_form();
     }
 }
@@ -299,12 +304,14 @@ function user_logged_in() {
  * Displays the login form
  */
 function view_login_form() {
+    global $lang;
     global $ezmanager_url;
     global $error, $input;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
-    if (isset($input['no_flash']))
+    if (isset($input['no_flash'])) {
         $_SESSION['has_flash'] = false;
+    }
     $url = $ezmanager_url;
     // template include goes here
     include_once template_getpath('login.php');

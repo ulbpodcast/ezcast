@@ -290,6 +290,8 @@
         <label id="Login" lang="en">Netid</label>
         <label id="Password" lang="fr">Mot de passe</label>
         <label id="Password" lang="en">Password</label>
+        <label id="Connect" lang="fr">Connexion</label>
+        <label id="Connect" lang="en">Log in</label>
         
         <!-- Long texts -->
         <label id="Destructive_operation" lang="fr">Opération destructive non-réversible.</label>

@@ -50,41 +50,6 @@
             <div id="global">
                 <p>
                     <br />
-                    <!--
-                    <form id="form_login" class="form-horizontal col-md-4 col-md-offset-4" style="margin-top: 50px;" 
-                          method="post" action="http://podcast.ulb.ac.be/ezplayer/index.php" onsubmit="detect_flash();">
-                        <div class="form-group">
-                            <label for="netid" class="col-sm-3 control-label">Netid</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="netid" placeholder="NetID" name="login" autocapitalize="off" autocorrect="off" tabindex="1">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="passwd" class="col-sm-3 control-label">Mot de passe</label>
-                          <div class="col-sm-9">
-                            <input type="password" class="form-control" name="passwd" placeholder="Mot de passe" autocapitalize="off" autocorrect="off" tabindex="2">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-9 col-sm-offset-3">
-                                <select class="lang form-control" name="lang" tabindex="3" onchange="document.location.href = './index.php?lang='+this.value;">
-                                    <option value="en">
-                                        English
-                                    </option>
-                                    <option value="fr" selected="selected">
-                                        Français
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="col-sm-offset-3 col-sm-9">
-                            <input type="submit" name="logged_session" class="btn btn-default login" value="Connexion" tabindex="4">
-                          </div>
-                        </div>
-                    </form>
-                    -->
-                    
                     <?php if(isset($error) && $error != "") { 
                     echo '<div class="alert alert-danger col-md-4 col-md-offset-4" role="alert">';
                         echo $error;

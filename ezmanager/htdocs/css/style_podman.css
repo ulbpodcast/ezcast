@@ -487,8 +487,6 @@ body{
 
 .BoutonSoumettreAlbum a{
     display:block;
-    background-image:url(../images/page4/AUp.png);
-    background-repeat:no-repeat;
     color:#444444;
     height:30px !important;
     text-decoration:none;
@@ -500,9 +498,6 @@ body{
 }
 
 .BoutonSoumettreAlbum a:hover{
-    display:block;
-    background-image:url(../images/page4/BUp.png);
-    background-repeat:no-repeat;
     color:#004C93; 
 }
 
@@ -547,7 +542,7 @@ body{
     text-decoration:none;
     font-size:14px;
     font-weight:bold;
-    padding-left:30px;
+    padding-left:15px;
     padding-top:3px;
 }
 
@@ -1027,7 +1022,7 @@ body{
 
 .footer_content {
     margin: auto;
-    width: 934px;
+    width: 1024px;
 }
 
 .footer_mention{
@@ -1509,4 +1504,20 @@ a.greyLink.ezplayer:hover {
     word-wrap: normal;
     word-break: break-all;
     resize: none;
+}
+
+.sidebar .nav li a {
+    color: #4c4c4c;
+}
+
+.sidebar .nav li.active a {
+    color: white;
+}
+
+.album-in-list {
+    border-bottom: 1px solid #eee;
+}
+
+.album-separation {
+    border-bottom: 1px solid #CFCFCF;
 }

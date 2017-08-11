@@ -51,7 +51,7 @@ Before calling this template, please define the following variables:
                       </button>
                       <ul class="dropdown-menu">
                         <li>
-                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php echo $album_name; ?>" 
+                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php echo $album_name_full; ?>" 
                                 data-remote="false" data-toggle="modal" data-target="#modal">
                                 <img src="images/page4/iconSuppBackg.png"> ®Delete_album®
                             </a>
@@ -63,7 +63,7 @@ Before calling this template, please define the following variables:
                              </a>
                         </li>
                         <li>
-                            <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php echo $album_name; ?>" 
+                            <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php echo $album_name_full; ?>" 
                                 data-remote="false" data-toggle="modal" data-target="#modal">
                                 <img src="images/page4/iconRssBackg.png"> ®Regenerate_RSS®
                             </a>
@@ -73,7 +73,7 @@ Before calling this template, please define the following variables:
                 </div>
             </div>
             <ul class="nav nav-tabs">
-                <li role="presentation" id="list" style="padding-left: 5px;"
+                <li role="presentation" id="list" style="padding-left: 14px;"
                     <?php if(!isset($current_tab) || $current_tab == 'list' ) { echo 'class="active"'; } ?> >
                     <a href="javascript:show_album_details('<?php echo $album; ?>');">
                         <img src="images/page4/list.png" style="display:inline"/> 

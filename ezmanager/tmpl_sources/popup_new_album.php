@@ -47,13 +47,14 @@ for every album the user can create.
     }
     ?>
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <table class="table table-hover text-center" >
+        <br />
+        <div class="col-md-12">
+            <table class="table table-hover text-left" >
                 <?php foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
                     // Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
                     // with an action "create_album". Once the processing is over, this div will be updated with the confirmation message.
                     echo '<tr>';
-                        echo '<td class="album_name" style="font-weight: bold;">';
+                        echo '<td class="album_name col-md-2" style="font-weight: bold;">';
                             echo '<a href="index.php?action=create_album&amp;album' . $album_name . '" '
                                     . 'data-remote="false" data-toggle="modal" data-target="#modal" >';
                             echo $album_name;

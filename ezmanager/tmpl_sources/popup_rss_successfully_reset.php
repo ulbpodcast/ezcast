@@ -25,12 +25,16 @@
 */
 ?>
 
-<!--
-DEPRECATED
--->
 
-<div class="popup" id="popup_rss_successfully_reset">
-    <h2>®Regenerate_RSS®</h2>
-    ®RSS_successfully_reset_message®<br/><br/>
-    <span class="Bouton"><a href="javascript:show_album_details('<?php echo $input['album']; ?>');" onclick="close_popup();"><span>®Close_and_return_to_index®</span></a></span>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Regenerate_RSS®</h4>
+</div>
+<div class="modal-body">
+    ®RSS_successfully_reset_message®
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" onclick="$('#modal').modal('hide');show_album_details('<?php echo $album; ?>');" >
+        ®Close_and_return_to_index®
+    </button>
 </div>

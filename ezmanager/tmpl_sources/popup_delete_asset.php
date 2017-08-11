@@ -35,7 +35,7 @@ You should not have to include this file yourself, but if you do, make sure that
     <h4 class="modal-title">®Delete_asset® "<?php echo htmlspecialchars($title); ?>" ?</h4>
 </div>
 <div class="modal-body">
-    <div class="alert alert-warning" role="alert">®Destructive_operation®</div>
+    <div class="alert alert-warning text-center" role="alert">®Destructive_operation®</div>
 
     <center>
         <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>

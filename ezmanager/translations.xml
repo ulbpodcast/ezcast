@@ -292,10 +292,10 @@
         <label id="Password" lang="en">Password</label>
         
         <!-- Long texts -->
-        <label id="Destructive_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération destructive non-réversible.</label>
-        <label id="Destructive_operation" lang="en">&lt;strong&gt;Caution: &lt;/strong&gt;destructive, non-reversible operation.</label>
-        <label id="Non_reversible_operation" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;opération non-réversible.</label>
-        <label id="Non_reversible_operation" lang="en">&lt;strong&gt;Caution: &lt;/strong&gt;non-reversible operation.</label>
+        <label id="Destructive_operation" lang="fr">Opération destructive non-réversible.</label>
+        <label id="Destructive_operation" lang="en">Destructive, non-reversible operation.</label>
+        <label id="Non_reversible_operation" lang="fr">Opération non-réversible.</label>
+        <label id="Non_reversible_operation" lang="en">Non-reversible operation.</label>
         <label id="Do_you_wish_to_continue" lang="fr">Voulez-vous vraiment continuer ?</label>
         <label id="Do_you_wish_to_continue" lang="en">Do you wish to continue?</label>
         <label id="Logout_confirmation_message" lang="fr">Vous êtes maintenant déconnecté.&lt;br /&gt;Merci d'avoir utilisé nos services, et à bientôt.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php">Revenir à la page de connexion&lt;/a&gt;</label>

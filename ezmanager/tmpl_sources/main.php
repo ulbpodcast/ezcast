@@ -215,19 +215,15 @@
         <script>
         $("#modal").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget);
-            $(this).find(".modal-content").load(link.attr("href"));
+            display_bootstrap_modal($(this), link);
         });
+        function display_bootstrap_modal(modal, button) {
+            console.log('display bootstrap modal');
+            console.log(modal);
+            console.log(button);
+            modal.find(".modal-content").load(button.attr("href"));
+        }
         </script>
     </body>
-    <!-- scripts that must be loaded after document -->
-    <script type="text/javascript">
-        var clipboard = new Clipboard('.clipboard');
-
-        clipboard.on('success', function(e) {
-            alert("®Content_in_clipboard®");
-            //todo: proper tooltip instead (or green coloring)
-        });
-        
-    </script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 </html>

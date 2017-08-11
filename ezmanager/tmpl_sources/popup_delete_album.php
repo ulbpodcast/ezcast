@@ -34,12 +34,15 @@ You should not have to include this file yourself (included in div_album_header.
     <h4 class="modal-title">®Delete_album® <?php echo $album_name; ?> ?</h4>
 </div>
 <div class="modal-body">
-    <div class="alert alert-warning" role="alert">®Destructive_operation®</div>
+    <div class="alert alert-warning text-center" role="alert">®Destructive_operation®</div>
     <p>®Delete_album_message®</p><br />
     <center>
         <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
-        <a class="btn btn-default" href="index.php?action=delete_album&amp;album=<?php echo $album_name; ?>" role="button"
-            data-remote="false" data-toggle="modal" data-target="#modal" >®OK®</a>
+        <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#delete_album_link'));$('#modal').modal('show'); }, 500);"
+            href="index.php?action=delete_album&album=<?php echo $album_name; ?>" 
+            data-dismiss="modal" id="delete_album_link">
+            ®OK®
+        </a>
     </center>
 </div>

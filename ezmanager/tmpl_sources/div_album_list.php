@@ -45,6 +45,7 @@
         }
         echo '</a></li>';
     } else {
+        $created_albums[] = $created_albums[0];
         foreach($created_albums as $album) {
             $stylePriv = '';
             $stylePrivClic = 'display: none;';
@@ -62,13 +63,13 @@
                 }
             }
             ?>
-            <li id="album_<?php echo $album.'-priv'; ?>">
+            <li id="album_<?php echo $album.'-priv'; ?>" class="album-in-list">
                 <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');">
                     <img src="images/page4/iconAlbumPriv.png" />
                     <?php echo $album; ?> (®Private_album®)
                 </a> 
             </li>
-            <li id="album_<?php echo $album.'-pub'; ?>">
+            <li id="album_<?php echo $album.'-pub'; ?>" class="album-in-list album-separation">
                 <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');">
                     <img src="images/page4/iconAlbumPublic.png" />
                     <?php echo $album; ?> (®Public_album®)

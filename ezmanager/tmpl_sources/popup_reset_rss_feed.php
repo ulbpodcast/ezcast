@@ -36,11 +36,15 @@ You should not have to include this file yourself.
     <h4 class="modal-title">®Regenerate_RSS®</h4>
 </div>
 <div class="modal-body">
-    <div class="alert alert-warning" role="alert">®Non_reversible_operation®</div>
+    <div class="alert alert-warning text-center" role="alert">®Non_reversible_operation®</div>
     <p>®Regenerate_RSS_message®</p><br />
     <center>
         <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
-        <a class="btn btn-default" href="javascript:popup_regenerate_rss_callback('<?php echo $album; ?>');" >®OK®</a>
+        <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#rss_confirm'));$('#modal').modal('show'); }, 500);"
+            href="index.php?action=reset_rss&album=<?php echo $album; ?>" 
+            data-dismiss="modal" id="rss_confirm">
+            ®OK®
+        </a>
     </center>
 </div>

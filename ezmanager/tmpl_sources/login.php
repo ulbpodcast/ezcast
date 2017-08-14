@@ -84,11 +84,11 @@
                             <div class="col-sm-9 col-sm-offset-3">
                                 <select class="lang form-control" name="lang" tabindex="3" 
                                         onchange="document.location.href = './index.php?lang='+this.value;">
-                                    <option value="en" <?php echo (isset($lang) && $lang == 'en') ? 'selected="selected"' : ''; ?>>
-                                        English
-                                    </option>
                                     <option value="fr" <?php echo (isset($lang) && $lang == 'fr') ? 'selected="selected"' : ''; ?>>
                                         Français
+                                    </option>
+                                    <option value="en" <?php echo (isset($lang) && $lang == 'en') ? 'selected="selected"' : ''; ?>>
+                                        English
                                     </option>
                                 </select>
                             </div>

@@ -127,11 +127,12 @@
             }
 
             function asset_downloadable_set(album, asset) {
+                var valeur = $('.download_small_button#is_downloadable_' + asset+'.btn-success').length > 0;
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=asset_downloadable_set',
                     data: {
-                        'downloadable': $('#is_downloadable_' + asset).is(':checked') ? true : false,
+                        'downloadable': valeur,
                         'album': album,
                         'asset': asset
                     }
@@ -238,7 +239,10 @@
             display_bootstrap_modal($(this), link);
         });
         function display_bootstrap_modal(modal, button) {
-            modal.find(".modal-content").load(button.attr("href"));
+            display_bootstrap_modal_url(modal, button.attr("href"));
+        }
+        function display_bootstrap_modal_url(modal, url) {
+            modal.find(".modal-content").load(url);
         }
         </script>
     </body>

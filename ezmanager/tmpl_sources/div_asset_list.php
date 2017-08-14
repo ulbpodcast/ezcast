@@ -53,8 +53,6 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 // the asset (raw) name
                 $title = (isset($metadata['title'])) ? $metadata['title'] : $asset_name;
                 $status = $metadata['status'];
-                $status = 'processing'; // TODO DEBUG
-                $metadata["scheduled"] = TRUE;
 
                 // We want the date to be displayed in format dd-mm-YYYY
                 // However, get_user_friendly_date returns dd-mm-YYYY-HH-ii, so we need to remove the last part
@@ -85,7 +83,8 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 <?php } else { ?>
                     <div>
                         <button role="button" id="is_downloadable_<?php echo $asset_name; ?>" 
-                            title="®Allow_download®" class="btn btn-success btn-xs download_small_button"
+                            title="®Allow_download®" class="btn btn-xs download_small_button <?php 
+                                echo ($metadata['downloadable'] !== 'false') ? "btn-success" : "btn-danger"; ?>"
                             onclick="update_download('<?php echo $album_name . (($public_album) ? '-pub' : '-priv') . "', '" .
                                 $asset_name; ?>')">
                             Téléchargement autorisé
@@ -132,7 +131,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
 
 <script>
     function update_download(album, asset) {
-        var button = $('.download_small_button');
+        var button = $('.download_small_button#is_downloadable_' + asset);
         if(button.hasClass('btn-success')) {
             button.removeClass('btn-success');
             button.addClass('btn-danger');
@@ -141,6 +140,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
             button.removeClass('btn-danger');
         }
         
+        console.log('asset_downloadable_set ' + album + ', ' + asset);
         asset_downloadable_set(album, asset);
     }
 </script>

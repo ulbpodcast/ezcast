@@ -60,67 +60,76 @@ function print_info($info, $suffix = '') {
         <ul>
             <li><span class="BoutonSuppAlbum">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_delete_asset_<?php echo $asset_name; ?>');">®Delete®</a>
-                        <?php
+                        echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.$title.
+                            '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
                     } else {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Delete®</a>
-                        <?php
-                    }
-                    ?>
+                        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                    } ?>
+                    ®Delete®</a>
 
                 </span></li>
-            <li><span class="BoutonEditer"><a href="javascript:show_edit_form('<?php echo $asset; ?>');">®Edit®</a></span></li>
+            <li>
+                <span class="BoutonEditer">
+                    <a href="javascript:show_edit_form('<?php echo $asset; ?>');">
+                        ®Edit®
+                    </a>
+                </span>
+            </li>
             <li><span class="BoutonDeplacer">
-                    <?php if ($status != 'processing' && $status != 'error') { ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_move_asset_<?php echo $asset_name; ?>');">®Move®</a>
-                        <?php
+                    <?php if ($status != 'processing' && $status != 'error') {
+                        echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.$album.
+                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
                     } else {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Move®</a>
-                        <?php
-                    }
-                    ?>
+                        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                    } ?>
+                    ®Move®</a>
                 </span></li>
             <?php if ($public_album) { ?>
-                <li><span class="BoutonDeplacerAlbumPrive">
-                        <?php
-                        if ($status != 'processing' && $status != 'error') {
-                            ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_unpublish_asset_<?php echo $asset_name; ?>');">®Unpublish®</a>
-                            <?php
+                <li>
+                    <span class="BoutonDeplacerAlbumPrive">
+                        <?php if ($status != 'processing' && $status != 'error') {
+                            echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.$title.
+                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                                'data-target="#modal">';
                         } else {
-                            ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Unpublish®</a>
-                            <?php
-                        }
-                        ?>
-                    </span></li>
-                    <?php } else { ?>
-                <li><span class="BoutonDeplacerAlbumPublic">
-                <?php if ($status != 'processing' && $status != 'error') { ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_publish_asset_<?php echo $asset_name; ?>');">®Publish®</a>
-                            <?php
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Unpublish®</a>
+                    </span>
+                </li>
+            <?php } else { ?>
+                <li>
+                    <span class="BoutonDeplacerAlbumPublic">
+                        <?php if ($status != 'processing' && $status != 'error') {
+                            echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.$title.
+                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                                'data-target="#modal">';
                         } else {
-                            ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Publish®</a>
-                            <?php
-                        }
-                        ?>
-                    </span></li>
-                    <?php } ?>            
-                    <li><span class="BoutonProgrammer">
-                    <?php if ($status != 'processing' && $status != 'error') { ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_schedule_<?php echo $asset_name; ?>');">®Program®</a>
-                        <?php
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                                ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Publish®</a>
+                    </span>
+                </li>
+            <?php } ?>
+            <li>
+                <span class="BoutonProgrammer">
+                    <?php if ($status != 'processing' && $status != 'error') {
+                        echo '<a href="index.php?action=show_popup&amp;popup=schedule_asset&amp;album='.$album.
+                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
                     } else {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Program®</a>
-                        <?php
-                    }
-                    ?>
-                </span></li>
+                        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                        ' data-toggle="modal" data-target="#modal">';
+                    } ?>
+                    ®Program®</a>
+                </span>
+            </li>
         </ul>
     </div>
 <?php } ?>
@@ -208,6 +217,7 @@ function print_info($info, $suffix = '') {
             onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Update®" />
     </div>
     <br />
+    <br />
 </div>
 
 <!-- Colonne 1 information podcast [Fin] -->
@@ -242,13 +252,3 @@ if ($status != 'processing' && $status != 'failed' && strtolower($origin) !== 's
 </div>
 
 <div style="clear: both;"></div>
-<!-- Popup -->
-<div style="display: none;">
-<?php include 'popup_delete_asset.php'; ?>
-<?php include 'popup_move_asset.php'; ?>
-<?php include 'popup_publish_asset.php'; ?>
-    <?php include 'popup_unpublish_asset.php'; ?>
-    <?php include 'popup_schedule.php' ?>
-    <?php include 'popup_media_url.php' ?>
-    <?php include_once 'popup_not_available_while_processing.php'; ?>
-</div>

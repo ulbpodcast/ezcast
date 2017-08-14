@@ -35,9 +35,17 @@ However, if you do, please make sure that $public_album_url is declared and set 
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title">®Album_deletion_succeeded_title®</h4>
 </div>
-<div class="modal-body">
+<div class="modal-body album-delete-success">
     <p>®Album_deletion_succeeded_message®</p>
 </div>
 <div class="modal-footer">
     <a type="button" class="btn btn-default" href="index.php">®Close_and_return_to_index®</a>
 </div>
+
+<script>
+$('#modal').on('hide.bs.modal', function () {
+    if($('#modal .modal-body.album-delete-success').length) {
+        $(location).attr('href', 'index.php');
+    }
+})
+</script>

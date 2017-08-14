@@ -339,12 +339,12 @@ body{
     border-bottom-width: thin; 
     border-bottom-style: dotted; 
     border-bottom-color: #CFCFCF; 
+    padding-left: 27px;
 }
 
 .BlocInfoAlbum{
     background-color:#ffffff;
 	/*height:90px;*/
-    padding-bottom: 10px;
 }
 
 .BlocInfoAlbum p{
@@ -466,10 +466,14 @@ body{
     color:#004C93;
 }
 
+.BoutonSoumettreAlbum {
+    padding-top: 10px;
+}
+
 .BoutonSoumettreAlbum a{
     display:block;
     color:#444444;
-    height:30px !important;
+    height:33px !important;
     text-decoration:none;
     font-size:12px;
     font-weight:regular;
@@ -512,6 +516,10 @@ body{
 
 /*--Bouton triangle--*/
 
+.ListButon:hover {
+    background-color: #eee;
+}
+
 .ListButon a {
     display:block;
     border-bottom-width: thin;
@@ -523,26 +531,29 @@ body{
     text-decoration:none;
     font-size:14px;
     font-weight:bold;
-    padding-left:15px;
+    padding-left:27px;
     padding-top:3px;
 }
 
-.BoutonTriangle a{	
-    background-image:url(../images/page4/ATriangleBackg.png);
+.ListButon.active {
+    background-color: #428bca;
+    color: white;
 }
 
-.BoutonTriangleProcessing a{
-    background-image:url(../images/page4/TriangleVert.png);
+.ListButon.active a {
+    color: white;
 }
 
-.BoutonTriangleError a{
-    background-image:url(../images/page4/TriangleRouge.png);
+.StatusBoutonProcessing a{
+    color: green;
+}
+
+.StatusBoutonError a glyphicon {
+    color: #ff0000;
 }
 
 .BoutonTriangle a:hover{
     display:block;
-    background-image:url(../images/page4/BTriangleBackg.png);
-    background-repeat:no-repeat;
     color:#004C93;
 }
 
@@ -552,14 +563,6 @@ body{
     background-repeat:no-repeat;
     color:#75940a;
 }
-
-.BoutonTriangleError a:hover{
-    display:block;
-    background-image:url(../images/page4/TriangleRouge.png);
-    background-repeat:no-repeat;
-    color:#ff0000;
-}
-
 
 .BoutonTriangleClic a{
     background-image:url(../images/page4/CTriangleBackg.png);
@@ -599,7 +602,6 @@ body{
 
 /*--bouton media--*/
 .LigneBouton{
-    margin-left:10px;
     margin-bottom:10px;
     margin-top:10px;
 }
@@ -667,7 +669,7 @@ body{
 }
 
 .Download, .Embed, .ULBcode {
-    padding-left: 45px;
+    padding-left: 25px;
 }
 
 .Publication {
@@ -703,7 +705,6 @@ body{
     font-weight:bold;
     padding-left:30px;
     padding-top:5px;
-    margin-left:15px;
 }
 
 .BoutonPlus a:hover, 
@@ -845,11 +846,10 @@ body{
 }
 
 .TitreCour{
-   /*     color:#004B93; */
     color: #004C93;
     font-weight:bold;
     font-size:14px;
-    margin-left:4px;
+    margin-left:17px;
     text-transform: uppercase;
 }
 
@@ -867,7 +867,6 @@ body{
 .BlocPodcastMenu h1{
     font-size:14px;
     color:#444444;
-    margin-left:10px;
     line-height:20px;
     padding-top:5px;
     margin-bottom:10px;
@@ -909,6 +908,7 @@ body{
 .infospodast{
     color:#004c93;
     font-weight:bold;
+    font-size: 1em;
 }
 
 .infosAvance{
@@ -975,7 +975,6 @@ body{
 
 
 .Video-slide-Bouton{
-    margin-left:15px;
     margin-bottom:2px;
 }
 
@@ -1427,9 +1426,6 @@ a.greyLink {
     text-decoration:none;
 /*	font-family:Arial, Helvetica, sans-serif;  */
     line-height: 1.8em;
-    border-style: dotted;
-    border-color: #797676;
-    border-left-width: 1px;
     padding-left: 4px;
 }
 
@@ -1502,3 +1498,10 @@ a.greyLink.ezplayer:hover {
 .album-separation {
     border-bottom: 1px solid #CFCFCF;
 }
+
+.download_small_button {
+    float: right;
+    margin-top: 1px;
+    margin-right: 2px;
+}
+

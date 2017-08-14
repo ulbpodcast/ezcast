@@ -34,7 +34,12 @@
     ®RSS_successfully_reset_message®
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" onclick="$('#modal').modal('hide');show_album_details('<?php echo $album; ?>');" >
+    <button type="button" class="btn btn-default" data-dismiss="modal" >
         ®Close_and_return_to_index®
     </button>
 </div>
+<script>
+$('#modal').on('hide.bs.modal', function (e) {
+    refresh_album_view();
+});
+</script>

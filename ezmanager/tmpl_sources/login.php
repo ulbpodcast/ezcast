@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9">
+                            <div class="col-sm-offset-3 col-sm-9 text-right">
                                 <input type="submit" class="btn btn-default login" tabindex="4" value="®Connect®">
                             </div>
                         </div>

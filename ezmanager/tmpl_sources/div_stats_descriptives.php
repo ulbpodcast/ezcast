@@ -27,8 +27,6 @@
 
 <div id="div_stats_descriptives">
     <div class="BlocPodcastMenu">
-        
-        <h2 style="text-align: center;">®Stats_Descriptives®</h2>
         <br />
         <table class="table table-striped">
             <tbody>

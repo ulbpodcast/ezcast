@@ -66,10 +66,28 @@
             }
             ;
 
+            function refresh_album_view() {
+                switch(tab) {
+                    case 'stats':
+                        show_stats_descriptives(current_album);
+                        break;
+                    
+                    case 'url':
+                        show_ezplayer_link(current_album);
+                        break;
+                    
+                    case 'list':
+                    default:
+                        show_album_details(current_album);
+                        break;
+                }
+            }
+
             function show_album_details(album) {
                 $('#album_' + current_album).removeClass('active');
                 $('#album_' + album).addClass('active');
                 current_album = album;
+                tab = 'list';
 
                 // Getting the content from the server, and filling the div_album_header with it
                 document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
@@ -121,12 +139,14 @@
             }
             
             function show_stats_descriptives(album) {
+                tab = 'stats';
                 document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
                 makeRequest('index.php', '?action=view_stats&album=' + album, 'div_content');
             }
             
             function show_ezplayer_link(album) {
+                tab = 'url';
                 document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
                 makeRequest('index.php', '?action=view_ezplayer_link&album=' + album, 'div_content');
@@ -218,9 +238,6 @@
             display_bootstrap_modal($(this), link);
         });
         function display_bootstrap_modal(modal, button) {
-            console.log('display bootstrap modal');
-            console.log(modal);
-            console.log(button);
             modal.find(".modal-content").load(button.attr("href"));
         }
         </script>

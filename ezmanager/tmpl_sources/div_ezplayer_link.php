@@ -26,83 +26,24 @@
 ?>
 <div id="div_ezplayer_url">
     <div class="BlocPodcastMenu">
-        <h2 style="text-align: center;">®Player_url®</h2>
         <?php 
         if(!$public_album) {
-            echo "<span style='color: red'><strong>®Player_url_private_alert®</strong></span>";
+            echo '<br />';
+            echo "<div class=\"alert alert-danger text-center\" role=\"alert\">";
+                echo "®Player_url_private_alert®";
+            echo "</div>";
         }
         ?>
         ®Player_url_message® <br/><br/>
-        <center>
-            <strong>
-                <a href="<?php echo $player_full_url; ?>" target="_blank">
-                    <?php echo $player_full_url; ?>
-                </a>
-            </strong>
-        </center>
-        <br/>
-
-        <div id="wrapper_clip" style="position:relative;text-align: center;">
-            <span id="copy_player_url" class="Bouton">
-                <a>
-                    <span id="copy_button_text_player_url">®Copy_to_clipboard®</span>
-                </a>
-            </span>
-            <div class="clipboard" id="clipboard_player_url" data-clipboard-text="<?php echo $player_full_url; ?>" 
-                 onmouseout="getElementById('copy_button_text_player_url').style.color='#797676'" 
-                 onmouseover="getElementById('copy_button_text_player_url').style.color='#004B93'" 
-                 style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99">
-            </div>
-        </div>
-        <br/><br/><br/>
         
-        <h2 style="text-align: center;">®SD_RSS_feed®</h2>
-        ®SD_RSS_feed_URL_message® <br/><br/>
-        <center>
-            <strong>
-                <a href="<?php echo $sd_rss_url; ?>"><?php echo $sd_rss_url; ?></a>
-            </strong>
-        </center>
-        <br/>
-
-        <div id="wrapper_clip" style="position:relative;text-align: center;">
-            <span id="copy_button_sd_rss" class="Bouton">
-                <a>
-                    <span id="copy_button_text_sd_rss">
-                        ®Copy_to_clipboard®
-                    </span>
-                </a>
+        <textarea readonly="" class="form-control" onclick="this.select()"
+                id="share_time_link"><?php echo trim($player_full_url); ?></textarea>
+        <br />
+        <div class="wrapper_clip" style="position:relative; text-align: center;">
+            <span id="share_time" onclick="copy_video_url();" class="btn btn-default">
+                <span id="share_valid" style="display: none">✔</span>
+                ®Copy_to_clipboard®
             </span>
-            <div class="clipboard" id="zero_clipboard_sd_rss" data-clipboard-text="<?php echo $sd_rss_url; ?>" 
-                 onmouseout="getElementById('copy_button_text_sd_rss').style.color='#797676'" 
-                 onmouseover="getElementById('copy_button_text_sd_rss').style.color='#004B93'" 
-                 style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99">
-            </div>
-        </div>
-        <br/><br/><br/>
-
-        <h2 style="text-align: center;">®HD_RSS_feed®</h2>
-        ®HD_RSS_feed_URL_message® <br/><br/>
-        <center>
-            <strong>
-                <a href="<?php echo $hd_rss_url; ?>"><?php echo $hd_rss_url; ?></a>
-            </strong>
-        </center>
-        <br/>
-
-        <div id="wrapper_clip" style="position:relative;text-align: center;">
-            <span id="copy_button_hd_rss" class="Bouton">
-                <a>
-                    <span id="copy_button_text_hd_rss">
-                        ®Copy_to_clipboard®
-                    </span>
-                </a>
-            </span>
-            <div class="clipboard" id="zero_clipboard_hd_rss" data-clipboard-text="<?php echo $hd_rss_url; ?>" 
-                 onmouseout="getElementById('copy_button_text_hd_rss').style.color='#797676'" 
-                 onmouseover="getElementById('copy_button_text_hd_rss').style.color='#004B93'" 
-                 style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99">
-            </div>
         </div>
         
     </div>

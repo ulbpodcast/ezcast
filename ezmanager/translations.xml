@@ -308,8 +308,8 @@
         <label id="SD_RSS_feed_URL_message" lang="en">You can watch or broadcast this album in low definition by using the following link:</label>
         <label id="Player_url_message" lang="fr">Pour consulter ou distribuer cet album via le lecteur enrichi "EZplayer", veuillez utiliser le lien suivant :</label>
         <label id="Player_url_message" lang="en">You can watch or broadcast this album via EZplayer, the rich media player, by using the following link:</label>
-        <label id="Player_url_private_alert" lang="fr">CECI EST UN LIEN VERS L'ALBUM PRIVE. Il ne devrait pas être partagé aux étudiants.</label>
-        <label id="Player_url_private_alert" lang="en">THIS IS THE PRIVATE ALBUM LINK. It should not be shared to students.</label>
+        <label id="Player_url_private_alert" lang="fr">&lt;b&gt;Ceci est un lien vers l'album prive.&lt;/b&gt;&lt;br /&gt;Il ne devrait pas être partagé aux étudiants.</label>
+        <label id="Player_url_private_alert" lang="en">&lt;b&gt;This is the private album link.&lt;/b&gt;&lt;br /&gt;It should not be shared to students.</label>
         <label id="media_URL_message" lang="fr">Pour regarder ou distribuer cette vidéo, veuillez utiliser le lien suivant :</label>
         <label id="media_URL_message" lang="en">You can watch or distribute this video by using the following link:</label>
         <label id="embed_code_message" lang="fr">Vous pouvez inclure cette vidéo dans une autre page en copiant/collant le code suivant : </label>

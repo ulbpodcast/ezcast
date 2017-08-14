@@ -38,7 +38,7 @@ You should not have to use this file on your own; if you do, make sure the varia
     <div class="modal-body">
         <p>®media_URL_message®</p>
 
-        <textarea readonly="" class="form-control" onclick="this.select()" id="share_time_link"><?php echo $media_url; ?></textarea>
+        <textarea readonly="" class="form-control" onclick="this.select()" id="share_time_link"><?php echo trim($media_url); ?></textarea>
         <br />
         <div class="wrapper_clip" style="position:relative; text-align: center;">
             <span id="share_time" onclick="copy_video_url();" class="btn btn-default">

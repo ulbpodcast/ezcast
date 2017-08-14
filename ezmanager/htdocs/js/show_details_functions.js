@@ -33,18 +33,27 @@ function show_asset_details(album, asset) {
     targetElement = document.getElementById('asset_'+asset+'_details') ;
     
     // Case 1: The div was hidden; we retrieve the info and display it
-    if (targetElement.style.display == "none")
-    {
+    if (targetElement.style.display == "none") {
         targetElement.style.display = "" ;
         targetElement.innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
         makeRequest('index.php', '?action=view_asset_details&album='+album+'&asset='+asset, 'asset_'+asset+'_details');
-        MM_DisplayHideLayers('asset_'+asset,'','hide','asset_'+ asset +'_clic','','show');
+        $('#asset_'+asset+'_line').addClass('active');
+        var asset_glyphicon = $('#asset_'+asset+'_glyphicon');
+        if(asset_glyphicon.hasClass('glyphicon-triangle')) {
+            asset_glyphicon.removeClass('glyphicon-triangle-right');
+            asset_glyphicon.addClass('glyphicon-triangle-bottom');
+        }
     }
     // case 2: The div was displayed; we hide it
     else {
         targetElement.style.display = "none" ;
         targetElement.innerHTML = '';
-        MM_DisplayHideLayers('asset_'+asset,'','show','asset_'+ asset +'_clic','','hide');
+        $('#asset_'+asset+'_line').removeClass('active');
+        var asset_glyphicon = $('#asset_'+asset+'_glyphicon');
+        if(asset_glyphicon.hasClass('glyphicon-triangle')) {
+            asset_glyphicon.removeClass('glyphicon-triangle-bottom');
+            asset_glyphicon.addClass('glyphicon-triangle-right');
+        }
     }
 }
 

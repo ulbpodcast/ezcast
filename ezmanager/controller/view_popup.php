@@ -40,6 +40,30 @@ function index($param = array()) {
         case 'reset_rss_feed':
             reset_rss_feed();
             break;
+
+        case 'unpublish_asset':
+            unpublish_asset();
+            break;
+
+        case 'publish_asset':
+            publish_asset();
+            break;
+
+        case 'delete_asset':
+            delete_asset();
+            break;
+
+        case 'popup_not_available':
+            popup_not_available();
+            break;
+
+        case 'move_asset':
+            move_asset();
+            break;
+
+        case 'schedule_asset':
+            schedule_asset();
+            break;
         
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
@@ -223,4 +247,81 @@ function reset_rss_feed() {
     }
     $album = $input['album'];
     require_once template_getpath('popup_reset_rss_feed.php');
+}
+
+function unpublish_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=unpublish_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $title = $input['title'];
+    $album = $input['album'];
+    $asset_name = $input['asset'];
+    require template_getpath('popup_unpublish_asset.php');
+}
+
+function publish_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=publish_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $title = $input['title'];
+    $album = $input['album'];
+    $asset_name = $input['asset'];
+    require template_getpath('popup_publish_asset.php');
+}
+
+function delete_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=delete_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $title = $input['title'];
+    $album = $input['album'];
+    $asset_name = $input['asset'];
+    require template_getpath('popup_delete_asset.php');
+}
+
+function popup_not_available() {
+    require template_getpath('popup_not_available_while_processing.php');
+}
+
+function move_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=move_asset&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
+    $asset_name = $input['asset'];
+    $album = $input['album'];
+
+    require template_getpath('popup_move_asset.php');
+}
+
+function schedule_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=schedule_asset&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $asset = $input['asset'];
+    $asset_name = $asset;
+    $album = $input['album'];
+
+    $DTZ = new DateTimeZone('Europe/Paris');
+    global $repository_path;
+    ezmam_repository_path($repository_path);
+    $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+
+    $title = $asset_metadata['title']; // "user-friendly" asset name (title)
+    $asset_scheduled = isset($asset_metadata['scheduled']) ? $asset_metadata['scheduled'] : false;
+    $asset_sched_date = isset($asset_metadata['schedule_date']) ? $asset_metadata['schedule_date'] : false;
+    $asset_sched_id = isset($asset_metadata['schedule_id']) ? $asset_metadata['schedule_id'] : false;
+
+
+    require template_getpath('popup_schedule.php');
 }

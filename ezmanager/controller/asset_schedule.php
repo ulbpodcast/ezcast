@@ -14,6 +14,7 @@ function index($param = array()) {
     global $php_cli_cmd;
     global $asset_publish_pgm;
     global $action;
+    $DTZ = new DateTimeZone('Europe/Paris');
 
     //
     // Usual sanity checks

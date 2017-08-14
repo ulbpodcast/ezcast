@@ -5,7 +5,7 @@
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
+*           Arnaud Wijns <awijns@ulb.ac.be>
 *                   Antoine Dewilde
 * UI Design by Julien Di Pietrantonio
 *
@@ -25,17 +25,15 @@
 */
 ?>
 
-
-<!--
-Popup displayed when an option is not available due to ongoing processing
--->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">®Not_available®</h4>
+    <h4 class="modal-title">®Asset_unpublishing_succeeded_title®</h4>
 </div>
 <div class="modal-body">
-    ®Not_available_while_processing®
+    ®Asset_publishing_succeeded_message®
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">®Close_and_return_to_index®</button>
 </div>
+
+

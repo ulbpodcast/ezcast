@@ -499,7 +499,7 @@ function private_asset_schedule_remove($album, $asset) {
     ezmam_repository_path($repository_path);
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
-    if ($asset_meta["scheduled"]) {
+    if (array_key_exists("scheduled", $asset_meta) && $asset_meta["scheduled"]) {
         $cmd = "at -r " . $asset_meta["schedule_id"];
         system($cmd);
 

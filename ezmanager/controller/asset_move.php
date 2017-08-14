@@ -53,5 +53,6 @@ function index($param = array()) {
     }
     toc_album_bookmarks_add($bookmarks);
 
+    $album = $input['from'];
     include_once template_getpath('popup_asset_successfully_moved.php');
 }

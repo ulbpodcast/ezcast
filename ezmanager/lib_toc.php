@@ -78,14 +78,19 @@ function toc_asset_bookmark_list_get($album, $asset) {
 
     $assoc_asset_bookmarks = array();
     $index = 0;
-    $ref_asset = $assoc_album_bookmarks[$index]['asset'];
     $count = count($assoc_album_bookmarks);
+    $ref_asset = NULL;
+    if($count > 0) {
+        $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+    }
     while ($index < $count && $asset >= $ref_asset) {
         if ($asset == $ref_asset) {
             array_push($assoc_asset_bookmarks, $assoc_album_bookmarks[$index]);
         }
         ++$index;
-        $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        if($index < $count) {
+            $ref_asset = $assoc_album_bookmarks[$index]['asset'];
+        }
     }
 
     return $assoc_asset_bookmarks;

@@ -70,9 +70,9 @@ You should not have to include this file yourself.
         </div>
         
         <div class="form-group">
-            <label for="titling" class="col-sm-2 control-label">®Titling®</label>
+            <label for="add_title" class="col-sm-2 control-label">®Titling®</label>
             <div class="col-sm-10">
-                <select class="form-control" name="intro" id="intro">
+                <select class="form-control" name="add_title" id="add_title">
                     <option value="false">®None_titling®</option>
                     <?php
                     foreach ($titlings as $titling) {
@@ -113,9 +113,14 @@ You should not have to include this file yourself.
                 var intro = encodeURIComponent(document.getElementById('intro').value);
                 var add_title = encodeURIComponent(document.getElementById('add_title').value);
                 var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
-                show_popup_from_outer_div('index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php 
+
+                $('#modal').modal('hide');
+                setTimeout(function(){ 
+                    display_bootstrap_modal_url($('#modal'), 'index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php 
                     echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + 
-                    add_title + '&downloadable=' + downloadable, true);
+                    add_title + '&downloadable=' + downloadable);
+                    $('#modal').modal('show'); 
+                }, 500);
             }
         </script>
     </div>

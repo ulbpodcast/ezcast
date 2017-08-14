@@ -51,7 +51,7 @@ Before calling this template, please define the following variables:
                       </button>
                       <ul class="dropdown-menu">
                         <li>
-                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php echo $album_name_full; ?>" 
+                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php echo $album_name; ?>" 
                                 data-remote="false" data-toggle="modal" data-target="#modal">
                                 <img src="images/page4/iconSuppBackg.png"> ®Delete_album®
                             </a>
@@ -101,6 +101,5 @@ Before calling this template, please define the following variables:
     <!-- Popups -->
     <div style="display: none;">
         <?php include_once 'popup_reset_rss_feed.php'; ?>
-        <?php include_once 'popup_stats_descriptives.php'; ?>
     </div>
 </div>

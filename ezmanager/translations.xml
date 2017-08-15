@@ -104,7 +104,11 @@
         <label id="Download_info_submit" lang="fr">Si cette case est cochée, la vidéo soumise pourra être téléchargée via EZplayer.</label>
         <label id="Download_info_submit" lang="en">If this box is checked, the submitted video will be downloadable via EZplayer. </label>
         <label id="Allow_download" lang="fr">Autoriser le téléchargement</label>
-        <label id="Allow_download" lang="en">Allow download</label>        
+        <label id="Allow_download" lang="en">Allow download</label>
+        <label id="Download_allowed" lang="fr">Téléchargement autorisé</label>
+        <label id="Download_allowed" lang="en">Download allowed</label>
+        <label id="Download_forbidden" lang="fr">Téléchargement interdit</label>
+        <label id="Download_forbidden" lang="en">Download forbidden</label>
         <label id="Ratio" lang="fr">Format d'image</label>
         <label id="Ratio" lang="en">Aspect ratio</label>
         <label id="Ratio_info" lang="fr">Force le format d'image pour la vidéo (aucun bord ne sera rajouté, donc l'image pourrait être déformée).</label>

@@ -87,7 +87,11 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                                 echo ($metadata['downloadable'] !== 'false') ? "btn-success" : "btn-danger"; ?>"
                             onclick="update_download('<?php echo $album_name . (($public_album) ? '-pub' : '-priv') . "', '" .
                                 $asset_name; ?>')">
-                            Téléchargement autorisé
+                            <?php if($metadata['downloadable'] !== 'false') {
+                                echo "®Download_allowed®";
+                            } else {
+                                echo "®Download_forbidden®"; 
+                            } ?>
                         </button>
                         <?php if(isset($metadata['scheduled']) && $metadata["scheduled"] == true){ ?>
                             <img src="images/page4/sched.png" style="float: right; width: 24px; padding: 3px;" 
@@ -135,9 +139,11 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
         if(button.hasClass('btn-success')) {
             button.removeClass('btn-success');
             button.addClass('btn-danger');
+            button.text("®Download_forbidden®");
         } else {
             button.addClass('btn-success');
             button.removeClass('btn-danger');
+            button.text("®Download_allowed®");
         }
         
         console.log('asset_downloadable_set ' + album + ', ' + asset);

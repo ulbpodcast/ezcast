@@ -1457,7 +1457,7 @@ a.greyLink.ezplayer:hover {
 }
 
 .sidebar {
-    position: initial;
+    position: absolute;
     top: 0px;
     padding-top: 0px;
     min-height: 600px;

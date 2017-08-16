@@ -25,7 +25,7 @@
 */
 ?>
 
-<div class="col-md-4 sidebar">
+<div class="col-sm-4 sidebar">
     <ul class="nav nav-sidebar">
 
 <?php

@@ -138,7 +138,7 @@ function print_info($info, $suffix = '') {
 
 <!-- Colonne 1 information podcast -->
 
-<div class="col-md-4" style="padding-left: 0px;">
+<div class="col-sm-4" style="padding-left: 0px;">
     <h1>®Information®</h1>
     <ul class="list-unstyled">
         <li>
@@ -223,7 +223,7 @@ function print_info($info, $suffix = '') {
 <!-- Colonne 1 information podcast [Fin] -->
 
 <!-- Colonne 2 information podcast -->
-<div class="col-md-4">
+<div class="col-sm-4">
 
 <?php
 // If there were two media, we spread them in two columns.
@@ -236,7 +236,7 @@ if ($has_cam && $has_slides && $status != 'processing' && $status != 'failed' &&
 
 <!-- Colonne 3 information podcast -->
 
-<div class="col-md-4">
+<div class="col-sm-4">
 <?php
 // If there is only one media, we display it in the right column.
 // 3 possibles scenarios: there was only a slides video, or there were 2 videos

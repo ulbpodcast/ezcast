@@ -192,7 +192,7 @@
                     <!-- Left column: album list END -->
 
                     <!-- Right part of the screen: album and asset details -->
-                    <div id="div_content" class="col-md-8 col-md-offset-4">
+                    <div id="div_content" class="col-sm-8 col-sm-offset-4">
 
                         <!-- Album details go here (dynamically filled with div_album_header) -->
                         <?php

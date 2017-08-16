@@ -139,6 +139,10 @@ function index($param = array()) {
             $nbr_param = 8;
             break;
         
+        case 'video_play_time':
+            $nbr_param = 7;
+            break;
+        
     }
     
     if(count($infos) == $nbr_param) {

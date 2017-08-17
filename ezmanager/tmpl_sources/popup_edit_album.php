@@ -29,7 +29,6 @@
 Allows user to edit settings of an album
 You should not have to include this file yourself.
 -->
-
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title">®Edit_album®</h4>
@@ -45,7 +44,14 @@ You should not have to include this file yourself.
             <label class="col-sm-2 control-label">®Album®</label>
             <div class="col-sm-10">
                 <p class="form-control-static">
-                    <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
+                    <?php if(isset($album_meta['course_code_public']) && $album_meta['course_code_public']!="") {
+                        echo $album_meta['course_code_public']; 
+                    } else {
+                        echo $album; 
+                    } 
+                    echo '(';
+                    echo (($moderation) ? '®Private_album®' : '®Public_album®');
+                    ?>)
                 </p>
             </div>
         </div>
@@ -105,20 +111,36 @@ You should not have to include this file yourself.
             </div>
         </div>
         
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <label>
+                    <input type="checkbox" id="anon_access" name="anon_access" 
+                        <?php if($anon_access !== 'false') { echo 'checked'; } ?>>
+                    <a class="info">
+                        ®Anonym_Access®
+                        <span style="font-weight: normal; font-size: 10px;">
+                            ®Anonym_info®
+                        </span>
+                    </a>
+                </label>
+            </div>
+        </div>
+        
         <div class="modal-footer">
             <a role="button" href="javascript:submit_edit_form();" class="btn btn-primary">®Update®</a>
         </div>
-        <script >
+        <script>
             function submit_edit_form() {
                 var intro = encodeURIComponent(document.getElementById('intro').value);
                 var add_title = encodeURIComponent(document.getElementById('add_title').value);
                 var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
+                var anon_access = encodeURIComponent(document.getElementById('anon_access').checked);
 
                 $('#modal').modal('hide');
                 setTimeout(function(){ 
                     display_bootstrap_modal_url($('#modal'), 'index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php 
                     echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + 
-                    add_title + '&downloadable=' + downloadable);
+                    add_title + '&downloadable=' + downloadable + '&anon_access=' + anon_access);
                     $('#modal').modal('show'); 
                 }, 500);
             }

@@ -31,13 +31,22 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
     global $ezmanager_url;
     $domain_name = $ezmanager_url;
 }
+
+$album_path = $repository_path . "/" . $album."-pub";
+$album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
+if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
+    $course_code_public = $album_metadata['course_code_public']; 
+} else { 
+    $course_code_public = $album;
+}
 ?>
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title">®Submit_record®</h4>
 </div>
-<form action="<?php echo $domain_name; ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" onsubmit="return false" target="uploadFrame">
+<form action="<?php echo $domain_name; ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" 
+      onsubmit="return false" target="uploadFrame">
     <div class="modal-body form-horizontal">
         <input type="hidden" id="action" name="action" value="submit_media"/>
         <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
@@ -50,7 +59,8 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
             <label class="col-sm-3 control-label">®Album®</label>
             <div class="col-sm-9">
                 <p class="form-control-static">
-                    <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
+                    <?php echo $course_code_public; ?> 
+                    (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
                 </p>
             </div>
         </div>

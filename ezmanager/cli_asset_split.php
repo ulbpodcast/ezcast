@@ -266,5 +266,3 @@ function xml_file2assoc_array($xml, $anonymous_key = 'anon') {
     }
     return $arr;
 }
-
-?>

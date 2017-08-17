@@ -120,7 +120,9 @@ function index($param = array()) {
             acl_update_watched_assets();
         }
     }
-
+	
+	$album_title = ezmam_album_metadata_get($album);
+	if(isset($album_title['course_code_public'])) $course_code_public = $album_title['course_code_public'];																									  
     // gets metadata for the selected asset
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);

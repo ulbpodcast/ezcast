@@ -40,6 +40,7 @@ require_once 'lib_ezmam.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
+require_once '../commons/common.inc';
 require_once 'lib_various.php';
 require_once 'lib_user_prefs.php';
 include_once 'lib_toc.php';
@@ -76,11 +77,32 @@ if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) ||
 }
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
-    // if the url contains the parameter 'anon' the session is assumed as anonymous
-
+	 // global $repository_path;
+    // if the url contains the parameter 'anon' the session is assumsed as anonymous
+/*
     if (isset($input['anon']) && $input['anon'] == true) {
         user_anonymous_session();
-    }
+    }*/
+	
+	
+	// if album or asset is public
+	 if (isset($input['album'])){
+		$selected_meta=metadata2assoc_array($repository_path.'/'.$input['album']."/_metadata.xml");
+		
+/*		
+		 // peut etre pas necessaire si on ne rend que les albums publics
+		if(isset($input['asset'])){			 
+			// gets metadata for the selected asset
+			// $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
+			$selected_meta=metadata2assoc_array($repository_path.'/'.$input['album'].'/'.$input['asset']."/_metadata.xml");
+			
+			
+			
+		}
+		*/
+	 }
+	if (isset($selected_meta['anon_access']) && $selected_meta['anon_access'] == 'true') user_anonymous_session();
+	
     // Step 2: Logging in a user who already submitted the form
     // The user can continue without any authentication. Then, it'll be an anonymous session.
     else if (isset($input['action']) && $input['action'] == 'login') {
@@ -659,6 +681,9 @@ function albums_view($refresh_page = true) {
             $moderated_tokens[$index]['album'] = $album . '-pub';
             $moderated_tokens[$index]['title'] = get_album_title($album . '-pub');
             $moderated_tokens[$index]['token'] = ezmam_album_token_get($album . '-pub');
+			  
+			$album_title = ezmam_album_metadata_get($album . '-pub');
+			if(isset($album_title['course_code_public'])) $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
         }
         // add the list of moderated public albums 
         user_prefs_tokens_add($_SESSION['user_login'], $moderated_tokens);

@@ -470,6 +470,26 @@ body{
 .BoutonSoumettreAlbum {
     padding-top: 10px;
 }
+.BoutonRegenTitle a{
+	display:block;
+	background-image:url(../images/page4/AProgrammer.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
+}
+
+.BoutonRegenTitle a:hover{
+	display:block;
+	background-image:url(../images/page4/BProgrammer.png);
+	background-repeat:no-repeat;
+	color:#004C93;
+}
 
 .BoutonSoumettreAlbum a{
     display:block;
@@ -644,6 +664,20 @@ body{
     padding-left:22px;
     padding-right:18px;
     padding-top:5px;
+}
+
+.BoutonCopier a{
+	display:block;
+	background-image:url(../images/page4/ACopierBackg.png);
+	background-repeat:no-repeat;
+	color:#444444;
+	height:20px;
+	text-decoration:none;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:22px;
+	padding-right:18px;
+	padding-top:5px;
 }
 
 .BoutonDeplacer a:hover{

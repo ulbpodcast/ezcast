@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * EZCAST EZrenderer
+ *
+ * Copyright (C) 2016 Université libre de Bruxelles
+ *
+ * Written by Michel Jansens <mjansens@ulb.ac.be>
+ * 	      Arnaud Wijns <awijns@ulb.ac.be>
+ *            Antoine Dewilde
+ *            Thibaut Roskam
+ *
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
 /**
  * This program processes a recording
  */
@@ -10,6 +35,7 @@ include_once __DIR__ . "/config.inc";
 include_once __DIR__ .'/'.$encoding_pgm['file'];
 include_once __DIR__ . "/lib_metadata.php";
 include_once __DIR__ . "/lib_gd.php";
+include_once __DIR__ . "/lib_audio_sync.php";
 
 if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_name>\n";
@@ -60,6 +86,11 @@ if (isset($toprocess_assoc['original_cam'])) {
     $originals['cam'] = $processing . substr($toprocess_assoc['original_cam'], strrpos($toprocess_assoc['original_cam'], '/'));
 }
 
+
+if($enable_audio_sync){
+	print "\n------------------------ Audio Syncronisation ----------------------\n";
+	sync_video($processing);
+}	
 
 if (!file_exists($originals['cam']))
     unset($originals['cam']);
@@ -373,38 +404,6 @@ function get_processing_info($processing_info_path, $processing_filename, &$proc
     return true;
 }
 
-/**
- *
- * @param string_path $title_meta_path
- * @param assoc_array $title_assoc
- * @return bool true on success
- * @desc load the title (xml) info and validate it. parameters should be in title,author,date,organization,copyright
- */
-function get_title_info($title_meta_path, $title_filename, &$title_assoc) {
-    if (!file_exists($title_meta_path . "/" . $title_filename)) {
-        $title_assoc = false;
-        return true; //no title file means no title to generate
-    }
-    $title_assoc = metadata2assoc_array($title_meta_path . "/" . $title_filename);
-    if (!is_array($title_assoc))
-        myerror("Title metadata file read error $title_meta_path/$title_filename\n");
-
-    //check if we dont have any invalid properties
-    $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright", "keywords");
-    $badmeta = "";
-    foreach ($title_assoc as $key => $value) {
-        if (!in_array($key, $valid_title_elems)) {
-            $badmeta.="'$key',";
-        }
-    }
-
-    if ($badmeta != "") {
-        $badmeta = "Error with metadata elements: " . $badmeta . "\n";
-        myerror($badmeta);
-    }
-
-    return true;
-}
 
 /**
  * look at the movies, transcode them and return path to transcoded movies

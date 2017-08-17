@@ -343,3 +343,18 @@ function file_get_extension($filename){
  $result_assoc['ext']=$ext_part;
  return $result_assoc;
 }
+
+
+
+
+function update_title($album,$asset){
+	
+	global $ezmanager_basedir;
+	global $php_cli_cmd;
+	
+	$cmd=$php_cli_cmd.' '.$ezmanager_basedir.'/cli_update_title.php '.$album.' '.$asset.' > /dev/null 2>&1 &';
+	exec($cmd, $cmdoutput, $returncode );
+
+}
+
+

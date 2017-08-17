@@ -8,6 +8,7 @@ const TIMEOUT = 10;
 function index($param = array()) {
     global $input;
     global $logger;
+    session_write_close();
     
     if (!isset($input['classroomId'])){ 
         print_error_status(0);

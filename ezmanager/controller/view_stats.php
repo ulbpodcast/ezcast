@@ -9,6 +9,8 @@ function index($param = array()) {
     global $repository_path;
     global $distribute_url;
     global $ezplayer_url;
+    global $enable_moderator;
+    global $enable_anon_access_control;
     
     if (isset($input['album']))
         $album = $input['album'];
@@ -28,6 +30,12 @@ function index($param = array()) {
     // 1) We retrieve the metadata relating to the album
     //
     $metadata = ezmam_album_metadata_get($album);
+    
+    if(isset($metadata['id'])) {
+        $album_id = $metadata['id'];
+    } else {
+        $album_id = $metadata['name'];
+    }
     
     $album_name_full = $album; // complete album name, used for div identification
     $album_name = suffix_remove($album); // "user-friendly" album name, used for display

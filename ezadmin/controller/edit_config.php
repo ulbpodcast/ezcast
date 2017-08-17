@@ -7,10 +7,9 @@ function index($param = array()) {
         $allow_recorder = (array_key_exists('recording_enabled', $input) && $input['recording_enabled'] == 'on');
         $add_users = (array_key_exists('add_users_enabled', $input) && $input['add_users_enabled'] == 'on');
         $pwd_storage = (array_key_exists('password_storage_enabled', $input) && $input['password_storage_enabled'] == 'on');
-        $use_course_name = (array_key_exists('courses_by_name', $input) && $input['courses_by_name'] == 'on');
         $use_user_name = (array_key_exists('users_by_name', $input) && $input['users_by_name'] == 'on');
 
-        update_config_file($allow_recorder, $add_users, $pwd_storage, $use_course_name, $use_user_name);
+        update_config_file($allow_recorder, $add_users, $pwd_storage, $use_user_name);
 
         $alert = '<div class="alert alert-success">' . template_get_message('save_successful', get_lang()) . '</div>';
     }

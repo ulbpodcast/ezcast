@@ -38,7 +38,7 @@ Before calling this template, please define the following variables:
     <div class="BlocInfoAlbum">
             <div class="BoutonInfoAlbum"> 
                 <span class="TitreCour">
-                    <?php echo $album_name; ?> | 
+                    <?php echo (isset($course_code_public) && $course_code_public !="") ? $course_code_public : $album_id; ?> |
                     <?php echo $description; ?> | 
                     <?php ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
                 </span>
@@ -46,12 +46,14 @@ Before calling this template, please define the following variables:
                 <!-- drop-down menu -->
                 <div id="advanced_menu">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+                              aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
                         <li>
-                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php echo $album_name; ?>" 
+                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php 
+                                    echo $album_name; ?>&amp;album_id=<?php echo $album_id; ?>" 
                                 data-remote="false" data-toggle="modal" data-target="#modal">
                                 <img src="images/page4/iconSuppBackg.png"> ®Delete_album®
                             </a>
@@ -62,6 +64,14 @@ Before calling this template, please define the following variables:
                                 <img src="images/page4/iconEditerBackg.png"> ®Edit_album®
                              </a>
                         </li>
+                        <?php if($enable_moderator){ ?> 
+                            <li>
+                                <a href="index.php?action=view_list_moderator" data-toggle="modal"
+                                   data-target="#modal">
+                                    <img src="images/page4/iconEditerBackg.png"> ®Moderator_List®
+                                </a>
+                            </li> 
+                        <?php } ?>
                         <li>
                             <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php echo $album_name_full; ?>" 
                                 data-remote="false" data-toggle="modal" data-target="#modal">
@@ -95,6 +105,21 @@ Before calling this template, please define the following variables:
                         ®Stats_Descriptives®
                     </a>
                 </li>
+                <?php if($enable_moderator){ ?>
+                    <li role="presentation" id="ezmanager"
+                        <?php if(isset($current_tab) && $current_tab == 'ezmanager' ) { echo 'class="active"'; } ?>>
+                        <a href="javascript:show_ezmanager('<?php echo $album; ?>'); ">
+                            <img src="images/page4/PictoEZ.png" style="display:inline"/>
+                            ®Ezmanager_url®
+                        </a>
+                    </li>
+<!--                    <a class="greyLink ezmanager" style="font-size:0.75em;" 
+                       href="javascript:show_popup_from_inner_div('#manager_url_box'); copyToClipboard('#zero_clipboard_manager_url','
+                           <?php // echo $manager_full_url; ?>');"><img src="images/page4/PictoEZ.png" style="display:inline"/>
+                        ®Ezmanager_url®
+                    </a> -->
+                <?php } ?>
+                
             </ul>
     </div>
 

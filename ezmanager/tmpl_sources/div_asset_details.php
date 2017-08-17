@@ -88,6 +88,23 @@ function print_info($info, $suffix = '') {
                     } ?>
                     ®Move®</a>
                 </span></li>
+				
+				<?php 
+				global $enable_copy_asset;
+					if($enable_copy_asset){?>
+						<li><span class="BoutonCopier">
+							<?php if ($status != 'processing' && $status != 'error') { ?>
+								<a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®copy®</a>
+								<?php
+							} else {
+								?>
+								<a href="javascript:show_popup_from_inner_div('#popup_not_available');">®copy®</a>
+								<?php
+							}
+							?>
+							</span></li>
+				<?php } ?>
+				
             <?php if ($public_album) { ?>
                 <li>
                     <span class="BoutonDeplacerAlbumPrive">
@@ -129,7 +146,25 @@ function print_info($info, $suffix = '') {
                     } ?>
                     ®Program®</a>
                 </span>
-            </li>
+            </li> 
+            <?php 
+            // add un flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
+            global $update_title;
+            if ($update_title == 'manual' && isset($asset_metadata['add_title'])) { ?>
+                <li>
+                    <span class="BoutonRegenTitle">
+                        <?php if($status != 'processing' && $status != 'error') {
+                            echo '<a href="index.php?action=show_popup&amp;popup=regen_title&amp;album='.$album.
+                            '&amp;asset='.$asset_name.'&amp;title='.$title.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
+                        } else {
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Regen_Intro®</a>
+                    </span>
+                </li>
+            <?php } ?>
         </ul>
     </div>
 <?php } ?>

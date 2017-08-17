@@ -41,7 +41,6 @@ for every album the user can create.
 <div class="modal-body">
     <?php if(empty($created_albums_list_with_descriptions)) { ?>
         ®No_albums_to_move_asset_to®
-
     <?php } else { ?>
         <p>®Move_asset_message®</p>
 
@@ -50,6 +49,16 @@ for every album the user can create.
             <div class="col-md-12">
                 <table class="table table-hover text-left" >
                     <?php foreach($created_albums_list_with_descriptions as $destination_name => $destination_description) {
+                        // sortir des template...
+			$course_code_public='';
+			$album_path = $repository_path . "/" . $destination_name."-pub";
+			$album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
+			if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
+                            $course_code_public = $album_metadata['course_code_public']; 
+                        } else {
+                            $course_code_public = $destination_name;
+                        }
+                        
                         if($album != $destination_name.'-priv') {
                             echo '<tr>';
                                 echo '<td class="album_name col-md-4" style="font-weight: bold;">';
@@ -58,7 +67,7 @@ for every album the user can create.
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#move_asset_'.$asset_name.'_priv"));$("#modal").modal("show"); }, 500);\' ' .
                                             'data-dismiss="modal" id="move_asset_'.$asset_name.'_priv" >';
-                                    echo $destination_name . ' (®private®)';
+                                    echo $course_code_public . ' (®private®)';
                                     echo '</a>';
                                 echo '</td>';
                                 echo '<td class="album_description">';
@@ -74,7 +83,7 @@ for every album the user can create.
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#move_asset_'.$asset_name.'_pub"));$("#modal").modal("show"); }, 500);\' ' .
                                             'data-dismiss="modal" id="move_asset_'.$asset_name.'_pub" >';
-                                    echo $destination_name . ' (®public®)';
+                                    echo $course_code_public . ' (®public®)';
                                     echo '</a>';
                                 echo '</td>';
                                 echo '<td class="album_description">';

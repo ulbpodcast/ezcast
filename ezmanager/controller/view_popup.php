@@ -65,6 +65,14 @@ function index($param = array()) {
             schedule_asset();
             break;
         
+        case 'regen_title':
+            regen_title();
+            break;
+        
+        case 'moderator_delete':
+            moderator_delete();
+            break;
+        
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
             die;
@@ -178,7 +186,6 @@ function popup_ezplayer_link() {
     $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
     $action = (strtolower($asset_meta['origin']) === "streaming") ? 'view_asset_streaming' : 'view_asset_details';
     $token = ezmam_asset_token_get($input['album'], $input['asset']);
-    $public_album = album_is_public($album);
     $ezplayer_link = $ezplayer_url . '/index.php?'
             . 'action=' . $action
             . '&album=' . $album
@@ -231,11 +238,12 @@ function popup_new_album() {
 
 function popup_delete_album() {
     global $input;
-    if(!isset($input['album'])) {
-        echo 'Usage: index.php?action=show_popup&amp;popup=delete_album&amp;album=ALBUM';
+    if(!isset($input['album']) || !isset($input['album_id'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=delete_album&amp;album=ALBUM&amp;album_id=ALBUM-ID';
         die;
     }
     $album_name = $input['album'];
+    $album_id = $input['album_id'];
     require_once template_getpath('popup_delete_album.php');
 }
 
@@ -324,4 +332,29 @@ function schedule_asset() {
 
 
     require template_getpath('popup_schedule.php');
+}
+
+function regen_title() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=regen_title&amp;album=ALBUM&amp;asset=ASSET&amp;title=TITLE';
+        die;
+    }
+    $asset_name = $input['asset'];
+    $album = $input['album'];
+    $title = $input['title'];
+    
+    require template_getpath('popup_regen_title.php');
+}
+
+function moderator_delete() {
+    global $input;
+    if(!isset($input['id_user']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=moderator_delete&amp;album=ALBUM&amp;id_user=ID_USER';
+        die;
+    }
+    $album = $input['album'];
+    $id_user = $input['id_user'];
+    
+    require template_getpath('popup_moderator_delete.php');
 }

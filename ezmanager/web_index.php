@@ -44,6 +44,10 @@ require_once 'lib_toc.php';
 $input = array_merge($_GET, $_POST);
 require_once '../commons/lib_sql_management.php';
 
+if(isset($input['lang'])) {
+    set_lang($input['lang']);
+}
+
 // print_r($_SESSION);
 // die;
 template_repository_path($template_folder . get_lang());
@@ -87,6 +91,7 @@ if (!user_logged_in()) {
     // Step 1: Displaying the login form
     // (happens if no "action" is provided)
     else {
+        $lang = get_lang();
         view_login_form();
     }
 }
@@ -94,7 +99,11 @@ if (!user_logged_in()) {
 // At this point of the code, the user is supposed to be logged in.
 // We check whether they specified an action to perform. If not, it means they landed
 // here through a page reload, so we check the session variables to restore the page as it was. 
-else if ((   (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) &&  ( !isset($_SESSION['add_moderator']) || $_SESSION['add_moderator']!='true')) ||  ( (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) && isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']!='true')) {
+else if ( ((isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) &&
+        ( !isset($_SESSION['add_moderator']) || $_SESSION['add_moderator']!='true')) ||  
+        ( (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) && 
+                isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']!='true')
+        ) {
     redraw_page();
 }
 
@@ -166,7 +175,19 @@ else {
             $service = true;
             requireController('reset_rss.php');
             break;
-
+        
+        case 'view_stats':
+            requireController('view_stats.php');
+            break;
+        
+        case 'view_ezplayer_link':
+            requireController('view_ezplayer_link.php');
+            break;
+        
+        case 'view_ezmanager_link':
+            requireController('view_ezmanager_link.php');
+            break;
+        
         //The users wants to upload an asset into the current album, show lets show him the upload form
         case 'submit_media_progress_bar':
             $service = true;
@@ -291,16 +312,16 @@ else {
             break;     
 
 
-		case 'add_moderator':
+        case 'add_moderator':
             requireController('album_add_moderator.php');
-			// redraw_page();
+            // redraw_page();
             break;
 			
 			
         case 'create_courseAndAlbum':
-			// include "../ezadmin/lib_sql_management.php";
-			 $service = true;
-			requireController('album_create.php');
+            // include "../ezadmin/lib_sql_management.php";
+            $service = true;
+            requireController('album_create.php');
             break;
 			
 					
@@ -345,12 +366,14 @@ function user_logged_in() {
  * Displays the login form
  */
 function view_login_form() {
+    global $lang;
     global $ezmanager_url;
     global $error, $input;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
-    if (isset($input['no_flash']))
+    if (isset($input['no_flash'])) {
         $_SESSION['has_flash'] = false;
+    }
     $url = $ezmanager_url;
     // template include goes here
     include_once template_getpath('login.php');
@@ -363,7 +386,7 @@ function view_login_form() {
 function albums_view() {
     global $url;
     // Used in redraw mode only
-	global $enable_moderator;
+    global $enable_moderator;
     global $album_name;
     global $album_id;
     global $course_code_public;
@@ -376,12 +399,11 @@ function albums_view() {
     global $hd_rss_url_web;
     global $sd_rss_url_web;
     global $player_full_url;
-	global $manager_full_url;
+    global $manager_full_url;
     global $head_code; // Optional code we want to append in the HTML header
     // List of all the albums a user has created
     $created_albums = acl_authorized_albums_list_created(); // Used to display the albums list
     $allowed_albums = acl_authorized_albums_list();
-    $not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
 
     $_SESSION['podman_mode'] = 'view_main';
 
@@ -401,7 +423,7 @@ function redraw_page() {
     global $current_album;
     global $current_album_is_public;
     global $album_name;
-	global $album_id;
+    global $album_id;
     global $course_code_public;						   
     global $album_name_full;
     global $description;
@@ -415,7 +437,7 @@ function redraw_page() {
     global $manager_full_url;
     global $distribute_url;
     global $ezplayer_url;
-	global $ezmanager_url;
+    global $ezmanager_url;
     ezmam_repository_path($repository_path);
 
     $action = $_SESSION['podman_mode'];
@@ -425,25 +447,35 @@ function redraw_page() {
         $current_album_is_public = album_is_public($_SESSION['podman_album']);
 
         $album_name = suffix_remove($_SESSION['podman_album']);
-        ;
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
         $description = $metadata['description'];
-		if(isset($metadata['id']))	$album_id = $metadata['id'];
-		else $album_id = $metadata['name'];
-		if(isset($metadata['course_code_public']) && $metadata['course_code_public']!="") $course_code_public=$metadata['course_code_public'];
+        
+        if(isset($metadata['id'])) {
+            $album_id = $metadata['id'];
+        } else {
+            $album_id = $metadata['name'];
+        }
+        
+        if(isset($metadata['course_code_public']) && $metadata['course_code_public']!="") {
+            $course_code_public = $metadata['course_code_public'];
+        }
         $public_album = $current_album_is_public;
         $assets = ezmam_asset_list_metadata($_SESSION['podman_album']);
-        $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album_name_full);
-        $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . ezmam_album_token_get($album_name_full);
-        $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=high&token=' . ezmam_album_token_get($album_name_full);
-        $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=low&token=' . ezmam_album_token_get($album_name_full);
-        $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $current_album . "&token=" . ezmam_album_token_get($album_name_full);
-		ezmam_album_token_manager_set($current_album);
-        $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $current_album . "&tokenmanager=" . ezmam_album_token_manager_get($album_name_full);
-    
-	
-	}
+        $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=high&amp;token=' . 
+                ezmam_album_token_get($album_name_full);
+        $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $current_album . '&amp;quality=low&amp;token=' . 
+                ezmam_album_token_get($album_name_full);
+        $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=high&token=' . 
+                ezmam_album_token_get($album_name_full);
+        $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $current_album . '&quality=low&token=' .
+                ezmam_album_token_get($album_name_full);
+        $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $current_album . "&token=" . 
+                ezmam_album_token_get($album_name_full);
+        ezmam_album_token_manager_set($current_album);
+        $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $current_album . "&tokenmanager=" . 
+        ezmam_album_token_manager_get($album_name_full);	
+    }
 
     // Whatever happens, the first thing to do is display the whole page.
     albums_view();
@@ -516,10 +548,11 @@ function user_login($login, $passwd) {
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
-        if ($input['has_flash'] == 'N')
+        if ($input['has_flash'] == 'N') {
             $_SESSION['has_flash'] = false;
-        else
+        } else {
             $_SESSION['has_flash'] = true;
+        }
     }
     // 2) Initializing the ACLs
     acl_init($login);
@@ -554,7 +587,7 @@ function private_asset_schedule_remove($album, $asset) {
     ezmam_repository_path($repository_path);
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
-    if ($asset_meta["scheduled"]) {
+    if (array_key_exists("scheduled", $asset_meta) && $asset_meta["scheduled"]) {
         $cmd = "at -r " . $asset_meta["schedule_id"];
         system($cmd);
 

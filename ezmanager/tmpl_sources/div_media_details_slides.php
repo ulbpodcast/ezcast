@@ -30,50 +30,78 @@ This template is not supposed to be used by itself.
 It is part of div_asset_details and has been split apart for readability.
 -->
 <h1>®Slides®</h1>
-        <div class="Video-slide-Bouton" id="Player_<?php echo $asset; ?>_slide"> <a href="javascript:show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php echo $asset_token; ?>');" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image11','','images/page4/BRegarderSlide.png',1)"><img src="images/page4/ARegarderSlide.png" name="Image11" width="187" title="®Watch_slides®" height="109" border="0" id="Image11" /></a> </div>
-        <span class="BoutonPlus"> <a href="javascript:visibilite('InfoAvance_<?php echo $asset; ?>_2');">®Advanced_info®</a> </span>
-    <div id="InfoAvance_<?php echo $asset; ?>_2" style="display:none">
-      <p><span class="infosAvance">®Filesize_HD®&nbsp;:</span> <?php print_info($filesize_slides['HD'], ' ®Megabyte_unit®'); ?></p>
-      <p><span class="infosAvance">®Filesize_SD®&nbsp;:</span> <?php print_info($filesize_slides['SD'], ' ®Megabyte_unit®'); ?></p>
-      <p><span class="infosAvance">®Dimensions_HD®&nbsp;:</span> <?php print_info($dimensions_slides['HD']); ?></p>
-      <p><span class="infosAvance">®Dimensions_SD®&nbsp;:</span> <?php print_info($dimensions_slides['SD']); ?></p>
-      <!--<p><span class="infosAvance">®View_count®&nbsp;:</span> <?php echo $view_count_slides; ?></p> -->
-    </div>
+<div class="Video-slide-Bouton" id="Player_<?php echo $asset; ?>_slide"> 
+    <a href="javascript:show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php echo $asset_token; ?>');" 
+       onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image11','','images/page4/BRegarderSlide.png',1)">
+        <img src="images/page4/ARegarderSlide.png" name="Image11" width="187" title="®Watch_slides®" height="109" border="0" id="Image11" />
+    </a> 
+</div>
+<span class="BoutonPlus"> 
+    <a href="javascript:visibilite('InfoAvance_<?php echo $asset; ?>_2');">®Advanced_info®</a> 
+</span>
+<div id="InfoAvance_<?php echo $asset; ?>_2" style="display:none">
+    <p><span class="infosAvance">®Filesize_HD®&nbsp;:</span> <?php print_info($filesize_slides['HD'], ' ®Megabyte_unit®'); ?></p>
+    <p><span class="infosAvance">®Filesize_SD®&nbsp;:</span> <?php print_info($filesize_slides['SD'], ' ®Megabyte_unit®'); ?></p>
+    <p><span class="infosAvance">®Dimensions_HD®&nbsp;:</span> <?php print_info($dimensions_slides['HD']); ?></p>
+    <p><span class="infosAvance">®Dimensions_SD®&nbsp;:</span> <?php print_info($dimensions_slides['SD']); ?></p>
+    <!--<p><span class="infosAvance">®View_count®&nbsp;:</span> <?php echo $view_count_slides; ?></p> -->
+</div>
         
-    <span class="BoutonPublication"> <a href="javascript:visibilite('Publication_<?php echo $asset; ?>_2');">®Publication®</a></span>
+<span class="BoutonPublication"> 
+    <a href="javascript:visibilite('Publication_<?php echo $asset; ?>_2');">®Publication®</a>
+</span>
 
-    <!--div class="Publication" id="Publication_<?php echo $asset; ?>_2" style="display:none">
-      <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">+ ®high_res®</a></p>
-      <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">+ ®low_res®</a></p>
+<!--div class="Publication" id="Publication_<?php echo $asset; ?>_2" style="display:none">
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+        // echo $album; ?>&amp;asset=<?php //echo $asset; ?>&amp;media=high_slide');">+ ®high_res®</a>
+    </p>
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+        // echo $album; ?>&amp;asset=<?php // echo $asset; ?>&amp;media=low_slide');">+ ®low_res®</a>
+    </p>
+</div>
+
+<span class="BoutonEmbed"> <a href="javascript:visibilite('Embed_<?php // echo $asset; ?>_2');">®Embed®</a> </span>
+
+<div class="Embed" id="Embed_<?php echo $asset; ?>_2" style="display:none">
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+        // echo $album; ?>&amp;asset=<?php // echo $asset; ?>&amp;media=high_slide');">+ ®high_res®</a></p>
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+        // echo $album; ?>&amp;asset=<?php // echo $asset; ?>&amp;media=low_slide');">+ ®low_res®</a></p>
+</div -->
+        
+
+<div class="Publication" id="Publication_<?php echo $asset; ?>_2" style="display:none;">
+    <span class="BoutonDownload"> <a href="javascript:visibilite('Download_<?php echo $asset; ?>_2');">®Download®</a> </span>
+    <div class="Download" id="Download_<?php echo $asset; ?>_2" style="display:none;">
+        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a></p>
+        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a></p>
     </div>
-
+    <!-- Links to embed player -->
     <span class="BoutonEmbed"> <a href="javascript:visibilite('Embed_<?php echo $asset; ?>_2');">®Embed®</a> </span>
 
-    <div class="Embed" id="Embed_<?php echo $asset; ?>_2" style="display:none">
-      <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">+ ®high_res®</a></p>
-      <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">+ ®low_res®</a></p>
-    </div -->
-        
-
-    <div class="Publication" id="Publication_<?php echo $asset; ?>_2" style="display:none;">
-        <span class="BoutonDownload"> <a href="javascript:visibilite('Download_<?php echo $asset; ?>_2');">®Download®</a> </span>
-        <div class="Download" id="Download_<?php echo $asset; ?>_2" style="display:none;">
-            <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a></p>
-            <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a></p>
-        </div>
-        <!-- Links to embed player -->
-        <span class="BoutonEmbed"> <a href="javascript:visibilite('Embed_<?php echo $asset; ?>_2');">®Embed®</a> </span>
-
-        <div class="Embed" id="Embed_<?php echo $asset; ?>_2" style="display:none;">
-            <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a></p>
-            <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a></p>
-        </div>
-
-        <span class="BoutonEZplayer"> <a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>');">EZplayer</a> </span>
-
-        <span class="BoutonULBCode"> <a href="javascript:visibilite('ULBcode_<?php echo $asset; ?>_2');">®ULBcode®</a> </span>
-        <div class="ULBcode" id="ULBcode_<?php echo $asset; ?>_2" style="display:none;">
-            <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a></p>
-            <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a></p>
-        </div>
+    <div class="Embed" id="Embed_<?php echo $asset; ?>_2" style="display:none;">
+        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a></p>
+        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a></p>
     </div>
+
+    <span class="BoutonEZplayer"> 
+        <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>" 
+           data-remote="false" data-toggle="modal" data-target="#modal">
+            EZplayer
+        </a>
+    </span>
+
+    <span class="BoutonULBCode"> <a href="javascript:visibilite('ULBcode_<?php echo $asset; ?>_2');">®ULBcode®</a> </span>
+    <div class="ULBcode" id="ULBcode_<?php echo $asset; ?>_2" style="display:none;">
+        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a>
+        </p>
+        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a>
+        </p>
+    </div>
+</div>

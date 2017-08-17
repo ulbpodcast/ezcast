@@ -35,37 +35,37 @@ make sure $created_albums_with_descriptions is initialized and is an array conta
 for every album the user can create.
 -->
 
-<div class="popup" id="popup_schedule_<?php echo $asset_name; ?>">
-    <h2>®Program®</h2>
-    <strong>®Title®&nbsp;: </strong><?php echo htmlspecialchars($title); ?><br/><br/>
-    <?php if ($asset_scheduled) { ?>
-        ®Asset_sched_move® 
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Program® <b><?php echo htmlspecialchars($title); ?></b></h4>
+</div>
+<?php if ($asset_scheduled) { ?>
+    <div class="modal-body">
+        <p>®Asset_sched_move®</p>
         <?php
         $date = (get_lang() == 'fr') ? new DateTimeFrench($asset_sched_date, $DTZ) : new DateTime($asset_sched_date, $DTZ);
         $dateVerbose = (get_lang() == 'fr') ? $date->format('j F Y à H\hi') : $date->format("F j, Y, g:i a");
-        echo $dateVerbose;
+        echo '<b>'.$dateVerbose.'</b>';
         ?>
         <br/><br/>
-        ®Asset_sched_remove® 
-        <br/><br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="Bouton"> <a href="?action=cancel_schedule_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>"><span>®Delete_sched®</span></a></span>
-
-    <?php } else { ?>
-        <br/>®schedule_at®<br/><br/>
-        <form  action="index.php" onsubmit="return false;" method="post" id="schedule_form">
+        <p>®Asset_sched_remove®</p>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-default" href="?action=cancel_schedule_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>">
+            ®Delete_sched®
+        </a>
+    </div>
+<?php } else { ?>
+    <form  action="index.php" onsubmit="return false;" method="post" id="schedule_form">
+        <div class="modal-body">
+            <p>®schedule_at®</p>
             <input type="hidden" name="action" value="schedule_asset"/>
             <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
             <input type="hidden" id="asset" name="asset" value="<?php echo $asset_name; ?>"/>
-            <input id="datepicker_<?php echo $asset_name; ?>" class="datepicker" type="text" name="date" value="">
-            <br/><br/>
-            <div id="submitButton">
-                <!-- <span class="Bouton"><span><input type="submit" value="®Submit®" /></span></span> -->
-                <!--span class="Bouton"><a href="javascript:document.forms['edit_form'].submit();"><span>®Update®</span></a></span-->
-                <span class="Bouton"><a href="javascript:submit_schedule_form();"><span>®Program®</span></a></span>
-            </div>
-            <script >
-
+            <center>
+                <input id="datepicker_<?php echo $asset_name; ?>" class="datepicker" type="text" name="date" value="">
+            </center>
+            <script>
                 $(function () {
                     d = new Date();
                     $('.datepicker').appendDtpicker({
@@ -73,11 +73,20 @@ for every album the user can create.
                         "inline": true
                     });
                 });
+
                 function submit_schedule_form() {
                     var date = encodeURIComponent(document.getElementById('datepicker_<?php echo $asset_name; ?>').value);
-                    show_popup_from_outer_div('index.php?action=schedule_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>&date=' + date, true);
+                    $('#modal').modal('hide');
+                    setTimeout(function(){ 
+                        display_bootstrap_modal_url($('#modal'), 'index.php?action=schedule_asset&album=<?php 
+                            echo $album; ?>&asset=<?php echo $asset_name; ?>&date=' + date);
+                        $('#modal').modal('show'); 
+                    }, 500);
                 }
             </script>
-        </form>
-    <?php } ?>
-</div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-default" href="javascript:submit_schedule_form();">®Program®</a>
+        </div>
+    </form>
+<?php } ?>

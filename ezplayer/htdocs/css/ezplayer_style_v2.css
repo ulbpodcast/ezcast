@@ -3806,3 +3806,6 @@ input.form-control, select.form-control {
     border-radius: 0px;
 }
     
+.alert-danger {
+    font-size: 13px;
+}

@@ -34,53 +34,66 @@ You should not have to use this template on its own. however, if you do, please
 make sure $created_albums_with_descriptions is initialized and is an array containing the album names (without any suffix) as keys, and albums descriptions as values
 for every album the user can create.
 -->
-
-<div class="popup" id="popup_move_asset_<?php echo $asset_name; ?>">
-    <h2>®Move®</h2>
-    <!-- If all albums have already been created, we display a message explaining the situation -->
-    <?php if(empty($created_albums_list_with_descriptions)) {
-        ?>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Move®</h4>
+</div>
+<div class="modal-body">
+    <?php if(empty($created_albums_list_with_descriptions)) { ?>
         ®No_albums_to_move_asset_to®
-        <?php
-    }
-    
-    //Else, we display the album list
-    else { ?>
-        ®Move_asset_message®<br/>
-        <table>
-        <?php 
-        foreach($created_albums_list_with_descriptions as $destination_name => $destination_description) {
-			// sortir des template...
+    <?php } else { ?>
+        <p>®Move_asset_message®</p>
+
+        <div class="row">
+            <br />
+            <div class="col-md-12">
+                <table class="table table-hover text-left" >
+                    <?php foreach($created_albums_list_with_descriptions as $destination_name => $destination_description) {
+                        // sortir des template...
 			$course_code_public='';
 			$album_path = $repository_path . "/" . $destination_name."-pub";
 			$album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
-			if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='')$course_code_public=$album_metadata['course_code_public']; else $course_code_public=$destination_name;
-            ?>
-            <tr>
-            <!-- Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
-                 with an action "create_album". Once the processing is over, this div will be updated with the confirmation message. -->
-                <td class="album_name">
-                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-priv'; ?>', '<?php echo $asset_name; ?>');"><?php echo $course_code_public; ?> (®private®)</a>
-                </td>
-                <td class="album_description">
-                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-priv'; ?>', '<?php echo $asset_name; ?>');"><?php echo $destination_description; ?> (®Private_album®)</a>
-                </td>
-            </tr>
-            <tr>
-            <!-- Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
-                 with an action "create_album". Once the processing is over, this div will be updated with the confirmation message. -->
-                <td class="album_name">
-                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-pub'; ?>', '<?php echo $asset_name; ?>');"><?php echo $course_code_public; ?> (®public®)</a>
-                </td>
-                <td class="album_description">
-                    <a href="javascript:popup_asset_move_callback('<?php echo $album; ?>', '<?php echo $destination_name.'-pub'; ?>', '<?php echo $asset_name; ?>');"><?php echo $destination_description; ?> (®Public_album®)</a>
-                </td>
-            </tr>
-            <?php
-        }
-        ?>
-        </table>   
-        <?php
-    }
-    ?>
+			if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
+                            $course_code_public = $album_metadata['course_code_public']; 
+                        } else {
+                            $course_code_public = $destination_name;
+                        }
+                        
+                        if($album != $destination_name.'-priv') {
+                            echo '<tr>';
+                                echo '<td class="album_name col-md-4" style="font-weight: bold;">';
+                                    echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
+                                            $destination_name.'-priv'.'&asset='.$asset_name.'" ' . 
+                                            'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
+                                                '$("#move_asset_'.$asset_name.'_priv"));$("#modal").modal("show"); }, 500);\' ' .
+                                            'data-dismiss="modal" id="move_asset_'.$asset_name.'_priv" >';
+                                    echo $course_code_public . ' (®private®)';
+                                    echo '</a>';
+                                echo '</td>';
+                                echo '<td class="album_description">';
+                                    echo $destination_description . ' (®Private_album®)';
+                                echo '</td>';
+                            echo '</tr>';
+                        }
+                        if($album != $destination_name.'-pub') {
+                            echo '<tr>';
+                                echo '<td class="album_name col-md-2" style="font-weight: bold;">';
+                                    echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
+                                            $destination_name.'-pub'.'&asset='.$asset_name.'" ' .
+                                            'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
+                                                '$("#move_asset_'.$asset_name.'_pub"));$("#modal").modal("show"); }, 500);\' ' .
+                                            'data-dismiss="modal" id="move_asset_'.$asset_name.'_pub" >';
+                                    echo $course_code_public . ' (®public®)';
+                                    echo '</a>';
+                                echo '</td>';
+                                echo '<td class="album_description">';
+                                    echo $destination_description . ' (®Public_album®)';
+                                echo '</td>';
+                            echo '</tr>';
+                        }
+                    } ?>
+                </table>
+            </div>
+        </div>
+    <?php } ?>
 </div>

@@ -68,7 +68,7 @@ function makeRequest(url, parameters,div_id) {
                 }
             }
         }
-    }
+    };
     //http_request.onreadystatechange = alertContents;
     http_request.open('GET', url + parameters, true);
     http_request.send(null);

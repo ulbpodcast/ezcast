@@ -31,90 +31,123 @@ This popup appears when the user clicks on "create an album".
 It asks for basic information about the album to create.
 
 You should not have to use this template on its own. however, if you do, please
-make sure $not_created_albums_with_descriptions is initialized and is an array containing the album names (without any suffix) as keys, and albums descriptions as values
+make sure $not_created_albums_with_descriptions is initialized and is an array containing the album names (without any 
+suffix) as keys, and albums descriptions as values
 for every album the user can create.
 -->
 
-<div class="popup" id="popup_new_album">
-    <h2>®Create_album®</h2>
-    <!-- If all albums have already been created, we display a message explaining the situation -->
-  <?php if(!empty($not_created_albums_with_descriptions)) { ?>
-  
-        ®Create_album_message®<br/>
-        <table>
-        <?php 
-        foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
-			// sortir des template...
-			$cours_info=db_course_read($album_name);
-			if(isset($cours_info['course_code_public']) && $cours_info['course_code_public']!='')$course_code_public=$cours_info['course_code_public']; else $course_code_public=$album_name;
-       ?>
-            <tr>
-            <!-- Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
-                 with an action "create_album". Once the processing is over, this div will be updated with the confirmation message. -->
-                <td class="album_name">
-                    <a href="javascript:show_popup_from_outer_div('index.php?action=create_album&amp;album=<?php echo $album_name; ?>', true);"><?php if(isset($course_code_public) && $course_code_public!="") echo $course_code_public; else echo $album_name; ?></a>
-                </td>
-                <td class="album_description">
-                    <a href="javascript:show_popup_from_outer_div('index.php?action=create_album&amp;album=<?php echo $album_name; ?>', true);"><?php echo $album_description; ?></a>
-                </td>
-        </tr>
-            <?php
-        }
-        ?>
-               </table>   
-		
-	
-        <?php
-    }
-	global $enable_course_creation;
-	if($enable_course_creation){
-    ?>
-		<form id="form_new_ablbum" action="index.php" method="post">
-			<table>
-				<tr>
-				  <td>®Album_type® </td>
-				  <td><select id="selectType">
-					  <option id="opt_course" value="course">®Course®</option>
-					  <option id="opt_channel" value="channel">®Channel®</option>
-					</select>	
-				  </td>
-				</tr>
-				<tr id="course_code_line">
-				  <td id="labelcodeCours"> ®Course_code®  </td>
-				  <td>	<input  id="course_code" type="text" name="course_code">  </td>
-				</tr>	
-				  <td id="labelIdCours">®Album_name®</td>
-				  <td>	<input  id="album" type="text" name="album">		  
-						<input id="postUrl" type="submit" value="Créer">
-				  </td>
-				</tr>			  
-			</table>
-		</form> 
-
-		<script>		
-		
-			$("#selectType").change(function(){
-			  var id = $(this).find("option:selected").attr("id");
-
-			  switch (id){
-				case "opt_course":
-				  $('#course_code_line').show();
-				  break;
-				case "opt_channel":
-				  $('#course_code_line').hide();
-				  break;
-			  }
-			});
-		
-			$('#form_new_ablbum').submit(function(e) {
-				e.preventDefault();
-				var album=encodeURIComponent($('#album').val());
-				var course_code=encodeURIComponent($('#course_code').val());																
-				var selectType=encodeURIComponent($('#selectType').val());
-				show_popup_from_outer_div("index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+selectType+"&course_code="+course_code,true);
-
-			}); 
-	
-	</script>
-		 <?php } ?>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Create_album®</h4>
 </div>
+<div class="modal-body">
+    <?php if(empty($not_created_albums_with_descriptions)) {
+        echo "<p>®All_albums_already_created®</p>";
+    } else { 
+        echo "<p>®Create_album_message®</p>"; 
+        ?>
+        
+        <div class="row">
+            <br />
+            <div class="col-md-12">
+                <table class="table table-hover text-left" >
+                    <?php foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
+                        // sortir des template...
+			$cours_info=db_course_read($album_name);
+			if(isset($cours_info['course_code_public']) && $cours_info['course_code_public']!='') {
+                            $course_code_public = $cours_info['course_code_public']; 
+                        } else { 
+                            $course_code_public = $album_name;
+                        }
+                        
+                        // Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
+                        // with an action "create_album". Once the processing is over, this div will be updated with the confirmation message.
+                        echo '<tr>';
+                            echo '<td class="album_name col-md-2" style="font-weight: bold;">';
+                                echo '<a href="index.php?action=create_album&amp;album=' . $album_name . '" ' .
+                                        'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
+                                                '$("#create_'.$album_name.'_album"));$("#modal").modal("show"); }, 500);\' ' .
+                                        'data-dismiss="modal" id="create_'.$album_name.'_album">';
+                                echo $album_name;
+                                if(isset($course_code_public) && $course_code_public!="") {
+                                    echo $course_code_public; 
+                                } else {
+                                    echo $album_name;
+                                }
+                                echo '</a>';
+                            echo '</td>';
+                            echo '<td class="album_description">';
+                                echo $album_description;
+                            echo '</td>';
+                        echo '</tr>';
+                    } ?>
+                </table>
+            </div>
+        </div>
+    <?php }
+    
+    global $enable_course_creation;
+    if($enable_course_creation){ ?>
+    <hr />
+        <form class="form-horizontal" id="form_new_ablbum" action="index.php" method="post">
+            <div class="form-group">
+                <label for="selectType" class="col-sm-3 control-label">®Album_type®</label>
+                <div class="col-sm-9">
+                    <select id="selectType" name="album_type" class="form-control">
+                        <option id="opt_course" value="course">®Course®</option>
+                        <option id="opt_channel" value="channel">®Channel®</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group" id="course_code_line">
+                <label for="course_code" id="labelcodeCours" class="col-sm-3 control-label">®Course_code®</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="course_code" name="course_code">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="album" id="labelIdCours" class="col-sm-3 control-label">®Album_name®</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="album" name="album">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" id="postUrl" class="btn btn-default">®Submit_create_album®</button>
+                </div>
+            </div>
+        </form>
+    <?php } ?>
+</div>
+
+<script>		
+    $("#selectType").change(function(){
+        var id = $(this).find("option:selected").attr("id");
+        switch (id){
+            case "opt_course":
+                $('#course_code_line').show();
+                break;
+                
+            case "opt_channel":
+                $('#course_code_line').hide();
+                break;
+        }
+    });
+
+    $('#form_new_ablbum').submit(function(e) {
+        e.preventDefault();
+        var album = encodeURIComponent($('#album').val());
+        var course_code = encodeURIComponent($('#course_code').val());																
+        var selectType = encodeURIComponent($('#selectType').val());
+        
+        $("#modal").modal("hide"); 
+        setTimeout(function() {
+            display_bootstrap_modal_url($("#modal"), "index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+
+                selectType+"&course_code="+course_code);
+            $("#modal").modal("show"); 
+        }, 500);
+    }); 
+</script>

@@ -29,7 +29,7 @@
  */
      
 include_once dirname(__FILE__) . '/config.inc';
-include_once dirname(__FILE__) . '/lib_error.php';
+include_once __DIR__.'/../commons/lib_error.php';
 include_once dirname(__FILE__) . '/lib_various.php';
 include_once dirname(__FILE__) . '/lib_ezmam.php';
 

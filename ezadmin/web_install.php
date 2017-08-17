@@ -18,7 +18,7 @@ if (file_exists('config.inc')) {
 require_once __DIR__ . '/../commons/lib_template.php';
 require_once __DIR__ . '/../commons/lib_sql_management.php';
 require_once __DIR__ . '/lib_various.php';
-require_once __DIR__ . '/lib_error.php';
+require_once __DIR__ . '/../commons/lib_error.php';
 require_once __DIR__ . '/../commons/common.inc'; //for logger access
 
 session_name("ezcast_installer");

@@ -204,7 +204,6 @@
 
                     <!-- Right part of the screen: album and asset details -->
                     <div id="div_content" class="col-sm-8 col-sm-offset-4">
-
                         <!-- Album details go here (dynamically filled with div_album_header) -->
                         <?php
                         // If we are in redraw mode, we fill the content of the div

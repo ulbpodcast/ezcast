@@ -48,8 +48,6 @@ if(isset($input['lang'])) {
     set_lang($input['lang']);
 }
 
-// print_r($_SESSION);
-// die;
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
@@ -104,6 +102,7 @@ else if ( ((isset($_SESSION['podman_logged']) && (!isset($input['action']) || em
         ( (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) && 
                 isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']!='true')
         ) {
+    
     redraw_page();
 }
 
@@ -134,6 +133,7 @@ else {
     // Actions
     //
     // Controller goes here
+    
     
     $paramController = array();
     switch ($action) {
@@ -407,6 +407,7 @@ function albums_view() {
 
     $_SESSION['podman_mode'] = 'view_main';
 
+    global $album;
     include_once template_getpath('main.php');
     //include_once "tmpl/fr/main.php";
 }

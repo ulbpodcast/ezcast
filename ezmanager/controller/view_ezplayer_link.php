@@ -11,11 +11,14 @@ function index($param = array()) {
     global $ezplayer_url;
     global $enable_moderator;
     global $enable_anon_access_control;
+    global $logger;
     
     if (isset($input['album']))
         $album = $input['album'];
     else
         $album = $_SESSION['podman_album'];
+    $current_album = $album;
+    
     ezmam_repository_path($repository_path);
     //
     // 0) Permissions checks
@@ -30,6 +33,11 @@ function index($param = array()) {
     // 1) We retrieve the metadata relating to the album
     //
     $metadata = ezmam_album_metadata_get($album);
+    if($metadata === false) {
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Failed to get metadata for album $album", array(__FUNCTION__));
+        error_print_message("Could not get metadata", get_lang());
+        return false;
+    }
     
     if(isset($metadata['id'])) {
         $album_id = $metadata['id'];

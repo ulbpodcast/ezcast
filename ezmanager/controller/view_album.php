@@ -16,14 +16,16 @@ function index($param = array()) {
     // global $ezmanager_url;
 
     if (isset($input['tokenmanager'])){
-		// add course to user in DB
-		
-		
-	}	
+        // add course to user in DB
+    }	
+    
     if (isset($input['album']))
         $album = $input['album'];
-    else
+    else {
         $album = $_SESSION['podman_album'];
+    }
+    $current_album = $album;
+    
     ezmam_repository_path($repository_path);
     //
     // 0) Permissions checks
@@ -43,7 +45,6 @@ function index($param = array()) {
     // 2) We set the variables used in the template with the correct values
     //
     $album_name_full = $album; // complete album name, used for div identification
-    print_r($metadata);
     if(isset($metadata['id'])) {
         $album_id = $metadata['id'];
     } else {

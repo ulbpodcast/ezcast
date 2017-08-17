@@ -16,6 +16,8 @@ function index($param = array()) {
         $album = $input['album'];
     else
         $album = $_SESSION['podman_album'];
+    $current_album = $album;
+    
     ezmam_repository_path($repository_path);
     //
     // 0) Permissions checks

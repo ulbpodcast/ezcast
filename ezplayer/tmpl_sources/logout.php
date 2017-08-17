@@ -29,12 +29,7 @@
 -->
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
-		<?php
-			global $enable_css_phone;
-			if ($enable_css_phone) {
-		?>
-			 <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
-		<?php }  ?>
+        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
 
 </head>
 <body>

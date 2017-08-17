@@ -33,12 +33,7 @@
         <script type="text/javascript" src="js/jQuery/jquery-2.1.3.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
-		<?php
-			global $enable_css_phone;
-			if ($enable_css_phone) {
-		?>
-			 <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
-		<?php }  ?>
+        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
 
         <script type="text/javascript">
             function detect_flash() {

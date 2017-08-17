@@ -99,6 +99,8 @@
         <label id="Downloadable" lang="en">Allow download</label>
         <label id="Download_info" lang="fr">Si cette case est cochée, les vidéos soumises dans l'album pourront être téléchargées via EZplayer. Cette modification ne s'applique que pour les futures vidéos. </label>
         <label id="Download_info" lang="en">If this box is checked, the videos contained in this album will be downloadable via EZplayer. This change only applies to upcoming videos. </label>
+        <label id="warningAnon" lang="fr">Si cette case est cochée, les vidéos soumises dans l'album pourront être accessible sans authentification via EZplayer. </label>
+        <label id="warningAnon" lang="en">If this box is checked, the videos contained in this album will be accessible via EZplayer without authentication.</label>
         <label id="Downloadable_submit" lang="fr">Vidéo téléchargeable</label>
         <label id="Downloadable_submit" lang="en">Allow download</label>
         <label id="Download_info_submit" lang="fr">Si cette case est cochée, la vidéo soumise pourra être téléchargée via EZplayer.</label>
@@ -327,8 +329,6 @@
         <label id="Non_reversible_operation" lang="en">Non-reversible operation.</label>
         <label id="Anonym_Access" lang="fr">Accès anonyme</label>
         <label id="Anonym_Access" lang="en">Anonymous Access</label>
-        <label id="Anonym_info" lang="fr">Si cette case est cochée, les vidéos soumises dans l'album pourront être accèssible sans authentification via EZplayer.</label>
-        <label id="Anonym_info" lang="en">If this box is checked, user without authenticating to EZPlayer will access to videos in this album.</label>
         <label id="Delete_Modo" lang="en">Delete Moderator</label>
         <label id="Delete_Modo" lang="fr">Supprimer modérateur</label>
         <label id="Do_you_wish_to_continue" lang="fr">Voulez-vous vraiment continuer ?</label>

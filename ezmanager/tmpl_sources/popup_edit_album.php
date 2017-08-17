@@ -119,7 +119,7 @@ You should not have to include this file yourself.
                     <a class="info">
                         ®Anonym_Access®
                         <span style="font-weight: normal; font-size: 10px;">
-                            ®Anonym_info®
+                            ®warningAnon®
                         </span>
                     </a>
                 </label>

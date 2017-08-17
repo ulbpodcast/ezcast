@@ -1784,3 +1784,8 @@ function assoc_array2metadata_file($assoc_array, $file_path) {
 
     return true;
 }
+
+function ezmam_album_allow_anonymous($album) {
+    $meta = ezmam_album_metadata_get($album);
+    return isset($meta['anon_access']) && $meta['anon_access'] == 'true';
+} 

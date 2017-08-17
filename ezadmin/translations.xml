@@ -148,6 +148,8 @@
         <label id="event_calendar_title" lang="en">Errors calendar</label>
         <label id="report_title" lang="fr">Rapport</label>
         <label id="report_title" lang="en">Report</label>
+        <label id="ID" lang="fr">ID</label>
+        <label id="ID" lang="en">ID</label>
         
         
         

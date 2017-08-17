@@ -36,14 +36,8 @@ switch ($action) {
         else
              http_response_code(500);
         break;
-    case 'streaming_start':
-        streaming_start();
-        break;
     case 'streaming_content_add':
         streaming_content_add();
-        break;
-    case 'streaming_stop':
-        streaming_stop();
         break;
     case 'streaming_close':
         streaming_close();
@@ -79,16 +73,9 @@ function download_from_recorder() {
     global $php_cli_cmd;
     global $recorder_download_pgm;
     global $logger;
-
-	
-	 // file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-	 
-	 // "------------DOWNLOAD FROM RECORDER BEGIN--------------". PHP_EOL
-	 
-	 
-	 // , FILE_APPEND);	
-			
-	 //get input parameters
+    
+            
+    //get input parameters
     $record_type = $input['record_type']; // cam|slide|camslide
     $record_date = $input['record_date'];
     $course_name = $input['course_name'];
@@ -174,8 +161,8 @@ function download_from_recorder() {
     }
     
     //start download in background. Can't check return value with at, replace by background process ?
-	// file_put_contents("/usr/local/ezcast/ezmanager/web_request/watchlogs.log",  "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1 '| at now" . PHP_EOL , FILE_APPEND);
-    $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1 '| at now";
+    $return_val = 0;
+    $cmd = "echo '$php_cli_cmd $recorder_download_pgm $record_name_sanitized >> $record_dir/download.log 2>&1' | at now";
     $pid = system($cmd, $return_val);
     if($return_val != 0) {
         $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Received valid download request, but download failed to start. Cmd: $cmd", array(__FUNCTION__), $record_name_sanitized);
@@ -199,130 +186,73 @@ function download_from_recorder() {
 function streaming_init() {
     global $input;
     global $caller_ip;
-    global $ezmanager_basedir;
     global $repository_path;
     
     global $logger;
-	
+    
     ezmam_repository_path($repository_path);
-	
-	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-	 
-	 "--------------------------" . PHP_EOL . date("h:i:s") . " " . PHP_EOL
-	 . "input['course'] :  " .($input['course']) . PHP_EOL
-	 . "caller_ip :  " .$caller_ip . PHP_EOL
-	 . "ezmanager_basedir :  " .$ezmanager_basedir . PHP_EOL
-	 . "repository_path :  " .$repository_path . PHP_EOL
-	 
-	 
-	 , FILE_APPEND);		 
-	 
-	 foreach ($input as $key2 => $value2){
-		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 		
-		  $key2 ." : ". $value2 . PHP_EOL		 
-		 , FILE_APPEND);
-	}
-	
-	$course = $input['course']; // current $course
+
+    $course = $input['course']; // current $course
     $asset = $input['asset']; // current asset
     $record_type = $input['record_type']; // camslide | cam | slide
     $module_type = $input['module_type']; // cam | slide
     $protocol = $input['protocol'];
     $classroom = $input['classroom'];
     $netid = $input['netid']; // user's netid
+    $quality = $input['module_quality'];
     //
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::INFO, "Received streaming init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     
+    $stream_name = 'stream_'.$asset;
+    $status = 'open';
+    
     // gets information about current streams
-	$streams_array=db_get_stream_info($course,$asset);
-	if(!isset($streams_array) || $streams_array==null ) $streams_array = array();
+    $streams_array = db_get_stream_info($course, $asset);
+    if($streams_array == null) 
+        $streams_array = array();
 	
     if (!isset($streams_array[$course][$asset])) {
         // creates a new entry in the streams array for the current stream
-        $streams_array[$course][$asset]['classroom'] = $classroom;
-        $streams_array[$course][$asset]['netid'] = $netid;
+        // prepares asset metadata
+        $asset_meta['classroom'] = $classroom;
+        $asset_meta['netid'] = $netid;
         // at first, we consider the record_type is the module_type 
         // (ex: record_type = camslide / module_type = slide)
         // This way, if the cam module is not set for streaming, EZplayer 
         // knows that the streaming video is of type slide only
-        $streams_array[$course][$asset]['record_type'] = $module_type;
-		$streams_array[$course][$asset]['stream_name'] = $course.'_'.$asset;																			
-
-        // prepares asset metadata
-        $asset_meta = $streams_array[$course][$asset];
+        $asset_meta['record_type'] = $module_type;
+        $asset_meta['stream_name'] = $stream_name;
         $asset_meta['origin'] = 'streaming';
         $asset_meta['record_date'] = $asset;
         $asset_meta['status'] = 'open';
         $asset_meta['author'] = $input['author'];
         $asset_meta['title'] = $input['title'];
+        $asset_meta['description'] = '';
 
         // creates a new (streaming) asset in the public album
-        $token = ezmam_asset_new($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
+        $token = ezmam_asset_new($course . '-pub', $stream_name, $asset_meta);
         if($token == false) {
-             $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create asset.", array(__FUNCTION__));
+             $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create streaming asset.", array(__FUNCTION__));
              return false;
         }
-        
-        $streams_array[$course][$asset]['token'] = $token;
     }
 
     switch ($protocol) {
-        case 'udp':
-            // the streaming has already been init, return the info for the current asset
-            if (isset($streams_array[$course][$asset][$module_type])) {
-                $port = $streams_array[$course][$asset][$module_type]['port'];
-                $server = $streams_array[$course][$asset][$module_type]['server'];
-            } else {
-                // we save information about the current stream and return server and port for EZrecorder
-                $streams_array[$course][$asset][$module_type] = array();
-                $streams_array[$course][$asset][$module_type]['ip'] = $caller_ip;
-                $streams_array[$course][$asset][$module_type]['status'] = 'open';
-                $streams_array[$course][$asset][$module_type]['protocol'] = $protocol;
-                $streams_array[$course][$asset][$module_type]['server'] = server_get();
-                $streams_array[$course][$asset][$module_type]['port'] = port_get();
-
-                $server = $streams_array[$course][$asset][$module_type]['server'];
-                $port = $streams_array[$course][$asset][$module_type]['port'];
-            }
-
-            $result = array("port" => $port, "server" => $server);
-            print serialize($result);
-            break;
-
         case 'http':
-            if (!isset($streams_array[$course][$asset][$module_type])) {
-                // we save information about the current stream 
-                $streams_array[$course][$asset][$module_type] = array();
-                $streams_array[$course][$asset][$module_type]['ip'] = $caller_ip;
-                $streams_array[$course][$asset][$module_type]['status'] = 'open';
-                $streams_array[$course][$asset][$module_type]['quality'] = $input['module_quality'];
-                $streams_array[$course][$asset][$module_type]['protocol'] = $protocol;
-            }
             $other_type = ($module_type == 'cam') ? 'slide' : 'cam';
             if (isset($streams_array[$course][$asset][$other_type])) {
                 // record_type is camslide and we know that both modules
                 // are set for streaming
-                $streams_array[$course][$asset]['record_type'] = $record_type;
-                $asset_meta = ezmam_asset_metadata_get($course . '-pub', $streams_array[$course][$asset]['stream_name']);
+                $asset_meta = ezmam_asset_metadata_get($course . '-pub', $stream_name);
                 $asset_meta['record_type'] = $record_type;
-                ezmam_asset_metadata_set($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
+                ezmam_asset_metadata_set($course . '-pub', $stream_name, $asset_meta);
             }
             break;
+        default:
+            print "Unknown protocol $protocol";
+            return false;
     }
-	
-	if(!isset($streams_array[$course][$asset][$module_type]['server']))$server="";
-	if(!isset($streams_array[$course][$asset][$module_type]['port'])) $port="";
-	if(!isset($streams_array[$course][$asset][$module_type]['pid']))  $pid="";
-	
-	$res=db_stream_create($course, $asset, $classroom, $record_type, $netid, $stream_name, $token,$module_type, $ip, $status,$pid, $quality, $protocol, $server, $port);
-	if(!$res){
-		$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to create stream in database.", array(__FUNCTION__));
-		return false;
-	}
-    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     
-<<<<<<< HEAD
-=======
     //default to NULL in db
     $server = isset($streams_array[$course][$asset][$module_type]['server']) ? 
             $streams_array[$course][$asset][$module_type]['server'] : null;
@@ -336,84 +266,7 @@ function streaming_init() {
     }
     
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed stream init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
->>>>>>> refs/remotes/ulbpodcast/master
     return true;
-}
-
-/**
- * Starts the live stream on EZmanager
- * @global type $input
- * @global type $ezmanager_basedir
- * @global type $repository_path
- * @return boolean
- */
-function streaming_start() {
-    global $input;
-    global $ezmanager_basedir;
-    global $repository_path;
-
-    ezmam_repository_path($repository_path);
-	
-	// DEBUG	
-	
-	// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "INPUT VALUES : " . PHP_EOL , FILE_APPEND);
-	// foreach ($input as $key => $value){
-		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-		// $key ." : ". $value . PHP_EOL
-		// , FILE_APPEND);
-	// }
-		
-    $course = $input['$course'];
-    $asset = $input['asset'];
-    $protocol = $input['protocol'];
-    $module_type = $input['module_type'];
-
-    // gets information about current streams
-
- 	$streams_array=db_get_stream_info($course,$asset);
-	if(!isset($streams_array) || $streams_array==null ) $streams_array = array();	
-	
-    $asset_meta = ezmam_asset_metadata_get($course . '-pub', $streams_array[$course][$asset]['stream_name']);
-    $asset_meta['status'] = 'streaming';
-    ezmam_asset_metadata_set($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
-
-    switch ($protocol) {
-        case 'udp':
-            // the streaming has already been init, return the info for the current asset
-            if (isset($streams_array[$course][$asset][$module_type])) {
-                $port = $streams_array[$course][$asset][$module_type]['port'];
-                $server = $streams_array[$course][$asset][$module_type]['server'];
-
-                // experimental: launches FFMPEG on remote EZrenderer to stream in EZmanager's webspace and saves the pid
-                $cmd = "ssh ezrenderer@$server '/usr/local/sbin/ffmpeg -i udp://localhost:$port -threads 0 -s 960x540 -f hls -hls_time 3 -hls_list_size 0 -hls_wrap 5 -y /var/www/hls/video/demo.m3u8 </dev/null >/dev/null 2> /var/www/hls/video/ffmpeg.log & echo $! ' > $ezmanager_basedir/var/pid_${$course}_$asset & ";
-                exec($cmd);
-                $stream_pid = '';
-                $count = 0;
-                while ($stream_pid == '' && $count < 10) {
-                    $stream_pid = file_get_contents("$ezmanager_basedir/var/pid_${$course}_$asset");
-                    $count++;
-                    sleep(1);
-                }
-                // saves the pid in the streams array
-                $streams_array[$course][$asset][$module_type]['pid'] = $stream_pid;
-                $streams_array[$course][$asset][$module_type]['status'] = 'streaming';
-                unlink("$ezmanager_basedir/var/pid_${$course}_$asset");
-            } else {
-                // no information found for the stream
-                print 'error - no information found for the current stream';
-                return false;
-            }
-
-            print "OK: $stream_pid";
-            break;
-    }
-	if(isset($streams_array[$course][$asset][$module_type]['pid']))$pid= $streams_array[$course][$asset][$module_type]['pid']; else $pid="";
-	if(isset($streams_array[$course][$asset][$module_type]['status']))$status= $streams_array[$course][$asset][$module_type]['status']; else $status="";
-	
-	$res=db_stream_update_statusPid($course,$asset,$module_type,$pid,$status);
-	if(!$res){
-		$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));
-	}																																
 }
 
 function create_m3u8_master($targetDir, $quality) {
@@ -464,7 +317,6 @@ function create_m3u8_external($targetDir, $type, $asset_token) {
  */
 function streaming_content_add() {
     global $input;
-    global $ezmanager_basedir;
     global $repository_path;
     global $apache_documentroot;
     global $streaming_video_alternate_server_enable_sync;
@@ -473,22 +325,9 @@ function streaming_content_add() {
     global $m3u8_external_master_filename;
     global $m3u8_quality_filename;
     global $logger;
-<<<<<<< HEAD
-     
-    ezmam_repository_path($repository_path);		
-	// DEBUG	
-	
-	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "INPUT VALUES : " . PHP_EOL , FILE_APPEND);
-	foreach ($input as $key => $value){
-		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-		$key ." : ". $value . PHP_EOL
-		, FILE_APPEND);
-	}
-=======
     
 
     ezmam_repository_path($repository_path);
->>>>>>> refs/remotes/ulbpodcast/master
 
     $course = $input['course'];
     $asset = $input['asset'];
@@ -499,17 +338,12 @@ function streaming_content_add() {
 //    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Received stream content add for asset $asset in course $course ", array(__FUNCTION__), $asset);
      
     // gets information about current streams
-	$streams_array=db_get_stream_info($course,$asset);
-	if(!isset($streams_array) || $streams_array==null ) $streams_array = array();
-		
-	file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "STREAM VALUES : " . PHP_EOL , FILE_APPEND);
-	foreach ($streams_array[$course][$asset] as $key => $value){
-		file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-		$key ." : ". $value . PHP_EOL
-		, FILE_APPEND);
-	}
-
-
+    $streams_array = db_get_stream_info($course,$asset);
+    if($streams_array == null || !isset($streams_array[$course][$asset])) { 
+       $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Requested stream info for asset $asset in course $course was not found", array(__FUNCTION__), $asset);
+       return false;
+    }
+    
     $stream_name = $streams_array[$course][$asset]['stream_name'];
     switch ($protocol) {
         case 'http':
@@ -519,31 +353,24 @@ function streaming_content_add() {
               */  
             // the streaming has already been init, saves the m3u8 file and segments
             if (!isset($streams_array[$course][$asset][$module_type])) {
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "No current stream info found for module type $module_type, asset $asset, course $course", array(__FUNCTION__), $asset);
                  // no information found for the stream
                 print 'error - no information found for the current stream';
                 return false;
             }
 
 	    $asset_token = $streams_array[$course][$asset]['token'];
-            if($streams_array[$course][$asset][$module_type]['status'] != $status)
-            {
-				$streams_array[$course][$asset][$module_type]['status'] = $status;																				
-				if(isset($streams_array[$course][$asset][$module_type]['pid']))$pid= $streams_array[$course][$asset][$module_type]['pid']; else $pid="";
-				$res=db_stream_update_statusPid($course,$asset,$module_type,$pid,$status);
-				if(!$res){
-					$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));
-				}
-
+            if($streams_array[$course][$asset][$module_type]['status'] != $status) {
+                $streams_array[$course][$asset][$module_type]['status'] = $status;																				
+                $res = db_stream_update_status($course,$asset,$module_type,$status);
+                if(!$res) {
+                    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream status in database.", array(__FUNCTION__), $asset);
+                    //do not return, we can still recover from a status update failure
+                }
             }
             $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $course . '/' . $stream_name . '_' . $asset_token . '/';
-            if(!is_file($upload_root_dir))
+            if(!is_dir($upload_root_dir))
                 mkdir($upload_root_dir, 0755, true); // creates the directories if needed
-<<<<<<< HEAD
-
-            if($streaming_video_alternate_server_enable_sync)
-            {
-               ExternalStreamDaemon::pause($asset_token);
-=======
        
             if(!is_dir($upload_root_dir)) {
                 $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload root dir (path: $upload_root_dir)", array(__FUNCTION__), $asset);
@@ -551,15 +378,18 @@ function streaming_content_add() {
             }
             if($streaming_video_alternate_server_enable_sync) {
                ExternalStreamDaemon::lock($asset_token);
->>>>>>> refs/remotes/ulbpodcast/master
                ensure_external_stream_daemon_is_running($upload_root_dir, $asset_token);
             }
 
             $upload_type_dir = $upload_root_dir . $input['module_type'] . '/';
 
-            if(!is_file($upload_type_dir))
+            if(!is_dir($upload_type_dir))
                 mkdir($upload_type_dir, 0755, true); // creates the directories if needed
-
+            if(!is_dir($upload_type_dir)) {
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload type dir (path: $upload_type_dir)", array(__FUNCTION__), $asset);
+                return false;
+            }
+            
             // master playlist file doesn't exist yet
             if (!is_file($upload_type_dir . $m3u8_master_filename)) {
                 create_m3u8_master($upload_type_dir, $streams_array[$course][$asset][$module_type]['quality']);
@@ -576,21 +406,18 @@ function streaming_content_add() {
 
             $upload_quality_dir = $upload_type_dir . $input['quality'] . '/';
             // for instance : /www2/htdocs/dev/ezplayer/videos/ALBUM-NAME/3000_001/cam/high/
-            if(!is_file($upload_quality_dir))
+            if(!is_dir($upload_quality_dir))
                 mkdir($upload_quality_dir, 0755, true); // creates the directories if needed
-
+            if(!is_dir($upload_quality_dir)) {
+                $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to create upload quality dir (path: $upload_quality_dir)", array(__FUNCTION__), $asset);
+                return false;
+            }
+            
             $uploadfile = $upload_quality_dir . $input['filename'];
             // places the file (.ts segment from HTTP request) in the webspace
             if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
                 echo "File is valid, and was successfully uploaded.\n";
             }
-			file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "UPLOADFILE22222 VALUES : " .$uploadfile. PHP_EOL , FILE_APPEND);
-			file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "FILES['m3u8_segment']['tmp_name']22222 VALUES : " .$_FILES['m3u8_segment']['tmp_name']. PHP_EOL , FILE_APPEND);
-			foreach ($_FILES['m3u8_segment'] as $key => $value){
-				file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-				$key ."888 : ". $value . PHP_EOL
-				, FILE_APPEND);
-			}	
 
             // appends the m3u8 file
             $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
@@ -610,98 +437,11 @@ function streaming_content_add() {
             
             print "OK";
             break;
+        default:
+            print "Unknown protocol $protocol";
+            return false;
     }
-// <<<<<<< HEAD
-
-	
-	//debug
-		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "STREAM22222 VALUES : " . PHP_EOL , FILE_APPEND);
-	// foreach ($streams_array[$course][$asset] as $key => $value){
-		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-		// $key ." : ". $value . PHP_EOL
-		// , FILE_APPEND);
-	// }
-		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "CAM22222 VALUES : " . PHP_EOL , FILE_APPEND);
-	// foreach ($streams_array[$course][$asset]['cam'] as $key => $value){
-		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-		// $key ." : ". $value . PHP_EOL
-		// , FILE_APPEND);
-	// }
-		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log",  "SLIDE22222 VALUES : " . PHP_EOL , FILE_APPEND);
-	// foreach ($streams_array[$course][$asset]['slide'] as $key => $value){
-		// file_put_contents("/usr/local/ezcast/ezmanager/web_request/debugLog.log", 
-		// $key ." : ". $value . PHP_EOL
-		// , FILE_APPEND);
-	// }
-	//findebug
-	
-	
-
-
-    // file_put_contents("$ezmanager_basedir/var/streams.php", $string);
-// =======
-// >>>>>>> refs/remotes/ulbpodcast/master
-}
-
-/**
- * Stops the streaming on EZmanager
- * @global type $input
- * @global type $ezmanager_basedir
- * @global type $repository_path
- * @return boolean
- */
-function streaming_stop() {
-    global $input;
-    global $ezmanager_basedir;
-    global $repository_path;
-
-    //stop external stream daemon if it's enabled
-    ExternalStreamDaemon::stop();
-    
-    ezmam_repository_path($repository_path);
-
-    $course = $input['$course'];
-    $asset = $input['asset'];
-    $protocol = $input['protocol'];
-    $module_type = $input['module_type'];
-
-    // gets information about current streams
-	$streams_array=db_get_stream_info($course,$asset);
-	if(!isset($streams_array) || $streams_array==null ) $streams_array = array();
-
-    $asset_meta = ezmam_asset_metadata_get($course . '-pub', $streams_array[$course][$asset]['stream_name']);
-    $asset_meta['status'] = 'stopped';
-    ezmam_asset_metadata_set($course . '-pub', $streams_array[$course][$asset]['stream_name'], $asset_meta);
-
-    switch ($protocol) {
-        case 'udp':
-            // the streaming has already been init, return the info for the current asset
-            if (isset($streams_array[$course][$asset][$module_type])) {
-                $server = $streams_array[$course][$asset][$module_type]['server'];
-                $pid = $streams_array[$course][$asset][$module_type]['pid'];
-                // kills the ffmpeg process on EZrenderer
-                $cmd = "ssh ezrenderer@$server 'kill $pid' &";
-                exec($cmd);
-                // deletes the HLS video files in the webspace
-                system("rm -rf /www2/htdocs/dev/ezplayer/videos/" . $streams_array[$course][$asset]['stream_name']);
-                $streams_array[$course][$asset][$module_type]['pid'] = '';
-                $streams_array[$course][$asset][$module_type]['status'] = 'stopped';
-            } else {
-                // no information found for the stream
-                print 'error - no information found for the current stream';
-                return false;
-            }
-
-            print "OK";
-            break;
-    }
-
-	if(isset($streams_array[$course][$asset][$module_type]['pid']))$pid= $streams_array[$course][$asset][$module_type]['pid']; else $pid="";
-	$status= $streams_array[$course][$asset][$module_type]['status'];
-	$res=db_stream_update_statusPid($course,$asset,$module_type,$pid,$status);
-	if(!$res){
-		$logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));
-	}
+    return true;
 }
 
 /**
@@ -714,11 +454,12 @@ function streaming_stop() {
  */
 function streaming_close() {
     global $input;
-    global $ezmanager_basedir;
+    //global $ezmanager_basedir;
     global $repository_path;
     global $php_cli_cmd;
     global $streaming_asset_delete_pgm;
-
+    global $logger;
+    
     ezmam_repository_path($repository_path);
 
     $course = $input['course'];
@@ -726,34 +467,28 @@ function streaming_close() {
     $protocol = $input['protocol'];
     $module_type = $input['module_type'];
 
+    $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE, "Received stream close request for asset $asset in course $course, module type $module_type", array(__FUNCTION__), $asset);
+
     // gets information about current streams
-	$streams_array=db_get_stream_info($course,$asset);
-	if(!isset($streams_array) || $streams_array==null ) $streams_array = array();
+    $streams_array = db_get_stream_info($course,$asset);
+    if($streams_array == null || !isset($streams_array[$course][$asset])) { 
+       $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Requested stream info for asset $asset in course $course was not found", array(__FUNCTION__), $asset);
+       return false;
+    }
+
     switch ($protocol) {
         case 'http':
-            // removes the stream from the streams files
-            if (isset($streams_array[$course][$asset])) {
-
-                $stream_name = $streams_array[$course][$asset]['stream_name'];
-                $token = $streams_array[$course][$asset]['token'];
-
-                ezmam_asset_delete($course . '-pub', $stream_name);
-                unset($streams_array[$course][$asset]);
-                if (count($streams_array[$course]) == 0) {
-                    unset($streams_array[$course]);
-                }
-
-                $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $course ${stream_name}_$token\" | at now + 1 hour";
-                $pid = shell_exec($cmd);
-            }
-
+            // delete stream asset in one hour
+            $stream_name = $streams_array[$course][$asset]['stream_name'];
+            ezmam_asset_delete($course . '-pub', $stream_name);
+            $token = $streams_array[$course][$asset]['token'];
+            $cmd = "echo \"$php_cli_cmd $streaming_asset_delete_pgm $course ${stream_name}_$token\" | at now + 1 hour";
+            shell_exec($cmd);
+            $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::NOTICE, "Scheduled stream deletion in one hour. Cmd: $cmd", array(__FUNCTION__), $asset);
             print "OK";
             break;
     }
 
-<<<<<<< HEAD
-    // write_streams_file($streams_array);
-=======
     $status = 'closed';
     $res = db_stream_update_status($course,$asset,$module_type,$status);
     if(!$res) {
@@ -761,7 +496,6 @@ function streaming_close() {
         return false;
     }
     return true;
->>>>>>> refs/remotes/ulbpodcast/master
 }
 
 /**
@@ -779,32 +513,3 @@ function str_to_safedir($string) {
             $toalnum.="_";
     return $toalnum;
 }
-
-function port_get() {
-    return "5000";
-}
-
-function server_get() {
-    return "164.15.128.144";
-}
-/*
-function write_streams_file(&$stream_array) {
-    global $ezmanager_basedir;
-    global $logger;
-    
-    $file_path = "$ezmanager_basedir/var/streams.php";
-    $file_path_temp = $file_path . '_';
-    
-    $string = "<?php" . PHP_EOL . "return ";
-    $string .= var_export($streams_array, true) . ';';
-    $string .= PHP_EOL . "?>";
-
-    $ok = file_put_contents($file_path_temp, $string);
-    if($ok !== false) {
-        $ok = rename($file_path_temp, $file_path);
-        if($ok === false)
-            $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to move streams file $file_path_temp to  $file_path", array(__FUNCTION__));
-    } else {
-          $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::CRITICAL, "Failed to write streams file $file_path_temp", array(__FUNCTION__));
-    }
-}*/

@@ -131,7 +131,6 @@ function db_statement_prepare($statement_name, $statement) {
  */
 function db_sanitize($input) {
     return (empty($input)) ? '%' : '%' . $input . '%';
-    //return $input;
 }
 
 function db_gettable($tableID) {

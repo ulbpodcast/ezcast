@@ -184,6 +184,10 @@ else {
             requireController('view_ezplayer_link.php');
             break;
         
+        case 'view_ezmanager_link':
+            requireController('view_ezmanager_link.php');
+            break;
+        
         //The users wants to upload an asset into the current album, show lets show him the upload form
         case 'submit_media_progress_bar':
             $service = true;

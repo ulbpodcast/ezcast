@@ -63,7 +63,6 @@ function index($param = array()) {
     $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=low&token=' . ezmam_album_token_get($album);
     $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
     ezmam_album_token_manager_set($album);	
-    $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $album . "&tokenmanager=" . ezmam_album_token_manager_get($album);
     $assets = ezmam_asset_list_metadata($album_name_full);
 
     //

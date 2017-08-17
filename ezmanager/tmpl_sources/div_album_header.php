@@ -98,13 +98,6 @@ Before calling this template, please define the following variables:
                         ®Player_url®
                     </a>
                 </li>
-                <li role="presentation" id="stats"
-                    <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
-                    <a href="javascript:show_stats_descriptives('<?php echo $album; ?>'); ">
-                        <img src="images/page4/stats.png" style="display:inline"/>
-                        ®Stats_Descriptives®
-                    </a>
-                </li>
                 <?php if($enable_moderator){ ?>
                     <li role="presentation" id="ezmanager"
                         <?php if(isset($current_tab) && $current_tab == 'ezmanager' ) { echo 'class="active"'; } ?>>
@@ -113,13 +106,14 @@ Before calling this template, please define the following variables:
                             ®Ezmanager_url®
                         </a>
                     </li>
-<!--                    <a class="greyLink ezmanager" style="font-size:0.75em;" 
-                       href="javascript:show_popup_from_inner_div('#manager_url_box'); copyToClipboard('#zero_clipboard_manager_url','
-                           <?php // echo $manager_full_url; ?>');"><img src="images/page4/PictoEZ.png" style="display:inline"/>
-                        ®Ezmanager_url®
-                    </a> -->
                 <?php } ?>
-                
+                <li role="presentation" id="stats"
+                    <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
+                    <a href="javascript:show_stats_descriptives('<?php echo $album; ?>'); ">
+                        <img src="images/page4/stats.png" style="display:inline"/>
+                        ®Stats_Descriptives®
+                    </a>
+                </li>
             </ul>
     </div>
 

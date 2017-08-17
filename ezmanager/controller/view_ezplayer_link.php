@@ -36,10 +36,13 @@ function index($param = array()) {
     } else {
         $album_id = $metadata['name'];
     }
+    if(isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
+        $course_code_public = $metadata['course_code_public'];
+    }
     
     $album_name_full = $album; // complete album name, used for div identification
     $album_name = suffix_remove($album); // "user-friendly" album name, used for display
-    $description = $metadata['description'];
+    $title = choose_title_from_metadata($metadata);
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
     $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
     

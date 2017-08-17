@@ -57,15 +57,15 @@
     // First of all, we have to set up the metada for the albums we're going to create
     //
     $not_created_albums = acl_authorized_albums_list_not_created(true);
-    $description ='';
+    $title ='';
     if(isset( $not_created_albums[$input['album']]))    
-        $description = $not_created_albums[$input['album']];
+        $title = $not_created_albums[$input['album']];
     
-    if($description == '' && isset($albumName) )
-        $description = $albumName;
+    if($title == '' && isset($albumName) )
+        $title = $albumName;
     
     if($albumName == $idAlbum)
-        $albumName = $description;  
+        $albumName = $title;  
         
     if(!isset( $input['albumtype']))
         $input['albumtype'] = 'not_defined';
@@ -76,7 +76,7 @@
         'id' => $idAlbum,
         'course_code_public' => $course_code_public,							 
         'name' => $albumName,
-        'description' => $description,
+        'title' => $title,
         'date' => date($dir_date_format),
         'anac' => $anac,
         'intro' => $default_intro,

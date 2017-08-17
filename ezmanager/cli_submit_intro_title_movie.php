@@ -172,7 +172,7 @@ function submit_itm_set_title($album_meta,$asset_meta,$render_dir){
         $asset_title=str_replace(' ', utf8_encode(chr(160)), $asset_title);//original title with no breaking spaces
     
     $title_info=array(
-      'album' => '['. suffix_remove($album_meta['name']) . '] ' . $album_meta['description'] ,
+      'album' => '['. suffix_remove($album_meta['name']) . '] ' . choose_title_from_metadata($album_meta) ,
       'title'=>  suffix_remove($album_meta['name'])." ".$asset_title,
       'author'=>$asset_meta['author'],
       'date'=> $human_date,

@@ -29,7 +29,7 @@
 Before calling this template, please define the following variables:
 - $album The (technical) album name, i.e. including suffix
 - $album_name The (user-friendly) album name
-- $description The album description/long name
+- $title The album description/long name
 - $public_album Set to "true" if the album is public, false otherwise
 - $hd_rss_url URL to the HD RSS feed
 - $sd_rss_url URL to the SD RSS feed
@@ -39,7 +39,7 @@ Before calling this template, please define the following variables:
             <div class="BoutonInfoAlbum"> 
                 <span class="TitreCour">
                     <?php echo (isset($course_code_public) && $course_code_public !="") ? $course_code_public : $album_id; ?> |
-                    <?php echo $description; ?> | 
+                    <?php echo $title; ?> | 
                     <?php ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
                 </span>
                 

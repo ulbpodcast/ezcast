@@ -101,3 +101,34 @@ function redirectToController($controller_name) {
 function get_asset_name($course_name, $record_date) {
     return $record_date . '_' . $course_name;
 }
+
+/**
+ * Returns the album full title from an album mnemonic
+ * @global type $repository_path
+ * @param type $album the album mnemonique
+ * @return boolean the album full title if the album exists; false otherwise
+ */
+function get_album_title($album){
+    global $repository_path;
+    
+    ezmam_repository_path($repository_path);
+    //
+    // Usual sanity checks
+    //
+    if(!ezmam_album_exists($album)) {
+        return false;
+    }
+    
+    $album_metadata = ezmam_album_metadata_get($album);
+    return choose_title_from_metadata($album_metadata);
+}
+
+function choose_title_from_metadata(&$album_metadata)
+{
+    if (isset($album_metadata['title']))        
+        return $album_metadata['title'];
+    else if (isset($album_metadata['description']))
+        return $album_metadata['description'];
+    else
+        return false;
+}

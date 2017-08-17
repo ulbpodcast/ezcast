@@ -473,19 +473,19 @@ function ezmam_rss_new($album_name, $type) {
         $quality = 'SD';
 
     // Feed title
-    $title = $metadata['name'] . ' ' . $metadata['description'] . ' (' . $quality;
+    $title = $metadata['name'] . ' ' . choose_title_from_metadata($metadata) . ' (' . $quality;
     if (album_is_private($album_name))
         $title .= ' - album privé';
     $title .= ')';
 
     // Feed subtitle, for itunes
-    $subtitle = $metadata['name'] . ' ' . $metadata['description'] . ' (' . $quality . ')';
+    $subtitle = $metadata['name'] . ' ' . choose_title_from_metadata($metadata) . ' (' . $quality . ')';
 
     // Album name
     $album_name = $metadata['name'];
 
     // Feed description
-    $description = $metadata['description'];
+    $description = choose_title_from_metadata($metadata);
 
     // Path to the thumbnail image
     $thumbnail_url = $ezplayer_url . '/images/rss_logo_HD.jpg';

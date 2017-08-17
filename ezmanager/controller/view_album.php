@@ -19,10 +19,7 @@ function index($param = array()) {
 		// add course to user in DB
 		
 		
-	}
-	
-	
-	
+	}	
     if (isset($input['album']))
         $album = $input['album'];
     else
@@ -46,6 +43,7 @@ function index($param = array()) {
     // 2) We set the variables used in the template with the correct values
     //
     $album_name_full = $album; // complete album name, used for div identification
+    print_r($metadata);
     if(isset($metadata['id'])) {
         $album_id = $metadata['id'];
     } else {
@@ -55,7 +53,12 @@ function index($param = array()) {
         $course_code_public = $metadata['course_code_public'];
     }
     $album_name = $metadata['name'];
-    $description = $metadata['description'];
+    
+    // TO DO : create variable to show displayed_course_code
+    // $album_displayed_code = get_album_displayed_code($album);
+
+    
+    $title = choose_title_from_metadata($metadata);
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
     $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album);
     $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $album . '&amp;quality=low&amp;token=' . ezmam_album_token_get($album);

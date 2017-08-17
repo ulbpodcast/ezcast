@@ -130,7 +130,7 @@ if (!isset($rendering_array['new_date']) || $rendering_array['new_date'] === '')
     $rendering_array['new_date'] = get_user_friendly_date($rendering_array['new_asset'], ' ', true, 'fr', false);
 if (!isset($rendering_array['new_album_name']) || $rendering_array['new_album_name'] === ''){
     $album_meta = ezmam_album_metadata_get($rendering_array['new_album']);
-    $rendering_array['new_album_name'] = '[' . suffix_remove($rendering_array['new_album']) . '] ' . $album_meta['description'];
+    $rendering_array['new_album_name'] = '[' . suffix_remove($rendering_array['new_album']) . '] ' . get_album_title($rendering_array['new_album']);
 }
 if (!isset($rendering_array['organization']) || $rendering_array['organization'] === '')
     $rendering_array['organization'] = $organization_name;

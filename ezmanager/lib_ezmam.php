@@ -499,19 +499,19 @@ function ezmam_rss_new($album_name, $type) {
         $quality = 'SD';
 
     // Feed title
-    $title = $metadata['name'] . ' ' . $metadata['description'] . ' (' . $quality;
+    $title = $metadata['name'] . ' ' . choose_title_from_metadata($metadata) . ' (' . $quality;
     if (album_is_private($album_name))
         $title .= ' - album privé';
     $title .= ')';
 
     // Feed subtitle, for itunes
-    $subtitle = $metadata['name'] . ' ' . $metadata['description'] . ' (' . $quality . ')';
+    $subtitle = $metadata['name'] . ' ' . choose_title_from_metadata($metadata) . ' (' . $quality . ')';
 
     // Album name
     $album_name = $metadata['name'];
 
     // Feed description
-    $description = $metadata['description'];
+    $description = choose_title_from_metadata($metadata);
 
     // Path to the thumbnail image
     $thumbnail_url = $ezmanager_url . '/images/rss_logo_ezplayer.png';
@@ -1828,7 +1828,7 @@ function ezmam_album_token_manager_get($album) {
 }
 function ezmam_album_token_manager_set($album) {
 	if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager') || file_get_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager') =='' ) {
-		$token =ezmam_token_generate_random();
+		$token = ezmam_token_generate_random();
 		file_put_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager',$token);
 	}
 }

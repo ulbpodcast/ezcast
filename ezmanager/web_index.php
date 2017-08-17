@@ -391,7 +391,7 @@ function albums_view() {
     global $album_id;
     global $course_code_public;
     global $album_name_full;
-    global $description;
+    global $title;
     global $public_album;
     global $assets;
     global $hd_rss_url;
@@ -426,7 +426,7 @@ function redraw_page() {
     global $album_id;
     global $course_code_public;						   
     global $album_name_full;
-    global $description;
+    global $title;
     global $public_album;
     global $assets;
     global $hd_rss_url;
@@ -449,7 +449,7 @@ function redraw_page() {
         $album_name = suffix_remove($_SESSION['podman_album']);
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
-        $description = $metadata['description'];
+        $title = choose_title_from_metadata($metadata);
         
         if(isset($metadata['id'])) {
             $album_id = $metadata['id'];

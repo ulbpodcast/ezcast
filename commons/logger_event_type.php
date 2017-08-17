@@ -44,7 +44,7 @@ class EventType {
     const RECORDER_SOUND_DETECTION           = "recorder_sound_detection";
     const RECORDER_FFMPEG_CUTLIST            = "recorder_ffmpeg_cutlist";
     const RECORDER_FFMPEG_PROCESS            = "recorder_ffmpeg_process";
-    const RECORDE_MODULE_MONIT               = "recorder_module_monit";
+    const RECORDER_MODULE_MONIT              = "recorder_module_monit";
     const RECORDER_SOUND_BACKUP              = "recorder_sound_backup";
     
     // EZAdmin
@@ -111,7 +111,7 @@ class EventType {
        EventType::RECORDER_SOUND_DETECTION                   => 1027,
        EventType::RECORDER_FFMPEG_CUTLIST                    => 1028,
        EventType::RECORDER_FFMPEG_PROCESS                    => 1029,
-       EventType::RECORDE_MODULE_MONIT                       => 1030,
+       EventType::RECORDER_MODULE_MONIT                      => 1030,
        EventType::RECORDER_SOUND_BACKUP                      => 1031,
         
        // EZAdmin: 2000->2999

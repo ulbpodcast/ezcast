@@ -40,7 +40,6 @@ function parse_config_file() {
         'recorders_option' => $classrooms_category_enabled,
         'add_users_option' => $add_users_enabled,
         'recorder_password_storage_option' => $recorder_password_storage_enabled,
-        'course_name_option' => $use_course_name,
         'user_name_option' => $use_user_name
     );
 
@@ -52,24 +51,20 @@ function parse_config_file() {
  * @param type $recorder_option
  * @param type $add_users_option
  * @param type $recorder_password_storage_option
- * @param type $use_course_name_option
  * @param type $use_user_name_option
  */
-function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, 
-        $use_course_name_option, $use_user_name_option) {
+function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_user_name_option) {
     $config = file_get_contents('config.inc');
 
     $conf1 = ($recorder_option) ? 'true' : 'false';
     $conf2 = ($add_users_option) ? 'true' : 'false';
     $conf3 = ($recorder_password_storage_option) ? 'true' : 'false';
-    $conf4 = ($use_course_name_option) ? 'true' : 'false';
-    $conf5 = ($use_user_name_option) ? 'true' : 'false';
+    $conf4 = ($use_user_name_option) ? 'true' : 'false';
 
     $config = preg_replace('/\$classrooms_category_enabled = (.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
     $config = preg_replace('/\$add_users_enabled = (.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
     $config = preg_replace('/\$recorder_password_storage_enabled = (.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
-    $config = preg_replace('/\$use_course_name = (.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
-    $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
+    $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf4 . ';', $config);
     
     file_put_contents('config.inc', $config);
 }
@@ -97,11 +92,10 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
  * @param type $classrooms_category_enabled
  * @param type $add_users_enable
  * @param type $recorder_password_storage_enabled
- * @param type $use_course_name
  * @param type $use_user_name
  * @param type $https_ready
  */
-function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repository_basedir, $organization_name, $organization_url, $copyright, $mailto_alert, $basedir, $db_type, $db_host, $db_login, $db_passwd, $db_name, $db_prefix, $recorder_user, $recorder_basedir, $ezmanager_host, $ezmanager_url, $classrooms_category_enabled, $add_users_enable, $recorder_password_storage_enabled, $use_course_name, $use_user_name, $https_ready) {
+function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repository_basedir, $organization_name, $organization_url, $copyright, $mailto_alert, $basedir, $db_type, $db_host, $db_login, $db_passwd, $db_name, $db_prefix, $recorder_user, $recorder_basedir, $ezmanager_host, $ezmanager_url, $classrooms_category_enabled, $add_users_enable, $recorder_password_storage_enabled, $use_user_name, $https_ready) {
     $global_config = (file_exists('../commons/config.inc')) ? file_get_contents('../commons/config.inc') : file_get_contents('../commons/config-sample.inc');
 
     $conf = ($https_ready) ? 'true' : 'false';
@@ -132,14 +126,12 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
     $conf1 = ($classrooms_category_enabled) ? 'true' : 'false';
     $conf2 = ($add_users_enable) ? 'true' : 'false';
     $conf3 = ($recorder_password_storage_enabled) ? 'true' : 'false';
-    $conf4 = ($use_course_name) ? 'true' : 'false';
-    $conf5 = ($use_user_name) ? 'true' : 'false';
+    $conf4 = ($use_user_name) ? 'true' : 'false';
 
     $config = preg_replace('/\$classrooms_category_enabled = (.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
     $config = preg_replace('/\$add_users_enabled = (.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
     $config = preg_replace('/\$recorder_password_storage_enabled = (.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
-    $config = preg_replace('/\$use_course_name = (.+);/', '\$use_course_name = ' . $conf4 . ';', $config);
-    $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf5 . ';', $config);
+    $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf4 . ';', $config);
 
     file_put_contents('config.inc', $config);
     copy("../ezmanager/config-sample.inc", "../ezmanager/config.inc");
@@ -421,8 +413,8 @@ function push_users_courses_to_recorder(&$failed_cmd) {
     global $recorder_user;
     global $recorder_basedir;
     global $recorder_subdir;
-	global $recorder_password_storage_enabled;										  
-
+    global $recorder_password_storage_enabled;	
+        
     if (!db_ready()) {
         $statements = statements_get();
         db_prepare($statements);
@@ -445,7 +437,7 @@ function push_users_courses_to_recorder(&$failed_cmd) {
     //courselist.php
     $courselist = '<?php' . PHP_EOL;
     foreach ($users as $u) {
-        $title = (isset($u['shortname']) && !empty($u['shortname'])) ? $u['shortname'] : $u['course_name'];
+        $title = $u['course_name'];
         $courselist .= '$course[\'' . $u['user_ID'] . '\'][\'' . $u['course_code'] . '\'] = "' . $title . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL;

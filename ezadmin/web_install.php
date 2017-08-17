@@ -154,7 +154,6 @@ if (isset($input['install']) && !empty($input['install'])) {
     $input['classrooms_category_enabled'] = $classrooms_category_enabled;
     $input['add_users_enabled'] = $add_users_enabled;
     $input['recorder_password_storage_enabled'] = $recorder_password_storage_enabled;
-    $input['use_course_name'] = $use_course_name;
     $input['use_user_name'] = $use_user_name;
 
     require template_getpath('install.php');
@@ -386,7 +385,7 @@ function validate_form() {
             
             escapeshellarg($input['db_prefix'] . 'courses') => array(
                 escapeshellarg('course_code'), escapeshellarg('course_name'), 
-                escapeshellarg('shortname'), escapeshellarg('in_recorders'), 
+                escapeshellarg('in_recorders'), 
                 escapeshellarg('has_albums'), escapeshellarg('date_created'), 
                 escapeshellarg('origin')),
             
@@ -513,7 +512,6 @@ function create_tables($drop = true) {
                 '`course_code` varchar(50) NOT NULL COMMENT \'At ULB: mnémonique\',' .
                 '`course_code_public` varchar(50) NOT NULL,' .
                 '`course_name` varchar(255) DEFAULT NULL,' .
-                '`shortname` varchar(100) DEFAULT NULL COMMENT \'Optional, shorter name displayed in recorders\',' .
                 '`in_recorders` tinyint(1) NOT NULL DEFAULT \'1\' COMMENT \'Set to FALSE to disable classroom recording\',' .
                 '`has_albums` int(11) NOT NULL DEFAULT \'0\' COMMENT \'Number of assets in the album (or 0/1 value for now)\',' .
                 '`date_created` date NOT NULL,' .

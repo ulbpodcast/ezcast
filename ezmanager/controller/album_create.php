@@ -25,11 +25,6 @@
     //
 	// include "../commons/lib_sql_management.php";
 
-	
-	
-	
-	
-	
 	if($input['action']=='create_courseAndAlbum'){		
 	     $course_code_public=$input['course_code'];	
 		if(strlen($input['album'])>=50) $input['album']=substr($input['album'], 0, 43) ;
@@ -42,11 +37,8 @@
 		$albumName=$input['album'];
 		$input['album']=$idAlbum;
 		if(!isset($course_code_public) || $course_code_public=="") $course_code_public=$albumName;																							
-		db_course_create($input['album'],$course_code_public,$albumName,$albumName,0);
+		db_course_create($input['album'],$course_code_public);
 		db_users_courses_create($input['album'], $_SESSION['user_login']);
-
-			
-		
     }
 	else{
 		$albumName=$input['album'];
@@ -73,8 +65,8 @@
 
 	
     $metadata = array(
-		'id' => $idAlbum,
-		'course_code_public' => $courseinfo['course_code_public'],							 
+        'id' => $idAlbum,
+        'course_code_public' => $courseinfo['course_code_public'],							 
         'name' => $albumName,
         'description' => $description,
         'date' => date($dir_date_format),
@@ -84,7 +76,7 @@
         'add_title' => $default_add_title,
         'downloadable' => $default_downloadable,
         'type' => $input['albumtype'],
-		'official' => 'false'
+        'official' => 'false'
     );
 
     //

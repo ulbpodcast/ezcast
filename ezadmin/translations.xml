@@ -316,8 +316,6 @@
         <label id="with_teacher" lang="en">Yes</label>    
         <label id="without_teacher" lang="fr">Non</label>
         <label id="without_teacher" lang="en">No</label>
-        <label id="shortname" lang="fr">Intitulé alternatif</label>
-        <label id="shortname" lang="en">Short name</label>
         <label id="users_category" lang="fr">Utilisateurs</label>  
         <label id="users_category" lang="en">Users</label>  
         <label id="list_users" lang="fr">Liste utilisateurs</label>  

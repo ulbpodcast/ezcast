@@ -10,7 +10,6 @@ function index($param = array()) {
 		$course_code=str_replace(" ", '_', $input['course_code']).rand(100000,999999);
         $course_name = $input['course_name'];
 		if(!isset($course_code_public) || $course_code_public=="") $course_code_public=$course_name;
-        $shortname = $input['shortname'];
         if(isset($input['in_recorders'])) $in_recorders = '1';
 		else $in_recorders='0';
 
@@ -20,7 +19,7 @@ function index($param = array()) {
         } else if (empty($course_name)) {
             $error = template_get_message('missing_course_name', get_lang());
         } else {
-            $valid = db_course_create($course_code,$course_code_public, $course_name, $shortname, $in_recorders);
+            $valid = db_course_create($course_code,$course_code_public, $course_name, $in_recorders);
         }
 
         if ($valid) {

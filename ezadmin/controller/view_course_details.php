@@ -10,13 +10,12 @@ function index($param = array()) {
         $course_code = $input['course_code'];
         $course_code_public = $input['course_code_public'];											 
         $course_name = $input['course_name'];
-        $shortname = $input['shortname'];
         $in_recorders = $input['in_recorders'] ? 1 : 0;
 
         if (empty($course_name)) {
             $error = template_get_message('missing_course_name', get_lang());
         } else {
-            db_course_update($course_code, $course_name, $shortname, $in_recorders);
+            db_course_update($course_code, $course_name, $in_recorders);
             db_log(db_gettable('course'), 'Edited course ' . $input['course_code'], $_SESSION['user_login']);
             notify_changes();
         }
@@ -29,7 +28,6 @@ function index($param = array()) {
     $course_code = $courseinfo['course_code'];
     $course_code_public = $courseinfo['course_code_public'];															
     $course_name = $courseinfo['course_name'];
-    $shortname = $courseinfo['shortname'];
     $origin = $courseinfo['origin'];
     $has_albums = ($courseinfo['has_albums'] != '0');
     $in_classroom = ($courseinfo['in_recorders'] == '1');

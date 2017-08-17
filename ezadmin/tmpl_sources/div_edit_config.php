@@ -51,19 +51,6 @@
         </div>
     </div>
     
-    <!-- Display courses by name or by code -->
-    <div class="form-group">
-        <div class="col-sm-5 col-sm-offset-1">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="courses_by_name" id="courses_by_name" 
-                        <?php if(array_key_exists('course_name_option', $params) && $params['course_name_option']) { echo 'checked="checked"'; } ?> />
-                    ®settings_use_course_name®
-                </label>
-            </div>
-        </div>
-    </div>
-    
     <!-- Display users by name or by code -->
     <div class="form-group">
         <div class="col-sm-5 col-sm-offset-1">

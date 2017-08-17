@@ -31,7 +31,7 @@
  */
 
 include_once 'config.inc';
-include_once 'lib_error.php';
+include_once __DIR__.'/../commons/lib_error.php';
 include_once 'lib_various.php';
 
 /**
@@ -453,7 +453,7 @@ function ezmam_rss_new($album_name, $type) {
     //
     // Sanity checks
     //
-  $repository_path = ezmam_repository_path();
+    $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
@@ -465,7 +465,7 @@ function ezmam_rss_new($album_name, $type) {
     //
     // Setting up information about the feed
     //
-  $metadata = ezmam_album_metadata_get($album_name);
+    $metadata = ezmam_album_metadata_get($album_name);
 
     // Quality
     $quality = 'HD';
@@ -505,7 +505,7 @@ function ezmam_rss_new($album_name, $type) {
     $channel->addChild('title', $title); // Feed title
     $channel->addChild('description', $description); // Feed description
     $channel->addChild('copyright', $organization_name); // Organization that broadcasts the podcast
-    $channel->addChild('generator', 'ezCast feed generator'); // Script that generated the file
+    $channel->addChild('generator', 'EZcast feed generator'); // Script that generated the file
     $channel->addChild('lastBuildDate', date(DATE_RFC822)); // Date of the last update
 
     $thumbnail = $channel->addChild('image'); // All you want to know about the thumbnail image
@@ -755,235 +755,6 @@ function ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array) {
     if (!$res)
         return false;
     ezmam_rss_generate($album, "low");
-
-    return $res;
-}
-
-/**
- *
- * @param string $album_name
- * @param string $asset_name
- * @param assoc_array $metadata
- * @return false|error_string
- * @desc creates an asset container in the given album
- */
-function ezmam_asset_new($album_name, $asset_name, $metadata) {
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        return false;
-    }
-    //create directory
-    $asset_path = $repository_path . "/" . $album_name . "/" . $asset_name;
-    if (!ezmam_album_exists($album_name))
-        return "album non existant";
-    if (ezmam_asset_exists($album_name, $asset_name))
-        return "asset already exists";
-    $res = mkdir($asset_path);
-    if (!$res) {
-        ezmam_last_error("ezmam_asset_new could not create $asset_path");
-        return false;
-    }
-
-    //create the metadata
-    $res = ezmam_asset_metadata_set($album_name, $asset_name, $metadata);
-    if (!$res)
-        return "could not update metadata for $asset_path";
-
-    // Create a token
-    $res = ezmam_asset_token_create($album_name, $asset_name);
-    if (!$res)
-        return "could not create token for $asset_path";
-
-    // Log
-    log_append('asset_new', 'Asset: ' . $asset_name . ', Album: ' . $album_name);
-
-    // Rebuild RSSes
-    ezmam_rss_generate($album_name, 'high');
-    ezmam_rss_generate($album_name, 'low');
-
-    return $res;
-}
-
-/**
- * Removes an asset from the repository
- * @param string $asset_name
- * @param string $album_name
- * @param bool $rebuild_rss(true) Set to false if you don't want the RSS to be regenerated
- * @return type 
- */
-function ezmam_asset_delete($album_name, $asset_name, $rebuild_rss = true) {
-
-    // Sanity checks
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        return false;
-    }
-
-    if (!ezmam_album_exists($album_name)) {
-        ezmam_last_error("Trying to delete $album_name which doesn't exist!");
-        return false;
-    }
-
-    if (!ezmam_asset_exists($album_name, $asset_name)) {
-        ezmam_last_error("Trying to delete $asset_name which doesn't exist!");
-        return false;
-    }
-
-    $path = $repository_path . '/' . $album_name . '/' . $asset_name;
-
-    // First we empty the directory
-    $dir = opendir($path);
-    if ($dir === false) {
-        ezmam_last_error("Unable to open folder $path");
-        return false;
-    }
-
-    while (($file = readdir($dir)) !== false) {
-        if ($file != "." && $file != "..") {
-            if (is_dir($path . '/' . $file))
-                ezmam_media_delete($album_name, $asset_name, $file);
-            else
-                unlink($path . '/' . $file);
-        }
-    }
-
-    // Then we delete it
-    $res = rmdir($path);
-    if (!$res) {
-        ezmam_last_error("Unable to delete folder $path");
-        return false;
-    }
-
-    if ($rebuild_rss) {
-        ezmam_rss_generate($album_name, "high");
-        ezmam_rss_generate($album_name, "low");
-    }
-
-    // And finally we log the operation
-    log_append('asset_delete', 'Asset: ' . $asset_name . ', Album: ' . $album_name);
-
-    return true;
-}
-
-/**
- * Moves an asset from $album_src to $album_dst. Warning: this function doesn't do any permissions check.
- * @param type $asset_name
- * @param type $album_src
- * @param type $album_dst
- * @return bool error status
- */
-function ezmam_asset_move($asset_name, $album_src, $album_dst) {
-    // Sanity checks
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        ezmam_last_error("ezmam_asset_move: ezmam not initialized");
-        return false;
-    }
-
-    if (!ezmam_album_exists($album_src)) {
-        ezmam_last_error("ezmam_asset_move: source album does not exist");
-        return false;
-    }
-
-    if (!ezmam_album_exists($album_dst)) {
-        ezmam_last_error("ezmam_asset_move: dest album does not exist");
-        return false;
-    }
-
-    if (!ezmam_asset_exists($album_src, $asset_name)) {
-        ezmam_last_error("ezmam_asset_move: asset does not exist");
-        return false;
-    }
-
-    if (ezmam_asset_exists($album_dst, $asset_name)) {
-        ezmam_last_error("ezmam_asset_move: there is already an asset with that name in dest album");
-        return false;
-    }
-
-    // moving the asset
-    $src_path = $repository_path . '/' . $album_src;
-    $dst_path = $repository_path . '/' . $album_dst;
-
-    if (!is_dir($src_path)) {
-        ezmam_last_error("ezmam_asset_move: $src_path is not a directory");
-        return false;
-    }
-    if (!is_dir($dst_path)) {
-        ezmam_last_error("ezmam_asset_move: $dst_path is not a directory");
-        return false;
-    }
-
-    $res = rename($src_path . '/' . $asset_name, $dst_path . '/' . $asset_name);
-    if (!$res) {
-        ezmam_last_error("could not move asset");
-        return false;
-    }
-
-    // Logging
-    log_append('asset_move', 'Asset: ' . $asset_name . ', From: ' . $album_src . ', To: ' . $album_dst);
-
-    // rebuilding the RSS feeds
-    $res = ezmam_rss_generate($album_src, "high");
-    if (!$res)
-        return false;
-
-    $res = ezmam_rss_generate($album_src, "low");
-    if (!$res)
-        return false;
-
-    $res = ezmam_rss_generate($album_dst, "high");
-    if (!$res)
-        return false;
-
-    $res = ezmam_rss_generate($album_dst, "low");
-    if (!$res)
-        return false;
-
-    return true;
-}
-
-/**
- * Publishes an asset, i.e. moves it from private album to public
- * @param type $asset_name $the asset to move
- * @param type $private_album private album name
- * @return bool error status
- */
-function ezmam_asset_publish($private_album, $asset_name) {
-    if (!ezmam_album_exists($private_album)) {
-        ezmam_last_error("ezmam_asset_publish: private album does not exist");
-        return false;
-    }
-
-    if (!ezmam_asset_exists($private_album, $asset_name)) {
-        ezmam_last_error("ezmam_asset_publish: asset does not exist");
-        return false;
-    }
-
-    $public_album = suffix_replace($private_album);
-    $res = ezmam_asset_move($asset_name, $private_album, $public_album);
-
-    return $res;
-}
-
-/**
- * Unpublishes an asset, i.e. moves it from public album to private
- * @param type $asset_name $the asset to move
- * @param type $public_album public album name
- * @return bool error status
- */
-function ezmam_asset_unpublish($public_album, $asset_name) {
-    if (!ezmam_album_exists($public_album)) {
-        ezmam_last_error("ezmam_asset_publish: private album does not exist");
-        return false;
-    }
-
-    if (!ezmam_asset_exists($public_album, $asset_name)) {
-        ezmam_last_error("ezmam_asset_publish: asset does not exist");
-        return false;
-    }
-
-    $private_album = suffix_replace($public_album);
-    $res = ezmam_asset_move($asset_name, $public_album, $private_album);
 
     return $res;
 }

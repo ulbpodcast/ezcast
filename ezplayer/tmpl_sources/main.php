@@ -194,7 +194,6 @@ if ($trace_on) {
                     url: 'index.php?action=view_asset_bookmark',
                     data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
                     success: function (response) {
-                        debugger;
                         $('#div_center').html(response);
                         if (commentId != '') {
                             $.scrollTo('#comment_' + commentId);

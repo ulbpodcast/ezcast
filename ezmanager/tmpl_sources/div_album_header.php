@@ -94,7 +94,7 @@ Before calling this template, please define the following variables:
                     <?php if(isset($current_tab) && $current_tab == 'url' ) { echo 'class="active"'; } ?>>
                     <a <?php if(!$public_album) { echo 'style="color: red !important;"'; } ?>
                         href="javascript:show_ezplayer_link('<?php echo $album; ?>');">
-                        <img src="images/page4/PictoEZ.png" style="display:inline"/> 
+                        <img src="images/page4/PictoEZPlayer.png" style="display:inline"/> 
                         ®Player_url®
                     </a>
                 </li>
@@ -102,7 +102,7 @@ Before calling this template, please define the following variables:
                     <li role="presentation" id="ezmanager"
                         <?php if(isset($current_tab) && $current_tab == 'ezmanager' ) { echo 'class="active"'; } ?>>
                         <a href="javascript:show_ezmanager('<?php echo $album; ?>'); ">
-                            <img src="images/page4/PictoEZ.png" style="display:inline"/>
+                            <img src="images/page4/PictoEZManager.png" style="display:inline"/>
                             ®Ezmanager_url®
                         </a>
                     </li>

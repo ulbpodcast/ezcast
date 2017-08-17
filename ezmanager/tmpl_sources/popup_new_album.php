@@ -88,56 +88,66 @@ for every album the user can create.
     
     global $enable_course_creation;
     if($enable_course_creation){ ?>
-        <form id="form_new_ablbum" action="index.php" method="post">
-            <table>
-                <tr>
-                    <td>®Album_type® </td>
-                    <td>
-                        <select id="selectType">
-                            <option id="opt_course" value="course">®Course®</option>
-                            <option id="opt_channel" value="channel">®Channel®</option>
-                        </select>	
-                    </td>
-                </tr>
-                <tr id="course_code_line">
-                    <td id="labelcodeCours">
-                        ®Course_code®
-                    </td>
-                    <td>
-                        <input id="course_code" type="text" name="course_code">  
-                    </td>
-                </tr>
-                <tr>
-                    <td id="labelIdCours">®Album_name®</td>
-                    <td>
-                        <input  id="album" type="text" name="album">		  
-                        <input id="postUrl" type="submit" value="Créer">
-                    </td>
-                </tr>			  
-            </table>
-        </form> 
+    <hr />
+        <form class="form-horizontal" id="form_new_ablbum" action="index.php" method="post">
+            <div class="form-group">
+                <label for="selectType" class="col-sm-3 control-label">®Album_type®</label>
+                <div class="col-sm-9">
+                    <select id="selectType" name="album_type" class="form-control">
+                        <option id="opt_course" value="course">®Course®</option>
+                        <option id="opt_channel" value="channel">®Channel®</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group" id="course_code_line">
+                <label for="course_code" id="labelcodeCours" class="col-sm-3 control-label">®Course_code®</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="course_code" name="course_code">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="album" id="labelIdCours" class="col-sm-3 control-label">®Album_name®</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="album" name="album">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" id="postUrl" class="btn btn-default">®Submit_create_album®</button>
+                </div>
+            </div>
+        </form>
     <?php } ?>
 </div>
 
 <script>		
     $("#selectType").change(function(){
-    var id = $(this).find("option:selected").attr("id");
+        var id = $(this).find("option:selected").attr("id");
         switch (id){
-              case "opt_course":
+            case "opt_course":
                 $('#course_code_line').show();
                 break;
-              case "opt_channel":
+                
+            case "opt_channel":
                 $('#course_code_line').hide();
                 break;
         }
-      });
+    });
 
     $('#form_new_ablbum').submit(function(e) {
-            e.preventDefault();
-            var album=encodeURIComponent($('#album').val());
-            var course_code=encodeURIComponent($('#course_code').val());																
-            var selectType=encodeURIComponent($('#selectType').val());
-            show_popup_from_outer_div("index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+
-                    selectType+"&course_code="+course_code,true);
+        e.preventDefault();
+        var album = encodeURIComponent($('#album').val());
+        var course_code = encodeURIComponent($('#course_code').val());																
+        var selectType = encodeURIComponent($('#selectType').val());
+        
+        $("#modal").modal("hide"); 
+        setTimeout(function() {
+            display_bootstrap_modal_url($("#modal"), "index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+
+                selectType+"&course_code="+course_code);
+            $("#modal").modal("show"); 
+        }, 500);
     }); 
 </script>

@@ -8,7 +8,7 @@
 function index($param = array()) {
     global $input;
     global $repository_path;
-    global $update_title;
+    global $regenerate_title_mode;
 
 	
     ezmam_repository_path($repository_path);
@@ -60,7 +60,7 @@ function index($param = array()) {
     // include_once $basedir.'/ezmanager/'.template_getpath('popup_asset_successfully_moved.php');
 
     // regegerate intro	
-    if ($update_title=='auto') {
+    if ($regenerate_title_mode=='auto') {
         update_title($input['to'],$input['asset']);
     }
 	

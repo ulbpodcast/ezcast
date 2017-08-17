@@ -71,13 +71,13 @@ function print_info($info, $suffix = '') {
 
                 </span></li>
             <li>
-                <span class="BoutonEditer">
+                <span class="ButtonEdit">
                     <a href="javascript:show_edit_form('<?php echo $asset; ?>');">
                         ®Edit®
                     </a>
                 </span>
             </li>
-            <li><span class="BoutonDeplacer">
+            <li><span class="ButtonMove">
                     <?php if ($status != 'processing' && $status != 'error') {
                         echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.$album.
                             '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
@@ -92,22 +92,22 @@ function print_info($info, $suffix = '') {
 				<?php 
 				global $enable_copy_asset;
 					if($enable_copy_asset){?>
-						<li><span class="BoutonCopier">
-							<?php if ($status != 'processing' && $status != 'error') { ?>
-								<a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®copy®</a>
-								<?php
-							} else {
-								?>
-								<a href="javascript:show_popup_from_inner_div('#popup_not_available');">®copy®</a>
-								<?php
-							}
-							?>
-							</span></li>
+                                            <li><span class="ButtonCopy">
+                                                    <?php if ($status != 'processing' && $status != 'error') { ?>
+                                                            <a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®copy®</a>
+                                                            <?php
+                                                    } else {
+                                                            ?>
+                                                            <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®copy®</a>
+                                                            <?php
+                                                    }
+                                                    ?>
+                                                    </span></li>
 				<?php } ?>
 				
             <?php if ($public_album) { ?>
                 <li>
-                    <span class="BoutonDeplacerAlbumPrive">
+                    <span class="ButtonMoveAlbumPrive">
                         <?php if ($status != 'processing' && $status != 'error') {
                             echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.$title.
                                 '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
@@ -121,7 +121,7 @@ function print_info($info, $suffix = '') {
                 </li>
             <?php } else { ?>
                 <li>
-                    <span class="BoutonDeplacerAlbumPublic">
+                    <span class="ButtonMoveAlbumPublic">
                         <?php if ($status != 'processing' && $status != 'error') {
                             echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.$title.
                                 '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
@@ -149,8 +149,8 @@ function print_info($info, $suffix = '') {
             </li> 
             <?php 
             // add un flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
-            global $update_title;
-            if ($update_title == 'manual' && isset($asset_metadata['add_title'])) { ?>
+            global $regenerate_title_mode;
+            if ($regenerate_title_mode == 'manual' && isset($asset_metadata['add_title'])) { ?>
                 <li>
                     <span class="BoutonRegenTitle">
                         <?php if($status != 'processing' && $status != 'error') {

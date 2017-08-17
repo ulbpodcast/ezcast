@@ -376,8 +376,8 @@
         <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
         <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>
         <label id="Album_edition_succeeded_message" lang="en">Album properties have been updated.</label>
-        <label id="Copy_asset_message" lang="fr">Veuillez choisir dans la liste ci-dessous l'album de destination :</label>
-        <label id="Copy_asset_message" lang="en">Please select the destination album in the following list:</label>
+        <label id="Copy_asset_message" lang="fr">Album de destination :</label>
+        <label id="Copy_asset_message" lang="en">Destination album:</label>
         <label id="No_albums_to_copy_asset_to" lang="fr">Aucun album disponible</label>
         <label id="No_albums_to_copy_asset_to" lang="en">No album available</label>
         <label id="Delete_asset_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un enregistrement. Cette opération est irréversible.</label>

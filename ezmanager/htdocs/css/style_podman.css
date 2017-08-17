@@ -404,7 +404,7 @@ body{
     color:#004C93;
 }
 
-.BoutonDeplacerAlbumPublic a{
+.ButtonMoveAlbumPublic a{
     display:block;
     background-image:url(../images/page4/ADeplacerAlbumPublic.png);
     background-repeat:no-repeat;
@@ -418,14 +418,14 @@ body{
     padding-top:5px;
 }
 
-.BoutonDeplacerAlbumPublic a:hover{
+.ButtonMoveAlbumPublic a:hover{
     display:block;
     background-image:url(../images/page4/BDeplacerAlbumPublic.png);
     background-repeat:no-repeat;
     color:#004C93;
 }
 
-.BoutonDeplacerAlbumPrive a{
+.ButtonMoveAlbumPrive a{
     display:block;
     background-image:url(../images/page4/ADeplacerAlbumPriver.png);
     background-repeat:no-repeat;
@@ -439,7 +439,7 @@ body{
     padding-top:5px;
 }
 
-.BoutonDeplacerAlbumPrive a:hover{
+.ButtonMoveAlbumPrive a:hover{
     display:block;
     background-image:url(../images/page4/BDeplacerAlbumPriver.png);
     background-repeat:no-repeat;
@@ -631,7 +631,7 @@ body{
     display:inline-block;
 }
 
-.BoutonEditer a{
+.ButtonEdit a{
     display:block;
     background-image:url(../images/page4/AEditerBackg.png);
     background-repeat:no-repeat;
@@ -645,14 +645,14 @@ body{
     padding-top:5px;
 }
 
-.BoutonEditer a:hover{
+.ButtonEdit a:hover{
     display:block;
     background-image:url(../images/page4/BEditerBackg.png);
     background-repeat:no-repeat;
     color:#004C93;
 }
 
-.BoutonDeplacer a{
+.ButtonMove a{
     display:block;
     background-image:url(../images/page4/ADeplacerBackg.png);
     background-repeat:no-repeat;
@@ -666,7 +666,14 @@ body{
     padding-top:5px;
 }
 
-.BoutonCopier a{
+.ButtonMove a:hover{
+    display:block;
+    background-image:url(../images/page4/BDeplacerBackg.png);
+    background-repeat:no-repeat;
+    color:#004C93;
+}
+
+.ButtonCopy a{
 	display:block;
 	background-image:url(../images/page4/ACopierBackg.png);
 	background-repeat:no-repeat;
@@ -679,14 +686,6 @@ body{
 	padding-right:18px;
 	padding-top:5px;
 }
-
-.BoutonDeplacer a:hover{
-    display:block;
-    background-image:url(../images/page4/BDeplacerBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
-}
-
 /*--bouton media [fin]--*/
 
 /*-- bouton : infos+ // publication // embed --*/

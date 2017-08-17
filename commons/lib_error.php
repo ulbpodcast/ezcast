@@ -59,11 +59,11 @@ function log_append($operation, $message = '') {
     // 3) Username and realname of the user that provoked the event
     // There can be no login if the operation was performed by a CLI tool for instance.
     // In that case, we display "nologin" instead.
-    if(!isset($_SESSION['user_login']) || empty($_SESSION['user_login'])) {
+    if (!isset($_SESSION['user_login']) || empty($_SESSION['user_login'])) {
         $data .= 'nologin';
     }
     // General case, where there is a login and (possibly) a real login
-    else if(isset($_SESSION['real_login'])) {
+    else if (isset($_SESSION['real_login'])) {
         $data .= $_SESSION['real_login'].'/'.$_SESSION['user_login'];
     }
     else {

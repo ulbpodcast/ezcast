@@ -10,25 +10,23 @@ for every album the user can create.
 -->
 
 <div class="popup" id="popup_copy_asset_<?php echo $asset_name; ?>">
-    <h2>®Copy® Copier</h2>
+    <h2>®Copy®</h2>
     <!-- If all albums have already been created, we display a message explaining the situation -->
     <?php if(empty($created_albums_list_with_descriptions)) {
         ?>
-        ®No_albums_to_copy_asset_to® Aucun album disponible
+        ®No_albums_to_copy_asset_to®
         <?php
     }
     
     //Else, we display the album list
     else { ?>
-       ®Copy_asset_message® Veuillez choisir dans la liste ci-dessous l'album de destination :<br/>
+       ®Copy_asset_message®<br/>
         <table>
         <?php 
         foreach($created_albums_list_with_descriptions as $destination_name => $destination_description) {
-			// sortir des template...
-			$course_code_public='';
-			$album_path = $repository_path . "/" . $destination_name."-pub";
-			$album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
-			if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='')$course_code_public=$album_metadata['course_code_public']; else $course_code_public=$destination_name;
+             // how to get this out of templates?
+                // sortir des template...
+                $course_code_public = ezmam_album_course_public_name_get($destination_course_name."-pub"); //get course name from private or public album, should be the same              
             ?>
             <tr>
             <!-- Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index

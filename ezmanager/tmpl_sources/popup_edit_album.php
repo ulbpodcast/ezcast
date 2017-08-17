@@ -85,7 +85,7 @@ You should not have to include this file yourself.
 					<?php global $enable_anon_access_control; if($enable_anon_access_control){ ?>
 				<br/><br/>
                 <input type="checkbox" id="anon_access" name="anon_access" <?php if($anon_access !== 'false') echo 'checked'; ?> style="width: 13px; clear:left; margin: 0px 10px 0px 82px; padding: 0px;"/>
-                <label class="labelcb" for="anon_access"><span><a class="info">®Anonym_Access®<span style="font-weight: normal; font-size: 10px;">Si cette case est cochée, les vidéos soumises dans l'album pourront être accèssible sans authentification via EZplayer. </span></a></span></label>
+                <label class="labelcb" for="anon_access"><span><a class="info">®Anonym_Access®<span style="font-weight: normal; font-size: 10px;">®warningAnon®</span></a></span></label>
 				<?php } ?>			 
 				
             <div class="spacer"></div>

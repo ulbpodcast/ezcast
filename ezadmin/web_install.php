@@ -760,10 +760,11 @@ function create_tables($drop = true) {
             "`asset` varchar(30) NOT NULL, " .
             "`album` varchar(30) NOT NULL, " .
             "`nbr_comment` int(11) NOT NULL DEFAULT '0', " .
-            "`nbr_view` int(11) NOT NULL DEFAULT '0', " .
+            "`nbr_view_total` int(11) NOT NULL DEFAULT '0', " .
+            "`nbr_view_unique` int(11) NOT NULL DEFAULT '0', " .
             "`month` varchar(7) NOT NULL, ".
             "PRIMARY KEY (`id`), ".
-            "UNIQUE KEY(`asset`,`album`)".
+            "UNIQUE KEY(`asset`,`album`,`month`)".
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
         
         if ($drop) {
@@ -777,7 +778,7 @@ function create_tables($drop = true) {
             "`video_time` int(11) NOT NULL, ".
             "`month` varchar(7) NOT NULL, " .
             "PRIMARY KEY (`id`), " .
-            "UNIQUE KEY(`asset`,`album`,`video_time`)" . 
+            "UNIQUE KEY(`asset`,`album`,`video_time`, `month`)" . 
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
         
         

@@ -495,8 +495,9 @@ function create_tables($drop = true) {
         $db->exec('SET time_zone = "+00:00"');
 
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'classrooms`');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'classrooms` (' .
                 '`room_ID` varchar(20) NOT NULL COMMENT \'Room nr (e.g. at ULB: R42-5-503)\',' .
                 '`name` varchar(255) DEFAULT NULL COMMENT \'Room name (e.g. "Auditoire K")\',' .
@@ -506,8 +507,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`room_ID`)' .
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'courses`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'courses` (' .
                 '`course_code` varchar(50) NOT NULL COMMENT \'At ULB: mnémonique\',' .
                 '`course_code_public` varchar(50) NOT NULL,' .
@@ -519,8 +521,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`course_code`)' .
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'admin_logs`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'admin_logs` (   ' .
                 '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
                 '`time` datetime NOT NULL,' .
@@ -530,8 +533,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`ID`)' .
                 ') ENGINE=InnoDB  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users` (' .
                 '`user_ID` varchar(50) NOT NULL COMMENT \'For ULB: netid\',' .
                 '`surname` varchar(255) DEFAULT NULL,' .
@@ -543,8 +547,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`user_ID`)' .
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users_courses`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users_courses` (' .
                 '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
                 '`course_code` varchar(50) NOT NULL COMMENT \'Course code as referenced in ezcast_courses\',' .
@@ -553,8 +558,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`ID`)' .
                 ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=\'Joint of Courses and Users\';');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'threads`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'threads` (' .
                 '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
                 '`authorId` varchar(50) NOT NULL COMMENT \'netid of the author of the discussion\',' .
@@ -575,8 +581,9 @@ function create_tables($drop = true) {
                 'FULLTEXT (`title`, `message`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'comments`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'comments` (' .
                 '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
                 '`authorId` varchar(50) NOT NULL COMMENT \'netid of the author of the discussion\',' .
@@ -598,8 +605,9 @@ function create_tables($drop = true) {
                 'FULLTEXT (`message`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'votes`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'votes` (' .
                 '`login` varchar(50) NOT NULL,' .
                 '`comment` bigint(20) NOT NULL,' .
@@ -608,8 +616,9 @@ function create_tables($drop = true) {
                 'FOREIGN KEY (`comment`) REFERENCES ' . $input['db_prefix'] . 'comments(`id`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'messages`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'messages` (' .
                 '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
                 '`authorId` varchar(50) NOT NULL,' .
@@ -623,8 +632,9 @@ function create_tables($drop = true) {
                 'FULLTEXT (`message`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL,".
                 "`origin` enum('ezmanager','ezadmin','ezrecorder','ezrenderer','other') NOT NULL,".
@@ -639,35 +649,40 @@ function create_tables($drop = true) {
                 "KEY `event_time` (`event_time`)".
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_STATUS_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_STATUS_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
-                "`status` enum('auto_success', 'auto_success_errors', 'auto_success_warnings', 'auto_failure', 'auto_ignore', 'manual_ok', 'manual_partial_ok', 'manual_failure', 'manual_ignore') NOT NULL," .
+                "`status` enum('auto_success', 'auto_success_errors', 'auto_success_warnings', 'auto_failure', 'auto_ignore', ".
+                    "'manual_ok', 'manual_partial_ok', 'manual_failure', 'manual_ignore') NOT NULL," .
                 "`author` varchar(50) DEFAULT 'system'," .
                 "`status_time` datetime DEFAULT NULL," .
                 "`description` text," .
                 "KEY `asset` (`asset`)" .
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_LAST_INDEXES_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_LAST_INDEXES_TABLE_NAME . '` (' .
                 "`source` varchar(20) NOT NULL," .
                 "`id` int(10) unsigned NOT NULL," .
                 " PRIMARY KEY (`source`) " .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
                 "`parent_asset` varchar(50) NOT NULL," .
                 " UNIQUE KEY `asset` (`asset`) " .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_INFO_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_INFO_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
                 "`start_time` datetime NOT NULL," .
@@ -678,29 +693,31 @@ function create_tables($drop = true) {
                 "`cam_slide` enum('cam','slide','camslide') NOT NULL," .
                 "PRIMARY KEY (`asset`)" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-	   if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'streams`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'streams` (' .
-               "`id` int(11) NOT NULL," .
-				 "`cours_id` varchar(255) NOT NULL," .
-				  "`asset` varchar(255) NOT NULL," .
-				  "`module_type` varchar(15) NOT NULL," .
-				  "`classroom` varchar(255) NOT NULL," .
-				  "`record_type` varchar(10) NOT NULL COMMENT 'cam/slide'," .
-				  "`netid` varchar(255) NOT NULL," .
-				  "`stream_name` varchar(255) NOT NULL," .
-				  "`token` varchar(255) NOT NULL," .
-				  "`ip` varchar(255) NOT NULL," .
-				  "`status` varchar(20) NOT NULL," .
-				  "`pid` varchar(50) NOT NULL," .
-				  "`quality` varchar(10) NOT NULL," .
-				  "`protocol` varchar(10) NOT NULL," .
-				  "`server` varchar(255) NOT NULL," .
-				  "`port` int(10) NOT NULL" .
+                "`id` int(11) NOT NULL," .
+                "`cours_id` varchar(255) NOT NULL," .
+                "`asset` varchar(255) NOT NULL," .
+                "`module_type` varchar(15) NOT NULL," .
+                "`classroom` varchar(255) NOT NULL," .
+                "`record_type` varchar(10) NOT NULL COMMENT 'cam/slide'," .
+                "`netid` varchar(255) NOT NULL," .
+                "`stream_name` varchar(255) NOT NULL," .
+                "`token` varchar(255) NOT NULL," .
+                "`ip` varchar(255) NOT NULL," .
+                "`status` varchar(20) NOT NULL," .
+                "`pid` varchar(50) NOT NULL," .
+                "`quality` varchar(10) NOT NULL," .
+                "`protocol` varchar(10) NOT NULL," .
+                "`server` varchar(255) NOT NULL," .
+                "`port` int(10) NOT NULL" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");								  
         
-         if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'streams`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'streams` (' .
             "`id` int(11) NOT NULL," .
             "`cours_id` varchar(50) NOT NULL," .
@@ -717,7 +734,7 @@ function create_tables($drop = true) {
             "`protocol` varchar(10) NOT NULL," .
             "`server` varchar(50)," .
             "`port` int(5)" .
-            " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");	
+            " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .
@@ -743,12 +760,14 @@ function create_config_files() {
 
     // Write config file
     edit_config_file(
-            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], $input['organization_name'], 
-            $input['organization_url'], $input['copyright'], $input['mailto_alert'], $input['ezcast_basedir'], $input['db_type'], $input['db_host'], 
-            $input['db_login'], $input['db_passwd'], $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], 
+            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], 
+            $input['organization_name'], $input['organization_url'], $input['copyright'], $input['mailto_alert'], 
+            $input['ezcast_basedir'], $input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], 
+            $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], 
             $input['ezmanager_host'], $input['ezmanager_user'], !empty($input['classrooms_category_enabled']) ? true : false, 
             !empty($input['add_users_enabled']) ? true : false, !empty($input['recorder_password_storage_enabled']) ? true : false, 
-            !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, !empty($input['https_ready']) ? true : false
+            !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, 
+            !empty($input['https_ready']) ? true : false
     );
 }
 

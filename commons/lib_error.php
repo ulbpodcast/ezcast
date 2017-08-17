@@ -1,34 +1,11 @@
 <?php
-/*
-* EZCAST EZadmin 
-* Copyright (C) 2016 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-*                   Thibaut Roskam
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
 
 /**
  * Error managing and logging library
  * @package ezcast.ezadmin.lib.error
  */
 
-$ezadmin_logs = "./ezadmin.log";
+$ezcast_logs = "./ezcast.log";
 
 /**
  * Prints the error message on screen and quits
@@ -43,7 +20,6 @@ function error_print_message($msg, $log = true) {
     
     if($log) {
         log_append('error', $msg);
-        die;
     }
 }
 
@@ -65,12 +41,12 @@ function error_print_http($http_code) {
 
 /**
  * Adds a line in log
- * @global string $ezadmin_logs Path to the log file
+ * @global string $ezcast_logs Path to the log file
  * @param string $operation The operation done
  * @param string $message Additionnal information (parameters)
  */
 function log_append($operation, $message = '') {
-    global $ezadmin_logs;
+    global $ezcast_logs;
     
     // 1) Date/time at which the event occurred
     $data = date('Y-m-d-H:i');
@@ -106,5 +82,5 @@ function log_append($operation, $message = '') {
     $data .= PHP_EOL;
     
     // Then we save the new entry
-    file_put_contents($ezadmin_logs, $data, FILE_APPEND | LOCK_EX);
+    file_put_contents($ezcast_logs, $data, FILE_APPEND | LOCK_EX);
 }

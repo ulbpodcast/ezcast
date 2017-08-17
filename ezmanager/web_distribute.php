@@ -36,7 +36,7 @@
 
 require_once 'config.inc';
 require_once 'lib_ezmam.php';
-require_once 'lib_error.php';
+require_once __DIR__.'/../commons/lib_error.php';
 require_once '../commons/lib_template.php';
 require_once 'lib_various.php';
 require_once 'external_products/rangeDownload.php';

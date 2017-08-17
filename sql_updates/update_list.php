@@ -9,8 +9,8 @@ $update_list = [
                         '`id` int(11) NOT NULL AUTO_INCREMENT, ' .
                         '`asset` varchar(30) NOT NULL, ' .
                         '`album` varchar(30) NOT NULL, ' .
-                        '`nbr_comment` int(11) NOT NULL DEFAULT \'0\', ' .
-                        '`nbr_view` int(11) NOT NULL DEFAULT \'0\', ' .
+                        '`nbr_view_total` int(11) NOT NULL DEFAULT \'0\', ' .
+                        '`nbr_view_unique` int(11) NOT NULL DEFAULT \'0\', ' .
                         '`month` varchar(7) NOT NULL, '.
                         'PRIMARY KEY (`id`), '.
                         'UNIQUE KEY(`asset`,`album`)'.

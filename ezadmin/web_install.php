@@ -216,7 +216,8 @@ function check_server_config() {
     $display = "";
     if (convert_size($upload_max_filesize) < 2000000000) {
         $display .= "<div style='line-height: 14px;'><span class=\"red\">upload_max_filesize = $upload_max_filesize</span> "
-                . "<-- Determines the max size of the files that a user can upload in EZmanager. We recommend <b>2G</b><br/><br/></div>";
+                . "<-- Determines the max size of the files that a user can upload in EZmanager. We recommend "
+                . "<b>2G</b><br/><br/></div>";
         $all_good = $all_good & false;
     } else {
         $display .= "<div class=\"green\">upload_max_filesize = $upload_max_filesize</div>";
@@ -263,9 +264,10 @@ function check_server_config() {
      <body>";
         template_display("div_header.php");
         print "<div id='login_form'>" . $display;
-        print "</div><div style='width: 400px; margin: auto;'><br/>Edit the '<b>" . php_ini_loaded_file() . "</b>' file to match your own needs.
-         <br/><br/>If you want to continue anyway, click on the following button.
-         <br/><br/><br/><a class='button' style='float: right;' href='install.php?skip_srv=true'>Continue</a></div>";
+        print "</div><div style='width: 400px; margin: auto;'><br/>Edit the '<b>" . php_ini_loaded_file() . 
+            "</b>' file to match your own needs.
+            <br/><br/>If you want to continue anyway, click on the following button.
+            <br/><br/><br/><a class='button' style='float: right;' href='install.php?skip_srv=true'>Continue</a></div>";
         template_display("div_footer.php");
         print "</body></html>";
         die;
@@ -432,7 +434,8 @@ function validate_form() {
             
         );
 
-        $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], $input['db_login'], $input['db_passwd']);
+        $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], 
+                $input['db_login'], $input['db_passwd']);
 
         // checks if tables already exist
         $data = $db->query(
@@ -449,8 +452,10 @@ function validate_form() {
             $_SESSION['user_inputs'] = $input;
             // prepare radio buttons for next view
             $radio_buttons = array(
-                'replace' => '<b>Replace</b> the existing tables. <b style="color:red">All contents of the existing tables will be erased.</b>',
-                'prefix' => 'Choose another prefix for the tables of EZcast. This will create new tables for EZcast. <br/><input type="text" name="new_prefix"/>',
+                'replace' => '<b>Replace</b> the existing tables. <b style="color:red">All contents of the existing' . 
+                    ' tables will be erased.</b>',
+                'prefix' => 'Choose another prefix for the tables of EZcast. This will create new tables for EZcast. '.
+                    '<br/><input type="text" name="new_prefix"/>',
             );
             if (count($result) >= count(array_keys($tables))) {
                 // all tables already exist

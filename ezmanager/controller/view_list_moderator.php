@@ -11,7 +11,6 @@ function index($param = array()) {
     global $default_downloadable;
     global $default_anon_access;
     global $basedir;
-	require_once $basedir.'/commons/lib_sql_management.php';
 
 	
     $album = suffix_remove($_SESSION['podman_album']);
@@ -19,8 +18,7 @@ function index($param = array()) {
     $visibility = ($moderation) ? '-priv' : '-pub';
     ezmam_repository_path($repository_path);
     $album_meta = ezmam_album_metadata_get($album . $visibility);
-	$tbusercourse= users_courses_get_users($album);
-    require_once template_getpath('popup_list_moderator.php');
-
+    $tbusercourse= users_courses_get_users($album);
+    require_once template_getpath('popup_moderator_list.php');
     die;
 }

@@ -376,5 +376,5 @@ function get_lang() {
         return $_SESSION['lang'];
     }
     else
-        return 'en';
+        return 'fr';
 }

@@ -78,7 +78,8 @@ function statements_get(){
                             db_gettable('users').'.forename, '.
                             db_gettable('users_courses').'.origin '.
                     'FROM '.  db_gettable('users').' ' .
-                    'INNER JOIN '.  db_gettable('users_courses').' ON '.  db_gettable('users').'.user_ID = '.  db_gettable('users_courses').'.user_ID '.
+                    'INNER JOIN '.  db_gettable('users_courses').' ON '.  db_gettable('users').'.user_ID = '. 
+                        db_gettable('users_courses').'.user_ID '.
                     'WHERE course_code = :course_code',
 
             'course_update' =>
@@ -240,8 +241,10 @@ function statements_get(){
                     'WHERE room_ID = :room_ID',
 
             'stream_create' =>
-                        'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, `netid`, `stream_name`, `token`, `module_type`, `ip`, `status`, `quality`, `protocol`, `server`, `port`) ' .
-                        'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, :ip, :status, :quality, :protocol, :server, :port)',      
+                        'INSERT INTO ' . db_gettable('streams') . ' (`cours_id`, `asset`, `classroom`, `record_type`, '.
+                        '`netid`, `stream_name`, `token`, `module_type`, `ip`, `status`, `quality`, `protocol`, `server`, `port`) ' .
+                        'VALUES (:cours_id, :asset, :classroom, :record_type, :netid, :stream_name, :token, :module_type, '.
+                        ':ip, :status, :quality, :protocol, :server, :port)',      
 
             'stream_update_status' =>
                     'UPDATE ' . db_gettable('streams') . ' ' .
@@ -829,7 +832,8 @@ function db_classroom_delete($room_ID) {
     return $statements['classroom_delete']->execute();
 }
 
-function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $ip, $status, $quality, $protocol, $server, $port) {
+function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $ip, 
+        $status, $quality, $protocol, $server, $port) {
     global $statements;
     $statements['stream_create']->bindParam(':cours_id', $cours_id);
     $statements['stream_create']->bindParam(':asset', $asset);

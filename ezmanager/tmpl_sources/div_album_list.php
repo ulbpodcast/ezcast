@@ -25,53 +25,54 @@
 */
 ?>
 
-<?php
-// before calling this template, please declare $albums as an array
-// with all album short names (i.e. names without the -pub or -priv suffix)
-global $redraw;
-global $current_album;
-global $current_album_is_public;
+<div class="col-sm-4 sidebar">
+    <ul class="nav nav-sidebar">
 
-if(empty($created_albums)) {
-    if(empty($allowed_albums)) {
-        ?>
-        <div style="font-style: italic;padding: 10px;">®No_album_available®</div>
-        <?php
-    }
-    else {
-        ?>
-        <div style="font-style: italic;padding: 10px;">®No_album_created®</div>
-        <?php
-    }
-}
-else {
-    foreach($created_albums as $album) {
-		$metadata = ezmam_album_metadata_get($album."-pub"); //get album name and not id for display
-		$stylePriv = '';
-        $stylePrivClic = 'display: none;';
-        $stylePub = '';
-        $stylePubClic = 'display: none;';
-
-        if($redraw && $current_album == $album) {
-            if($current_album_is_public) {
-                $stylePub = 'display: none;';
-                $stylePubClic = '';
-            }
-            else {
-                $stylePriv = 'display: none;';
-                $stylePrivClic = '';
-            }
+    <?php
+    // before calling this template, please declare $albums as an array
+    // with all album short names (i.e. names without the -pub or -priv suffix)
+    global $redraw;
+    global $current_album;
+    global $current_album_is_public;
+    
+    if(empty($created_albums)) {
+        echo '<li class="disabled"><a href="#" style="font-style: italic;">';
+        if(empty($allowed_albums)) {
+            echo '®No_album_available®';
+        } else {
+            echo '®No_album_created®';
         }
-		$full_name=$metadata['name'];
-		if(isset($metadata['course_code_public']) && $metadata['course_code_public']!='') $displayed_name=$metadata['course_code_public'];
-		else $displayed_name=$album;
-		
-		if( strlen($metadata['name']) > 15)  $metadata['name']=substr($metadata['name'],0,15)."...";			   
-        ?>
-            <div title="<?php echo $full_name ?>" class="button_private_album" id="album_<?php echo $album.'-priv'; ?>" style="<?php echo $stylePriv; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');"><?php echo $displayed_name; ?> (®Private_album®)</a> </div>
-            <div title="<?php echo $full_name ?>" class="button_private_album_selected" id="album_<?php echo $album.'-priv' ?>_clic" style="<?php echo $stylePrivClic; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');"><?php echo $displayed_name; ?> (®Private_album®)</a></div>
-            <div title="<?php echo $full_name ?>" class="button_public_album" id="album_<?php echo $album.'-pub'; ?>" style="<?php echo $stylePub; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');"><?php echo $displayed_name; ?> (®Public_album®)</a> </div>
-            <div title="<?php echo $full_name ?>" class="button_public_album_selected" id="album_<?php echo $album.'-pub' ?>_clic" style="<?php echo $stylePubClic; ?>"> <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');"><?php echo $displayed_name; ?> (®Public_album®)</a></div>
-        <?php
-    }
-}
+        echo '</a></li>';
+    } else {
+        
+        foreach($created_albums as $album) {
+            $metadata = ezmam_album_metadata_get($album."-pub"); //get album name and not id for display
+            
+            $full_name = $metadata['name'];
+            if(isset($metadata['course_code_public']) && $metadata['course_code_public']!='') {
+                $displayed_name = $metadata['course_code_public'];
+            } else {
+                $displayed_name = $album;
+            }
+
+            if( strlen($metadata['name']) > 15)  $metadata['name']=substr($metadata['name'],0,15)."...";
+            ?>
+            <li id="album_<?php echo $album.'-priv'; ?>" class="album-in-list" title="<?php echo $full_name ?>">
+                <a href="javascript:show_album_details('<?php echo $album.'-priv'; ?>');">
+                    <img style="width: 30px;" src="images/page4/iconAlbumPriv.png" />
+                    <?php echo $displayed_name; ?> (®Private_album®)
+                    <span style="float: right;top: 9px;" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </a> 
+            </li>
+            <li id="album_<?php echo $album.'-pub'; ?>" class="album-in-list album-separation" title="<?php echo $full_name ?>">
+                <a href="javascript:show_album_details('<?php echo $album.'-pub'; ?>');">
+                    <img style="width: 30px;" src="images/page4/iconAlbumPublic.png" />
+                    <?php echo $displayed_name; ?> (®Public_album®)
+                    <span style="float: right;top: 9px;" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </a> 
+            </li>
+            <?php
+        }
+    } ?>
+    </ul>
+</div>

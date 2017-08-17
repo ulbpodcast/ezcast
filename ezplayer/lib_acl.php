@@ -324,6 +324,7 @@ function acl_show_notifications(){
  * @return boolean
  */
 function acl_display_threads(){
+    
     if (!acl_user_is_logged()) return true;
     
     global $default_display_thread;

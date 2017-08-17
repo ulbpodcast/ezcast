@@ -421,12 +421,8 @@ function push_users_courses_to_recorder(&$failed_cmd) {
     global $recorder_user;
     global $recorder_basedir;
     global $recorder_subdir;
-<<<<<<< HEAD
 	global $recorder_password_storage_enabled;										  
 
-=======
-    
->>>>>>> refs/remotes/ulbpodcast/master
     if (!db_ready()) {
         $statements = statements_get();
         db_prepare($statements);

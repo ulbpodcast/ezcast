@@ -38,11 +38,9 @@
 
 <table class="table table-striped table-hover table-condensed table-responsive courses">
     <tr>
-        <?php global $use_course_name; if($use_course_name) { ?>
-            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_name®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
-        <?php } else { ?>
-            <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_code®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
-        <?php } ?>
+        <th>®ID®</th>        
+        <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_name®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
+        <th data-col="course_code" <?php echo $input['col'] == 'course_code' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®course_code®<?php echo ($input['col'] == 'course_code') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®teacher®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®origin®</th>
         <th>®albums®</th>
@@ -50,13 +48,11 @@
     </tr>
         
     <?php foreach($courses as $course) { ?>
-        <tr>
-            <?php if($use_course_name) { ?>
-                <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?></a></span></td>
-            <?php } else { ?>
-                <td><span title="<?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php if(isset($course['course_code_public']) && $course['course_code_public']!="") echo $course['course_code_public']; else echo $course['course_code']; ?></a></span></td>
-            <?php } ?>
-                
+        <tr>               
+            <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo  $course['course_code']; ?></a></span></td>
+            <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?></a></span></td>
+            <td><span title="<?php echo (isset($course['shortname']) && !empty($course['shortname'])) ? $course['shortname'] : $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php if(isset($course['course_code_public']) && $course['course_code_public']!="") echo $course['course_code_public']; else echo $course['course_code']; ?></a></span></td>
+
             <?php global $use_user_name; if($use_user_name) { ?>
                 <td><span title="<?php echo $course['user_ID']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo urlencode($course['user_ID']); ?>"><?php echo $course['forename'].' '.$course['surname']; ?></a></span></td>
             <?php } else { ?>

@@ -40,22 +40,24 @@ function file_checkauth($login, $passwd) {
 
     if (!ctype_alnum($login))
         return false; //sanity check
-    $fpasswd = $users[$login]['password']; // password from pwfile.inc
-    $salt = substr($fpasswd, 0, 2);
-    $cpasswd = crypt($passwd, $salt);
-    $fpasswd = rtrim($fpasswd);
-
-    if (isset($users[$login]) && $fpasswd == $cpasswd) {
-        //user exists and password matches
-        $userinfo = $users[$login];
-        unset($userinfo['password']); //removes password info
-        $userinfo['login'] = $login; //return login as normal login
-        $userinfo['real_login'] = $login; //return login as normal login
-        return $userinfo;
-        // user does not exist or password is incorrect
-    } else {
-        return false;
-    }
+        if (isset($users[$login])){
+            $fpasswd = $users[$login]['password']; // password from pwfile.inc
+            $salt = substr($fpasswd, 0, 2);
+            $cpasswd = crypt($passwd, $salt);
+            $fpasswd = rtrim($fpasswd);
+    
+            if ( $fpasswd == $cpasswd) {
+                //user exists and password matches
+                $userinfo = $users[$login];
+                unset($userinfo['password']); //removes password info
+                $userinfo['login'] = $login; //return login as normal login
+                $userinfo['real_login'] = $login; //return login as normal login
+                return $userinfo;
+                // user does not exist or password is incorrect
+            } else {
+                return false;
+            }
+        } else return false;
 }
 
 /**

@@ -36,6 +36,7 @@ require_once 'lib_acl.php';
 require_once 'lib_error.php';
 require_once 'lib_ezmam.php';
 require_once '../commons/lib_auth.php';
+require_once '../commons/lib_various.php';
 require_once '../commons/lib_template.php';
 require_once 'lib_various.php';
 require_once 'lib_upload.php';

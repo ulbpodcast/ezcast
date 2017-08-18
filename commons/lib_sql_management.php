@@ -707,6 +707,15 @@ function db_users_courses_delete($user_course_ID) {
 
     return $statements['users_courses_delete']->execute();
 }
+function db_users_courses_delete_row($album,$user_course_ID) {
+	global $statements;
+		
+	$statements['users_courses_delete_row']->bindParam(':user_ID', $user_course_ID);
+	$statements['users_courses_delete_row']->bindParam(':course_code', $album);
+	
+	return $statements['users_courses_delete_row']->execute();
+}
+
 function db_unlink_user($user_ID) {
     global $statements;
 

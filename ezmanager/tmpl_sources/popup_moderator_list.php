@@ -12,12 +12,15 @@
                         echo '<td>';
                             echo $tbusercourse[$i]['user_ID'];
                         echo '</td>';
-                        if (count($tbusercourse) != 1) { // avoid suppression of the last admin
-                            echo '<td>';
-                                echo '<a class="button delete_user_course pointer" ' .
-                                        'href="index.php?action=show_popup&amp;popup=moderator_delete&amp;album=' . $album .
-                                        '&amp;id_user=' . $tbusercourse[$i]['user_ID'] . '" ' .
-                                        'data-remote="false" data-toggle="modal" data-target="#modal" >';
+                        if (TRUE || count($tbusercourse) != 1) { // avoid suppression of the last admin
+                            echo '<td>';?>
+                                <a class="btn-xs btn btn-danger delete_user_course pointer" id="delete_user_course"
+                                    onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#delete_user_course'));
+                                        $('#modal').modal('show'); }, 500);"
+                                    href="index.php?action=show_popup&amp;popup=moderator_delete&amp;album=<?php echo $album; 
+                                        ?>&amp;id_user=<?php echo $tbusercourse[$i]['user_ID']; ?>" 
+                                    data-remote="false" data-toggle="modal" data-target="#modal" >
+                                <?php 
                                     echo '<span>®Delete®</span>';
                                 echo '</a>';
                             echo '</td>';

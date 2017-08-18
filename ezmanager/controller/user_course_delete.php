@@ -16,13 +16,13 @@ function index($param = array()) {
     require_once $basedir.'/commons/lib_sql_management.php';
 
 	
-    $album=$input['album'];
-    $iduser=$input['iduser'];
+    $album = $input['album'];
+    $iduser = $input['iduser'];
 	
     db_users_courses_delete_row($album,$iduser);
 	
     // $album = suffix_remove($_SESSION['podman_album']);
-    $tbusercourse= users_courses_get_users($album);
+    $tbusercourse = users_courses_get_users($album);
 	
     // header('Location: index.php');
     require_once template_getpath('popup_moderator_list.php');	

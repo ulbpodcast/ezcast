@@ -4,6 +4,8 @@
 function index($param = array()) {
     global $input;
     global $repository_path;
+    global $basedir;
+//    require_once($basedir.'/commons/lib_sql_management.php');
 
     //
     // Usual sanity checks
@@ -32,10 +34,12 @@ function index($param = array()) {
     $album_meta = ezmam_album_metadata_get($album);
 
     $album_meta['intro'] = $input['intro'];
-    if(isset($input['credits']))
+    if(isset($input['credits'])) {
         $album_meta['credits'] = $input['credits'];
+    }
     $album_meta['add_title'] = $input['add_title'];
     $album_meta['downloadable'] = $input['downloadable'];
+    $album_meta['anon_access'] = $input['anon_access'];
 
     $res = ezmam_album_metadata_set($album, $album_meta);
 

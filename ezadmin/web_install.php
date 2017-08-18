@@ -13,7 +13,7 @@ $in_install = true;
 require_once __DIR__ . '/../commons/lib_template.php';
 require_once __DIR__ . '/../commons/lib_sql_management.php';
 require_once __DIR__ . '/lib_various.php';
-require_once __DIR__ . '/lib_error.php';
+require_once __DIR__ . '/../commons/lib_error.php';
 require_once __DIR__ . '/../commons/common.inc'; //for logger access
 
 $template_folder = __DIR__. '/tmpl/' . get_lang();
@@ -154,7 +154,6 @@ if (isset($input['install']) && !empty($input['install'])) {
     $input['classrooms_category_enabled'] = $classrooms_category_enabled;
     $input['add_users_enabled'] = $add_users_enabled;
     $input['recorder_password_storage_enabled'] = $recorder_password_storage_enabled;
-    $input['use_course_name'] = $use_course_name;
     $input['use_user_name'] = $use_user_name;
 
     require template_getpath('install.php');
@@ -217,7 +216,8 @@ function check_server_config() {
     $display = "";
     if (convert_size($upload_max_filesize) < 2000000000) {
         $display .= "<div style='line-height: 14px;'><span class=\"red\">upload_max_filesize = $upload_max_filesize</span> "
-                . "<-- Determines the max size of the files that a user can upload in EZmanager. We recommend <b>2G</b><br/><br/></div>";
+                . "<-- Determines the max size of the files that a user can upload in EZmanager. We recommend "
+                . "<b>2G</b><br/><br/></div>";
         $all_good = $all_good & false;
     } else {
         $display .= "<div class=\"green\">upload_max_filesize = $upload_max_filesize</div>";
@@ -264,9 +264,10 @@ function check_server_config() {
      <body>";
         template_display("div_header.php");
         print "<div id='login_form'>" . $display;
-        print "</div><div style='width: 400px; margin: auto;'><br/>Edit the '<b>" . php_ini_loaded_file() . "</b>' file to match your own needs.
-         <br/><br/>If you want to continue anyway, click on the following button.
-         <br/><br/><br/><a class='button' style='float: right;' href='install.php?skip_srv=true'>Continue</a></div>";
+        print "</div><div style='width: 400px; margin: auto;'><br/>Edit the '<b>" . php_ini_loaded_file() . 
+            "</b>' file to match your own needs.
+            <br/><br/>If you want to continue anyway, click on the following button.
+            <br/><br/><br/><a class='button' style='float: right;' href='install.php?skip_srv=true'>Continue</a></div>";
         template_display("div_footer.php");
         print "</body></html>";
         die;
@@ -386,7 +387,7 @@ function validate_form() {
             
             escapeshellarg($input['db_prefix'] . 'courses') => array(
                 escapeshellarg('course_code'), escapeshellarg('course_name'), 
-                escapeshellarg('shortname'), escapeshellarg('in_recorders'), 
+                escapeshellarg('in_recorders'), 
                 escapeshellarg('has_albums'), escapeshellarg('date_created'), 
                 escapeshellarg('origin')),
             
@@ -433,7 +434,8 @@ function validate_form() {
             
         );
 
-        $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], $input['db_login'], $input['db_passwd']);
+        $db = new PDO($input['db_type'] . ':host=' . $input['db_host'] . ';dbname=' . $input['db_name'], 
+                $input['db_login'], $input['db_passwd']);
 
         // checks if tables already exist
         $data = $db->query(
@@ -450,8 +452,10 @@ function validate_form() {
             $_SESSION['user_inputs'] = $input;
             // prepare radio buttons for next view
             $radio_buttons = array(
-                'replace' => '<b>Replace</b> the existing tables. <b style="color:red">All contents of the existing tables will be erased.</b>',
-                'prefix' => 'Choose another prefix for the tables of EZcast. This will create new tables for EZcast. <br/><input type="text" name="new_prefix"/>',
+                'replace' => '<b>Replace</b> the existing tables. <b style="color:red">All contents of the existing' . 
+                    ' tables will be erased.</b>',
+                'prefix' => 'Choose another prefix for the tables of EZcast. This will create new tables for EZcast. '.
+                    '<br/><input type="text" name="new_prefix"/>',
             );
             if (count($result) >= count(array_keys($tables))) {
                 // all tables already exist
@@ -496,8 +500,9 @@ function create_tables($drop = true) {
         $db->exec('SET time_zone = "+00:00"');
 
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'classrooms`');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'classrooms` (' .
                 '`room_ID` varchar(20) NOT NULL COMMENT \'Room nr (e.g. at ULB: R42-5-503)\',' .
                 '`name` varchar(255) DEFAULT NULL COMMENT \'Room name (e.g. "Auditoire K")\',' .
@@ -507,12 +512,13 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`room_ID`)' .
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'courses`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'courses` (' .
                 '`course_code` varchar(50) NOT NULL COMMENT \'At ULB: mnémonique\',' .
+                '`course_code_public` varchar(50) NOT NULL,' .
                 '`course_name` varchar(255) DEFAULT NULL,' .
-                '`shortname` varchar(100) DEFAULT NULL COMMENT \'Optional, shorter name displayed in recorders\',' .
                 '`in_recorders` tinyint(1) NOT NULL DEFAULT \'1\' COMMENT \'Set to FALSE to disable classroom recording\',' .
                 '`has_albums` int(11) NOT NULL DEFAULT \'0\' COMMENT \'Number of assets in the album (or 0/1 value for now)\',' .
                 '`date_created` date NOT NULL,' .
@@ -520,8 +526,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`course_code`)' .
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'admin_logs`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'admin_logs` (   ' .
                 '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
                 '`time` datetime NOT NULL,' .
@@ -531,8 +538,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`ID`)' .
                 ') ENGINE=InnoDB  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users` (' .
                 '`user_ID` varchar(50) NOT NULL COMMENT \'For ULB: netid\',' .
                 '`surname` varchar(255) DEFAULT NULL,' .
@@ -544,8 +552,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`user_ID`)' .
                 ') ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'users_courses`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'users_courses` (' .
                 '`ID` int(11) NOT NULL AUTO_INCREMENT,' .
                 '`course_code` varchar(50) NOT NULL COMMENT \'Course code as referenced in ezcast_courses\',' .
@@ -554,8 +563,9 @@ function create_tables($drop = true) {
                 'PRIMARY KEY (`ID`)' .
                 ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=\'Joint of Courses and Users\';');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'threads`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'threads` (' .
                 '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
                 '`authorId` varchar(50) NOT NULL COMMENT \'netid of the author of the discussion\',' .
@@ -576,8 +586,9 @@ function create_tables($drop = true) {
                 'FULLTEXT (`title`, `message`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'comments`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'comments` (' .
                 '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
                 '`authorId` varchar(50) NOT NULL COMMENT \'netid of the author of the discussion\',' .
@@ -599,8 +610,9 @@ function create_tables($drop = true) {
                 'FULLTEXT (`message`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'votes`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'votes` (' .
                 '`login` varchar(50) NOT NULL,' .
                 '`comment` bigint(20) NOT NULL,' .
@@ -609,8 +621,9 @@ function create_tables($drop = true) {
                 'FOREIGN KEY (`comment`) REFERENCES ' . $input['db_prefix'] . 'comments(`id`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'messages`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'messages` (' .
                 '`id` bigint(20) NOT NULL AUTO_INCREMENT,' .
                 '`authorId` varchar(50) NOT NULL,' .
@@ -624,8 +637,9 @@ function create_tables($drop = true) {
                 'FULLTEXT (`message`)' .
                 ') ENGINE=MyISAM  DEFAULT CHARSET=utf8;');
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL,".
                 "`origin` enum('ezmanager','ezadmin','ezrecorder','ezrenderer','other') NOT NULL,".
@@ -640,35 +654,40 @@ function create_tables($drop = true) {
                 "KEY `event_time` (`event_time`)".
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_STATUS_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_STATUS_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
-                "`status` enum('auto_success', 'auto_success_errors', 'auto_success_warnings', 'auto_failure', 'auto_ignore', 'manual_ok', 'manual_partial_ok', 'manual_failure', 'manual_ignore') NOT NULL," .
+                "`status` enum('auto_success', 'auto_success_errors', 'auto_success_warnings', 'auto_failure', 'auto_ignore', ".
+                    "'manual_ok', 'manual_partial_ok', 'manual_failure', 'manual_ignore') NOT NULL," .
                 "`author` varchar(50) DEFAULT 'system'," .
                 "`status_time` datetime DEFAULT NULL," .
                 "`description` text," .
                 "KEY `asset` (`asset`)" .
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_LAST_INDEXES_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_LAST_INDEXES_TABLE_NAME . '` (' .
                 "`source` varchar(20) NOT NULL," .
                 "`id` int(10) unsigned NOT NULL," .
                 " PRIMARY KEY (`source`) " .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_PARENT_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
                 "`parent_asset` varchar(50) NOT NULL," .
                 " UNIQUE KEY `asset` (`asset`) " .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
-        if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_INFO_TABLE_NAME .'`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . ServerLogger::EVENT_ASSET_INFO_TABLE_NAME . '` (' .
                 "`asset` varchar(50) NOT NULL," .
                 "`start_time` datetime NOT NULL," .
@@ -679,9 +698,31 @@ function create_tables($drop = true) {
                 "`cam_slide` enum('cam','slide','camslide') NOT NULL," .
                 "PRIMARY KEY (`asset`)" .
                 " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-        
-         if ($drop)
+        if ($drop) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'streams`;');
+        }
+        $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'streams` (' .
+                "`id` int(11) NOT NULL," .
+                "`cours_id` varchar(255) NOT NULL," .
+                "`asset` varchar(255) NOT NULL," .
+                "`module_type` varchar(15) NOT NULL," .
+                "`classroom` varchar(255) NOT NULL," .
+                "`record_type` varchar(10) NOT NULL COMMENT 'cam/slide'," .
+                "`netid` varchar(255) NOT NULL," .
+                "`stream_name` varchar(255) NOT NULL," .
+                "`token` varchar(255) NOT NULL," .
+                "`ip` varchar(255) NOT NULL," .
+                "`status` varchar(20) NOT NULL," .
+                "`pid` varchar(50) NOT NULL," .
+                "`quality` varchar(10) NOT NULL," .
+                "`protocol` varchar(10) NOT NULL," .
+                "`server` varchar(255) NOT NULL," .
+                "`port` int(10) NOT NULL" .
+                " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");								  
+        
+        if ($drop) {
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'streams`;');
+        }
         $db->exec('CREATE TABLE IF NOT EXISTS `' . $input['db_prefix'] . 'streams` (' .
             "`id` int(11) NOT NULL," .
             "`cours_id` varchar(50) NOT NULL," .
@@ -698,7 +739,37 @@ function create_tables($drop = true) {
             "`protocol` varchar(10) NOT NULL," .
             "`server` varchar(50)," .
             "`port` int(5)" .
-            " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");	
+            " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+        
+        if ($drop) {
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'stats_video_infos`;');
+        }
+        $db->exec('CREATE TABLE IF NOT EXISTS `'. $input['db_prefix'] .'stats_video_infos` (' .
+            "`id` int(11) NOT NULL AUTO_INCREMENT, " .
+            "`asset` varchar(30) NOT NULL, " .
+            "`album` varchar(30) NOT NULL, " .
+            "`nbr_comment` int(11) NOT NULL DEFAULT '0', " .
+            "`nbr_view_total` int(11) NOT NULL DEFAULT '0', " .
+            "`nbr_view_unique` int(11) NOT NULL DEFAULT '0', " .
+            "`month` varchar(7) NOT NULL, ".
+            "PRIMARY KEY (`id`), ".
+            "UNIQUE KEY(`asset`,`album`,`month`)".
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+        
+        if ($drop) {
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'stats_video_view`;');
+        }
+        $db->exec('CREATE TABLE IF NOT EXISTS `'. $input['db_prefix'] .'stats_video_view` (' .
+            "`id` int(11) NOT NULL AUTO_INCREMENT, " .
+            "`asset` varchar(30) NOT NULL, " .
+            "`album` varchar(30) NOT NULL, " .
+            "`nbr_view` int(11) NOT NULL, " .
+            "`video_time` int(11) NOT NULL, ".
+            "`month` varchar(7) NOT NULL, " .
+            "PRIMARY KEY (`id`), " .
+            "UNIQUE KEY(`asset`,`album`,`video_time`, `month`)" . 
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+        
         
         // Creation of the indexes
         $db->exec('CREATE INDEX `albumname_ndx` ' .
@@ -724,12 +795,14 @@ function create_config_files() {
 
     // Write config file
     edit_config_file(
-            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], $input['organization_name'], 
-            $input['organization_url'], $input['copyright'], $input['mailto_alert'], $input['ezcast_basedir'], $input['db_type'], $input['db_host'], 
-            $input['db_login'], $input['db_passwd'], $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], 
+            $input['php_cli_cmd'], $input['rsync_pgm'], $input['application_url'], $input['repository_basedir'], 
+            $input['organization_name'], $input['organization_url'], $input['copyright'], $input['mailto_alert'], 
+            $input['ezcast_basedir'], $input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], 
+            $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], 
             $input['ezmanager_host'], $input['ezmanager_user'], !empty($input['classrooms_category_enabled']) ? true : false, 
             !empty($input['add_users_enabled']) ? true : false, !empty($input['recorder_password_storage_enabled']) ? true : false, 
-            !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, !empty($input['https_ready']) ? true : false
+            !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, 
+            !empty($input['https_ready']) ? true : false
     );
 }
 

@@ -25,19 +25,24 @@
 */
 ?>
 
-
-<!-- 
-This is the popup displaying the URL to the HD RSS feed.
-You should not have to use this file on your own; if you do, make sure the variable $hd_rss_url is defined
--->
-<div class="popup" id="HD_RSS_box" style="width:600px;">
-    <h2>®HD_RSS_feed®</h2>
-    ®HD_RSS_feed_URL_message® <br/><br/>
-    <strong><a href="<?php echo $hd_rss_url; ?>"><?php echo $hd_rss_url; ?></a><br/><br/></strong>
-        
-    <div id="wrapper_clip" style="position:relative">
-        <span id="copy_button_hd_rss" class="Bouton"><a><span id="copy_button_text_hd_rss">®Copy_to_clipboard®</span></a></span>
-        <div class="clipboard" id="zero_clipboard_hd_rss" data-clipboard-text="<?php echo $hd_rss_url; ?>" onmouseout="getElementById('copy_button_text_hd_rss').style.color='#797676'" onmouseover="getElementById('copy_button_text_hd_rss').style.color='#004B93'" style="position:absolute; left:200px; top:0px; width:200px; height:30px; z-index:99"></div>
+<div id="div_stats_descriptives">
+    <div class="BlocPodcastMenu">
+        <br />
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>Nombre d'accès aux vidéos</td>
+                    <td>6561</td> 
+                </tr>
+                <tr>
+                    <td>Nombre de signets déposés sur les vidéos</td>
+                    <td>2</td> 
+                </tr>
+                <tr>
+                    <td>Nombre de discussions sur les vidéos</td>
+                    <td>9</td> 
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-

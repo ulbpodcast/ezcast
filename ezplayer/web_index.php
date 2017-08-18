@@ -35,11 +35,12 @@
 require_once 'config.inc';
 session_name($appname);
 session_start();
-require_once 'lib_error.php';
+require_once __DIR__.'/../commons/lib_error.php';
 require_once 'lib_ezmam.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
+require_once '../commons/common.inc';
 require_once 'lib_various.php';
 require_once 'lib_user_prefs.php';
 include_once 'lib_toc.php';
@@ -53,6 +54,9 @@ $input = array_merge($_GET, $_POST);
 
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
+
+global $repository_path;
+ezmam_repository_path($repository_path);
 
 //
 // Login/logout
@@ -74,54 +78,77 @@ if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) ||
     $_SESSION['user_os'] = $os->getName();
     $_SESSION['user_os_version'] = $os->getVersion();
 }
+
+
+$logged_in = user_logged_in();
+$album_allow_anonymous = isset($input['album']) && ezmam_album_allow_anonymous($input['album']);
+//logout anon user if he tries to access an album which was not set as anonym allowed (except if we still accept the anon=true option in the url, should be removed in the future)
+if($logged_in && user_anonymous() && !$allow_url_anon
+   && isset($input['album']) && !$album_allow_anonymous) {
+    logout();
+    $logged_in = false;
+}
+
+
 // If we're not logged in, we try to log in or display the login form
-if (!user_logged_in()) {
-    // if the url contains the parameter 'anon' the session is assumed as anonymous
-
-    if (isset($input['anon']) && $input['anon'] == true) {
+if (!$logged_in) {
+	 // global $repository_path;
+    // if the url contains the parameter 'anon' the session is assumsed as anonymous
+    if ($allow_url_anon && isset($input['anon']) && $input['anon'] == true) {
         user_anonymous_session();
+        $logged_in = true;
     }
-    // Step 2: Logging in a user who already submitted the form
-    // The user can continue without any authentication. Then, it'll be an anonymous session.
-    else if (isset($input['action']) && $input['action'] == 'login') {
-        // The user continues without any authentication
-        if (isset($_POST['anonymous_session'])) {
-            user_anonymous_session();
-
-            // The user want to authenticate
-        } else {
-            if (!isset($input['login']) || !isset($input['passwd'])) {
-                error_print_message(template_get_message('empty_username_password', get_lang()));
-                die;
-            }
-            user_login(trim($input['login']), trim($input['passwd']));
+	
+    // Log as anonymous if user tries to access an album and it has been set as accessible as anonymous
+    if (isset($input['album']) && $album_allow_anonymous) {
+        user_anonymous_session();
+        $logged_in = true;
+    }
+    
+    if(isset($input['action'])) {
+        switch($input['action']) {
+            // Handle login form
+            case 'login':
+                if (!isset($input['login']) || !isset($input['passwd'])) {
+                    error_print_message(template_get_message('empty_username_password', get_lang()));
+                    die;
+                }
+                user_login(trim($input['login']), trim($input['passwd']));
+                exit(0);  //page will be loaded in user_login
+                break;
+            case 'client_trace':
+                requireController('client_trace.php');
+                index();
+                exit(0);
+                break;
+            default:
+                // This is a tricky case:
+                // If we do not have a session, but we have an action, that means we lost the
+                // session somehow and are trying to load part of a page through AJAX call.
+                // We do not want the login page to be displayed randomly inside a div,
+                // so we refresh the whole page to get a full-page login form.
+                //
+                // $input['click'] indicates that the action comes from a link in the application
+                if ($input['click']) {
+                    refresh_page();
+                    exit(0);
+                }
+                break;
         }
-    } else if (isset($input['action']) && $input['action'] == 'client_trace') {
-        requireController('client_trace.php');
-        index();
     }
-
-    // This is a tricky case:
-    // If we do not have a session, but we have an action, that means we lost the
-    // session somehow and are trying to load part of a page through AJAX call.
-    // We do not want the login page to be displayed randomly inside a div,
-    // so we refresh the whole page to get a full-page login form.
-    //
-    // $input['click'] indicates that the action comes from a link in the application
-    else if (isset($input['action']) && $input['click']) {
-        refresh_page();
-    }
-    // Step 1: Displaying the login form
-    // (happens if no "action" is provided)
-    else {
+    
+    if(!$logged_in) {
+        //Just display the login form
         view_login_form();
+        exit(0);
     }
 }
 
-// At this point of the code, the user is supposed to be logged in.
+// From this point, user is logged in.
+
 // We check whether they specified an action to perform. If not, it means they landed
 // here through a page reload, so we check the session variables to restore the page as it was.
-else if (isset($_SESSION['ezplayer_logged']) && (!isset($input['action']) || empty($input['action']))) {    
+ if (isset($_SESSION['ezplayer_logged']) && (!isset($input['action']) || empty($input['action']))) {    
     // Check if player first connexion
     global $first_connexion;
     $first_connexion = !isset($_COOKIE['has_connected_once']);
@@ -600,6 +627,10 @@ function user_logged_in() {
     return (isset($_SESSION['ezplayer_logged']) || isset($_SESSION['ezplayer_anonymous']));
 }
 
+function user_anonymous() {
+    return (isset($_SESSION['ezplayer_logged']) || isset($_SESSION['ezplayer_anonymous']));
+}
+
 /**
  * Displays the login form
  */
@@ -659,6 +690,9 @@ function albums_view($refresh_page = true) {
             $moderated_tokens[$index]['album'] = $album . '-pub';
             $moderated_tokens[$index]['title'] = get_album_title($album . '-pub');
             $moderated_tokens[$index]['token'] = ezmam_album_token_get($album . '-pub');
+			  
+			$album_title = ezmam_album_metadata_get($album . '-pub');
+			if(isset($album_title['course_code_public'])) $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
         }
         // add the list of moderated public albums 
         user_prefs_tokens_add($_SESSION['user_login'], $moderated_tokens);
@@ -899,3 +933,18 @@ function thread_details_update($display = true) {
         return $thread;
     }
 }
+
+function logout() {
+    // Deleting the ACLs from the session var
+    log_append("logout");
+    $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+    trace_append(array($lvl, 'logout'));
+    acl_exit();
+
+    // Unsetting session vars
+    unset($_SESSION['ezplayer_mode']);
+    unset($_SESSION['user_login']);     // User netID
+    unset($_SESSION['ezplayer_logged']); // "boolean" stating that we're logged
+    unset($_SESSION['ezplayer_anonymous']); // "boolean" stating that we're logged
+    session_destroy();
+} 

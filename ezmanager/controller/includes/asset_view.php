@@ -140,6 +140,7 @@ function asset_view() {
     $_SESSION['podman_album'] = $input['album'];
     $_SESSION['podman_asset'] = $input['asset'];
 
+     global $enable_copy_asset;
     //
     // 4) Then display the asset and its content
     //

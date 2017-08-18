@@ -42,7 +42,7 @@ $basedir = "/usr/local/ezcast";
 // Database info
 $db_type = 'mysql';
 $db_host = 'localhost';
-$db_login= "ezcast";
+$db_login = "ezcast";
 $db_passwd = "";
 $db_name = "ezcast";
 $db_prefix = "ezcast_";
@@ -63,6 +63,7 @@ $mailto_alert = "mail@your.organization"; //who to call in case of problem in th
 
 $auth_methods = array("file", "ldap");
 
+$ldap_institution="";	//empty by default   "ucl" for ucl.					
 # JSON FILES FOR LDAP
 /*
  * For each ldap_server:

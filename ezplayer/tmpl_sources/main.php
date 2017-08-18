@@ -15,10 +15,11 @@
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />
+        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
     
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="#EZPlayer" />
-        <meta name="twitter:title" content="EZPlayer (from EZCast)" /> <!-- Personalise with translation -->
+        <meta name="twitter:title" content="EZPlayer (from EZCast)" /> <!-- Personalize with translation -->
         <meta name="twitter:description" content="EZPlayer is propulsed by EZCast (ULB)" />
         <meta name="twitter:image" content="./images/Header/LogoEZplayer.png" />
     
@@ -193,7 +194,6 @@ if ($trace_on) {
                     url: 'index.php?action=view_asset_bookmark',
                     data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
                     success: function (response) {
-                        debugger;
                         $('#div_center').html(response);
                         if (commentId != '') {
                             $.scrollTo('#comment_' + commentId);

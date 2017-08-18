@@ -13,6 +13,7 @@ if(file_exists('config.inc')) {
 function stats_statements_get() {
     $table_stats_infos = "stats_video_infos";
     $table_stats_view = "stats_video_view";
+    $table_thread = "threads";
     
     return array(
             'album_info_empty' => 
@@ -31,7 +32,8 @@ function stats_statements_get() {
                 'GROUP BY month;',
         
             'video_get_view_comment' => 
-                'SELECT SUM(nbr_comment) AS total_comment, ' .
+                'SELECT asset, ' . 
+                    'SUM(nbr_comment) AS total_comment, ' .
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
                 'FROM ' . db_gettable($table_stats_infos) . ' ' .
@@ -45,7 +47,12 @@ function stats_statements_get() {
                     'AND ' .
                     'asset = :asset ' .
                 'GROUP BY view_time ' .
-                'ORDER BY video_time;'
+                'ORDER BY video_time;',
+        
+            'threads_by_album_count' =>
+                'SELECT count(*) '.
+                'FROM ' . db_gettable($table_thread) . ' ' .
+                'WHERE albumName like :album',
         );
 }
 
@@ -76,7 +83,7 @@ function db_stats_album_get_view_comment($album) {
     $statements['album_get_view_comment']->bindParam(':album', $album);
     
     $statements['album_get_view_comment']->execute();
-    return $statements['album_get_view_comment']->fetchAll();
+    return $statements['album_get_view_comment']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -90,7 +97,7 @@ function db_stats_video_get_view_comment($album) {
     $statements['video_get_view_comment']->bindParam(':album', $album);
     
     $statements['video_get_view_comment']->execute();
-    return $statements['video_get_view_comment']->fetchAll();
+    return $statements['video_get_view_comment']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -105,5 +112,23 @@ function db_stats_video_get_view_time($album, $asset) {
     $statements['video_get_view_time']->bindParam(':asset', $asset);
     
     $statements['video_get_view_time']->execute();
-    return $statements['video_get_view_time']->fetchAll();
+    return $statements['video_get_view_time']->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+/**
+ * Get number of threads for a specific album
+ * 
+ * @global array $statements
+ * @param string $album name
+ * @return int number of thread
+ */
+function db_stats_album_threads_get($album) {
+    global $statements;
+    
+    $statements['threads_by_album_count']->bindParam(':album', $album);
+    
+    $statements['threads_by_album_count']->execute();
+    $result = $statements['threads_by_album_count']->fetchAll(PDO::FETCH_COLUMN);
+    return count($result) > 0 ? $result[0] : 0;
 }

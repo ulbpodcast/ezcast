@@ -107,13 +107,16 @@ Before calling this template, please define the following variables:
                         </a>
                     </li>
                 <?php } ?>
-                <li role="presentation" id="stats"
-                    <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
-                    <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>'); ">
-                        <img src="images/page4/stats.png" style="display:inline"/>
-                        ®Stats_Descriptives®
-                    </a>
-                </li>
+                    
+                <?php if($trace_on) { ?>
+                    <li role="presentation" id="stats"
+                        <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
+                        <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>'); ">
+                            <img src="images/page4/stats.png" style="display:inline"/>
+                            ®Stats_Descriptives®
+                        </a>
+                    </li>
+                <?php } ?>
             </ul>
     </div>
 

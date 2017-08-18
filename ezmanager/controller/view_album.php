@@ -13,6 +13,7 @@ function index($param = array()) {
     global $ezplayer_url;
     global $enable_moderator;
     global $enable_anon_access_control;
+    global $trace_on;
     // global $ezmanager_url;
 
     if (isset($input['tokenmanager'])){

@@ -345,153 +345,21 @@ body{
 
 .BlocInfoAlbum{
     background-color:#ffffff;
-	/*height:90px;*/
+    /*height:90px;*/
 }
 
 .BlocInfoAlbum p{
     color:#666666;
     font-size:11px;
     margin-left:15px;
-	/*margin-bottom:px;*/
+    /*margin-bottom:px;*/
 }
 
-.BoutonInfoAlbum{
-    margin-left:12px;
-    margin-top:5px;
-    margin-bottom:5px;
-
-}
-
-.BoutonSuppAlbum a{
-    display:block;
-    background-image:url(../images/page4/ASuppBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:21px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
-}
-
-.BoutonSuppAlbum a:hover{
-    display:block;
-    background-image:url(../images/page4/BSuppBackg.png);
-    background-repeat:no-repeat;
-    color:#ED6A56;
-}
-
-.BoutonEditAlbum a{
-    display:block;
-    background-image:url(../images/page4/AEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:21px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px; 
-    padding-top:5px;
-}
-
-.BoutonEditAlbum a:hover{
-    display:block;
-    background-image:url(../images/page4/BEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
-}
-
-.ButtonMoveAlbumPublic a{
-    display:block;
-    background-image:url(../images/page4/ADeplacerAlbumPublic.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
-}
-
-.ButtonMoveAlbumPublic a:hover{
-    display:block;
-    background-image:url(../images/page4/BDeplacerAlbumPublic.png);
-    background-repeat:no-repeat;
-    color:#004C93;
-}
-
-.ButtonMoveAlbumPrive a{
-    display:block;
-    background-image:url(../images/page4/ADeplacerAlbumPriver.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
-}
-
-.ButtonMoveAlbumPrive a:hover{
-    display:block;
-    background-image:url(../images/page4/BDeplacerAlbumPriver.png);
-    background-repeat:no-repeat;
-    color:#004C93;
-}
-
-.BoutonProgrammer a{
-    display:block;
-    background-image:url(../images/page4/AProgrammer.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:21px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
-}
-
-.BoutonProgrammer a:hover{
-    display:block;
-    background-image:url(../images/page4/BProgrammer.png);
-    background-repeat:no-repeat;
-    color:#004C93;
-}
-
-.BoutonSoumettreAlbum {
+.ButtonSoumettreAlbum {
     padding-top: 10px;
 }
-.BoutonRegenTitle a{
-	display:block;
-	background-image:url(../images/page4/AProgrammer.png);
-	background-repeat:no-repeat;
-	color:#444444;
-	height:20px;
-	text-decoration:none;
-	font-size:12px;
-	font-weight:bold;
-	padding-left:22px;
-	padding-right:18px;
-	padding-top:5px;
-}
 
-.BoutonRegenTitle a:hover{
-	display:block;
-	background-image:url(../images/page4/BProgrammer.png);
-	background-repeat:no-repeat;
-	color:#004C93;
-}
-
-.BoutonSoumettreAlbum a{
+.ButtonSoumettreAlbum a{
     display:block;
     color:#444444;
     height:33px !important;
@@ -503,35 +371,10 @@ body{
     text-transform: uppercase;
 }
 
-.BoutonSoumettreAlbum a:hover{
+.ButtonSoumettreAlbum a:hover{
     color:#004C93; 
 }
 
-.BoutonRSS a{
-    display:block;
-    background-image:url(../images/page4/ARssBackg.png);
-    background-repeat:no-repeat;
-    color:#656464;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:5px;
-}
-
-.BoutonRSS a:hover{
-    display:block;
-    background-image:url(../images/page4/BRssBackg.png);
-    background-repeat:no-repeat;
-    color:#F7B234;
-    height:20px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:30px;
-    padding-top:5px;
-}
 /*-- bouton info album [Fin]--*/
 
 
@@ -565,38 +408,118 @@ body{
     color: white;
 }
 
-.StatusBoutonProcessing a{
+.StatusButtonProcessing a{
     color: green;
 }
 
-.StatusBoutonError a glyphicon {
+.StatusButtonError a glyphicon {
     color: #ff0000;
 }
 
-.BoutonTriangle a:hover{
+.ButtonTriangle a:hover{
     display:block;
     color:#004C93;
 }
 
-.BoutonTriangleProcessing a:hover{
+.ButtonTriangleProcessing a:hover{
     display:block;
     background-image:url(../images/page4/TriangleVert.png);
     background-repeat:no-repeat;
     color:#75940a;
 }
 
-.BoutonTriangleClic a{
+.ButtonTriangleClic a{
     background-image:url(../images/page4/CTriangleBackg.png);
 }
 
-.BoutonTriangleClicProcessing a{
+.ButtonTriangleClicProcessing a{
     background-image:url(../images/page4/TriangleVertBas.png);
 }
 
-.BoutonTriangleClicError a{
+.ButtonTriangleClicError a{
     background-image:url(../images/page4/TriangleRougeBas.png);
 }
 
+.LigneButton li a {
+    display:block;
+    background-repeat:no-repeat;
+    height:21px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:bold;
+    padding-left:22px;
+    padding-right:18px;
+    padding-top:5px;
+    color:#444444;
+}
+
+.LigneButton li a:hover {
+    color:#004C93;
+}
+
+.ButtonSuppAlbum a{
+    background-image:url(../images/page4/ASuppBackg.png);
+}
+
+.ButtonSuppAlbum a:hover{
+    background-image:url(../images/page4/BSuppBackg.png);
+    color:#ED6A56;
+}
+
+.ButtonEdit a{
+    background-image:url(../images/page4/AEditerBackg.png);
+}
+
+.ButtonEdit a:hover{
+    background-image:url(../images/page4/BEditerBackg.png);
+}
+
+.ButtonRegenTitle a {
+    background-image:url(../images/page4/AProgrammer.png);
+}
+
+.ButtonRegenTitle a:hover {
+    background-image:url(../images/page4/BProgrammer.png);
+}
+
+.ButtonMove a{
+    background-image:url(../images/page4/ADeplacerBackg.png);
+}
+
+.ButtonMove a:hover{
+    background-image:url(../images/page4/BDeplacerBackg.png);
+}
+
+.ButtonMoveAlbumPrive a{
+    background-image:url(../images/page4/ADeplacerAlbumPriver.png);
+}
+
+.ButtonMoveAlbumPrive a:hover{
+    background-image:url(../images/page4/BDeplacerAlbumPriver.png);
+}
+
+.ButtonProgrammer a {
+    background-image:url(../images/page4/AProgrammer.png);
+}
+
+.ButtonProgrammer a:hover{
+    background-image:url(../images/page4/BProgrammer.png);
+}
+
+.ButtonMoveAlbumPublic a{
+    background-image:url(../images/page4/ADeplacerAlbumPublic.png);
+}
+
+.ButtonMoveAlbumPublic a:hover{
+    background-image:url(../images/page4/BDeplacerAlbumPublic.png);
+}
+
+.ButtonInfoAlbum{
+    margin-left:12px;
+    margin-top:5px;
+    margin-bottom:5px;
+
+}
 
 /*--Bouton triangle [fin]--*/
 
@@ -622,55 +545,13 @@ body{
 }
 
 /*--bouton media--*/
-.LigneBouton{
+.LigneButton{
     margin-bottom:10px;
     margin-top:10px;
 }
 
-.LigneBouton li{
+.LigneButton li{
     display:inline-block;
-}
-
-.ButtonEdit a{
-    display:block;
-    background-image:url(../images/page4/AEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:21px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
-}
-
-.ButtonEdit a:hover{
-    display:block;
-    background-image:url(../images/page4/BEditerBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
-}
-
-.ButtonMove a{
-    display:block;
-    background-image:url(../images/page4/ADeplacerBackg.png);
-    background-repeat:no-repeat;
-    color:#444444;
-    height:21px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:bold;
-    padding-left:22px;
-    padding-right:18px;
-    padding-top:5px;
-}
-
-.ButtonMove a:hover{
-    display:block;
-    background-image:url(../images/page4/BDeplacerBackg.png);
-    background-repeat:no-repeat;
-    color:#004C93;
 }
 
 .ButtonCopy a{
@@ -724,12 +605,12 @@ body{
     text-decoration:none;
 }
 
-.BoutonPlus a, 
-.BoutonEmbed a, 
-.BoutonEZplayer a, 
-.BoutonPublication a, 
-.BoutonDownload a, 
-.BoutonULBCode a{
+.ButtonPlus a, 
+.ButtonEmbed a, 
+.ButtonEZplayer a, 
+.ButtonPublication a, 
+.ButtonDownload a, 
+.ButtonULBCode a{
     display:block;
     background-repeat:no-repeat;
     color:#444444;
@@ -741,69 +622,69 @@ body{
     padding-top:5px;
 }
 
-.BoutonPlus a:hover, 
-.BoutonEmbed a:hover, 
-.BoutonEZplayer a:hover, 
-.BoutonPublication a:hover, 
-.BoutonDownload a:hover, 
-.BoutonULBCode a:hover{
+.ButtonPlus a:hover, 
+.ButtonEmbed a:hover, 
+.ButtonEZplayer a:hover, 
+.ButtonPublication a:hover, 
+.ButtonDownload a:hover, 
+.ButtonULBCode a:hover{
     color:#004C93;
     font-size:12px;
 }
 
 
-.BoutonPlus a{    
+.ButtonPlus a{    
     background-image:url(../images/page4/AInfos.png);
     margin-top:5px;
 }
 
 
-.BoutonPlus a:hover {
+.ButtonPlus a:hover {
     background-image:url(../images/page4/BInfos.png); 
     margin-top:5px;   
 }
 
-.BoutonEmbed a{
+.ButtonEmbed a{
     background-image:url(../images/page4/AEmbedBackg.png);
 }
 
-.BoutonEmbed a:hover{
+.ButtonEmbed a:hover{
     background-image:url(../images/page4/BEmbedBackg.png);
 }
 
-.BoutonEZplayer a{
+.ButtonEZplayer a{
     background-image:url(../images/page4/AEZplayerBackg.png);
 }
 
-.BoutonEZplayer a:hover{
+.ButtonEZplayer a:hover{
     background-image:url(../images/page4/BEZplayerBackg.png);
 }
 
-.BoutonPublication a{
+.ButtonPublication a{
     background-image:url(../images/page4/AMap.png);
 }
 
-.BoutonPublication a:hover{
+.ButtonPublication a:hover{
     background-image:url(../images/page4/BMap.png);
 }
 
-.BoutonDownload a{
+.ButtonDownload a{
     background-image:url(../images/page4/AFlecheBackg.png);    
 }
 
-.BoutonDownload a:hover{
+.ButtonDownload a:hover{
     background-image:url(../images/page4/BFlecheBackg.png);    
 }
 
-.BoutonULBCode a{    
+.ButtonULBCode a{    
     background-image:url(../images/page4/ASlash.png);  
 }
 
-.BoutonULBCode a:hover{
+.ButtonULBCode a:hover{
     background-image:url(../images/page4/BSlash.png);      
 }
 
-.BoutonHD a, .BoutonSD a{
+.ButtonHD a, .ButtonSD a{
     display:inline-block;
     background-repeat:no-repeat;
     background-position: top;
@@ -816,15 +697,15 @@ body{
        /* padding-bottom: 10px; */
 }
 
-.BoutonHD a {
+.ButtonHD a {
     background-image:url(../images/AHD.png);    
 }
 
-.BoutonSD a {
+.ButtonSD a {
     background-image:url(../images/ASD.png);    
 }
 
-.BoutonHD a:hover, .BoutonSD a:hover{
+.ButtonHD a:hover, .ButtonSD a:hover{
     display:inline-block;
     background-repeat:no-repeat;
     background-position: top;
@@ -837,11 +718,11 @@ body{
 
 }
 
-.BoutonHD a:hover{
+.ButtonHD a:hover{
     background-image:url(../images/BHD.png);
 }
 
-.BoutonSD a:hover{
+.ButtonSD a:hover{
     background-image:url(../images/BSD.png);
 }
 
@@ -1008,7 +889,7 @@ body{
 
 
 
-.Video-slide-Bouton{
+.Video-slide-Button{
     margin-bottom:2px;
 }
 
@@ -1099,8 +980,8 @@ body{
 /* More options button */
 
 
-.BoutonMoreOptions a,
-.BoutonMoreOptionsClic a{
+.ButtonMoreOptions a,
+.ButtonMoreOptionsClic a{
     display:block;
     background-color:#e9e9e9;
     background-repeat:no-repeat;
@@ -1121,21 +1002,21 @@ body{
     padding-right:10px; */
 }
 
-.BoutonMoreOptions a {    
+.ButtonMoreOptions a {    
     background-image:url(../images/page4/ATriangleBackg.png);
 }
 
-.BoutonMoreOptionsClic a{
+.ButtonMoreOptionsClic a{
     background-image:url(../images/page4/BTriangleBackg.png);
     color:#004b93;
 }
 
-.BoutonMoreOptions a:hover{
+.ButtonMoreOptions a:hover{
     background-image:url(../images/page4/BTriangleBackg.png);
     color:#004b93;
 }
 
-.BoutonMoreOptionsClic a:hover{
+.ButtonMoreOptionsClic a:hover{
     background-image:url(../images/page4/BTriangleBackg.png);
     color:#004b93;
 }

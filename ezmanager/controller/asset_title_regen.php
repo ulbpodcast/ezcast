@@ -3,8 +3,6 @@
 function index($param = array()) {
     global $input;
     global $repository_path;
-	
-	
 
     //
     // Access checks
@@ -14,10 +12,5 @@ function index($param = array()) {
         log_append('warning', 'view_asset_details: tried to access album ' . $input['album'] . ' without permission');
         die;
     }
-
-	update_title($input['album'],$input['asset']);
-
-
-
-    // require_once template_getpath('popup_album_successfully_deleted.php');
+    update_title($input['album'],$input['asset']);
 }

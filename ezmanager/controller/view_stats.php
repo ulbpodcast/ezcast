@@ -57,10 +57,9 @@ function load_stats($album) {
     require_once dirname(__FILE__) . '/../lib_sql_stats.php';
     
     $stats = array();
-    $stats['album'] = db_stats_album_get_view_comment($album);
-    $stats['video'] = db_stats_video_get_view_comment($album);
-    $stats['descriptive'] = array(
-            'threads' => 
-                db_stats_album_threads_get($album));
+    $stats['album'] = db_stats_album_get_month_comment($album);
+    $stats['video'] = db_stats_video_get_month_comment($album);
+    $stats['descriptive'] = db_stats_album_infos_get($album);
+    $stats['descriptive']['threads'] = db_stats_album_threads_get($album);
     return $stats;
 }

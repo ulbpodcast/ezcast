@@ -11,32 +11,33 @@ if(file_exists('config.inc')) {
  
 
 function stats_statements_get() {
-    $table_stats_infos = "stats_video_infos";
+    $table_stats_month_infos = "stats_video_month_infos";
     $table_stats_view = "stats_video_view";
+    $table_stats_infos = "stats_video_infos";
     $table_thread = "threads";
     
     return array(
             'album_info_empty' => 
                 'SELECT 1 ' . 
-                'FROM ' . db_gettable($table_stats_infos) . ' ' .
+                'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
                 'WHERE album = :album ' .
                 'LIMIT 1;',
         
-            'album_get_view_comment' =>
+            'album_get_month_comment' =>
                 'SELECT month, '.
                     'SUM(nbr_comment) AS total_comment, ' .
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
-                'FROM ' . db_gettable($table_stats_infos) . ' ' .
+                'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
                 'WHERE album = :album ' .
                 'GROUP BY month;',
         
-            'video_get_view_comment' => 
+            'video_get_month_comment' => 
                 'SELECT asset, ' . 
                     'SUM(nbr_comment) AS total_comment, ' .
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
-                'FROM ' . db_gettable($table_stats_infos) . ' ' .
+                'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
                 'WHERE album = :album ' .
                 'GROUP BY asset;',
         
@@ -48,6 +49,14 @@ function stats_statements_get() {
                     'asset = :asset ' .
                 'GROUP BY view_time ' .
                 'ORDER BY video_time;',
+        
+            'album_get_info' => 
+                'SELECT SUM(nbr_bookmark_personal) AS bookmark_personal, ' .
+                    'SUM(nbr_bookmark_official) AS bookmark_official, ' .
+                    'SUM(nbr_access) AS access ' .
+                'FROM ' . db_gettable($table_stats_infos) . ' ' .
+                'WHERE album = :album '.
+                'GROUP BY album;',
         
             'threads_by_album_count' =>
                 'SELECT count(*) '.
@@ -77,13 +86,13 @@ function db_stats_album_empty($album) {
  * @param album name
  * @global array $statements
  */
-function db_stats_album_get_view_comment($album) {
+function db_stats_album_get_month_comment($album) {
     global $statements;
     
-    $statements['album_get_view_comment']->bindParam(':album', $album);
+    $statements['album_get_month_comment']->bindParam(':album', $album);
     
-    $statements['album_get_view_comment']->execute();
-    return $statements['album_get_view_comment']->fetchAll(PDO::FETCH_ASSOC);
+    $statements['album_get_month_comment']->execute();
+    return $statements['album_get_month_comment']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -91,13 +100,13 @@ function db_stats_album_get_view_comment($album) {
  * @param album name
  * @global array $statements
  */
-function db_stats_video_get_view_comment($album) {
+function db_stats_video_get_month_comment($album) {
     global $statements;
     
-    $statements['video_get_view_comment']->bindParam(':album', $album);
+    $statements['video_get_month_comment']->bindParam(':album', $album);
     
-    $statements['video_get_view_comment']->execute();
-    return $statements['video_get_view_comment']->fetchAll(PDO::FETCH_ASSOC);
+    $statements['video_get_month_comment']->execute();
+    return $statements['video_get_month_comment']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -131,4 +140,20 @@ function db_stats_album_threads_get($album) {
     $statements['threads_by_album_count']->execute();
     $result = $statements['threads_by_album_count']->fetchAll(PDO::FETCH_COLUMN);
     return count($result) > 0 ? $result[0] : 0;
+}
+
+/**
+ * Get informations about an album (access and bookmarks)
+ * 
+ * @global array $statements
+ * @param string $album name
+ * @return array with access, bookmarks_public, bookmarks_private
+ */
+function db_stats_album_infos_get($album) {
+    global $statements;
+    
+    $statements['album_get_info']->bindParam(':album', $album);
+    
+    $statements['album_get_info']->execute();
+    return $statements['album_get_info']->fetchAll(PDO::FETCH_ASSOC);
 }

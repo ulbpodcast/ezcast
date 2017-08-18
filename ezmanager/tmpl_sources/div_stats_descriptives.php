@@ -44,7 +44,7 @@ echo '</pre>';
                 </tr>
                 <tr>
                     <td>Nombre de discussions sur les vidéos</td>
-                    <td>9</td> 
+                    <td><?php echo $stats['descriptive']['threads']; ?></td> 
                 </tr>
             </tbody>
         </table>

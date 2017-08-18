@@ -12,7 +12,7 @@
                         echo '<td>';
                             echo $tbusercourse[$i]['user_ID'];
                         echo '</td>';
-                        if (TRUE || count($tbusercourse) != 1) { // avoid suppression of the last admin
+                        if (count($tbusercourse) != 1) { // avoid suppression of the last admin
                             echo '<td>';?>
                                 <a class="btn-xs btn btn-danger delete_user_course pointer" id="delete_user_course"
                                     onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#delete_user_course'));

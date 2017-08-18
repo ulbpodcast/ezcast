@@ -6,20 +6,10 @@
 <div class="modal-body">
     <center>
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
-        <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#rss_confirm'));
-                $('#modal').modal('show'); }, 500);"
-            href="index.php?action=reset_rss&album=<?php echo $album; ?>" 
-            data-dismiss="modal" id="rss_confirm">
+        <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#regen_title'));}, 500);"
+            href="index.php?action=regen_title&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>" 
+            data-dismiss="modal" id="regen_title">
             ®OK®
         </a>
     </center>
-</div>
-
-
-<div class="popup" id="popup_regen_title">
-    <h2>®Regen_Intro® "<?php echo htmlspecialchars($title); ?>"?</h2>
-    <span class="Bouton"> <a href="javascript:close_popup();"><span>®Cancel®</span></a></span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span class="Bouton"> <a href="javascript:popup_asset_regentitle_callback('<?php echo $album; ?>', '<?php 
-    echo $asset_name; ?>');"><span>®OK®</span></a></span>
 </div>

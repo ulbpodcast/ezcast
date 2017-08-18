@@ -36,7 +36,7 @@ Before calling this template, please define the following variables:
 -->
 <div id="div_album_header">
     <div class="BlocInfoAlbum">
-            <div class="BoutonInfoAlbum"> 
+            <div class="ButtonInfoAlbum"> 
                 <span class="TitreCour">
                     <?php echo (isset($course_code_public) && $course_code_public !="") ? $course_code_public : $album_id; ?> |
                     <?php echo $title; ?> | 

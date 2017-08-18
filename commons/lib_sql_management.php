@@ -906,33 +906,33 @@ function db_get_stream_info($cours_id,$asset){
 }
 
 function get_anon_assets($search=""){
-	global $statements;
-	$search='%'.$search.'%';
+    global $statements;
+    $search='%'.$search.'%';
 	
-	$statements['get_anon_assets']->bindParam(':search', $search);
-	$statements['get_anon_assets']->execute();
-	$res=$statements['get_anon_assets']->fetchAll();
-	// file_put_contents('/home/arwillame/log/test1234DB.txt',"RES : ".json_encode($res));
+    $statements['get_anon_assets']->bindParam(':search', $search);
+    $statements['get_anon_assets']->execute();
+    $res=$statements['get_anon_assets']->fetchAll();
+    // file_put_contents('/home/arwillame/log/test1234DB.txt',"RES : ".json_encode($res));
 
-	// if(!isset($infos))$infos=null;
-	return $res;	
+    // if(!isset($infos))$infos=null;
+    return $res;	
 }
 
 
 function db_get_asset_info($album,$asset){
-	global $statements;
+    global $statements;
 	
-	$statements['get_asset_info']->bindParam(':cours_id', $album);
+    $statements['get_asset_info']->bindParam(':cours_id', $album);
     $statements['get_asset_info']->bindParam(':name', $asset);
-	$statements['get_asset_info']->execute();
-	$res=$statements['get_asset_info']->fetchAll();
+    $statements['get_asset_info']->execute();
+    $res=$statements['get_asset_info']->fetchAll();
 
-	// if(!isset($infos))$infos=null;
-	return $res;	
+    // if(!isset($infos))$infos=null;
+    return $res;	
 }
 
 function db_alter_asset($album,$asset,$title,$description,$token,$anon){
-	 global $statements;
+    global $statements;
 
     $statements['asset_alter']->bindParam(':cours_id', $album);
     $statements['asset_alter']->bindParam(':name', $asset);
@@ -946,7 +946,7 @@ function db_alter_asset($album,$asset,$title,$description,$token,$anon){
 
 
 function db_insert_asset($album,$asset,$title,$description,$token,$anon){
-	 global $statements;
+    global $statements;
 
     $statements['asset_create']->bindParam(':cours_id', $album);
     $statements['asset_create']->bindParam(':name', $asset);
@@ -959,7 +959,7 @@ function db_insert_asset($album,$asset,$title,$description,$token,$anon){
 }
 
 function db_delete_asset($album,$asset){
-	 global $statements;
+    global $statements;
 
     $statements['delete_asset']->bindParam(':cours_id', $album);
     $statements['delete_asset']->bindParam(':name', $asset);

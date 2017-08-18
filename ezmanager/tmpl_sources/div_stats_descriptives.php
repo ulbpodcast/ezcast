@@ -23,6 +23,10 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+
+echo '<pre>';
+print_r($stats);
+echo '</pre>';
 ?>
 
 <div id="div_stats_descriptives">
@@ -40,7 +44,7 @@
                 </tr>
                 <tr>
                     <td>Nombre de discussions sur les vidéos</td>
-                    <td>9</td> 
+                    <td><?php echo $stats['descriptive']['threads']; ?></td> 
                 </tr>
             </tbody>
         </table>

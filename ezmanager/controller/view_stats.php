@@ -11,11 +11,13 @@ function index($param = array()) {
     global $ezplayer_url;
     global $enable_moderator;
     global $enable_anon_access_control;
+    global $trace_on;
     
-    if (isset($input['album']))
+    if (isset($input['album'])) {
         $album = $input['album'];
-    else
+    } else {
         $album = $_SESSION['podman_album'];
+    }
     $current_album = $album;
     
     ezmam_repository_path($repository_path);
@@ -43,9 +45,21 @@ function index($param = array()) {
     $album_name = suffix_remove($album); // "user-friendly" album name, used for display
     $title = choose_title_from_metadata($metadata);
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
-    $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
+    
+    $stats = load_stats($album);
     
     $current_tab = 'stats';
     include template_getpath('div_album_header.php');
     include template_getpath('div_stats_descriptives.php');
+}
+
+function load_stats($album) {
+    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    
+    $stats = array();
+    $stats['album'] = db_stats_album_get_month_comment($album);
+    $stats['video'] = db_stats_video_get_month_comment($album);
+    $stats['descriptive'] = db_stats_album_infos_get($album);
+    $stats['descriptive']['threads'] = db_stats_album_threads_get($album);
+    return $stats;
 }

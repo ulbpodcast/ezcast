@@ -5,7 +5,6 @@ class View_per_time extends Module {
     private static $SPLIT_TIME = 30;
 
     private $saved_data = array();
-    private $month;
 
 
     function analyse_line($date, $timestamp, $session, $ip, $netid, $level, $action, $other_info = NULL) {
@@ -16,7 +15,6 @@ class View_per_time extends Module {
             $type = trim($other_info[2]);
             $start = trim($other_info[3]);
             $play_time = trim($other_info[4]);
-            $this->month = date('m-Y', $timestamp);
 
             if(!array_key_exists($album, $this->saved_data)) {
                 $this->saved_data[$album] = array($asset => array());
@@ -59,20 +57,19 @@ class View_per_time extends Module {
 
     function save_to_sql($album, $asset, $nbr_view, $video_time) {
         $this->logger->debug('[view_per_time] save sql: album:' . $album . ' | asset: ' . $asset . 
-            ' | nbr_view: ' . $nbr_view . ' | video_time: ' . $video_time . ' | month: ' . $this->month);
+            ' | nbr_view: ' . $nbr_view . ' | video_time: ' . $video_time);
 
         $db = $this->database->get_database_object();
         $query = $db->prepare('INSERT INTO ' . $this->database->get_table('stats_video_view') . ' ' .
-                    '(asset, album, nbr_view, video_time, month) ' .
-                    'VALUES(:asset, :album, :nbr_view, :video_time, :month) '.
+                    '(asset, album, nbr_view, video_time) ' .
+                    'VALUES(:asset, :album, :nbr_view, :video_time) '.
                 'ON DUPLICATE KEY UPDATE ' .
                     'nbr_view =  nbr_view + :nbr_view;');
         $query->execute(array(
                 ':asset' => $asset,
                 ':album' => $album,
                 ':nbr_view' => $nbr_view,
-                ':video_time' => $video_time,
-                ':month' => $this->month
+                ':video_time' => $video_time
             ));
     }
 

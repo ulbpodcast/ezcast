@@ -1,9 +1,10 @@
 <?php
 
 abstract class Module {
-    function __construct($database) {
+    function __construct($database, $repos_folder) {
         $this->logger = new Logs();
         $this->database = $database;
+        $this->repos_folder = $repos_folder;
 
         $this->logger->info('Module: ' . get_class($this) . ' LOAD !');
     }

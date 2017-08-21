@@ -1,2 +1,0 @@
-/var/lib/ezcast/ezplayer/ezplayer_traces//2017-08-16.trace
-/var/lib/ezcast/ezplayer/ezplayer_traces//2017-08-18.trace

@@ -10,7 +10,7 @@ require_once '../config.inc';
 $all_logs = FALSE;
 $modules_folder = 'modules';
 $trace_folder = $ezplayer_trace_path;
-
+$repos_folder = $repository_basedir . "/repository/";
 
 class Logs {
 
@@ -53,11 +53,12 @@ class Read_Logs {
 
     const FILE_ALREADY_CHECK_PATH = 'checked_file.txt';
 
-    function __construct($database, $folder_traces = '.', $folder_module = 'modules', $all_logs = FALSE) {
+    function __construct($database, $repos_folder, $folder_traces = '.', $folder_module = 'modules', $all_logs = FALSE) {
         $this->logger = new Logs();
         $this->database = $database;
 
         $this->folder_traces = $folder_traces;
+        $this->repos_folder = $repos_folder;
         $this->folder_module = $folder_module;
 
         $this->all_modules = array();
@@ -84,7 +85,7 @@ class Read_Logs {
             $module_name = preg_replace("/_module.php/", "", basename($module));
 
             try {
-                $this->all_modules[] = new $module_name($this->database);
+                $this->all_modules[] = new $module_name($this->database, $this->repos_folder);
             } catch(Exception $e) {
                 $this->logger->warn('Module ' . $module_name . ' could not be load !');
                 var_dump($e->getMessage());
@@ -244,5 +245,5 @@ try {
 }
 echo "Connect to database\n";
 
-new Read_Logs($database, $trace_folder, $modules_folder, $all_logs);
+new Read_Logs($database, $repos_folder, $trace_folder, $modules_folder, $all_logs);
 

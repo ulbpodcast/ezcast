@@ -20,7 +20,6 @@
 class Infos_per_month extends Module {
 
     private static $VIEW_MIN_TIME = 60;
-    private static $FOLDER = 'repository';
 
     private $sql_data = array();
     private $saved_view_data = array();
@@ -197,7 +196,7 @@ class Infos_per_month extends Module {
     }
 
     private function get_user_view_file_path($album, $asset) {
-        return './' . self::$FOLDER . '/' . $album . '/' . $asset . '/' . 'user_view.txt';
+        return './' . $this->repos_folder . '/' . $album . '/' . $asset . '/' . 'user_view.txt';
     }
 
 }

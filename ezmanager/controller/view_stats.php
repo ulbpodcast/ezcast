@@ -59,7 +59,14 @@ function load_stats($album) {
     $stats = array();
     $stats['album'] = db_stats_album_get_month_comment($album);
     $stats['video'] = db_stats_video_get_month_comment($album);
-    $stats['descriptive'] = db_stats_album_infos_get($album);
+    $stats['descriptive'] = array(
+        'bookmark_personal' => 0, 
+        'bookmark_official' => 0, 
+        'access' => 0);
+    $album_infos = db_stats_album_infos_get($album);
+    if(count($album_infos) > 0) {
+        $stats['descriptive'] = $album_infos[0];
+    }
     $stats['descriptive']['threads'] = db_stats_album_threads_get($album);
     return $stats;
 }

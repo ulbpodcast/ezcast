@@ -36,11 +36,15 @@ echo '</pre>';
             <tbody>
                 <tr>
                     <td>Nombre d'accès aux vidéos</td>
-                    <td>6561</td> 
+                    <td><?php echo $stats['descriptive']['access']; ?></td> 
                 </tr>
                 <tr>
-                    <td>Nombre de signets déposés sur les vidéos</td>
-                    <td>2</td> 
+                    <td>Nombre de signets officiel déposés sur les vidéos</td>
+                    <td><?php echo $stats['descriptive']['bookmark_official']; ?></td> 
+                </tr>
+                <tr>
+                    <td>Nombre de signets personnel déposés sur les vidéos</td>
+                    <td><?php echo $stats['descriptive']['bookmark_personal']; ?></td> 
                 </tr>
                 <tr>
                     <td>Nombre de discussions sur les vidéos</td>

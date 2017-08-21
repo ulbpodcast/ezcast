@@ -71,13 +71,13 @@ class Infos_per_month extends Module {
 
             if(!array_key_exists($netid, $this->saved_view_data[$album][$asset][$key_unique_netid])) {
                 $this->saved_view_data[$album][$asset][$key_unique_netid][$netid] = $play_time;
-            } else {
+            } else if($this->saved_view_data[$album][$asset][$key_unique_netid][$netid] < self::$VIEW_MIN_TIME) {
                 $this->saved_view_data[$album][$asset][$key_unique_netid][$netid] += $play_time;
             }
 
-            if(!array_key_exists($netid, $this->saved_view_data[$album][$asset]['total'])) {
+            if(!array_key_exists($session, $this->saved_view_data[$album][$asset]['total'])) {
                 $this->saved_view_data[$album][$asset]['total'][$session] = $play_time;
-            } else {
+            } else if($this->saved_view_data[$album][$asset]['total'][$session] < self::$VIEW_MIN_TIME) {
                 $this->saved_view_data[$album][$asset]['total'][$session] += $play_time;
             }
 
@@ -110,7 +110,7 @@ class Infos_per_month extends Module {
 
                 foreach ($asset_data['unique_session'] as $netid => $value) {
                     if($value >= self::$VIEW_MIN_TIME) {
-                        $this->sql_data[$album][$asset]['unique']++;
+                        $this->sql_data[$album][$asset]['nbr_view_unique']++;
                     }
                 }
             }
@@ -189,7 +189,10 @@ class Infos_per_month extends Module {
         } else {
             $data = $netid;
         }
-        mkdir(dirname($path_file));
+        $dir_path = dirname($path_file);
+        if (!file_exists($path_file)) {
+            mkdir($dir_path, 0777, TRUE);
+        }
         file_put_contents($path_file, $data, FILE_APPEND);
     }
 

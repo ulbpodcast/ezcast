@@ -63,6 +63,7 @@ class EventType {
     const MANAGER_SCHEDULING                 = "manager_scheduling";
     const MANAGER_RENDERING                  = "manager_rendering";
     const MANAGER_EXTERNAL_STREAM            = "manager_external_stream";
+    const MANAGER_ASSET_COPY                 = "manager_asset_copy";
     
     // EZRenderer
     
@@ -71,69 +72,70 @@ class EventType {
     
     // index by EventType. Do NOT change already existing values unless you're ready to loose the EventType of all previous logs
     public static $event_type_id = array(
-       // Commons: 0->999
-       EventType::TEST                                       => 0,
-       EventType::LOGGER                                     => 1,
-       EventType::ASSET_CREATED                              => 2,
-       EventType::ASSET_FINALIZED                            => 3,
-       EventType::ASSET_RECORD_END                           => 4,
-       EventType::PHP                                        => 5,
-       EventType::ASSET_CANCELED                             => 6,
+        // Commons: 0->999
+        EventType::TEST                                       => 0,
+        EventType::LOGGER                                     => 1,
+        EventType::ASSET_CREATED                              => 2,
+        EventType::ASSET_FINALIZED                            => 3,
+        EventType::ASSET_RECORD_END                           => 4,
+        EventType::PHP                                        => 5,
+        EventType::ASSET_CANCELED                             => 6,
         
-       // Recorder: 1000->1999
-       EventType::RECORDER_DB                                => 1000,
-       EventType::RECORDER_UPLOAD_WRONG_METADATA             => 1001,
-       EventType::RECORDER_CAPTURE_POST_PROCESSING           => 1002,
-       EventType::RECORDER_UPLOAD_TO_EZCAST                  => 1003,
-       EventType::RECORDER_PUSH_STOP                         => 1004,
-       EventType::RECORDER_REQUEST_TO_MANAGER                => 1005,
-       EventType::RECORDER_FFMPEG_INIT                       => 1006,
-       EventType::RECORDER_FFMPEG_STOP                       => 1007,
-       EventType::RECORDER_MERGE_MOVIES                      => 1008,
-       EventType::RECORDER_LOG_SYNC                          => 1009,
-       EventType::RECORDER_PUBLISH                           => 1010,
-       EventType::RECORDER_USER_SUBMIT_INFO                  => 1011,
-       EventType::RECORDER_CAPTURE_INIT                      => 1012,
-       EventType::RECORDER_PAUSE_RESUME                      => 1013,
-       EventType::RECORDER_START                             => 1014,
-       EventType::RECORDER_FINALIZE                          => 1015,
-       EventType::RECORDER_INFO_GET                          => 1016,
-       EventType::RECORDER_CANCEL                            => 1017,
-       EventType::RECORDER_FORCE_QUIT                        => 1018,
-       EventType::RECORDER_LOGIN                             => 1019,
-       EventType::RECORDER_STOP                              => 1020,
-       EventType::RECORDER_METADATA                          => 1021,
-       EventType::RECORDER_SET_STATUS                        => 1022,
-       EventType::RECORDER_REMOTE_CALL                       => 1023,
-       EventType::RECORDER_TIMEOUT_MONITORING                => 1024,
-       EventType::RECORDER_CAM_MANAGEMENT                    => 1025,
-       EventType::RECORDER_STREAMING                         => 1026,
-       EventType::RECORDER_SOUND_DETECTION                   => 1027,
-       EventType::RECORDER_FFMPEG_CUTLIST                    => 1028,
-       EventType::RECORDER_FFMPEG_PROCESS                    => 1029,
-       EventType::RECORDER_MODULE_MONIT                      => 1030,
-       EventType::RECORDER_SOUND_BACKUP                      => 1031,
+        // Recorder: 1000->1999
+        EventType::RECORDER_DB                                => 1000,
+        EventType::RECORDER_UPLOAD_WRONG_METADATA             => 1001,
+        EventType::RECORDER_CAPTURE_POST_PROCESSING           => 1002,
+        EventType::RECORDER_UPLOAD_TO_EZCAST                  => 1003,
+        EventType::RECORDER_PUSH_STOP                         => 1004,
+        EventType::RECORDER_REQUEST_TO_MANAGER                => 1005,
+        EventType::RECORDER_FFMPEG_INIT                       => 1006,
+        EventType::RECORDER_FFMPEG_STOP                       => 1007,
+        EventType::RECORDER_MERGE_MOVIES                      => 1008,
+        EventType::RECORDER_LOG_SYNC                          => 1009,
+        EventType::RECORDER_PUBLISH                           => 1010,
+        EventType::RECORDER_USER_SUBMIT_INFO                  => 1011,
+        EventType::RECORDER_CAPTURE_INIT                      => 1012,
+        EventType::RECORDER_PAUSE_RESUME                      => 1013,
+        EventType::RECORDER_START                             => 1014,
+        EventType::RECORDER_FINALIZE                          => 1015,
+        EventType::RECORDER_INFO_GET                          => 1016,
+        EventType::RECORDER_CANCEL                            => 1017,
+        EventType::RECORDER_FORCE_QUIT                        => 1018,
+        EventType::RECORDER_LOGIN                             => 1019,
+        EventType::RECORDER_STOP                              => 1020,
+        EventType::RECORDER_METADATA                          => 1021,
+        EventType::RECORDER_SET_STATUS                        => 1022,
+        EventType::RECORDER_REMOTE_CALL                       => 1023,
+        EventType::RECORDER_TIMEOUT_MONITORING                => 1024,
+        EventType::RECORDER_CAM_MANAGEMENT                    => 1025,
+        EventType::RECORDER_STREAMING                         => 1026,
+        EventType::RECORDER_SOUND_DETECTION                   => 1027,
+        EventType::RECORDER_FFMPEG_CUTLIST                    => 1028,
+        EventType::RECORDER_FFMPEG_PROCESS                    => 1029,
+        EventType::RECORDER_MODULE_MONIT                      => 1030,
+        EventType::RECORDER_SOUND_BACKUP                      => 1031,
         
-       // EZAdmin: 2000->2999
+        // EZAdmin: 2000->2999
        
-       // EZManager: 3000->3999 
-       EventType::MANAGER_LOG_SYNC                           => 3000,
-       EventType::MANAGER_UPLOAD_TO_EZCAST                   => 3001,
-       EventType::MANAGER_REQUEST_FROM_RECORDER              => 3002,
-       EventType::MANAGER_MAM_INSERT                         => 3003,
-       EventType::MANAGER_SUBMIT_RENDERING                   => 3004,
-       EventType::MANAGER_FILL_STATUS                        => 3005,
-       EventType::MANAGER_ASSET_DELETE                       => 3006,
-       EventType::MANAGER_ASSET_MOVE                         => 3007,
-       EventType::MANAGER_STREAMING                          => 3008,
-       EventType::MANAGER_BOOKMARKS                          => 3009,
-       EventType::MANAGER_SCHEDULING                         => 3010,
-       EventType::MANAGER_RENDERING                          => 3011,
-       EventType::MANAGER_EXTERNAL_STREAM                    => 3012,
+        // EZManager: 3000->3999 
+        EventType::MANAGER_LOG_SYNC                           => 3000,
+        EventType::MANAGER_UPLOAD_TO_EZCAST                   => 3001,
+        EventType::MANAGER_REQUEST_FROM_RECORDER              => 3002,
+        EventType::MANAGER_MAM_INSERT                         => 3003,
+        EventType::MANAGER_SUBMIT_RENDERING                   => 3004,
+        EventType::MANAGER_FILL_STATUS                        => 3005,
+        EventType::MANAGER_ASSET_DELETE                       => 3006,
+        EventType::MANAGER_ASSET_MOVE                         => 3007,
+        EventType::MANAGER_STREAMING                          => 3008,
+        EventType::MANAGER_BOOKMARKS                          => 3009,
+        EventType::MANAGER_SCHEDULING                         => 3010,
+        EventType::MANAGER_RENDERING                          => 3011,
+        EventType::MANAGER_EXTERNAL_STREAM                    => 3012,
+        EventType::MANAGER_ASSET_COPY                         => 3013,
         
-       // EZRenderer: 4000->4999
+        // EZRenderer: 4000->4999
         
-       // EZPlayer: 5000->5999
-       EventType::EZPLAYER_STREAMING                         => 5000,
+        // EZPlayer: 5000->5999
+        EventType::EZPLAYER_STREAMING                         => 5000,
     );
 }

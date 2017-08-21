@@ -50,11 +50,12 @@ for every album the user can create.
                 <table class="table table-hover text-left" >
                     <?php foreach($created_albums_list_with_descriptions as $destination_name => $destination_description) {
                         // sortir des template...
-			$course_code_public='';
-			$album_path = $repository_path . "/" . $destination_name."-pub";
-			$album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
-			if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
-                            $course_code_public = $album_metadata['course_code_public']; 
+                        global $repository_path;
+                        $course_code_public='';
+                        $album_path = $repository_path . "/" . $destination_name."-pub";
+                        $album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
+                        if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
+                                        $course_code_public = $album_metadata['course_code_public']; 
                         } else {
                             $course_code_public = $destination_name;
                         }

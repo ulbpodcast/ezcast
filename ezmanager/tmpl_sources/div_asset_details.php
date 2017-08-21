@@ -152,7 +152,7 @@ function print_info($info, $suffix = '') {
                 </span>
             </li> 
             <?php 
-            // add un flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
+            // add flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
             global $regenerate_title_mode;
             if ($regenerate_title_mode == 'manual' && isset($asset_metadata['add_title'])) { ?>
                 <li>

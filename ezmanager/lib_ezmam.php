@@ -197,13 +197,17 @@ function ezmam_album_list_metadata() {
     return $album_list;
 }
 
-function ezmam_album_course_public_name_get($album) {
+function ezmam_album_course_code_public_get($album) {
+    global $logger;
+    
     $album_metadata = ezmam_album_metadata_get($album);
-    if(isset($album_metadata['course_public_name']) 
-       && $album_metadata['course_public_name'] != '' ) {
-        $course_code_public = $album_metadata['course_public_name']; 
-    } else if(isset($album_metadata['name'])) {
+    if(   isset($album_metadata['course_code_public']) 
+       && $album_metadata['course_code_public'] != '' )
+        $course_code_public = $album_metadata['course_code_public']; 
+    else if(isset($album_metadata['name'])) {
         $course_code_public = $album_metadata['name'];
+    } else {
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Could not get course code from album $album", array(__FUNCTION__));
     }
     return $course_code_public;
 }

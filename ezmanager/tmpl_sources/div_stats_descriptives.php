@@ -23,34 +23,154 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-echo '<pre>';
-print_r($stats);
-echo '</pre>';
 ?>
 
 <div id="div_stats_descriptives">
     <div class="BlocPodcastMenu">
+        <div id="containerMonth" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+        <br />
+        <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+        <br />
         <br />
         <table class="table table-striped">
             <tbody>
                 <tr>
-                    <td>Nombre d'accès aux vidéos</td>
+                    <td>®Stats_access_video_nbr®</td>
                     <td><?php echo $stats['descriptive']['access']; ?></td> 
                 </tr>
                 <tr>
-                    <td>Nombre de signets officiel déposés sur les vidéos</td>
+                    <td>®Stats_bookmark_official_nbr®</td>
                     <td><?php echo $stats['descriptive']['bookmark_official']; ?></td> 
                 </tr>
                 <tr>
-                    <td>Nombre de signets personnel déposés sur les vidéos</td>
+                    <td>®Stats_bookmark_personal_nbr®</td>
                     <td><?php echo $stats['descriptive']['bookmark_personal']; ?></td> 
                 </tr>
                 <tr>
-                    <td>Nombre de discussions sur les vidéos</td>
+                    <td>®Stats_threads_nbr®</td>
                     <td><?php echo $stats['descriptive']['threads']; ?></td> 
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+Highcharts.setOptions({
+    lang: {
+        months: ["®month_01®", "®month_02®", "®month_03®", "®month_04®", "®month_05®", "®month_06®", "®month_07®", 
+            "®month_08®", "®month_09®", "®month_10®", "®month_11®", "®month_12®"]
+    }
+});
+    
+// Month graphic
+Highcharts.stockChart('containerMonth', {
+    chart: {
+        zoomType: 'x'
+    },
+    title: {
+        text: '®Graph_month_view®'
+    },
+    rangeSelector: {
+        inputDateFormat: "%b %Y",
+        inputEditDateFormat: "%Y-%m"
+    },
+    xAxis: {
+        tickInterval: 30 * 24 * 3600 * 1000,
+        dateTimeLabelFormats: { // don't display the dummy year
+            month: '%b \'%y',
+            year: '%Y'
+        }
+    },
+    yAxis: [{ // Primary yAxis
+        title: {
+            text: '®Graph_nbr_view®',
+            margin: 40
+        },
+        labels: {
+            align: "right",
+            x: 25
+        }
+        
+    }, { // Second yAxis
+        gridLineWidth: 0,
+        title: {
+            text: '®Graph_nbr_thread®'
+        },
+        opposite: false
+    }],
+    tooltip: {
+        shared: true,
+        xDateFormat: '%B %Y'
+    },
+    series: [{
+        name: '®Graph_nbr_total_view®',
+        type: 'column',
+        yAxis: 0,
+        data: <?php echo $stats['graph']['album']['str_totalview']; ?>
+
+    }, {
+        name: '®Graph_nbr_unique_view®',
+        type: 'column',
+        yAxis: 0,
+        data: <?php echo $stats['graph']['album']['str_uniqueview']; ?>
+
+    }, {
+        name: '®Graph_nbr_thread®',
+        type: 'spline',
+        data: <?php echo $stats['graph']['album']['str_comment']; ?>
+    }]
+});
+
+// Asset graphic
+Highcharts.chart('containerVideo', {
+    title: {
+        text: 'Vue par asset'
+    },
+    xAxis: {
+        categories: <?php echo $stats['graph']['video']['str_all_asset']; ?>,
+        min: 0,
+        max: 15,
+        scrollbar: {
+            enabled: true
+        }
+    },
+    yAxis: [{ // Primary yAxis
+        title: {
+            text: '®Graph_nbr_view®',
+            margin: 40
+        },
+        labels: {
+            align: "right",
+            x: 25
+        },
+        opposite: true
+        
+    }, { // Second yAxis
+        gridLineWidth: 0,
+        title: {
+            text: '®Graph_nbr_thread®'
+        },
+        opposite: false
+    }],
+    tooltip: {
+        shared: true
+    },
+    series: [{
+            type: 'column',
+            name: '®Graph_nbr_total_view®',
+            yAxis: 0,
+            data: <?php echo $stats['graph']['video']['str_total_view']; ?>
+        }, {
+            type: 'column',
+            name: '®Graph_nbr_unique_view®',
+            yAxis: 0,
+            data: <?php echo $stats['graph']['video']['str_unique_view']; ?>
+        }, {
+            type: 'spline',
+            name: '®Graph_nbr_thread®',
+            data: <?php echo $stats['graph']['video']['str_total_comment']; ?>
+        }]
+});
+
+</script>

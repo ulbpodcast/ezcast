@@ -27,10 +27,14 @@
 
 <div id="div_stats_descriptives">
     <div class="BlocPodcastMenu">
-        <div id="containerMonth" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-        <br />
-        <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-        <br />
+        <?php if(isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) { ?>
+            <div id="containerMonth" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+            <br />
+        <?php } ?>
+        <?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
+            <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+            <br />
+        <?php } ?>
         <br />
         <table class="table table-striped">
             <tbody>
@@ -59,118 +63,128 @@
 Highcharts.setOptions({
     lang: {
         months: ["®month_01®", "®month_02®", "®month_03®", "®month_04®", "®month_05®", "®month_06®", "®month_07®", 
-            "®month_08®", "®month_09®", "®month_10®", "®month_11®", "®month_12®"]
+            "®month_08®", "®month_09®", "®month_10®", "®month_11®", "®month_12®"],
+        shortMonths: ["®short_month_01®", "®short_month_02®", "®short_month_03®", "®short_month_04®", "®short_month_05®", 
+            "®short_month_06®", "®short_month_07®", "®short_month_08®", "®short_month_09®", "®short_month_10®", 
+            "®short_month_11®", "®short_month_12®"]
     }
 });
-    
-// Month graphic
-Highcharts.stockChart('containerMonth', {
-    chart: {
-        zoomType: 'x'
-    },
-    title: {
-        text: '®Graph_month_view®'
-    },
-    rangeSelector: {
-        inputDateFormat: "%b %Y",
-        inputEditDateFormat: "%Y-%m"
-    },
-    xAxis: {
-        tickInterval: 30 * 24 * 3600 * 1000,
-        dateTimeLabelFormats: { // don't display the dummy year
-            month: '%b \'%y',
-            year: '%Y'
-        }
-    },
-    yAxis: [{ // Primary yAxis
-        title: {
-            text: '®Graph_nbr_view®',
-            margin: 40
-        },
-        labels: {
-            align: "right",
-            x: 25
-        }
-        
-    }, { // Second yAxis
-        gridLineWidth: 0,
-        title: {
-            text: '®Graph_nbr_thread®'
-        },
-        opposite: false
-    }],
-    tooltip: {
-        shared: true,
-        xDateFormat: '%B %Y'
-    },
-    series: [{
-        name: '®Graph_nbr_total_view®',
-        type: 'column',
-        yAxis: 0,
-        data: <?php echo $stats['graph']['album']['str_totalview']; ?>
 
-    }, {
-        name: '®Graph_nbr_unique_view®',
-        type: 'column',
-        yAxis: 0,
-        data: <?php echo $stats['graph']['album']['str_uniqueview']; ?>
-
-    }, {
-        name: '®Graph_nbr_thread®',
-        type: 'spline',
-        data: <?php echo $stats['graph']['album']['str_comment']; ?>
-    }]
-});
-
-// Asset graphic
-Highcharts.chart('containerVideo', {
-    title: {
-        text: 'Vue par asset'
-    },
-    xAxis: {
-        categories: <?php echo $stats['graph']['video']['str_all_asset']; ?>,
-        min: 0,
-        max: 15,
-        scrollbar: {
-            enabled: true
-        }
-    },
-    yAxis: [{ // Primary yAxis
+<?php if(isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) { ?>
+    // Month graphic
+    Highcharts.stockChart('containerMonth', {
+        chart: {
+            zoomType: 'x'
+        },
         title: {
-            text: '®Graph_nbr_view®',
-            margin: 40
+            text: '®Graph_month_view®'
         },
-        labels: {
-            align: "right",
-            x: 25
+        rangeSelector: {
+            inputDateFormat: "%b %Y",
+            inputEditDateFormat: "%Y-%m"
         },
-        opposite: true
-        
-    }, { // Second yAxis
-        gridLineWidth: 0,
-        title: {
-            text: '®Graph_nbr_thread®'
+        xAxis: {
+            tickInterval: 30 * 24 * 3600 * 1000,
+            dateTimeLabelFormats: { // don't display the dummy year
+                month: '%b \'%y',
+                year: '%Y'
+            }
         },
-        opposite: false
-    }],
-    tooltip: {
-        shared: true
-    },
-    series: [{
-            type: 'column',
+        yAxis: [{ // Primary yAxis
+            title: {
+                text: '®Graph_nbr_view®',
+                margin: 40
+            },
+            labels: {
+                align: "right",
+                x: 25
+            }
+
+        }, { // Second yAxis
+            gridLineWidth: 0,
+            title: {
+                text: '®Graph_nbr_thread®'
+            },
+            opposite: false
+        }],
+        tooltip: {
+            shared: true,
+            xDateFormat: '%B %Y'
+        },
+        series: [{
             name: '®Graph_nbr_total_view®',
-            yAxis: 0,
-            data: <?php echo $stats['graph']['video']['str_total_view']; ?>
-        }, {
             type: 'column',
-            name: '®Graph_nbr_unique_view®',
             yAxis: 0,
-            data: <?php echo $stats['graph']['video']['str_unique_view']; ?>
+            data: <?php echo $stats['graph']['album']['str_totalview']; ?>
+
         }, {
-            type: 'spline',
+            name: '®Graph_nbr_unique_view®',
+            type: 'column',
+            yAxis: 0,
+            data: <?php echo $stats['graph']['album']['str_uniqueview']; ?>
+
+        }, {
             name: '®Graph_nbr_thread®',
-            data: <?php echo $stats['graph']['video']['str_total_comment']; ?>
+            type: 'spline',
+            yAxis: 1,
+            data: <?php echo $stats['graph']['album']['str_comment']; ?>
         }]
-});
+    });
+<?php } ?>
+
+
+<?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
+    // Asset graphic
+    Highcharts.chart('containerVideo', {
+        title: {
+            text: 'Vue par asset'
+        },
+        xAxis: {
+            categories: <?php echo $stats['graph']['video']['str_all_asset']; ?>,
+            min: 0,
+            max: 15,
+            scrollbar: {
+                enabled: true
+            }
+        },
+        yAxis: [{ // Primary yAxis
+            title: {
+                text: '®Graph_nbr_view®',
+                margin: 40
+            },
+            labels: {
+                align: "right",
+                x: 25
+            },
+            opposite: true
+
+        }, { // Second yAxis
+            gridLineWidth: 0,
+            title: {
+                text: '®Graph_nbr_thread®'
+            },
+            opposite: false
+        }],
+        tooltip: {
+            shared: true
+        },
+        series: [{
+                type: 'column',
+                name: '®Graph_nbr_total_view®',
+                yAxis: 0,
+                data: <?php echo $stats['graph']['video']['str_total_view']; ?>
+            }, {
+                type: 'column',
+                name: '®Graph_nbr_unique_view®',
+                yAxis: 0,
+                data: <?php echo $stats['graph']['video']['str_unique_view']; ?>
+            }, {
+                type: 'spline',
+                name: '®Graph_nbr_thread®',
+                yAxis: 1,
+                data: <?php echo $stats['graph']['video']['str_total_comment']; ?>
+            }]
+    });
+<?php } ?>
 
 </script>

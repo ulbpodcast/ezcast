@@ -465,6 +465,31 @@
         <label id="month_12" lang="fr">décembre</label>
         <label id="month_12" lang="en">December</label>
         
+        <label id="short_month_01" lang="fr">Jan</label>
+        <label id="short_month_01" lang="en">Jan</label>
+        <label id="short_month_02" lang="fr">Fév</label>
+        <label id="short_month_02" lang="en">Feb</label>
+        <label id="short_month_03" lang="fr">Mar</label>
+        <label id="short_month_03" lang="en">Mar</label>
+        <label id="short_month_04" lang="fr">Avr</label>
+        <label id="short_month_04" lang="en">Apr</label>
+        <label id="short_month_05" lang="fr">Mai</label>
+        <label id="short_month_05" lang="en">May</label>
+        <label id="short_month_06" lang="fr">Juin</label>
+        <label id="short_month_06" lang="en">Jun</label>
+        <label id="short_month_07" lang="fr">Juil</label>
+        <label id="short_month_07" lang="en">July</label>
+        <label id="short_month_08" lang="fr">Août</label>
+        <label id="short_month_08" lang="en">Aug</label>
+        <label id="short_month_09" lang="fr">Sep</label>
+        <label id="short_month_09" lang="en">Sep</label>
+        <label id="short_month_10" lang="fr">Oct</label>
+        <label id="short_month_10" lang="en">Oct</label>
+        <label id="short_month_11" lang="fr">Nov</label>
+        <label id="short_month_11" lang="en">Nov</label>
+        <label id="short_month_12" lang="fr">Déc</label>
+        <label id="short_month_12" lang="en">Dec</label>
+        
     </labels>
     
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->

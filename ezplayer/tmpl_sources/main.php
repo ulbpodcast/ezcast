@@ -11,12 +11,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
         <title>®ezplayer_page_title®</title>
         <meta name="description" content="EZPlayer is a video player to view EZCast video" />
-        <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
-        <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
-        <link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
-        <link rel="stylesheet" type="text/css" href="css/reveal.css" />
-        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
-    
+        <?php include_once template_getpath('head_css_js.php'); ?>
+        
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="#EZPlayer" />
         <meta name="twitter:title" content="EZPlayer (from EZCast)" /> <!-- Personalize with translation -->

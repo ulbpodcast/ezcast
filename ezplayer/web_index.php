@@ -628,7 +628,7 @@ function user_logged_in() {
 }
 
 function user_anonymous() {
-    return (isset($_SESSION['ezplayer_logged']) || isset($_SESSION['ezplayer_anonymous']));
+    return (isset($_SESSION['ezplayer_anonymous']));
 }
 
 /**

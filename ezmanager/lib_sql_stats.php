@@ -37,7 +37,7 @@ function stats_statements_get() {
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
                 'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
                 'WHERE album = :album ' .
-                'GROUP BY asset;',
+                'GROUP BY asset, asset_name;',
         
             'video_get_view_time' => 
                 'SELECT video_time, nbr_view ' .

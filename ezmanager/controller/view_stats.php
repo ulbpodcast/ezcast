@@ -129,7 +129,7 @@ function calcul_graph_video($all_video_data) {
     $result = array();
     if(count($all_video_data) > 0) {
         $result['display'] = TRUE;
-        $result['str_all_asset'] = json_encode(array_column($all_video_data, 'asset'));
+        $result['str_all_asset'] = json_encode(array_column($all_video_data, 'asset_name'));
         $result['str_total_view'] = json_encode(array_map('intval', array_column($all_video_data, 'total_view_total')));
         $result['str_unique_view'] = json_encode(array_map('intval', array_column($all_video_data, 'total_view_unique')));
     } else {

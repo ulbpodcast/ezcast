@@ -62,6 +62,7 @@ function statements_get(){
             'course_read' =>
                     'SELECT ' . 
                             db_gettable('courses') . '.course_code, ' .
+                            db_gettable('courses') . '.course_code_public, ' .
                             db_gettable('courses') . '.course_name, ' .
                             db_gettable('courses') . '.in_recorders, ' .
                             db_gettable('courses') . '.has_albums, ' .

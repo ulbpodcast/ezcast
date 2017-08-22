@@ -45,6 +45,9 @@
         db_users_courses_create($input['album'], $_SESSION['user_login']);
     }
     else{
+        $courseinfo = db_course_read($input['album']);
+        if(isset($courseinfo['course_code_public']) && $courseinfo['course_code_public'] != '' )$course_code_public = $courseinfo['course_code_public'];
+        else $course_code_public = $input['album'];
         $albumName = $input['album'];
         $idAlbum = $input['album'];
     }

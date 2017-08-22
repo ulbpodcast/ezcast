@@ -32,8 +32,8 @@ for every album the user can create.
                                     echo '<a href="index.php?action=copy_asset&from='.$album.'&to='.
                                             $destination_name.'-priv'.'&asset='.$asset_name.'" ' . 
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
-                                                '$("#copy_asset_'.$asset_name.'_priv"));$("#modal").modal("show"); }, 500);\' ' .
-                                            'data-dismiss="modal" id="copy_asset_'.$asset_name.'_priv" >';
+                                                '$("#copy_asset_'.$destination_name.'_priv"));$("#modal").modal("show"); }, 500);\' ' .
+                                            'data-dismiss="modal" id="copy_asset_'.$destination_name.'_priv" >';
                                     echo $course_code_public . ' (®private®)';
                                     echo '</a>';
                                 echo '</td>';
@@ -48,8 +48,8 @@ for every album the user can create.
                                     echo '<a href="index.php?action=copy_asset&from='.$album.'&to='.
                                             $destination_name.'-pub'.'&asset='.$asset_name.'" ' .
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
-                                                '$("#copy_asset_'.$asset_name.'_pub"));$("#modal").modal("show"); }, 500);\' ' .
-                                            'data-dismiss="modal" id="copy_asset_'.$asset_name.'_pub" >';
+                                                '$("#copy_asset_'.$destination_name.'_pub"));$("#modal").modal("show"); }, 500);\' ' .
+                                            'data-dismiss="modal" id="copy_asset_'.$destination_name.'_pub" >';
                                     echo $course_code_public . ' (®public®)';
                                     echo '</a>';
                                 echo '</td>';

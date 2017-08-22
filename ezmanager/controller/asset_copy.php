@@ -45,7 +45,7 @@ function index($param = array()) {
     
     $logger->log(EventType::MANAGER_ASSET_COPY, LogLevel::NOTICE, 'Started copying asset '. $input['asset'] . ' from ' 
              . $input['from'] . ' to ' . $input['to'] , array(basename(__FILE__)), $input['asset']);
-     
+
     $res = ezmam_asset_copy($input['asset'], $input['from'], $input['to']);
     if (!$res) {
         error_print_message(ezmam_last_error());

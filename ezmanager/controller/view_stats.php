@@ -67,8 +67,8 @@ function load_stats($album) {
     require_once dirname(__FILE__) . '/../lib_sql_stats.php';
     
     $stats = array();
-    $all_album_data = db_stats_album_get_month_comment($album);
-    $all_video_data = db_stats_video_get_month_comment($album);
+    $all_album_data = db_stats_album_get_month_data($album);
+    $all_video_data = db_stats_video_get_month_data($album);
     $stats['descriptive'] = array(
         'bookmark_personal' => 0, 
         'bookmark_official' => 0, 
@@ -88,7 +88,6 @@ function load_stats($album) {
 function calcul_graph_album($all_album_data) {
     $result = array();
     $data = array(
-            'comment' => array(),
             'total_view' => array(),
             'unique_view' => array()
             );
@@ -99,29 +98,23 @@ function calcul_graph_album($all_album_data) {
         foreach($all_album_data as $album_data) {
             // TODO remove: it's only for debug
     //        $strTime = strtotime("02-" . $album_data['month']);
-    //        $data['comment'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_comment']+2;
     //        $data['total_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_total']-200;
     //        $data['unique_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_unique']-10;
     //        
-    //        $data['comment'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_comment'];
     //        $data['total_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_total']-100;
     //        $data['unique_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_unique']-50;
     //        
-    //        $data['comment'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_comment']+10;
     //        $data['total_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_total']-30;
     //        $data['unique_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_unique']-120;
     //        
-    //        $data['comment'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_comment']+6;
     //        $data['total_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_total']-6;
     //        $data['unique_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_unique']-400;
 
             $time = strtotime("02-" . $album_data['month']) . "000";
-            $data['comment'][$time] = $album_data['total_comment'];
             $data['total_view'][$time] = $album_data['total_view_total'];
             $data['unique_view'][$time] = $album_data['total_view_unique'];
         }
 
-        $result['str_comment'] = convertPHPArrayToJSArray($data['comment']);
         $result['str_totalview'] = convertPHPArrayToJSArray($data['total_view']);
         $result['str_uniqueview'] = convertPHPArrayToJSArray($data['unique_view']);
         
@@ -137,8 +130,6 @@ function calcul_graph_video($all_video_data) {
     if(count($all_video_data) > 0) {
         $result['display'] = TRUE;
         $result['str_all_asset'] = json_encode(array_column($all_video_data, 'asset'));
-        $comment = array_map('intval', array_column($all_video_data, 'total_comment'));
-        $result['str_total_comment'] = json_encode($comment);
         $result['str_total_view'] = json_encode(array_map('intval', array_column($all_video_data, 'total_view_total')));
         $result['str_unique_view'] = json_encode(array_map('intval', array_column($all_video_data, 'total_view_unique')));
     } else {

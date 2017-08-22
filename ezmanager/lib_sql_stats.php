@@ -23,18 +23,16 @@ function stats_statements_get() {
                 'WHERE album = :album ' .
                 'LIMIT 1;',
         
-            'album_get_month_comment' =>
+            'album_get_month_data' =>
                 'SELECT month, '.
-                    'SUM(nbr_comment) AS total_comment, ' .
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
                 'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
                 'WHERE album = :album ' .
                 'GROUP BY month;',
         
-            'video_get_month_comment' => 
+            'video_get_month_data' => 
                 'SELECT asset, ' . 
-                    'SUM(nbr_comment) AS total_comment, ' .
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
                 'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
@@ -81,31 +79,31 @@ function db_stats_album_empty($album) {
 }
 
 /**
- * Return all datas (view and comment) for an album and grouped by month
+ * Return all datas (view) for an album and grouped by month
  * @param album name
  * @global array $statements
  */
-function db_stats_album_get_month_comment($album) {
+function db_stats_album_get_month_data($album) {
     global $statements;
     
-    $statements['album_get_month_comment']->bindParam(':album', $album);
+    $statements['album_get_month_data']->bindParam(':album', $album);
     
-    $statements['album_get_month_comment']->execute();
-    return $statements['album_get_month_comment']->fetchAll(PDO::FETCH_ASSOC);
+    $statements['album_get_month_data']->execute();
+    return $statements['album_get_month_data']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
- * Return all datas (view and comment) for an album and grouped by video
+ * Return all datas (view) for an album and grouped by video
  * @param album name
  * @global array $statements
  */
-function db_stats_video_get_month_comment($album) {
+function db_stats_video_get_month_data($album) {
     global $statements;
     
-    $statements['video_get_month_comment']->bindParam(':album', $album);
+    $statements['video_get_month_data']->bindParam(':album', $album);
     
-    $statements['video_get_month_comment']->execute();
-    return $statements['video_get_month_comment']->fetchAll(PDO::FETCH_ASSOC);
+    $statements['video_get_month_data']->execute();
+    return $statements['video_get_month_data']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**

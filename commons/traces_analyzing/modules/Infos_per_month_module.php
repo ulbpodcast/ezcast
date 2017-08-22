@@ -29,20 +29,7 @@ class Infos_per_month extends Module {
     function analyse_line($date, $timestamp, $session, $ip, $netid, $level, $action, $other_info = NULL) {
         $this->month = date('m-Y', $timestamp);
 
-        if(in_array($action, array("thread_add", "comment_add", "comment_reply_add"))) {
-            // thread_add | Album | asset | video_time | titre | ?
-            // comment_add | Album | asset | id_thread
-            // comment_reply_add | Album | asset | 
-
-            $album = trim($other_info[0]);
-            $asset = trim($other_info[1]);
-            $this->add_album_asset_sql_data($album, $asset);
-            if(!array_key_exists('nbr_comment', $this->sql_data[$album][$asset])) {
-                $this->sql_data[$album][$asset]['nbr_comment'] = 0;
-            }
-            ++$this->sql_data[$album][$asset]['nbr_comment'];
-
-        } else if($action == "video_play_time") {
+        if($action == "video_play_time") {
             // other_info: current_album, current_asset, type, last_play_start, play_time
             $album = trim($other_info[0]);
             $asset = trim($other_info[1]);
@@ -120,18 +107,14 @@ class Infos_per_month extends Module {
             foreach ($album_data as $asset => $asset_data) {
                 $nbr_view_total = 0;
                 $nbr_view_unique = 0;
-                $nbr_comment = 0;
 
                 if(array_key_exists('nbr_view_total', $asset_data)) {
                     $nbr_view_total = $asset_data['nbr_view_total'];
                     $nbr_view_unique = $asset_data['nbr_view_unique'];
                 }
-                if(array_key_exists('nbr_comment', $asset_data)) {
-                    $nbr_comment = $asset_data['nbr_comment'];
-                }
 
-                if($nbr_comment > 0 || $nbr_view_total > 0 || $nbr_view_unique > 0 ) {
-                    $this->save_to_sql($album, $asset, $nbr_comment, $nbr_view_total, $nbr_view_unique);
+                if($nbr_view_total > 0 || $nbr_view_unique > 0 ) {
+                    $this->save_to_sql($album, $asset, $nbr_view_total, $nbr_view_unique);
                 }
             }
         }
@@ -140,23 +123,21 @@ class Infos_per_month extends Module {
         $this->saved_view_data = array();
     }
 
-    function save_to_sql($album, $asset, $nbr_comment, $nbr_view_total, $nbr_view_unique) {
+    function save_to_sql($album, $asset, $nbr_view_total, $nbr_view_unique) {
         $this->logger->debug('[infos_per_month] save sql: album: ' . $album . ' | asset: ' . $asset . 
             ' | nbr_view_total: ' . $nbr_view_total . ' | nbr_view_unique: ' . $nbr_view_unique . 
-            ' | nbr_comment: ' . $nbr_comment . ' | month: ' . $this->month);
+            ' | month: ' . $this->month);
 
         $db = $this->database->get_database_object();
         $query = $db->prepare('INSERT INTO ' . $this->database->get_table('stats_video_month_infos') . ' ' .
-                    '(asset, album, nbr_comment, nbr_view_total, nbr_view_unique, month) ' .
-                    'VALUES(:asset, :album, :nbr_comment, :nbr_view_total, :nbr_view_unique, :month) '.
+                    '(asset, album, nbr_view_total, nbr_view_unique, month) ' .
+                    'VALUES(:asset, :album, :nbr_view_total, :nbr_view_unique, :month) '.
                 'ON DUPLICATE KEY UPDATE ' .
-                    'nbr_comment = nbr_comment + :nbr_comment, ' .
                     'nbr_view_total = nbr_view_total + :nbr_view_total, ' .
                     'nbr_view_unique =  nbr_view_unique + :nbr_view_unique;');
         $query->execute(array(
                 ':asset' => $asset,
                 ':album' => $album,
-                ':nbr_comment' => $nbr_comment,
                 ':nbr_view_total' => $nbr_view_total,
                 ':nbr_view_unique' => $nbr_view_unique,
                 ':month' => $this->month

@@ -387,7 +387,7 @@ function view_embed() {
     if (isset($input['height']) && !empty($input['height']))
         $height = $input['height'] - 5;
 
-    $origin = ($input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
+    $origin = ((isset($input['origin']) && $input['origin'] == 'ezmanager')) ? 'ezmanager' : 'embed';
 
     $pre_media_url = ezmam_media_geturl($input['album'], $input['asset'], $media_name) . '&origin=' . $origin;
     //handle &time=? argument

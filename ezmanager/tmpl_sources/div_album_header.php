@@ -40,7 +40,7 @@ Before calling this template, please define the following variables:
                 <span class="TitreCour">
                     <?php echo (isset($course_code_public) && $course_code_public !="") ? $course_code_public : $album_id; ?> |
                     <?php echo $title; ?> | 
-                    <?php ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
+                    <?php echo ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
                 </span>
                 
                 <!-- drop-down menu -->

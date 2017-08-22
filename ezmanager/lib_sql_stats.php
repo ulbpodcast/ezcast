@@ -32,7 +32,7 @@ function stats_statements_get() {
                 'GROUP BY month;',
         
             'video_get_month_data' => 
-                'SELECT asset, ' . 
+                'SELECT asset, asset_name, ' . 
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
                 'FROM ' . db_gettable($table_stats_month_infos) . ' ' .

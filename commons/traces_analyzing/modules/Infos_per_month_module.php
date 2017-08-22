@@ -114,7 +114,8 @@ class Infos_per_month extends Module {
                 }
 
                 if($nbr_view_total > 0 || $nbr_view_unique > 0 ) {
-                    $this->save_to_sql($album, $asset, $nbr_view_total, $nbr_view_unique);
+                    // TODO get asset name (cache ;) )
+                    $this->save_to_sql($album, $asset, $asset_name, $nbr_view_total, $nbr_view_unique);
                 }
             }
         }
@@ -123,20 +124,21 @@ class Infos_per_month extends Module {
         $this->saved_view_data = array();
     }
 
-    function save_to_sql($album, $asset, $nbr_view_total, $nbr_view_unique) {
+    function save_to_sql($album, $asset, $asset_name, $nbr_view_total, $nbr_view_unique) {
         $this->logger->debug('[infos_per_month] save sql: album: ' . $album . ' | asset: ' . $asset . 
-            ' | nbr_view_total: ' . $nbr_view_total . ' | nbr_view_unique: ' . $nbr_view_unique . 
-            ' | month: ' . $this->month);
+            ' | asset_name: ' . $asset_name . ' | nbr_view_total: ' . $nbr_view_total . 
+            ' | nbr_view_unique: ' . $nbr_view_unique . ' | month: ' . $this->month);
 
         $db = $this->database->get_database_object();
         $query = $db->prepare('INSERT INTO ' . $this->database->get_table('stats_video_month_infos') . ' ' .
-                    '(asset, album, nbr_view_total, nbr_view_unique, month) ' .
-                    'VALUES(:asset, :album, :nbr_view_total, :nbr_view_unique, :month) '.
+                    '(asset, asset_name, album, nbr_view_total, nbr_view_unique, month) ' .
+                    'VALUES(:asset, :asset_name, :album, :nbr_view_total, :nbr_view_unique, :month) '.
                 'ON DUPLICATE KEY UPDATE ' .
                     'nbr_view_total = nbr_view_total + :nbr_view_total, ' .
                     'nbr_view_unique =  nbr_view_unique + :nbr_view_unique;');
         $query->execute(array(
                 ':asset' => $asset,
+                ':asset_name' => $asset_name,
                 ':album' => $album,
                 ':nbr_view_total' => $nbr_view_total,
                 ':nbr_view_unique' => $nbr_view_unique,

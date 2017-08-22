@@ -27,7 +27,7 @@
             labels: {
                 formatter: 
                     function() {
-                        var val = (this.value * 30); // TODO replace 30 by param
+                        var val = (this.value * <?php echo $video_split_time; ?>); // TODO replace 30 by param
                         var min = Math.floor(val/60)%60;
                         var sec = val%60;
                         var hour = Math.floor(val/3600);

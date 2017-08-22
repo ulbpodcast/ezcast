@@ -12,7 +12,7 @@ require_once('logger_server.php');
 
 // Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in 
 // config and common.inc don't match, a warning is triggered.
-$config_version = "20170818"; 
+$config_version = "20170822"; 
 
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name"; //this will also affect choosen translations when generating templates
@@ -91,6 +91,7 @@ $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
 // -- Traces -- //
 $trace_on = false; // determines whether we want to enable traces on actions or not
 $ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
+$video_split_time = 30; // Time in second to send information that user watch a video
 
 
 // -- Alternate server as streaming distribution source -- //

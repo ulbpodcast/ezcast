@@ -365,6 +365,8 @@ function moderator_delete() {
 
 function asset_stats() {
     global $input;
+    global $video_split_time;
+    
     if(!isset($input['asset']) || !isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
         die;

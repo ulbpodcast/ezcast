@@ -2,13 +2,13 @@
 
 class View_per_time extends Module {
 
-    private static $SPLIT_TIME = 30;
-
     private $saved_data = array();
 
 
     function analyse_line($date, $timestamp, $session, $ip, $netid, $level, $action, $other_info = NULL) {
         if($action == "video_play_time") {
+            global $video_split_time;
+            
             // other_info: current_album, current_asset, type, last_play_start, play_time
             $album = trim($other_info[0]);
             $asset = trim($other_info[1]);
@@ -27,13 +27,13 @@ class View_per_time extends Module {
             for($i = 0; $i < $play_time; ++$i) {
                 $time_until_start = $start+$i;
 
-                $video_time = $time_until_start / self::$SPLIT_TIME;
+                $video_time = $time_until_start / $video_split_time;
                 $str_video_time = strval(floor($video_time));
 
                 if(!array_key_exists($str_video_time, $this->saved_data[$album][$asset])) {
-                    $this->saved_data[$album][$asset][$str_video_time] = (1 / self::$SPLIT_TIME);
+                    $this->saved_data[$album][$asset][$str_video_time] = (1 / $video_split_time);
                 } else {
-                    $this->saved_data[$album][$asset][$str_video_time] += (1 / self::$SPLIT_TIME);
+                    $this->saved_data[$album][$asset][$str_video_time] += (1 / $video_split_time);
                 }
             }
 

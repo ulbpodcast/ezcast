@@ -54,5 +54,4 @@ $streaming_video_player = "flowplayer"; // defines the video player to use for l
 
 $antispam_filter_words = array(); //contact message with words in this array will be ignored
 
-$ezplayer_custom_css_filename = false; // Specify a custome filename from the css/custom folder to include, or false for no custom file
-$ezplayer_custom_logo = false;  // Specify a custome filename from the images/custom folder to replace the usual ezplayer logo
+$ezplayer_custom_logo = false;  // Specify a custome filename from the <webspace>/ezplayer/images/custom/ folder to replace the usual ezplayer logo, or false if no custom logo

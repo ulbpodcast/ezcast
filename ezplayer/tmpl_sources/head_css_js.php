@@ -4,9 +4,12 @@
 <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
 
 <?php
-    global $ezplayer_custom_css_filename;
-    if($ezplayer_custom_css_filename !== false) {
-        echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$ezplayer_custom_css_filename.'"/>';;
+    global $apache_documentroot;
+    $custom_folder = "$apache_documentroot/ezplayer/css/custom/";
+    $dir = new DirectoryIterator($custom_folder);
+    foreach ($dir as $fileinfo) {
+        if ($fileinfo->isFile())
+            echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$fileinfo->getFilename().'"/>';
     }
 ?>
 <link rel="stylesheet" type="text/css" href="css/smartphone.css" />

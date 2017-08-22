@@ -48,4 +48,4 @@ $web_file = file_get_contents($web_documentroot . "/ezplayer/infos.php");
 $web_file = str_replace("!PATH", __DIR__, $web_file);
 file_put_contents($web_documentroot . "/ezplayer/infos.php", $web_file);
 
-echo "Copied htdocs files to $$web_documentroot" . PHP_EOL;
+echo "Copied htdocs files to $web_documentroot" . PHP_EOL;

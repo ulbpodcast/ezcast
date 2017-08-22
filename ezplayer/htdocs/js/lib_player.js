@@ -39,7 +39,7 @@ var panel_width = 231;
 var seeked = false;
 
 var playing = false;
-var log_playing_interval = 30; // time until each "playing" log
+var log_playing_interval = video_split_time; // time until each "playing" log
 var last_play_start = 0;
 
 // variable describing which components are displayed on the page

@@ -68,7 +68,6 @@ for every album the user can create.
                                         'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#create_'.$album_name.'_album"));$("#modal").modal("show"); }, 500);\' ' .
                                         'data-dismiss="modal" id="create_'.$album_name.'_album">';
-                                echo $album_name;
                                 if(isset($course_code_public) && $course_code_public!="") {
                                     echo $course_code_public; 
                                 } else {

@@ -5,7 +5,8 @@ function asset_view() {
     global $input;
     global $repository_path;
     global $ezmanager_url;
-
+    global $trace_on;
+    
 
     // Setting up various variables we'll need later
     if (isset($input['album']))

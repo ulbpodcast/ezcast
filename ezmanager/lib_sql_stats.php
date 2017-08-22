@@ -42,12 +42,11 @@ function stats_statements_get() {
                 'GROUP BY asset;',
         
             'video_get_view_time' => 
-                'SELECT view_time, SUM(nbr_view) AS total_view ' .
+                'SELECT video_time, nbr_view ' .
                 'FROM ' . db_gettable($table_stats_view) . ' ' .
                 'WHERE album = :album ' . 
                     'AND ' .
                     'asset = :asset ' .
-                'GROUP BY view_time ' .
                 'ORDER BY video_time;',
         
             'album_get_info' => 

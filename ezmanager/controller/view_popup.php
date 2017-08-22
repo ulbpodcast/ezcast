@@ -73,6 +73,10 @@ function index($param = array()) {
             moderator_delete();
             break;
         
+        case 'asset_stats':
+            asset_stats();
+            break;
+        
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
             die;
@@ -357,4 +361,37 @@ function moderator_delete() {
     $id_user = $input['id_user'];
     
     require template_getpath('popup_moderator_delete.php');
+}
+
+function asset_stats() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    
+    $asset_name = $input['asset'];
+    $album = $input['album'];
+    $all_view_time = db_stats_video_get_view_time($album, $asset_name);
+    
+    $stats = array();
+    if(count($all_view_time) > 0) {
+        $data_view_time = array();
+        $last_time = 0;
+        foreach ($all_view_time as $view_time) {
+            while($view_time['video_time'] > $last_time) {
+                $data_view_time[] = 0;
+                ++$last_time;
+            }
+            $data_view_time[] = intval($view_time['nbr_view']);
+            ++$last_time;
+        }
+        $stats['display'] = TRUE;
+        $stats['str_view_time'] = json_encode($data_view_time);
+    } else {
+        $stats['display'] = FALSE;
+    }
+    
+    require template_getpath('popup_asset_stats.php');
 }

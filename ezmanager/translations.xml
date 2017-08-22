@@ -420,6 +420,8 @@
         <label id="Assets_list" lang="en">List of videos</label>
         
         <!-- Stats -->
+        <label id="Stats_No_stats" lang="en">No statistics to display</label>
+        <label id="Stats_No_stats" lang="fr">Aucune statistique à afficher</label>
         <label id="Stats_access_video_nbr" lang="en">Number of access to videos</label>
         <label id="Stats_access_video_nbr" lang="fr">Nombre d'accès aux vidéos</label>
         <label id="Stats_bookmark_official_nbr" lang="en">Number of official bookmarks on videos</label>
@@ -438,6 +440,10 @@
         <label id="Graph_nbr_unique_view" lang="fr">Nombre de vues unique</label>
         <label id="Graph_month_view" lang="en">Number of view per month on this album</label>
         <label id="Graph_month_view" lang="fr">Nombre de vues sur l\'album par mois</label>
+        <label id="Graph_min_per_min_view" lang="en">Number of view for this video</label>
+        <label id="Graph_min_per_min_view" lang="fr">Nombre de vues de la video</label>
+        <label id="Graph_views" lang="en">view</label>
+        <label id="Graph_views" lang="fr">vues</label>
         
         
         <label id="month_01" lang="fr">janvier</label>

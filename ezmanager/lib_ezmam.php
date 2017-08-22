@@ -1044,7 +1044,7 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
     //Copy Asset in background, and pass the metadata status to processing during the copy.  
     $cmd1 = "mkdir $dst_path/$asset_time";
     $cmd2 = "cp $src_path/$asset_time/_metadata.xml $dst_path/$asset_time/_metadata.xml";
-    $cmd3 = 'sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . ' popup appears when the user clicks on "copy this r/' . $asset_time.'/_metadata.xml';
+    $cmd3 = 'sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
     $cmd4 = 'rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/';
     $cmd5 = 'sed -i "s/<status>processing<\/status>/<status>processed<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
     $final_cmd = "($cmd1 && $cmd2 && $cmd3 && $cmd4 && $cmd5) 2>&1 > /dev/null &";

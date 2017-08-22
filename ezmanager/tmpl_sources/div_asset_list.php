@@ -103,14 +103,17 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                             } else if ($status == 'processing') {
                                 echo 'Processing';
                             } ?>">
-                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"
+                               <?php if($status == 'failed') {
+                                   echo 'style="color: #d9534f;" ';
+                               } else if($status == 'processing') {
+                                   echo 'style="color: #5cb85c;" ';
+                               } ?> > 
                                 <span 
                                     <?php if($status == 'failed') {
                                         echo 'class="glyphicon glyphicon-warning-sign" ';
-                                        echo 'style="color: #d9534f;" ';
                                     } else if($status == 'processing') {
                                         echo 'class="glyphicon glyphicon-refresh" ';
-                                        echo 'style="color: #5cb85c;" ';
                                     } else {
                                         echo 'class="glyphicon glyphicon-triangle glyphicon-triangle-right" ';
                                     } ?>

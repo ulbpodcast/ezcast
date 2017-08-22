@@ -29,10 +29,10 @@
  * This is a library through which you can manage the Media Repository Filesystem
  * Use this library whenever you can instead of going directly in directory structure
  */
-include_once dirname(__FILE__) . '/config.inc';
-include_once __DIR__.'/../commons/lib_error.php';
-include_once dirname(__FILE__) . '/lib_various.php';
-// include_once dirname(__FILE__) . '../commons/common.inc';
+require_once __DIR__ . '/config.inc';
+require_once __DIR__ . '/../commons/lib_error.php';
+require_once __DIR__ . '/lib_various.php';
+require_once __DIR__ . '/../commons/lib_various.php';
 
 /**
  *

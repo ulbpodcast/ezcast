@@ -30,9 +30,9 @@
  * @package ezcast.ezplayer.lib.ezmam
  */
 
-include_once 'config.inc';
-include_once __DIR__.'/../commons/lib_error.php';
-include_once 'lib_various.php';
+require_once 'config.inc';
+require_once __DIR__.'/../commons/lib_error.php';
+require_once 'lib_various.php';
 
 /**
  *

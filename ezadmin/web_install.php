@@ -745,13 +745,13 @@ function create_tables($drop = true) {
             $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'stats_video_month_infos`;');
         }
         $db->exec('CREATE TABLE IF NOT EXISTS `'. $input['db_prefix'] .'stats_video_month_infos` (' .
-            "`id` int(11) NOT NULL AUTO_INCREMENT, " .
-            "`asset` varchar(30) NOT NULL, " .
-            "`album` varchar(30) NOT NULL, " .
-            "`nbr_comment` int(11) NOT NULL DEFAULT '0', " .
-            "`nbr_view_total` int(11) NOT NULL DEFAULT '0', " .
-            "`nbr_view_unique` int(11) NOT NULL DEFAULT '0', " .
-            "`month` varchar(7) NOT NULL, ".
+            '`id` int(11) NOT NULL AUTO_INCREMENT, ' .
+            '`asset` varchar(30) NOT NULL, ' .
+            '`asset_name` varchar(70) NOT NULL, ' .
+            '`album` varchar(30) NOT NULL, ' .
+            '`nbr_view_total` int(11) NOT NULL DEFAULT \'0\', ' .
+            '`nbr_view_unique` int(11) NOT NULL DEFAULT \'0\', ' .
+            '`month` varchar(7) NOT NULL, '.
             "PRIMARY KEY (`id`), ".
             "UNIQUE KEY(`asset`,`album`,`month`)".
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");

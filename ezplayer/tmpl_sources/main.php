@@ -57,6 +57,8 @@ if ($trace_on) {
         <script type="text/javascript" src="js/jQuery/jquery.localscroll-1.2.7-min.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery.reveal.js"></script>
         <script type="text/javascript" src="js/jQuery/highlight-js.js"></script>
+        <?php global $video_split_time;
+        echo '<script>var video_split_time = '.$video_split_time . '</script>'; ?>
         <script type="text/javascript" src="js/lib_player.js"></script>
         <script type="text/javascript" src="js/lib_threads.js"></script>
         <script type="text/javascript" src="js/lib_bookmarks.js"></script>

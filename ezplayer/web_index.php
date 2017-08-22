@@ -83,7 +83,8 @@ if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) ||
 
 $logged_in = user_logged_in();
 $album_allow_anonymous = isset($input['album']) && ezmam_album_allow_anonymous($input['album']);
-//logout anon user if he tries to access an album which was not set as anonym allowed (except if we still accept the anon=true option in the url, should be removed in the future)
+//logout anon user if he tries to access an album which was not set as anonym allowed (except if we still 
+// accept the anon=true option in the url, should be removed in the future)
 if($logged_in && user_anonymous() && !$allow_url_anon
    && isset($input['album']) && !$album_allow_anonymous) {
     logout();
@@ -694,8 +695,10 @@ function albums_view($refresh_page = true) {
             $moderated_tokens[$index]['title'] = get_album_title($album . '-pub');
             $moderated_tokens[$index]['token'] = ezmam_album_token_get($album . '-pub');
 			  
-			$album_title = ezmam_album_metadata_get($album . '-pub');
-			if(isset($album_title['course_code_public'])) $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
+            $album_title = ezmam_album_metadata_get($album . '-pub');
+            if(isset($album_title['course_code_public'])) {
+                $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
+            }
         }
         // add the list of moderated public albums 
         user_prefs_tokens_add($_SESSION['user_login'], $moderated_tokens);

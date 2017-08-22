@@ -121,8 +121,10 @@ function index($param = array()) {
         }
     }
 	
-	$album_title = ezmam_album_metadata_get($album);
-	if(isset($album_title['course_code_public'])) $course_code_public = $album_title['course_code_public'];																									  
+    $album_title = ezmam_album_metadata_get($album);
+    if(isset($album_title['course_code_public'])) {
+        $course_code_public = $album_title['course_code_public'];
+    }
     // gets metadata for the selected asset
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
@@ -167,8 +169,9 @@ function index($param = array()) {
     $_SESSION['album'] = $album;
     $_SESSION['asset'] = $asset;
     $_SESSION['timecode'] = $timecode;
-    if ($seek && isset($thread_id))
+    if ($seek && isset($thread_id)) {
         $_SESSION['current_thread'] = $thread_id;
+    }
     $_SESSION['asset_token'] = $asset_token;
     
     if($seek) {

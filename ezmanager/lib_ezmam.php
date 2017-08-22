@@ -197,7 +197,7 @@ function ezmam_album_list_metadata() {
     return $album_list;
 }
 
-function ezmam_album_course_code_public_get($album) {
+function ezmam_album_course_public_name_get($album) {
     global $logger;
     
     $album_metadata = ezmam_album_metadata_get($album);

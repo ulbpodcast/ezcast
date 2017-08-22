@@ -173,8 +173,8 @@ class Read_Logs {
         return array();
     }
 
-    private function add_file_already_check($filename) {
-        file_put_contents(self::FILE_ALREADY_CHECK_PATH, $filename . "\n", FILE_APPEND);
+    private function add_file_already_check($filepath) {
+        file_put_contents(self::FILE_ALREADY_CHECK_PATH, basename($filepath) . "\n", FILE_APPEND);
     }
 
 }

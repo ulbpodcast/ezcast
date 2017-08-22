@@ -360,16 +360,6 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                    <input type="checkbox" name="use_course_name" <?php echo (isset($input['use_course_name']) && !empty($input['use_course_name'])) ? 'checked' : '' ?> />
-                                                ®settings_use_course_name®
-                                            </label>
-                                            <span class="help-block">If checked, courses will be identified by their name. If unchecked, courses will be identified by their course code. This setting only influences the way data is displayed in EZadmin, it does not influence other products. This setting can be changed later on.</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <label class="checkbox">
                                                     <input type="checkbox" name="use_user_name" <?php echo (isset($input['use_user_name']) && !empty($input['use_user_name'])) ? 'checked' : '' ?> />
                                                 ®settings_use_user_name®
                                             </label>

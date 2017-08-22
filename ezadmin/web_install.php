@@ -801,7 +801,7 @@ function create_config_files() {
             $input['db_name'], $input['db_prefix'], $input['recorder_user'], $input['recorder_basedir'], 
             $input['ezmanager_host'], $input['ezmanager_user'], !empty($input['classrooms_category_enabled']) ? true : false, 
             !empty($input['add_users_enabled']) ? true : false, !empty($input['recorder_password_storage_enabled']) ? true : false, 
-            !empty($input['use_course_name']) ? true : false, !empty($input['use_user_name']) ? true : false, 
+            !empty($input['use_user_name']) ? true : false, 
             !empty($input['https_ready']) ? true : false
     );
 }

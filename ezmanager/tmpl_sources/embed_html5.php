@@ -30,7 +30,7 @@
        width="<?php echo $width; ?>" 
        height="<?php echo $height; ?>" 
        id="<?php echo $video_id; ?>" 
-       controls
+       controls controlsList="nodownload" 
 >
 <?php include_once 'embed_flash.php'; ?>    
 </video>

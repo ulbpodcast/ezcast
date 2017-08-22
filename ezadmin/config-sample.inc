@@ -14,8 +14,7 @@ $ezplayer_subdir = '/'; // Path from the basedir to admin.inc
 $recorders_category_enabled = false; // Set to false to hide the "recorders" category
 $classrooms_category_enabled = false; // Set to false to hide the "classrooms" category
 $add_users_enabled = true; // set to true to have a userlist in ezmanager
-$recorder_password_storage_enabled = true; // Set to true to save passwords on the Mac Minis
-$use_course_name = false; // Set to true to use course name instead of course code
+$recorder_password_storage_enabled = true; // Set to true to save passwords on the recorders
 $use_user_name = false; // Set to true to use user's full name instead of user ID
 
 // Technical stuff

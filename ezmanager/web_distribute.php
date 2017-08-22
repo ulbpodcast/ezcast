@@ -36,7 +36,7 @@
 
 require_once 'config.inc';
 require_once 'lib_ezmam.php';
-require_once 'lib_error.php';
+require_once __DIR__.'/../commons/lib_error.php';
 require_once '../commons/lib_template.php';
 require_once 'lib_various.php';
 require_once 'external_products/rangeDownload.php';
@@ -237,6 +237,7 @@ function view_media() {
         $media_name = $quality . '_' . $type;
 
         $media_handle = ezmam_media_getpath($input['album'], $input['asset'], $media_name, false);
+		
 
         // If we still can't find a file, we just tell the users so
         if (!$media_handle) {
@@ -277,9 +278,15 @@ function view_media() {
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Length: ' . filesize($media_handle));
         header('Accept-Ranges: bytes');
-        //readfile($media_handle);
+		
         //fpassthru($fh);
+		// flush();
+		// readfile($file);
+        // readfile($media_handle);
+
+		ob_clean();
         passthru('/bin/cat ' . escapeshellarg($media_handle));
+        fclose($fh);
     }
 }
 

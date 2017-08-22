@@ -5,7 +5,8 @@ function asset_view() {
     global $input;
     global $repository_path;
     global $ezmanager_url;
-
+    global $trace_on;
+    
 
     // Setting up various variables we'll need later
     if (isset($input['album']))
@@ -140,6 +141,7 @@ function asset_view() {
     $_SESSION['podman_album'] = $input['album'];
     $_SESSION['podman_asset'] = $input['asset'];
 
+     global $enable_copy_asset;
     //
     // 4) Then display the asset and its content
     //

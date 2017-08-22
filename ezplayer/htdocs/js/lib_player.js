@@ -115,9 +115,9 @@ window.addEventListener("keyup", function (e) {
                     break;
                 case 70:  // 'f'
                     if (ezplayer_mode === 'view_asset_streaming') {
-                        player_streaming_fullscreen(fullscreen());
+                        player_streaming_fullscreen(!fullscreen);
                     } else {
-                        player_video_fullscreen(fullscreen());
+                        player_video_fullscreen(!fullscreen);
                     }
                     break;
                 case 38:  // 'up arrow'
@@ -995,7 +995,7 @@ function player_streaming_fullscreen(on) {
 
 // Enters/exits fullscreen
 function player_video_fullscreen(on) {
-    fullscreen = (on == true); // check that 'on' is only a boolean
+    fullscreen = (on === true); // check that 'on' is only a boolean
     var action = fullscreen ? 'video_fullscreen_enter' : 'video_fullscreen_exit';
     
     if (fullscreen) {

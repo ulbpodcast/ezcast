@@ -10,8 +10,9 @@ require_once('logger_server.php');
  * DO NOT REMOVE ANY OF THEM
  */
 
-// Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in config and common.inc don't match, a warning is triggered.
-$config_version = "20161003"; 
+// Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in 
+// config and common.inc don't match, a warning is triggered.
+$config_version = "20170818"; 
 
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name"; //this will also affect choosen translations when generating templates
@@ -23,7 +24,7 @@ $timezone = 'Europe/Brussels';
 // URL's to EZcast applications
 $application_url = "http://localhost/";
 $https_ready = false;
-$application_safe_url = $https_ready ? str_replace('http', 'https', $application_url) : $application_url;
+$application_safe_url = $https_ready ? preg_replace("/^(http:\/\/)?/", "https://", $application_url) : $application_url;
 // Adapt these URL's according to the name of each application in your webspace
 // Warning ! If you modify the name of an application, you should also
 // edit its location in the files (index.php, ...) located in your webspace
@@ -42,7 +43,7 @@ $basedir = "/usr/local/ezcast";
 // Database info
 $db_type = 'mysql';
 $db_host = 'localhost';
-$db_login= "ezcast";
+$db_login = "ezcast";
 $db_passwd = "";
 $db_name = "ezcast";
 $db_prefix = "ezcast_";
@@ -63,6 +64,7 @@ $mailto_alert = "mail@your.organization"; //who to call in case of problem in th
 
 $auth_methods = array("file", "ldap");
 
+$ldap_institution="";	//empty by default   "ucl" for ucl.					
 # JSON FILES FOR LDAP
 /*
  * For each ldap_server:
@@ -85,6 +87,11 @@ $ldap_servers_auth_json_file = "$basedir/commons/ldap_servers_auth.json";
  * retrieve information about a given user
  */
 $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
+
+// -- Traces -- //
+$trace_on = false; // determines whether we want to enable traces on actions or not
+$ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
+
 
 // -- Alternate server as streaming distribution source -- //
 
@@ -109,7 +116,8 @@ $streaming_video_alternate_server_uri = "stream/";
 $debug_mode = false; //debug mode print recorder events and php errors to console
 // -- -- //
 
-$common_config_defined = true; //config and common include each other... apparently php does not consider a file already included until he completely finished including it. This variable is a workaround for this problem.
+$common_config_defined = true; //config and common include each other... apparently php does not consider a 
+// file already included until he completely finished including it. This variable is a workaround for this problem.
 
 // load static variables
 require_once(__DIR__ . '/common.inc');

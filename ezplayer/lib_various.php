@@ -215,28 +215,6 @@ function get_asset_title($album, $asset) {
     return $asset_title;
 }
 
-/**
- * Returns the album full title from an album mnemonic
- * @global type $repository_path
- * @param type $album the album mnemonique
- * @return boolean the album full title if the album exists; false otherwise
- */
-function get_album_title($album) {
-    global $repository_path;
-
-    ezmam_repository_path($repository_path);
-    //
-    // Usual sanity checks
-    //
-    if (!ezmam_album_exists($album)) {
-        return false;
-    }
-
-    $album_title = ezmam_album_metadata_get($album);
-    $album_title = $album_title['description'];
-
-    return $album_title;
-}
 
 /**
  * Returns a URL that allows the user to view the media

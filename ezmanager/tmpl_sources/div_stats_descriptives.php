@@ -1,30 +1,3 @@
-<?php 
-/*
-* EZCAST EZmanager 
-*
-* Copyright (C) 2016 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-* UI Design by Julien Di Pietrantonio
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
-
 <div id="div_stats_descriptives">
     <div class="BlocPodcastMenu">
         <?php if(isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) { ?>
@@ -34,7 +7,11 @@
         <?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
             <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
             <br />
-        <?php } ?>
+        <?php 
+        echo '<pre>';
+        print_r($stats['graph']['video']);
+        echo '</pre>';
+        } ?>
         <br />
         <table class="table table-striped">
             <tbody>
@@ -110,7 +87,7 @@ Highcharts.setOptions({
                 year: '%Y'
             }
         },
-        yAxis: [{ // Primary yAxis
+        yAxis: {
             title: {
                 text: '®Graph_nbr_view®',
                 margin: 40
@@ -120,13 +97,7 @@ Highcharts.setOptions({
                 x: 25
             }
 
-        }, { // Second yAxis
-            gridLineWidth: 0,
-            title: {
-                text: '®Graph_nbr_thread®'
-            },
-            opposite: false
-        }],
+        },
         legend: {
             enabled: true,
             layout: 'horizontal',
@@ -139,40 +110,33 @@ Highcharts.setOptions({
         series: [{
             name: '®Graph_nbr_total_view®',
             type: 'column',
-            yAxis: 0,
             data: <?php echo $stats['graph']['album']['str_totalview']; ?>
-
         }, {
             name: '®Graph_nbr_unique_view®',
             type: 'column',
-            yAxis: 0,
             data: <?php echo $stats['graph']['album']['str_uniqueview']; ?>
-
-        }, {
-            name: '®Graph_nbr_thread®',
-            type: 'spline',
-            yAxis: 1,
-            data: <?php echo $stats['graph']['album']['str_comment']; ?>
         }]
     });
 <?php } ?>
 
 
 <?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
+    var allAssets = <?php echo $stats['graph']['video']['str_all_asset']; ?>;
+    
     // Asset graphic
     Highcharts.chart('containerVideo', {
         title: {
             text: 'Vue par asset'
         },
         xAxis: {
-            categories: <?php echo $stats['graph']['video']['str_all_asset']; ?>,
+            categories: allAssets,
             min: 0,
-            max: 15,
+            max: Math.min(allAssets.length, 15),
             scrollbar: {
                 enabled: true
             }
         },
-        yAxis: [{ // Primary yAxis
+        yAxis: { // Primary yAxis
             title: {
                 text: '®Graph_nbr_view®',
                 margin: 40
@@ -183,31 +147,18 @@ Highcharts.setOptions({
             },
             opposite: true
 
-        }, { // Second yAxis
-            gridLineWidth: 0,
-            title: {
-                text: '®Graph_nbr_thread®'
-            },
-            opposite: false
-        }],
+        },
         tooltip: {
             shared: true
         },
         series: [{
                 type: 'column',
                 name: '®Graph_nbr_total_view®',
-                yAxis: 0,
                 data: <?php echo $stats['graph']['video']['str_total_view']; ?>
             }, {
                 type: 'column',
                 name: '®Graph_nbr_unique_view®',
-                yAxis: 0,
                 data: <?php echo $stats['graph']['video']['str_unique_view']; ?>
-            }, {
-                type: 'spline',
-                name: '®Graph_nbr_thread®',
-                yAxis: 1,
-                data: <?php echo $stats['graph']['video']['str_total_comment']; ?>
             }]
     });
 <?php } ?>

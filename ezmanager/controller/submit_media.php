@@ -19,6 +19,9 @@ function index($param = array()) {
     if (!isset($title) || empty($title)) {
         error_print_message('no Title');
         die;
+    } else if(count($title) > 70) {
+        error_print_message('Title too long');
+        die;
     }
 
 
@@ -36,14 +39,16 @@ function index($param = array()) {
 
     // 2) Creating the folder in the queue, and the metadata for the media
     $tmp_name = date($dir_date_format) . '_' . $input['album'];
-    if ($input['moderation'] == 'false')
+    if ($input['moderation'] == 'false') {
         $moderation = "false";
-    else
+    } else {
         $moderation = "true";
+    }
+    
     $metadata = array(
         'course_name' => $input['album'],
         'origin' => 'SUBMIT',
-        'title' => $input['title'],
+        'title' => $title,
         'description' => $input['description'],
         'record_type' => $input['type'],
         'submitted_cam' => $_FILES['media']['name'],

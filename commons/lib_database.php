@@ -76,7 +76,7 @@ function db_prepare(&$stmt_array = array()) {
         try {
             $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
         } catch (PDOException $e) {
-            throw new Exception('Could not connect to database.');
+            throw new Exception("Could not connect to database $db_host, $db_name with login $db_login");
         }
     }
     

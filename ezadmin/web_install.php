@@ -300,6 +300,7 @@ function convert_size($string) {
 
 function save_logo() {
     global $input;
+    global $apache_documentroot;
 
     if (file_exists("../commons/config.inc")) {
         include_once '../commons/config.inc';
@@ -370,7 +371,7 @@ function validate_form() {
     $errors = array();
     $res = db_ping($input['db_type'], $input['db_host'], $input['db_login'], $input['db_passwd'], $input['db_name']);
     if (!$res) {
-        $errors['db_error'] = 'Could not connect to database ' . $input['db_host'];
+        $errors['db_error'] = 'Could not connect to database ' . $input['db_host'] . '. Does the DB '.$input['db_name'].' exists?';
     }
 
     if (count($errors) > 0) {

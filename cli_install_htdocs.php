@@ -12,9 +12,9 @@ system("cp -rp ".__DIR__."/ezadmin/htdocs $web_documentroot/ezadmin");
 system("cp -rp ".__DIR__."/ezmanager/htdocs $web_documentroot/ezmanager");
 system("cp -rp ".__DIR__."/ezplayer/htdocs $web_documentroot/ezplayer");
 
-system("cp -rp ".__DIR__."/commons/htdocs $web_documentroot/ezadmin/commons");
-system("cp -rp ".__DIR__."/commons/htdocs $web_documentroot/ezmanager/commons");
-system("cp -rp ".__DIR__."/commons/htdocs $web_documentroot/ezplayer/commons");
+system("cp -rp ".__DIR__."/commons/htdocs/ $web_documentroot/ezadmin/commons");
+system("cp -rp ".__DIR__."/commons/htdocs/ $web_documentroot/ezmanager/commons");
+system("cp -rp ".__DIR__."/commons/htdocs/ $web_documentroot/ezplayer/commons");
 
 $web_file = file_get_contents($web_documentroot . "/ezadmin/install.php");
 $web_file = str_replace("!PATH", __DIR__, $web_file);

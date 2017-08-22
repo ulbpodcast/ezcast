@@ -5,7 +5,7 @@
                 <a class="hidden-print-link" href="<?php
                 global $organization_url;
                 echo $organization_url;
-                ?>"><img src="./img/organization-logo.png" height="42px;"/></a>
+                ?>"><img id="organisation_logo" src="./img/organization-logo.png"/></a>
                <?php } ?>
             <a class="hidden-print-link" href="index.php"><img src="./img/ezadmin.png" alt="" height="42px;"/></a>
             <?php if (isset($_SESSION['changes_to_push'])) {

@@ -1,11 +1,12 @@
 <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
 <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
-<link rel="stylesheet" type="text/css" href="css/ezplayer_style_v2.css" />
+<link rel="stylesheet" type="text/css" href="css/ezplayer_style.css" />
+<link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
 
 <?php
-    global $custom_css_filename;
-    if($custom_css_filename !== false) {
-        echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$custom_css_filename.'"/>';;
+    global $ezplayer_custom_css_filename;
+    if($ezplayer_custom_css_filename !== false) {
+        echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$ezplayer_custom_css_filename.'"/>';;
     }
     
     global $enable_css_phone;

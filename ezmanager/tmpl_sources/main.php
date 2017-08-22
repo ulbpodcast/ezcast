@@ -10,6 +10,7 @@
         <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
+        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
         <link rel="stylesheet" type="text/css" href="css/colorbox.css" />
         <link href="css/uploadify.css" type="text/css" rel="stylesheet" />
         <script type="text/javascript" src="js/AppearDissapear.js"></script>

@@ -40,7 +40,8 @@ function asset_streaming_player_update($display = true) {
     //should contain cam or slide
     $type = $asset_meta['record_type'] == 'camslide' ? $input['type'] : $asset_meta['record_type'];
     if(!in_array($type, array('cam', 'slide'))) {
-        $logger->log(EventType::MANAGER_STREAMING, LogLevel::WARNING, "Trying to use wrong record type '.$type.'. Resetting to 'cam'", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_STREAMING, LogLevel::WARNING, "Trying to use wrong record type '.$type."
+                . "'. Resetting to 'cam'", array(__FUNCTION__));
         $type = 'cam';
     }
     
@@ -217,13 +218,14 @@ function asset_streaming_view($refresh_center = true) {
     if (!acl_user_is_logged() || !acl_has_album_permissions($album)) {
         // either the user is not logged in or he doesn't have access to the album
         if (!ezmam_asset_token_check($album, $asset, $asset_token)) {
-            if ($input['click']) // refresh a part of the page
+            if ($input['click']) { // refresh a part of the page
                 include_once template_getpath('error_permission_denied.php');
-            else { // refresh the whole page
+            } else { // refresh the whole page
                 $error_path = template_getpath('error_permission_denied.php');
                 include_once template_getpath('main.php');
             }
-            log_append('warning', 'view_asset_streaming: tried to access asset ' . $input['asset'] . 'in album ' . $input['album'] . ' with invalid token ' . $input['asset_token']);
+            log_append('warning', 'view_asset_streaming: tried to access asset ' . $input['asset'] . 
+                    'in album ' . $input['album'] . ' with invalid token ' . $input['asset_token']);
             die;
         }
     }
@@ -247,12 +249,13 @@ function asset_streaming_view($refresh_center = true) {
 
     if ($refresh_center) { // the whole page must be displayed
         if ($input['click']) { // called from a local link
-            // lvl, action, album, asset, record type (cam|slide|camslide), permissions (view official | add personal), origin
-            trace_append(array('3', 'view_asset_streaming', $album, $asset, $asset_meta['record_type'], 'view_only', 'from_ezplayer'));
+            $origin = 'from_ezplayer';
             include_once template_getpath("div_streaming_center.php");
         } else {// called from the UV or a shared link
-            trace_append(array('3', 'view_asset_streaming', $album, $asset, $asset_meta['record_type'], 'view_only', 'from_external'));
+            $origin = 'from_external';
             include_once template_getpath('main.php');
         }
+        // lvl, action, album, asset, record type (cam|slide|camslide), permissions (view_only | add personal), origin
+        trace_append(array('3', 'view_asset_streaming', $album, $asset, $asset_meta['record_type'], 'view_only', $origin));
     }
 }

@@ -36,13 +36,13 @@ function index($param = array()) {
 
     log_append('import_bookmarks: bookmarks added to the album ' . $album);
     // lvl, action, album, asset, target (in official|personal), number of selected bookmarks, number of uploaded bookmarks
-    trace_append(array($input['source'] == 'assets' ? '2' : '3', 'bookmarks_import', $album, $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target, count($selection), count($imported_bookmarks)));
+    trace_append(array($input['source'] == 'assets' ? '2' : '3', 'bookmarks_import', $album, 
+        $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target, count($selection), count($imported_bookmarks)));
+    
     // determines the page to display
     if ($input['source'] == 'assets') {
         // the token is needed to display the album assets
         $input['token'] = ezmam_album_token_get($album);
-        bookmarks_list_update();
-    } else {
-        bookmarks_list_update();
     }
+    bookmarks_list_update();
 }

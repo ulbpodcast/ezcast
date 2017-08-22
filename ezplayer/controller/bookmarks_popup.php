@@ -11,8 +11,8 @@ function index($param = array()) {
     global $repository_path;
     global $user_files_path;
 
-    $album = $input['album'];
-    $asset = $input['asset'];
+    $album = trim($input['album']);
+    $asset = trim($input['asset']);
     $tab = $input['tab'];
     $source = $input['source'];
 

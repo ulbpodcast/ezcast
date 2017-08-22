@@ -62,7 +62,8 @@ ezmam_repository_path($repository_path);
 // Login/logout
 //
 // Saves the URL used to access the website
-if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['action'] != 'logout' && $input['action'] != 'login' && $input['action'] != 'client_trace') {
+if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['action'] != 'logout' && 
+        $input['action'] != 'login' && $input['action'] != 'client_trace') {
     $_SESSION['first_input'] = array_merge($_GET, $_POST);
 }
 // Saves user's web browser information
@@ -513,7 +514,8 @@ function user_anonymous_session() {
     log_append("Anonymous_session");
     log_append("user's browser : " . $_SESSION['browser_full']);
     // lvl, action, browser_name, browser_version, user_os, browser_full_info
-    trace_append(array("1", "login_as_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
+    trace_append(array("1", "login_as_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], 
+        $_SESSION['user_os'], $_SESSION['browser_full']));
 
     // 5) Displaying the page
 //    view_main();
@@ -602,7 +604,8 @@ function user_login($login, $passwd) {
     log_append("login");
     log_append("user's browser : " . $_SESSION['browser_full']);
     // lvl, action, browser_name, browser_version, user_os, browser_full_info
-    trace_append(array("1", "login", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
+    trace_append(array("1", "login", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], 
+        $_SESSION['browser_full']));
 
     // 6) Displaying the page
 //    view_main();
@@ -833,7 +836,8 @@ function chat_messages_remove_private($messages_array) {
     $chat_messages = array();
     $match_user = '@' . $_SESSION['user_login'];
     foreach ($messages_array as $message) {
-        if (($message['authorId'] == $_SESSION['user_login']) || $message['message'][0] !== '@' || substr($message['message'], 0, strlen($match_user)) === $match_user) {
+        if (($message['authorId'] == $_SESSION['user_login']) || $message['message'][0] !== '@' || 
+                substr($message['message'], 0, strlen($match_user)) === $match_user) {
             $chat_messages[] = $message;
         }
     }
@@ -897,9 +901,10 @@ function trace_append($array) {
     $max_idx = count($array);
     foreach ($array as $value) {
         $idx++;
-        $data .= $value;
-        if ($idx != $max_idx)
+        $data .= preg_replace("/\|/", "-", $value);
+        if ($idx != $max_idx) {
             $data .= ' | ';
+        }
     }
     // 6) And we add a carriage return for readability
     $data .= PHP_EOL;

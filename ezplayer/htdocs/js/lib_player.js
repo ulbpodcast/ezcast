@@ -28,7 +28,8 @@ var type; // current type of the video (cam | slide)
 var quality; // current quality of the video (high | low)
 var cam_loaded;
 var slide_loaded;
-var previous_time = 0; // used for the seeked event
+var previous_seek_time = 0; // used for the seeked event
+var last_time = 0;
 var time = 0;   // current timecode of the video
 var duration = 0; // duration of the video
 var from_shortcut = false; // determines if the action has been done from keyboard shortcut
@@ -37,7 +38,9 @@ var mouse_down = 0; // 0 when mouseUp / 1 when mouseDown - Used for the video se
 var panel_width = 231;
 var seeked = false;
 
+var playing = false;
 var log_playing_interval = 30; // time until each "playing" log
+var last_play_start = 0;
 
 // variable describing which components are displayed on the page
 var fullscreen = false;
@@ -79,7 +82,7 @@ window.addEventListener("keyup", function (e) {
                     break;
                 case 78:  // 'n'
                     if (is_logged)
-                        player_bookmark_form_toggle('custom');
+                        player_bookmark_form_toggle('personal');
                     break;
                 case 107:
                 case 187: // '+'
@@ -198,7 +201,8 @@ function player_prepare(current_quality, current_type, start_time) {
     quality = (current_quality !== '') ? current_quality : 'low';
 
     document.getElementById('video_player').onmousedown = function () {
-        previous_time = time;
+        previous_seek_time = last_time;
+        console.log('Update seek ! ' + previous_seek_time);
         ++mouse_down;
     };
     document.getElementById('video_player').onmouseup = function () {
@@ -229,7 +233,8 @@ function player_prepare(current_quality, current_type, start_time) {
 function video_listener_add(video, start_time) {
     
     video.addEventListener("seeked", function () {
-        video_event_seeked();
+        var current_time = Math.round(this.currentTime);
+        video_event_seeked(current_time);
     }, false);
     
     // when the video is being played
@@ -255,7 +260,7 @@ function video_listener_add(video, start_time) {
     }, false);
     
     video.addEventListener("error", function (e) {
-        video_event_error();
+        video_event_error($(this));
     }, true);
     
     // When data are loaded
@@ -287,13 +292,17 @@ function video_listener_add(video, start_time) {
  * 
  * @returns {undefined}
  */
-function video_event_seeked() {
+function video_event_seeked(current_time) {
     // checks if the mouse is up. If not, the user is still seeking so 
     // we don't need to save this trace
     if(trace_pause > 0) {
         --trace_pause;
     } else if (!mouse_down) {
-        time = Math.round(this.currentTime);
+        if(!seeked) {
+            trace_video_play_time(last_time);
+        }
+        previous_seek_time = last_time;
+        time = current_time;
         time_code_update();
         seeked = true;
     }
@@ -303,29 +312,46 @@ function video_event_update_time(current_time) {
     if(current_time == time)
         return;
 
+    last_time = time;
     time = current_time;
     
     threads_notif_display();
 
+    if(last_play_start - current_time > log_playing_interval) {
+        trace_video_play_time();
+    }
+
     // -- Log "currently playing" action
     let timestamp = Math.floor(Date.now() / 1000);
 
-    if (typeof this.last_playing_log == 'undefined')
-        this.last_playing_log = 0;
-    if (typeof this.last_playing_log_play_time == 'undefined')
-        this.last_playing_log_play_time = -999;
+    if (typeof last_playing_log == 'undefined')
+        last_playing_log = 0;
+    if (typeof last_playing_log_play_time == 'undefined')
+        last_playing_log_play_time = -999;
 
     //log if: last log is more than log_playing_interval ago OR if play time has significantly changed since last log
     if( /* this.paused !== false && this api param seems buggy, fix me if can */
-        ( timestamp > this.last_playing_log + log_playing_interval || time > this.last_playing_log_play_time + log_playing_interval ) 
+        ( timestamp > last_playing_log + log_playing_interval || time > last_playing_log_play_time + log_playing_interval ) 
       )
     {
-        this.last_playing_log = timestamp;
-        this.last_playing_log_play_time = time;
+        last_playing_log = timestamp;
+        last_playing_log_play_time = time;
         server_trace(new Array('4', 'video_playing', current_album, current_asset, type, time));
         //console.log("video_playing");
     }
     // --
+}
+
+function trace_video_play_time(stop_time) {
+    if(playing) {
+        stop_time = (typeof stop_time !== 'undefined') ? stop_time : time;
+        var play_time = stop_time - last_play_start;
+        if(play_time > 0) {
+            console.log('video_play_time | Depuis:' + last_play_start + ' | Pendant: ' + play_time);
+            server_trace(new Array('4', 'video_play_time', current_album, current_asset, type, last_play_start, play_time));
+            last_play_start = time;
+        }
+    }
 }
 
 function video_event_play() {
@@ -334,11 +360,14 @@ function video_event_play() {
         //console.log("video_seeked");
         if(trace_pause <= 0) {
             server_trace(new Array('4', 'video_seeked', current_album, current_asset, 
-                    duration, previous_time, time, type, quality));
+                    duration, previous_seek_time, time, type, quality));
         } else {
             --trace_pause;
         }
     }
+    playing = true;
+    console.log('last player start');
+    last_play_start = time;
 
     if (!shortcuts)
         $(".shortcuts_tab").css('display', 'none');
@@ -352,7 +381,11 @@ function video_event_play() {
 
 function video_event_pause() {
     paused = ($('video')[1]) ? $('video')[1].paused : true;
-    
+    if(playing) {
+        trace_video_play_time();
+        playing = false;
+    }
+
     if (($('video')[0].paused && paused) || shortcuts)
         $(".shortcuts_tab").css('display', 'block');
 
@@ -368,10 +401,10 @@ function video_event_pause() {
 // 2) pause the video
 // 3) wait for ~5 min
 // 4) play the video >> ERR_CONTENT_LENGTH_MISMATCH
-function video_event_error() {
-    this.load();
-    this.currentTime = time;
-    this.play();
+function video_event_error(element) {
+    element.load();
+    currentTime = time;
+    element.play();
 }
 
 function video_event_data_loaded(event) {
@@ -400,7 +433,8 @@ function threads_notif_display() {
                         break;
                     
                     html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
-                            "<span class='span-link red' onclick='javascript:player_thread_notification_remove(" + timecode + ", " + id + ")' >x</span>" +
+                            "<span class='span-link red' onclick='javascript:player_thread_notification_remove(" + 
+                                timecode + ", " + id + ")' >x</span>" +
                             "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " +
                             threads_array[timecode][id] + "</span>" +
                             "</li>";
@@ -563,15 +597,14 @@ function player_video_seek(bookmark_time, bookmark_type) {
     if (bookmark_type != '' && type != bookmark_type) {
         player_video_type_set(bookmark_type);
     }
+    var video;
     if (camslide && type == 'slide') {
-        var video = document.getElementById('secondary_video');
+        video = document.getElementById('secondary_video');
     } else {
-        var video = document.getElementById('main_video');
+        video = document.getElementById('main_video');
     }
-    var paused = video.paused;
-
     video.currentTime = bookmark_time;
-    paused ? video.pause() : video.play();
+    video.paused ? video.pause() : video.play();
 }
 
 /**
@@ -679,16 +712,15 @@ function player_video_play_toggle() {
 
 // goes 15 seconds back/forward in the video
 function player_video_navigate(forward_rewind) {
-    origin = get_origin();
+    var video;
     if (camslide && type == 'slide') {
-        var video = document.getElementById('secondary_video');
+        video = document.getElementById('secondary_video');
     } else {
-        var video = document.getElementById('main_video');
+        video = document.getElementById('main_video');
     }
-    var paused = video.paused;
-
+    
     video.currentTime = (forward_rewind == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
-    paused ? video.pause() : video.play();
+    video.paused ? video.pause() : video.play();
     video_trace('4', 'video_' + forward_rewind);
 }
 
@@ -744,6 +776,7 @@ function player_bookmark_form_show(source) {
     video.pause();
     time_code_update();
     document.getElementById('bookmark_type').value = type;
+    document.getElementById('bookmark_source').value = source;
     // sets the form style according to the source (official | personal bookmarks)
     if (source == 'official') {
         $('.bookmark-color').hide();
@@ -804,7 +837,9 @@ function player_bookmark_form_toggle(source) {
         }
     }
     
-    video_trace('4', 'bookmark_form_show');
+    origin = get_origin();
+    server_trace(new Array('4', 'bookmark_form_show', current_album, current_asset, duration, 
+        time, type, source, quality, origin));
     player_bookmark_form_show(source);
     $("#bookmark_title").focus();   
 }

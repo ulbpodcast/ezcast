@@ -33,7 +33,11 @@ function index($param = array()) {
     if (!isset($bookmark_type) || ($bookmark_type != 'cam' && $bookmark_type != 'slide')) {
         $bookmark_type = '';
     }
-
+    
+    if(!isset($bookmark_source) || ($bookmark_source != 'personal' && $bookmark_source != 'official')) {
+        $bookmark_source = '';
+    }
+    
     $str_bookmark_keywords = "";
     foreach(explode(",", $bookmark_keywords) as $keyword) {
         if($str_bookmark_keywords != "") {
@@ -64,9 +68,11 @@ function index($param = array()) {
             'timecode - ' . $bookmark_timecode);
     
     // lvl, action, album, asset, timecode, target (personal|official), type (cam|slide), title, descr, keywords, bookmark_lvl
-    trace_append(array('3', (array_key_exists('edit', $input) && $input['edit']) ? 'asset_bookmark_edit' : 'asset_bookmark_add', 
-        $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_source, $bookmark_type,
-        $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
+    if($bookmark_type != '' && $bookmark_source != '') { // TODO error if not define
+        trace_append(array('3', (array_key_exists('edit', $input) && $input['edit']) ? 'asset_bookmark_edit' : 'asset_bookmark_add', 
+            $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_source, $bookmark_type,
+            $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
+    }
 
     bookmarks_list_update();
 }

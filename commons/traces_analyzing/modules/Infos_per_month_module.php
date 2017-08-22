@@ -25,21 +25,25 @@ class Infos_per_month extends Module {
     private $saved_view_data = array();
     private $month;
 
+    private $cache_asset_name = array();
 
     function analyse_line($date, $timestamp, $session, $ip, $netid, $level, $action, $other_info = NULL) {
         $this->month = date('m-Y', $timestamp);
 
         if($action == "video_play_time") {
-            // other_info: current_album, current_asset, type, last_play_start, play_time
+            // other_info: current_album, current_asset, current_asset_name, type, last_play_start, play_time
             $album = trim($other_info[0]);
             $asset = trim($other_info[1]);
-            $type = trim($other_info[2]);
-            $start = trim($other_info[3]);
-            $play_time = trim($other_info[4]);
+            $asset_name = trim($other_info[2]);
+            $type = trim($other_info[3]);
+            $start = trim($other_info[4]);
+            $play_time = trim($other_info[5]);
 
             if(!array_key_exists($album, $this->saved_view_data)) {
                 $this->saved_view_data[$album] = array();
+                $this->cache_asset_name[$album] = array();
             }
+            $this->cache_asset_name[$album][$asset] = $asset_name;
 
             if(!array_key_exists($asset, $this->saved_view_data[$album])) {
                 $this->saved_view_data[$album][$asset] = array(
@@ -114,13 +118,17 @@ class Infos_per_month extends Module {
                 }
 
                 if($nbr_view_total > 0 || $nbr_view_unique > 0 ) {
-                    // TODO get asset name (cache ;) )
+                    $asset_name = "";
+                    if(isset($this->cache_asset_name[$album][$asset])) {
+                        $asset_name = $this->cache_asset_name[$album][$asset];
+                    }
                     $this->save_to_sql($album, $asset, $asset_name, $nbr_view_total, $nbr_view_unique);
                 }
             }
         }
 
         // Reset saved_view_data
+        $this->cache_asset_name = array();
         $this->saved_view_data = array();
     }
 

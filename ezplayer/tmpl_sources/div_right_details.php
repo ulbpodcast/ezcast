@@ -31,15 +31,15 @@ include_once 'lib_print.php';
     #back_button : displayed on asset page and used to return to the current album
     #home_button : used to return to the home page
 -->
-
 <script>
     $('.bookmarks_button, .toc_button').localScroll({
         target: '#side_pane',
         axis: 'x'
     });
-
-    current_album = '<?php echo $_SESSION['album']; ?>'
-    current_asset = '<?php echo $_SESSION['asset']; ?>'
+    
+    var current_album = '<?php echo $_SESSION['album']; ?>';
+    var current_asset = '<?php echo $_SESSION['asset']; ?>';
+    var current_asset_name = '<?php echo print_info($asset_meta['title']); ?>';
 
     history.pushState({"url": 'index.php?action=view_asset_details&album=' + current_album + '&asset=' + current_asset + 
                 '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');

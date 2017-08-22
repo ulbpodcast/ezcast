@@ -140,7 +140,7 @@ function index($param = array()) {
             break;
         
         case 'video_play_time':
-            $nbr_param = 7;
+            $nbr_param = 8;
             break;
         
     }

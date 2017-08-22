@@ -32,7 +32,7 @@
 require_once dirname(__FILE__) . '/config.inc';
 require_once dirname(__FILE__) . '/lib_ezmam.php';
 require_once dirname(__FILE__) . '/lib_various.php';
-require_once dirname(__FILE__) . '/lib_error.php';
+require_once __DIR__.'/../commons/lib_error.php';
 require_once dirname(__FILE__) . '/lib_toc.php';
 
 if ($argc != 4) {

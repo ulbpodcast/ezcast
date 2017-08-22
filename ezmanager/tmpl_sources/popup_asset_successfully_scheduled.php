@@ -31,19 +31,21 @@ This popup displays a confirmation message when we edit an album.
 You should not have to use it by itself (it is called by web_index.php::create_album())
 However, if you do, please make sure that $public_album_url is declared and set to the URL to the 
 -->
-<div class="popup" id="popup_album_successfully_edited">
-    <h2>®Asset_sched_succeeded_title®</h2>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Asset_sched_succeeded_title®</h4>
+</div>
+<div class="modal-body">
     <?php if ($action == "publish"){ ?>
-        ®Asset_sched_publish®
+        <p>®Asset_sched_publish®</p>
     <?php } else { ?>
-        ®Asset_sched_unpublish®
+        <p>®Asset_sched_unpublish®</p>
     <?php } 
-    
+
     $date = (get_lang() == 'fr') ? new DateTimeFrench($input['date'], $DTZ) : new DateTime($input['date'], $DTZ);
     $dateVerbose = (get_lang() == 'fr') ? $date->format('j F Y à H\hi') : $date->format("F j, Y, g:i a");
-    echo $dateVerbose;
-    ?>
-    <br/>
-    <br/>
-    <span class="Bouton"> <a href="index.php"><span>®Close_and_return_to_index®</span></a></span>
+    echo '<b>'.$dateVerbose.'</b>'; ?>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">®Close_and_return_to_index®</button>
 </div>

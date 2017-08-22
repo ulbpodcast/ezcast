@@ -148,6 +148,8 @@
         <label id="event_calendar_title" lang="en">Errors calendar</label>
         <label id="report_title" lang="fr">Rapport</label>
         <label id="report_title" lang="en">Report</label>
+        <label id="ID" lang="fr">ID</label>
+        <label id="ID" lang="en">ID</label>
         
         
         
@@ -641,8 +643,6 @@
         <label id="settings_add_users_enabled" lang="en">Allow user addition</label>
         <label id="settings_recorder_password_storage_enabled" lang="fr">Stocker les mots de passe en auditoire</label>
         <label id="settings_recorder_password_storage_enabled" lang="en">Store password in classroom</label>
-        <label id="settings_use_course_name" lang="fr">Afficher le nom des cours</label>
-        <label id="settings_use_course_name" lang="en">Show course name</label>
         <label id="settings_use_user_name" lang="fr">Afficher le nom des utilisateurs</label>
         <label id="settings_use_user_name" lang="en">Show users name</label>
         <label id="install" lang="fr">Installer</label>

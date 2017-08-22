@@ -40,7 +40,7 @@
         <script type="text/javascript" src="js/AppearDissapear.js"></script>
         <script type="text/javascript" src="js/hover.js"></script>
         <script type="text/javascript" src="js/httpRequest.js"></script>
-        <script type="text/javascript" src="js/jQuery/jquery-1.3.2.min.js"></script>
+        <script type="text/javascript" src="js/jQuery/jquery-2.2.4.min.js"></script>
         <script src="js/jquery.colorbox.js"></script>
         <script type="text/javascript" src="js/upload.js"></script>
         <script type="text/javascript">
@@ -86,7 +86,6 @@
         <script type="text/javascript" src="js/show_details_functions.js"></script>
     </head>
     <body onload="MM_preloadImages('images/page4/BCreerAlbum.png')">
-        <div id="test"></div>
         <div class="container">
             <div id="global">
                 <?php include_once template_getpath('div_main_header.php'); ?>

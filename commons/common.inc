@@ -19,7 +19,7 @@ if($debug_mode) {
 }
 
 if($config_version != "20161003")
-    trigger_error("global_config.inc file is not up to date", E_USER_WARNING);
+    trigger_error("commons/config.inc file is not up to date", E_USER_WARNING);
 
 $logger = new ServerLogger();
 //Uncomment this to print all log message to screen (may be useful to debug services or such)

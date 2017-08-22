@@ -31,9 +31,21 @@ This popup displays a confirmation message when we create a new album.
 You should not have to use it by itself (it is called by web_index.php::create_album())
 However, if you do, please make sure that $public_album_url is declared and set to the URL to the 
 -->
-<div class="popup" id="popup_album_successfully_created">
-    <h2>®Album_creation_succeeded_title®</h2>
-    ®Album_creation_succeeded_message®<br/><br/>
-    
-    <span class="Bouton"> <a href="index.php"><span>®Close_and_return_to_index®</span></a></span>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Album_creation_succeeded_title®</h4>
 </div>
+<div class="modal-body album-create-success">
+    <p>®Album_creation_succeeded_message®</p>
+</div>
+<div class="modal-footer">
+    <a type="button" class="btn btn-default" href="index.php">®Close_and_return_to_index®</a>
+</div>
+
+<script>
+$('#modal').on('hide.bs.modal', function () {
+    if($('#modal .modal-body.album-create-success').length) {
+        $(location).attr('href', 'index.php');
+    }
+})
+</script>

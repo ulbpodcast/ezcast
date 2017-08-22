@@ -44,13 +44,13 @@ $enable_anon_access_control= false; //Enable the user to choose if the album is 
 
 $default_anon_access = 'false'; //default value when a video is uploaded
 
-$enable_copy_asset=false; //copy asset into other albums
+$enable_copy_asset = false; //allow copying asset into other albums
 
 $enable_course_creation = false; //enable the possibility for a ezmanager user to create his own course
 
 $enable_moderator= false;  //enable the possibility to share album and manage moderator on ezmanager 
 
-$update_title='none';  //none = no update   auto= update auto if modif  manual= button in ezmanager to modif
+$regenerate_title_mode = 'none';  //When moving an asset, auto regenerate title. Possible option : none: no update / auto: update auto if modif / manual: button in ezmanager to modif
 // used by lib_ezmam (ezmanager)
 $accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)

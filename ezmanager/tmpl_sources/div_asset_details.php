@@ -56,107 +56,119 @@ function print_info($info, $suffix = '') {
 ?>
 
 <?php if (strtolower($origin) !== 'streaming') { ?>
-    <div class="LigneBouton">
+    <div class="LigneButton">
         <ul>
-            <li><span class="BoutonSuppAlbum">
+            <li><span class="ButtonSuppAlbum">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_delete_asset_<?php echo $asset_name; ?>');">®Delete®</a>
-                        <?php
+                        echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.$title.
+                            '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
                     } else {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Delete®</a>
-                        <?php
-                    }
-                    ?>
+                        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                    } ?>
+                    ®Delete®</a>
 
                 </span></li>
-            <li><span class="BoutonEditer"><a href="javascript:show_edit_form('<?php echo $asset; ?>');">®Edit®</a></span></li>
-            <li><span class="BoutonDeplacer">
-                    <?php if ($status != 'processing' && $status != 'error') { ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_move_asset_<?php echo $asset_name; ?>');">®Move®</a>
-                        <?php
+            <li>
+                <span class="ButtonEdit">
+                    <a href="javascript:show_edit_form('<?php echo $asset; ?>');">
+                        ®Edit®
+                    </a>
+                </span>
+            </li>
+            <li>
+                <span class="ButtonMove">
+                    <?php if ($status != 'processing' && $status != 'error') {
+                        echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.$album.
+                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
                     } else {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Move®</a>		  
-                        <?php
-                    }
-                    ?>
-                </span></li>
+                        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                    } ?>
+                    ®Move®</a>
+                </span>
+            </li>
 				
-				<?php 
-				global $enable_copy_asset;
-					if($enable_copy_asset){?>
-						<li><span class="BoutonCopier">
-							<?php if ($status != 'processing' && $status != 'error') { ?>
-								<a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®copy®</a>
-								<?php
-							} else {
-								?>
-								<a href="javascript:show_popup_from_inner_div('#popup_not_available');">®copy®</a>
-								<?php
-							}
-							?>
-							</span></li>
-				<?php } ?>
-				
+            <?php 
+            global $enable_copy_asset;
+            if($enable_copy_asset) { ?>
+                <li>
+                    <span class="ButtonCopy">
+                        <?php if ($status != 'processing' && $status != 'error') { 
+                            echo '<a href="index.php?action=show_popup&amp;popup=copy_asset&amp;album='.$album.
+                                '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                                'data-target="#modal">';
+                        } else {
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                                ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Copy®</a>
+                    </span>
+                </li>
+            <?php } ?>
+            
             <?php if ($public_album) { ?>
-                <li><span class="BoutonDeplacerAlbumPrive">
-                        <?php
-                        if ($status != 'processing' && $status != 'error') {
-                            ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_unpublish_asset_<?php echo $asset_name; ?>');">®Unpublish®</a>
-                            <?php
+                <li>
+                    <span class="ButtonMoveAlbumPrive">
+                        <?php if ($status != 'processing' && $status != 'error') {
+                            echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.$title.
+                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                                'data-target="#modal">';
                         } else {
-                            ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Unpublish®</a>
-                            <?php
-                        }
-                        ?>
-                    </span></li>
-                    <?php } else { ?>
-                <li><span class="BoutonDeplacerAlbumPublic">
-                <?php if ($status != 'processing' && $status != 'error') { ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_publish_asset_<?php echo $asset_name; ?>');">®Publish®</a>
-                            <?php
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Unpublish®</a>
+                    </span>
+                </li>
+            <?php } else { ?>
+                <li>
+                    <span class="ButtonMoveAlbumPublic">
+                        <?php if ($status != 'processing' && $status != 'error') {
+                            echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.$title.
+                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                                'data-target="#modal">';
                         } else {
-                            ?>
-                            <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Publish®</a>
-                            <?php
-                        }
-                        ?>
-                    </span></li>
-                    <?php } ?>            
-                    <li><span class="BoutonProgrammer">
-                    <?php if ($status != 'processing' && $status != 'error') { ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_schedule_<?php echo $asset_name; ?>');">®Program®</a>
-                        <?php
-                    } else {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Program®</a>
-                        <?php
-                    }
-                    ?>
-                </span></li>       
-				<?php 
-				// add un flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
-				global $update_title;				
-				if($update_title=='manual' && isset($asset_metadata['add_title'])){?>
-
-				  <li><span class="BoutonRegenTitle">
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                                ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Publish®</a>
+                    </span>
+                </li>
+            <?php } ?>
+            <li>
+                <span class="ButtonProgrammer">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_regen_title_<?php echo $asset_name; ?>');">®Regen_Intro®</a>
-                        <?php
+                        echo '<a href="index.php?action=show_popup&amp;popup=schedule_asset&amp;album='.$album.
+                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
                     } else {
-                        ?>
-                        <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®Regen_Intro®</a>
-                        <?php
-                    }
-                    ?>
-
-                </span></li>
-				<?php } ?>
+                        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                        ' data-toggle="modal" data-target="#modal">';
+                    } ?>
+                    ®Program®</a>
+                </span>
+            </li> 
+            <?php 
+            // add flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
+            global $regenerate_title_mode;
+            if ($regenerate_title_mode == 'manual' && isset($asset_metadata['add_title'])) { ?>
+                <li>
+                    <span class="ButtonRegenTitle">
+                        <?php if($status != 'processing' && $status != 'error') {
+                            echo '<a href="index.php?action=show_popup&amp;popup=regen_title&amp;album='.$album.
+                            '&amp;asset='.$asset_name.'&amp;title='.$title.'" data-remove="false" data-toggle="modal" '.
+                            'data-target="#modal">';
+                        } else {
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                            ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Regen_Intro®</a>
+                    </span>
+                </li>
+            <?php } ?>
         </ul>
     </div>
 <?php } ?>
@@ -165,102 +177,117 @@ function print_info($info, $suffix = '') {
 
 <!-- Colonne 1 information podcast -->
 
-<div class="Colonne-Un-Information">
+<div class="col-sm-4" style="padding-left: 0px;">
     <h1>®Information®</h1>
-    <p>
-        <span class="infospodast">®Title®&nbsp;:</span> 
-        <span id="title_<?php echo $asset; ?>"><?php print_info($title); ?></span>
-        <!-- Edit form -->
-        <span id="title_<?php echo $asset; ?>_edit" style="display: none;"><input type="text" name="title" id="title_<?php echo $asset; ?>_input" value="<?php echo htmlentities($title, ENT_COMPAT, "UTF-8"); ?>" /></span>
-    </p>
-    <p>
-        <span class="infospodast">®Description®&nbsp;:</span> 
-        <span id="description_<?php echo $asset; ?>"><?php print_info($description); ?></span>
-        <!-- Edit form -->
-        <span id="description_<?php echo $asset; ?>_edit" style="display: none;"><textarea name="description" id="description_<?php echo $asset; ?>_input"><?php echo htmlentities($description, ENT_COMPAT, "UTF-8"); ?></textarea></span>
+    <ul class="list-unstyled">
+        <li>
+            <span class="infospodast">®Title®</span><br />
+            <span id="title_<?php echo $asset; ?>"><?php print_info($title); ?></span>
+            <span id="title_<?php echo $asset; ?>_edit" style="display: none;">
+                <input type="text" name="title" id="title_<?php echo $asset; ?>_input" class="form-control input-sm"
+                       value="<?php echo htmlentities($title, ENT_COMPAT, "UTF-8"); ?>" />
+            </span>
+        </li>
+        <li>
+            <span class="infospodast">®Description®</span><br />
+            <span id="description_<?php echo $asset; ?>"><?php print_info($description); ?></span>
+            <span id="description_<?php echo $asset; ?>_edit" style="display: none;">
+                <textarea name="description" class="form-control input-sm" style="resize: vertical;"
+                          id="description_<?php echo $asset; ?>_input"><?php echo htmlentities($description, ENT_COMPAT, "UTF-8"); 
+                ?></textarea>
+            </span>
+        </li>
+        <li>
+            <span class="infospodast">®Author®</span><br />
+            <?php print_info($author); ?>
+        </li>
+        <li>
+            <span class="infospodast">®Date®</span><br />
+            <?php print_info($date); ?>
+        </li>
+        <li>
+            <span class="infospodast">®Origin®</span><br />
+            <?php if ($origin == 'SUBMIT') { echo '®Manual_submit®'; } else { print_info($origin); } ?>
+        </li>
 
-    </p>
-    <p><span class="infospodast">®Author®&nbsp;:</span> <?php print_info($author); ?></p>
-    <p><span class="infospodast">®Date®&nbsp;:</span> <?php print_info($date); ?></p>
-    <p><span class="infospodast">®Origin®&nbsp;:</span> <?php if ($origin == 'SUBMIT') echo '®Manual_submit®';
-else print_info($origin); ?></p>
-<?php if ($status == 'processing') {
-    ?>
-        <p><span class="infospodast">®Status®&nbsp;:</span> <span style="color: #75940a;">®Processing®</span></p>
-        <?php
-    } else if ($status == 'failed') {
-        ?>
-        <p><span class="infospodast">®Status®&nbsp;:</span> <span style="color: red;">®Processing_error®</span></p>
-        <?php
-    } else {
-        ?>
-        <p><span class="infospodast">®Length®&nbsp;:</span> <?php print_info($duration); ?></p>
-        <p><span class="infospodast">®Type®&nbsp;:</span> <?php print_info($record_type); ?></p>
-        <?php
-    }
+        <?php if ($status == 'processing') { ?>
+            <li>
+                <span class="infospodast">®Status®</span><br />
+                <span style="color: #75940a;">®Processing®</span>
+            </li>
+        <?php } else if ($status == 'failed') { ?>
+            <li>
+                <span class="infospodast">®Status®</span><br />
+                <span style="color: red;">®Processing_error®</span>
+            </li>
+        <?php } else { ?>
+            <li>
+                <span class="infospodast">®Length®</span><br />
+                <?php print_info($duration); ?>
+            </li>
+            <li>
+                <span class="infospodast">®Type®</span><br /> 
+                <?php print_info($record_type); ?>
+            </li>
+        <?php }
 
-    if ($origin == 'SUBMIT') {
-        ?>
-        <p><span class="infospodast">®Filename®&nbsp;:</span> <?php print_info($file_name); ?></p>
-        <?php } else if (strtolower($origin) === 'streaming') {
-        ?>
-        <span class="BoutonEZplayer"> <a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>');">EZplayer</a> </span>
-    <?php }
-    ?>
+        if ($origin == 'SUBMIT') { ?>
+            <li>
+                <span class="infospodast">®Filename®</span><br />
+                <?php print_info($file_name); ?>
+            </li>
+        <?php } else if (strtolower($origin) === 'streaming') { ?>
+            <li>
+                <span class="ButtonEZplayer"> 
+                    <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php 
+                        echo $asset; ?>" 
+                    data-remote="false" data-toggle="modal" data-target="#modal">
+                    EZplayer
+                    </a>
+                </span>
+            </li>
+        <?php } ?>
+    </ul>
     <!-- Edit form (submit/cancel buttons) -->
-    <div id="<?php echo $asset; ?>_submit" style="display: none; width: 200px; text-align: right; padding-right: 10px;">
-        <input type="button" id="<?php echo $asset; ?>_cancel_button" onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
-        <input type="button" id="<?php echo $asset ?>_submit_button" onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Update®" />
+    <div class="btn-group" role="group" id="<?php echo $asset; ?>_submit" style="display: none;">
+        <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button" 
+            onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
+        <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button" 
+            onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Update®" />
     </div>
+    <br />
+    <br />
 </div>
 
 <!-- Colonne 1 information podcast [Fin] -->
 
 <!-- Colonne 2 information podcast -->
+<div class="col-sm-4">
 
 <?php
 // If there were two media, we spread them in two columns.
 // This is the first one (the second one is below), i.e. the video
 if ($has_cam && $has_slides && $status != 'processing' && $status != 'failed' && strtolower($origin) !== 'streaming') {
-    ?>
-    <div class="Colonne-Deux-Video">
-    <?php require 'div_media_details_camera.php'; ?>
-    </div>
-    <?php
+    require 'div_media_details_camera.php';
 } // Fin colonne 2
 ?>
-
+</div>
 
 <!-- Colonne 3 information podcast -->
 
+<div class="col-sm-4">
 <?php
 // If there is only one media, we display it in the right column.
 // 3 possibles scenarios: there was only a slides video, or there were 2 videos
 //    That happens if $has_slides is true (inside the "if")
 // There was only a cam video. In that case $has_slides is false, so the content of the "else" is displayed
 if ($status != 'processing' && $status != 'failed' && strtolower($origin) !== 'streaming') {
-    ?>
-    <div class="Colonne-Trois-Diaporama">                                
-    <?php
     if ($has_slides) {
         require 'div_media_details_slides.php';
     } else {
         require 'div_media_details_camera.php';
     }
-    ?>
-    </div><!-- fin colonne trois-->    
-        <?php }
-    ?>
-<div style="clear: both;"></div>
-<!-- Popup -->
-<div style="display: none;">
-<?php include 'popup_delete_asset.php'; ?>
-<?php include 'popup_regen_title.php'; ?>										 
-<?php include 'popup_move_asset.php'; ?>
-<?php include 'popup_copy_asset.php'; ?>
-<?php include 'popup_publish_asset.php'; ?>
-    <?php include 'popup_unpublish_asset.php'; ?>
-    <?php include 'popup_schedule.php' ?>
-    <?php include 'popup_media_url.php' ?>
-    <?php include_once 'popup_not_available_while_processing.php'; ?>
+} ?>
 </div>
+
+<div style="clear: both;"></div>

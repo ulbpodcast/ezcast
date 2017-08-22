@@ -347,8 +347,11 @@ function trace_video_play_time(stop_time) {
         stop_time = (typeof stop_time !== 'undefined') ? stop_time : time;
         var play_time = stop_time - last_play_start;
         if(play_time > 0) {
-            console.log('video_play_time | Depuis:' + last_play_start + ' | Pendant: ' + play_time);
-            server_trace(new Array('4', 'video_play_time', current_album, current_asset, type, last_play_start, play_time));
+            // console.log('video_play_time | From:' + last_play_start + ' | During: ' + play_time);
+            // Known bug: when video is finish, push on play doesn't count the time because "last_play_start" contain
+            // the total time of the video (when the video have stop)
+            server_trace(new Array('4', 'video_play_time', current_album, current_asset, current_asset_name, type, 
+                last_play_start, play_time));
             last_play_start = time;
         }
     }
@@ -366,7 +369,6 @@ function video_event_play() {
         }
     }
     playing = true;
-    console.log('last player start');
     last_play_start = time;
 
     if (!shortcuts)

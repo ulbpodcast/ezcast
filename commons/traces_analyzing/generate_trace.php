@@ -14,6 +14,7 @@ class Generate_Trace {
 
     const USER_NAME = "User_";
     const COURS_NAME = "Cours_";
+    const ASSET_TITLE = "Title_";
     const ANONYME = "nologin";
     const LEVEL = 4; // Level of the generate trace
     const ACTION = "video_play_time";
@@ -82,6 +83,7 @@ class Generate_Trace {
         for ($i=0; $i < $nbr_videos; $i++) { 
             $this->listVideos[] = array(
                     'name' => $this->generateRandomVideoName(),
+                    'title' => self::ASSET_TITLE . $i,
                     'max_time' => $this->generateRandomMaxVideoTime($max_time_video)
                 );
         }
@@ -157,6 +159,9 @@ class Generate_Trace {
 
         // Asset
         $allInfos[] = $videoData['name'];
+
+        // Asset_title
+        $allInfos[] = $videoData['title'];
 
         // Type
         $allInfos[] = $this->getRandomVideoType();

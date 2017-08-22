@@ -199,11 +199,13 @@ function ezmam_album_list_metadata() {
 
 function ezmam_album_course_public_name_get($album) {
     $album_metadata = ezmam_album_metadata_get($album);
-    if(   isset($album_metadata['course_public_name']) 
-       && $album_metadata['course_public_name'] != '' )
+    if(isset($album_metadata['course_public_name']) 
+       && $album_metadata['course_public_name'] != '' ) {
         $course_code_public = $album_metadata['course_public_name']; 
-    else 
+    } else if(isset($album_metadata['name'])) {
         $course_code_public = $album_metadata['name'];
+    }
+    return $course_code_public;
 }
 
 /**

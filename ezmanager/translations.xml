@@ -239,8 +239,6 @@
         <label id="Move" lang="en">Move</label>
         <label id="view" lang="fr">afficher</label>
         <label id="view" lang="en">show</label>
-        <label id="copy" lang="fr">copier</label>
-        <label id="copy" lang="en">copier</label>
         <label id="Publish" lang="fr">Déplacer dans l'album public</label>
         <label id="Publish" lang="en">Move to public album</label>
         <label id="Unpublish" lang="fr">Déplacer dans l'album privé</label>

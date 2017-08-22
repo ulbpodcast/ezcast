@@ -55,6 +55,21 @@ function stats_statements_get() {
                 'WHERE album = :album '.
                 'GROUP BY album;',
         
+            'update_album_month_infos' => 
+                'UPDATE '. db_gettable($table_stats_month_infos) .' '.
+                    'SET album = :new_album ' .
+                    'WHERE album = :old_album;',
+        
+            'update_album_view' => 
+                'UPDATE '. db_gettable($table_stats_view) .' '.
+                    'SET album = :new_album ' .
+                    'WHERE album = :old_album;',
+        
+            'update_album_infos' => 
+                'UPDATE '. db_gettable($table_stats_infos) .' '.
+                    'SET album = :new_album ' .
+                    'WHERE album = :old_album;',
+                    
             'threads_by_album_count' =>
                 'SELECT count(*) '.
                 'FROM ' . db_gettable($table_thread) . ' ' .
@@ -153,4 +168,20 @@ function db_stats_album_infos_get($album) {
     
     $statements['album_get_info']->execute();
     return $statements['album_get_info']->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function db_stats_update_album($album, $new_album) {
+    global $statements;
+    
+    $statements['update_album_month_infos']->bindParam(':old_album', $album);
+    $statements['update_album_month_infos']->bindParam(':new_album', $new_album);
+    $statements['update_album_month_infos']->execute();
+    
+    $statements['update_album_view']->bindParam(':old_album', $album);
+    $statements['update_album_view']->bindParam(':new_album', $new_album);
+    $statements['update_album_view']->execute();
+    
+    $statements['update_album_infos']->bindParam(':old_album', $album);
+    $statements['update_album_infos']->bindParam(':new_album', $new_album);
+    $statements['update_album_infos']->execute();
 }

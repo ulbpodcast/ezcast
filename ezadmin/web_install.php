@@ -312,6 +312,7 @@ function convert_size($string) {
 
 function save_logo() {
     global $input;
+    global $apache_documentroot;
 
     if (file_exists("../commons/config.inc")) {
         include_once '../commons/config.inc';

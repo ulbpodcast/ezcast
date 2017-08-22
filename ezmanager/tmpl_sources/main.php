@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="bootstrap/css/dashboard.css" />
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
+        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
         <link rel="stylesheet" type="text/css" href="css/colorbox.css" />
         <link href="css/uploadify.css" type="text/css" rel="stylesheet" />
         <script type="text/javascript" src="js/AppearDissapear.js"></script>

@@ -40,6 +40,7 @@
         <link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet"/>
         <link href="bootstrap/css/angular-bootstrap-calendar.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
+        <link type="text/css" href="commons/css/common_style.css" rel="stylesheet" />
         <link href="css/jquery.jqplot.min.css" rel="stylesheet"/>
         <link href="css/ezplayerStats.css" rel="stylesheet"/>
  

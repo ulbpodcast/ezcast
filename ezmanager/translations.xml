@@ -445,6 +445,12 @@
         <label id="Graph_views" lang="en">view</label>
         <label id="Graph_views" lang="fr">vues</label>
         
+        <label id="month" lang="fr">Mois</label>
+        <label id="month" lang="en">Month</label>
+        <label id="year" lang="fr">Année</label>
+        <label id="year" lang="en">Year</label>
+        <label id="all" lang="fr">Tout</label>
+        <label id="all" lang="en">All</label>
         
         <label id="month_01" lang="fr">janvier</label>
         <label id="month_01" lang="en">January</label>

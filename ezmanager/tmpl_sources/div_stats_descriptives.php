@@ -81,7 +81,27 @@ Highcharts.setOptions({
         },
         rangeSelector: {
             inputDateFormat: "%b %Y",
-            inputEditDateFormat: "%Y-%m"
+            inputEditDateFormat: "%Y-%m",
+            buttonTheme: {
+                width: null,
+                padding: 2
+            },
+            buttons: [{
+                    type: 'month',
+                    count: 3,
+                    text: '3 ®month®'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6 ®month®'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1 ®year®'
+                }, {
+                    type: 'all',
+                    text: '®all®'
+                }]
         },
         xAxis: {
             tickInterval: 30 * 24 * 3600 * 1000,
@@ -107,6 +127,11 @@ Highcharts.setOptions({
             },
             opposite: false
         }],
+        legend: {
+            enabled: true,
+            layout: 'horizontal',
+            verticalAlign: 'bottom'
+        },
         tooltip: {
             shared: true,
             xDateFormat: '%B %Y'

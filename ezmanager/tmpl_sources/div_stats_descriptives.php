@@ -7,11 +7,7 @@
         <?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
             <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
             <br />
-        <?php 
-        echo '<pre>';
-        print_r($stats['graph']['video']);
-        echo '</pre>';
-        } ?>
+        <?php } ?>
         <br />
         <table class="table table-striped">
             <tbody>

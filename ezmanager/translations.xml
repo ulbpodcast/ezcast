@@ -277,8 +277,12 @@
         <label id="Keep_quality" lang="en">Keep the original video quality</label>
         <label id="Add_title_album" lang="fr">Ajouter un titre aux vidéos publiées dans cet album</label>
         <label id="Add_title_album" lang="en">Add a title to videos published in this album</label>
+        <label id="sharemyalbum" lang="fr">Partager mon Album</label>
+        <label id="sharemyalbum" lang="en">Share my album</label>
         <label id="Moderator_List" lang="en">Moderator List</label>
         <label id="Moderator_List" lang="fr">Liste des modérateurs</label>
+        <label id="Moderator_manage" lang="en">Moderator management</label>
+        <label id="Moderator_manage" lang="fr">Gestion des modérateurs</label>
         <label id="Regen_Intro" lang="fr">Regénérer l'intro</label>
         <label id="Regen_Intro" lang="en">Regen Intro</label>
         

@@ -68,7 +68,7 @@ Before calling this template, please define the following variables:
                             <li>
                                 <a href="index.php?action=view_list_moderator" data-toggle="modal"
                                    data-target="#modal">
-                                    <img src="images/page4/iconEditerBackg.png" /> ®Moderator_List®
+                                    <img src="images/page4/iconEditerBackg.png" /> ®Moderator_manage®
                                 </a>
                             </li> 
                         <?php } ?>
@@ -98,15 +98,6 @@ Before calling this template, please define the following variables:
                         ®Player_url®
                     </a>
                 </li>
-                <?php if($enable_moderator){ ?>
-                    <li role="presentation" id="ezmanager"
-                        <?php if(isset($current_tab) && $current_tab == 'ezmanager' ) { echo 'class="active"'; } ?>>
-                        <a href="javascript:show_ezmanager('<?php echo $current_album; ?>'); ">
-                            <img src="images/page4/PictoEZManager.png" style="display:inline"/>
-                            ®Ezmanager_url®
-                        </a>
-                    </li>
-                <?php } ?>
                 <li role="presentation" id="stats"
                     <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
                     <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>'); ">

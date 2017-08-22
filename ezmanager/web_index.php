@@ -203,7 +203,7 @@ else {
             break;
 			
         case 'view_list_moderator':
-            requireController('view_list_moderator.php');
+            requireController('moderator_management.php');
             break;
 
         // users has filled in the edit album form and has confirmed
@@ -331,7 +331,7 @@ else {
             break;	
 			
         case 'delete_user_course':
-            requireController('user_course_delete.php');
+            requireController('moderator_delete.php');
             break;
 
         //debugging should be removed in prod

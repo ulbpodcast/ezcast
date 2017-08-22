@@ -64,6 +64,7 @@ class EventType {
     const MANAGER_RENDERING                  = "manager_rendering";
     const MANAGER_EXTERNAL_STREAM            = "manager_external_stream";
     const MANAGER_ASSET_COPY                 = "manager_asset_copy";
+    const MANAGER_MODO_DELETE                = "manager_modo_delete";
     
     // EZRenderer
     
@@ -132,6 +133,7 @@ class EventType {
         EventType::MANAGER_RENDERING                          => 3011,
         EventType::MANAGER_EXTERNAL_STREAM                    => 3012,
         EventType::MANAGER_ASSET_COPY                         => 3013,
+        EventType::MANAGER_MODO_DELETE                        => 3014,
         
         // EZRenderer: 4000->4999
         

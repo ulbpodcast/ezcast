@@ -1,19 +1,21 @@
 <?php
 
-
-/**
- * Displays the stast informations
- */
 function index($param = array()) {
-    global $input;
+    global $intros;
+    global $credits;
+    global $titlings;
+    global $downloadable;
+    global $anon_access;
     global $repository_path;
-    global $distribute_url;
+    global $default_add_title;
+    global $default_downloadable;
+    global $default_anon_access;
+    global $basedir;
     global $ezmanager_url; // Website URL, defined in config.inc
-    global $ezplayer_url;
-    global $enable_moderator;
-    global $enable_anon_access_control;
+
+
     
-    if (isset($input['album']))
+      if (isset($input['album']))
         $album = $input['album'];
     else
         $album = $_SESSION['podman_album'];
@@ -50,6 +52,16 @@ function index($param = array()) {
     $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $album . "&tokenmanager=" . ezmam_album_token_manager_get($album);
     
     $current_tab = 'ezmanager';
-    include template_getpath('div_album_header.php');
-    include template_getpath('div_ezmanager_link.php');
+    
+    
+    
+	
+    $album = suffix_remove($_SESSION['podman_album']);
+    $moderation = album_is_private($_SESSION['podman_album']);
+    $visibility = ($moderation) ? '-priv' : '-pub';
+    ezmam_repository_path($repository_path);
+    $album_meta = ezmam_album_metadata_get($album . $visibility);
+    $tbusercourse= users_courses_get_users($album);
+    require_once template_getpath('popup_moderator_management.php');
+    die;
 }

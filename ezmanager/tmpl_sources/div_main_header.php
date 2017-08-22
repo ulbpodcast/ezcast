@@ -29,7 +29,7 @@
     <div class="header_content">
         <div class="logo"> 
             <?php if (file_exists("./htdocs/images/Header/organization-logo.png")){ ?>
-            <a href="<?php global $organization_url; echo $organization_url;?>"><img src="./images/Header/organization-logo.png" height="42px;"/></a>
+            <a href="<?php global $organization_url; echo $organization_url;?>"><img id="organisation_logo" src="./images/Header/organization-logo.png" height="42px;"/></a>
             <?php } ?>            
             <a href="index.php"><img src="./images/Header/EZmanager.png" alt="" /></a>
         </div>

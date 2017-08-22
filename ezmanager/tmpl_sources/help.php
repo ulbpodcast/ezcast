@@ -34,6 +34,7 @@
         <title>®podman_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
+        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
         <link rel="stylesheet" type="text/css" href="css/styleHelp.css" />
         <script type="text/javascript" src="js/AppearDissapear.js"></script>
         <script type="text/javascript" src="js/hover.js"></script>

@@ -7,10 +7,11 @@
     <?php if(isset($stats['display']) && $stats['display']) { ?>
         <div id="container" style="margin: 0 auto"></div>
         
-        <div style="width:<?php echo ($has_slides) ? '50%' : '100%'; ?>;" 
+        <div style="width:<?php echo ($has_slides) ? '50%' : '100%'; ?>;" class="popup_video_player"
             id="Popup_Player_<?php echo $asset; ?>_cam"></div>
         <?php if($has_slides) { ?>
-            <div style="width: 50%;" id="Popup_Player_<?php echo $asset; ?>_slide"></div>
+            <div style="width: 50%;" class="popup_video_player" 
+                 id="Popup_Player_<?php echo $asset; ?>_slide"></div>
         <?php } ?>
         <br />
             
@@ -24,17 +25,26 @@
 
 <script>
 <?php if(isset($stats['display']) && $stats['display']) { ?>
-    Highcharts.chart('container', {
+    var chart = Highcharts.chart('container', {
         chart: {
-            type: 'areaspline'
+            type: 'areaspline',
+            events: {
+                click: function(e) {
+                    adaptVideoTime(Math.round(event.xAxis[0].value));
+                }
+            }
         },
         title: {
             text: '®Graph_min_per_min_view®'
         },
         plotOptions: {
             areaspline: {
+                cursor: 'pointer',
                 events: {
-                    legendItemClick: function () { return false; }
+                    legendItemClick: function () { return false; },
+                    click: function () {
+                        adaptVideoTime(event.point.category);
+                    }
                 }
             }
         },
@@ -42,7 +52,7 @@
             labels: {
                 formatter: 
                     function() {
-                        var val = (this.value * <?php echo $video_split_time; ?>); // TODO replace 30 by param
+                        var val = (this.value * <?php echo $video_split_time; ?>);
                         var min = Math.floor(val/60)%60;
                         var sec = val%60;
                         var hour = Math.floor(val/3600);
@@ -76,11 +86,8 @@
         tooltip: {
             shared: true,
             valueSuffix: ' ®Graph_views®',
-            useHTML: true,
             formatter: function() {
-                    return this.x +' <img src="http://static.adzerk.net/Advertisers/bd294ce7ff4c43b6aad4aa4169fb819b.jpg" '+
-                        'title="" alt="" border="0" height="50" width="50"><br />'+
-                        this.y + ' ®Graph_views®';
+                    return '<b>' + this.y + ' ®Graph_views®</b>';
                 }
         },
         series: [{
@@ -97,5 +104,26 @@
             echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_slide'; ?>');
     <?php } ?>
 })();
-    
+
+function adaptVideoTime(xValue) {
+    var newVideoTime = xValue * <?php echo $video_split_time; ?>;
+    var allVideoPlayer = $('.popup_video_player video');
+    for(var i = 0; i < allVideoPlayer.length; i++) {
+        var video = $('.popup_video_player video')[i];
+        video.currentTime = newVideoTime;
+    }
+    addPlotLine(xValue);
+}
+
+function addPlotLine(xValue) {
+    console.log('Update plotline');
+    chart.xAxis[0].removePlotLine('video-plot-line');
+    chart.xAxis[0].addPlotLine({
+            color: 'red', // Color value
+            value: xValue, // Value of where the line will appear
+            width: 1, // Width of the line
+            id: 'video-plot-line'
+        });
+}
+
 </script>

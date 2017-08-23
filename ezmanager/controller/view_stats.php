@@ -79,13 +79,21 @@ function load_stats($album) {
         $stats['descriptive'] = $album_infos[0];
     }
     
-    $stats['graph']['album'] = calcul_graph_album($all_album_data);
-    $stats['graph']['video'] = calcul_graph_video($all_video_data);
+    $stats['calculate'] = array();
+    $stats['graph']['album'] = calcul_graph_album($all_album_data, $stats['calculate']);
+    $stats['graph']['video'] = calcul_graph_video($all_video_data, $stats['calculate']);
+    
+    if($stats['calculate']['view_unique'] > 0) {
+        $total_bookmarks = $stats['descriptive']['bookmark_personal'] + $stats['descriptive']['bookmark_official'];
+        $stats['calculate']['bookmarks_view_ratio'] = round(($total_bookmarks / $stats['calculate']['view_unique'])*100, 2);
+    } else {
+        $stats['calculate']['bookmarks_view_ratio'] = 0;
+    }
     
     return $stats;
 }
 
-function calcul_graph_album($all_album_data) {
+function calcul_graph_album($all_album_data, &$calculate_stats) {
     $result = array();
     $data = array(
             'total_view' => array(),
@@ -97,22 +105,24 @@ function calcul_graph_album($all_album_data) {
         
         foreach($all_album_data as $album_data) {
             // TODO remove: it's only for debug
-    //        $strTime = strtotime("02-" . $album_data['month']);
-    //        $data['total_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_total']-200;
-    //        $data['unique_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_unique']-10;
-    //        
-    //        $data['total_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_total']-100;
-    //        $data['unique_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_unique']-50;
-    //        
-    //        $data['total_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_total']-30;
-    //        $data['unique_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_unique']-120;
-    //        
-    //        $data['total_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_total']-6;
-    //        $data['unique_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_unique']-400;
+//            $strTime = strtotime("02-" . $album_data['month']);
+//            $data['total_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_total']-10;
+//            $data['unique_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_unique']-10;
+//            
+//            $data['total_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_total']-1;
+//            $data['unique_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_unique']-5;
+//            
+//            $data['total_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_total']-30;
+//            $data['unique_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_unique']-12;
+//            
+//            $data['total_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_total']-6;
+//            $data['unique_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_unique']-4;
 
             $time = strtotime("02-" . $album_data['month']) . "000";
             $data['total_view'][$time] = $album_data['total_view_total'];
+            $calculate_stats['view_total'] += $album_data['total_view_total'];
             $data['unique_view'][$time] = $album_data['total_view_unique'];
+            $calculate_stats['view_unique'] += $album_data['total_view_unique'];
         }
 
         $result['str_totalview'] = convertPHPArrayToJSArray($data['total_view']);

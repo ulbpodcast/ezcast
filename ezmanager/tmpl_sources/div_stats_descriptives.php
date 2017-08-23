@@ -16,12 +16,24 @@
                     <td><?php echo $stats['descriptive']['access']; ?></td> 
                 </tr>
                 <tr>
+                    <td>®Stats_view_total®</td>
+                    <td><?php echo $stats['calculate']['view_total']; ?></td> 
+                </tr>
+                <tr>
+                    <td>®Stats_view_unique_total®</td>
+                    <td><?php echo $stats['calculate']['view_unique']; ?></td> 
+                </tr>
+                <tr>
                     <td>®Stats_bookmark_official_nbr®</td>
                     <td><?php echo $stats['descriptive']['bookmark_official']; ?></td> 
                 </tr>
                 <tr>
                     <td>®Stats_bookmark_personal_nbr®</td>
                     <td><?php echo $stats['descriptive']['bookmark_personal']; ?></td> 
+                </tr>
+                <tr>
+                    <td>®Stats_bookmarks_view_ratio®</td>
+                    <td><?php echo $stats['calculate']['bookmarks_view_ratio']; ?> %</td> 
                 </tr>
                 <tr>
                     <td>®Stats_threads_nbr®</td>

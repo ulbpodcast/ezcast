@@ -61,11 +61,19 @@ class View_per_time extends Module {
 
         $db = $this->database->get_database_object();
         $query = $db->prepare('INSERT INTO ' . $this->database->get_table('stats_video_view') . ' ' .
-                    '(asset, album, nbr_view, video_time) ' .
-                    'VALUES(:asset, :album, :nbr_view, :video_time) '.
+                    '(visibility, asset, album, nbr_view, video_time) ' .
+                    'VALUES(:visibility, :asset, :album, :nbr_view, :video_time) '.
                 'ON DUPLICATE KEY UPDATE ' .
                     'nbr_view =  nbr_view + :nbr_view;');
         $query->execute(array(
+                ':visibility' => 0,
+                ':asset' => $asset,
+                ':album' => $album,
+                ':nbr_view' => $nbr_view,
+                ':video_time' => $video_time
+            ));
+        $query->execute(array(
+                ':visibility' => 1,
                 ':asset' => $asset,
                 ':album' => $album,
                 ':nbr_view' => $nbr_view,

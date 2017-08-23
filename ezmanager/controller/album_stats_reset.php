@@ -11,7 +11,7 @@ function index($param = array()) {
         die;
     }
     require_once dirname(__FILE__) . '/../lib_sql_stats.php';
-    // TODO appellé la bonne méthode
+    db_stats_album_hide($input['album']);
     
     require_once template_getpath('popup_album_stats_successfully_reset.php');
 }

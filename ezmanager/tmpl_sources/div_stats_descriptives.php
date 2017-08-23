@@ -127,7 +127,7 @@ Highcharts.setOptions({
         xAxis: {
             categories: allAssets,
             min: 0,
-            max: Math.min(allAssets.length, 15),
+            max: Math.min(allAssets.length-1, 15),
             scrollbar: {
                 enabled: true
             }

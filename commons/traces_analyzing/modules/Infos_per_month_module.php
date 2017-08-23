@@ -139,12 +139,13 @@ class Infos_per_month extends Module {
 
         $db = $this->database->get_database_object();
         $query = $db->prepare('INSERT INTO ' . $this->database->get_table('stats_video_month_infos') . ' ' .
-                    '(asset, asset_name, album, nbr_view_total, nbr_view_unique, month) ' .
-                    'VALUES(:asset, :asset_name, :album, :nbr_view_total, :nbr_view_unique, :month) '.
+                    '(visibility, asset, asset_name, album, nbr_view_total, nbr_view_unique, month) ' .
+                    'VALUES(:visibility, :asset, :asset_name, :album, :nbr_view_total, :nbr_view_unique, :month) '.
                 'ON DUPLICATE KEY UPDATE ' .
                     'nbr_view_total = nbr_view_total + :nbr_view_total, ' .
                     'nbr_view_unique =  nbr_view_unique + :nbr_view_unique;');
         $query->execute(array(
+                ':visibility' => 1,
                 ':asset' => $asset,
                 ':asset_name' => $asset_name,
                 ':album' => $album,
@@ -152,7 +153,15 @@ class Infos_per_month extends Module {
                 ':nbr_view_unique' => $nbr_view_unique,
                 ':month' => $this->month
             ));
-
+        $query->execute(array(
+                ':visibility' => 0,
+                ':asset' => $asset,
+                ':asset_name' => $asset_name,
+                ':album' => $album,
+                ':nbr_view_total' => $nbr_view_total,
+                ':nbr_view_unique' => $nbr_view_unique,
+                ':month' => $this->month
+            ));
     }
 
     private function add_album_asset_sql_data($album, $asset) {
@@ -167,7 +176,7 @@ class Infos_per_month extends Module {
     private function get_user_view_file($album, $asset) {
         $path_file = $path_file = $this->get_user_view_file_path($album, $asset);
         if(file_exists($path_file)) {
-            return explode("\n", file_get_contents($path_file)); // TODO
+            return explode("\n", file_get_contents($path_file));
         }
         return array();
     }
@@ -181,13 +190,25 @@ class Infos_per_month extends Module {
         }
         $dir_path = dirname($path_file);
         if (!file_exists($path_file)) {
-            mkdir($dir_path, 0777, TRUE);
+            $allPath = array();
+            $currentPath = $dir_path;
+            while($currentPath != "/") {
+                $currentPath = dirname($currentPath);
+                $allPath[] = $currentPath;
+            }
+            $allPath = array_reverse($allPath);
+
+            foreach ($allPath as $interPath) {
+                if(!is_dir($interPath)) {
+                    mkdir($interPath, 0777, TRUE);
+                }
+            }
         }
         file_put_contents($path_file, $data, FILE_APPEND);
     }
 
     private function get_user_view_file_path($album, $asset) {
-        return './' . $this->repos_folder . '/' . $album . '/' . $asset . '/' . 'user_view.txt';
+        return $this->repos_folder . '/' . $album . '/' . $asset . '/' . 'user_view.txt';
     }
 
 }

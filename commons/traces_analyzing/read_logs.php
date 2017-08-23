@@ -108,7 +108,7 @@ class Read_Logs {
     }
 
     function traces_read($filename) {
-        if(in_array($filename, $this->file_already_check)) {
+        if(in_array(basename($filename), $this->file_already_check)) {
             $this->logger->info('File ' . $filename . ' already analysed');
             return;
         }

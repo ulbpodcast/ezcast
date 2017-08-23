@@ -20,7 +20,7 @@ function stats_statements_get() {
             'album_info_empty' => 
                 'SELECT 1 ' . 
                 'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
-                'WHERE album = :album ' .
+                'WHERE album = :album AND visibility = 1 ' .
                 'LIMIT 1;',
         
             'album_get_month_data' =>
@@ -28,15 +28,15 @@ function stats_statements_get() {
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
                 'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
-                'WHERE album = :album ' .
+                'WHERE album = :album AND visibility = 1 ' .
                 'GROUP BY month;',
-        
+            
             'video_get_month_data' => 
                 'SELECT asset, asset_name, ' . 
                     'SUM(nbr_view_total) AS total_view_total, ' .
                     'SUM(nbr_view_unique) AS total_view_unique ' . 
                 'FROM ' . db_gettable($table_stats_month_infos) . ' ' .
-                'WHERE album = :album ' .
+                'WHERE album = :album AND visibility = 1 ' .
                 'GROUP BY asset, asset_name;',
         
             'video_get_view_time' => 
@@ -45,14 +45,18 @@ function stats_statements_get() {
                 'WHERE album = :album ' . 
                     'AND ' .
                     'asset = :asset ' .
+                    'AND ' .
+                    'visibility = 1 ' .
                 'ORDER BY video_time;',
         
             'album_get_info' => 
-                'SELECT SUM(nbr_bookmark_personal) AS bookmark_personal, ' .
+                'SELECT '.
+                    'SUM(nbr_bookmark_personal) AS bookmark_personal, ' .
                     'SUM(nbr_bookmark_official) AS bookmark_official, ' .
+                    'SUM(nbr_thread) AS threads, ' .
                     'SUM(nbr_access) AS access ' .
                 'FROM ' . db_gettable($table_stats_infos) . ' ' .
-                'WHERE album = :album '.
+                'WHERE album = :album AND visibility = 1 '.
                 'GROUP BY album;',
         
             'update_album_month_infos' => 
@@ -69,8 +73,20 @@ function stats_statements_get() {
                 'UPDATE '. db_gettable($table_stats_infos) .' '.
                     'SET album = :new_album ' .
                     'WHERE album = :old_album;',
+        
+            'hide_album_infos' => 
+                'DELETE FROM ' .db_gettable($table_stats_infos) . ' ' .
+                    'WHERE album = :album AND visibility = 1;',
+        
+            'hide_album_month_infos' => 
+                'DELETE FROM ' .db_gettable($table_stats_month_infos) . ' ' .
+                    'WHERE album = :album AND visibility = 1;',
+            
+            'hide_album_view' => 
+                'DELETE FROM ' .db_gettable($table_stats_view) . ' ' .
+                    'WHERE album = :album AND visibility = 1;',
                     
-            'threads_by_album_count' =>
+            'threads_by_album_count' => // TODO deprecated
                 'SELECT count(*) '.
                 'FROM ' . db_gettable($table_thread) . ' ' .
                 'WHERE albumName like :album',
@@ -184,4 +200,17 @@ function db_stats_update_album($album, $new_album) {
     $statements['update_album_infos']->bindParam(':old_album', $album);
     $statements['update_album_infos']->bindParam(':new_album', $new_album);
     $statements['update_album_infos']->execute();
+}
+
+function db_stats_album_hide($album) {
+    global $statements;
+    
+    $statements['hide_album_month_infos']->bindParam(':album', $album);
+    $statements['hide_album_month_infos']->execute();
+    
+    $statements['hide_album_view']->bindParam(':album', $album);
+    $statements['hide_album_view']->execute();
+    
+    $statements['hide_album_infos']->bindParam(':album', $album);
+    $statements['hide_album_infos']->execute();
 }

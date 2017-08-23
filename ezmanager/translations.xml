@@ -442,6 +442,10 @@
         <label id="Graph_nbr_view" lang="fr">Nombre de vues</label>
         <label id="Graph_nbr_total_view" lang="en">Number of total views</label>
         <label id="Graph_nbr_total_view" lang="fr">Nombre de vues total</label>
+        <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total views accumulated</label>
+        <label id="Graph_nbr_total_view_tooltip" lang="fr">Nombre de vue total cumulées</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of views per user</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre de vue par utilisateur</label>
         <label id="Graph_nbr_unique_view" lang="en">Number of unique views</label>
         <label id="Graph_nbr_unique_view" lang="fr">Nombre de vues unique</label>
         <label id="Graph_month_view" lang="en">Number of view per month on this album</label>

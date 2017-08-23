@@ -32,6 +32,11 @@
     </div>
 </div>
 
+<div class="popover fade bottom" role="tooltip" id="stats_tooltip" style="display: block;position: fixed;">
+    <div class="arrow" style="left: 50%;"></div>
+    <div class="popover-content"></div>
+</div>
+
 <script>
 Highcharts.setOptions({
     lang: {
@@ -158,5 +163,44 @@ Highcharts.setOptions({
             }]
     });
 <?php } ?>
+
+var containerMonth = $('#containerMonth');
+var containerVideo = $('#containerVideo');
+
+containerMonth.on('mouseenter', '.highcharts-legend-item', display_tooltip);
+containerMonth.on('mouseleave','.highcharts-legend-item', hide_tooltip);
+
+containerVideo.on('mouseenter', '.highcharts-legend-item', display_tooltip);
+containerVideo.on('mouseleave','.highcharts-legend-item', hide_tooltip);
+
+function display_tooltip(event) {
+    var seriesName = $(event.currentTarget).text();
+    console.log('Serie: ' + seriesName);
+    var tooltip = $('#stats_tooltip');
+    var rect = $(event.currentTarget)[0].getBoundingClientRect();
+    var displayText = "";
+    
+    switch(seriesName) {
+        case '®Graph_nbr_total_view®':
+            displayText = '®Graph_nbr_total_view_tooltip®';
+            break;
+        
+        case '®Graph_nbr_unique_view®':
+            displayText = '®Graph_nbr_unique_view_tooltip®';
+            break;
+        
+        default:
+            return;
+    }
+    
+    $('#stats_tooltip .popover-content').text(displayText);
+    tooltip.css({left:rect.left-20, top:rect.bottom});
+    tooltip.addClass('in');
+};
+
+function hide_tooltip(event) {
+    $('#stats_tooltip').removeClass('in');
+}
+
 
 </script>

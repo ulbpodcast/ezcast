@@ -31,9 +31,11 @@ It is part of div_asset_details and has been split apart for readability.
 -->
 <h1>®Slides®</h1>
 <div class="Video-slide-Bouton" id="Player_<?php echo $asset; ?>_slide"> 
-    <a href="javascript:show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php echo $asset_token; ?>');" 
+    <a href="javascript:show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php 
+        echo $asset_token; ?>');" 
        onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image11','','images/page4/BRegarderSlide.png',1)">
-        <img src="images/page4/ARegarderSlide.png" name="Image11" width="187" title="®Watch_slides®" height="109" border="0" id="Image11" />
+        <img src="images/page4/ARegarderSlide.png" name="Image11" width="187" title="®Watch_slides®" height="109" 
+             border="0" id="Image11" />
     </a> 
 </div>
 <span class="BoutonPlus"> 

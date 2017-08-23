@@ -5,7 +5,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
-        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
         <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
 
         <script type="text/javascript">
@@ -60,6 +60,5 @@
             </div>
 
             <?php include 'div_footer.php'; ?>
-
     </body>
 </html>

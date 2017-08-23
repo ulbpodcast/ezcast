@@ -72,12 +72,12 @@ function load_stats($album) {
     $stats['descriptive'] = array(
         'bookmark_personal' => 0, 
         'bookmark_official' => 0, 
-        'access' => 0);
+        'access' => 0,
+        'threads' => 0);
     $album_infos = db_stats_album_infos_get($album);
     if(count($album_infos) > 0) {
         $stats['descriptive'] = $album_infos[0];
     }
-    $stats['descriptive']['threads'] = db_stats_album_threads_get($album);
     
     $stats['graph']['album'] = calcul_graph_album($all_album_data);
     $stats['graph']['video'] = calcul_graph_video($all_video_data);

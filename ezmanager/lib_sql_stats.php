@@ -84,12 +84,7 @@ function stats_statements_get() {
             
             'hide_album_view' => 
                 'DELETE FROM ' .db_gettable($table_stats_view) . ' ' .
-                    'WHERE album = :album AND visibility = 1;',
-                    
-            'threads_by_album_count' => // TODO deprecated
-                'SELECT count(*) '.
-                'FROM ' . db_gettable($table_thread) . ' ' .
-                'WHERE albumName like :album',
+                    'WHERE album = :album AND visibility = 1;'
         );
 }
 
@@ -152,23 +147,6 @@ function db_stats_video_get_view_time($album, $asset) {
     return $statements['video_get_view_time']->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
-/**
- * Get number of threads for a specific album
- * 
- * @global array $statements
- * @param string $album name
- * @return int number of thread
- */
-function db_stats_album_threads_get($album) {
-    global $statements;
-    
-    $statements['threads_by_album_count']->bindParam(':album', $album);
-    
-    $statements['threads_by_album_count']->execute();
-    $result = $statements['threads_by_album_count']->fetchAll(PDO::FETCH_COLUMN);
-    return count($result) > 0 ? $result[0] : 0;
-}
 
 /**
  * Get informations about an album (access and bookmarks)

@@ -23,6 +23,13 @@
         title: {
             text: '®Graph_min_per_min_view®'
         },
+        plotOptions: {
+            areaspline: {
+                events: {
+                    legendItemClick: function () { return false; }
+                }
+            }
+        },
         xAxis: {
             labels: {
                 formatter: 

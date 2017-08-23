@@ -60,8 +60,8 @@ function print_info($info, $suffix = '') {
         <ul>
             <li><span class="ButtonSuppAlbum">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.$title.
-                            '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                        echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).
+                            '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                     } else {
                         echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -80,8 +80,8 @@ function print_info($info, $suffix = '') {
             <li>
                 <span class="ButtonMove">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.$album.
-                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                        echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.urlencode($album).
+                            '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                     } else {
                         echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -97,8 +97,8 @@ function print_info($info, $suffix = '') {
                 <li>
                     <span class="ButtonCopy">
                         <?php if ($status != 'processing' && $status != 'error') { 
-                            echo '<a href="index.php?action=show_popup&amp;popup=copy_asset&amp;album='.$album.
-                                '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            echo '<a href="index.php?action=show_popup&amp;popup=copy_asset&amp;album='.urlencode($album).
+                                '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
                         } else {
                             echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -113,8 +113,8 @@ function print_info($info, $suffix = '') {
                 <li>
                     <span class="ButtonMoveAlbumPrive">
                         <?php if ($status != 'processing' && $status != 'error') {
-                            echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.$title.
-                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.urlencode($title).
+                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
                         } else {
                             echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -127,8 +127,8 @@ function print_info($info, $suffix = '') {
                 <li>
                     <span class="ButtonMoveAlbumPublic">
                         <?php if ($status != 'processing' && $status != 'error') {
-                            echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.$title.
-                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.urlencode($title).
+                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
                         } else {
                             echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -141,8 +141,8 @@ function print_info($info, $suffix = '') {
             <li>
                 <span class="ButtonProgrammer">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        echo '<a href="index.php?action=show_popup&amp;popup=schedule_asset&amp;album='.$album.
-                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                        echo '<a href="index.php?action=show_popup&amp;popup=schedule_asset&amp;album='.urlencode($album).
+                            '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                     } else {
                         echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -158,8 +158,8 @@ function print_info($info, $suffix = '') {
                 <li>
                     <span class="ButtonRegenTitle">
                         <?php if($status != 'processing' && $status != 'error') {
-                            echo '<a href="index.php?action=show_popup&amp;popup=regen_title&amp;album='.$album.
-                            '&amp;asset='.$asset_name.'&amp;title='.$title.'" data-remove="false" data-toggle="modal" '.
+                            echo '<a href="index.php?action=show_popup&amp;popup=regen_title&amp;album='.urlencode($album).
+                            '&amp;asset='.urlencode($asset_name).'&amp;title='.urlencode($title).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                         } else {
                             echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .

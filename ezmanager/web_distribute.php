@@ -56,7 +56,7 @@ switch ($input['action']) {
     // The user wants to grab the RSS feed
     case 'rss':
         if (!isset($input['album']) || !isset($input['quality']) || !isset($input['token'])) {
-            echo 'Usage: view.php?action=rss&amp;album=ALBUM&amp;quality=QUALITY&amp;token=TOKEN';
+            echo 'Usage: distribute.php?action=rss&amp;album=ALBUM&amp;quality=QUALITY&amp;token=TOKEN';
             die;
         }
         view_rss();
@@ -65,7 +65,7 @@ switch ($input['action']) {
     // The user wants to download a media
     case 'media':
         if (!isset($input['type']) || !isset($input['album']) || !isset($input['asset']) || !isset($input['token'])) {
-            echo 'Usage: view.php?action=media&amp;type=TYPE&amp;album=ALBUM&amp;asset=ASSET&amp;token=TOKEN';
+            echo 'Usage: distribute.php?action=media&amp;type=TYPE&amp;album=ALBUM&amp;asset=ASSET&amp;token=TOKEN';
             die;
         }
         view_media();
@@ -113,7 +113,8 @@ function view_rss() {
 
     if (!accepted_quality($input['quality'])) {
         error_print_http(403);
-        log_append('warning', 'view_rss: tried to access album ' . $input['album'] . 'in forbidden quality "' . $input['quality'] . '"');
+        log_append('warning', 'view_rss: tried to access album ' . $input['album'] . 'in forbidden quality "' . 
+                $input['quality'] . '"');
         die;
     }
 
@@ -197,11 +198,13 @@ function view_media() {
 
     if (!ezmam_asset_exists($input['album'], $input['asset'])) {
         error_print_http(404);
-        log_append('warning', 'view_media: tried to access non-existant asset ' . $input['asset'] . ' from album ' . $input['album']);
+        log_append('warning', 'view_media: tried to access non-existant asset ' . $input['asset'] . ' from album ' . 
+                $input['album']);
         die;
     }
 
-    if (!ezmam_album_token_check($input['album'], $input['token']) && !ezmam_asset_token_check($input['album'], $input['asset'], $input['token'])) {
+    if (!ezmam_album_token_check($input['album'], $input['token']) && 
+            !ezmam_asset_token_check($input['album'], $input['asset'], $input['token'])) {
         error_print_http(404);
         log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . $input['album'] . 
                 ' with invalid token ' . $input['token']);
@@ -242,7 +245,8 @@ function view_media() {
         // If we still can't find a file, we just tell the users so
         if (!$media_handle) {
             error_print_http(404);
-            log_append('view_media: couldn\'t find the media file for asset ' . $input['asset'] . ' of album ' . $input['album']);
+            log_append('view_media: couldn\'t find the media file for asset ' . $input['asset'] . ' of album ' . 
+                    $input['album']);
             die;
         }
     }
@@ -301,7 +305,8 @@ function view_embed_link() {
     global $ezmanager_url;
     global $template_folder;
     // Sanity checks
-    if (!isset($input['album']) || !isset($input['asset']) || !isset($input['quality']) || !isset($input['type']) || !isset($input['token'])) {
+    if (!isset($input['album']) || !isset($input['asset']) || !isset($input['quality']) || !isset($input['type']) || 
+            !isset($input['token'])) {
         echo "Usage: distribute.php?action=embed&amp;album=ALBUM&amp;asset=ASSET&amp;type=TYPE&amp;".
                 "quality=QUALITY&amp;token=TOKEN<br/>";
         echo "Optional parameters: width: Video width in pixels. height: video height in pixels. iframe: set to true ".
@@ -334,7 +339,8 @@ function view_embed() {
     // Sanity checks
     if (!isset($input['album']) || !isset($input['asset']) || !isset($input['quality']) || 
             !isset($input['type']) || !isset($input['token'])) {
-        echo "Usage: distribute.php?action=embed&amp;album=ALBUM&amp;asset=ASSET&amp;type=TYPE&amp;quality=QUALITY&amp;token=TOKEN<br/>";
+        echo "Usage: distribute.php?action=embed&amp;album=ALBUM&amp;asset=ASSET&amp;type=TYPE&amp;quality=QUALITY"
+            . "&amp;token=TOKEN<br/>";
         echo "Optional parameters: <br/>";
         echo "    width: Video width in pixels.  <br/>";
         echo "    height: video height in pixels.  <br/>";

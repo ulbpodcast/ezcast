@@ -80,5 +80,6 @@ function show_edit_form(asset) {
 }
 
 function show_embed_player(album, asset, quality, type, token) {
-    makeRequest('distribute.php', '?action=embed&album='+album+'&asset='+asset+'&type='+type+'&quality='+quality+'&origin=podman&token='+token+'&iframe=true&width=185&height=149', 'Player_'+asset+'_'+type);
+    makeRequest('distribute.php', '?action=embed&album='+album+'&asset='+asset+'&type='+type+'&quality='+quality+
+            '&origin=podman&token='+token+'&width=185&height=149', 'Player_'+asset+'_'+type);
 }

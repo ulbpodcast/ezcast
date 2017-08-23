@@ -6,6 +6,14 @@
 <div class="modal-body">
     <?php if(isset($stats['display']) && $stats['display']) { ?>
         <div id="container" style="margin: 0 auto"></div>
+        
+        <div style="width:<?php echo ($has_slides) ? '50%' : '100%'; ?>;" 
+            id="Popup_Player_<?php echo $asset; ?>_cam"></div>
+        <?php if($has_slides) { ?>
+            <div style="width: 50%;" id="Popup_Player_<?php echo $asset; ?>_slide"></div>
+        <?php } ?>
+        <br />
+            
     <?php } else { ?>
         ®Stats_No_stats®
     <?php } ?>
@@ -81,4 +89,13 @@
         }]
     });
 <?php } ?>
+(function() {
+    show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'cam', '<?php 
+            echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_cam'; ?>', '100%', '100%');
+    <?php if($has_slides) { ?>
+    show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php 
+            echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_slide'; ?>');
+    <?php } ?>
+})();
+    
 </script>

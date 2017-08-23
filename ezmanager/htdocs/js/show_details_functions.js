@@ -79,7 +79,11 @@ function show_edit_form(asset) {
     }
 }
 
-function show_embed_player(album, asset, quality, type, token) {
+function show_embed_player(album, asset, quality, type, token, div_player, width, height) {
+    div_player = (typeof div_player !== 'undefined' ? div_player : 'Player_'+asset+'_'+type);
+    width = (typeof width !== 'undefined' ? width : '185');
+    height = (typeof height !== 'undefined' ? height : '149');
+    
     makeRequest('distribute.php', '?action=embed&album='+album+'&asset='+asset+'&type='+type+'&quality='+quality+
-            '&origin=podman&token='+token+'&width=185&height=149', 'Player_'+asset+'_'+type);
+            '&origin=podman&token='+token+'&width='+width+'&height='+height, div_player);
 }

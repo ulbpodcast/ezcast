@@ -377,9 +377,12 @@ function asset_stats() {
     }
     require_once dirname(__FILE__) . '/../lib_sql_stats.php';
     
-    $asset_name = $input['asset'];
+    $asset = $input['asset'];
     $album = $input['album'];
-    $all_view_time = db_stats_video_get_view_time($album, $asset_name);
+    $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+    $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
+    $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
+    $all_view_time = db_stats_video_get_view_time($album, $asset);
     
     $stats = array();
     if(count($all_view_time) > 0) {

@@ -389,12 +389,22 @@ function view_embed() {
     $metadata = ezmam_media_metadata_get($input['album'], $input['asset'], $media_name);
 
     $width = $metadata['width'];
-    if (isset($input['width']) && !empty($input['width']))
-        $width = $input['width'] - 5;
+    if (isset($input['width']) && !empty($input['width'])) {
+        if(strpos($input['width'], '%')) {
+            $width = $input['width'];
+        } else {
+            $width = $input['width'] - 5;
+        }
+    }
 
     $height = $metadata['height'];
-    if (isset($input['height']) && !empty($input['height']))
-        $height = $input['height'] - 5;
+    if (isset($input['height']) && !empty($input['height'])) {
+        if(strpos($input['height'], '%')) {
+            $height = $input['height'];
+        } else {
+            $height = $input['height'] - 5;
+        }
+    }
 
     $origin = (isset($input['origin']) && $input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
 

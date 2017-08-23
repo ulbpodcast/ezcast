@@ -416,6 +416,12 @@
         <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
         <label id="Stats_Descriptives" lang="fr">Statistiques</label>
         <label id="Stats_Descriptives" lang="en">Statistics</label>
+        <label id="Stats_Reset" lang="fr">Remettre les statistiques à zéro</label>
+        <label id="Stats_Reset" lang="en">Reset statistics</label>
+        <label id="Stats_Reset_message" lang="fr">Remettre les statistiques à zéro et ...</label>
+        <label id="Stats_Reset_message" lang="en">Reset statistics and ...</label>
+        <label id="Stats_successfully_reset_message" lang="fr">Les statistiques ont bien été remises à zéro</label>
+        <label id="Stats_successfully_reset_message" lang="en">Statistics have successfully been reset</label>
         <label id="Assets_list" lang="fr">Liste des vidéos</label>
         <label id="Assets_list" lang="en">List of videos</label>
         

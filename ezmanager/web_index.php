@@ -331,6 +331,10 @@ else {
         case 'delete_user_course':
             requireController('user_course_delete.php');
             break;
+        
+        case 'album_stats_reset':
+            requireController('album_stats_reset.php');
+            break;
 
         //debugging should be removed in prod
         // No action selected: we choose to display the homepage again

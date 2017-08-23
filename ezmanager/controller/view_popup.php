@@ -77,6 +77,10 @@ function index($param = array()) {
             asset_stats();
             break;
         
+        case 'album_stats_reset':
+            album_stats_reset();
+            break;
+        
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
             die;
@@ -396,4 +400,16 @@ function asset_stats() {
     }
     
     require template_getpath('popup_asset_stats.php');
+}
+
+function album_stats_reset() {
+    global $input;
+    
+    if(!isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=ALBUM';
+        die;
+    }
+    $album = $input['album'];
+    
+    require template_getpath('popup_album_stats_reset.php');
 }

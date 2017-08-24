@@ -9,12 +9,13 @@ class View_per_time extends Module {
         if($action == "video_play_time") {
             global $video_split_time;
             
-            // other_info: current_album, current_asset, type, last_play_start, play_time
+            // other_info: current_album, current_asset, current_asset_name, type, last_play_start, play_time
             $album = trim($other_info[0]);
             $asset = trim($other_info[1]);
-            $type = trim($other_info[2]);
-            $start = trim($other_info[3]);
-            $play_time = trim($other_info[4]);
+            $asset_name = trim($other_info[2]);
+            $type = trim($other_info[3]);
+            $start = trim($other_info[4]);
+            $play_time = trim($other_info[5]);
 
             if(!array_key_exists($album, $this->saved_data)) {
                 $this->saved_data[$album] = array($asset => array());
@@ -69,14 +70,15 @@ class View_per_time extends Module {
 
         $db = $this->database->get_database_object();
         $query = $db->prepare('INSERT INTO ' . $this->database->get_table('stats_video_view') . ' ' .
-                    '(visibility, asset, album, nbr_view, video_time) ' .
-                    'VALUES(:visibility, :asset, :album, :nbr_view, :video_time) '.
+                    '(visibility, asset, album, type, nbr_view, video_time) ' .
+                    'VALUES(:visibility, :asset, :album, :type, :nbr_view, :video_time) '.
                 'ON DUPLICATE KEY UPDATE ' .
                     'nbr_view =  nbr_view + :nbr_view;');
         $query->execute(array(
                 ':visibility' => 0,
                 ':asset' => $asset,
                 ':album' => $album,
+                ':type' => $type,
                 ':nbr_view' => $nbr_view,
                 ':video_time' => $video_time
             ));
@@ -84,6 +86,7 @@ class View_per_time extends Module {
                 ':visibility' => 1,
                 ':asset' => $asset,
                 ':album' => $album,
+                ':type' => $type,
                 ':nbr_view' => $nbr_view,
                 ':video_time' => $video_time
             ));

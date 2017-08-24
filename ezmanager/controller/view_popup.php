@@ -386,18 +386,22 @@ function asset_stats() {
     
     $stats = array();
     if(count($all_view_time) > 0) {
-        $data_view_time = array();
+        $data_view_time = array('cam' => array(), 'slide' => array());
         $last_time = 0;
         foreach ($all_view_time as $view_time) {
+            if(!array_key_exists($view_time['type'], $data_view_time)) {
+                $data_view_time[$view_time['type']] = array();
+            }
             while($view_time['video_time'] > $last_time) {
-                $data_view_time[] = 0;
+                $data_view_time[$view_time['type']][] = 0;
                 ++$last_time;
             }
-            $data_view_time[] = intval($view_time['nbr_view']);
+            $data_view_time[$view_time['type']][] = intval($view_time['nbr_view']);
             ++$last_time;
         }
         $stats['display'] = TRUE;
-        $stats['str_view_time'] = json_encode($data_view_time);
+        $stats['str_view_time_cam'] = json_encode($data_view_time['cam']);
+        $stats['str_view_time_slide'] = json_encode($data_view_time['slide']);
     } else {
         $stats['display'] = FALSE;
     }

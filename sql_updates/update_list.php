@@ -32,10 +32,11 @@ $update_list = [
                         '`visibility` tinyint(1) NOT NULL DEFAULT \'1\', ' .
                         '`asset` varchar(30) NOT NULL, ' .
                         '`album` varchar(30) NOT NULL, ' .
+                        '`type` ENUM(\'cam\', \'slide\') NOT NULL, ' .
                         '`nbr_view` int(11) NOT NULL, ' .
                         '`video_time` int(11) NOT NULL, ' .
                         'PRIMARY KEY (`id`), ' .
-                        'UNIQUE KEY(`visibility`, `asset`,`album`,`video_time`)' . 
+                        'UNIQUE KEY(`visibility`, `asset`, `album`, `type`, `video_time`)' . 
                     ') ENGINE=InnoDB DEFAULT CHARSET=utf8;',
                 
                 'CREATE TABLE IF NOT EXISTS `!PREFIX!stats_video_infos` (' .

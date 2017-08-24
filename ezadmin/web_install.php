@@ -769,7 +769,7 @@ function create_tables($drop = true) {
             "`nbr_view` int(11) NOT NULL, " .
             "`video_time` int(11) NOT NULL, ".
             "PRIMARY KEY (`id`), " .
-            "UNIQUE KEY(`visibility`, `asset`,`album`,`video_time`)" . 
+            "UNIQUE KEY(`visibility`, `asset`,`album`, `type`, `video_time`)" . 
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
         
         if ($drop) {

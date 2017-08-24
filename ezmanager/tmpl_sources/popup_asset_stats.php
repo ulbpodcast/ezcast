@@ -41,11 +41,11 @@
         },
         plotOptions: {
             areaspline: {
+                stacking: 'normal',
                 cursor: 'pointer',
                 events: {
-                    legendItemClick: function () { return false; },
                     click: function () {
-                        adaptVideoTime(event.point.category);
+                        adaptVideoTime(event.points.category);
                     }
                 }
             }
@@ -89,13 +89,21 @@
             shared: true,
             valueSuffix: ' ®Graph_views®',
             formatter: function() {
-                    return '<b>' + this.y + ' ®Graph_views®</b>';
+                    return '<b>' + this.points[0].series.name + ':</b> ' +
+                    	this.points[0].y + ' ®Graph_views®<br />' +
+                      '<b>' + this.points[1].series.name + ':</b> ' +
+                      this.points[1].y + ' ®Graph_views®<br />'+
+                      '<b>Total:</b> ' + (this.points[0].y + this.points[1].y) + 
+                        ' ®Graph_views®';
                 }
         },
         series: [{
-            name: '®Graph_nbr_view®',
-            data: <?php echo $stats['str_view_time']; ?>
-        }]
+                name: '®Graph_slide_view®',
+                data: <?php echo $stats['str_view_time_slide']; ?>
+            },{
+                name: '®Graph_cam_view®',
+                data: <?php echo $stats['str_view_time_cam']; ?>
+            }]
     });
 <?php } ?>
 (function() {

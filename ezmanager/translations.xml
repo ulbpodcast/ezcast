@@ -460,6 +460,10 @@
         <label id="Graph_min_per_min_view" lang="fr">Nombre de vues de la video</label>
         <label id="Graph_views" lang="en">view</label>
         <label id="Graph_views" lang="fr">vues</label>
+        <label id="Graph_cam_view" lang="en">View in cam mode</label>
+        <label id="Graph_cam_view" lang="fr">Vue en mode caméra</label>
+        <label id="Graph_slide_view" lang="en">View in slide mode</label>
+        <label id="Graph_slide_view" lang="fr">Vue en mode slide</label>
         
         <label id="month" lang="fr">Mois</label>
         <label id="month" lang="en">Month</label>

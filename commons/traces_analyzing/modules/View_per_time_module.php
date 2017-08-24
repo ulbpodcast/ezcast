@@ -24,11 +24,13 @@ class View_per_time extends Module {
                 $this->saved_data[$album][$asset] = array();
             }
 
+            // For each second of the playtime
             for($i = 0; $i < $play_time; ++$i) {
+                // Calcul the real video time
                 $time_until_start = $start+$i;
-
+                // Find the "index" of the video (named video_time)
                 $video_time = $time_until_start / $video_split_time;
-                $str_video_time = strval(floor($video_time));
+                $str_video_time = strval(floor($video_time)); // bottom round and convert to string
 
                 if(!array_key_exists($str_video_time, $this->saved_data[$album][$asset])) {
                     $this->saved_data[$album][$asset][$str_video_time] = (1 / $video_split_time);

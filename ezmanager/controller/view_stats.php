@@ -79,7 +79,7 @@ function load_stats($album) {
         $stats['descriptive'] = $album_infos[0];
     }
     
-    $stats['calculate'] = array();
+    $stats['calculate'] = array('view_total' => 0, 'view_unique' => 0);
     $stats['graph']['album'] = calcul_graph_album($all_album_data, $stats['calculate']);
     $stats['graph']['video'] = calcul_graph_video($all_video_data, $stats['calculate']);
     

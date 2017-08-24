@@ -7,12 +7,14 @@
     <?php if(isset($stats['display']) && $stats['display']) { ?>
         <div id="container" style="margin: 0 auto"></div>
         
-        <div style="width:<?php echo ($has_slides) ? '50%' : '100%'; ?>;" class="popup_video_player"
-            id="Popup_Player_<?php echo $asset; ?>_cam"></div>
-        <?php if($has_slides) { ?>
-            <div style="width: 50%;" class="popup_video_player" 
-                 id="Popup_Player_<?php echo $asset; ?>_slide"></div>
-        <?php } ?>
+        <center>
+            <div style="display:inline-block;width:<?php echo ($has_slides) ? '50%' : '100%'; ?>;" class="popup_video_player"
+                id="Popup_Player_<?php echo $asset; ?>_cam"></div>
+            <?php if($has_slides) { ?>
+                <div style="display:inline-block;width: 49%;" class="popup_video_player" 
+                     id="Popup_Player_<?php echo $asset; ?>_slide"></div>
+            <?php } ?>
+        </center>
         <br />
             
     <?php } else { ?>
@@ -100,8 +102,10 @@
     show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'cam', '<?php 
             echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_cam'; ?>', '100%', '100%');
     <?php if($has_slides) { ?>
-    show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php 
-            echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_slide'; ?>');
+        setTimeout(function(){ 
+            show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php 
+                echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_slide'; ?>', '100%', '100%');
+        }, 100);
     <?php } ?>
 })();
 

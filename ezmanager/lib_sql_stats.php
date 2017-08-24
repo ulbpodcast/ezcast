@@ -8,7 +8,7 @@ if(file_exists('config.inc')) {
     $stmt_array = stats_statements_get();
     db_prepare($stmt_array);
 }
- 
+
 
 function stats_statements_get() {
     $table_stats_month_infos = "stats_video_month_infos";
@@ -40,7 +40,7 @@ function stats_statements_get() {
                 'GROUP BY asset, asset_name;',
         
             'video_get_view_time' => 
-                'SELECT video_time, nbr_view ' .
+                'SELECT video_time, nbr_view, type ' .
                 'FROM ' . db_gettable($table_stats_view) . ' ' .
                 'WHERE album = :album ' . 
                     'AND ' .

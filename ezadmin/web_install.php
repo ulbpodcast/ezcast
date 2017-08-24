@@ -765,6 +765,7 @@ function create_tables($drop = true) {
             "`visibility` tinyint(1) NOT NULL DEFAULT '1', " .
             "`asset` varchar(30) NOT NULL, " .
             "`album` varchar(30) NOT NULL, " .
+            "`type` ENUM('cam', 'slide') NOT NULL, " .
             "`nbr_view` int(11) NOT NULL, " .
             "`video_time` int(11) NOT NULL, ".
             "PRIMARY KEY (`id`), " .

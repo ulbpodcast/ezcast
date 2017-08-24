@@ -24,6 +24,10 @@ class View_per_time extends Module {
                 $this->saved_data[$album][$asset] = array();
             }
 
+            if(!array_key_exists($type, $this->saved_data[$album][$asset])) {
+                $this->saved_data[$album][$asset][$type] = array();
+            }
+
             // For each second of the playtime
             for($i = 0; $i < $play_time; ++$i) {
                 // Calcul the real video time
@@ -32,10 +36,10 @@ class View_per_time extends Module {
                 $video_time = $time_until_start / $video_split_time;
                 $str_video_time = strval(floor($video_time)); // bottom round and convert to string
 
-                if(!array_key_exists($str_video_time, $this->saved_data[$album][$asset])) {
-                    $this->saved_data[$album][$asset][$str_video_time] = (1 / $video_split_time);
+                if(!array_key_exists($str_video_time, $this->saved_data[$album][$asset][$type])) {
+                    $this->saved_data[$album][$asset][$type][$str_video_time] = (1 / $video_split_time);
                 } else {
-                    $this->saved_data[$album][$asset][$str_video_time] += (1 / $video_split_time);
+                    $this->saved_data[$album][$asset][$type][$str_video_time] += (1 / $video_split_time);
                 }
             }
 
@@ -45,10 +49,12 @@ class View_per_time extends Module {
     function end_file() {
         foreach ($this->saved_data as $album => $album_data) {
             foreach ($album_data as $asset => $asset_data) {
-                foreach ($asset_data as $video_time => $value) {
-                    $nbr_view = round($value);
-                    if($nbr_view > 0) {
-                        $this->save_to_sql($album, $asset, $nbr_view, $video_time);
+                foreach ($asset_data as $type => $type_data) {
+                    foreach($type_data as $video_time => $value) {
+                        $nbr_view = round($value);
+                        if($nbr_view > 0) {
+                            $this->save_to_sql($album, $asset, $type, $nbr_view, $video_time);
+                        }
                     }
                 }
             }
@@ -57,9 +63,9 @@ class View_per_time extends Module {
         $this->saved_data = array();
     }
 
-    function save_to_sql($album, $asset, $nbr_view, $video_time) {
+    function save_to_sql($album, $asset, $type, $nbr_view, $video_time) {
         $this->logger->debug('[view_per_time] save sql: album:' . $album . ' | asset: ' . $asset . 
-            ' | nbr_view: ' . $nbr_view . ' | video_time: ' . $video_time);
+            ' | type: ' . $type . ' | nbr_view: ' . $nbr_view . ' | video_time: ' . $video_time);
 
         $db = $this->database->get_database_object();
         $query = $db->prepare('INSERT INTO ' . $this->database->get_table('stats_video_view') . ' ' .

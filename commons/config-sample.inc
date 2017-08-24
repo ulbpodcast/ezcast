@@ -4,10 +4,8 @@ require_once('logger_server.php');
 
 // Get default configuration (if not already defined)
 if(basename(__FILE__) != "config-sample.inc" && !isset($sample_config_version)) {
-    // Get the real path fodler
-    $folder = dirname(realpath(__FILE__));
-    // Include config sample
-    require_once($folder.'/config-sample.inc');
+    // Require "config-sample.inc" in commons and not in other folder (ezadmin, ezplayer, ezmanager)
+    require_once(__DIR__.'/config-sample.inc');
     // Keep old config
     $sample_config_version = $config_version;
 }

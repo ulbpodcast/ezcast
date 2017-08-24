@@ -662,6 +662,8 @@
         <label id="stats_average" lang="fr">Moyenne</label>
         <label id="stats_average" lang="en">Average</label>
         
+        
+        
         <!-- Report -->
         <label id="report_form_general" lang="fr">Général</label>
         <label id="report_form_general" lang="en">General</label>
@@ -943,6 +945,13 @@
             If it was disabled, run this script: 
             &lt;code&gt;php &lt;?php echo $ezmanager_basedir; ?&gt;cli_fill_assets_status.php all&lt;/code&gt;
         </label>
+        
+        <!-- Version -->
+        <label id="new_config_version" lang="fr">Votre configuration n\'est pas à jour !</label>
+        <label id="new_config_version" lang="en">Your configuration is not up to date</label>
+        <label id="config_more_recent_version" lang="fr">Votre configuration est en avance par rapport à la 
+            version installée</label>
+        <label id="config_more_recent_version" lang="en">Your configuration is ahead of the installed version</label>
         
         
         <!-- Error -->

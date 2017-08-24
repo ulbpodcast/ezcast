@@ -28,7 +28,8 @@
  */
 
 /**
- * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login'] (['real_login']) of the user. failure returns false. Error message can be received via checkauth_last_error()
+ * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login'] 
+ * (['real_login']) of the user. failure returns false. Error message can be received via checkauth_last_error()
  * @param string $login can be tdupont or jsmith/tdupont (auth as jsmith and become tdupont)
  * @param string $passwd
  * @return assoc_array|false

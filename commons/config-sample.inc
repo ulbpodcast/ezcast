@@ -20,7 +20,7 @@ if(basename(__FILE__) != "config-sample.inc" && !isset($sample_config_version)) 
 
 // Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in 
 // config and common.inc don't match, a warning is triggered.
-$config_version = "20161003"; 
+$config_version = "20170824"; 
 
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name"; //this will also affect choosen translations when generating templates

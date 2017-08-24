@@ -950,8 +950,8 @@
         <label id="new_config_version" lang="fr">Votre configuration n\'est pas à jour !</label>
         <label id="new_config_version" lang="en">Your configuration is not up to date</label>
         <label id="config_more_recent_version" lang="fr">Votre configuration est en avance par rapport à la 
-            configuration par défaut</label>
-        <label id="config_more_recent_version" lang="en">Your configuration is ahead of the default configuration</label>
+            version installée</label>
+        <label id="config_more_recent_version" lang="en">Your configuration is ahead of the installed version</label>
         
         
         <!-- Error -->

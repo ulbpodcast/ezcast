@@ -2,6 +2,16 @@
 
 require_once('logger_server.php');
 
+// Get default configuration (if not already defined)
+if(basename(__FILE__) != "config-sample.inc" && !isset($sample_config_version)) {
+    // Get the real path fodler
+    $folder = dirname(realpath(__FILE__));
+    // Include config sample
+    require_once($folder.'/config-sample.inc');
+    // Keep old config
+    $sample_config_version = $config_version;
+}
+
 /*
  * This config file contains global config for the server
  * to run. It can be edited following your particular needs.
@@ -10,7 +20,8 @@ require_once('logger_server.php');
  * DO NOT REMOVE ANY OF THEM
  */
 
-// Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in config and common.inc don't match, a warning is triggered.
+// Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in 
+// config and common.inc don't match, a warning is triggered.
 $config_version = "20161003"; 
 
 // Name of the organization hosting EZcast or providing the service
@@ -110,8 +121,12 @@ $streaming_video_alternate_server_uri = "stream/";
 $debug_mode = false; //debug mode print recorder events and php errors to console
 // -- -- //
 
-$common_config_defined = true; //config and common include each other... apparently php does not consider a file already included until he completely finished including it. This variable is a workaround for this problem.
+$common_config_defined = true; //config and common include each other... apparently php does not consider a file already 
+// included until he completely finished including it. This variable is a workaround for this problem.
 
-// load static variables
-require_once(__DIR__ . '/common.inc');
-require_once('logger_server.php');
+// If not in config simple
+if(basename(__FILE__) != "config-sample.inc") {
+    // load static variables
+    require_once(__DIR__ . '/common.inc');
+    require_once('logger_server.php');
+}

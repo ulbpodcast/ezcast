@@ -247,6 +247,10 @@
         <label id="Program" lang="en">Schedule</label>
         <label id="Create_album" lang="fr">Créer un album</label>
         <label id="Create_album" lang="en">New album</label>
+        <label id="addexistingCourse" lang="fr">Ajouter un album existant</label>
+        <label id="addexistingCourse" lang="en">Add a existing album</label>
+        <label id="createnewCourse" lang="fr">Créer un nouvel album</label>
+        <label id="createnewCourse" lang="en">New album</label>
         <label id="Submit_create_album" lang="fr">Créer</label>
         <label id="Submit_create_album" lang="en">Create</label>
         <label id="Delete_album" lang="fr">Supprimer l'album</label>

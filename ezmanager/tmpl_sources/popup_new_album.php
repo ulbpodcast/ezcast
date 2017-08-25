@@ -41,6 +41,7 @@ for every album the user can create.
     <h4 class="modal-title">®Create_album®</h4>
 </div>
 <div class="modal-body">
+    <h3 class='text-center'>®addexistingCourse® </h3> <br>
     <?php if(empty($not_created_albums_with_descriptions)) {
         echo "<p>®All_albums_already_created®</p>";
     } else { 
@@ -86,14 +87,16 @@ for every album the user can create.
     <?php }
     
     global $enable_course_creation;
-    global $enable_channel;
+    global $enable_channel_creation;
     
     if($enable_course_creation){ ?>
     <hr />
+<h3 class='text-center'>®createnewCourse®</h3><br>
+
         <form class="form-horizontal" id="form_new_ablbum" action="index.php" method="post">
             <div class="form-group">
                 
-            <?php if($enable_channel){ ?>
+            <?php if($enable_channel_creation){ ?>
                 <label for="selectType" class="col-sm-3 control-label">®Album_type®</label>
                 <div class="col-sm-9">
                     <select id="selectType" name="album_type" class="form-control">

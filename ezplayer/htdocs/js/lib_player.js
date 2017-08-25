@@ -50,6 +50,8 @@ var thread_form = false;
 var comment_form = false;
 var shortcuts = false;
 
+var video_play_from = ''; // DEBUG
+
 /**
  * Duration of the notification (sec)
  * @type Number
@@ -202,7 +204,6 @@ function player_prepare(current_quality, current_type, start_time) {
 
     document.getElementById('video_player').onmousedown = function () {
         previous_seek_time = last_time;
-        // console.log('Update seek ! ' + previous_seek_time);
         ++mouse_down;
     };
     document.getElementById('video_player').onmouseup = function () {
@@ -232,38 +233,38 @@ function player_prepare(current_quality, current_type, start_time) {
 
 function video_listener_add(video, start_time) {
     
-    video.addEventListener("seeked", function () {
+    video.addEventListener("seeking", function () {
         var current_time = Math.round(this.currentTime);
         video_event_seeked(current_time);
-    }, false);
+    }, true);
     
     // when the video is being played
     // --> saves the current time
     // --> loads the thread notifications to be displayed over the player
     video.addEventListener("timeupdate", function () {
         var current_time = Math.round(this.currentTime);
-        video_event_update_time(current_time);
+        video_event_update_time(this, current_time);
     });
     
     // when the video is played
     // --> hides the shortcuts panel
     // --> saves trace
     video.addEventListener('play', function () {
-        video_event_play();
-    }, false);
+        video_event_play(this);
+    }, true);
     
     // when the video is played
     // --> shows the shortcuts panel
     // --> saves trace
     video.addEventListener('pause', function () {
-        video_event_pause();        
-    }, false);
+        video_event_pause(this);
+    }, true);
     
     // when the volume of the video change
     // --> check if muted and adapt volume value
     video.addEventListener('volumechange', function() {
         video_event_volume(this);
-    }, false);
+    }, true);
     
     video.addEventListener("error", function (e) {
         video_event_error($(this));
@@ -301,6 +302,7 @@ function video_listener_add(video, start_time) {
 function video_event_seeked(current_time) {
     // checks if the mouse is up. If not, the user is still seeking so 
     // we don't need to save this trace
+    
     if(trace_pause > 0) {
         --trace_pause;
     } else if (!mouse_down) {
@@ -314,19 +316,29 @@ function video_event_seeked(current_time) {
     }
 }
 
-function video_event_update_time(current_time) {
+function video_event_update_time(video, current_time) {
     if(current_time == time)
         return;
-
+    
+    if((current_time - time) <= 1) {
+        if((current_time - last_play_start) > log_playing_interval) {
+            video_play_from = 'time';
+            trace_video_play_time();
+        }
+    
+        if(seeked && !video.seeked) {
+            end_seeking();
+        }
+    } else {
+        trace_video_play_time(last_time);
+    }
+    
     last_time = time;
     time = current_time;
     
     threads_notif_display();
-
-    if((current_time - last_play_start) >= log_playing_interval) {
-        trace_video_play_time();
-    }
-
+    
+    /*
     // -- Log "currently playing" action
     let timestamp = Math.floor(Date.now() / 1000);
 
@@ -336,7 +348,7 @@ function video_event_update_time(current_time) {
         last_playing_log_play_time = -999;
 
     //log if: last log is more than log_playing_interval ago OR if play time has significantly changed since last log
-    if( /* this.paused !== false && this api param seems buggy, fix me if can */
+    if( /* this.paused !== false && this api param seems buggy, fix me if can /
         ( timestamp > last_playing_log + log_playing_interval || time > last_playing_log_play_time + log_playing_interval ) 
       )
     {
@@ -345,43 +357,28 @@ function video_event_update_time(current_time) {
         server_trace(new Array('4', 'video_playing', current_album, current_asset, type, time));
         //console.log("video_playing");
     }
-    // --
+    // -- 
+    */
 }
 
 function trace_video_play_time(stop_time) {
     if(playing) {
         stop_time = (typeof stop_time !== 'undefined') ? stop_time : time;
         var play_time = Math.round(stop_time - last_play_start);
-        if(play_time > log_playing_interval) {
-            console.log("On dépasse les 30 SEC: " + play_time);
-            play_time = log_playing_interval;
-        }
         
-        if(play_time > 0) {
-            console.log('video_play_time | From:' + last_play_start + ' | During: ' + play_time + ' | type: ' + type);
+        if(play_time > 0 && play_time <= log_playing_interval) {
             // Known bug: when video is finish, push on play doesn't count the time because "last_play_start" contain
             // the total time of the video (when the video have stop)
             server_trace(new Array('4', 'video_play_time', current_album, current_asset, current_asset_name, type, 
                 last_play_start, play_time));
             last_play_start = time;
-        } else {
-            console.log('No play time (0)');
         }
-    } else {
-        console.log('Not playing (no trace)');
     }
 }
 
-function video_event_play() {
+function video_event_play(video) {
     if(seeked) {
-        seeked = false;
-        //console.log("video_seeked");
-        if(trace_pause <= 0) {
-            server_trace(new Array('4', 'video_seeked', current_album, current_asset, 
-                    duration, previous_seek_time, time, type, quality));
-        } else {
-            --trace_pause;
-        }
+        end_seeking();
     }
     playing = true;
     last_play_start = time;
@@ -391,23 +388,38 @@ function video_event_play() {
     }
     
     if (trace_pause <= 0) {
-        video_trace('4', 'video_play');
+        if(!video.seeking) {
+            video_trace('4', 'video_play');
+        }
     } else {
         --trace_pause;
     }
 }
 
-function video_event_pause() {
-    $(".shortcuts_tab").css('display', 'block');
+function end_seeking() {
+    seeked = false;
+    if(trace_pause <= 0) {
+        server_trace(new Array('4', 'video_seeked', current_album, current_asset, 
+                duration, previous_seek_time, time, type, quality));
+    } else {
+        --trace_pause;
+    }
+}
 
+function video_event_pause(video) {
+    $(".shortcuts_tab").css('display', 'block');
+    if(video.seeking) {
+        return;
+    }
+    
     if (trace_pause <= 0) {
         if(playing) {
+            video_play_from = 'pause';
             trace_video_play_time();
             playing = false;
         }
         video_trace('4', 'video_pause');
     } else {
-
         --trace_pause;
     }
 }
@@ -508,6 +520,7 @@ function player_video_type_set(media_type) {
         to_hide = document.getElementById('main_video');
         to_show = document.getElementById('secondary_video');
     }
+    video_play_from = 'switch';
     trace_video_play_time(); 
     
     // specific case for iOS
@@ -569,16 +582,16 @@ function player_video_quality_set(media_quality) {
     if (media_quality == quality)
         return;
 
+    var video;
     if (camslide && type == 'slide') {
-        var video = document.getElementById('secondary_video');
+        video = document.getElementById('secondary_video');
     } else {
-        var video = document.getElementById('main_video');
+        video = document.getElementById('main_video');
     }
 
     var source = document.getElementById('main_video_source');
     var paused = video.paused;
     var old_current_time = video.currentTime;
-    trace_video_play_time(old_current_time);
     // doesn't work in Safari 5
     // source.setAttribute('src', source.getAttribute(media + '_src')); 
 
@@ -592,6 +605,7 @@ function player_video_quality_set(media_quality) {
         video.load();
     }
     video.addEventListener('loadedmetadata', function () {
+        ++trace_pause;
         this.currentTime = old_current_time;
     }, false);
     ++trace_pause;

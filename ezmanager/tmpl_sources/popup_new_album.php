@@ -86,17 +86,23 @@ for every album the user can create.
     <?php }
     
     global $enable_course_creation;
+    global $enable_channel;
+    
     if($enable_course_creation){ ?>
     <hr />
         <form class="form-horizontal" id="form_new_ablbum" action="index.php" method="post">
             <div class="form-group">
+                
+            <?php if($enable_channel){ ?>
                 <label for="selectType" class="col-sm-3 control-label">®Album_type®</label>
                 <div class="col-sm-9">
                     <select id="selectType" name="album_type" class="form-control">
                         <option id="opt_course" value="course">®Course®</option>
                         <option id="opt_channel" value="channel">®Channel®</option>
+                      
                     </select>
                 </div>
+            <?php }  ?>
             </div>
             
             <div class="form-group" id="course_code_line">

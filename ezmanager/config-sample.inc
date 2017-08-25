@@ -47,6 +47,7 @@ $default_anon_access = 'false'; //default value when a video is uploaded
 $enable_copy_asset = false; //allow copying asset into other albums
 
 $enable_course_creation = false; //enable the possibility for a ezmanager user to create his own course
+$enable_channel = false; //enable the possibility for a ezmanager user to define his album as a channel
 
 $enable_moderator= false;  //enable the possibility to share album and manage moderator on ezmanager 
 

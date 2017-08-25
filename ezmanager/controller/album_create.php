@@ -28,8 +28,8 @@
                 error_print_message("no given value");
                 die();
             }    
-            $album_type = $input['albumtype'];
-            $label = $input['label'];
+            $album_type = htmlspecialchars($input['albumtype']);
+            $label = htmlspecialchars($input['label']);
             if($album_type == "other") {
                  $course_code_public = $label;
             } else {
@@ -37,7 +37,7 @@
                     error_print_message("no given value");
                     die();
                 }
-                $course_code_public = $input['course_code'];
+                $course_code_public = htmlspecialchars($input['course_code']);
             }
             // --
   
@@ -67,7 +67,7 @@
                 error_print_message("no given value");
                 die();
             }
-            $course_code = $input['course_code'];
+            $course_code = htmlspecialchars($input['course_code']);
             // -
             
             if (!acl_has_album_permissions($course_code)) {
@@ -80,7 +80,7 @@
             if(isset($courseinfo['course_code_public']) && $courseinfo['course_code_public'] != '' )
                 $course_code_public = $courseinfo['course_code_public'];
             else 
-                $course_code_public = $input['course_code'];
+                $course_code_public = htmlspecialchars($input['course_code']);
             
             $label = $courseinfo['course_name'];
             $album_type = "course";

@@ -88,14 +88,18 @@ class DBUpdater
                 return false;
             }
             
+            $sub_update_count = 1;
             foreach($queries as $query) {
                 if($this->apply_update($query)) {
-                    $this->log("Successfully updated from version $from_version to version $target_version", $print);
+                    $this->log("Applying sub-update $sub_update_count...", $print);
                 } else {
                     $this->log("Failed to update from version $from_version to version $target_version", $print);
                     return false; //stop immediately
                 }
+                $sub_update_count++;
             }
+             $this->log("Successfully applied update from version $from_version to version $target_version", $print);
+             
             //all okay, update current db version
             $this->update_db_version($target_version);
             $current_db_version = $target_version;

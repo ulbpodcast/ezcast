@@ -202,7 +202,7 @@ function player_prepare(current_quality, current_type, start_time) {
 
     document.getElementById('video_player').onmousedown = function () {
         previous_seek_time = last_time;
-        console.log('Update seek ! ' + previous_seek_time);
+        // console.log('Update seek ! ' + previous_seek_time);
         ++mouse_down;
     };
     document.getElementById('video_player').onmouseup = function () {
@@ -257,6 +257,12 @@ function video_listener_add(video, start_time) {
     // --> saves trace
     video.addEventListener('pause', function () {
         video_event_pause();        
+    }, false);
+    
+    // when the volume of the video change
+    // --> check if muted and adapt volume value
+    video.addEventListener('volumechange', function() {
+        video_event_volume(this);
     }, false);
     
     video.addEventListener("error", function (e) {
@@ -317,7 +323,7 @@ function video_event_update_time(current_time) {
     
     threads_notif_display();
 
-    if(last_play_start - current_time > log_playing_interval) {
+    if((current_time - last_play_start) >= log_playing_interval) {
         trace_video_play_time();
     }
 
@@ -345,15 +351,24 @@ function video_event_update_time(current_time) {
 function trace_video_play_time(stop_time) {
     if(playing) {
         stop_time = (typeof stop_time !== 'undefined') ? stop_time : time;
-        var play_time = stop_time - last_play_start;
+        var play_time = Math.round(stop_time - last_play_start);
+        if(play_time > log_playing_interval) {
+            console.log("On dépasse les 30 SEC: " + play_time);
+            play_time = log_playing_interval;
+        }
+        
         if(play_time > 0) {
-            // console.log('video_play_time | From:' + last_play_start + ' | During: ' + play_time);
+            console.log('video_play_time | From:' + last_play_start + ' | During: ' + play_time + ' | type: ' + type);
             // Known bug: when video is finish, push on play doesn't count the time because "last_play_start" contain
             // the total time of the video (when the video have stop)
             server_trace(new Array('4', 'video_play_time', current_album, current_asset, current_asset_name, type, 
                 last_play_start, play_time));
             last_play_start = time;
+        } else {
+            console.log('No play time (0)');
         }
+    } else {
+        console.log('Not playing (no trace)');
     }
 }
 
@@ -371,8 +386,9 @@ function video_event_play() {
     playing = true;
     last_play_start = time;
 
-    if (!shortcuts)
+    if (!shortcuts) {
         $(".shortcuts_tab").css('display', 'none');
+    }
     
     if (trace_pause <= 0) {
         video_trace('4', 'video_play');
@@ -382,19 +398,23 @@ function video_event_play() {
 }
 
 function video_event_pause() {
-    paused = ($('video')[1]) ? $('video')[1].paused : true;
-    if(playing) {
-        trace_video_play_time();
-        playing = false;
-    }
-
-    if (($('video')[0].paused && paused) || shortcuts)
-        $(".shortcuts_tab").css('display', 'block');
+    $(".shortcuts_tab").css('display', 'block');
 
     if (trace_pause <= 0) {
+        if(playing) {
+            trace_video_play_time();
+            playing = false;
+        }
         video_trace('4', 'video_pause');
     } else {
+
         --trace_pause;
+    }
+}
+
+function video_event_volume(video) {
+    if(video.muted && video.volume != 0) {
+        video.volume = 0;
     }
 }
 
@@ -470,7 +490,6 @@ function player_range_count_update(current_time, current_type) {
 /**
  * switches from cam to slide and vice versa
  * @param {type} media_type cam | slide
- * @returns {undefined}
  */
 function player_video_type_set(media_type) {
     // only available for camslide
@@ -489,8 +508,7 @@ function player_video_type_set(media_type) {
         to_hide = document.getElementById('main_video');
         to_show = document.getElementById('secondary_video');
     }
-
-    //++trace_pause; // disables trace to make sure play/pause actions are not written in the logs
+    trace_video_play_time(); 
     
     // specific case for iOS
     if (/webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
@@ -528,6 +546,7 @@ function player_video_type_set(media_type) {
     }
     to_hide.style.display = 'none';
     to_show.style.display = 'block';
+    to_show.volume = to_hide.volume;
 
     from = type;
     type = media_type;
@@ -559,6 +578,7 @@ function player_video_quality_set(media_quality) {
     var source = document.getElementById('main_video_source');
     var paused = video.paused;
     var old_current_time = video.currentTime;
+    trace_video_play_time(old_current_time);
     // doesn't work in Safari 5
     // source.setAttribute('src', source.getAttribute(media + '_src')); 
 
@@ -1184,12 +1204,15 @@ function player_shortcuts_toggle() {
     var action;
     
     shortcuts = !shortcuts;
-    if (shortcuts)
+    if (shortcuts) {
         $('#video_shortcuts').css('height', '92.4%');
+    }
+    
     $('.shortcuts').animate({'width': (shortcuts) ? 'show' : 'hide'}, function () {
         $('.shortcuts_tab a').toggleClass('active');
-        if (!shortcuts)
+        if (!shortcuts) {
             $('#video_shortcuts').css('height', '10%');
+        }
     });
     action = (shortcuts) ? 'show' : 'hide';
     video_trace('4', 'shortcuts_' + action);

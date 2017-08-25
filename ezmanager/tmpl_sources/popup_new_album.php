@@ -93,7 +93,7 @@ for every album the user can create.
     
     if($enable_course_creation){ ?>
     <hr />
-<h3 class='text-center'>®createnewCourse®</h3><br>
+    <h3 class='text-center'>®createnewCourse®</h3><br>
 
         <form class="form-horizontal" id="form_new_ablbum" action="index.php" method="post">
             <div class="form-group">

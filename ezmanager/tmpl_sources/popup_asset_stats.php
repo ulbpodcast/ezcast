@@ -8,7 +8,7 @@
         <div id="container" style="margin: 0 auto"></div>
         
         <center>
-            <div style="display:inline-block;width:<?php echo ($has_slides) ? '50%' : '100%'; ?>;" class="popup_video_player"
+            <div style="display:inline-block;width:<?php echo ($has_slides) ? '49%' : '100%'; ?>;" class="popup_video_player"
                 id="Popup_Player_<?php echo $asset; ?>_cam"></div>
             <?php if($has_slides) { ?>
                 <div style="display:inline-block;width: 49%;" class="popup_video_player" 
@@ -45,12 +45,13 @@
                 cursor: 'pointer',
                 events: {
                     click: function () {
-                        adaptVideoTime(event.points.category);
+                        adaptVideoTime(event.point.category);
                     }
                 }
             }
         },
         xAxis: {
+            minTickInterval: 1,
             labels: {
                 formatter: 
                     function() {
@@ -110,10 +111,8 @@
     show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'cam', '<?php 
             echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_cam'; ?>', '100%', '100%');
     <?php if($has_slides) { ?>
-        setTimeout(function(){ 
-            show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php 
+        show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php 
                 echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_slide'; ?>', '100%', '100%');
-        }, 100);
     <?php } ?>
 })();
 

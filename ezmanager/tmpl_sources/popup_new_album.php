@@ -41,6 +41,7 @@ for every album the user can create.
     <h4 class="modal-title">®Create_album®</h4>
 </div>
 <div class="modal-body">
+    <h3 class='text-center'>®addexistingCourse® </h3> <br>
     <?php if(empty($not_created_albums_with_descriptions)) {
         echo "<p>®All_albums_already_created®</p>";
     } else { 
@@ -64,7 +65,7 @@ for every album the user can create.
                         // with an action "create_album". Once the processing is over, this div will be updated with the confirmation message.
                         echo '<tr>';
                             echo '<td class="album_name col-md-2" style="font-weight: bold;">';
-                                echo '<a href="index.php?action=create_album&amp;album=' . $album_name . '" ' .
+                                echo '<a href="index.php?action=create_album&amp;course_code=' . $album_name . '" ' .
                                         'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#create_'.$album_name.'_album"));$("#modal").modal("show"); }, 500);\' ' .
                                         'data-dismiss="modal" id="create_'.$album_name.'_album">';
@@ -86,30 +87,47 @@ for every album the user can create.
     <?php }
     
     global $enable_course_creation;
+    global $enable_channel_creation;
+    global $max_course_code_size;
+    global $max_album_label_size;
+    
     if($enable_course_creation){ ?>
     <hr />
+<h3 class='text-center'>®createnewCourse®</h3><br>
+
         <form class="form-horizontal" id="form_new_ablbum" action="index.php" method="post">
             <div class="form-group">
+                
+            <?php if($enable_channel_creation){ ?>
                 <label for="selectType" class="col-sm-3 control-label">®Album_type®</label>
                 <div class="col-sm-9">
                     <select id="selectType" name="album_type" class="form-control">
                         <option id="opt_course" value="course">®Course®</option>
-                        <option id="opt_channel" value="channel">®Channel®</option>
+                        <option id="opt_other" value="other">®othertypealbum®</option>
+                      
                     </select>
                 </div>
+            <?php }  ?>
             </div>
             
             <div class="form-group" id="course_code_line">
                 <label for="course_code" id="labelcodeCours" class="col-sm-3 control-label">®Course_code®</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="course_code" name="course_code">
+                    <input  maxlength="<?php echo $max_course_code_size ?>" type="text" class="form-control" id="course_code" name="course_code">
                 </div>
             </div>
             
-            <div class="form-group">
-                <label for="album" id="labelIdCours" class="col-sm-3 control-label">®Album_name®</label>
+            <div class="form-group labelclass" id="label_course_line">
+                <label for="label_course" id="labelIdCours" class="col-sm-3 control-label">®Album_name®</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="album" name="album">
+                    <input maxlength="<?php echo $max_album_label_size ?>" type="text" class="form-control" id="label_course" name="label">
+                </div>
+            </div>
+            
+            <div class="form-group labelclass" id="label_other_line">
+                <label for="label_other" id="labelIdother" class="col-sm-3 control-label">®Album_other_name®</label>
+                <div class="col-sm-9">
+                    <input maxlength="<?php echo $max_album_label_size ?>" type="text" class="form-control" id="label_other" name="label">
                 </div>
             </div>
             
@@ -123,30 +141,59 @@ for every album the user can create.
 </div>
 
 <script>		
+    $('#label_other_line').hide();
     $("#selectType").change(function(){
         var id = $(this).find("option:selected").attr("id");
         switch (id){
             case "opt_course":
                 $('#course_code_line').show();
+                $('#label_other_line').hide();
+                $('#label_course_line').show();
                 break;
                 
-            case "opt_channel":
+            case "opt_other":
                 $('#course_code_line').hide();
+                $('#label_other_line').show();
+                $('#label_course_line').hide();
                 break;
         }
     });
 
     $('#form_new_ablbum').submit(function(e) {
         e.preventDefault();
-        var album = encodeURIComponent($('#album').val());
+        var label = encodeURIComponent($('#label_course').val());
+        if (label == '')
+            label = encodeURIComponent($('#label_other').val());
+        
         var course_code = encodeURIComponent($('#course_code').val());																
         var selectType = encodeURIComponent($('#selectType').val());
         
-        $("#modal").modal("hide"); 
-        setTimeout(function() {
-            display_bootstrap_modal_url($("#modal"), "index.php?action=create_courseAndAlbum&album="+album+"&albumtype="+
-                selectType+"&course_code="+course_code);
-            $("#modal").modal("show"); 
-        }, 500);
+        var error=0;
+        if (label == ''){
+            $(".labelclass").addClass('has-error');
+            error+=1;
+        }
+        else 
+            $(".labelclass").removeClass('has-error');
+        
+        if (selectType == 'course' && course_code==''){
+            $("#course_code_line").addClass('has-error');
+            error+=1;
+        }
+        else
+            $("#course_code_line").removeClass('has-error');
+
+        
+        if(error===0){
+            $("#modal").modal("hide"); 
+            setTimeout(function() {
+                display_bootstrap_modal_url($("#modal"), "index.php?action=create_courseAndAlbum&label="+label+"&albumtype="+
+                    selectType+"&course_code="+course_code);
+                $("#modal").modal("show"); 
+            }, 500);
+        }
     }); 
+    
+    
+    
 </script>

@@ -122,6 +122,11 @@ $debug_mode = false; //debug mode print recorder events and php errors to consol
 $common_config_defined = true; //config and common include each other... apparently php does not consider a file already 
 // included until he completely finished including it. This variable is a workaround for this problem.
 
+//define size of course_code
+$max_course_code_size=20; //!!! WARNING => Linked to the DB
+//define size of album_label
+$max_album_label_size=50;
+
 // If not in config simple
 if(basename(__FILE__) != "config-sample.inc") {
     // load static variables

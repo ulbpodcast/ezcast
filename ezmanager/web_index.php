@@ -160,6 +160,7 @@ else {
 
         // The user selected an album to create. We now create the two albums (-pub and -priv) they want
         case 'create_album':
+        case 'create_courseAndAlbum':
             $service = true;
             requireController('album_create.php');
             break;
@@ -311,20 +312,11 @@ else {
             redraw_page();
             break;     
 
-
         case 'add_moderator':
             requireController('album_add_moderator.php');
             // redraw_page();
             break;
 			
-			
-        case 'create_courseAndAlbum':
-            // include "../ezadmin/lib_sql_management.php";
-            $service = true;
-            requireController('album_create.php');
-            break;
-			
-					
         case 'regen_title':
             $service = true;
             requireController('asset_title_regen.php');

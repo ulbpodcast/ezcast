@@ -37,6 +37,7 @@ var trace_pause = 0; // traces are paused if this variable is not 0
 var mouse_down = 0; // 0 when mouseUp / 1 when mouseDown - Used for the video seeked event
 var panel_width = 231;
 var seeked = false;
+var video_forward = false;
 
 var playing = false;
 var log_playing_interval = video_split_time; // time until each "playing" log
@@ -306,12 +307,13 @@ function begin_seeked(current_time) {
 
 function end_seeked() {
     if(seeked) {
-        if(previous_seek_time != time) {
+        if(previous_seek_time != time && !video_forward) {
             server_trace(new Array('4', 'video_seeked', current_album, current_asset, 
                     duration, previous_seek_time, time, type, quality));
         }
         last_play_start = time;
         seeked = false;
+        video_forward = false;
     }
 }
 
@@ -715,6 +717,7 @@ function player_video_navigate(forward_rewind) {
         video = document.getElementById('main_video');
     }
     
+    video_forward = true;
     video.currentTime = (forward_rewind == 'forward') ? video.currentTime + 15 : video.currentTime - 15;
     video.paused ? video.pause() : video.play();
     video_trace('4', 'video_' + forward_rewind);

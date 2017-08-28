@@ -50,8 +50,6 @@ var thread_form = false;
 var comment_form = false;
 var shortcuts = false;
 
-var video_play_from = ''; // DEBUG
-
 /**
  * Duration of the notification (sec)
  * @type Number
@@ -202,8 +200,7 @@ function player_prepare(current_quality, current_type, start_time) {
     type = (current_type !== '') ? current_type : 'cam';
     quality = (current_quality !== '') ? current_quality : 'low';
 
-    document.getElementById('video_player').onmousedown = function () {
-        previous_seek_time = last_time;
+    document.getElementById('video_player').onmousedown = function (elem) {
         ++mouse_down;
     };
     document.getElementById('video_player').onmouseup = function () {
@@ -235,7 +232,7 @@ function video_listener_add(video, start_time) {
     
     video.addEventListener("seeking", function () {
         var current_time = Math.round(this.currentTime);
-        video_event_seeked(current_time);
+        begin_seeked(current_time);
     }, true);
     
     // when the video is being played
@@ -292,73 +289,51 @@ function video_listener_add(video, start_time) {
 
 ///////////////// EVENT /////////////////
 
-/**
- * When the user seeks the video
- * --> saves the current time
- * --> puts the timecode in bookmark and thread forms
- * 
- * @returns {undefined}
- */
-function video_event_seeked(current_time) {
-    // checks if the mouse is up. If not, the user is still seeking so 
-    // we don't need to save this trace
-    
+function begin_seeked(current_time) {
     if(trace_pause > 0) {
         --trace_pause;
-    } else if (!mouse_down) {
+    } else {
         if(!seeked) {
-            trace_video_play_time(last_time);
+            previous_seek_time = last_time;
+            trace_video_play_time(previous_seek_time);
+            
+            time_code_update();
+            seeked = true;
         }
-        previous_seek_time = last_time;
         time = current_time;
-        time_code_update();
-        seeked = true;
+    }
+}
+
+function end_seeked() {
+    if(seeked) {
+        if(previous_seek_time != time) {
+            server_trace(new Array('4', 'video_seeked', current_album, current_asset, 
+                    duration, previous_seek_time, time, type, quality));
+        }
+        last_play_start = time;
+        seeked = false;
     }
 }
 
 function video_event_update_time(video, current_time) {
-    if(current_time == time)
+    if(current_time == time) {
         return;
+    }
     
     if((current_time - time) <= 1) {
-        if((current_time - last_play_start) > log_playing_interval) {
-            video_play_from = 'time';
+        if((current_time - last_play_start) > log_playing_interval && !seeked) {
             trace_video_play_time();
         }
     
-        if(seeked && !video.seeked) {
-            end_seeking();
+        if(seeked && !video.seeked && playing && !video.paused && mouse_down == 0) {
+            end_seeked();
         }
-    } else {
-        trace_video_play_time(last_time);
     }
     
     last_time = time;
     time = current_time;
     
     threads_notif_display();
-    
-    /*
-    // -- Log "currently playing" action
-    let timestamp = Math.floor(Date.now() / 1000);
-
-    if (typeof last_playing_log == 'undefined')
-        last_playing_log = 0;
-    if (typeof last_playing_log_play_time == 'undefined')
-        last_playing_log_play_time = -999;
-
-    //log if: last log is more than log_playing_interval ago OR if play time has significantly changed since last log
-    if( /* this.paused !== false && this api param seems buggy, fix me if can /
-        ( timestamp > last_playing_log + log_playing_interval || time > last_playing_log_play_time + log_playing_interval ) 
-      )
-    {
-        last_playing_log = timestamp;
-        last_playing_log_play_time = time;
-        server_trace(new Array('4', 'video_playing', current_album, current_asset, type, time));
-        //console.log("video_playing");
-    }
-    // -- 
-    */
 }
 
 function trace_video_play_time(stop_time) {
@@ -367,8 +342,6 @@ function trace_video_play_time(stop_time) {
         var play_time = Math.round(stop_time - last_play_start);
         
         if(play_time > 0 && play_time <= log_playing_interval) {
-            // Known bug: when video is finish, push on play doesn't count the time because "last_play_start" contain
-            // the total time of the video (when the video have stop)
             server_trace(new Array('4', 'video_play_time', current_album, current_asset, current_asset_name, type, 
                 last_play_start, play_time));
             last_play_start = time;
@@ -377,44 +350,32 @@ function trace_video_play_time(stop_time) {
 }
 
 function video_event_play(video) {
-    if(seeked) {
-        end_seeking();
-    }
-    playing = true;
-    last_play_start = time;
-
     if (!shortcuts) {
         $(".shortcuts_tab").css('display', 'none');
     }
     
     if (trace_pause <= 0) {
-        if(!video.seeking) {
+        if(!video.seeking && !playing) {
             video_trace('4', 'video_play');
         }
     } else {
         --trace_pause;
     }
-}
-
-function end_seeking() {
-    seeked = false;
-    if(trace_pause <= 0) {
-        server_trace(new Array('4', 'video_seeked', current_album, current_asset, 
-                duration, previous_seek_time, time, type, quality));
-    } else {
-        --trace_pause;
+    
+    if(!playing) {
+        last_play_start = time;
     }
+    playing = true;
 }
 
 function video_event_pause(video) {
     $(".shortcuts_tab").css('display', 'block');
-    if(video.seeking) {
+    if(video.seeking || seeked) {
         return;
     }
     
     if (trace_pause <= 0) {
         if(playing) {
-            video_play_from = 'pause';
             trace_video_play_time();
             playing = false;
         }
@@ -520,7 +481,6 @@ function player_video_type_set(media_type) {
         to_hide = document.getElementById('main_video');
         to_show = document.getElementById('secondary_video');
     }
-    video_play_from = 'switch';
     trace_video_play_time(); 
     
     // specific case for iOS

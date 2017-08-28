@@ -40,12 +40,14 @@
         <link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet"/>
         <link href="bootstrap/css/angular-bootstrap-calendar.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
+        <link type="text/css" href="commons/css/common_style.css" rel="stylesheet" />
         <link href="css/jquery.jqplot.min.css" rel="stylesheet"/>
         <link href="css/ezplayerStats.css" rel="stylesheet"/>
  
         
     </head>
-    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && ($GLOBALS['debugmode'] == "devl")) echo 'background="#99ff99"' ?>>
+    <body link="#000088" vlink="#000044" alink="#0000ff" 
+        <?php if (isset($GLOBALS['debugmode']) && ($GLOBALS['debugmode'] == "devl")) { echo 'background="#99ff99"'; } ?>>
 
         <div class="container_ezplayer">
         <?php include template_getpath('div_header.php'); ?>
@@ -55,3 +57,12 @@
             <div class="row">
 <?php include template_getpath('div_main_menu.php'); ?>
                 <div class="col-md-10">
+                    <?php 
+                    global $sample_config_version;
+                    global $config_version;
+                    if($sample_config_version > $config_version) {
+                        echo '<div class="alert alert-danger" role="alert">®new_config_version®</div>';
+                    } else if($sample_config_version < $config_version) { 
+                        echo '<div class="alert alert-info" role="alert">®config_more_recent_version®</div>';
+                    } ?>
+

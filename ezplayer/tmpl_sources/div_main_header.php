@@ -40,13 +40,18 @@
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
-            <?php if (file_exists('./htdocs/images/Header/organization-logo.png')) { ?>
+            <?php  //if a custom organisation logo was defined, try to load it
+                if (file_exists('./htdocs/images/Header/organization-logo.png')) { ?>
                 <a href="<?php
                 global $organization_url;
                 echo $organization_url;
-                ?>"><img src="./images/Header/organization-logo.png"/></a>
-            <?php } ?>
-            <a href="index.php" title="®Back_to_home®"><img src="./images/Header/LogoEZplayer.png" alt="" /></a>
+                ?>"><img id="organisation_logo" src="images/Header/organization-logo.png"/></a>
+            <?php } 
+            
+            global $ezplayer_custom_logo;
+            $ezplayer_logo = $ezplayer_custom_logo !== false ? "images/custom/$ezplayer_custom_logo" : "images/Header/LogoEZplayer.png"; //default value
+            ?>
+            <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezplayer_logo; ?>" /></a>
         </div>
         <!-- S E T T I N G S -->
         <div class="form" id="settings_form">

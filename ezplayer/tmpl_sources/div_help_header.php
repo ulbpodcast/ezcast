@@ -30,9 +30,13 @@
         <div class="logo"> 
             <?php if (file_exists('./htdocs/images/Header/organization-logo.png')) { ?>
                 <a href="<?php global $organization_url;
-            echo $organization_url; ?>"><img src="./images/Header/organization-logo.png"/></a>
+            echo $organization_url; ?>"><img id="organisation_logo" src="./images/Header/organization-logo.png"/></a>
 <?php } ?>
-            <a href="index.php" title="®Back_to_home®"><img src="./images/Header/LogoEZplayer.png" alt="" /></a>
+            <?php
+            global $ezplayer_custom_logo;
+            $ezplayer_logo = $ezplayer_custom_logo !== false ? "images/custom/$ezplayer_custom_logo" : "images/Header/LogoEZplayer.png"; //default value
+            ?>
+            <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezplayer_logo; ?>" /></a>
         </div>      
     </div>
 </div>

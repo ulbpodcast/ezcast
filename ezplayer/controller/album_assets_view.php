@@ -97,9 +97,14 @@ function index_asset_view($param) {
     $_SESSION['token'] = $token;
 
     // 3) Add current album to the album list
-
+	
     $album_name = get_album_title($album);
-    $album_token = array('title' => $album_name, 'album' => $album, 'token' => $token);
+	$album_title = ezmam_album_metadata_get($album);
+			if(isset($album_title['course_code_public'])) $course_code_public = $album_title['course_code_public'];
+			
+			
+	
+    $album_token = array('title' => $album_name, 'album' => $album,'course_code_public' =>$course_code_public ,'token' => $token);
     // checks if the album already exists in the token list
     // if it exists yet, checks if the title and the token have not changed
     if (!token_array_contains($_SESSION['acl_album_tokens'], $album_token)) {

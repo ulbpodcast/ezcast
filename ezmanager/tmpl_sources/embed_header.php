@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 <html>
     <head>
-            <!-- 
+    <?php /*
     * EZCAST EZmanager 
     *
     * Copyright (C) 2016 Université libre de Bruxelles
@@ -25,7 +25,7 @@
     * You should have received a copy of the GNU Lesser General Public
     * License along with this software; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-            -->
+    */ ?>
         <title>¤organization¤</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
     </head>

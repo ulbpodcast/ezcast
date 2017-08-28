@@ -8,6 +8,9 @@
 function index($param = array()) {
     global $input;
     global $repository_path;
+    global $regenerate_title_mode;
+
+	
     ezmam_repository_path($repository_path);
 
     //
@@ -52,6 +55,16 @@ function index($param = array()) {
         $bookmarks[$index]['album'] = $input['to'];
     }
     toc_album_bookmarks_add($bookmarks);
+	
 
+    // include_once $basedir.'/ezmanager/'.template_getpath('popup_asset_successfully_moved.php');
+
+    // regegerate intro	
+    if ($regenerate_title_mode=='auto') {
+        update_title($input['to'],$input['asset']);
+    }
+	
+	
+    $album = $input['from'];
     include_once template_getpath('popup_asset_successfully_moved.php');
 }

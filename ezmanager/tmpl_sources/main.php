@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,13 +8,16 @@
         <meta name="description" content="EZManager is an web application to manage video from EZCast" />
         <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/dashboard.css" />
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
+        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
         <link rel="stylesheet" type="text/css" href="css/colorbox.css" />
         <link href="css/uploadify.css" type="text/css" rel="stylesheet" />
         <script type="text/javascript" src="js/AppearDissapear.js"></script>
         <script type="text/javascript" src="js/hover.js"></script>
         <script type="text/javascript" src="js/httpRequest.js"></script>
-        <script type="text/javascript" src="js/jQuery/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/jQuery/jquery-2.2.4.min.js"></script>
         <script src="js/jquery.colorbox.js"></script>
         <script type="text/javascript" src="js/upload.js"></script>
         <script type="text/javascript" src="js/clipboard.js"></script>
@@ -27,6 +29,7 @@
              * Retrieves album header and displays it in div_album_header
              */
             var current_album = '<?php if (isset($_SESSION['podman_album'])) echo $_SESSION['podman_album']; ?>';
+            var tab = 'list';
             
             // Render a styled file input in the submit form
             function initFileUploads() {
@@ -58,30 +61,42 @@
                 }
             }
 
-            function show_advanced_menu() {
-                $('#dropdown_menu .submenu').toggle();
-            }
-
             function is_touch_device() {
                 return !!('ontouchstart' in window) // works on most browsers 
                         || !!('onmsgesturechange' in window); // works on ie10
             }
             ;
 
+            function refresh_album_view() {
+                switch(tab) {
+                    case 'stats':
+                        show_stats_descriptives(current_album);
+                        break;
+                    
+                    case 'url':
+                        show_ezplayer_link(current_album);
+                        break;
+                        
+                    case 'ezmanager':
+                        show_ezmanager(current_album);
+                        break;
+                    
+                    case 'list':
+                    default:
+                        show_album_details(current_album);
+                        break;
+                }
+            }
+
             function show_album_details(album) {
-                // highlighting the current album, and removing the old one
-                if (document.getElementById('album_' + current_album + '_clic')) {
-                    document.getElementById('album_' + current_album + '_clic').style.display = 'none';
-                    document.getElementById('album_' + current_album + '').style.display = '';
-                }
-                if (document.getElementById('album_' + album + '_clic')) {
-                    document.getElementById('album_' + album + '_clic').style.display = '';
-                    document.getElementById('album_' + album + '').style.display = 'none';
-                }
+                $('#album_' + current_album).removeClass('active');
+                $('#album_' + album).addClass('active');
                 current_album = album;
+                tab = 'list';
 
                 // Getting the content from the server, and filling the div_album_header with it
-                document.getElementById('div_content').innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                        '<img src="images/loading_white.gif" alt="loading..." /></div>';
                 makeRequest('index.php', '?action=view_album&album=' + album, 'div_content');
             }
 
@@ -100,15 +115,16 @@
                 var description = encodeURIComponent(document.getElementById('description_' + asset + '_input').value);
 
                 if (unencoded_title.length > <?php
-global $title_max_length;
-echo $title_max_length;
-?>) {
+                    global $title_max_length;
+                    echo $title_max_length;
+                    ?>) {
                     window.alert('®Title_too_long®');
                     return false;
                 }
 
                 // Then we update them
-                makeRequest('index.php', '?action=edit_asset&album=' + album + '&asset=' + asset + '&title=' + title + '&description=' + description, 'asset_' + asset + '_details');
+                makeRequest('index.php', '?action=edit_asset&album=' + album + '&asset=' + asset + '&title=' + title + 
+                        '&description=' + description, 'asset_' + asset + '_details');
 
                 // And finally we refresh the view
                 document.getElementById('asset_' + asset + '_title').innerHTML = ' | ' + decodeURIComponent(title);
@@ -116,18 +132,39 @@ echo $title_max_length;
             }
 
             function asset_downloadable_set(album, asset) {
+                var valeur = $('.download_small_button#is_downloadable_' + asset+'.btn-success').length > 0;
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=asset_downloadable_set',
                     data: {
-                        'downloadable': $('#is_downloadable_' + asset).is(':checked') ? true : false,
+                        'downloadable': valeur,
                         'album': album,
                         'asset': asset
                     }
                 });
             }
-
-
+            
+            function show_stats_descriptives(album) {
+                tab = 'stats';
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                        '<img src="images/loading_white.gif" alt="loading..." /></div>';
+                makeRequest('index.php', '?action=view_stats&album=' + album, 'div_content');
+            }
+            
+            function show_ezplayer_link(album) {
+                tab = 'url';
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                        '<img src="images/loading_white.gif" alt="loading..." /></div>';
+                makeRequest('index.php', '?action=view_ezplayer_link&album=' + album, 'div_content');
+            }
+            
+            function show_ezmanager(album) {
+                tab = 'ezmanager';
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                        '<img src="images/loading_white.gif" alt="loading..." /></div>';
+                makeRequest('index.php', '?action=view_ezmanager_link&album=' + album, 'div_content');
+            }
+            
         </script>
         <script type="text/javascript" src="js/popup_general.js"></script>
         <script type="text/javascript" src="js/popup_callback.js"></script>
@@ -138,39 +175,36 @@ echo $title_max_length;
 
         <script type="text/javascript" src="js/swfobject.js"></script>
         <script type="text/javascript" src="js/jquery.uploadify.v2.1.4.js"></script>
-
-
-
-
         <!-- End script submit -->
-
-
 
         <?php if (isset($head_code)) echo $head_code; ?>
     </head>
     <body>
-        <div id="test"></div>
-
         <div class="container">
             <?php include_once template_getpath('div_main_header.php'); ?>
-            <div id="global">
+            <div id="global" class="row">
                 <!-- "New album" button -->
-                <span class="CreerAlbum"><a href="javascript:show_popup_from_inner_div('#popup_new_album');">®Create_album®</a></span>
-                <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php // echo get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang(); ?>.png" name="Image5" width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div> -->
+                <div class="col-md-12 btn-new-album">
+                    <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=new_album"
+                       data-remote="false" data-toggle="modal" data-target="#modal" >
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        ®Create_album®
+                    </a>
+                </div>
+                <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" 
+                    onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php 
+                    // echo get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang(); ?>.png" name="Image5" 
+                    width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div> -->
                 <!-- "New album" button, END -->          
 
-                <div id="div_center">
+                <div id="div_center" class="col-md-12">
 
-                    <!-- Left column: album list -->
-                    <div id="div_album_list">
-                        <!-- Album list goes here -->
-                        <?php include_once template_getpath('div_album_list.php'); ?>
-                    </div>
+                    <!-- Album list goes here -->
+                    <?php include_once template_getpath('div_album_list.php'); ?>
                     <!-- Left column: album list END -->
 
                     <!-- Right part of the screen: album and asset details -->
-                    <div id="div_content">
-
+                    <div id="div_content" class="col-sm-8 col-sm-offset-4">
                         <!-- Album details go here (dynamically filled with div_album_header) -->
                         <?php
                         // If we are in redraw mode, we fill the content of the div
@@ -196,24 +230,32 @@ echo $title_max_length;
 
             <!-- Popups -->
             <div style="display: none;">
-                <?php include_once 'popup_new_album.php'; ?>
-
                 <!-- This popup gets automatically filled with messages, depending on the situation -->
                 <div class="popup" id="popup_messages"></div>
 
                 <!-- This popup gets automatically filled with errors -->
                 <div class="popup" id="popup_errors"></div>
             </div>
-        </div><!-- Container fin -->
-    </body>
-    <!-- scripts that must be loaded after document -->
-    <script type="text/javascript">
-        var clipboard = new Clipboard('.clipboard');
-
-        clipboard.on('success', function(e) {
-            alert("®Content_in_clipboard®");
-            //todo: proper tooltip instead (or green coloring)
+            
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <img src="images/loading_white.gif" alt="loading..." /></div>
+                  </div>
+            </div>
+        </div> <!-- Container fin -->
+        <script>
+        $("#modal").on("show.bs.modal", function(e) {
+            var link = $(e.relatedTarget);
+            display_bootstrap_modal($(this), link);
         });
-        
-    </script>
+        function display_bootstrap_modal(modal, button) {
+            display_bootstrap_modal_url(modal, button.attr("href"));
+        }
+        function display_bootstrap_modal_url(modal, url) {
+            modal.find(".modal-content").load(url);
+        }
+        </script>
+    </body>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 </html>

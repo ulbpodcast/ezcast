@@ -28,7 +28,55 @@ function index($param = array()) {
         case 'ulb_code':
             popup_ulb_code();
             break;
+        
+        case 'new_album':
+            popup_new_album();
+            break;
 
+        case 'delete_album':
+            popup_delete_album();
+            break;
+        
+        case 'reset_rss_feed':
+            reset_rss_feed();
+            break;
+
+        case 'unpublish_asset':
+            unpublish_asset();
+            break;
+
+        case 'publish_asset':
+            publish_asset();
+            break;
+
+        case 'delete_asset':
+            delete_asset();
+            break;
+
+        case 'popup_not_available':
+            popup_not_available();
+            break;
+
+        case 'move_asset':
+            move_asset();
+            break;
+
+        case 'schedule_asset':
+            schedule_asset();
+            break;
+        
+        case 'regen_title':
+            regen_title();
+            break;
+        
+        case 'moderator_delete':
+            moderator_delete();
+            break;
+        
+        case 'copy_asset':
+            copy_asset();
+            break;
+        
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
             die;
@@ -98,8 +146,13 @@ function popup_embed_code() {
     $iframe_height = $metadata['height'] + 40;
     $iframe_width = $metadata['width'] + 30;
     // Embed code
-    $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
-    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height . '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' . $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' . $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() . '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';
+    $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . 
+            '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
+    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height . 
+            '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' . 
+            $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' . 
+            $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() . 
+            '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';
     $embed_code = htmlentities($embed_code_web, ENT_COMPAT, 'UTF-8');
 
     // Displaying the popup
@@ -137,7 +190,6 @@ function popup_ezplayer_link() {
     $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
     $action = (strtolower($asset_meta['origin']) === "streaming") ? 'view_asset_streaming' : 'view_asset_details';
     $token = ezmam_asset_token_get($input['album'], $input['asset']);
-    $public_album = album_is_public($album);
     $ezplayer_link = $ezplayer_url . '/index.php?'
             . 'action=' . $action
             . '&album=' . $album
@@ -181,4 +233,146 @@ function popup_ulb_code() {
 
     // Displaying the popup
     require_once template_getpath('popup_ulb_code.php');
+}
+
+function popup_new_album() {
+    $not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
+    require_once template_getpath('popup_new_album.php');
+}
+
+function popup_delete_album() {
+    global $input;
+    if(!isset($input['album']) || !isset($input['album_id'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=delete_album&amp;album=ALBUM&amp;album_id=ALBUM-ID';
+        die;
+    }
+    $album_name = $input['album'];
+    $album_id = $input['album_id'];
+    require_once template_getpath('popup_delete_album.php');
+}
+
+function reset_rss_feed() {
+    global $input;
+    if(!isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=ALBUM';
+        die;
+    }
+    $album = $input['album'];
+    require_once template_getpath('popup_reset_rss_feed.php');
+}
+
+function unpublish_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=unpublish_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $title = $input['title'];
+    $album = $input['album'];
+    $asset_name = $input['asset'];
+    require template_getpath('popup_unpublish_asset.php');
+}
+
+function publish_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=publish_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $title = $input['title'];
+    $album = $input['album'];
+    $asset_name = $input['asset'];
+    require template_getpath('popup_publish_asset.php');
+}
+
+function delete_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=delete_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $title = $input['title'];
+    $album = $input['album'];
+    $asset_name = $input['asset'];
+    require template_getpath('popup_delete_asset.php');
+}
+
+function popup_not_available() {
+    require template_getpath('popup_not_available_while_processing.php');
+}
+
+function move_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=move_asset&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
+    $asset_name = $input['asset'];
+    $album = $input['album'];
+
+    require template_getpath('popup_move_asset.php');
+}
+
+function schedule_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=schedule_asset&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $asset = $input['asset'];
+    $asset_name = $asset;
+    $album = $input['album'];
+
+    $DTZ = new DateTimeZone('Europe/Paris');
+    global $repository_path;
+    ezmam_repository_path($repository_path);
+    $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+
+    $title = $asset_metadata['title']; // "user-friendly" asset name (title)
+    $asset_scheduled = isset($asset_metadata['scheduled']) ? $asset_metadata['scheduled'] : false;
+    $asset_sched_date = isset($asset_metadata['schedule_date']) ? $asset_metadata['schedule_date'] : false;
+    $asset_sched_id = isset($asset_metadata['schedule_id']) ? $asset_metadata['schedule_id'] : false;
+
+
+    require template_getpath('popup_schedule.php');
+}
+
+function regen_title() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=regen_title&amp;album=ALBUM&amp;asset=ASSET&amp;title=TITLE';
+        die;
+    }
+    $asset_name = $input['asset'];
+    $album = $input['album'];
+    $title = $input['title'];
+    
+    require template_getpath('popup_regen_title.php');
+}
+
+function moderator_delete() {
+    global $input;
+    if(!isset($input['id_user']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=moderator_delete&amp;album=ALBUM&amp;id_user=ID_USER';
+        die;
+    }
+    $album = $input['album'];
+    $id_user = $input['id_user'];
+    
+    require template_getpath('popup_moderator_delete.php');
+}
+
+function copy_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=copy_asset&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
+    $asset_name = $input['asset'];
+    $album = $input['album'];
+
+    require template_getpath('popup_copy_asset.php');
+    
 }

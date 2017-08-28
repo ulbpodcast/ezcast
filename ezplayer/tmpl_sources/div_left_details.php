@@ -60,7 +60,7 @@ switch (strtolower($_SESSION['browser_name'])) {
             $token = $token['token'];
             ?>
             <div class="right-arrow"></div>
-            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" title="®Back_to_album®">(<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?></a>   
+            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" title="®Back_to_album®">(<?php if(isset($course_code_public) && $course_code_public!="") echo $course_code_public; else echo suffix_remove($album); ?>) <?php  echo get_album_title($album); ?></a>   
         <?php } ?>
         <div class="right-arrow"></div><?php print_info($asset_meta['title']); ?>
     </div>
@@ -97,7 +97,8 @@ switch (strtolower($_SESSION['browser_name'])) {
             </div>
         <?php } ?>
 
-        <video id="main_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
+        <video id="main_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls 
+               controlsList="nodownload" src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
             <source id="main_video_source"
                     <?php if(array_key_exists('low_slide_src', $asset_meta)) { ?>
                     high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
@@ -110,8 +111,9 @@ switch (strtolower($_SESSION['browser_name'])) {
         </video>
 
         <?php if ($asset_meta['record_type'] == 'camslide') { ?>
-
-            <video id="secondary_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" preload="metadata" type="video/mp4">
+            <video id="secondary_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls 
+                   controlsList="nodownload" src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" 
+                   preload="metadata" type="video/mp4">
             </video>
         <?php } ?>
 

@@ -33,6 +33,7 @@ $processed_dir = "$basedir/queues/processed";
 $failed_dir = "$basedir/queues/failed";
 $intros_dir = "$basedir/intros";
 $credits_dir = "$basedir/credits";
+$enable_audio_sync = false;
 
 $performance_idx = 1; // Arbitrary number reflecting the performance of the machine. Float number between 0 and 1.
 $num_threads = 4; // Number of threads used for one encoding.
@@ -43,6 +44,7 @@ $default_add_title = "FlyingTitle";
 $php_cli_cmd = "/usr/bin/php";
 $ffmpegpath = "/usr/local/bin/ffmpeg";
 $ffprobepath = "/usr/local/bin/ffprobe";
+$praatpath = "/usr/bin/praat";
 $encoders_path = "$basedir/bin/encoders/";
 $encoding_pgm = array("name" => 'ffmpeg', "description" => 'ffmpeg command line', "file" => 'lib_ffmpeg.php');
 

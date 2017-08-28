@@ -105,7 +105,7 @@ function analytics_album_access_count($album, $start_date = 0, $end_date = 99999
         }
         $previous_trace = $trace_file_parts[0];
         exec("cat $trace_file | grep 'view_album_assets' | grep '$album' | cut -d '|' -f 1 | cut -d '-' -f 1,2,3 | sort | uniq -c", $output);
-        print_r($output);
+        //print_r($output);
         foreach ($output as $output_line){
             $output_line = str_replace('-', '', $output_line);
             $output_part = explode(' ', trim($output_line));
@@ -118,4 +118,3 @@ function analytics_album_access_count($album, $start_date = 0, $end_date = 99999
     return $access_count;
     
 }
-?>

@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-
         <title>®ezadmin_page_title®</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
-        <link href="css/style.css" rel="stylesheet"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
 
         <script type="text/javascript">
             function detect_flash() {
@@ -16,14 +16,6 @@
                 else {
                     document.login_form.has_flash.value = 'Y';
                 }
-            }
-
-            function unsafe_connection() {
-                document.forms['login_form'].action = "<?php
-global $ezadmin_url;
-echo $ezadmin_url;
-?>/index.php";
-                document.forms['login_form'].submit();
             }
         </script>
     </head>
@@ -65,7 +57,6 @@ echo $ezadmin_url;
                                 </option>
                             </select>
                             <br/>
-                            <a style="font-size: 0.8em;" href="javascript:unsafe_connection();" title="®Unsafe_connection®">®Unencrypted_connection®</a>
                             <input type="submit" style="width: 100px; margin-left: 30px;" tabindex="4" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" />
 
                         </form>
@@ -74,6 +65,5 @@ echo $ezadmin_url;
             </div>
 
             <?php include 'div_footer.php'; ?>
-
     </body>
 </html>

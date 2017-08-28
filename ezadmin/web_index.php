@@ -19,7 +19,7 @@ session_name($appname);
 session_start();
 require_once 'lib_statistics.php';
 require_once __DIR__ . '/../commons/lib_sql_management.php';
-require_once 'lib_error.php';
+require_once __DIR__.'/../commons/lib_error.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
@@ -261,6 +261,11 @@ else {
         
         case 'view_event_calendar':
             requireController('view_event_calendar.php');
+            break;
+        
+        // Service ping classroom
+        case 'get_classrooms_status':
+            requireController('get_classrooms_status.php');
             break;
         
         

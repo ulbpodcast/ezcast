@@ -137,7 +137,7 @@ body{
  /*   margin-left:30px; */
  /*   line-height:40px; */
     
-    width: 255px; 
+    width: 265px; 
  /*   height: 280px; */
  /*   padding-left: 15px; */
   /*  padding-right: 15px; */
@@ -152,7 +152,7 @@ body{
 }
 
 #login_form label {
-    min-width: 70px;
+    min-width: 81px;
     text-align: right;
     display: inline-block;
     margin-bottom: 15px;

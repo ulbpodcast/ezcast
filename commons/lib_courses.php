@@ -51,7 +51,6 @@ function courses_list($netid) {
             'SELECT DISTINCT ' .
             db_gettable('users_courses') . '.ID, ' .
             db_gettable('courses') . '.course_code, ' .
-            db_gettable('courses') . '.shortname, ' .
             db_gettable('courses') . '.course_name, ' .
             db_gettable('courses') . '.in_recorders, ' .
             db_gettable('users_courses') . '.origin ' .
@@ -106,7 +105,6 @@ function debuglog($message) {
  * Retrieve all courses
  * @param String $course_code
  * @param String $course_name
- * @param String $shortname
  * @param boolean $in_recorders
  * @param integer $has_albums
  * @param Stirng $origin

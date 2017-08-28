@@ -28,10 +28,10 @@
 * @package ezcast.ezplayer.lib.toc
 */
      
-include_once 'config.inc';
-include_once 'lib_error.php';
-include_once 'lib_various.php';
-include_once 'lib_ezmam.php';
+require_once 'config.inc';
+require_once __DIR__.'/../commons/lib_error.php';
+require_once 'lib_various.php';
+require_once 'lib_ezmam.php';
 
 
 /**

@@ -22,10 +22,6 @@
         <label id="yes" lang="en">Yes</label>
         <label id="no" lang="fr">Non</label>
         <label id="no" lang="en">No</label>
-        <label id="Unsafe_connection" lang="fr">Connexion non sécurisée</label>
-        <label id="Unsafe_connection" lang="en">Unsafe connection</label>
-        <label id="Unencrypted_connection" lang="fr">Connexion non cryptée</label>
-        <label id="Unencrypted_connection" lang="en">Unencrypted connection</label>
         <label id="Login" lang="fr">Netid</label>
         <label id="Login" lang="en">Netid</label>
         <label id="Password" lang="fr">Mot de passe</label>
@@ -152,6 +148,8 @@
         <label id="event_calendar_title" lang="en">Errors calendar</label>
         <label id="report_title" lang="fr">Rapport</label>
         <label id="report_title" lang="en">Report</label>
+        <label id="ID" lang="fr">ID</label>
+        <label id="ID" lang="en">ID</label>
         
         
         
@@ -318,8 +316,6 @@
         <label id="with_teacher" lang="en">Yes</label>    
         <label id="without_teacher" lang="fr">Non</label>
         <label id="without_teacher" lang="en">No</label>
-        <label id="shortname" lang="fr">Intitulé alternatif</label>
-        <label id="shortname" lang="en">Short name</label>
         <label id="users_category" lang="fr">Utilisateurs</label>  
         <label id="users_category" lang="en">Users</label>  
         <label id="list_users" lang="fr">Liste utilisateurs</label>  
@@ -647,8 +643,6 @@
         <label id="settings_add_users_enabled" lang="en">Allow user addition</label>
         <label id="settings_recorder_password_storage_enabled" lang="fr">Stocker les mots de passe en auditoire</label>
         <label id="settings_recorder_password_storage_enabled" lang="en">Store password in classroom</label>
-        <label id="settings_use_course_name" lang="fr">Afficher le nom des cours</label>
-        <label id="settings_use_course_name" lang="en">Show course name</label>
         <label id="settings_use_user_name" lang="fr">Afficher le nom des utilisateurs</label>
         <label id="settings_use_user_name" lang="en">Show users name</label>
         <label id="install" lang="fr">Installer</label>
@@ -667,6 +661,8 @@
         <label id="stats_total" lang="en">Total</label>
         <label id="stats_average" lang="fr">Moyenne</label>
         <label id="stats_average" lang="en">Average</label>
+        
+        
         
         <!-- Report -->
         <label id="report_form_general" lang="fr">Général</label>
@@ -949,6 +945,13 @@
             If it was disabled, run this script: 
             &lt;code&gt;php &lt;?php echo $ezmanager_basedir; ?&gt;cli_fill_assets_status.php all&lt;/code&gt;
         </label>
+        
+        <!-- Version -->
+        <label id="new_config_version" lang="fr">Votre configuration n\'est pas à jour !</label>
+        <label id="new_config_version" lang="en">Your configuration is not up to date</label>
+        <label id="config_more_recent_version" lang="fr">Votre configuration est en avance par rapport à la 
+            version installée</label>
+        <label id="config_more_recent_version" lang="en">Your configuration is ahead of the installed version</label>
         
         
         <!-- Error -->

@@ -26,6 +26,34 @@ class DBUpdater
         $this->db_version_complete_table_name = $db_prefix . self::DB_VERSION_TABLE_NAME;
     }
     
+    public function create_version_table()
+    {
+        global $db_prefix;
+        $table_name = $db_prefix."db_version";
+        
+        //create table if needed 
+        $query = "CREATE TABLE IF NOT EXISTS $table_name (`version` varchar(30) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $res = $this->db_object->query($query);
+        if($res === false) //at least one row should be affected
+            return false;
+        
+        //check if version exists
+        $query2 = "SELECT * FROM $table_name";
+        $res2 = $this->db_object->query($query2);
+        if($res2 === false) //at least one row should be fiund
+            return false;
+        
+        //no version, create one
+        if($res2->rowCount() == 0) {
+            $query3 = "INSERT INTO $table_name VALUES ('1.0.0')";
+            $res3 = $this->db_object->query($query3);
+            if($res3 === false ) //at least one row should be fiund
+                return false;
+        }
+          
+        return true;
+    }
+    
     public function get_db_version() 
     {
         $res = $this->db_object->query('SELECT version FROM '.$this->db_version_complete_table_name);
@@ -47,7 +75,7 @@ class DBUpdater
 
     private function apply_update($query) 
     {
-        global $db_prefix ;
+        global $db_prefix;
         
         $query_prefixed = str_replace("!PREFIX!", $db_prefix, $query);
 
@@ -66,7 +94,8 @@ class DBUpdater
     {
         require_once(__DIR__.'/update_list.php');
         
-        $current_db_version = $this->get_db_version($this->db_object);
+        $this->create_version_table();
+        $current_db_version = $this->get_db_version();
         if($current_db_version === false) {
             $this->log("auto_update: Could not get current db version", $print);
             return false;

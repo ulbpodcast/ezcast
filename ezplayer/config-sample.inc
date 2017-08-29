@@ -43,10 +43,8 @@ $accepted_media_types = array('cam', 'slide');    // Media types accepted by the
 
 $template_folder = 'tmpl/';
 $ezplayer_logs = $basedir . '/ezplayer/ezplayer.log';
-$ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
 
 $valid_extensions = array('xml'); // accepted extensions for imported bookmarks
-$trace_on = false; // determines whether we want to enable traces on actions or not
 
 $cache_limit = 5; // number of trending threads that are displayed on level 2 
 

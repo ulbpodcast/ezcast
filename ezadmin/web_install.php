@@ -743,18 +743,19 @@ function create_tables($drop = true) {
             " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
         
         if ($drop) {
-            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'stats_video_infos`;');
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'stats_video_month_infos`;');
         }
-        $db->exec('CREATE TABLE IF NOT EXISTS `'. $input['db_prefix'] .'stats_video_infos` (' .
+        $db->exec('CREATE TABLE IF NOT EXISTS `'. $input['db_prefix'] .'stats_video_month_infos` (' .
             "`id` int(11) NOT NULL AUTO_INCREMENT, " .
+            "`visibility` tinyint(1) NOT NULL DEFAULT '1', " .
             "`asset` varchar(30) NOT NULL, " .
+            "`asset_name` varchar(70) NOT NULL, " .
             "`album` varchar(30) NOT NULL, " .
-            "`nbr_comment` int(11) NOT NULL DEFAULT '0', " .
             "`nbr_view_total` int(11) NOT NULL DEFAULT '0', " .
             "`nbr_view_unique` int(11) NOT NULL DEFAULT '0', " .
-            "`month` varchar(7) NOT NULL, ".
+            "`month` varchar(7) NOT NULL, " .
             "PRIMARY KEY (`id`), ".
-            "UNIQUE KEY(`asset`,`album`,`month`)".
+            "UNIQUE KEY(`visibility`, `asset`,`album`,`month`)".
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
         
         if ($drop) {
@@ -762,13 +763,30 @@ function create_tables($drop = true) {
         }
         $db->exec('CREATE TABLE IF NOT EXISTS `'. $input['db_prefix'] .'stats_video_view` (' .
             "`id` int(11) NOT NULL AUTO_INCREMENT, " .
+            "`visibility` tinyint(1) NOT NULL DEFAULT '1', " .
             "`asset` varchar(30) NOT NULL, " .
             "`album` varchar(30) NOT NULL, " .
+            "`type` ENUM('cam', 'slide') NOT NULL, " .
             "`nbr_view` int(11) NOT NULL, " .
             "`video_time` int(11) NOT NULL, ".
-            "`month` varchar(7) NOT NULL, " .
             "PRIMARY KEY (`id`), " .
-            "UNIQUE KEY(`asset`,`album`,`video_time`, `month`)" . 
+            "UNIQUE KEY(`visibility`, `asset`,`album`, `type`, `video_time`)" . 
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+        
+        if ($drop) {
+            $db->exec('DROP TABLE IF EXISTS `' . $input['db_prefix'] . 'stats_video_infos`;');
+        }
+        $db->exec('CREATE TABLE IF NOT EXISTS `'. $input['db_prefix'] .'stats_video_infos` (' .
+            "`id` int(11) NOT NULL AUTO_INCREMENT, " .
+            "`visibility` tinyint(1) NOT NULL DEFAULT '1', " .
+            "`asset` varchar(30) NOT NULL, " .
+            "`album` varchar(30) NOT NULL, " .
+            "`nbr_bookmark_personal` int(11) NOT NULL, " .
+            "`nbr_bookmark_official` int(11) NOT NULL, " .
+            "`nbr_thread` int(11) NOT NULL, " .
+            "`nbr_access` int(11) NOT NULL, " .
+            "PRIMARY KEY (`id`), " .
+            "UNIQUE KEY(`visibility`, `asset`,`album`)" . 
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
         
         

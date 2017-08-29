@@ -211,12 +211,15 @@ function user_prefs_tokens_add($user, $tokens_array) {
 function token_array_contains(&$array, $token) {
     if (count($array) == 0)
         return false;
+    
     foreach ($array as $index => $array_token) {
-        if ($array_token['album'] == $token['album'] && $array_token['token'] == $token['token'] && $array_token['title'] == $token['title']) {
-            return true;
-        } else if ($array_token['album'] == $token['album']) {
-            $array[$index]['token'] = $token['token'];
-            $array[$index]['title'] = $token['title'];
+        if($array_token['album'] == $token['album']) {
+            if($array_token['token'] != $token['token'] || 
+                $array_token['title'] != $token['title']) {
+                
+                $array[$index]['token'] = $token['token'];
+                $array[$index]['title'] = $token['title'];
+            }
             return true;
         }
     }
@@ -234,11 +237,10 @@ function token_array_contains(&$array, $token) {
  */
 function user_prefs_token_add($user, $album, $title, $token, $index = 0) {
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '' ||
+            !ezmam_album_exists($album)) {
         return false;
-
-    if (!ezmam_album_exists($album))
-        return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -664,7 +666,10 @@ function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode) {
  * @return the bookmark if it exists; false otherwise
  */
 function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode) {
-    $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get($user, $album, $asset);
+    $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get(trim($user), trim($album), trim($asset));
+    if($assoc_asset_bookmarks == false || !is_array($assoc_asset_bookmarks)) {
+        return false;
+    }
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['timecode'] == $timecode) {
             return $bookmark;
@@ -690,17 +695,12 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
     global $logger;
     
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '' ||
+            !ezmam_album_exists($album) ||
+            !ezmam_asset_exists($album, $asset) ||
+            !isset($timecode) || $timecode == '' || $timecode < 0) {
         return false;
-
-    if (!ezmam_album_exists($album))
-        return false;
-
-    if (!ezmam_asset_exists($album, $asset))
-        return false;
-
-    if (!isset($timecode) || $timecode == '' || $timecode < 0)
-        return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -713,7 +713,9 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
     // remove the previous same bookmark if it existed yet
     $delete_ok = user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode);
     if(!$delete_ok) {
-        $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::ERROR, "Could not delete last bookmark (user: $user, album: $album, asset: $asset, timecode: $timecode). New bookmark cannot be added.", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::ERROR, "Could not delete last bookmark (user: "
+                . "$user, album: $album, asset: $asset, timecode: $timecode). New bookmark cannot be added.", 
+                array(__FUNCTION__));
         return false;
     }
     
@@ -751,7 +753,8 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
             --$index;
     }
     
-    $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::DEBUG, "BOOKMARK bookmarks_list: " . print_r($bookmarks_list,true) .", count: $count, index: $index", array(__FUNCTION__));
+    $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::DEBUG, "BOOKMARK bookmarks_list: " . 
+            print_r($bookmarks_list,true) .", count: $count, index: $index", array(__FUNCTION__));
 
     // extract keywords from the description
     $keywords_array = get_keywords($description);
@@ -839,7 +842,8 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
                     $index = 0;
                 if ($index > $count) // add in last index
                     --$index;
-                if ($bookmark['asset'] == $bookmarks_list[$index - 1]['asset'] && $bookmark['timecode'] == $bookmarks_list[$index - 1]['timecode']) {
+                if ($bookmark['asset'] == $bookmarks_list[$index - 1]['asset'] && 
+                        $bookmark['timecode'] == $bookmarks_list[$index - 1]['timecode']) {
                     $bookmarks_list[$index - 1] = $bookmark;
                 } else {
                     // add a bookmark at the specified index in the albums list
@@ -888,7 +892,8 @@ function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode) {
 
     if (user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode)) {
         
-        $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::DEBUG, "Bookmark already exists (user: $user, album: $album, asset: $asset, timecode: $timecode)", array(__FUNCTION__));
+        $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::DEBUG, "Bookmark already exists (user: $user, album: "
+                . "$album, asset: $asset, timecode: $timecode)", array(__FUNCTION__));
 
         $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
 
@@ -941,7 +946,8 @@ function user_prefs_album_bookmarks_delete($user, $bookmarks) {
     foreach ($bookmarks as $bookmark) {
         if ($bookmark['album'] == $album && $bookmark['timecode'] >= 0) {
             foreach ($bookmarks_list as $index => $ref_bookmark) {
-                if ($bookmark['album'] == $ref_bookmark['album'] && $bookmark['asset'] == $ref_bookmark['asset'] && $bookmark['timecode'] == $ref_bookmark['timecode']) {
+                if ($bookmark['album'] == $ref_bookmark['album'] && $bookmark['asset'] == $ref_bookmark['asset'] && 
+                        $bookmark['timecode'] == $ref_bookmark['timecode']) {
                     unset($bookmarks_list[$index]);
                     break;
                 }

@@ -12,10 +12,13 @@ function index($param = array()) {
     global $default_anon_access;
     global $basedir;
     global $ezmanager_url; // Website URL, defined in config.inc
-
-
+    global $ezplayer_url;
+    global $enable_moderator;
+    global $enable_anon_access_control;
+    global $trace_on;
+    global $display_trace_stats;
     
-      if (isset($input['album']))
+    if (isset($input['album']))
         $album = $input['album'];
     else
         $album = $_SESSION['podman_album'];
@@ -49,12 +52,9 @@ function index($param = array()) {
     $album_name = suffix_remove($album); // "user-friendly" album name, used for display
     $title = choose_title_from_metadata($metadata);
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
-    $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $album . "&tokenmanager=" . ezmam_album_token_manager_get($album);
-    
+    $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $album . "&tokenmanager=" . 
+            ezmam_album_token_manager_get($album);
     $current_tab = 'ezmanager';
-    
-    
-    
 	
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);

@@ -17,13 +17,20 @@ function index($param = array()) {
     );
 
     $res_type = vote_insert($values);
-    if ($res_type == 0) {
-        trace_append(array('3', 'vote_cancel', $_SESSION['album'], $_SESSION['asset'], $comment));
-    } else if($res_type == 1) {
-        trace_append(array('3', 'vote_up', $_SESSION['album'], $_SESSION['asset'], $comment));
-    } else {
-        trace_append(array('3', 'vote_down', $_SESSION['album'], $_SESSION['asset'], $comment));
+    switch ($res_type) {
+        case 0:
+            $trace_action = 'vote_cancel';
+            break;
+        
+        case 1:
+            $trace_action = 'vote_up';
+            break;
+
+        default:
+            $trace_action = 'vote_down';
+            break;
     }
+    trace_append(array('3', $trace_action, $_SESSION['album'], $_SESSION['asset'], $comment));
     
     return thread_details_update();
 }

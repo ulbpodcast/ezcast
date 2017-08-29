@@ -11,7 +11,7 @@
     <div class="download-button">
 
             <?php
-            if ($asset_meta['downloadable'] !== 'false') {
+            if (!isset($asset_meta['downloadable']) || $asset_meta['downloadable'] !== 'false') {
                 if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {?>
                     <a class="button <?php echo $asset_meta['record_type'] == 'camslide' ? 'left-side' : ''?>" 
                        href="javascript:popup_asset(current_album, current_asset, time, 'cam', 'share_link')" 

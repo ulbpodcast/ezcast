@@ -196,7 +196,9 @@ function popup_ezplayer_link() {
         die;
     }
     $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
-    $action = (strtolower($asset_meta['origin']) === "streaming") ? 'view_asset_streaming' : 'view_asset_details';
+    $action = (isset($asset_meta['origin']) && strtolower($asset_meta['origin']) === "streaming") ? 
+            'view_asset_streaming' : 
+            'view_asset_details';
     $token = ezmam_asset_token_get($input['album'], $input['asset']);
     $ezplayer_link = $ezplayer_url . '/index.php?'
             . 'action=' . $action

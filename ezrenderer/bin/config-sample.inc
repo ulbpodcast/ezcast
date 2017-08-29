@@ -33,7 +33,8 @@ $processed_dir = "$basedir/queues/processed";
 $failed_dir = "$basedir/queues/failed";
 $intros_dir = "$basedir/intros";
 $credits_dir = "$basedir/credits";
-$enable_audio_sync = false;
+$enable_audio_sync = false;  //synchronize cam and slide based on sound
+$copy_sound_from_slide_to_cam = false; //if the $enable_audio_sync is true => copy sound from slide to cam
 
 $performance_idx = 1; // Arbitrary number reflecting the performance of the machine. Float number between 0 and 1.
 $num_threads = 4; // Number of threads used for one encoding.

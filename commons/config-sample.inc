@@ -92,6 +92,7 @@ $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
 $trace_on = false; // determines whether we want to enable traces on actions or not
 $ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
 $video_split_time = 30; // Time in second to send information that user watch a video
+$display_trace_stats = false; // Display or not stat on ezmanager
 
 
 // -- Alternate server as streaming distribution source -- //

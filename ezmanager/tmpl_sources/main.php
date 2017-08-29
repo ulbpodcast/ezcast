@@ -210,6 +210,7 @@
                         // If we are in redraw mode, we fill the content of the div
                         if ($redraw && isset($current_album)) {
                             global $trace_on;
+                            global $display_trace_stats;
                             require 'div_album_header.php';
                         }
                         ?>

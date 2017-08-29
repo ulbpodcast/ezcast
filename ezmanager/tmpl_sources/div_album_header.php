@@ -51,7 +51,7 @@ Before calling this template, please define the following variables:
                                 <img src="images/page4/iconRssBackg.png" /> ®Regenerate_RSS®
                             </a>
                         </li>
-                        <?php if($trace_on) { ?>
+                        <?php if($trace_on && $display_trace_stats) { ?>
                             <li>
                                 <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php echo $album_name_full; ?>" 
                                     data-remote="false" data-toggle="modal" data-target="#modal">
@@ -89,7 +89,7 @@ Before calling this template, please define the following variables:
                     </li>
                 <?php } ?>
                     
-                <?php if($trace_on) { ?>
+                <?php if($trace_on && $display_trace_stats) { ?>
                     <li role="presentation" id="stats"
                         <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
                         <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>'); ">

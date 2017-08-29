@@ -166,7 +166,7 @@ function print_info($info, $suffix = '') {
                 </li>
             <?php } ?>
                 
-            <?php if($trace_on) { ?>
+            <?php if($trace_on && $display_trace_stats) { ?>
                 <li>
                     <span class="BoutonStatsTitle">
                         <?php if($status != 'processing' && $status != 'error') {

@@ -13,6 +13,7 @@ function index($param = array()) {
     global $enable_moderator;
     global $enable_anon_access_control;
     global $trace_on;
+    global $display_trace_stats;
     
     if (isset($input['album']))
         $album = $input['album'];

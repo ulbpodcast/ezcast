@@ -6,6 +6,7 @@ function asset_view() {
     global $repository_path;
     global $ezmanager_url;
     global $trace_on;
+    global $display_trace_stats;
     
 
     // Setting up various variables we'll need later

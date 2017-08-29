@@ -14,6 +14,7 @@ function index($param = array()) {
     global $enable_moderator;
     global $enable_anon_access_control;
     global $trace_on;
+    global $display_trace_stats;
     // global $ezmanager_url;
 
     if (isset($input['tokenmanager'])){

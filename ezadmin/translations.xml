@@ -307,7 +307,9 @@
         <label id="push_changes_title" lang="fr">Envoyer changements aux recorders et au manager</label>   
         <label id="push_changes_title" lang="en">Push changes to recorders and manager</label>        
         <label id="sync_externals" lang="fr">Synchro externes</label>   
-        <label id="sync_externals" lang="en">Sync externals</label>        
+        <label id="sync_externals" lang="en">Sync externals</label>   
+        <label id="db_updater" lang="en">DB Updater</label>   
+        <label id="db_updater" lang="fr">Mise à jour DB</label>            
         <label id="unsaved_changes" lang="fr">non-sauvegardé</label>   
         <label id="unsaved_changes" lang="en">unsaved changes</label>  
         <label id="teacher_assign" lang="fr">Avec prof</label>  

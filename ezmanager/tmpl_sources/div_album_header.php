@@ -79,16 +79,7 @@ Before calling this template, please define the following variables:
                         ®Player_url®
                     </a>
                 </li>
-                <?php if($enable_moderator){ ?>
-                    <li role="presentation" id="ezmanager"
-                        <?php if(isset($current_tab) && $current_tab == 'ezmanager' ) { echo 'class="active"'; } ?>>
-                        <a href="javascript:show_ezmanager('<?php echo $current_album; ?>'); ">
-                            <img src="images/page4/PictoEZManager.png" style="display:inline"/>
-                            ®Ezmanager_url®
-                        </a>
-                    </li>
-                <?php } ?>
-                    
+                
                 <?php if($trace_on && $display_trace_stats) { ?>
                     <li role="presentation" id="stats"
                         <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>

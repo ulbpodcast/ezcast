@@ -2,16 +2,7 @@
 
 /**
  * All the business logic related to the album creation: this function effectively creates the album and displays a confirmation message to the user
- * @global type $input
- * @global type $ezmanager_url
- * @global type $repository_path
- * @global type $dir_date_format
- * @global type $default_intro 
- * @global type $default_credits
- 
  */
-
- 
  function index($param = array()) {
     global $input;
     global $repository_path;
@@ -20,96 +11,116 @@
     global $default_add_title;
     global $default_downloadable;
     global $default_credits;
-    //
-    // Sanity checks
-    //
-	// include "../commons/lib_sql_management.php";
+    global $max_course_code_size;
+    global $max_album_label_size;
+    
+    //all these values are defined in each switch case
+    $course_code_public = null;
+    $course_id = null;
+    $album_type = null;
+    $label = null;
+   
+    //if we create a new album
+    switch($input['action']) {
+        case 'create_courseAndAlbum':
+            // Sanity checks
+            if(!isset($input['label']) || $input['label'] == "" || !isset($input['albumtype']) || $input['albumtype'] == ""  ) {
+                error_print_message("no given value");
+                die();
+            }    
+            $album_type = htmlspecialchars($input['albumtype']);
+            $label = htmlspecialchars($input['label']);
+            if($album_type == "other") {
+                 $course_code_public = $label;
+            } else {
+                if(!isset($input['course_code']) || $input['course_code'] == "") {
+                    error_print_message("no given value");
+                    die();
+                }
+                $course_code_public = htmlspecialchars($input['course_code']);
+            }
+            // --
+  
+            //enforce size limits
+            if(strlen($course_code_public) > $max_course_code_size)
+                $course_code_public = substr($course_code_public, 0, $max_course_code_size);
+            if(strlen($label) > $max_album_label_size)
+                $label = substr($label, 0, $max_album_label_size); 
 
-    if($input['action'] == 'create_courseAndAlbum') {		
-        $course_code_public = $input['course_code'];	
-        if(strlen($input['album']) >= 50)
-            $input['album'] = substr($input['album'], 0, 43) ;
-        
-        $course=true;
-        while($course) {
-            $idAlbum = preg_replace("#[^a-zA-Z]#", "", $input['album']);
-            $idAlbum = str_replace(" ", '_',$idAlbum).rand(100000,999999);
-            $course = db_course_read($idAlbum);				
-        }
-        $albumName = $input['album'];
-        $input['album'] = $idAlbum;
-        if(!isset($course_code_public) || $course_code_public == "")
-            $course_code_public = $albumName;							
-        
-        db_course_create($input['album'], $course_code_public, $albumName,0);
-        db_users_courses_create($input['album'], $_SESSION['user_login']);
+            //generate real course id 
+            $id_course_input = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
+            $incremental_id = 0;
+            $course_id = $id_course_input;
+            $course = db_course_read($course_id);
+            while($course) { //if we found an already existing course, loop until we found a free id
+                $course_id = $id_course_input . $incremental_id++;
+                $course = db_course_read($course_id);				
+            }
+
+            //finally, create in db
+            db_course_create($course_id, $course_code_public, $label, 0);
+            db_users_courses_create($course_id, $_SESSION['user_login']);
+            break;
+        case 'create_album':
+            // Sanity checks
+            if(!isset($input['course_code']) || $input['course_code'] == "") {
+                error_print_message("no given value");
+                die();
+            }
+            $course_code = htmlspecialchars($input['course_code']);
+            // -
+            
+            if (!acl_has_album_permissions($course_code)) {
+                error_print_message(template_get_message('Unauthorized', get_lang()));
+                log_append('warning', 'create_album: tried to access course ' . $course_code . ' without permission');
+                die;
+            }
+            
+            $courseinfo = db_course_read($course_code);
+            if(isset($courseinfo['course_code_public']) && $courseinfo['course_code_public'] != '' )
+                $course_code_public = $courseinfo['course_code_public'];
+            else 
+                $course_code_public = htmlspecialchars($input['course_code']);
+            
+            $label = $courseinfo['course_name'];
+            $album_type = "course";
+                    
+            break;
+        default:
+            echo "wrong action";
+            die;
     }
-    else{
-        $courseinfo = db_course_read($input['album']);
-        if(isset($courseinfo['course_code_public']) && $courseinfo['course_code_public'] != '' )$course_code_public = $courseinfo['course_code_public'];
-        else $course_code_public = $input['album'];
-        $albumName = $input['album'];
-        $idAlbum = $input['album'];
-    }
-    if (!isset($input['album']) || (!acl_has_album_permissions($input['album']) && $input['action']!='create_courseAndAlbum' )) {
-        error_print_message(template_get_message('Unauthorized', get_lang()));
-        log_append('warning', 'create_album: tried to access album ' . $input['album'] . ' without permission');
-        die;
-    }
-    //
-    // First of all, we have to set up the metada for the albums we're going to create
-    //
-    $not_created_albums = acl_authorized_albums_list_not_created(true);
-    $title ='';
-    if(isset( $not_created_albums[$input['album']]))    
-        $title = $not_created_albums[$input['album']];
     
-    if($title == '' && isset($albumName) )
-        $title = $albumName;
-    
-    if($albumName == $idAlbum)
-        $albumName = $title;  
-        
-    if(!isset( $input['albumtype']))
-        $input['albumtype'] = 'not_defined';
-        
-    $anac = get_anac(date('Y'), date('m'));
-	
+    //now prepare metadata for the repository
     $metadata = array(
-        'id' => $idAlbum,
+        'id' => $course_id,
         'course_code_public' => $course_code_public,							 
-        'name' => $albumName,
-        'title' => $title,
+        'name' => $label,
+        'title' => $label,
         'date' => date($dir_date_format),
-        'anac' => $anac,
+        'anac' => get_anac(date('Y'), date('m')),
         'intro' => $default_intro,
         'credits' => $default_credits,
         'add_title' => $default_add_title,
         'downloadable' => $default_downloadable,
-        'type' => $input['albumtype'],
+        'type' => $album_type,
         'official' => 'false'
     );
 
-    //
-    // All we have to do now is call ezmam twice to create both the private and public album
-    // (remember that $input['album'] only contains the album's base name, /not/ the suffix
-    //
+    // Create both the private and public album
     ezmam_repository_path($repository_path);
-    $res = ezmam_album_new($input['album'] . '-priv', $metadata);
+    $res = ezmam_album_new($course_id . '-priv', $metadata);
+    if (!$res) {
+        error_print_message(ezmam_last_error());
+        die;
+    }
+    $res = ezmam_album_new($course_id . '-pub', $metadata);
     if (!$res) {
         error_print_message(ezmam_last_error());
         die;
     }
 
-    $res = ezmam_album_new($input['album'] . '-pub', $metadata);
-    if (!$res) {
-        error_print_message(ezmam_last_error());
-        die;
-    }
-
-    //
     // Don't forget to update the session variables!
-    //
     acl_update_permissions_list();
     
     require_once template_getpath('popup_album_successfully_created.php');

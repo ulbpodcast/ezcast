@@ -217,10 +217,12 @@
         <label id="Course_code" lang="fr">Code Cours : </label>
         <label id="Cours_non_officiel" lang="fr">  Cours non officiel </label>
         <label id="Cours_non_officiel" lang="en">  Unofficial course </label>
-        <label id="Channel" lang="fr"> Chaîne </label>
-        <label id="Channel" lang="en"> Channel </label>
-        <label id="Album_name" lang="fr"> Nom d'album :  </label>
-        <label id="Album_name" lang="en"> Album Name :  </label>
+        <label id="othertypealbum" lang="fr"> Autre </label>
+        <label id="othertypealbum" lang="en"> Other </label>
+        <label id="Album_name" lang="fr"> Libelle du cours :  </label>
+        <label id="Album_name" lang="en"> Course label :  </label>
+        <label id="Album_other_name" lang="fr"> Libelle d'album :  </label>
+        <label id="Album_other_name" lang="en"> Album label :  </label>
         <label id="album_copy_success" lang="fr"> Album copié avec succès :  </label>
         <label id="album_copy_success" lang="en"> Album copied successfully :  </label>
 

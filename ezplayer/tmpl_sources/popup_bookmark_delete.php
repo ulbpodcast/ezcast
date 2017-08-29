@@ -29,11 +29,19 @@
 include_once 'lib_print.php';
 ?> 
 
-<h2><b style="text-transform:uppercase;"><?php echo print_bookmark_title($bookmark['title']); ?></b></h2>
+<h2>
+    <b style="text-transform:uppercase;">
+    <?php echo print_bookmark_title($bookmark['title']); ?>
+    </b>
+</h2>
 <h3><?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?></h3>
-<br/><p>®Delete_bookmark_message®</p>
+<br/>
+<p>®Delete_bookmark_message®</p>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
-<a href="javascript:bookmark_delete('<?php echo $bookmark['album'] ?>', '<?php echo $bookmark['asset'] ?>', '<?php echo $bookmark['timecode'] ?>', '<?php echo $source ?>', '<?php echo $tab ?>');" class="delete-button-confirm">®Delete®</a>
+<a href="javascript:bookmark_delete('<?php echo $bookmark['album'] ?>', '<?php echo $bookmark['asset'] ?>', '<?php 
+echo $bookmark['timecode'] ?>', '<?php echo $source ?>', '<?php echo $tab ?>');" class="delete-button-confirm">
+    ®Delete®
+</a>
 <a class="close-reveal-modal-button"  href="javascript:close_popup();">®Cancel®</a>
 

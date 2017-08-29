@@ -12,11 +12,14 @@ function index($param = array()) {
     global $enable_moderator;
     global $enable_anon_access_control;
     global $logger;
+    global $trace_on;
+    global $display_trace_stats;
     
-    if (isset($input['album']))
+    if (isset($input['album'])) {
         $album = $input['album'];
-    else
+    } else {
         $album = $_SESSION['podman_album'];
+    }
     $current_album = $album;
     
     ezmam_repository_path($repository_path);

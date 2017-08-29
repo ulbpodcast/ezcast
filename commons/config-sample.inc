@@ -32,7 +32,7 @@ $timezone = 'Europe/Brussels';
 // URL's to EZcast applications
 $application_url = "http://localhost/";
 $https_ready = false;
-$application_safe_url = $https_ready ? str_replace('http', 'https', $application_url) : $application_url;
+$application_safe_url = $https_ready ? preg_replace("/^(http:\/\/)?/", "https://", $application_url) : $application_url;
 // Adapt these URL's according to the name of each application in your webspace
 // Warning ! If you modify the name of an application, you should also
 // edit its location in the files (index.php, ...) located in your webspace
@@ -95,6 +95,13 @@ $ldap_servers_auth_json_file = "$basedir/commons/ldap_servers_auth.json";
  * retrieve information about a given user
  */
 $ldap_servers_cred_json_file = "$basedir/commons/ldap_servers_cred.json";
+
+// -- Traces -- //
+$trace_on = false; // determines whether we want to enable traces on actions or not
+$ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
+$video_split_time = 30; // Time in second to send information that user watch a video
+$display_trace_stats = false; // Display or not stat on ezmanager
+
 
 // -- Alternate server as streaming distribution source -- //
 

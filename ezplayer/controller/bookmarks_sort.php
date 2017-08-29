@@ -37,8 +37,6 @@ function index($param = array()) {
     if ($input['source'] == 'assets') {
         // the token is needed to display the album assets
         $input['token'] = ezmam_album_token_get($album);
-        bookmarks_list_update();
-    } else {
-        bookmarks_list_update();
     }
+    bookmarks_list_update();
 }

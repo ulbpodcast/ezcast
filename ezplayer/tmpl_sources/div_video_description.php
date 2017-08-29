@@ -12,16 +12,20 @@
 
             <?php
             if ($asset_meta['downloadable'] !== 'false') {
-                if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {
-                    ?>
-                    <a class="button <?php echo $asset_meta['record_type'] == 'camslide' ? 'left-side' : ''?>"  href="javascript:popup_asset(current_album, current_asset, time, 'cam', 'share_link')"  onclick="server_trace(new Array('3', 'cam_download_open', current_album, current_asset, duration, time, type, quality));">®Download_movie®</a>
-                    <?php
-                }
-                if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') {
-                    ?>
-                    <a class="button <?php echo $asset_meta['record_type'] == 'camslide' ? 'right-side' : ''?>" href="javascript:popup_asset(current_album, current_asset, time, 'slide', 'share_link')" onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));"><?php echo $asset_meta['record_type'] == 'camslide' ? '®The_slides®' : '®Download_slide®'?></a>
-                    <?php
-                }
+                if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {?>
+                    <a class="button <?php echo $asset_meta['record_type'] == 'camslide' ? 'left-side' : ''?>" 
+                       href="javascript:popup_asset(current_album, current_asset, time, 'cam', 'share_link')" 
+                       onclick="server_trace(new Array('3', 'cam_download_open', current_album, current_asset, duration, time, type, quality));">
+                        ®Download_movie®
+                    </a>
+                <?php }
+                if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') { ?>
+                    <a class="button <?php echo $asset_meta['record_type'] == 'camslide' ? 'right-side' : ''?>" 
+                       href="javascript:popup_asset(current_album, current_asset, time, 'slide', 'share_link')" 
+                       onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));">
+                           <?php echo $asset_meta['record_type'] == 'camslide' ? '®The_slides®' : '®Download_slide®'?>
+                    </a>
+                <?php }
             }
             ?>
 

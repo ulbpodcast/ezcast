@@ -20,7 +20,11 @@ function index($param = array()) {
     $album = $_POST['album']; // the album user wants to import in
     $asset = $_POST['asset']; // the asset user wants to import in
     $target = $_POST['target']; // personal bookmarks or table of contents
-
+    
+    if(!in_array($target, array('official', 'custom'))) {
+        return false;
+    }
+    
     $_SESSION['album'] = $album;
     $_SESSION['asset'] = $asset;
     $_SESSION['target'] = $target;
@@ -80,6 +84,7 @@ function index($param = array()) {
     // lvl, action, album, asset, target (in official|personal bookmarks), number of bookmarks uploaded
     trace_append(array($asset != '' ? '3' : '2', 'bookmarks_upload', $album, $asset != '' ? $asset : '-', $target, count($imported_bookmarks)));
     echo '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>';
-    //   echo  "<script language='javascript' type='text/javascript'>window.top.window.document.getElementById('popup_import_bookmarks').innerHTML='$lapin';</script>";
+    //   echo  "<script language='javascript' type='text/javascript'>".
+    //              "window.top.window.document.getElementById('popup_import_bookmarks').innerHTML='$lapin';</script>";
     include_once template_getpath('popup_bookmarks_import.php');
 }

@@ -5,7 +5,8 @@
  */
 
 if ($argc != 11) {
-    echo "usage: " . $argv[0] . " <php_path> <rsync_path> <apache_documentroot> <ezcast_basedir> <repository_basedir> <user> <passwd> <fullname> <apache_username>" .
+    echo "usage: " . $argv[0] . " <php_path> <rsync_path> <apache_documentroot> <ezcast_basedir> <repository_basedir> "
+            . "<user> <passwd> <fullname> <apache_username>" .
     "\n <php_path> the path to the php binary" .
     "\n <rsync_path> the path to the rsync binary" .
     "\n <apache_documentroot> the path Apache's documentroot" .

@@ -251,21 +251,25 @@ body {
     font-size: 14px;
 }
 
-#login_form{
-    font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;	
-    font-size:12px; 
-    color:#000000;
-    background-color: #F9F8F8;
-    
-    width: 270px;
-    padding:10px 25px 25px 25px;
-    margin: auto;
-    margin-top:50px;
 
+#login_form{   
+    font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;
+    font-size:12px;
+    /*  color:#000000;  */
+    color: #444444;
+    background-color: #F9F8F8;
+    /*   margin-left:30px; */
+    /*   line-height:40px; */
+    width: 300px;
+    /*   height: 280px; */
+    /*   padding-left: 15px; */
+    /*  padding-right: 15px; */
+    padding:10px 25px 25px 25px;
+    margin:auto;
     border-radius: 25px;
     border: 1px dotted #BEBEBE;
-
-    text-align: center; 
+    margin-top:50px;
+    /*  text-align: center; */
 }
 /*
 #login_form label {

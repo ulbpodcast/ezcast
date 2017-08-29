@@ -9,11 +9,11 @@ Before calling this template, please define the following variables:
 -->
 <div id="div_album_header">
     <div class="BlocInfoAlbum">
-            <div class="BoutonInfoAlbum"> 
+            <div class="ButtonInfoAlbum"> 
                 <span class="TitreCour">
                     <?php echo (isset($course_code_public) && $course_code_public !="") ? $course_code_public : $album_id; ?> |
                     <?php echo $title; ?> | 
-                    <?php ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
+                    <?php echo ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
                 </span>
                 
                 <!-- drop-down menu -->
@@ -41,7 +41,7 @@ Before calling this template, please define the following variables:
                             <li>
                                 <a href="index.php?action=view_list_moderator" data-toggle="modal"
                                    data-target="#modal">
-                                    <img src="images/page4/iconEditerBackg.png" /> ®Moderator_List®
+                                    <img src="images/page4/iconEditerBackg.png" /> ®Moderator_manage®
                                 </a>
                             </li> 
                         <?php } ?>

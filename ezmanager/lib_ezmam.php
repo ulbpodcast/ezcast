@@ -29,10 +29,10 @@
  * This is a library through which you can manage the Media Repository Filesystem
  * Use this library whenever you can instead of going directly in directory structure
  */
-include_once dirname(__FILE__) . '/config.inc';
-include_once __DIR__.'/../commons/lib_error.php';
-include_once dirname(__FILE__) . '/lib_various.php';
-// include_once dirname(__FILE__) . '../commons/common.inc';
+require_once __DIR__ . '/config.inc';
+require_once __DIR__ . '/../commons/lib_error.php';
+require_once __DIR__ . '/lib_various.php';
+require_once __DIR__ . '/../commons/lib_various.php';
 
 /**
  *
@@ -198,12 +198,18 @@ function ezmam_album_list_metadata() {
 }
 
 function ezmam_album_course_public_name_get($album) {
+    global $logger;
+    
     $album_metadata = ezmam_album_metadata_get($album);
-    if(   isset($album_metadata['course_public_name']) 
-       && $album_metadata['course_public_name'] != '' )
-        $course_code_public = $album_metadata['course_public_name']; 
-    else 
+    if(   isset($album_metadata['course_code_public']) 
+       && $album_metadata['course_code_public'] != '' )
+        $course_code_public = $album_metadata['course_code_public']; 
+    else if(isset($album_metadata['name'])) {
         $course_code_public = $album_metadata['name'];
+    } else {
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Could not get course code from album $album", array(__FUNCTION__));
+    }
+    return $course_code_public;
 }
 
 /**
@@ -1038,7 +1044,7 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
     //Copy Asset in background, and pass the metadata status to processing during the copy.  
     $cmd1 = "mkdir $dst_path/$asset_time";
     $cmd2 = "cp $src_path/$asset_time/_metadata.xml $dst_path/$asset_time/_metadata.xml";
-    $cmd3 = 'sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . ' popup appears when the user clicks on "copy this r/' . $asset_time.'/_metadata.xml';
+    $cmd3 = 'sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
     $cmd4 = 'rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/';
     $cmd5 = 'sed -i "s/<status>processing<\/status>/<status>processed<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
     $final_cmd = "($cmd1 && $cmd2 && $cmd3 && $cmd4 && $cmd5) 2>&1 > /dev/null &";

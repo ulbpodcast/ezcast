@@ -31,7 +31,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
 -->
 <div id="div_asset_list">
     <div class="BlocPodcastMenu">
-        <div class="ListButon BoutonSoumettreAlbum">
+        <div class="ListButon ButtonSoumettreAlbum">
             <a href="index.php?action=view_submit_media"
                data-remote="false" data-toggle="modal" data-target="#modal" > 
                 <img src="images/page4/iconUp.png">
@@ -60,7 +60,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 $date = substr($date, 0, -6);
                 if ($metadata['origin'] === 'streaming'){ ?>
                     <div>
-                        <div id="asset_<?php echo $asset_name; ?>" class="ListButon BoutonTriangleProcessing"> 
+                        <div id="asset_<?php echo $asset_name; ?>" class="ListButon ButtonTriangleProcessing"> 
                             <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 
                                 LIVE
                                 <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
@@ -68,7 +68,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                                 </span> 
                             </a> 
                         </div>
-                        <div id="asset_<?php echo $asset_name ?>_clic" class="ListButon BoutonTriangleClicProcessing" style="display:none"> 
+                        <div id="asset_<?php echo $asset_name ?>_clic" class="ListButon ButtonTriangleClicProcessing" style="display:none"> 
                             <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');" >
                                 LIVE
                                 <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic"> 
@@ -97,20 +97,23 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                             <img src="images/page4/sched.png" style="float: right; width: 24px; padding: 3px;" 
                                 title="<?php echo $metadata['schedule_date']; ?>">
                         <?php } ?>
-                        <div id="asset_<?php echo $asset_name; ?>_line"  class="ListButon StatusBouton<?php 
+                        <div id="asset_<?php echo $asset_name; ?>_line"  class="ListButon StatusButton<?php 
                             if ($status == 'failed') {
                                 echo 'Error';
                             } else if ($status == 'processing') {
                                 echo 'Processing';
                             } ?>">
-                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"
+                               <?php if($status == 'failed') {
+                                   echo 'style="color: #d9534f;" ';
+                               } else if($status == 'processing') {
+                                   echo 'style="color: #5cb85c;" ';
+                               } ?> > 
                                 <span 
                                     <?php if($status == 'failed') {
                                         echo 'class="glyphicon glyphicon-warning-sign" ';
-                                        echo 'style="color: #d9534f;" ';
                                     } else if($status == 'processing') {
                                         echo 'class="glyphicon glyphicon-refresh" ';
-                                        echo 'style="color: #5cb85c;" ';
                                     } else {
                                         echo 'class="glyphicon glyphicon-triangle glyphicon-triangle-right" ';
                                     } ?>

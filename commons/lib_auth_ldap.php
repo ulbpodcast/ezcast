@@ -27,8 +27,8 @@
  * @package ezcast.commons.lib.auth
  */
 
-include dirname(__FILE__).'/lib_various.php';
-include dirname(__FILE__).'/config.inc';										
+require_once __DIR__.'/lib_various.php';
+require_once __DIR__.'/config.inc';										
 /**
  * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login'] (['real_login']) of the user. failure returns false. Error message can be received via checkauth_last_error()
  * @global string $ldap_servers_auth_json_file path to the json file containing list of ldap servers for authentication

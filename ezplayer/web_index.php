@@ -131,7 +131,7 @@ if (!$logged_in) {
                 // so we refresh the whole page to get a full-page login form.
                 //
                 // $input['click'] indicates that the action comes from a link in the application
-                if ($input['click']) {
+                if (isset($input['click']) && $input['click']) {
                     refresh_page();
                     exit(0);
                 }
@@ -632,7 +632,7 @@ function user_logged_in() {
 }
 
 function user_anonymous() {
-    return (isset($_SESSION['ezplayer_logged']) || isset($_SESSION['ezplayer_anonymous']));
+    return (isset($_SESSION['ezplayer_anonymous']));
 }
 
 /**

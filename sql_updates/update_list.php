@@ -12,7 +12,8 @@ $update_list = [
     "1.0.0" => 
         array("1.0.1", 
             array(
-                'ALTER TABLE !PREFIX!_courses` MODIFY COLUMN `course_code_public` varchar(50) NOT NULL;',
+                'ALTER TABLE !PREFIX!courses` ADD COLUMN `course_code_public` varchar(50) NOT NULL ' . 
+                    'AFTER `course_code`;',
                 
                 'CREATE TABLE IF NOT EXISTS `!PREFIX!stats_video_month_infos` (' .
                         '`id` int(11) NOT NULL AUTO_INCREMENT, ' .

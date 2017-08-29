@@ -206,8 +206,8 @@ function view_media() {
     if (!ezmam_album_token_check($input['album'], $input['token']) && 
             !ezmam_asset_token_check($input['album'], $input['asset'], $input['token'])) {
         error_print_http(404);
-        log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . $input['album'] . 
-                ' with invalid token ' . $input['token']);
+        log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' . 
+                $input['album'] . ' with invalid token ' . $input['token']);
         die;
     }
 
@@ -405,8 +405,7 @@ function view_embed() {
             $height = $input['height'] - 5;
         }
     }
-
-    $origin = (isset($input['origin']) && $input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
+    $origin = ((isset($input['origin']) && $input['origin'] == 'ezmanager')) ? 'ezmanager' : 'embed';
 
     $pre_media_url = ezmam_media_geturl($input['album'], $input['asset'], $media_name) . '&origin=' . $origin;
     //handle &time=? argument

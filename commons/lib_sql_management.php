@@ -62,6 +62,7 @@ function statements_get(){
             'course_read' =>
                     'SELECT ' . 
                             db_gettable('courses') . '.course_code, ' .
+                            db_gettable('courses') . '.course_code_public, ' .
                             db_gettable('courses') . '.course_name, ' .
                             db_gettable('courses') . '.in_recorders, ' .
                             db_gettable('courses') . '.has_albums, ' .
@@ -835,6 +836,7 @@ function db_classroom_update($ID, $room_ID, $name, $ip, $ip_remote) {
     $statements['classroom_update']->bindParam(':ip_remote', $ip_remote);
     return $statements['classroom_update']->execute();
 }
+
 function db_classroom_delete($room_ID) {    
     global $statements;
     $statements['classroom_delete']->bindParam(':room_ID', $room_ID);
@@ -860,7 +862,8 @@ function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $
     $statements['stream_create']->bindParam(':port', $port);
     return $statements['stream_create']->execute();
 }
-function db_stream_update_status($course,$asset,$module_type,$status){
+
+function db_stream_update_status($course,$asset,$module_type,$status) {
     global $statements;
     $statements['stream_update_status']->bindParam(':course', $course);
     $statements['stream_update_status']->bindParam(':asset', $asset);
@@ -869,15 +872,17 @@ function db_stream_update_status($course,$asset,$module_type,$status){
 	
     return $statements['stream_update_status']->execute();	
 }
+
 /* return an array in the form if ... ?
  * Return null of no streams were found
  */
-function db_get_stream_info($cours_id,$asset){
+function db_get_stream_info($cours_id,$asset) {
     global $statements;
     $statements['get_stream_info']->bindParam(':cours_id', $cours_id);
     $statements['get_stream_info']->bindParam(':asset', $asset);
     $statements['get_stream_info']->execute();
     $res = $statements['get_stream_info']->fetchAll();
+    
     // generate a formated table 
     $infos = null;
     for($i=0; $i < count($res); $i++) {
@@ -905,33 +910,30 @@ function db_get_stream_info($cours_id,$asset){
     return $infos;	
 }
 
-function get_anon_assets($search=""){
+function get_anon_assets($search = "") {
     global $statements;
-    $search='%'.$search.'%';
-	
+    $search = '%'.$search.'%';
+
     $statements['get_anon_assets']->bindParam(':search', $search);
     $statements['get_anon_assets']->execute();
-    $res=$statements['get_anon_assets']->fetchAll();
-    // file_put_contents('/home/arwillame/log/test1234DB.txt',"RES : ".json_encode($res));
+    $res = $statements['get_anon_assets']->fetchAll();
 
-    // if(!isset($infos))$infos=null;
     return $res;	
 }
 
 
-function db_get_asset_info($album,$asset){
+function db_get_asset_info($album,$asset) {
     global $statements;
-	
+
     $statements['get_asset_info']->bindParam(':cours_id', $album);
     $statements['get_asset_info']->bindParam(':name', $asset);
     $statements['get_asset_info']->execute();
-    $res=$statements['get_asset_info']->fetchAll();
+    $res = $statements['get_asset_info']->fetchAll();
 
-    // if(!isset($infos))$infos=null;
     return $res;	
 }
 
-function db_alter_asset($album,$asset,$title,$description,$token,$anon){
+function db_alter_asset($album,$asset,$title,$description,$token,$anon) {
     global $statements;
 
     $statements['asset_alter']->bindParam(':cours_id', $album);
@@ -945,7 +947,7 @@ function db_alter_asset($album,$asset,$title,$description,$token,$anon){
 }
 
 
-function db_insert_asset($album,$asset,$title,$description,$token,$anon){
+function db_insert_asset($album,$asset,$title,$description,$token,$anon) {
     global $statements;
 
     $statements['asset_create']->bindParam(':cours_id', $album);
@@ -958,12 +960,11 @@ function db_insert_asset($album,$asset,$title,$description,$token,$anon){
     return $statements['asset_create']->execute();
 }
 
-function db_delete_asset($album,$asset){
+function db_delete_asset($album,$asset) {
     global $statements;
 
     $statements['delete_asset']->bindParam(':cours_id', $album);
     $statements['delete_asset']->bindParam(':name', $asset);
   
-  return $statements['delete_asset']->execute();
-	
+    return $statements['delete_asset']->execute();
 }

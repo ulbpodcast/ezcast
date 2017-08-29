@@ -31,6 +31,7 @@
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
+        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
 
         <script type="text/javascript">

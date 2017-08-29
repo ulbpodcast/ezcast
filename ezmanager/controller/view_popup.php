@@ -80,6 +80,10 @@ function index($param = array()) {
         case 'album_stats_reset':
             album_stats_reset();
             break;
+
+        case 'copy_asset':
+            copy_asset();
+            break;
         
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
@@ -419,4 +423,18 @@ function album_stats_reset() {
     $album = $input['album'];
     
     require template_getpath('popup_album_stats_reset.php');
+}
+
+function copy_asset() {
+    global $input;
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=copy_asset&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
+    $asset_name = $input['asset'];
+    $album = $input['album'];
+
+    require template_getpath('popup_copy_asset.php');
+    
 }

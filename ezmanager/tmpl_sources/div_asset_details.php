@@ -56,12 +56,12 @@ function print_info($info, $suffix = '') {
 ?>
 
 <?php if (strtolower($origin) !== 'streaming') { ?>
-    <div class="LigneBouton">
+    <div class="LigneButton">
         <ul>
-            <li><span class="BoutonSuppAlbum">
+            <li><span class="ButtonSuppAlbum">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.$title.
-                            '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                        echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).
+                            '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                     } else {
                         echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -77,40 +77,44 @@ function print_info($info, $suffix = '') {
                     </a>
                 </span>
             </li>
-            <li><span class="ButtonMove">
+            <li>
+                <span class="ButtonMove">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.$album.
-                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                        echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.urlencode($album).
+                            '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                     } else {
                         echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
                             ' data-toggle="modal" data-target="#modal">';
                     } ?>
                     ®Move®</a>
-                </span></li>
+                </span>
+            </li>
 				
-				<?php 
-				global $enable_copy_asset;
-					if($enable_copy_asset){?>
-                                            <li><span class="ButtonCopy">
-                                                    <?php if ($status != 'processing' && $status != 'error') { ?>
-                                                            <a href="javascript:show_popup_from_inner_div('#popup_copy_asset_<?php echo $asset_name; ?>');">®copy®</a>
-                                                            <?php
-                                                    } else {
-                                                            ?>
-                                                            <a href="javascript:show_popup_from_inner_div('#popup_not_available');">®copy®</a>
-                                                            <?php
-                                                    }
-                                                    ?>
-                                                    </span></li>
-				<?php } ?>
-				
+            <?php 
+            global $enable_copy_asset;
+            if($enable_copy_asset) { ?>
+                <li>
+                    <span class="ButtonCopy">
+                        <?php if ($status != 'processing' && $status != 'error') { 
+                            echo '<a href="index.php?action=show_popup&amp;popup=copy_asset&amp;album='.urlencode($album).
+                                '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                'data-target="#modal">';
+                        } else {
+                            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                                ' data-toggle="modal" data-target="#modal">';
+                        } ?>
+                        ®Copy®</a>
+                    </span>
+                </li>
+            <?php } ?>
+            
             <?php if ($public_album) { ?>
                 <li>
                     <span class="ButtonMoveAlbumPrive">
                         <?php if ($status != 'processing' && $status != 'error') {
-                            echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.$title.
-                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.urlencode($title).
+                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
                         } else {
                             echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -123,8 +127,8 @@ function print_info($info, $suffix = '') {
                 <li>
                     <span class="ButtonMoveAlbumPublic">
                         <?php if ($status != 'processing' && $status != 'error') {
-                            echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.$title.
-                                '&amp;album='.$album.'&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                            echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.urlencode($title).
+                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
                         } else {
                             echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -135,10 +139,10 @@ function print_info($info, $suffix = '') {
                 </li>
             <?php } ?>
             <li>
-                <span class="BoutonProgrammer">
+                <span class="ButtonProgrammer">
                     <?php if ($status != 'processing' && $status != 'error') {
-                        echo '<a href="index.php?action=show_popup&amp;popup=schedule_asset&amp;album='.$album.
-                            '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                        echo '<a href="index.php?action=show_popup&amp;popup=schedule_asset&amp;album='.urlencode($album).
+                            '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                     } else {
                         echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -148,14 +152,14 @@ function print_info($info, $suffix = '') {
                 </span>
             </li> 
             <?php 
-            // add un flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
+            // add flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
             global $regenerate_title_mode;
             if ($regenerate_title_mode == 'manual' && isset($asset_metadata['add_title'])) { ?>
                 <li>
-                    <span class="BoutonRegenTitle">
+                    <span class="ButtonRegenTitle">
                         <?php if($status != 'processing' && $status != 'error') {
-                            echo '<a href="index.php?action=show_popup&amp;popup=regen_title&amp;album='.$album.
-                            '&amp;asset='.$asset_name.'&amp;title='.$title.'" data-remove="false" data-toggle="modal" '.
+                            echo '<a href="index.php?action=show_popup&amp;popup=regen_title&amp;album='.urlencode($album).
+                            '&amp;asset='.urlencode($asset_name).'&amp;title='.urlencode($title).'" data-remove="false" data-toggle="modal" '.
                             'data-target="#modal">';
                         } else {
                             echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
@@ -250,7 +254,7 @@ function print_info($info, $suffix = '') {
             </li>
         <?php } else if (strtolower($origin) === 'streaming') { ?>
             <li>
-                <span class="BoutonEZplayer"> 
+                <span class="ButtonEZplayer"> 
                     <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php 
                         echo $asset; ?>" 
                     data-remote="false" data-toggle="modal" data-target="#modal">

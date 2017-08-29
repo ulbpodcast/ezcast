@@ -443,12 +443,15 @@ function push_users_courses_to_recorder(&$failed_cmd) {
 
     //courselist.php
     $courselist = '<?php' . PHP_EOL;
-    foreach ($users as $u) {
-        $title = $u['course_name'];
-        $courselist .= '$course[\'' . $u['user_ID'] . '\'][\'' . $u['course_code'] . '\'] = "' . $title . '";' . PHP_EOL;
+    
+    foreach ($users as $u) {        
+        $courseCode = (isset($u['course_code_public']) && !empty($u['course_code_public'])) ? $u['course_code_public'] : $u['course_code'];
+        $title = (isset($u['shortname']) && !empty($u['shortname'])) ? $u['shortname'] : $u['course_name'];        
+        $courselist .= '$course[\'' . $u['user_ID'] . '\'][\'' . $u['course_code'] . '\'] = "' . $courseCode.'-'.$title . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL;
-    }
+    } 
+    
     $courselist .= '?>';
     file_put_contents('var/courselist.php', $courselist);
     
@@ -461,14 +464,14 @@ function push_users_courses_to_recorder(&$failed_cmd) {
             $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . 
                     $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
-            if($return_var != 0) {
+            if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
                 $error = true;
             }
             $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . 
                     ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
-            if($return_var != 0) {
+            if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
                 $error = true;
             }
@@ -814,7 +817,7 @@ function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_
  * @return mixed the value of the array key or empty string if not exist
  */
 function empty_str_if_not_def($key, $array) {
-    if(array_key_exists($key, $array)) {
+    if (array_key_exists($key, $array)) {
         return $array[$key];
     }
     return "";
@@ -822,7 +825,7 @@ function empty_str_if_not_def($key, $array) {
 
 
 function array_increment_or_init_static(&$array, $key) {
-    if(array_key_exists($key, $array)) {
+    if (array_key_exists($key, $array)) {
         ++$array[$key];
     } else {
         $array[$key] = 1;
@@ -830,7 +833,7 @@ function array_increment_or_init_static(&$array, $key) {
 }
 
 function array_increment_or_init(&$array, &$key) {
-    if(array_key_exists($key, $array)) {
+    if (array_key_exists($key, $array)) {
         ++$array[$key];
     } else {
         $array[$key] = 1;

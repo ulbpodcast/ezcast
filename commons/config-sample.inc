@@ -2,6 +2,14 @@
 
 require_once('logger_server.php');
 
+// Get default configuration (if not already defined)
+if(basename(__FILE__) != "config-sample.inc" && !isset($sample_config_version)) {
+    // Require "config-sample.inc" in commons and not in other folder (ezadmin, ezplayer, ezmanager)
+    require_once(__DIR__.'/config-sample.inc');
+    // Keep old config
+    $sample_config_version = $config_version;
+}
+
 /*
  * This config file contains global config for the server
  * to run. It can be edited following your particular needs.
@@ -12,7 +20,7 @@ require_once('logger_server.php');
 
 // Dev: Change this value everytime you add an option to this file, as well as the value in common.inc. When version in 
 // config and common.inc don't match, a warning is triggered.
-$config_version = "20170822"; 
+$config_version = "20170824"; 
 
 // Name of the organization hosting EZcast or providing the service
 $organization_name = "© Your organization name"; //this will also affect choosen translations when generating templates
@@ -118,9 +126,17 @@ $streaming_video_alternate_server_uri = "stream/";
 $debug_mode = false; //debug mode print recorder events and php errors to console
 // -- -- //
 
-$common_config_defined = true; //config and common include each other... apparently php does not consider a 
-// file already included until he completely finished including it. This variable is a workaround for this problem.
+$common_config_defined = true; //config and common include each other... apparently php does not consider a file already 
+// included until he completely finished including it. This variable is a workaround for this problem.
 
-// load static variables
-require_once(__DIR__ . '/common.inc');
-require_once('logger_server.php');
+//define size of course_code
+$max_course_code_size=20; //!!! WARNING => Linked to the DB
+//define size of album_label
+$max_album_label_size=50;
+
+// If not in config simple
+if(basename(__FILE__) != "config-sample.inc") {
+    // load static variables
+    require_once(__DIR__ . '/common.inc');
+    require_once('logger_server.php');
+}

@@ -123,8 +123,7 @@ function get_album_title($album){
     return choose_title_from_metadata($album_metadata);
 }
 
-function choose_title_from_metadata(&$album_metadata)
-{
+function choose_title_from_metadata(&$album_metadata) {
     if (isset($album_metadata['title']))        
         return $album_metadata['title'];
     else if (isset($album_metadata['description']))

@@ -643,8 +643,6 @@
         <label id="settings_add_users_enabled" lang="en">Allow user addition</label>
         <label id="settings_recorder_password_storage_enabled" lang="fr">Stocker les mots de passe en auditoire</label>
         <label id="settings_recorder_password_storage_enabled" lang="en">Store password in classroom</label>
-        <label id="settings_use_course_name" lang="fr">Afficher le nom des cours</label>
-        <label id="settings_use_course_name" lang="en">Show course name</label>
         <label id="settings_use_user_name" lang="fr">Afficher le nom des utilisateurs</label>
         <label id="settings_use_user_name" lang="en">Show users name</label>
         <label id="install" lang="fr">Installer</label>
@@ -663,6 +661,8 @@
         <label id="stats_total" lang="en">Total</label>
         <label id="stats_average" lang="fr">Moyenne</label>
         <label id="stats_average" lang="en">Average</label>
+        
+        
         
         <!-- Report -->
         <label id="report_form_general" lang="fr">Général</label>
@@ -945,6 +945,13 @@
             If it was disabled, run this script: 
             &lt;code&gt;php &lt;?php echo $ezmanager_basedir; ?&gt;cli_fill_assets_status.php all&lt;/code&gt;
         </label>
+        
+        <!-- Version -->
+        <label id="new_config_version" lang="fr">Votre configuration n\'est pas à jour !</label>
+        <label id="new_config_version" lang="en">Your configuration is not up to date</label>
+        <label id="config_more_recent_version" lang="fr">Votre configuration est en avance par rapport à la 
+            version installée</label>
+        <label id="config_more_recent_version" lang="en">Your configuration is ahead of the installed version</label>
         
         
         <!-- Error -->

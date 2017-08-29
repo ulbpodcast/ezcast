@@ -1,7 +1,7 @@
 <?php
 
 if($argc != 2) {
-    echo "Usage: cli_install_htdocs <webspace_root>" . PHP_EOL;
+    echo "Usage: cli_install_htdocs <webspace_root>";
     exit(1);
 }
 
@@ -48,4 +48,4 @@ $web_file = file_get_contents($web_documentroot . "/ezplayer/infos.php");
 $web_file = str_replace("!PATH", __DIR__, $web_file);
 file_put_contents($web_documentroot . "/ezplayer/infos.php", $web_file);
 
-echo "Copied htdocs files to $$web_documentroot" . PHP_EOL;
+echo "Copied htdocs files to $web_documentroot" . PHP_EOL;

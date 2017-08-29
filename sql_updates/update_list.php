@@ -14,7 +14,7 @@ $update_list = [
             array(
                 'ALTER TABLE !PREFIX!courses ADD COLUMN `course_code_public` varchar(50) NOT NULL AFTER `course_code`;',
               
-                'CREATE TABLE IF NOT EXISTS `!PREFIX!stats_video_infos` (' .
+                'CREATE TABLE IF NOT EXISTS `!PREFIX!stats_video_month_infos` (' .
                         '`id` int(11) NOT NULL AUTO_INCREMENT, ' .
                         '`visibility` tinyint(1) NOT NULL DEFAULT \'1\', ' .
                         '`asset` varchar(30) NOT NULL, ' .

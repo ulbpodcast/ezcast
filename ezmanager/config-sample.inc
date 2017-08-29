@@ -40,7 +40,7 @@ $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (def
                 //   array('value' => 'RevealTitle', 'label' => 'Reveal'));
 $default_downloadable = false;
 
-$enable_anon_access_control= false; //Enable the user to choose if the album is accessible from anonym or not
+$enable_anon_access_control = false; //Enable the user to choose if the album is accessible from anonym or not
 
 $default_anon_access = 'false'; //default value when a video is uploaded
 
@@ -49,7 +49,7 @@ $enable_copy_asset = false; //allow copying asset into other albums
 $enable_course_creation = false; //enable the possibility for a ezmanager user to create his own course
 $enable_channel_creation = false; //enable the possibility for a ezmanager user to define his album as a channel
 
-$enable_moderator= false;  //enable the possibility to share album and manage moderator on ezmanager 
+$enable_moderator = false;  //enable the possibility to share album and manage moderator on ezmanager 
 
 $regenerate_title_mode = 'none';  //When moving an asset, auto regenerate title. Possible option : none: no update / auto: update auto if modif / manual: button in ezmanager to modif
 // used by lib_ezmam (ezmanager)

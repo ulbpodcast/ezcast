@@ -27,7 +27,7 @@ In order to use EZrecorder, you need to install / enable several components:
 
 - Apache2 
 - MySQL 5.x
-- PHP5.3 ( or greater ) with following extensions activated:
+- PHP5.6 ( or greater ) with following extensions activated:
   -curl
   -ldap
   -pdo_mysql

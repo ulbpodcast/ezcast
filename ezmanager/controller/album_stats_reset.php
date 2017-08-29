@@ -4,9 +4,15 @@
  * Reset album statistics change the column "visibility" to mask statistic but this operation doesn't remove stats
  */
 function index($param = array()) {
-   global $input;
+    global $input;
+    global $trace_on;
+    global $display_trace_stats;
    
-   if (!isset($input['album'])) {
+    if(!$trace_on || !$display_trace_stats) {
+        die;
+    }
+   
+    if (!isset($input['album'])) {
         echo "Usage: index.php?action=album_stats_reset&album=ALBUM";
         die;
     }

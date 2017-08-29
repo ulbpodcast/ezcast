@@ -14,6 +14,10 @@ function index($param = array()) {
     global $trace_on;
     global $display_trace_stats;
     
+    if(!$trace_on || !$display_trace_stats) {
+       die;
+    }
+    
     if (isset($input['album'])) {
         $album = $input['album'];
     } else {

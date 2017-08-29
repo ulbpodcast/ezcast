@@ -88,10 +88,12 @@ function index($param = array()) {
     log_append("anonymous user logged in");
     // lvl, action, browser_name, browser_version, user_os, browser_full_info
     $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
-    trace_append(array($lvl, "login_from_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
+    trace_append(array($lvl, "login_from_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], 
+        $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
 
-    if (count($input) > 0)
+    if (count($input) > 0) {
         $ezplayer_url .= '/index.php?';
+    }
     foreach ($input as $key => $value) {
         $ezplayer_url .= "$key=$value&";
     }

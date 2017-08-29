@@ -71,8 +71,7 @@ function db_prepare(&$stmt_array = array()) {
     global $statements;
     global $debug_mode;
     
-    if($db_object == null)
-    {
+    if($db_object == null) {
         try {
             $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
         } catch (PDOException $e) {

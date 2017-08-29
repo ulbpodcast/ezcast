@@ -48,7 +48,8 @@ $DTZ = new DateTimeZone('Europe/Paris');
 ?>
 </script>
 <div class="thread_header">
-    <span class="visibility-logo <?php echo ($thread['studentOnly']) ? 'students' : 'all' ?> details" title="<?php echo ($thread['studentOnly']) ? '®Visibility_students®' : '®Visibility_all®' ?>"></span>
+    <span class="visibility-logo <?php echo ($thread['studentOnly']) ? 'students' : 'all' ?> details" title="<?php 
+        echo ($thread['studentOnly']) ? '®Visibility_students®' : '®Visibility_all®' ?>"></span>
     <a class="thread_timecode" href="javascript:player_video_seek(<?php echo $thread['timecode'] ?>, '');">  
         <span class="timecode white inline-block">(<?php print_time($thread['timecode']); ?>) </span>
     </a>
@@ -105,7 +106,11 @@ $DTZ = new DateTimeZone('Europe/Paris');
                 <a class="button" tabindex='16' href="javascript: thread_edit_form_cancel(<?php echo $thread['id']; ?>);">®Cancel®</a>
             </div>
             <div class="submitButton">
-                <a class="button green2" tabindex='17' href="javascript: if(thread_edit_form_check(<?php echo $thread['id']; ?>)) thread_edit_form_submit(<?php echo $thread['id']; ?>,'<?php echo $thread['albumName']; ?>','<?php echo $thread['assetName']; ?>');">®Update®</a>
+                <a class="button green2" tabindex='17' href="javascript: if(thread_edit_form_check(<?php 
+                    echo $thread['id']; ?>)) thread_edit_form_submit(<?php echo $thread['id']; ?>,'<?php 
+                    echo $thread['albumName']; ?>','<?php echo $thread['assetName']; ?>');">
+                    ®Update®
+                </a>
             </div>
             <br />
         </form>
@@ -121,7 +126,8 @@ $DTZ = new DateTimeZone('Europe/Paris');
         <a class="edit-button green2 pull-right inline-block" title="®Edit_discussion®" onclick="thread_edit_form_prepare(<?php echo $thread['id'] ?>)"></a>
         <?php if (acl_is_admin()) {
             ?>     
-            <a class="delete-button green2 pull-right inline-block" title="®Delete_discussion®" href="javascript:popup_thread('<?php echo $thread['id']; ?>', 'delete');" ></a>
+            <a class="delete-button green2 pull-right inline-block" title="®Delete_discussion®" 
+               href="javascript:popup_thread('<?php echo $thread['id']; ?>', 'delete');" ></a>
 <?php
         }
     }
@@ -190,7 +196,7 @@ $DTZ = new DateTimeZone('Europe/Paris');
             <br/>
             <!-- Submit button -->
             <div class="cancelButton" style="margin-left: 464px;">
-                <a class="button" tabindex='16' href="javascript: thread_comment_form_hide();">®Cancel®</a>
+                <a class="button" tabindex='16' href="javascript:thread_comment_form_hide();">®Cancel®</a>
             </div>
             <div class="submitButton">
                 <a class="button green2" tabindex='17' href="javascript: if(thread_comment_form_check()) thread_comment_form_submit();">®Reply®</a>

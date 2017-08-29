@@ -25,7 +25,7 @@ function index($param = array()) {
     } else { // removes from table of contents
         $bookmark = toc_asset_bookmark_get($bookmark_album, $bookmark_asset, $bookmark_timecode);
     }
-
+    
     switch ($input['display']) {
         case 'remove' :
             include_once template_getpath('popup_bookmark_delete.php');

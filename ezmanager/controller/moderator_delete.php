@@ -16,7 +16,6 @@ function index($param = array()) {
 	   
     require_once $basedir.'/commons/lib_sql_management.php';
 
-    
     $album = $input['album'];
     $iduser = $input['iduser'];
     

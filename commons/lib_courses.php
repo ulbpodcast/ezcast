@@ -55,7 +55,8 @@ function courses_list($netid) {
             db_gettable('courses') . '.in_recorders, ' .
             db_gettable('users_courses') . '.origin ' .
             'FROM ' . db_gettable('courses') . ' ' .
-            'INNER JOIN ' . db_gettable('users_courses') . ' ON ' . db_gettable('courses') . '.course_code = ' . db_gettable('users_courses') . '.course_code ' .
+            'INNER JOIN ' . db_gettable('users_courses') . ' ON ' . db_gettable('courses') . '.course_code = ' . 
+                db_gettable('users_courses') . '.course_code ' .
             'WHERE user_ID = :user_ID'
     );
     
@@ -67,7 +68,7 @@ function courses_list($netid) {
     }
     $result = array();
 
-       if ($netid == "") {
+    if ($netid == "") {
         // retrieves all courses in the database
         $course_list = db_courses_all_get();
         $result = array();
@@ -81,7 +82,6 @@ function courses_list($netid) {
         $result = array();
         foreach ($course_list as $value){
             $result[$value['course_code']] = $value['course_code'] . '|' . $value['course_name'];
-
         }
     }
     db_close();
@@ -95,7 +95,8 @@ function debuglog($message) {
     $fp = fopen($commons_logfile, "a+");
     $time = time();
     $rawdate = getdate($time);
-    $date = $rawdate["mday"] . "/" . $rawdate["mon"] . "/" . $rawdate["year"] . "  " . $rawdate["hours"] . ":" . $rawdate["minutes"] . ":" . $rawdate["seconds"];
+    $date = $rawdate["mday"] . "/" . $rawdate["mon"] . "/" . $rawdate["year"] . "  " . $rawdate["hours"] . ":" . 
+            $rawdate["minutes"] . ":" . $rawdate["seconds"];
     $line = $date . " ip: " . $_SERVER['REMOTE_ADDR'] . " " . $message . "\n";
     fwrite($fp, $line);
     fclose($fp);

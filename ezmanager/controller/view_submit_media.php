@@ -21,7 +21,7 @@ function index($param = array()) {
 
     // for preselection in the form
     $album_intro = $album_meta['intro'];
-    $album_credits = $album_meta['credits'];
+    $album_credits = (isset($album_meta['credits']) ? $album_meta['credits'] : '');
     if (isset($album_meta['add_title'])) {
         $add_title = $album_meta['add_title'];
     } else {

@@ -478,6 +478,10 @@ body{
     right: 5px;
 }
 
+.LigneButtonRight.LigneButton .dropdown-menu li {
+    margin-left: 5px;
+}
+
 .ButtonSuppAlbum a{
     background-image:url(../images/page4/ASuppBackg.png);
 }

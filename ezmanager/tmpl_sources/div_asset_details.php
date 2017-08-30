@@ -122,7 +122,7 @@ function print_info($info, $suffix = '') {
                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                 <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-right">
               <li><span class="ButtonSuppAlbum">
                         <?php if ($status != 'processing' && $status != 'error') {
                             echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).

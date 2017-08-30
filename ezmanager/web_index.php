@@ -394,8 +394,6 @@ function albums_view() {
     global $sd_rss_url_web;
     global $player_full_url;
     global $manager_full_url;
-    global $trace_on;
-    global $display_trace_stats;
     global $head_code; // Optional code we want to append in the HTML header
     // List of all the albums a user has created
     $created_albums = acl_authorized_albums_list_created(); // Used to display the albums list

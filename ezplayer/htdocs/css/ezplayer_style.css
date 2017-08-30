@@ -322,7 +322,7 @@ body {
 }
 
 
-.logout{
+.logout,.anonym_login{
     float: right;
     padding: 3px 5px;
 }
@@ -1256,7 +1256,7 @@ body {
 }
 
 #settings_form,
-#contact_form{
+#contact_form {
     display: none;
     padding-bottom: 15px;
 }

@@ -380,15 +380,21 @@ body{
 
 /*--Bouton triangle--*/
 
+.ListButon.StatusButton {
+    border-bottom-width: thin;
+    border-bottom-style: dotted;
+    border-bottom-color: #CFCFCF;
+    border-top-width: thin;
+    border-top-style: dotted;
+    border-top-color: #CFCFCF;
+}
+
 .ListButon:hover {
     background-color: #eee;
 }
 
 .ListButon a {
     display:block;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
     color:#444444;
     height:25px;
     background-repeat:no-repeat;
@@ -397,6 +403,7 @@ body{
     font-weight:bold;
     padding-left:27px;
     padding-top:3px;
+    overflow: auto;
 }
 
 .ListButon.active {
@@ -406,6 +413,10 @@ body{
 
 .ListButon.active a {
     color: white;
+}
+
+.TitrePodcast {
+    word-break: break-all;
 }
 
 .StatusButtonProcessing a{

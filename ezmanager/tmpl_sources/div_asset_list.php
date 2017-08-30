@@ -31,16 +31,6 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
 -->
 <div id="div_asset_list">
     <div class="BlocPodcastMenu">
-        <div class="ListButon ButtonSoumettreAlbum">
-            <a href="index.php?action=view_submit_media"
-               data-remote="false" data-toggle="modal" data-target="#modal" > 
-                <img src="images/page4/iconUp.png">
-                <span class="TitrePodcast"> 
-                    ®Submit_record®
-                </span> 
-            </a> 
-        </div>
-        
         <?php
         require_once 'lib_various.php';
         // Note: we can't use foreach() here because assets are ordered by date, oldest first,

@@ -18,48 +18,61 @@ Before calling this template, please define the following variables:
                 
                 <!-- drop-down menu -->
                 <div id="advanced_menu">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
-                              aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
-                            <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php 
-                                    echo trim($album_name); ?>&amp;album_id=<?php echo trim($album_id); ?>" 
-                                data-remote="false" data-toggle="modal" data-target="#modal">
-                                <img src="images/page4/iconSuppBackg.png" /> ®Delete_album®
-                            </a>
-                        </li>
-                        <li>
-                            <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
-                                data-target="#modal">
-                                <img src="images/page4/iconEditerBackg.png" /> ®Edit_album®
-                             </a>
-                        </li>
-                        <?php if($enable_moderator){ ?> 
-                            <li>
-                                <a href="index.php?action=view_list_moderator" data-toggle="modal"
-                                   data-target="#modal">
-                                    <img src="images/page4/iconEditerBackg.png" /> ®Moderator_manage®
-                                </a>
-                            </li> 
-                        <?php } ?>
-                        <li>
-                            <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php echo $album_name_full; ?>" 
-                                data-remote="false" data-toggle="modal" data-target="#modal">
-                                <img src="images/page4/iconRssBackg.png" /> ®Regenerate_RSS®
-                            </a>
-                        </li>
-                        <?php if($trace_on && $display_trace_stats) { ?>
-                            <li>
-                                <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php echo $album_name_full; ?>" 
-                                    data-remote="false" data-toggle="modal" data-target="#modal">
-                                    <img src="images/page4/iconRestaStatsBackg.png" /> ®Stats_Reset®
-                                </a>
-                            </li>
-                        <?php } ?>
-                      </ul>
+                    <div class="btn-group" role="group">
+                        
+                        <a href="index.php?action=view_submit_media" class="btn btn-default" role="button"
+                            data-remote="false" data-toggle="modal" data-target="#modal" > 
+                            <img src="images/page4/iconUp.png" style="height: 18px;" >
+                            <span class="TitrePodcast"> 
+                                ®Submit_record®
+                            </span> 
+                        </a>
+                        
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+                                  aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php 
+                                            echo trim($album_name); ?>&amp;album_id=<?php echo trim($album_id); ?>" 
+                                        data-remote="false" data-toggle="modal" data-target="#modal">
+                                        <img src="images/page4/iconSuppBackg.png" /> ®Delete_album®
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
+                                        data-target="#modal">
+                                        <img src="images/page4/iconEditerBackg.png" /> ®Edit_album®
+                                    </a>
+                                </li>
+                                <?php if($enable_moderator){ ?> 
+                                    <li>
+                                        <a href="index.php?action=view_list_moderator" data-toggle="modal"
+                                            data-target="#modal">
+                                            <img src="images/page4/iconEditerBackg.png" /> ®Moderator_manage®
+                                        </a>
+                                    </li> 
+                                <?php } ?>
+                                <li>
+                                    <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php 
+                                        echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
+                                        data-target="#modal">
+                                        <img src="images/page4/iconRssBackg.png" /> ®Regenerate_RSS®
+                                    </a>
+                                </li>
+                                <?php if($trace_on && $display_trace_stats) { ?>
+                                    <li>
+                                        <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php 
+                                            echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
+                                            data-target="#modal">
+                                            <img src="images/page4/iconRestaStatsBackg.png" /> ®Stats_Reset®
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

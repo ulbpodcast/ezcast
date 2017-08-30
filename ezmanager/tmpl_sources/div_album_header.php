@@ -97,7 +97,7 @@ Before calling this template, please define the following variables:
                     <li role="presentation" id="stats"
                         <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
                         <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>'); ">
-                            <img src="images/page4/stats.png" style="display:inline"/>
+                            <span class="glyphicon glyphicon-stats" aria-hidden="true" style="color: black;"></span>
                             ®Stats_Descriptives®
                         </a>
                     </li>

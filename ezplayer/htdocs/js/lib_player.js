@@ -1122,8 +1122,6 @@ function player_bookmarks_panel_hide() {
         });
         $('#side_wrapper').animate({
             right: '-232px'
-        }, function () {
-            $('#div_right').css('height', '80px');
         });
 
     }

@@ -52,13 +52,13 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 // Testing purpose only: if the title does not exist, we replace it by
                 // the asset (raw) name
                 $title = (isset($metadata['title'])) ? $metadata['title'] : $asset_name;
-                $status = $metadata['status'];
+                $status = (isset($metadata['status'])) ? $metadata['status'] : '';
 
                 // We want the date to be displayed in format dd-mm-YYYY
                 // However, get_user_friendly_date returns dd-mm-YYYY-HH-ii, so we need to remove the last part
                 $date = get_user_friendly_date($metadata['record_date'], '-', false);
                 $date = substr($date, 0, -6);
-                if ($metadata['origin'] === 'streaming'){ ?>
+                if (isset($metadata['origin']) && $metadata['origin'] === 'streaming'){ ?>
                     <div>
                         <div id="asset_<?php echo $asset_name; ?>" class="ListButon ButtonTriangleProcessing"> 
                             <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 

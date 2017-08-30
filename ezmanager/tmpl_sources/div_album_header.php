@@ -26,7 +26,7 @@ Before calling this template, please define the following variables:
                       <ul class="dropdown-menu dropdown-menu-right">
                         <li>
                             <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php 
-                                    echo $album_name; ?>&amp;album_id=<?php echo $album_id; ?>" 
+                                    echo trim($album_name); ?>&amp;album_id=<?php echo trim($album_id); ?>" 
                                 data-remote="false" data-toggle="modal" data-target="#modal">
                                 <img src="images/page4/iconSuppBackg.png" /> ®Delete_album®
                             </a>

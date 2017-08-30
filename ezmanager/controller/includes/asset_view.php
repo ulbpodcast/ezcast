@@ -57,8 +57,8 @@ function asset_view() {
     $title = $asset_metadata['title']; // "user-friendly" asset name (title)
     $description = $asset_metadata['description']; // Asset description
     $date = get_user_friendly_date($asset_metadata['record_date'], ' ', true, get_lang(), true); // Recording date, i.e. asset creation date
-    $origin = $asset_metadata['origin'];
-    $status = $asset_metadata['status'];
+    $origin = (isset($asset_metadata) ? $asset_metadata['origin'] : '');
+    $status = (isset($asset_metadata['status']) ? $asset_metadata['status'] : '');
     $public_album = album_is_public($album); // Whether the album the asset is public or not
     $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
     $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
@@ -70,27 +70,31 @@ function asset_view() {
     // Filling in the data about the media
     // all you want to know about high res camera video
     if (isset($media_metadata['high_cam'])) {
-        $filesize_cam['HD'] = $media_metadata['high_cam']['file_size'];
+        $filesize_cam['HD'] = (isset($media_metadata['high_cam']['file_size']) ? 
+                                        $media_metadata['high_cam']['file_size'] : '');
         $dimensions_cam['HD'] = $media_metadata['high_cam']['width'] . ' x ' . $media_metadata['high_cam']['height'];
         //not used // $format_cam = $media_metadata['high_cam']['videocodec'];
     }
 
     // Everything about the low-res version of the camera video
     if (isset($media_metadata['low_cam'])) {
-        $filesize_cam['SD'] = $media_metadata['low_cam']['file_size'];
+        $filesize_cam['SD'] = (isset($media_metadata['low_cam']['file_size']) ?
+                                        $media_metadata['low_cam']['file_size'] : '');
         $dimensions_cam['SD'] = $media_metadata['low_cam']['width'] . ' x ' . $media_metadata['low_cam']['height'];
     }
 
     // Everything about the high-res slides video
     if (isset($media_metadata['high_slide'])) {
-        $filesize_slides['HD'] = $media_metadata['high_slide']['file_size'];
+        $filesize_slides['HD'] = (isset($media_metadata['high_slide']['file_size']) ? 
+                                        $media_metadata['high_slide']['file_size'] : '');
         $dimensions_slides['HD'] = $media_metadata['high_slide']['width'] . ' x ' . $media_metadata['high_slide']['height'];
         //not used// $format_slides = $media_metadata['high_slides']['videocodec'];
     }
 
     // Everything about the low-res slides
     if (isset($media_metadata['low_slide'])) {
-        $filesize_slides['SD'] = $media_metadata['low_slide']['file_size'];
+        $filesize_slides['SD'] = (isset($media_metadata['low_slide']['file_size']) ? 
+                                        $media_metadata['low_slide']['file_size'] : '');
         $dimensions_slides['SD'] = $media_metadata['low_slide']['width'] . ' x ' . $media_metadata['low_slide']['height'];
     }
 

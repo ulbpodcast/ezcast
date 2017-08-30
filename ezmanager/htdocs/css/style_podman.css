@@ -451,6 +451,10 @@ body{
     background-image:url(../images/page4/TriangleRougeBas.png);
 }
 
+.LigneButton {
+    display: inline-block;
+}
+
 .LigneButton li a {
     display:block;
     background-repeat:no-repeat;
@@ -466,6 +470,12 @@ body{
 
 .LigneButton li a:hover {
     color:#004C93;
+}
+
+.LigneButtonRight {
+    display: inline-block;
+    float: right;
+    right: 5px;
 }
 
 .ButtonSuppAlbum a{

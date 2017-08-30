@@ -120,6 +120,7 @@ function print_info($info, $suffix = '') {
             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" 
                     aria-haspopup="true" aria-expanded="false">
                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                ®More_options®
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">

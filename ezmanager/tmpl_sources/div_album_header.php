@@ -59,7 +59,7 @@ Before calling this template, please define the following variables:
                                     <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php 
                                         echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
                                         data-target="#modal">
-                                        <img src="images/page4/iconRssBackg.png" /> ®Regenerate_RSS®
+                                        <img src="images/page4/iconRssBackg.png" /> ®Reset_broadcast_link®
                                     </a>
                                 </li>
                                 <?php if($trace_on && $display_trace_stats) { ?>

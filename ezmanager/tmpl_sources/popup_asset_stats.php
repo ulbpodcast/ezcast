@@ -6,7 +6,6 @@
 <div class="modal-body">
     <?php if(isset($stats['display']) && $stats['display']) { ?>
         <div id="container" style="margin: 0 auto"></div>
-        
         <center>
             <div style="display:inline-block;width:<?php echo ($has_slides) ? '49%' : '100%'; ?>;" class="popup_video_player"
                 id="Popup_Player_<?php echo $asset; ?>_cam"></div>
@@ -16,7 +15,6 @@
             <?php } ?>
         </center>
         <br />
-            
     <?php } else { ?>
         ®Stats_No_stats®
     <?php } ?>
@@ -51,6 +49,9 @@
             }
         },
         xAxis: {
+            title: {
+                text: 'Test'
+            },
             minTickInterval: 1,
             labels: {
                 formatter: 

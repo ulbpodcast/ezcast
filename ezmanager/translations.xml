@@ -472,7 +472,11 @@
         <label id="Graph_cam_view" lang="fr">Vue en mode caméra</label>
         <label id="Graph_slide_view" lang="en">View in slide mode</label>
         <label id="Graph_slide_view" lang="fr">Vue en mode slide</label>
-        
+        <label id="popupModoAddedP1" lang="fr"> Album " </label>
+        <label id="popupModoAddedP1" lang="en"> Album " </label>
+        <label id="popupModoAddedP2" lang="fr">  " ajouté correctement à votre liste </label>
+        <label id="popupModoAddedP2" lang="en">  " correctly added to your list </label>
+
         <label id="month" lang="fr">Mois</label>
         <label id="month" lang="en">Month</label>
         <label id="year" lang="fr">Année</label>

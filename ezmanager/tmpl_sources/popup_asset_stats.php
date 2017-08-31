@@ -83,7 +83,7 @@
         },
         yAxis: {
             title: {
-                text: '®Graph_nbr_view®'
+                text: '®Graph_nbr_view_video®'
             }
         },
         tooltip: {

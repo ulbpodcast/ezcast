@@ -49,6 +49,8 @@
         <label id="Logout" lang="en">Log out</label>
         <label id="Update" lang="fr">Sauvegarder</label>
         <label id="Update" lang="en">Update</label>
+        <label id="Valid" lang="fr">Valider</label>
+        <label id="Valid" lang="en">Valid</label>
         <label id="Album" lang="fr">Album</label>
         <label id="Album" lang="en">Album</label>
         <label id="Private_album" lang="fr">Album privé</label>
@@ -454,6 +456,8 @@
         <label id="Graph_nbr_thread" lang="fr">Nombre de discussions</label>
         <label id="Graph_nbr_view" lang="en">Number of views</label>
         <label id="Graph_nbr_view" lang="fr">Nombre de vues</label>
+        <label id="Graph_nbr_view_video" lang="en">Number of views</label>
+        <label id="Graph_nbr_view_video" lang="fr">Nombre de vues</label>
         <label id="Graph_nbr_total_view" lang="en">Number of total views</label>
         <label id="Graph_nbr_total_view" lang="fr">Nombre de vues total</label>
         <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total views accumulated</label>
@@ -464,8 +468,8 @@
         <label id="Graph_nbr_unique_view" lang="fr">Nombre de vues unique</label>
         <label id="Graph_month_view" lang="en">Number of view per month on this album</label>
         <label id="Graph_month_view" lang="fr">Nombre de vues sur l\'album par mois</label>
-        <label id="Graph_min_per_min_view" lang="en">Number of view for this video</label>
-        <label id="Graph_min_per_min_view" lang="fr">Nombre de vues de la video</label>
+        <label id="Graph_min_per_min_view" lang="en">Number of view for this video</label> // todo
+        <label id="Graph_min_per_min_view" lang="fr">Mesure d'audiance de la vidéo</label>
         <label id="Graph_views" lang="en">view</label>
         <label id="Graph_views" lang="fr">vues</label>
         <label id="Graph_cam_view" lang="en">View in cam mode</label>

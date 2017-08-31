@@ -283,7 +283,7 @@ function print_info($info, $suffix = '') {
         <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button" 
             onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
         <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button" 
-            onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Update®" />
+            onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Valid®" />
     </div>
     <br />
     <br />

@@ -115,16 +115,14 @@ else if ( ((isset($_SESSION['podman_logged']) && (!isset($input['action']) || em
 // At this point of the code, the user is logged in and explicitly specified an action.
 // We perform the action specified.
 else {
-	
-	
-	if(isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']=='true'){
-		$input['action']='add_moderator';
-		$input['album']=$_SESSION['add_moderator_album'];
-		$input['tokenmanager']=$_SESSION['add_moderator_token'];
-		$_SESSION['add_moderator']='false';		
-	}
-	
-	
+    
+    if(isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']=='true'){
+        $input['action']='add_moderator';
+        $input['album']=$_SESSION['add_moderator_album'];
+        $input['tokenmanager']=$_SESSION['add_moderator_token'];
+        $_SESSION['add_moderator']='false';		
+    }
+    
     $action = $input['action'];
     $redraw = false;
     /**
@@ -330,6 +328,10 @@ else {
 			
         case 'delete_user_course':
             requireController('moderator_delete.php');
+            break;
+        
+        case 'album_stats_reset':
+            requireController('album_stats_reset.php');
             break;
 
         //debugging should be removed in prod

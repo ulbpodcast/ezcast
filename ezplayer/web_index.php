@@ -62,7 +62,8 @@ ezmam_repository_path($repository_path);
 // Login/logout
 //
 // Saves the URL used to access the website
-if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['action'] != 'logout' && $input['action'] != 'login' && $input['action'] != 'client_trace') {
+if (!isset($_SESSION['first_input']) && isset($input['action']) && $input['action'] != 'logout' && 
+        $input['action'] != 'login' && $input['action'] != 'client_trace') {
     $_SESSION['first_input'] = array_merge($_GET, $_POST);
 }
 // Saves user's web browser information
@@ -82,7 +83,8 @@ if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) ||
 
 $logged_in = user_logged_in();
 $album_allow_anonymous = isset($input['album']) && ezmam_album_allow_anonymous($input['album']);
-//logout anon user if he tries to access an album which was not set as anonym allowed (except if we still accept the anon=true option in the url, should be removed in the future)
+//logout anon user if he tries to access an album which was not set as anonym allowed (except if we still 
+// accept the anon=true option in the url, should be removed in the future)
 if($logged_in && user_anonymous() && !$allow_url_anon
    && isset($input['album']) && !$album_allow_anonymous) {
     logout();
@@ -92,15 +94,12 @@ if($logged_in && user_anonymous() && !$allow_url_anon
 
 // If we're not logged in, we try to log in or display the login form
 if (!$logged_in) {
-	 // global $repository_path;
+    // global $repository_path;
+    
     // if the url contains the parameter 'anon' the session is assumsed as anonymous
-    if ($allow_url_anon && isset($input['anon']) && $input['anon'] == true) {
-        user_anonymous_session();
-        $logged_in = true;
-    }
-	
-    // Log as anonymous if user tries to access an album and it has been set as accessible as anonymous
-    if (isset($input['album']) && $album_allow_anonymous) {
+    if (($allow_url_anon && isset($input['anon']) && $input['anon'] == true) || 
+            // Log as anonymous if user tries to access an album and it has been set as accessible as anonymous
+            (isset($input['album']) && $album_allow_anonymous)) {
         user_anonymous_session();
         $logged_in = true;
     }
@@ -522,7 +521,8 @@ function user_anonymous_session() {
     log_append("Anonymous_session");
     log_append("user's browser : " . $_SESSION['browser_full']);
     // lvl, action, browser_name, browser_version, user_os, browser_full_info
-    trace_append(array("1", "login_as_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
+    trace_append(array("1", "login_as_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], 
+        $_SESSION['user_os'], $_SESSION['browser_full']));
 
     // 5) Displaying the page
 //    view_main();
@@ -611,7 +611,8 @@ function user_login($login, $passwd) {
     log_append("login");
     log_append("user's browser : " . $_SESSION['browser_full']);
     // lvl, action, browser_name, browser_version, user_os, browser_full_info
-    trace_append(array("1", "login", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
+    trace_append(array("1", "login", $_SESSION['browser_name'], $_SESSION['browser_version'], $_SESSION['user_os'], 
+        $_SESSION['browser_full']));
 
     // 6) Displaying the page
 //    view_main();
@@ -707,8 +708,10 @@ function albums_view($refresh_page = true) {
             $moderated_tokens[$index]['title'] = get_album_title($album . '-pub');
             $moderated_tokens[$index]['token'] = ezmam_album_token_get($album . '-pub');
 			  
-			$album_title = ezmam_album_metadata_get($album . '-pub');
-			if(isset($album_title['course_code_public'])) $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
+            $album_title = ezmam_album_metadata_get($album . '-pub');
+            if(isset($album_title['course_code_public'])) {
+                $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
+            }
         }
         // add the list of moderated public albums 
         user_prefs_tokens_add($_SESSION['user_login'], $moderated_tokens);
@@ -849,7 +852,8 @@ function chat_messages_remove_private($messages_array) {
     $chat_messages = array();
     $match_user = '@' . $_SESSION['user_login'];
     foreach ($messages_array as $message) {
-        if (($message['authorId'] == $_SESSION['user_login']) || $message['message'][0] !== '@' || substr($message['message'], 0, strlen($match_user)) === $match_user) {
+        if (($message['authorId'] == $_SESSION['user_login']) || $message['message'][0] !== '@' || 
+                substr($message['message'], 0, strlen($match_user)) === $match_user) {
             $chat_messages[] = $message;
         }
     }
@@ -913,9 +917,10 @@ function trace_append($array) {
     $max_idx = count($array);
     foreach ($array as $value) {
         $idx++;
-        $data .= $value;
-        if ($idx != $max_idx)
+        $data .= preg_replace("/\|/", "-", $value);
+        if ($idx != $max_idx) {
             $data .= ' | ';
+        }
     }
     // 6) And we add a carriage return for readability
     $data .= PHP_EOL;

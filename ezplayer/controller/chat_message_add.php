@@ -35,8 +35,13 @@ function index($param = array()) {
 
     // remove php and javascript tags
     $message = safe_text($message);
-    $message = str_replace(PHP_EOL, '<br/>', $message);
-
+    $message = str_replace(PHP_EOL, '<br/>', $message); // TODO why not nl2br ?
+    
+    $record_date = $asset_meta['record_date'];
+    if($album == '' || $message == '' || $record_date = '') {
+        return false;
+    }
+    
     $values = array(
         "message" => $message,
         "timecode" => $timecode,
@@ -44,14 +49,14 @@ function index($param = array()) {
         "authorFullName" => $_SESSION['user_full_name'],
         "creationDate" => date('Y-m-d H:i:s'),
         "albumName" => $album,
-        "assetName" => $asset_meta['record_date']
+        "assetName" => $record_date
     );
 
     message_insert($values);
 
     cache_asset_chat_unset($album, $asset);
 
-    trace_append(array('3', 'chat_message_add', $album, $asset_meta['record_date'], $timecode, $message));
+    trace_append(array('3', 'chat_message_add', $album, $record_date, $timecode, $message));
     requireController('asset_streaming_chat_get_last.php');
-    return asset_streaming_player();
+    return asset_streaming_player_update();
 }

@@ -50,7 +50,7 @@ include_once 'lib_print.php';
     var copy = false;
     function copy_video_url() {
         if(!copy) {
-            server_trace(new Array('4', 'link_copy', current_album, current_asset, duration, time, type, quality))
+            server_trace(new Array('4', 'link_copy', current_album, current_asset, duration, time, type, quality));
             copy = true;
         }
         $('#share_time_link').select();

@@ -42,7 +42,9 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
 ?>
 
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="force_close=true;">
+        <span aria-hidden="true">&times;</span>
+    </button>
     <h4 class="modal-title">®Submit_record®</h4>
 </div>
 <form action="<?php echo $domain_name; ?>/index.php" method="post" id="submit_form" enctype="multipart/form-data" 
@@ -258,6 +260,8 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
 </form>
 
 <script type="text/javascript">
+    var force_close = true; // variable to allow or not to close the popup
+    
     var is_xhr2 = supportAjaxUploadProgressEvents();
 
     if (is_xhr2) {
@@ -346,6 +350,7 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
             $('.modal-body').text("®Upload_finished®");
             $('.modal-footer').html('<button type="button" class="btn btn-primary" ' + 
                     'data-dismiss="modal">®Close_and_return_to_index®</button>');
+            force_close = true;
         } else {
             document.getElementById('submit_cam').style.display = 'none';
             document.getElementById('submit_slide').style.display = 'none';
@@ -353,7 +358,8 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
             document.getElementById('progressbar_container').style.display = 'block';
             document.getElementById('progressbar').style.width = progressRate + '%';
             $('#submitButton').prop('disabled', true);
-            document.getElementById('submitButton').innerHTML = type + '®Upload_in_progress® (' + (isNaN(progressRate) ? '0' : progressRate) + '%)';
+            document.getElementById('submitButton').innerHTML = type + '®Upload_in_progress® (' + 
+                    (isNaN(progressRate) ? '0' : progressRate) + '%)';
         }
     }
 
@@ -367,7 +373,6 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
     document.getElementById('uploadFrame').addEventListener('load', uploadFinished());
     
     function uploadFinished() {
-        console.log('upload finished function !');
         var frame = document.getElementById('uploadFrame');
         if (frame) {
             ret = frame.contentWindow.document.body.innerHTML;
@@ -381,8 +386,9 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
     }
 
     // submit the form 
+    var worker;
     function sendRequest() {
-
+        force_close = false;
         var file = document.getElementById('loadingfile');
         var id; // id is set after the form has been submitted to the server
         var chunkSize;
@@ -427,7 +433,7 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
                     id = response.values.id;
                     chunkSize = response.values.chunk_size;
 
-                    var worker = new Worker("js/fileupload.js");
+                    worker = new Worker("js/fileupload.js");
                     console.log(worker);
 
                     // determines the action to do when the worker sends 
@@ -502,6 +508,16 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
                 && (typeof (Worker) !== "undefined")
                 && (typeof (blob.slice) === 'function' || typeof (blob.mozSlice) === 'function');
     }
-    ;
+    
+    // When modal will close
+    $('#modal').on('hide.bs.modal', function (event) {
+        if(!force_close) { // Cancel if not forced
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return false; 
+        } else if(worker != null && worker != 'undefined') {
+            worker.terminate();
+        }
+    });
 </script>
 

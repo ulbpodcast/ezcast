@@ -397,15 +397,21 @@ body{
 
 /*--Bouton triangle--*/
 
+.ListButon.StatusButton {
+    border-bottom-width: thin;
+    border-bottom-style: dotted;
+    border-bottom-color: #CFCFCF;
+    border-top-width: thin;
+    border-top-style: dotted;
+    border-top-color: #CFCFCF;
+}
+
 .ListButon:hover {
     background-color: #eee;
 }
 
 .ListButon a {
     display:block;
-    border-bottom-width: thin;
-    border-bottom-style: dotted;
-    border-bottom-color: #CFCFCF;
     color:#444444;
     height:25px;
     background-repeat:no-repeat;
@@ -414,6 +420,7 @@ body{
     font-weight:bold;
     padding-left:27px;
     padding-top:3px;
+    overflow: auto;
 }
 
 .ListButon.active {
@@ -423,6 +430,10 @@ body{
 
 .ListButon.active a {
     color: white;
+}
+
+.TitrePodcast {
+    word-break: break-all;
 }
 
 .StatusButtonProcessing a{
@@ -457,6 +468,10 @@ body{
     background-image:url(../images/page4/TriangleRougeBas.png);
 }
 
+.LigneButton {
+    display: inline-block;
+}
+
 .LigneButton li a {
     display:block;
     background-repeat:no-repeat;
@@ -472,6 +487,16 @@ body{
 
 .LigneButton li a:hover {
     color:#004C93;
+}
+
+.LigneButtonRight {
+    display: inline-block;
+    float: right;
+    right: 5px;
+}
+
+.LigneButtonRight.LigneButton .dropdown-menu li {
+    margin-left: 5px;
 }
 
 .ButtonSuppAlbum a{
@@ -846,7 +871,7 @@ body{
 .infosAvance{
     color:#004c93;
     font-weight:bold;
-    padding-left: 25px;
+    padding-left: 20px;
 }
 
 

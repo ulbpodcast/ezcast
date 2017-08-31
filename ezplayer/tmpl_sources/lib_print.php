@@ -88,64 +88,6 @@ function print_new_video($count) {
     }
 }
 
-// Adds a new syntax for supporting usage of external links in some text
-// The string is parsed following these rules:
-// - @url ==> adds a simple html tag <a href="url">url</a>
-// - #alias@url ==> adds an html tag using the alias <a href="url">alias</a>
-// - something@url ==> nothing happens
-function replace_links_old($string) {
-    // saves the text length
-    $str_length = strlen($string);
-    // loop on the text
-    for ($i = 0; $i < $str_length; $i++) {
-        // init var
-        $j = 0;
-        $alias = '';
-        $link = '';
-        // if there is an alias (starts by '#')
-        if ($string[$i] == '#') {
-            // saves the alias (ends by '@')
-            $j = $i + 1;
-            while ($j <= $str_length && $string[$j] != "@") {
-                $alias .= $string[$j];
-                $j++;
-            }
-            // saves the position of the pointer 
-            $i = $j;
-        }
-        // if there is a link (starts by '@')
-        if ($string[$i] == "@") {
-            $j = $i + 1;
-            while ($j < $str_length && $string[$j] != " ") {
-                // saves the link (everything that follows the '@' (till the next space) is considered as a link)
-                $link .= $string[$j];
-                $j++;
-            }
-        }
-        // if we've found a link and it is not an email address (something@url)
-        if ($link != '' && ($alias != '' || $i == 0 || $string[$i - 1] == ' ')) {
-            // makes sure the url starts by 'http://' or 'mailto:'
-            $http = (substr($link, 0, 7) != 'http://' && substr($link, 0, 8) != 'https://' && substr($link, 0, 7) != 'mailto:') ? 'http://' : '';
-            // uses the alias if it exists
-            if ($alias != '') {
-                $full_link = "<a href=\"$http$link\" target=\"_blank\">$alias</a>";
-                $token_length = strlen($alias) + strlen($link) + 2;
-            } else { // uses the link otherwise
-                $full_link = "<a href=\"$http$link\" target=\"_blank\">$link</a>";
-                $token_length = strlen($link) + 1;
-            }
-            // replaces the previous syntax with the adequate html tag (#alias@url ==> <a href="url">alias</a>)
-            // in the original text
-            $string = substr_replace($string, $full_link, $j - $token_length, $token_length);
-            $replace_length = strlen($full_link);
-            // moves the pointer at the end of the html tag
-            $i = $j - $token_length + $replace_length;
-            // saves the new text length
-            $str_length = strlen($string);
-        }
-    }
-    return $string;
-}
 
 /**
  * Adds a new syntax for supporting usage of external links in some text
@@ -156,50 +98,10 @@ function replace_links_old($string) {
  * @return type
  */
 function replace_links($string) {
-    $str_length = strlen($string);
-    // loop on the text
-    for ($i = 0; $i < $str_length; $i++) {
-        // reinit variables
-        $link = '';
-        $alias = '';
-        // if there is a link (starts by '*')
-        if ($string[$i] == "*" && $string[$i+1] == "*") {
-            // saves the position
-            $j = $i + 2;
-            // saves the url
-            while ($j < $str_length && $string[$j] != " " && ($string[$j] != "*" || ($string[$j] == "*" && $string[$j+1] != "*" ))) {
-                $link .= $string[$j];
-                $j++;
-            }
-            // if the next char is not '*' it means there is an alias
-            while ($j < $str_length && ($string[$j] != "*" || ($string[$j] == "*" && $string[$j+1] != "*" ))) {
-                $j++;
-                if ($string[$j] != "*" || ($string[$j] == "*" && $string[$j+1] != "*" ))
-                    $alias .= $string[$j];
-            }
-            // there is a url
-            if ($link != '') {
-                // makes sure the url starts by 'http://' or 'mailto:'
-                $http = (substr($link, 0, 7) != 'http://' && substr($link, 0, 8) != 'https://' && substr($link, 0, 7) != 'mailto:') ? 'http://' : '';
-                // uses the alias in the html tag
-                if ($alias != '') {
-                    $full_link = "<a href=\"$http$link\" onclick=\"server_trace(new Array('3', 'description_link', current_album, current_asset, current_tab));\" target=\"_blank\">$alias</a>";
-                } else {
-                    $full_link = "<a href=\"$http$link\" onclick=\"server_trace(new Array('3', 'description_link', current_album, current_asset, current_tab));\" target=\"_blank\">$link</a>";
-                }
-
-                // replaces the previous syntax with the adequate html tag (*url alias* ==> <a href="url">alias</a>)
-                // in the original text
-                $string = substr_replace($string, $full_link, $i, $j - $i + 2);
-                $replace_length = strlen($full_link);
-                // moves the pointer at the end of the html tag
-                $i = $i + $replace_length - 1;
-                // saves the new text length
-                $str_length = strlen($string);
-            }
-        }
-    }
-    return $string;
+    return preg_replace("/(https?\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/", '<a href="$1" ' .
+            'target="_blank" ' .
+            'onclick="server_trace(new Array(\'3\', \'description_link\', current_album, current_asset, current_tab));" ' .
+            '>$1</a>', $string);
 }
 
 /**

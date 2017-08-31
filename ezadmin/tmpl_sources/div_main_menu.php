@@ -154,6 +154,7 @@ $category_names = array(
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>
     <li class="sidebar" title="®push_changes_title®"><a style="<?php echo (isset($_SESSION['changes_to_push']) && $_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
     <li class="sidebar"><a href="index.php?action=sync_externals">®sync_externals®</a></li>
+    <li class="sidebar"><a href="index.php?action=db_updater">®db_updater®</a></li>
     <li class="sidebar"><a href="?<?php echo SID."&action=logout"?>">®logout®</a></li>
 </ul>
 <!-- <a class="btn" style="margin-top: 10px; width: 80%;" href="?<?php echo SID."&action=logout"?>">®logout®</a> -->

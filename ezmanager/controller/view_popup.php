@@ -73,6 +73,14 @@ function index($param = array()) {
             moderator_delete();
             break;
         
+        case 'asset_stats':
+            asset_stats();
+            break;
+        
+        case 'album_stats_reset':
+            album_stats_reset();
+            break;
+
         case 'copy_asset':
             copy_asset();
             break;
@@ -188,7 +196,9 @@ function popup_ezplayer_link() {
         die;
     }
     $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
-    $action = (strtolower($asset_meta['origin']) === "streaming") ? 'view_asset_streaming' : 'view_asset_details';
+    $action = (isset($asset_meta['origin']) && strtolower($asset_meta['origin']) === "streaming") ? 
+            'view_asset_streaming' : 
+            'view_asset_details';
     $token = ezmam_asset_token_get($input['album'], $input['asset']);
     $ezplayer_link = $ezplayer_url . '/index.php?'
             . 'action=' . $action
@@ -361,6 +371,60 @@ function moderator_delete() {
     $id_user = $input['id_user'];
     
     require template_getpath('popup_moderator_delete.php');
+}
+
+function asset_stats() {
+    global $input;
+    global $video_split_time;
+    
+    if(!isset($input['asset']) || !isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
+        die;
+    }
+    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    
+    $asset = $input['asset'];
+    $album = $input['album'];
+    $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+    $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
+    $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
+    $all_view_time = db_stats_video_get_view_time($album, $asset);
+    
+    $stats = array();
+    if(count($all_view_time) > 0) {
+        $data_view_time = array('cam' => array(), 'slide' => array());
+        $last_time = 0;
+        foreach ($all_view_time as $view_time) {
+            if(!array_key_exists($view_time['type'], $data_view_time)) {
+                $data_view_time[$view_time['type']] = array();
+            }
+            while($view_time['video_time'] > $last_time) {
+                $data_view_time[$view_time['type']][] = 0;
+                ++$last_time;
+            }
+            $data_view_time[$view_time['type']][] = intval($view_time['nbr_view']);
+            ++$last_time;
+        }
+        $stats['display'] = TRUE;
+        $stats['str_view_time_cam'] = json_encode($data_view_time['cam']);
+        $stats['str_view_time_slide'] = json_encode($data_view_time['slide']);
+    } else {
+        $stats['display'] = FALSE;
+    }
+    
+    require template_getpath('popup_asset_stats.php');
+}
+
+function album_stats_reset() {
+    global $input;
+    
+    if(!isset($input['album'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=ALBUM';
+        die;
+    }
+    $album = $input['album'];
+    
+    require template_getpath('popup_album_stats_reset.php');
 }
 
 function copy_asset() {

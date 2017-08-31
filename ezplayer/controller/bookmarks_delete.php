@@ -33,7 +33,8 @@ function index($param = array()) {
 
     log_append('delete_bookmarks: ' . count($selection) . ' bookmarks deleted from the album ' . $album);
     // lvl, action, album, asset, target (from official|personal), number of deleted bookmarks 
-    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_delete', $album, $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target == '' ? 'custom' : $target, count($selection)));
+    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_delete', $album, 
+        $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target == '' ? 'custom' : $target, count($selection)));
     if ($input['source'] == 'assets') {
         // album token needed to display the album assets
         $input['token'] = ezmam_album_token_get($album);

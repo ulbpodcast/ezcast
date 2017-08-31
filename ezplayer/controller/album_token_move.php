@@ -11,7 +11,11 @@ function index($param = array()) {
     global $repository_path;
     global $user_files_path;
 
-
+    if(!isset($input['album']) || !isset($input['index']) ||
+            !isset($input['up_down'])) {
+        return false;
+    }
+    
     $album = $input['album'];
     $index = (int) $input['index'];
     $upDown = $input['up_down'];

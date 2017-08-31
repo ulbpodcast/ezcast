@@ -227,6 +227,15 @@ function print_info($info, $suffix = '') {
                 ?></textarea>
             </span>
         </li>
+        <li class="text-right">
+            <!-- Edit form (submit/cancel buttons) -->
+            <div class="btn-group" role="group" id="<?php echo $asset; ?>_submit" style="display: none;margin-top: 5px;">
+                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button" 
+                    onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
+                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button" 
+                    onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Valid®" />
+            </div>
+        </li>
         <li>
             <span class="infospodast">®Author®</span><br />
             <?php print_info($author); ?>
@@ -278,14 +287,6 @@ function print_info($info, $suffix = '') {
             </li>
         <?php } ?>
     </ul>
-    <!-- Edit form (submit/cancel buttons) -->
-    <div class="btn-group" role="group" id="<?php echo $asset; ?>_submit" style="display: none;">
-        <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button" 
-            onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
-        <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button" 
-            onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Valid®" />
-    </div>
-    <br />
     <br />
 </div>
 

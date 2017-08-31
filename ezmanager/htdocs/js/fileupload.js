@@ -51,21 +51,21 @@ var str2ab_blobreader = function(str, callback) {
     }
     var f = new FileReader();
     f.onload = function(e) {
-        callback(e.target.result)
-    }
+        callback(e.target.result);
+    };
     f.readAsArrayBuffer(blob);
-}
+};
+
 /**
  * Performs actual upload, adjustes progress bars
  *
- * @param blob
+ * @param file
  * @param index
  * @param start
  * @param end
  */
 function uploadFile(file, index, start, end) {
     var xhr;
-    var end;
     var chunk;
     var blob = file.blob;
     var type = file.type;
@@ -123,7 +123,8 @@ function uploadFile(file, index, start, end) {
     xhr.setRequestHeader("X-id", globalObj.id);
     xhr.setRequestHeader("X-type", type);
 
-    if (blob.webkitSlice && typeof(blob.slice) !== 'function') {                                     // android default browser in version 4.0.4 has webkitSlice instead of slice()
+    // android default browser in version 4.0.4 has webkitSlice instead of slice()
+    if (blob.webkitSlice && typeof(blob.slice) !== 'function') {                                     
         var buffer = str2ab_blobreader(chunk, function(buf) {   // we cannot send a blob, because body payload will be empty
             xhr.send(buf);                                      // thats why we send an ArrayBuffer
         });
@@ -166,22 +167,20 @@ function mergeFile(file) {
 }
 
 self.onmessage = function(e) {
-
-
     switch (e.data.fct) {
         case 'pushValue':
             self.postMessage(e.data.fct);
             globalObj[e.data.args.key] = e.data.args.value;
             msg("console", "globalObj[" + e.data.args.key + "] : " + e.data.args.value);
             break;
+            
         case 'process':
             msg("console", e.data.fct);
             var file = e.data.args;
             process(file);
             break;
     }
-
-}
+};
 
 function msg(action, message) {
     self.postMessage({'action': action, 'message': message}); // exec / console / error

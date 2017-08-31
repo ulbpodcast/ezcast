@@ -690,7 +690,8 @@ function lib_scheduling_renderer_job_info($renderer, &$job) {
  */
 function lib_scheduling_renderer_job_kill($renderer, $job) {
     lib_scheduling_renderer_ssh($renderer, $renderer['php'] . ' ' . $renderer['kill'] . ' ' . $job['asset']);
-    return lib_scheduling_file_move(lib_scheduling_config('processing-path') . '/' . $job['basename'], lib_scheduling_config('failed-path') . '/' . $job['basename']);
+    return lib_scheduling_file_move(lib_scheduling_config('processing-path') . '/' . $job['basename'], 
+            lib_scheduling_config('failed-path') . '/' . $job['basename']);
 }
 
 /**

@@ -204,8 +204,10 @@
         <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
-        <label id="schedule_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l'enregistrement soit publié / archivé</label>
-        <label id="schedule_at" lang="en">Select the date and hour you want the recording to be published / archived</label>
+        <label id="schedule_public_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que l\'enregistrement soit publié dans le dossier public</label>
+        <label id="schedule_public_at" lang="en">Select the date and hour you want the recording to be published in public folder</label>
+        <label id="schedule_prive_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l\'enregistrement soit déplacé dans le dossier privé</label>
+        <label id="schedule_prive_at" lang="en">Select the date and hour you want the recording to be archived in private folder</label>
         
         <label id="Album_type" lang="fr">  Type d'album : </label>
         <label id="Album_type" lang="en"> Album Type : </label>	

@@ -5,16 +5,17 @@
  * @global type $input
  * @global type $repository_path
  * @global type $php_cli_cmd
- * @global type $asset_publish_pgm
+ * @global type $ezmanager_basedir
  * @global type $action
  */
 function index($param = array()) {
     global $input;
     global $repository_path;
     global $php_cli_cmd;
-    global $asset_publish_pgm;
+    global $ezmanager_basedir;
     global $action;
     $DTZ = new DateTimeZone('Europe/Paris');
+    $asset_publish_pgm= $ezmanager_basedir. "/cli_asset_publish_unpublish.php";
 
     //
     // Usual sanity checks
@@ -39,7 +40,8 @@ function index($param = array()) {
     $action = (album_is_public($input['album'])) ? "unpublish" : "publish";
     $date = date("H:i M d, Y", strtotime($input["date"]));
 
-    $cmd = "echo '" . $php_cli_cmd . " " . $asset_publish_pgm . " " . $input["album"] . " " . $input["asset"] . " " . $action . "' | at " . $date . "  2>&1 | awk '/job/ {print $2}'";
+    $cmd = "echo '" . $php_cli_cmd . " " . $asset_publish_pgm . " " . $input["album"] . " " . $input["asset"] . " " . 
+            $action . "' | at " . $date . "  2>&1 | awk '/job/ {print $2}'";
     $at_id = shell_exec($cmd);
     //
     // Then we update the metadata

@@ -378,9 +378,9 @@ function view_login_form() {
     $url = $ezmanager_url;
     // template include goes here
     if (in_array("sso",$auth_methods)){
-        include_once "tmpl/fr/login_w_sso.php";
+		include_once template_getpath('login_w_sso.php');
 	}else{
-        include_once "tmpl/fr/login.php";
+		include_once template_getpath('login.php');
 	}    
     
     //include_once "tmpl/fr/login.php";

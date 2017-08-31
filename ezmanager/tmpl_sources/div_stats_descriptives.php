@@ -3,9 +3,13 @@
         <?php if(isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) { ?>
             <div id="containerMonth" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
             <br />
+            <hr />
+            <br />
         <?php } ?>
         <?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
             <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+            <br />
+            <hr />
             <br />
         <?php } ?>
         <br />
@@ -123,10 +127,12 @@ Highcharts.setOptions({
         series: [{
             name: '®Graph_nbr_total_view®',
             type: 'column',
+            color: '#064c93',
             data: <?php echo $stats['graph']['album']['str_totalview']; ?>
         }, {
             name: '®Graph_nbr_unique_view®',
             type: 'column',
+            color: '#454445',
             data: <?php echo $stats['graph']['album']['str_uniqueview']; ?>
         }]
     });
@@ -167,10 +173,12 @@ Highcharts.setOptions({
         series: [{
                 type: 'column',
                 name: '®Graph_nbr_total_view®',
+                color: '#064c93',
                 data: <?php echo $stats['graph']['video']['str_total_view']; ?>
             }, {
                 type: 'column',
                 name: '®Graph_nbr_unique_view®',
+                color: '#454445',
                 data: <?php echo $stats['graph']['video']['str_unique_view']; ?>
             }]
     });

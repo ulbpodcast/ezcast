@@ -81,7 +81,7 @@ ezmam_asset_metadata_set($album, $asset, $asset_meta);
 //
 // (Un)publishing the asset, and displaying a confirmation message.
 //
-    if ($action == 'publish') {
+if ($action == 'publish') {
     $res = ezmam_asset_publish($album, $asset);
     if (!$res) {
         error_print_message(ezmam_last_error());

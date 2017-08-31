@@ -21,6 +21,7 @@
         <script src="js/jquery.colorbox.js"></script>
         <script type="text/javascript" src="js/upload.js"></script>
         <script type="text/javascript" src="js/clipboard.js"></script>
+        <script src="./js/highstock.js" async></script>
         
         <script type="text/javascript" src="jQuery-DateTimePicker/jquery.simple-dtpicker.js"></script>
         <link type="text/css" href="jQuery-DateTimePicker/jquery.simple-dtpicker.css" rel="stylesheet" />

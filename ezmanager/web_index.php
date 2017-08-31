@@ -71,10 +71,10 @@ if (!user_logged_in()) {
         user_login($input['login'], $input['passwd']);
     }
 	//if not connected and the user click on a link to partage album management -> put arg in session variable to add it when he is connected
-	else if(isset($input['action']) && $input['action'] == 'add_moderator' && isset($input['album']) && isset($input['tokenmanager']) ){
-		$_SESSION['add_moderator']='true';
-		$_SESSION['add_moderator_album']=$input['album'];
-		$_SESSION['add_moderator_token']=$input['tokenmanager'];
+	else if (isset($input['action']) && $input['action'] == 'add_moderator' && isset($input['album']) && isset($input['tokenmanager']) ){
+		$_SESSION['add_moderator'] = 'true';
+		$_SESSION['add_moderator_album'] = $input['album'];
+		$_SESSION['add_moderator_token'] = $input['tokenmanager'];
 		view_login_form();
 	}
 
@@ -98,9 +98,9 @@ if (!user_logged_in()) {
 // We check whether they specified an action to perform. If not, it means they landed
 // here through a page reload, so we check the session variables to restore the page as it was. 
 else if ( ((isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) &&
-        ( !isset($_SESSION['add_moderator']) || $_SESSION['add_moderator']!='true')) ||  
+        ( !isset($_SESSION['add_moderator']) || $_SESSION['add_moderator'] != 'true')) ||  
         ( (isset($_SESSION['podman_logged']) && (!isset($input['action']) || empty($input['action']))) && 
-                isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']!='true')
+                isset($_SESSION['add_moderator']) && $_SESSION['add_moderator'] != 'true')
         ) {
     
     redraw_page();
@@ -110,13 +110,15 @@ else if ( ((isset($_SESSION['podman_logged']) && (!isset($input['action']) || em
 // We perform the action specified.
 else {
     
-    if(isset($_SESSION['add_moderator']) && $_SESSION['add_moderator']=='true'){
-        $input['action']='add_moderator';
-        $input['album']=$_SESSION['add_moderator_album'];
-        $input['tokenmanager']=$_SESSION['add_moderator_token'];
-        $_SESSION['add_moderator']='false';		
-    }
     
+	if (isset($_SESSION['add_moderator']) && $_SESSION['add_moderator'] == 'true'){
+		$input['action'] = 'add_moderator';
+		$input['album'] = $_SESSION['add_moderator_album'];
+		$input['tokenmanager'] = $_SESSION['add_moderator_token'];
+		$_SESSION['add_moderator'] = 'false';                      
+	}
+        
+        
     $action = $input['action'];
     $redraw = false;
     /**
@@ -446,13 +448,13 @@ function redraw_page() {
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
         $title = choose_title_from_metadata($metadata);
         
-        if(isset($metadata['id'])) {
+        if (isset($metadata['id'])) {
             $album_id = $metadata['id'];
         } else {
             $album_id = $metadata['name'];
         }
         
-        if(isset($metadata['course_code_public']) && $metadata['course_code_public']!="") {
+        if (isset($metadata['course_code_public']) && $metadata['course_code_public']!="") {
             $course_code_public = $metadata['course_code_public'];
         }
         $public_album = $current_album_is_public;

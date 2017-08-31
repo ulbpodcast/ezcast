@@ -40,13 +40,20 @@
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
-            <?php if (file_exists('./htdocs/images/Header/organization-logo.png')) { ?>
+            <?php  //if a custom organisation logo was defined, try to load it
+                if (file_exists('./htdocs/images/Header/organization-logo.png')) { ?>
                 <a href="<?php
                 global $organization_url;
                 echo $organization_url;
-                ?>"><img src="./images/Header/organization-logo.png"/></a>
-            <?php } ?>
-            <a href="index.php" title="®Back_to_home®"><img src="./images/Header/LogoEZplayer.png" alt="" /></a>
+                ?>"><img id="organisation_logo" src="images/Header/organization-logo.png"/></a>
+            <?php } 
+            
+            global $ezplayer_custom_logo;
+            $ezplayer_logo = $ezplayer_custom_logo !== false ? 
+                    "images/custom/$ezplayer_custom_logo" : 
+                    "images/Header/LogoEZplayer.png"; //default value
+            ?>
+            <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezplayer_logo; ?>" /></a>
         </div>
         <!-- S E T T I N G S -->
         <div class="form" id="settings_form">
@@ -58,41 +65,48 @@
         <!-- C O N T A C T -->
         <div class="form" id="contact_form">
             <div id='contact_form_wrapper'>
-<?php include_once template_getpath('div_contact.php'); ?>
+                <?php include_once template_getpath('div_contact.php'); ?>
             </div>
         </div>
 
         <?php if (acl_user_is_logged()) { ?>
-            <a href="index.php?action=logout" title="®Logout_title®"><span class="logout">®Logout®</span></a>
-            <?php
-        } else {
+            <a href="index.php?action=logout" title="®Logout_title®">
+                <span class="logout">®Logout®</span>
+            </a>
+        <?php } else {
             require_once template_getpath('popup_login.php');
             ?>
-            <a onclick="javascript:$('#popup_login').reveal($(this).data());" title="®Login_title®"><span class="logout">®Login®</span></a>
-<?php } ?>       
+            <a onclick="javascript:$('#popup_login').reveal($(this).data());" title="®Login_title®">
+                <span class="anonym_login">®Login®</span>
+            </a>
+        <?php } ?>       
         <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
-        <a href="index.php?action=view_help" target="_blank" title="®Help_title®"><span class="logout green">®Help®</span></a>
-        <a id="help" href="index.php?action=view_help" target="_blank" title="®Help_title®"></a>
-        <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
-<?php if (acl_user_is_logged()) { ?>
+        <a href="index.php?action=view_help" target="_blank" title="®Help_title®">
+            <span class="logout green">®Help®</span>
+        </a>
+        <?php if (acl_user_is_logged()) { ?>
+            <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
             <a id="contact" onclick="javascript:header_form_toggle('contact')" title="®Contact_title®"></a>  
-            <a id="user-settings" class="pull-right" onclick="javascript:header_form_toggle('settings')" title="®Preferences_title®">
+            <a id="user-settings" class="pull-right" onclick="javascript:header_form_toggle('settings');" title="®Preferences_title®">
                 <span>®Preferences®</span> 
             </a>      
-        <?php } ?>
-<?php if (acl_admin_user()) { ?>
+        <?php }
+        
+        if (acl_admin_user()) { ?>
             <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
             <a href="javascript:admin_mode_update()" title="®Admin_mode_update®">
                 <span class="logout"><?php echo acl_is_admin() ? '®Admin_mode_enabled®' : '®Admin_mode_disabled®'; ?></span>
             </a>
 
-        <?php } ?>
-<?php if (acl_runas()) { ?>
+        <?php } 
+        if (acl_runas()) { ?>
             <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
             <span class="logout">®connected_as® <b><?php echo $_SESSION['user_full_name']; ?></b></span>
-<?php } ?>
+        <?php } ?>
     </div>
 </div>
-<?php if (!acl_user_is_logged() && isset($login_error) && !empty($login_error)) { ?>
-    <script>              $('#popup_login').reveal($(this).data());</script> 
+<?php if (!acl_user_is_logged()) { ?>
+    <script>
+        $('#popup_login').reveal($(this).data());
+    </script>
 <?php } ?>

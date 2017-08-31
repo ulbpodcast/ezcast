@@ -71,12 +71,11 @@ function db_prepare(&$stmt_array = array()) {
     global $statements;
     global $debug_mode;
     
-    if($db_object == null)
-    {
+    if($db_object == null) {
         try {
             $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
         } catch (PDOException $e) {
-            throw new Exception('Could not connect to database.');
+            throw new Exception("Could not connect to database $db_host, $db_name with login $db_login");
         }
     }
     
@@ -131,7 +130,6 @@ function db_statement_prepare($statement_name, $statement) {
  */
 function db_sanitize($input) {
     return (empty($input)) ? '%' : '%' . $input . '%';
-    //return $input;
 }
 
 function db_gettable($tableID) {

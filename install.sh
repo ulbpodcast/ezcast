@@ -510,14 +510,6 @@ done;
 while [ "$lastname" == "" ]; do
     read -p "User's last name: " lastname;
 done;
-# places web files in the webspace
-cp -rp $ezcast_basedir/ezadmin/htdocs $webspace_directory/ezadmin;
-cp -rp $ezcast_basedir/ezmanager/htdocs $webspace_directory/ezmanager;
-cp -rp $ezcast_basedir/ezplayer/htdocs $webspace_directory/ezplayer;
-
-cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezamin/commons;
-cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezmanager/commons;
-cp -rp $ezcast_basedir/commons/htdocs $webspace_directory/ezplayer/commons;
 
 $php_path $ezcast_basedir/cli_install.php "$php_path" "$rsync_path" "$webspace_directory" "$ezcast_basedir" "$repository_basedir" "$username" "$password" "$firstname" "$lastname" "$apache_username";
 

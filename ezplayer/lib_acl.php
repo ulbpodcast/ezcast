@@ -196,9 +196,11 @@ function acl_global_count($album){
  * @return boolean
  */
 function acl_value_get($setting) {
-    $settings = $_SESSION["acl_user_settings"];
-    if(is_string($setting) && is_array($settings) && array_key_exists($setting, $settings)) {
-        return $settings[$setting];
+    if(isset($_SESSION["acl_user_settings"])) {
+        $settings = $_SESSION["acl_user_settings"];
+        if(is_string($setting) && is_array($settings) && array_key_exists($setting, $settings)) {
+            return $settings[$setting];
+        }
     }
     return NULL;
 }
@@ -324,6 +326,7 @@ function acl_show_notifications(){
  * @return boolean
  */
 function acl_display_threads(){
+    
     if (!acl_user_is_logged()) return true;
     
     global $default_display_thread;

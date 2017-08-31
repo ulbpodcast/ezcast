@@ -1,0 +1,377 @@
+
+
+    /* --- SMARTPHONE Interface  ----------------------------------------------------------*/
+
+@media only screen and (max-device-width: 736px){ 
+	/*Header*/
+	.header_content span{
+		font-size:30px !important;
+		color: white;
+		padding-right: 15px;
+	}
+	.header{
+		    padding: 50px 0px;
+	}
+
+	/*login part*/
+	.login_video {
+		display: none;
+	}	
+
+	#form_login label {
+		font-size: 35px;
+	}
+	
+	#form_login{
+		padding-left: 50px;
+	}
+
+	.login_background .form-control{
+			height: 75px;
+			font-size: 35px;
+			
+	}
+	
+	.login_background .col-sm-9 {
+		width: 50%;
+	}
+	.login{
+		height: 75px;
+		width: 100%;
+		font-size: 35px;
+	}
+
+	/*COURSE LIST*/
+
+	.albums .share-rss{
+		display:none;
+	}
+	.albums {
+		font-size: 35px;
+	}
+	.albums .album_options {
+		font-size: 35px;
+		margin-top: -80px;
+		width: 75px;
+		height: 75px;
+
+	}
+	
+	.albums .up-arrow, .albums .down-arrow{
+		background-size: 32px;
+		width: 32px;
+		height: 32px;	
+	}
+	.albums .delete-album {
+		width: 32px;
+		height: 32px;
+		background-size: 32px;
+	}
+
+	/*assets list*/
+	#side_pane{
+	    /*display: none;*/
+		width: 100% !important;
+		height: 100% !important;
+		font-size: 30px;
+	}
+	#side_menu {
+		/*display: none;*/
+	}
+
+	#side_wrapper {
+		position: relative;
+	}
+	#assets {
+		width: 940px;
+		font-size: 35px;
+		word-wrap: break-word;
+	}
+	
+	#div_right {
+		height: 15px !important;
+	}
+
+	#assets .title{
+		height: 35px;
+		font-size: 35px;
+	}
+	#assets .title span{
+		padding-left: 125px !important;
+	}
+
+	#site_map {
+		font-size: 35px;
+	}
+
+	/*video screen*/
+	
+	.download-button {
+		width: 600px;
+	}
+
+	.asset_info {
+		font-size: 35px;
+	}
+	.asset_title {
+		font-size: 35px;
+		word-wrap: break-word;
+			width:100%;
+	}
+	
+	.threads_header {
+		font-size: 35px;
+	}
+
+	#threads {
+		font-size: 35px;
+	}
+
+	#bottom {
+		padding-top: 40px;
+	}
+	
+	#main_video, #secondary_video {
+		/*height: 100%;*/
+		width: 100% !important;
+	}
+	.video_controls{
+		width: 100% !important;
+	}
+
+	#video_player {
+		width: 100% !important;
+		height: 100%;
+		z-index: 800;
+	}
+
+	.panel-button{
+		display:none !important;
+	}
+
+	#div_left {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		min-height: 450px;
+	}
+	#div_right {
+		position: relative;
+		width: 100%;
+		height: 100% !important;
+		min-height: 450px;
+	}
+
+	#side_wrapper{
+		right:0px !important;
+		
+	}
+	#search{
+		display:none;
+	}
+		
+	.side_pane_content {
+		width: 50%;
+	}
+
+	.side_pane_content ul {
+		 width: 100%; 
+	}
+	.side_pane_content ul li a.item.blue, .side_pane_content ul li a.item.orange {
+		width:100%; 
+	}
+	.side_pane_up, .side_pane_down {
+		width: 100%;
+	}
+	.side_pane_up a, .side_pane_down a {
+		width: 100%; 
+	}
+
+	.item-thread-content span, #thread_author span{
+		font-size:35px !important;
+	}
+	.item-thread-content {
+		font-size: 35px;
+	}
+	
+	#thread_author{
+		font-size:35px !important;
+	}
+	
+	.cancelButton{
+		margin-left: 0px !important; 
+	}
+	
+	.comment_author , .comment_author span {
+		font-size: 25px !important;
+	}
+	
+	.upvote-button,  .downvote-button{
+		height: 35px;
+		width: 35px;
+		background-size: 35px;
+	}
+	.copy-button,.copy-button.active  {
+		background-size: 30px;
+		width: 30px;
+		height: 30px;
+	}
+	.edit-button.green2 {
+		height: 30px;
+		width: 30px;
+		background-size: 30px;
+	}
+		
+	#div_popup{
+		font-size: 30px;
+	}
+	
+	#thread_form, #bookmark_form{
+		width:100% !important;
+		height: 370px;
+	}
+	
+	
+	#help-content, #infos-content {
+		font-size: 25px;
+	}
+	#login_form {
+		font-size: 35px;
+		width: 735px;
+	}
+	.settings {
+		display: none !important;
+	}
+	
+	.item-thread-nbcomments {
+		font-size: 35px;
+	}
+	.more-button-small,.more-button-small.active, .more-button-small.active:hover{
+		width: 35px;
+		height: 35px;
+		background-size: 35px !important;
+	}
+	.error_message {
+		font-size: 35px;
+	}
+	.cookie_header {
+		font-size: 30px;
+	}
+	.cookie_header button ,.button-empty, .button{
+		font-size: 25px;
+	}
+	#tuto_label {
+		width: 85%;
+		font-size: 25px;
+	}
+	.refresh-button,.more-button,.more-button.active,.delete-button,.edit-button.active,.edit-button {
+		height: 30px;
+		width: 30px;
+		background-size: 30px;
+	}
+	.close-reveal-modal {
+		font-size: 50px !important;
+	}
+	
+	.footer_mention {
+		font-size: 25px;
+	}
+	.copyright {
+		font-size: 25px;
+	}
+
+	.form .small {
+		font-size: 10px !important;
+		width: 175px;
+	}
+	#contact_form_wrapper,#contact_form_wrapper form label{
+		font-size:25px;
+	}
+	
+	#contact_form.form textarea {
+		width: 700px;
+		height: 120px;
+	}
+	#contact_form.form label , #contact_form.form .small {
+		width: 210px;
+	}
+
+	
+	#settings_form input[type=checkbox]{
+		width:25px;
+		height:25px;
+	}
+	
+	#video_player .form label{
+		font-size: 15px;
+	}
+	
+	.video_controls {
+		height: 40px;
+	}
+	
+	.video_controls ul li a, .video_controls ul li div {
+		width:30px;
+		height:30px;
+		background-size:30px !important;
+	}
+	
+	#main_player{
+		word-wrap: break-word;
+	}
+	
+	/*streaming*/
+
+	#streaming_config_wrapper {
+		width: 100% !important;
+	}
+	
+	#chat_help, #chat_questions,#chat_menu {
+		display: none;
+	}
+	
+	#chat_container,#chat,#chat_text,#chat_text,#chat_wrapper,#chat_messages,#chat_scrollable_area, #chat_header {
+		width:100% !important;
+		font-size:20px;
+	}
+	#chat{
+		margin-bottom:200px !important;
+	}
+	
+	.chat_msg, .chat_msg_info, #chat_message,#chat_header span {
+		font-size:20px;
+	}
+	.side_pane_content input, .side_pane_content textarea {
+		border-width: 3px;
+		font-size: 25px;
+		width:90%;
+			
+	}
+	.edit_bookmark_form {
+		width: 100%;
+	}
+	.full-width label, .full-width span{
+		width: 110;
+		text-align:left !important;
+	}
+	#thread_form_wrapper {
+		max-width: 100%;
+	}
+	
+	.form input, .form textarea, .form select {
+		font-size: 25px !important;
+	}
+	
+	.mce-container-body {
+		width: 100% !important;
+	}
+
+	.message-input.edit_msg {
+		width: 100%;
+		margin: 5px 5px;
+	}
+	#comment_form_wrapper,#answer_comment_form_wrapper {
+    margin: 15px 15px;
+}
+	
+}

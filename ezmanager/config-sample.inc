@@ -25,7 +25,7 @@ $render_root_path="$repository_basedir/queues/rendering/";
 $render_finished_partial_upload_dir="$repository_basedir/queues/rendering/uploading";
 $render_finished_upload_dir="$repository_basedir/queues/rendering/processed";
 
-$dir_date_format="Y_m_d_H\hi";// ls friendly date to create directories/files
+$dir_date_format="Y_m_d_H\hi_s\s";// ls friendly date to create directories/files
 
 // used by web_index when creating a new album for titling the videos
 $default_intro = 'Semeur';
@@ -38,9 +38,20 @@ $default_add_title = "FlyingTitle";
 // titlings value: false if no titling needed / name of the titling if value
 $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (default)'));
                 //   array('value' => 'RevealTitle', 'label' => 'Reveal'));
-$default_downloadable = true;
+$default_downloadable = false;
 
+$enable_anon_access_control = false; //Enable the user to choose if the album is accessible from anonym or not
 
+$default_anon_access = 'false'; //default value when a video is uploaded
+
+$enable_copy_asset = false; //allow copying asset into other albums
+
+$enable_course_creation = false; //enable the possibility for a ezmanager user to create his own course
+$enable_channel_creation = false; //enable the possibility for a ezmanager user to define his album as a channel
+
+$enable_moderator = false;  //enable the possibility to share album and manage moderator on ezmanager 
+
+$regenerate_title_mode = 'none';  //When moving an asset, auto regenerate title. Possible option : none: no update / auto: update auto if modif / manual: button in ezmanager to modif
 // used by lib_ezmam (ezmanager)
 $accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)

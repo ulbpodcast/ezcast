@@ -29,8 +29,13 @@
 <!--
 Popup displayed when an option is not available due to ongoing processing
 -->
-<div class="popup" id="popup_not_available">
-    <h2>®Not_available®</h2>
-    ®Not_available_while_processing®<br/><br/>
-    <span class="Bouton"> <a href="javascript:close_popup();"><span>®Close_and_return_to_index®</span></a></span>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Not_available®</h4>
+</div>
+<div class="modal-body">
+    ®Not_available_while_processing®
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">®Close_and_return_to_index®</button>
 </div>

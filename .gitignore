@@ -30,3 +30,4 @@ ezplayer/tmpl_sources/core
 ezmanager/core
 **/*killme*
 **/.php_cs.cache
+/commons/traces_analyzing/checked_file.txt

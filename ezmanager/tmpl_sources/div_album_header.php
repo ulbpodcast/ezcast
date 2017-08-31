@@ -1,76 +1,112 @@
-<?php 
-/*
-* EZCAST EZmanager 
-*
-* Copyright (C) 2016 Université libre de Bruxelles
-*
-* Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
-*                   Antoine Dewilde
-* UI Design by Julien Di Pietrantonio
-*
-* This software is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-?>
-
 <!--
 Before calling this template, please define the following variables:
 - $album The (technical) album name, i.e. including suffix
 - $album_name The (user-friendly) album name
-- $description The album description/long name
+- $title The album description/long name
 - $public_album Set to "true" if the album is public, false otherwise
 - $hd_rss_url URL to the HD RSS feed
 - $sd_rss_url URL to the SD RSS feed
 -->
 <div id="div_album_header">
     <div class="BlocInfoAlbum">
-            <div class="BoutonInfoAlbum"> <span class="TitreCour"><?php echo $album_name; ?> | <?php echo $description; ?> | <?php if($public_album) echo '®Public_album®'; else echo '®Private_album®'; ?></span>
+            <div class="ButtonInfoAlbum"> 
+                <span class="TitreCour">
+                    <?php echo (isset($course_code_public) && $course_code_public !="") ? $course_code_public : $album_id; ?> |
+                    <?php echo $title; ?> | 
+                    <?php echo ($public_album) ? '®Public_album®' : '®Private_album®'; ?>
+                </span>
                 
                 <!-- drop-down menu -->
                 <div id="advanced_menu">
-                    <ul id="dropdown_menu">
-                        <li>
-                            <div onclick="show_advanced_menu()"></div>
-                            <ul class="submenu">
-                                <li><span class="BoutonSuppAlbum"><a href="javascript:show_popup_from_inner_div('#popup_delete_album')">®Delete_album®</a></span></li>
-                                <li><span class="BoutonEditer"><a href="javascript:show_popup_from_outer_div('index.php?action=view_edit_album')">®Edit_album®</a></span></li>
-                                <li><span class="BoutonRSS"><a href="javascript:show_popup_from_inner_div('#popup_reset_rss_feed')">®Regenerate_RSS®</a></span></li>
+                    <div class="btn-group" role="group">
+                        
+                        <a href="index.php?action=view_submit_media" class="btn btn-default" role="button"
+                            data-remote="false" data-toggle="modal" data-target="#modal" > 
+                            <img src="images/page4/iconUp.png" style="height: 18px;" >
+                            <span class="TitrePodcast"> 
+                                ®Submit_record®
+                            </span> 
+                        </a>
+                        
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+                                  aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php 
+                                            echo trim($album_name); ?>&amp;album_id=<?php echo trim($album_id); ?>" 
+                                        data-remote="false" data-toggle="modal" data-target="#modal">
+                                        <img src="images/page4/iconSuppBackg.png" /> ®Delete_album®
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
+                                        data-target="#modal">
+                                        <img src="images/page4/iconEditerBackg.png" /> ®Edit_album®
+                                    </a>
+                                </li>
+                                <?php if($enable_moderator){ ?> 
+                                    <li>
+                                        <a href="index.php?action=view_list_moderator" data-toggle="modal"
+                                            data-target="#modal">
+                                            <img src="images/page4/iconEditerBackg.png" /> ®Moderator_manage®
+                                        </a>
+                                    </li> 
+                                <?php } ?>
+                                <li>
+                                    <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php 
+                                        echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
+                                        data-target="#modal">
+                                        <img src="images/page4/iconRssBackg.png" /> ®Regenerate_RSS®
+                                    </a>
+                                </li>
+                                <?php if($trace_on && $display_trace_stats) { ?>
+                                    <li>
+                                        <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php 
+                                            echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
+                                            data-target="#modal">
+                                            <img src="images/page4/iconRestaStatsBackg.png" /> ®Stats_Reset®
+                                        </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
-                
-                <ul>
-                    <li><span class="BoutonSoumettreAlbum"><a href="javascript:show_popup_from_outer_div('index.php?action=view_submit_media');">®Submit_record®</a></span></li>
-                </ul>
             </div>
-            <a class="greyLink" style="padding-left: 15px; border: none; font-size: 0.75em" href="javascript:show_popup_from_inner_div('#HD_RSS_box'); ">
-                <img src="images/page4/PictoRss.png" style="display:inline"/> ®HD_RSS_feed®</a> 
-            <a class="greyLink" style="font-size:0.75em;" href="javascript:show_popup_from_inner_div('#SD_RSS_box'); ">
-                <img src="images/page4/PictoRss.png" style="display:inline"/> ®SD_RSS_feed®</a> 
-            <a class="greyLink ezplayer" style="font-size:0.75em;<?php if(!$public_album) echo "color: red !important;"?>" href="javascript:show_popup_from_inner_div('#player_url_box');">
-                    <img src="images/page4/PictoEZ.png" style="display:inline"/> ®Player_url®</a>
-
+            <ul class="nav nav-tabs">
+                <li role="presentation" id="list" style="padding-left: 14px;"
+                    <?php if(!isset($current_tab) || $current_tab == 'list' ) { echo 'class="active"'; } ?> >
+                    <a href="javascript:show_album_details('<?php echo $current_album; ?>');">
+                        <img src="images/page4/list.png" style="display:inline"/> 
+                        ®Assets_list®
+                    </a>
+                </li>
+                <li role="presentation" id="url" 
+                    <?php if(isset($current_tab) && $current_tab == 'url' ) { echo 'class="active"'; } ?>>
+                    <a <?php if(!$public_album) { echo 'style="color: red !important;"'; } ?>
+                        href="javascript:show_ezplayer_link('<?php echo $current_album; ?>');">
+                        <img src="images/page4/PictoEZPlayer.png" style="display:inline"/> 
+                        ®Player_url®
+                    </a>
+                </li>
+                
+                <?php if($trace_on && $display_trace_stats) { ?>
+                    <li role="presentation" id="stats"
+                        <?php if(isset($current_tab) && $current_tab == 'stats' ) { echo 'class="active"'; } ?>>
+                        <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>'); ">
+                            <span class="glyphicon glyphicon-stats" aria-hidden="true" style="color: black;"></span>
+                            ®Stats_Descriptives®
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
     </div>
 
     <!-- Popups -->
     <div style="display: none;">
-        <?php include_once 'popup_player_url.php'; ?>
-        <?php include_once 'popup_hd_rss_feed.php'; ?>
-        <?php include_once 'popup_sd_rss_feed.php'; ?>
-        <?php include_once 'popup_delete_album.php'; ?>
         <?php include_once 'popup_reset_rss_feed.php'; ?>
     </div>
 </div>

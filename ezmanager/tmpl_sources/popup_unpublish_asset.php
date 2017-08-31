@@ -30,12 +30,20 @@
 Asks confirmation before deleting an album.
 You should not have to include this file yourself (included in div_album_header.php), but if you do, make sure that $album_name is correctly defined
 -->
-<div class="popup" id="popup_unpublish_asset_<?php echo $asset_name; ?>">
-    <h2>®Unpublish®</h2>
-    <strong>®Title®&nbsp;:</strong> <?php echo $title; ?><br/><br/>
-    <span class="Bouton"> <a href="?action=view_help" target="_blank"><span>®Help®</span></a></span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span class="Bouton"> <a href="javascript:close_popup();"><span>®Cancel®</span></a></span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span class="Bouton"> <a href="javascript:popup_asset_unpublish_callback('<?php echo $album; ?>', '<?php echo $asset_name; ?>');"><span>®OK®</span></a></span>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">®Unpublish®</h4>
+</div>
+<div class="modal-body">
+    <strong>®Title®&nbsp;:</strong> <?php echo htmlspecialchars($title); ?>
+
+    <center>
+        <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
+        <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#unpublish_asset'));$('#modal').modal('show'); }, 500);"
+            href="index.php?action=unpublish_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>" 
+            data-dismiss="modal" id="unpublish_asset">
+            ®OK®
+        </a>
+    </center>
 </div>

@@ -1,5 +1,5 @@
 
-<div class="page_title">®course_details_title®: <?php echo $course_code; ?></div>
+<div class="page_title">®course_details_title®: <?php if(isset($course_code_public) && $course_code_public!="") echo $course_code_public; else echo $course_code; ?></div>
 
 <div class="col-md-8">
     <form class="form-horizontal" method="POST">
@@ -31,18 +31,6 @@
                            value="<?php echo htmlspecialchars($course_name) ?>" />
                 </div>
             <?php } ?>
-            </div>
-        </div>
-
-        <!-- Shortname -->
-        <div class="form-group <?php echo empty($shortname) ? 'edit' : '' ?>">
-            <label class="col-md-3 control-label">®course_short_name®</label>
-            <div class="col-sm-5">
-                <p class="view form-control-static"><?php echo $shortname; ?></p>
-                <div class="edit">
-                    <input type="text" class="form-control" name="shortname" 
-                           value="<?php echo htmlspecialchars($shortname) ?>" />
-                </div>
             </div>
         </div>
 

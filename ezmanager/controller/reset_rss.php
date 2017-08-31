@@ -15,20 +15,17 @@ function index($param = array()) {
     }
 
     if (!ezmam_album_exists($input['album'])) {
+        echo 'album ! ' . $input['album'];
         error_print_message(ezmam_last_error());
         die;
     }
-
-    if (!ezmam_album_exists($input['album'])) {
-        error_print_message(ezmam_last_error());
-        die;
-    }
-
+    
     //
     // We just have to reset the tokens ...
     //
     ezmam_album_token_reset($input['album']);
-
+    $album = $input['album'];
+    
     //
     // ... And display a confirmation message!
     //

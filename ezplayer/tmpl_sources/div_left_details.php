@@ -60,7 +60,15 @@ switch (strtolower($_SESSION['browser_name'])) {
             $token = $token['token'];
             ?>
             <div class="right-arrow"></div>
-            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" title="®Back_to_album®">(<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?></a>   
+            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" 
+                title="®Back_to_album®">
+                (<?php if(isset($course_code_public) && $course_code_public!="") {
+                    echo $course_code_public; 
+                } else {
+                    echo suffix_remove($album); 
+                } ?>) 
+                <?php  echo get_album_title($album); ?>
+            </a>
         <?php } ?>
         <div class="right-arrow"></div><?php print_info($asset_meta['title']); ?>
     </div>

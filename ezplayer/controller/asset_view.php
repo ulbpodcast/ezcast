@@ -120,7 +120,11 @@ function index($param = array()) {
             acl_update_watched_assets();
         }
     }
-
+	
+    $album_title = ezmam_album_metadata_get($album);
+    if(isset($album_title['course_code_public'])) {
+        $course_code_public = $album_title['course_code_public'];
+    }
     // gets metadata for the selected asset
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
@@ -165,8 +169,9 @@ function index($param = array()) {
     $_SESSION['album'] = $album;
     $_SESSION['asset'] = $asset;
     $_SESSION['timecode'] = $timecode;
-    if ($seek && isset($thread_id))
+    if ($seek && isset($thread_id)) {
         $_SESSION['current_thread'] = $thread_id;
+    }
     $_SESSION['asset_token'] = $asset_token;
     
     if($seek) {
@@ -197,11 +202,13 @@ function index($param = array()) {
     }
     if (array_key_exists('click', $input) && $input['click']) { // called from a local link
         // lvl, action, album, asset, record type (cam|slide|camslide), permissions (view official | add personal), origin
-        trace_append(array('3', $ezplayer_mode, $album, $asset, $asset_meta['record_type'], ($has_bookmark) ? 'view_and_add' : 'view_only', 'from_ezplayer'));
+        trace_append(array('3', $ezplayer_mode, $album, $asset, $asset_meta['record_type'], 
+            ($has_bookmark) ? 'view_and_add' : 'view_only', 'from_ezplayer'));
         include_once template_getpath('div_assets_center.php');
     } else {// called from the UV or a shared link
         if(!array_key_exists('no_trace', $input) || !$input['no_trace']) {
-            trace_append(array('3', $ezplayer_mode, $album, $asset, $asset_meta['record_type'], ($has_bookmark) ? 'view_and_add' : 'view_only', 'from_external'));
+            trace_append(array('3', $ezplayer_mode, $album, $asset, $asset_meta['record_type'], 
+                ($has_bookmark) ? 'view_and_add' : 'view_only', 'from_external'));
         }
         
         include_once template_getpath('main.php');

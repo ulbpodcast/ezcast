@@ -23,9 +23,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-var http_request = false;
 function makeRequest(url, parameters,div_id) {
-    http_request = false;
+    var http_request = false;
     if (window.XMLHttpRequest) { // Mozilla, Safari,...
         http_request = new XMLHttpRequest();
         if (http_request.overrideMimeType) {
@@ -40,10 +39,12 @@ function makeRequest(url, parameters,div_id) {
             } catch (e) {}
         }
     }
+    
     if (!http_request) {
         alert('Cannot create XMLHTTP instance');
         return false;
     }
+    
     http_request.onreadystatechange=function(){
         if (http_request.readyState==4 && http_request.status==200){
             //alert('response from server:'+http_request.responseText);
@@ -53,22 +54,17 @@ function makeRequest(url, parameters,div_id) {
             //makes sure the scripts contained in the page are executed after being 
             //loaded by ajax
             var scripts = div_element.getElementsByTagName('script');
-            for(var i=0; i < scripts.length;i++)
-            {			
+            for(var i=0; i < scripts.length;i++) {
                 // if IE, we have to use execScript to define functions as global
-                if (window.execScript)
-                {
+                if (window.execScript) {
                     //Replaces the HTML comments because IE doesn't handle them well
                     window.execScript(scripts[i].text.replace('<!--',''));
-                }
-                // if any other web browser, we use a simple window.eval()
-                else
-                {
+                } else { // if any other web browser, we use a simple window.eval()
                     window.eval(scripts[i].text);
                 }
             }
         }
-    }
+    };
     //http_request.onreadystatechange = alertContents;
     http_request.open('GET', url + parameters, true);
     http_request.send(null);

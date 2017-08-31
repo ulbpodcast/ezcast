@@ -35,10 +35,11 @@
         <title>®podman_page_title®</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
+        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
         <link rel="stylesheet" type="text/css" href="css/uploadify.css" />
         <script type="text/javascript" src="js/AppearDissapear.js"></script>
         <script type="text/javascript" src="js/hover.js"></script>
-        <script type="text/javascript" src="js/jQuery/jquery-1.3.2.min.js"></script>
+        <script type="text/javascript" src="js/jQuery/jquery-2.2.4.min.js"></script>
         <script type="text/javascript" src="js/swfobject.js"></script>
         <script type="text/javascript" src="js/jquery.uploadify.v2.1.4.min.js"></script>
         <script type="text/javascript" src="js/httpRequest.js"></script>
@@ -61,7 +62,6 @@
         </script>
     </head>
     <body onload="MM_preloadImages('images/page4/BCreerAlbum.png')">
-        <div id="test"></div>
         <div class="container">
             <div id="global">
                 <?php include_once template_getpath('div_main_header.php'); ?>

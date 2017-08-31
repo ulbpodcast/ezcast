@@ -5,7 +5,8 @@
  */
 
 if ($argc != 11) {
-    echo "usage: " . $argv[0] . " <php_path> <rsync_path> <apache_documentroot> <ezcast_basedir> <repository_basedir> <user> <passwd> <fullname> <apache_username>" .
+    echo "usage: " . $argv[0] . " <php_path> <rsync_path> <apache_documentroot> <ezcast_basedir> <repository_basedir> "
+            . "<user> <passwd> <fullname> <apache_username>" .
     "\n <php_path> the path to the php binary" .
     "\n <rsync_path> the path to the rsync binary" .
     "\n <apache_documentroot> the path Apache's documentroot" .
@@ -34,37 +35,7 @@ $apache_username = $argv[10];
  * position of EZcast products
  */
 
-$web_file = file_get_contents($apache_documentroot . "/ezadmin/install.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezadmin/install.php", $web_file);
-
-$web_file = file_get_contents($apache_documentroot . "/ezadmin/index.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezadmin/index.php", $web_file);
-
-$web_file = file_get_contents($apache_documentroot . "/ezmanager/index.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezmanager/index.php", $web_file);
-
-$web_file = file_get_contents($apache_documentroot . "/ezmanager/distribute.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezmanager/distribute.php", $web_file);
-
-$web_file = file_get_contents($apache_documentroot . "/ezmanager/recorder/index.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezmanager/recorder/index.php", $web_file);
-
-$web_file = file_get_contents($apache_documentroot . "/ezmanager/recorder/logs.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezmanager/recorder/logs.php", $web_file);
-
-$web_file = file_get_contents($apache_documentroot . "/ezplayer/index.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezplayer/index.php", $web_file);
-
-$web_file = file_get_contents($apache_documentroot . "/ezplayer/infos.php");
-$web_file = str_replace("!PATH", $basedir, $web_file);
-file_put_contents($apache_documentroot . "/ezplayer/infos.php", $web_file);
+system("$php_cli_cmd ".__DIR__."/cli_install_htdocs.php $apache_documentroot");
 
 /*
  * Then, we add user's configuration in commons/config.inc

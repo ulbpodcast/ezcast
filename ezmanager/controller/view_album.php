@@ -11,11 +11,23 @@ function index($param = array()) {
     global $ezmanager_url; // Website URL, defined in config.inc
     global $distribute_url;
     global $ezplayer_url;
+    global $enable_moderator;
+    global $enable_anon_access_control;
+    global $trace_on;
+    global $display_trace_stats;
+    // global $ezmanager_url;
 
+    if (isset($input['tokenmanager'])){
+        // add course to user in DB
+    }	
+    
     if (isset($input['album']))
         $album = $input['album'];
-    else
+    else {
         $album = $_SESSION['podman_album'];
+    }
+    $current_album = $album;
+    
     ezmam_repository_path($repository_path);
     //
     // 0) Permissions checks
@@ -35,14 +47,28 @@ function index($param = array()) {
     // 2) We set the variables used in the template with the correct values
     //
     $album_name_full = $album; // complete album name, used for div identification
-    $album_name = suffix_remove($album); // "user-friendly" album name, used for display
-    $description = $metadata['description'];
+    if(isset($metadata['id'])) {
+        $album_id = $metadata['id'];
+    } else {
+        $album_id = $metadata['name'];
+    }
+    if(isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
+        $course_code_public = $metadata['course_code_public'];
+    }
+    $album_name = $metadata['name'];
+    
+    // TO DO : create variable to show displayed_course_code
+    // $album_displayed_code = get_album_displayed_code($album);
+
+    
+    $title = choose_title_from_metadata($metadata);
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
     $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album);
     $sd_rss_url = $distribute_url . '?action=rss&amp;album=' . $album . '&amp;quality=low&amp;token=' . ezmam_album_token_get($album);
     $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=high&token=' . ezmam_album_token_get($album);
     $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=low&token=' . ezmam_album_token_get($album);
     $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
+    ezmam_album_token_manager_set($album);	
     $assets = ezmam_asset_list_metadata($album_name_full);
 
     //
@@ -55,6 +81,7 @@ function index($param = array()) {
     // 4) Then we display the album
     //
 
+    $current_tab = 'list';
     include template_getpath('div_album_header.php');
     include template_getpath('div_asset_list.php');
 }

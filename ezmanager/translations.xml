@@ -426,6 +426,8 @@
         <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
         <label id="Stats_Descriptives" lang="fr">Statistiques</label>
         <label id="Stats_Descriptives" lang="en">Statistics</label>
+        <label id="Stats_video_title" lang="fr">Statistiques de la vidéo</label>
+        <label id="Stats_video_title" lang="en">Statistics of the video</label>
         <label id="Stats_Reset" lang="fr">Remettre les statistiques à zéro</label>
         <label id="Stats_Reset" lang="en">Reset statistics</label>
         <label id="Stats_Reset_message" lang="fr">Remettre les statistiques à zéro et ...</label>
@@ -472,10 +474,12 @@
         <label id="Graph_min_per_min_view" lang="fr">Mesure d\'audiance de la vidéo</label>
         <label id="Graph_views" lang="en">view</label>
         <label id="Graph_views" lang="fr">vues</label>
-        <label id="Graph_cam_view" lang="en">View in cam mode</label>
-        <label id="Graph_cam_view" lang="fr">Vue en mode caméra</label>
-        <label id="Graph_slide_view" lang="en">View in slide mode</label>
-        <label id="Graph_slide_view" lang="fr">Vue en mode slide</label>
+        <label id="Graph_cam_view" lang="en">Cam</label>
+        <label id="Graph_cam_view" lang="fr">Vidéo</label>
+        <label id="Graph_slide_view" lang="en">Slide</label>
+        <label id="Graph_slide_view" lang="fr">Diaporama</label>
+        <label id="Graph_time" lang="en">Time</label>
+        <label id="Graph_time" lang="fr">Temps</label>
         <label id="popupModoAddedP1" lang="fr"> Album " </label>
         <label id="popupModoAddedP1" lang="en"> Album " </label>
         <label id="popupModoAddedP2" lang="fr">  " ajouté correctement à votre liste </label>

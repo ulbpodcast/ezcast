@@ -1,7 +1,7 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">®Stats_Descriptives®</h4>
+    <h4 class="modal-title">®Stats_video_title®</h4>
 </div>
 <div class="modal-body">
     <?php if(isset($stats['display']) && $stats['display']) { ?>
@@ -35,7 +35,10 @@
             }
         },
         title: {
-            text: '®Graph_min_per_min_view®'
+            text: ''
+        },
+        legend: {
+            verticalAlign: 'top'
         },
         plotOptions: {
             areaspline: {
@@ -50,7 +53,7 @@
         },
         xAxis: {
             title: {
-                text: 'Test'
+                text: '®Graph_time®'
             },
             minTickInterval: 1,
             labels: {
@@ -91,30 +94,50 @@
             shared: true,
             valueSuffix: ' ®Graph_views®',
             formatter: function() {
-                    return '<b>' + this.points[0].series.name + ':</b> ' +
+                    return '' +
+                      '<b>' + this.points[0].series.name + ':</b> ' +
                     	this.points[0].y + ' ®Graph_views®<br />' +
+                    <?php if($has_slides && $has_cam) { ?>
                       '<b>' + this.points[1].series.name + ':</b> ' +
                       this.points[1].y + ' ®Graph_views®<br />'+
-                      '<b>Total:</b> ' + (this.points[0].y + this.points[1].y) + 
-                        ' ®Graph_views®';
+                    <?php } ?>
+                    <?php if($has_cam && $has_slides) { ?>
+                      '<b>Total:</b> ' + (this.points[0].y + this.points[1].y) + ' ®Graph_views®' + 
+                    <?php } ?>
+                    '';
                 }
         },
-        series: [{
-                name: '®Graph_slide_view®',
-                data: <?php echo $stats['str_view_time_slide']; ?>
-            },{
-                name: '®Graph_cam_view®',
-                data: <?php echo $stats['str_view_time_cam']; ?>
-            }]
+        series: [
+            <?php if($has_slides) { ?>
+                {
+                    name: '®Graph_slide_view®',
+                    data: <?php echo $stats['str_view_time_slide']; ?>
+                }
+            <?php }
+        
+            if($has_slides && $has_cam) {
+                echo ',';
+            }
+        
+            if($has_cam) { ?>
+                {
+                    name: '®Graph_cam_view®',
+                    data: <?php echo $stats['str_view_time_cam']; ?>
+                }
+            <?php } ?>
+        ]
     });
 <?php } ?>
 (function() {
-    show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'cam', '<?php 
-            echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_cam'; ?>', '100%', '100%');
-    <?php if($has_slides) { ?>
-        show_embed_player('<?php echo $album; ?>', '<?php echo $asset; ?>', 'low', 'slide', '<?php 
-                echo $asset_token; ?>', 'Popup_Player_<?php echo $asset . '_slide'; ?>', '100%', '100%');
-    <?php } ?>
+    <?php if($has_cam) {
+        echo "show_embed_player('".$album."', '".$asset."', 'low', 'cam', '" .
+            $asset_token. "', 'Popup_Player_" . $asset . "_cam', '100%', '100%');";
+    }
+    
+    if($has_slides) {
+        echo "show_embed_player('" . $album . "', '" . $asset . "', 'low', 'slide', '".
+                $asset_token . "', 'Popup_Player_" . $asset . "_slide', '100%', '100%');";
+    } ?>
 })();
 
 function adaptVideoTime(xValue) {

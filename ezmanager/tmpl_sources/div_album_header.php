@@ -51,7 +51,7 @@ Before calling this template, please define the following variables:
                                     <li>
                                         <a href="index.php?action=view_list_moderator" data-toggle="modal"
                                             data-target="#modal">
-                                            <img src="images/page4/iconEditerBackg.png" /> ®Moderator_manage®
+                                            <img src="images/page4/iconModeratorBackg.png" /> ®Moderator_manage®
                                         </a>
                                     </li> 
                                 <?php } ?>

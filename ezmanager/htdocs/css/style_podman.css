@@ -458,6 +458,7 @@ body{
 .LigneButton li a {
     display:block;
     background-repeat:no-repeat;
+    background-position: left center;
     height:21px;
     text-decoration:none;
     font-size:12px;
@@ -500,11 +501,11 @@ body{
 }
 
 .ButtonRegenTitle a {
-    background-image:url(../images/page4/AProgrammer.png);
+    background-image:url(../images/page4/ARegenerer.png);
 }
 
 .ButtonRegenTitle a:hover {
-    background-image:url(../images/page4/BProgrammer.png);
+    background-image:url(../images/page4/BRegenerer.png);
 }
 
 .ButtonMove a{
@@ -537,6 +538,14 @@ body{
 
 .ButtonMoveAlbumPublic a:hover{
     background-image:url(../images/page4/BDeplacerAlbumPublic.png);
+}
+
+.BoutonStatsTitle a {
+    background-image:url(../images/page4/AStats.png);
+}
+
+.BoutonStatsTitle a:hover {
+    background-image:url(../images/page4/BStats.png);
 }
 
 .ButtonInfoAlbum{

@@ -225,6 +225,10 @@
         <label id="Album_other_name" lang="en"> Album label :  </label>
         <label id="album_copy_success" lang="fr"> Album copié avec succès :  </label>
         <label id="album_copy_success" lang="en"> Album copied successfully :  </label>
+        <label id="popupModoAddedP1" lang="fr"> Album " </label>
+        <label id="popupModoAddedP1" lang="en"> Album " </label>
+        <label id="popupModoAddedP2" lang="fr">  " ajouté correctement à votre liste </label>
+        <label id="popupModoAddedP2" lang="en">  " correctly added to your list </label>
 
 
         
@@ -424,112 +428,8 @@
         <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
         <label id="Stats_Descriptives" lang="fr">Statistiques</label>
         <label id="Stats_Descriptives" lang="en">Statistics</label>
-        <label id="Stats_Reset" lang="fr">Remettre les statistiques à zéro</label>
-        <label id="Stats_Reset" lang="en">Reset statistics</label>
-        <label id="Stats_Reset_message" lang="fr">Remettre les statistiques à zéro et ...</label>
-        <label id="Stats_Reset_message" lang="en">Reset statistics and ...</label>
-        <label id="Stats_successfully_reset_message" lang="fr">Les statistiques ont bien été remises à zéro</label>
-        <label id="Stats_successfully_reset_message" lang="en">Statistics have successfully been reset</label>
         <label id="Assets_list" lang="fr">Liste des vidéos</label>
         <label id="Assets_list" lang="en">List of videos</label>
-        
-        <!-- Stats -->
-        <label id="Stats_No_stats" lang="en">No statistics to display</label>
-        <label id="Stats_No_stats" lang="fr">Aucune statistique à afficher</label>
-        <label id="Stats_access_video_nbr" lang="en">Number of access to videos</label>
-        <label id="Stats_access_video_nbr" lang="fr">Nombre d'accès aux vidéos</label>
-        <label id="Stats_bookmark_official_nbr" lang="en">Number of official bookmarks on videos</label>
-        <label id="Stats_bookmark_official_nbr" lang="fr">Nombre de signets officiel déposés sur les vidéos</label>
-        <label id="Stats_bookmark_personal_nbr" lang="en">Number of personal bookmarks on videos</label>
-        <label id="Stats_bookmark_personal_nbr" lang="fr">Nombre de signets personnel déposés sur les vidéos</label>
-        <label id="Stats_threads_nbr" lang="en">Number of threads on videos</label>
-        <label id="Stats_threads_nbr" lang="fr">Nombre de discussions sur les vidéos</label>
-        <label id="Stats_view_total" lang="en">Number of total view</label>
-        <label id="Stats_view_total" lang="fr">Nombre de vue total</label>
-        <label id="Stats_view_unique_total" lang="en">Number of total unique view</label>
-        <label id="Stats_view_unique_total" lang="fr">Nombre de vue unique total</label>
-        <label id="Stats_bookmarks_view_ratio" lang="en">Percentage of bookmarks</label>
-        <label id="Stats_bookmarks_view_ratio" lang="fr">Pourcentage de signets</label>
-        <label id="Graph_nbr_thread" lang="en">Number of threads</label>
-        <label id="Graph_nbr_thread" lang="fr">Nombre de discussions</label>
-        <label id="Graph_nbr_view" lang="en">Number of views</label>
-        <label id="Graph_nbr_view" lang="fr">Nombre de vues</label>
-        <label id="Graph_nbr_total_view" lang="en">Number of total views</label>
-        <label id="Graph_nbr_total_view" lang="fr">Nombre de vues total</label>
-        <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total views accumulated</label>
-        <label id="Graph_nbr_total_view_tooltip" lang="fr">Nombre de vue total cumulées</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of views per user</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre de vue par utilisateur</label>
-        <label id="Graph_nbr_unique_view" lang="en">Number of unique views</label>
-        <label id="Graph_nbr_unique_view" lang="fr">Nombre de vues unique</label>
-        <label id="Graph_month_view" lang="en">Number of view per month on this album</label>
-        <label id="Graph_month_view" lang="fr">Nombre de vues sur l\'album par mois</label>
-        <label id="Graph_min_per_min_view" lang="en">Number of view for this video</label>
-        <label id="Graph_min_per_min_view" lang="fr">Nombre de vues de la video</label>
-        <label id="Graph_views" lang="en">view</label>
-        <label id="Graph_views" lang="fr">vues</label>
-        <label id="Graph_cam_view" lang="en">View in cam mode</label>
-        <label id="Graph_cam_view" lang="fr">Vue en mode caméra</label>
-        <label id="Graph_slide_view" lang="en">View in slide mode</label>
-        <label id="Graph_slide_view" lang="fr">Vue en mode slide</label>
-        
-        <label id="month" lang="fr">Mois</label>
-        <label id="month" lang="en">Month</label>
-        <label id="year" lang="fr">Année</label>
-        <label id="year" lang="en">Year</label>
-        <label id="all" lang="fr">Tout</label>
-        <label id="all" lang="en">All</label>
-        
-        <label id="month_01" lang="fr">janvier</label>
-        <label id="month_01" lang="en">January</label>
-        <label id="month_02" lang="fr">février</label>
-        <label id="month_02" lang="en">February</label>
-        <label id="month_03" lang="fr">mars</label>
-        <label id="month_03" lang="en">March</label>
-        <label id="month_04" lang="fr">avril</label>
-        <label id="month_04" lang="en">April</label>
-        <label id="month_05" lang="fr">mai</label>
-        <label id="month_05" lang="en">May</label>
-        <label id="month_06" lang="fr">juin</label>
-        <label id="month_06" lang="en">June</label>
-        <label id="month_07" lang="fr">juillet</label>
-        <label id="month_07" lang="en">July</label>
-        <label id="month_08" lang="fr">août</label>
-        <label id="month_08" lang="en">August</label>
-        <label id="month_09" lang="fr">septembre</label>
-        <label id="month_09" lang="en">September</label>
-        <label id="month_10" lang="fr">octobre</label>
-        <label id="month_10" lang="en">October</label>
-        <label id="month_11" lang="fr">novembre</label>
-        <label id="month_11" lang="en">November</label>
-        <label id="month_12" lang="fr">décembre</label>
-        <label id="month_12" lang="en">December</label>
-        
-        <label id="short_month_01" lang="fr">Jan</label>
-        <label id="short_month_01" lang="en">Jan</label>
-        <label id="short_month_02" lang="fr">Fév</label>
-        <label id="short_month_02" lang="en">Feb</label>
-        <label id="short_month_03" lang="fr">Mar</label>
-        <label id="short_month_03" lang="en">Mar</label>
-        <label id="short_month_04" lang="fr">Avr</label>
-        <label id="short_month_04" lang="en">Apr</label>
-        <label id="short_month_05" lang="fr">Mai</label>
-        <label id="short_month_05" lang="en">May</label>
-        <label id="short_month_06" lang="fr">Juin</label>
-        <label id="short_month_06" lang="en">Jun</label>
-        <label id="short_month_07" lang="fr">Juil</label>
-        <label id="short_month_07" lang="en">July</label>
-        <label id="short_month_08" lang="fr">Août</label>
-        <label id="short_month_08" lang="en">Aug</label>
-        <label id="short_month_09" lang="fr">Sep</label>
-        <label id="short_month_09" lang="en">Sep</label>
-        <label id="short_month_10" lang="fr">Oct</label>
-        <label id="short_month_10" lang="en">Oct</label>
-        <label id="short_month_11" lang="fr">Nov</label>
-        <label id="short_month_11" lang="en">Nov</label>
-        <label id="short_month_12" lang="fr">Déc</label>
-        <label id="short_month_12" lang="en">Dec</label>
-        
     </labels>
     
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->
@@ -537,6 +437,31 @@
         <!-- Random messages -->
         <message id="view_video" lang="fr">Voir la vidéo</message>
         <message id="view_video" lang="en">View video</message>
+        
+        <message id="month_01" lang="fr">janvier</message>
+        <message id="month_01" lang="en">January</message>
+        <message id="month_02" lang="fr">février</message>
+        <message id="month_02" lang="en">February</message>
+        <message id="month_03" lang="fr">mars</message>
+        <message id="month_03" lang="en">March</message>
+        <message id="month_04" lang="fr">avril</message>
+        <message id="month_04" lang="en">April</message>
+        <message id="month_05" lang="fr">mai</message>
+        <message id="month_05" lang="en">May</message>
+        <message id="month_06" lang="fr">juin</message>
+        <message id="month_06" lang="en">June</message>
+        <message id="month_07" lang="fr">juillet</message>
+        <message id="month_07" lang="en">July</message>
+        <message id="month_08" lang="fr">août</message>
+        <message id="month_08" lang="en">August</message>
+        <message id="month_09" lang="fr">septembre</message>
+        <message id="month_09" lang="en">September</message>
+        <message id="month_10" lang="fr">octobre</message>
+        <message id="month_10" lang="en">October</message>
+        <message id="month_11" lang="fr">novembre</message>
+        <message id="month_11" lang="en">November</message>
+        <message id="month_12" lang="fr">décembre</message>
+        <message id="month_12" lang="en">December</message>
         
         <!-- Errors -->
         <message id="error_mimetype" lang="fr">Le fichier soumis ne semble pas être de type video</message>

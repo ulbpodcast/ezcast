@@ -21,7 +21,6 @@
         <script src="js/jquery.colorbox.js"></script>
         <script type="text/javascript" src="js/upload.js"></script>
         <script type="text/javascript" src="js/clipboard.js"></script>
-        <script src="./js/highstock.js" async></script>
         
         <script type="text/javascript" src="jQuery-DateTimePicker/jquery.simple-dtpicker.js"></script>
         <link type="text/css" href="jQuery-DateTimePicker/jquery.simple-dtpicker.css" rel="stylesheet" />
@@ -183,6 +182,37 @@
     <body>
         <div class="container">
             <?php include_once template_getpath('div_main_header.php'); ?>
+            
+            
+            <?php 
+            //Add popup to inform user that the course is correctly added
+            if (isset($_SESSION['modoAdded'])){ ?>          
+                        <!-- Modal -->
+                <div class="modal fade" id="modoAdded" tabindex="-1" role="dialog" aria-labelledby="modoAddedLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modoAddedLabel">Info</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>®popupModoAddedP1®<?php echo '<b>'.$_SESSION['modoAdded'].'</b>'; ?>®popupModoAddedP2®</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#modoAdded').modal('show');
+                });
+                </script>
+            <?php unset ($_SESSION['modoAdded']);
+            } ?>
+          
             <div id="global" class="row">
                 <!-- "New album" button -->
                 <div class="col-md-12 btn-new-album">
@@ -211,7 +241,7 @@
                         // If we are in redraw mode, we fill the content of the div
                         if ($redraw && isset($current_album)) {
                             global $trace_on;
-                            global $display_trace_stats;
+                            global $display_trace_stats;                           
                             require 'div_album_header.php';
                         }
                         ?>

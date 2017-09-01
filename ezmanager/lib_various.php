@@ -122,9 +122,9 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
         template_load_dictionnary('translations.xml');
         
         if($lang == 'fr-ASCII')
-            $new_date .= str_replace(array('é', 'û'), array('e', 'u'), template_get_message('month_'.$matches[2], 'fr'));
+            $new_date .= str_replace(array('é', 'û'), array('e', 'u'), template_get_label('month_'.$matches[2], 'fr'));
         else
-            $new_date .= template_get_message('month_'.$matches[2], $lang);
+            $new_date .= template_get_label('month_'.$matches[2], $lang);
     }
     // Otherwise, we just display the month as a number
     else

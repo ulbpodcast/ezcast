@@ -111,6 +111,11 @@ You should not have to include this file yourself.
             </div>
         </div>
         
+        <?php
+        global $enable_anon_access_control;
+        if($enable_anon_access_control === true) {
+        ?>
+        
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <label>
@@ -125,6 +130,9 @@ You should not have to include this file yourself.
                 </label>
             </div>
         </div>
+        <?php
+        }
+        ?>
         
         <div class="modal-footer">
             <a role="button" href="javascript:submit_edit_form();" class="btn btn-primary">®Update®</a>

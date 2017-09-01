@@ -87,7 +87,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                             <img src="images/page4/sched.png" style="float: right; width: 24px; padding: 3px;" 
                                 title="<?php echo $metadata['schedule_date']; ?>">
                         <?php } ?>
-                        <div id="asset_<?php echo $asset_name; ?>_line"  class="ListButon StatusButton<?php 
+                        <div id="asset_<?php echo $asset_name; ?>_line"  class="ListButon StatusButton StatusButton<?php 
                             if ($status == 'failed') {
                                 echo 'Error';
                             } else if ($status == 'processing') {

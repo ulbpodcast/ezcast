@@ -85,8 +85,7 @@ $logged_in = user_logged_in();
 $album_allow_anonymous = isset($input['album']) && ezmam_album_allow_anonymous($input['album']);
 //logout anon user if he tries to access an album which was not set as anonym allowed (except if we still 
 // accept the anon=true option in the url, should be removed in the future)
-if($logged_in && user_anonymous() && !$allow_url_anon
-   && isset($input['album']) && !$album_allow_anonymous) {
+if($logged_in && user_anonymous() && isset($input['album']) && !$album_allow_anonymous) {
     logout();
     $logged_in = false;
 }
@@ -94,12 +93,9 @@ if($logged_in && user_anonymous() && !$allow_url_anon
 
 // If we're not logged in, we try to log in or display the login form
 if (!$logged_in) {
-    // global $repository_path;
     
-    // if the url contains the parameter 'anon' the session is assumsed as anonymous
-    if (($allow_url_anon && isset($input['anon']) && $input['anon'] == true) || 
-            // Log as anonymous if user tries to access an album and it has been set as accessible as anonymous
-            (isset($input['album']) && $album_allow_anonymous)) {
+    // Log as anonymous if user tries to access an album and it has been set as accessible as anonymous
+    if (isset($input['album']) && $album_allow_anonymous) {
         user_anonymous_session();
         $logged_in = true;
     }

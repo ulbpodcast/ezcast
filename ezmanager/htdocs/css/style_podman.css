@@ -4,7 +4,7 @@
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
+*           Arnaud Wijns <awijns@ulb.ac.be>
 *                   Antoine Dewilde
 * UI Design by Julien Di Pietrantonio
 *
@@ -22,7 +22,7 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-	
+    
 /*---------------------------------------------- Generale ----------------------------------------------*/
 
 img, a, fieldset, ul, li, p, h1, h2, h3, h4, h5, h6, div{
@@ -130,7 +130,7 @@ body{
 }
 
 .popup h2 {
-	/* color:#004B93; */
+    /* color:#004B93; */
     color: #444444;
     font-weight:bold;
     font-size:14px;
@@ -195,7 +195,7 @@ body{
 }
 
 .header_content a:hover {
-    text-decoration:none;	
+    text-decoration:none;   
     color: #004C93;
 }
 
@@ -475,6 +475,8 @@ body{
 .LigneButton li a {
     display:block;
     background-repeat:no-repeat;
+    background-position: left center;
+    background-size: 20px;
     height:21px;
     text-decoration:none;
     font-size:12px;
@@ -517,11 +519,11 @@ body{
 }
 
 .ButtonRegenTitle a {
-    background-image:url(../images/page4/AProgrammer.png);
+    background-image:url(../images/page4/ARegenerer.png);
 }
 
 .ButtonRegenTitle a:hover {
-    background-image:url(../images/page4/BProgrammer.png);
+    background-image:url(../images/page4/BRegenerer.png);
 }
 
 .ButtonMove a{
@@ -556,11 +558,31 @@ body{
     background-image:url(../images/page4/BDeplacerAlbumPublic.png);
 }
 
+.BoutonStatsTitle a {
+    background-image:url(../images/page4/AStats.png);
+}
+
+.BoutonStatsTitle a:hover {
+    background-image:url(../images/page4/BStats.png);
+}
+
+.ButtonCopy a{
+    background-image:url(../images/page4/ACopierBackg.png);
+}
+
+.ButtonCopy a:hover {
+    background-image:url(../images/page4/BCopierBackg.png);
+}
+
 .ButtonInfoAlbum{
     margin-left:12px;
     margin-top:5px;
     margin-bottom:5px;
 
+}
+
+img.dropdown-icon {
+    max-height: 20px;
 }
 
 /*--Bouton triangle [fin]--*/
@@ -596,19 +618,7 @@ body{
     display:inline-block;
 }
 
-.ButtonCopy a{
-	display:block;
-	background-image:url(../images/page4/ACopierBackg.png);
-	background-repeat:no-repeat;
-	color:#444444;
-	height:20px;
-	text-decoration:none;
-	font-size:12px;
-	font-weight:bold;
-	padding-left:22px;
-	padding-right:18px;
-	padding-top:5px;
-}
+
 /*--bouton media [fin]--*/
 
 /*-- bouton : infos+ // publication // embed --*/
@@ -1040,7 +1050,7 @@ body{
     font-weight:bold;
     margin-left: 110px;
     padding-top: 5px;
-/*	padding-left:20px;
+/*  padding-left:20px;
     padding-right:10px; */
 }
 
@@ -1177,7 +1187,7 @@ div.fakefile input {
 input.file {
     position: relative;
     text-align: right;
-	-moz-opacity:0 ;
+    -moz-opacity:0 ;
     filter:alpha(opacity: 0);
     opacity: 0;
     z-index: 2;
@@ -1250,7 +1260,7 @@ a.info:hover span{
     border: 1px solid #000033;
     height: 22px;
     width: 82px;
-	/*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
     font-size: 12px;
     color: #FFFFFF;
     font-weight: bold;
@@ -1262,7 +1272,7 @@ a.info:hover span{
     margin-left: 20px;
 }
 .button {
-	/*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
     font-size: 12px;
     font-weight: bold;
     color: #FFFFFF;
@@ -1305,7 +1315,7 @@ a.info:hover span{
 }
 
 #f1_upload_form {
-	 /* font-family: Geneva, Arial, Helvetica, sans-serif; */
+     /* font-family: Geneva, Arial, Helvetica, sans-serif; */
     font-size: 12px;
     font-weight: normal;
     color: #666666;
@@ -1355,7 +1365,7 @@ a.info:hover span{
     padding-bottom: 7px;
     padding-right:11px;
     font-size:14px;
-/*	font-family:Arial, Helvetica, sans-serif; */
+/*  font-family:Arial, Helvetica, sans-serif; */
 }
 
 .Bouton span{
@@ -1381,7 +1391,7 @@ a.info:hover span{
 a.greyLink {
     color:#797676;
     text-decoration:none;
-/*	font-family:Arial, Helvetica, sans-serif;  */
+/*  font-family:Arial, Helvetica, sans-serif;  */
     line-height: 1.8em;
     padding-left: 4px;
 }
@@ -1419,6 +1429,20 @@ a.greyLink.ezplayer:hover {
     padding-top: 0px;
     min-height: 600px;
     border-right: 1px solid #CFCFCF;
+}
+/* For mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        position: inherit;
+        min-height: auto;
+        display: block;
+    }
+    
+    .nav-sidebar {
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-bottom: 30px;
+    }
 }
 
 .share_log_asset {

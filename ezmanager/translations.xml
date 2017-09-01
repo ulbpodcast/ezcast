@@ -443,17 +443,19 @@
         <label id="Stats_access_video_nbr" lang="en">Number of access to videos</label>
         <label id="Stats_access_video_nbr" lang="fr">Nombre d'accès aux vidéos</label>
         <label id="Stats_bookmark_official_nbr" lang="en">Number of official bookmarks on videos</label>
-        <label id="Stats_bookmark_official_nbr" lang="fr">Nombre de signets officiel déposés sur les vidéos</label>
+        <label id="Stats_bookmark_official_nbr" lang="fr">Nombre de signets officiels déposés sur les vidéos</label>
         <label id="Stats_bookmark_personal_nbr" lang="en">Number of personal bookmarks on videos</label>
-        <label id="Stats_bookmark_personal_nbr" lang="fr">Nombre de signets personnel déposés sur les vidéos</label>
+        <label id="Stats_bookmark_personal_nbr" lang="fr">Nombre de signets personnels déposés sur les vidéos</label>
         <label id="Stats_threads_nbr" lang="en">Number of threads on videos</label>
         <label id="Stats_threads_nbr" lang="fr">Nombre de discussions sur les vidéos</label>
         <label id="Stats_view_total" lang="en">Number of total view</label>
-        <label id="Stats_view_total" lang="fr">Nombre de vue total</label>
+        <label id="Stats_view_total" lang="fr">Nombre de vues totales</label>
         <label id="Stats_view_unique_total" lang="en">Number of total unique view</label>
-        <label id="Stats_view_unique_total" lang="fr">Nombre de vue unique total</label>
-        <label id="Stats_bookmarks_view_ratio" lang="en">Percentage of bookmarks</label>
-        <label id="Stats_bookmarks_view_ratio" lang="fr">Pourcentage de signets</label>
+        <label id="Stats_view_unique_total" lang="fr">Nombre de vues uniques totales</label>
+        <label id="Stats_bookmarks_view_ratio" lang="en">Rate of use of bookmarks</label>
+        <label id="Stats_bookmarks_view_ratio" lang="fr">Taux d'utilisation des signets</label>
+        <label id="Stats_table_info" lang="en">Further information</label>
+        <label id="Stats_table_info" lang="fr">Informations complémentaires</label>
         <label id="Graph_nbr_thread" lang="en">Number of threads</label>
         <label id="Graph_nbr_thread" lang="fr">Nombre de discussions</label>
         <label id="Graph_nbr_view" lang="en">Number of views</label>
@@ -468,8 +470,10 @@
         <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre d\'utilisateur ayant regardé une ou plusieurs fois les vidéo</label>
         <label id="Graph_nbr_unique_view" lang="en">Per user</label>
         <label id="Graph_nbr_unique_view" lang="fr">Par utilisateur</label>
-        <label id="Graph_month_view" lang="en">Number of view per month on this album</label>
-        <label id="Graph_month_view" lang="fr">Nombre de vues sur l\'album par mois</label>
+        <label id="Graph_month_view" lang="en">Consultation per month</label>
+        <label id="Graph_month_view" lang="fr">Consultation par mois</label>
+        <label id="Graph_video_view" lang="en">Consultation per video</label>
+        <label id="Graph_video_view" lang="fr">Consultation par vidéo</label>
         <label id="Graph_min_per_min_view" lang="en">Measuring audience of video</label>
         <label id="Graph_min_per_min_view" lang="fr">Mesure d\'audiance de la vidéo</label>
         <label id="Graph_views" lang="en">view</label>

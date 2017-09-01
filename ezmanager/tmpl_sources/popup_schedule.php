@@ -66,7 +66,6 @@ for every album the user can create.
                     echo '®schedule_public_at®';
                 } ?>
             </p>
-            <p>®schedule_at®</p>
             <input type="hidden" name="action" value="schedule_asset"/>
             <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
             <input type="hidden" id="asset" name="asset" value="<?php echo $asset_name; ?>"/>

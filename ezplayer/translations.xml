@@ -557,7 +557,7 @@
         <label id="Display_tab" lang="en">Show bookmarks</label>
         <label id="Comment" lang="fr">Commentaire</label>
         <label id="Comment" lang="en">Comment</label>
-        <label id="authSSO" lang="fr"> SSO</label>
+        <label id="authSSO" lang="fr">Authentification SSO</label>
         <label id="authSSO" lang="en">SSO Authentication</label>
         <label id="authLocal" lang="fr">Authentification Locale</label>
         <label id="authLocal" lang="en">Local Authentication</label>

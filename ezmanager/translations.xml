@@ -293,7 +293,7 @@
         <label id="Moderator_manage" lang="fr">Gestion des modérateurs</label>
         <label id="Regen_Intro" lang="fr">Regénérer l'intro</label>
         <label id="Regen_Intro" lang="en">Regen Intro</label>        
-        <label id="authSSO" lang="fr"> SSO</label>
+        <label id="authSSO" lang="fr">Authentification SSO</label>
         <label id="authSSO" lang="en">SSO Authentication</label>
         <label id="authLocal" lang="fr">Authentification Locale</label>
         <label id="authLocal" lang="en">Local Authentication</label>

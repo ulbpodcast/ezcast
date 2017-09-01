@@ -34,40 +34,40 @@ Before calling this template, please define the following variables:
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li>
+                                <li class="dropdown-background-icon-button ButtonSuppAlbum">
                                     <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php 
                                             echo trim($album_name); ?>&amp;album_id=<?php echo trim($album_id); ?>" 
                                         data-remote="false" data-toggle="modal" data-target="#modal">
-                                        <img src="images/page4/iconSuppBackg.png" class="dropdown-icon" /> ®Delete_album®
+                                        ®Delete_album®
                                     </a>
                                 </li>
-                                <li>
+                                <li class="dropdown-background-icon-button ButtonEdit">
                                     <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
                                         data-target="#modal">
-                                        <img src="images/page4/iconEditerBackg.png" class="dropdown-icon" /> ®Edit_album®
+                                        ®Edit_album®
                                     </a>
                                 </li>
                                 <?php if($enable_moderator){ ?> 
-                                    <li>
+                                    <li class="dropdown-background-icon-button ButtonModerator">
                                         <a href="index.php?action=view_list_moderator" data-toggle="modal"
                                             data-target="#modal">
-                                            <img src="images/page4/iconModeratorBackg.png" class="dropdown-icon" /> ®Moderator_manage®
+                                            ®Moderator_manage®
                                         </a>
                                     </li> 
                                 <?php } ?>
-                                <li>
+                                <li class="dropdown-background-icon-button ButtonResetBroadcast">
                                     <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php 
                                         echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
                                         data-target="#modal">
-                                        <img src="images/page4/iconRssBackg.png" class="dropdown-icon" /> ®Reset_broadcast_link®
+                                        ®Reset_broadcast_link®
                                     </a>
                                 </li>
                                 <?php if($trace_on && $display_trace_stats) { ?>
-                                    <li>
+                                    <li class="dropdown-background-icon-button ButtonResetStats">
                                         <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php 
                                             echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
                                             data-target="#modal">
-                                            <img src="images/page4/iconRestaStatsBackg.png" class="dropdown-icon" /> ®Stats_Reset®
+                                            ®Stats_Reset®
                                         </a>
                                     </li>
                                 <?php } ?>

@@ -90,7 +90,7 @@ if ($action == 'publish') {
         die;
     }
     // Move bookmarks and stats
-    move_data($input['album'], $input['asset']);
+    move_data($album, $asset);
 
 } else if ($action == 'unpublish') {
     $res = ezmam_asset_unpublish($album, $asset);
@@ -99,7 +99,7 @@ if ($action == 'publish') {
         die;
     }
     // Move bookmarks and stats
-    move_data($input['album'], $input['asset']);
+    move_data($album, $asset);
 
 } else {
     error_print_message('Publish_unpublish: no operation provided');
@@ -112,6 +112,6 @@ function move_data($album, $asset) {
     toc_album_bookmarks_swap($album, $asset);
     $albumTo = suffix_replace($album);
     
-    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    require_once dirname(__FILE__) . '/lib_sql_stats.php';
     db_stats_update_album($album, $albumTo);
 }

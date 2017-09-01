@@ -33,12 +33,6 @@ function index($param = array()) {
         die;
     }
     
-    private_asset_schedule_remove($input['from'], $input['asset']);
-
-    // saves the bookmarks to copy
-    $bookmarks = toc_asset_bookmark_list_get($input['from'], $input['asset']);
-    // deletes the bookmarks from the source album
-    toc_asset_bookmarks_delete_all($input['from'], $input['asset']);
     //
     // Moving the asset
     // TODO: the moving won't work if there is a different asset with the same name in dest folder. 
@@ -50,24 +44,6 @@ function index($param = array()) {
         die;
     }
 
-    // adds the previously saved bookmarks to the new album
-    $count = count($bookmarks);
-    for ($index = 0; $index < $count; $index++) {
-        $bookmarks[$index]['album'] = $input['to'];
-    }
-    toc_album_bookmarks_add($bookmarks);
-    
-    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
-    db_stats_update_album($input['from'], $input['to']);
-
-    // include_once $basedir.'/ezmanager/'.template_getpath('popup_asset_successfully_moved.php');
-
-    // regegerate intro	
-    if ($regenerate_title_mode=='auto') {
-        update_title($input['to'],$input['asset']);
-    }
-	
-	
     $album = $input['from'];
     include_once template_getpath('popup_asset_successfully_moved.php');
 }

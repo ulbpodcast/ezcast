@@ -217,16 +217,26 @@ function toc_asset_bookmark_get($album, $asset, $timecode) {
  * @param type $album
  * @param type $asset
  */
-function toc_album_bookmarks_swap($album, $asset){
-        $bookmarks = toc_asset_bookmark_list_get($album, $asset);
-        toc_asset_bookmarks_delete_all($album, $asset);
-        $album = suffix_replace($album);
+function toc_album_bookmarks_swap($from, $asset){
+        $to = suffix_replace($from);
+        toc_album_bookmarks_move($from, $to, $asset);
+}
+
+/**
+ * Moves all bookmarks of an asset from the public to the private album and reverse.
+ * @param type $album
+ * @param type $asset
+ */
+function toc_album_bookmarks_move($from, $to, $asset){
+        $bookmarks = toc_asset_bookmark_list_get($from, $asset);
+        toc_asset_bookmarks_delete_all($from, $asset);
         $count = count($bookmarks);
         for ($index = 0; $index < $count; $index++){
-            $bookmarks[$index]['album'] = $album;
+            $bookmarks[$index]['album'] = $to;
         }
         toc_album_bookmarks_add($bookmarks);    
 }
+
 
 /**
  * Adds a bookmark in the bookmarks file (table of contents)

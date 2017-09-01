@@ -43,9 +43,7 @@ function index($param = array()) {
             error_print_message(ezmam_last_error());
             die;
         }
-        // moves asset bookmarks from private to public 
-        toc_album_bookmarks_swap($input['album'], $input['asset']);
-
+        
         require_once template_getpath('popup_asset_successfully_published.php');
         //include_once "tmpl/fr/popup_asset_successfully_published.php";
     } else if ($action == 'unpublish') {
@@ -54,9 +52,7 @@ function index($param = array()) {
             error_print_message(ezmam_last_error());
             die;
         }
-        // moves asset bookmarks from public to private
-        toc_album_bookmarks_swap($input['album'], $input['asset']);
-
+        
         require_once template_getpath('popup_asset_successfully_unpublished.php');
     } else {
         error_print_message('Publish_unpublish: no operation provided');

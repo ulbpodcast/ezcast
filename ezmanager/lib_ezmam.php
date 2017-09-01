@@ -33,7 +33,8 @@ require_once __DIR__ . '/config.inc';
 require_once __DIR__ . '/../commons/lib_error.php';
 require_once __DIR__ . '/lib_various.php';
 require_once __DIR__ . '/../commons/lib_various.php';
-
+require_once __DIR__ . '/lib_sql_stats.php';
+    
 /**
  *
  * @param [path $path of the repository (optional)]
@@ -994,11 +995,13 @@ function ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, &$src
  */
 function ezmam_asset_move($asset_time, $album_src, $album_dst) {
     global $logger;
+    global $regenerate_title_mode;
     
     $src_path = '';
     $dst_path = '';
     if(!ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, $src_path, $dst_path))
         return false; //ezmam_copy_or_move_get_paths handles ezmam_last_error
+    
     $album_meta = ezmam_album_metadata_get($album_src);
     $course = trim($album_meta['name']);
     $asset_name = get_asset_name($course, $asset_time);
@@ -1011,6 +1014,7 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst) {
     // Logging
     log_append('asset_move', 'Asset: ' . $asset_time . ', From: ' . $album_src . ', To: ' . $album_dst);
     $logger->log(EventType::MANAGER_ASSET_MOVE, LogLevel::NOTICE, 'Moved asset: ' . $asset_time . ', album: ' . $album_dst, array(basename(__FUNCTION__)), $asset_name);
+    
     // rebuilding the RSS feeds
     ezmam_rss_generate($album_src, "high");
     ezmam_rss_generate($album_src, "low");
@@ -1019,6 +1023,15 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst) {
     ezmam_rss_generate($album_dst, "low");
     ezmam_rss_generate($album_dst, "ezplayer");
     
+    private_asset_schedule_remove($album_src, $asset_time);
+    toc_album_bookmarks_move($album_src, $album_dst,  $asset_time);
+    db_stats_update_album($album_src, $album_dst);
+
+    // regegerate intro	
+    if ($regenerate_title_mode == 'auto') {
+        update_title($album_dst, $asset_time);
+    }
+	
     return true;
 }
 

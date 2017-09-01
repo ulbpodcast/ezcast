@@ -173,6 +173,3 @@ if(basename(__FILE__) != "config-sample.inc") {
     require_once(__DIR__ . '/common.inc');
     require_once('logger_server.php');
 }
-
-$max_course_code_size=20; //!!! WARNING => Linked to the DB
-$max_album_label_size=50;

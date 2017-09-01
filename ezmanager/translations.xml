@@ -464,8 +464,8 @@
         <label id="Graph_nbr_total_view" lang="fr">Totales</label>
         <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total cconsultations</label>
         <label id="Graph_nbr_total_view_tooltip" lang="fr">Nombre de consultation totales</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of users who watched the video one or more times</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre d\'utilisateur ayant regardé une ou plusieurs fois la vidéo</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of users who watched videos one or more times</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre d\'utilisateur ayant regardé une ou plusieurs fois les vidéo</label>
         <label id="Graph_nbr_unique_view" lang="en">Per user</label>
         <label id="Graph_nbr_unique_view" lang="fr">Par utilisateur</label>
         <label id="Graph_month_view" lang="en">Number of view per month on this album</label>

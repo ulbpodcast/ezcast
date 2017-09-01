@@ -564,6 +564,10 @@ body{
 
 }
 
+img.dropdown-icon {
+    max-height: 20px;
+}
+
 /*--Bouton triangle [fin]--*/
 
 .custom-checkbox{

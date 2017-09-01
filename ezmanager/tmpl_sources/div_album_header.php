@@ -38,20 +38,20 @@ Before calling this template, please define the following variables:
                                     <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php 
                                             echo trim($album_name); ?>&amp;album_id=<?php echo trim($album_id); ?>" 
                                         data-remote="false" data-toggle="modal" data-target="#modal">
-                                        <img src="images/page4/iconSuppBackg.png" /> ®Delete_album®
+                                        <img src="images/page4/iconSuppBackg.png" class="dropdown-icon" /> ®Delete_album®
                                     </a>
                                 </li>
                                 <li>
                                     <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal" 
                                         data-target="#modal">
-                                        <img src="images/page4/iconEditerBackg.png" /> ®Edit_album®
+                                        <img src="images/page4/iconEditerBackg.png" class="dropdown-icon" /> ®Edit_album®
                                     </a>
                                 </li>
                                 <?php if($enable_moderator){ ?> 
                                     <li>
                                         <a href="index.php?action=view_list_moderator" data-toggle="modal"
                                             data-target="#modal">
-                                            <img src="images/page4/iconModeratorBackg.png" /> ®Moderator_manage®
+                                            <img src="images/page4/iconModeratorBackg.png" class="dropdown-icon" /> ®Moderator_manage®
                                         </a>
                                     </li> 
                                 <?php } ?>
@@ -59,7 +59,7 @@ Before calling this template, please define the following variables:
                                     <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php 
                                         echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
                                         data-target="#modal">
-                                        <img src="images/page4/iconRssBackg.png" /> ®Regenerate_RSS®
+                                        <img src="images/page4/iconRssBackg.png" class="dropdown-icon" /> ®Regenerate_RSS®
                                     </a>
                                 </li>
                                 <?php if($trace_on && $display_trace_stats) { ?>
@@ -67,7 +67,7 @@ Before calling this template, please define the following variables:
                                         <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php 
                                             echo $album_name_full; ?>" data-remote="false" data-toggle="modal" 
                                             data-target="#modal">
-                                            <img src="images/page4/iconRestaStatsBackg.png" /> ®Stats_Reset®
+                                            <img src="images/page4/iconRestaStatsBackg.png" class="dropdown-icon" /> ®Stats_Reset®
                                         </a>
                                     </li>
                                 <?php } ?>

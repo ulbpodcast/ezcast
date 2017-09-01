@@ -56,7 +56,6 @@ $regenerate_title_mode = 'none';  //When moving an asset, auto regenerate title.
 $accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)
 
-$template_folder = 'tmpl/';
 $ezmanager_logs="$ezmanager_basedir/ezmanager.log";
 
 // used by ezmanager for asset edit

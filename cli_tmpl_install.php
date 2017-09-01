@@ -10,7 +10,7 @@ $languages = array("fr","en");
 
 foreach ($components as $component) {
     $source_folder = "./$component/tmpl_sources";
-    $dest_folder = "./$component/tmpl";
+    $dest_folder = "./$component/$template_folder";
     
     if (!is_dir($dest_folder)) {
         $res = mkdir ($dest_folder);

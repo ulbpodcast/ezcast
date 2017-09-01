@@ -70,7 +70,8 @@ Highcharts.setOptions({
     // Month graphic
     Highcharts.stockChart('containerMonth', {
         chart: {
-            zoomType: 'x'
+            zoomType: 'x',
+            backgroundColor: 'rgba(255, 255, 255, 0)'
         },
         title: {
             text: '®Graph_month_view®',
@@ -145,6 +146,10 @@ Highcharts.setOptions({
     
     // Asset graphic
     Highcharts.chart('containerVideo', {
+        chart: {
+            zoomType: 'x',
+            backgroundColor: 'rgba(255, 255, 255, 0)'
+        },
         title: {
             text: '®Graph_video_view®',
             align: 'left'

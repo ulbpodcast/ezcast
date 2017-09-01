@@ -7,16 +7,6 @@
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
         <?php include_once template_getpath('head_css_js.php'); ?>
 
-        <script type="text/javascript">
-            function detect_flash() {
-                if ((navigator.mimeTypes ["application/x-shockwave-flash"] == undefined)) {
-                    document.form_login.has_flash.value = 'N';
-                }
-                else {
-                    document.form_login.has_flash.value = 'Y';
-                }
-            }
-        </script>
     </head>
     <body>
         <?php
@@ -66,6 +56,14 @@
         <div class="login_background container">
             <?php include 'div_help_header.php'; ?>
             <div id="global" class="row">
+                <?php if($sso_enabled) { ?>
+                <div class="login-choices btn-center" >
+                      <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url; echo $ezplayer_safe_url;
+                      ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
+                      <a class="btn-login btn-default" href="#" id="default_auth_button" title="">®authLocal®</a>
+                </div>
+                <?php } ?>
+
                 <form id="form_login" class="form-horizontal col-md-4 col-md-offset-4" style="margin-top: 50px;" method="post" action="<?php
                           global $ezplayer_safe_url;
                           echo $ezplayer_safe_url;
@@ -126,5 +124,26 @@
 <?php include 'div_main_footer.php'; ?>
 
         </div>
+        
+        <script type="text/javascript">
+            function detect_flash() {
+                if ((navigator.mimeTypes ["application/x-shockwave-flash"] == undefined)) {
+                    document.form_login.has_flash.value = 'N';
+                }
+                else {
+                    document.form_login.has_flash.value = 'Y';
+                }
+            }
+            <?php if($sso_enabled) { ?>
+                $( document ).ready(function() {
+                    $("#form_login").hide();
+                    $("#default_auth_button").click(function () {
+                        $("#form_login").slideToggle('fast');
+                        return false;
+                    });
+                });
+            <?php } ?>
+        </script>
+        
     </body>
 </html>

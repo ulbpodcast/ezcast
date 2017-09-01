@@ -658,12 +658,8 @@ function view_login_form() {
     
     // template include goes here
     /* require_once template_getpath('login.php');*/
-	
-	if (in_array("sso",$auth_methods)){
-		include_once template_getpath('login_w_sso.php');
-	}else{
-		include_once template_getpath('login.php');
-	}
+    $sso_enabled = in_array("sso",$auth_methods);
+    include_once template_getpath('login.php');
 }
 
 /**

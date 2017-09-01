@@ -2,3 +2,48 @@
 #organisation_logo {
     max-height: 60px; 
 }
+
+.btn-login {
+    -moz-border-radius:12px;
+    -webkit-border-radius:12px;
+    border-radius:12px;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:17px;
+    padding:16px 31px;
+    text-decoration:none;
+    margin: 0px 20px 0px 20px;
+}
+.btn-sso {
+    background-color:#44c767;
+    border:1px solid #18ab29;
+    text-shadow:0px 1px 0px #2f6627;	
+}
+.btn-sso:hover {
+    background-color:#5cbf2a;
+}
+.btn-sso:active {
+    position:relative;
+    top:1px;
+}
+.btn-default {
+    background-color:#c6c6c6;
+    border:1px solid #aaaaaa;
+    text-shadow:0px 1px 0px #2f6627;
+}
+.btn-default:hover {
+    background-color:#bcbcbc;
+}
+.btn-default:active {
+    position:relative;
+    top:1px;
+}
+.btn-center {
+    text-align: center;
+}
+
+.login-choices {
+    margin-top: 30px;
+}

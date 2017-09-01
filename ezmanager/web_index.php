@@ -70,13 +70,13 @@ if (!user_logged_in()) {
 
         user_login($input['login'], $input['passwd']);
     }
-	//if not connected and the user click on a link to partage album management -> put arg in session variable to add it when he is connected
-	else if (isset($input['action']) && $input['action'] == 'add_moderator' && isset($input['album']) && isset($input['tokenmanager']) ){
-		$_SESSION['add_moderator'] = 'true';
-		$_SESSION['add_moderator_album'] = $input['album'];
-		$_SESSION['add_moderator_token'] = $input['tokenmanager'];
-		view_login_form();
-	}
+    //if not connected and the user click on a link to partage album management -> put arg in session variable to add it when he is connected
+    else if (isset($input['action']) && $input['action'] == 'add_moderator' && isset($input['album']) && isset($input['tokenmanager']) ){
+        $_SESSION['add_moderator'] = 'true';
+        $_SESSION['add_moderator_album'] = $input['album'];
+        $_SESSION['add_moderator_token'] = $input['tokenmanager'];
+        view_login_form();
+    }
 
    // This is a tricky case:
     // If we do not have a session, but we have an action, that means we lost the
@@ -89,14 +89,14 @@ if (!user_logged_in()) {
     // Step 1: Displaying the login form
     // (happens if no "action" is provided)
     else {
-             //  view_login_form();
+        //  view_login_form();
     	if (isset($_GET["sso"])){
-			if (in_array("sso",$auth_methods)){
-				user_login(trim('login'), trim('passwd'));
-			}
-		}else{
-			view_login_form();
-		}
+            if (in_array("sso",$auth_methods)){
+                user_login(trim('login'), trim('passwd'));
+            }
+        }else{
+            view_login_form();
+        }
     }
 }
 
@@ -115,14 +115,13 @@ else if ( ((isset($_SESSION['podman_logged']) && (!isset($input['action']) || em
 // At this point of the code, the user is logged in and explicitly specified an action.
 // We perform the action specified.
 else {
-    
-    
-	if (isset($_SESSION['add_moderator']) && $_SESSION['add_moderator'] == 'true'){
-		$input['action'] = 'add_moderator';
-		$input['album'] = $_SESSION['add_moderator_album'];
-		$input['tokenmanager'] = $_SESSION['add_moderator_token'];
-		$_SESSION['add_moderator'] = 'false';                      
-	}
+
+    if (isset($_SESSION['add_moderator']) && $_SESSION['add_moderator'] == 'true'){
+            $input['action'] = 'add_moderator';
+            $input['album'] = $_SESSION['add_moderator_album'];
+            $input['tokenmanager'] = $_SESSION['add_moderator_token'];
+            $_SESSION['add_moderator'] = 'false';                      
+    }
         
         
     $action = $input['action'];
@@ -380,10 +379,10 @@ function view_login_form() {
     $url = $ezmanager_url;
     // template include goes here
     if (in_array("sso",$auth_methods)){
-		include_once template_getpath('login_w_sso.php');
-	}else{
-		include_once template_getpath('login.php');
-	}    
+        include_once template_getpath('login_w_sso.php');
+    } else {
+        include_once template_getpath('login.php');
+    }    
     
     //include_once "tmpl/fr/login.php";
 }

@@ -549,6 +549,14 @@ body{
     background-image:url(../images/page4/BStats.png);
 }
 
+.ButtonCopy a{
+    background-image:url(../images/page4/ACopierBackg.png);
+}
+
+.ButtonCopy a:hover {
+    background-image:url(../images/page4/BCopierBackg.png);
+}
+
 .ButtonInfoAlbum{
     margin-left:12px;
     margin-top:5px;
@@ -589,19 +597,7 @@ body{
     display:inline-block;
 }
 
-.ButtonCopy a{
-	display:block;
-	background-image:url(../images/page4/ACopierBackg.png);
-	background-repeat:no-repeat;
-	color:#444444;
-	height:20px;
-	text-decoration:none;
-	font-size:12px;
-	font-weight:bold;
-	padding-left:22px;
-	padding-right:18px;
-	padding-top:5px;
-}
+
 /*--bouton media [fin]--*/
 
 /*-- bouton : infos+ // publication // embed --*/

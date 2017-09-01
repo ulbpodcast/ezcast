@@ -60,7 +60,7 @@
                 <div class="login-choices btn-center" >
                       <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url; echo $ezplayer_safe_url;
                       ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
-                      <a class="btn-login btn-default" href="#" id="default_auth_button" title="">®authLocal®</a>
+                      <a class="btn-login btn-default btn-login-default" href="#" id="default_auth_button" title="">®authLocal®</a>
                 </div>
                 <?php } ?>
 

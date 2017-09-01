@@ -28,15 +28,15 @@
     position:relative;
     top:1px;
 }
-.btn-default {
+.btn-login-default {
     background-color:#c6c6c6;
     border:1px solid #aaaaaa;
     text-shadow:0px 1px 0px #2f6627;
 }
-.btn-default:hover {
+.btn-login-default:hover {
     background-color:#bcbcbc;
 }
-.btn-default:active {
+.btn-login-default:active {
     position:relative;
     top:1px;
 }

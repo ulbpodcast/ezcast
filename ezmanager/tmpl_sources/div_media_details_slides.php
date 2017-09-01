@@ -46,7 +46,7 @@ It is part of div_asset_details and has been split apart for readability.
     <p><span class="infosAvance">®Filesize_SD®&nbsp;:</span> <?php print_info($filesize_slides['SD'], ' ®Megabyte_unit®'); ?></p>
     <p><span class="infosAvance">®Dimensions_HD®&nbsp;:</span> <?php print_info($dimensions_slides['HD']); ?></p>
     <p><span class="infosAvance">®Dimensions_SD®&nbsp;:</span> <?php print_info($dimensions_slides['SD']); ?></p>
-    <!--<p><span class="infosAvance">®View_count®&nbsp;:</span> <?php echo $view_count_slides; ?></p> -->
+    <!--<p><span class="infosAvance">®View_count®&nbsp;:</span> <?php // echo $view_count_slides; ?></p> -->
 </div>
         
 <span class="ButtonPublication"> 

@@ -3,11 +3,17 @@
         <?php if(isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) { ?>
             <div id="containerMonth" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
             <br />
+            <hr />
+            <br />
         <?php } ?>
         <?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
             <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
             <br />
+            <hr />
+            <br />
         <?php } ?>
+        <br />
+        <h4>®Stats_table_info®</h4>
         <br />
         <table class="table table-striped">
             <tbody>
@@ -64,10 +70,12 @@ Highcharts.setOptions({
     // Month graphic
     Highcharts.stockChart('containerMonth', {
         chart: {
-            zoomType: 'x'
+            zoomType: 'x',
+            backgroundColor: 'rgba(255, 255, 255, 0)'
         },
         title: {
-            text: '®Graph_month_view®'
+            text: '®Graph_month_view®',
+            align: 'left'
         },
         rangeSelector: {
             inputDateFormat: "%b %Y",
@@ -102,14 +110,12 @@ Highcharts.setOptions({
         },
         yAxis: {
             title: {
-                text: '®Graph_nbr_view®',
-                margin: 40
+                text: '®Graph_nbr_view®'
             },
             labels: {
-                align: "right",
-                x: 25
-            }
-
+                align: "right"
+            },
+            opposite: false
         },
         legend: {
             enabled: true,
@@ -123,10 +129,12 @@ Highcharts.setOptions({
         series: [{
             name: '®Graph_nbr_total_view®',
             type: 'column',
+            color: '#064c93',
             data: <?php echo $stats['graph']['album']['str_totalview']; ?>
         }, {
             name: '®Graph_nbr_unique_view®',
             type: 'column',
+            color: '#454445',
             data: <?php echo $stats['graph']['album']['str_uniqueview']; ?>
         }]
     });
@@ -138,8 +146,13 @@ Highcharts.setOptions({
     
     // Asset graphic
     Highcharts.chart('containerVideo', {
+        chart: {
+            zoomType: 'x',
+            backgroundColor: 'rgba(255, 255, 255, 0)'
+        },
         title: {
-            text: 'Vue par asset'
+            text: '®Graph_video_view®',
+            align: 'left'
         },
         xAxis: {
             categories: allAssets,
@@ -151,15 +164,12 @@ Highcharts.setOptions({
         },
         yAxis: { // Primary yAxis
             title: {
-                text: '®Graph_nbr_view®',
-                margin: 40
+                text: '®Graph_nbr_view®'
             },
             labels: {
-                align: "right",
-                x: 25
+                align: "right"
             },
-            opposite: true
-
+            opposite: false
         },
         tooltip: {
             shared: true
@@ -167,10 +177,12 @@ Highcharts.setOptions({
         series: [{
                 type: 'column',
                 name: '®Graph_nbr_total_view®',
+                color: '#064c93',
                 data: <?php echo $stats['graph']['video']['str_total_view']; ?>
             }, {
                 type: 'column',
                 name: '®Graph_nbr_unique_view®',
+                color: '#454445',
                 data: <?php echo $stats['graph']['video']['str_unique_view']; ?>
             }]
     });
@@ -187,9 +199,11 @@ containerVideo.on('mouseleave','.highcharts-legend-item', hide_tooltip);
 
 function display_tooltip(event) {
     var seriesName = $(event.currentTarget).text();
-    console.log('Serie: ' + seriesName);
     var tooltip = $('#stats_tooltip');
-    var rect = $(event.currentTarget)[0].getBoundingClientRect();
+    var rectTooltip = tooltip[0].getBoundingClientRect();
+    var distanceToMiddle = (rectTooltip.right-rectTooltip.left)/2;
+    var rectLegende = $(event.currentTarget)[0].getBoundingClientRect();
+    var middleLegend = rectLegende.left + (rectLegende.right-rectLegende.left)/2;
     var displayText = "";
     
     switch(seriesName) {
@@ -206,7 +220,7 @@ function display_tooltip(event) {
     }
     
     $('#stats_tooltip .popover-content').text(displayText);
-    tooltip.css({left:rect.left-20, top:rect.bottom});
+    tooltip.css({left:middleLegend-distanceToMiddle, top:rectLegende.bottom});
     tooltip.addClass('in');
 };
 

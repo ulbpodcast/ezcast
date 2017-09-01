@@ -386,6 +386,7 @@ function asset_stats() {
     $asset = $input['asset'];
     $album = $input['album'];
     $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+    $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
     $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
     $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
     $all_view_time = db_stats_video_get_view_time($album, $asset);

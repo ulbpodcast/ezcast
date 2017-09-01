@@ -49,6 +49,8 @@
         <label id="Logout" lang="en">Log out</label>
         <label id="Update" lang="fr">Sauvegarder</label>
         <label id="Update" lang="en">Update</label>
+        <label id="Valid" lang="fr">Valider</label>
+        <label id="Valid" lang="en">Valid</label>
         <label id="Album" lang="fr">Album</label>
         <label id="Album" lang="en">Album</label>
         <label id="Private_album" lang="fr">Album privé</label>
@@ -261,8 +263,8 @@
         <label id="Delete_sched" lang="en">Delete the scheduling</label>
         <label id="Edit_album" lang="fr">Propriétés de l'album</label>
         <label id="Edit_album" lang="en">Album properties</label>
-        <label id="Regenerate_RSS" lang="fr">Régénérer RSS</label>
-        <label id="Regenerate_RSS" lang="en">Reset RSS</label>
+        <label id="Reset_broadcast_link" lang="fr">Regénérer le lien de diffusion</label>
+        <label id="Reset_broadcast_link" lang="en">Reset broadcast link</label>
         <label id="Submit" lang="fr">Soumettre</label>
         <label id="Submit" lang="en">Submit</label>
         <label id="Submit_record" lang="fr">Ajouter une vidéo</label>
@@ -392,10 +394,10 @@
         <label id="Delete_asset_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;You are about to delete a record. This operation can't be reverted</label>
         <label id="Asset_deletion_succeeded_message" lang="fr">Votre enregistrement a bien été supprimé.</label>
         <label id="Asset_deletion_succeeded_message" lang="en">The slected record has been successfully deleted.</label>
-        <label id="Regenerate_RSS_message" lang="fr">Le flux RSS va être régénéré. Les personnes abonnées à ce flux RSS ne pourront plus y accéder.</label>
-        <label id="Regenerate_RSS_message" lang="en">The RSS feed will be reset. All subscribers will lose their access to the album.</label>
-        <label id="RSS_successfully_reset_message" lang="fr">Le flux RSS a été régénéré avec succès. &lt;br/&gt;&lt;br/&gt;Les personnes qui étaient abonnées à votre album n'y auront donc plus accès.</label>
-        <label id="RSS_successfully_reset_message" lang="en">The RSS feed has been successfully reset. &lt;br/&gt;&lt;br/&gt;The persons who subscribed to this feed do not have access to it anymore.</label>
+        <label id="Reset_broadcast_message" lang="fr">Le lien de diffussion va être régénéré. Les personnes abonnées à ce flux RSS ne pourront plus y accéder.</label>
+        <label id="Reset_broadcast_message" lang="en">The broadcast link will be reset. All subscribers will lose their access to the album.</label>
+        <label id="Reset_broadcast_successfully_message" lang="fr">Le lien de diffusion a été régénéré avec succès. &lt;br/&gt;&lt;br/&gt;Les personnes qui étaient abonnées à votre album n'y auront donc plus accès.</label>
+        <label id="Reset_broadcast_successfully_message" lang="en">The broadcast link has been successfully reset. &lt;br/&gt;&lt;br/&gt;The persons who subscribed to this feed do not have access to it anymore.</label>
         <label id="Publish_asset_message" lang="fr">Votre enregistrement va être déplacé dans l'album public.</label>
         <label id="Publish_asset_message" lang="en">Your record will now be moved to the public folder.</label>
         <label id="Unpublish_asset_message" lang="fr">Votre enregistrement va être déplacé dans l'album privé</label>
@@ -424,6 +426,8 @@
         <label id="update" lang="en">Due to an important update, you might experience some display issue. Follow &lt;a href="index.php?action=view_update" style="color: brown; font-weight:bold;"&gt;this link&lt;/a&gt; to have more information.</label>
         <label id="Stats_Descriptives" lang="fr">Statistiques</label>
         <label id="Stats_Descriptives" lang="en">Statistics</label>
+        <label id="Stats_video_title" lang="fr">Statistiques de la vidéo</label>
+        <label id="Stats_video_title" lang="en">Statistics of the video</label>
         <label id="Stats_Reset" lang="fr">Remettre les statistiques à zéro</label>
         <label id="Stats_Reset" lang="en">Reset statistics</label>
         <label id="Stats_Reset_message" lang="fr">Remettre les statistiques à zéro et ...</label>
@@ -439,40 +443,52 @@
         <label id="Stats_access_video_nbr" lang="en">Number of access to videos</label>
         <label id="Stats_access_video_nbr" lang="fr">Nombre d'accès aux vidéos</label>
         <label id="Stats_bookmark_official_nbr" lang="en">Number of official bookmarks on videos</label>
-        <label id="Stats_bookmark_official_nbr" lang="fr">Nombre de signets officiel déposés sur les vidéos</label>
+        <label id="Stats_bookmark_official_nbr" lang="fr">Nombre de signets officiels déposés sur les vidéos</label>
         <label id="Stats_bookmark_personal_nbr" lang="en">Number of personal bookmarks on videos</label>
-        <label id="Stats_bookmark_personal_nbr" lang="fr">Nombre de signets personnel déposés sur les vidéos</label>
+        <label id="Stats_bookmark_personal_nbr" lang="fr">Nombre de signets personnels déposés sur les vidéos</label>
         <label id="Stats_threads_nbr" lang="en">Number of threads on videos</label>
         <label id="Stats_threads_nbr" lang="fr">Nombre de discussions sur les vidéos</label>
         <label id="Stats_view_total" lang="en">Number of total view</label>
-        <label id="Stats_view_total" lang="fr">Nombre de vue total</label>
+        <label id="Stats_view_total" lang="fr">Nombre de vues totales</label>
         <label id="Stats_view_unique_total" lang="en">Number of total unique view</label>
-        <label id="Stats_view_unique_total" lang="fr">Nombre de vue unique total</label>
-        <label id="Stats_bookmarks_view_ratio" lang="en">Percentage of bookmarks</label>
-        <label id="Stats_bookmarks_view_ratio" lang="fr">Pourcentage de signets</label>
+        <label id="Stats_view_unique_total" lang="fr">Nombre de vues uniques totales</label>
+        <label id="Stats_bookmarks_view_ratio" lang="en">Rate of use of bookmarks</label>
+        <label id="Stats_bookmarks_view_ratio" lang="fr">Taux d'utilisation des signets</label>
+        <label id="Stats_table_info" lang="en">Further information</label>
+        <label id="Stats_table_info" lang="fr">Informations complémentaires</label>
         <label id="Graph_nbr_thread" lang="en">Number of threads</label>
         <label id="Graph_nbr_thread" lang="fr">Nombre de discussions</label>
         <label id="Graph_nbr_view" lang="en">Number of views</label>
         <label id="Graph_nbr_view" lang="fr">Nombre de vues</label>
-        <label id="Graph_nbr_total_view" lang="en">Number of total views</label>
-        <label id="Graph_nbr_total_view" lang="fr">Nombre de vues total</label>
-        <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total views accumulated</label>
-        <label id="Graph_nbr_total_view_tooltip" lang="fr">Nombre de vue total cumulées</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of views per user</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre de vue par utilisateur</label>
-        <label id="Graph_nbr_unique_view" lang="en">Number of unique views</label>
-        <label id="Graph_nbr_unique_view" lang="fr">Nombre de vues unique</label>
-        <label id="Graph_month_view" lang="en">Number of view per month on this album</label>
-        <label id="Graph_month_view" lang="fr">Nombre de vues sur l\'album par mois</label>
-        <label id="Graph_min_per_min_view" lang="en">Number of view for this video</label>
-        <label id="Graph_min_per_min_view" lang="fr">Nombre de vues de la video</label>
+        <label id="Graph_nbr_view_video" lang="en">Number of views</label>
+        <label id="Graph_nbr_view_video" lang="fr">Nombre de vues</label>
+        <label id="Graph_nbr_total_view" lang="en">Total</label>
+        <label id="Graph_nbr_total_view" lang="fr">Totales</label>
+        <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total cconsultations</label>
+        <label id="Graph_nbr_total_view_tooltip" lang="fr">Nombre de consultation totales</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of users who watched videos one or more times</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre d\'utilisateur ayant regardé une ou plusieurs fois les vidéo</label>
+        <label id="Graph_nbr_unique_view" lang="en">Per user</label>
+        <label id="Graph_nbr_unique_view" lang="fr">Par utilisateur</label>
+        <label id="Graph_month_view" lang="en">Consultation per month</label>
+        <label id="Graph_month_view" lang="fr">Consultation par mois</label>
+        <label id="Graph_video_view" lang="en">Consultation per video</label>
+        <label id="Graph_video_view" lang="fr">Consultation par vidéo</label>
+        <label id="Graph_min_per_min_view" lang="en">Measuring audience of video</label>
+        <label id="Graph_min_per_min_view" lang="fr">Mesure d\'audiance de la vidéo</label>
         <label id="Graph_views" lang="en">view</label>
         <label id="Graph_views" lang="fr">vues</label>
-        <label id="Graph_cam_view" lang="en">View in cam mode</label>
-        <label id="Graph_cam_view" lang="fr">Vue en mode caméra</label>
-        <label id="Graph_slide_view" lang="en">View in slide mode</label>
-        <label id="Graph_slide_view" lang="fr">Vue en mode slide</label>
-        
+        <label id="Graph_cam_view" lang="en">Cam</label>
+        <label id="Graph_cam_view" lang="fr">Caméra</label>
+        <label id="Graph_slide_view" lang="en">Slide</label>
+        <label id="Graph_slide_view" lang="fr">Diaporama</label>
+        <label id="Graph_time" lang="en">Time</label>
+        <label id="Graph_time" lang="fr">Temps</label>
+        <label id="popupModoAddedP1" lang="fr"> Album " </label>
+        <label id="popupModoAddedP1" lang="en"> Album " </label>
+        <label id="popupModoAddedP2" lang="fr">  " ajouté correctement à votre liste </label>
+        <label id="popupModoAddedP2" lang="en">  " correctly added to your list </label>
+
         <label id="month" lang="fr">Mois</label>
         <label id="month" lang="en">Month</label>
         <label id="year" lang="fr">Année</label>

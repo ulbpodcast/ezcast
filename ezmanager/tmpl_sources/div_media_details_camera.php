@@ -44,7 +44,7 @@ It is part of div_asset_details and has been split apart for readability.
     <p><span class="infosAvance">®Filesize_SD®&nbsp;:</span> <?php print_info($filesize_cam['SD'], ' ®Megabyte_unit®'); ?></p>
     <p><span class="infosAvance">®Dimensions_HD®&nbsp;:</span> <?php print_info($dimensions_cam['HD']); ?></p>
     <p><span class="infosAvance">®Dimensions_SD®&nbsp;:</span> <?php print_info($dimensions_cam['SD']); ?></p>
-    <!--  <p><span class="infosAvance">®View_count®&nbsp;:</span> <?php echo $view_count_cam; ?></p> -->
+    <!--  <p><span class="infosAvance">®View_count®&nbsp;:</span> <?php //echo $view_count_cam; ?></p> -->
 </div>
 <!-- Links to media -->
 <span class="ButtonPublication"> <a href="javascript:visibilite('Publication_<?php echo $asset; ?>_1');">®Publication®</a></span>

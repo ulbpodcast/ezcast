@@ -227,6 +227,15 @@ function print_info($info, $suffix = '') {
                 ?></textarea>
             </span>
         </li>
+        <li class="text-right">
+            <!-- Edit form (submit/cancel buttons) -->
+            <div class="btn-group" role="group" id="<?php echo $asset; ?>_submit" style="display: none;margin-top: 5px;">
+                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button" 
+                    onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
+                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button" 
+                    onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Valid®" />
+            </div>
+        </li>
         <li>
             <span class="infospodast">®Author®</span><br />
             <?php print_info($author); ?>
@@ -278,46 +287,34 @@ function print_info($info, $suffix = '') {
             </li>
         <?php } ?>
     </ul>
-    <!-- Edit form (submit/cancel buttons) -->
-    <div class="btn-group" role="group" id="<?php echo $asset; ?>_submit" style="display: none;">
-        <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button" 
-            onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
-        <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button" 
-            onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Update®" />
-    </div>
-    <br />
     <br />
 </div>
 
-<!-- Colonne 1 information podcast [Fin] -->
-
-<!-- Colonne 2 information podcast -->
-<div class="col-sm-4">
-
-<?php
-// If there were two media, we spread them in two columns.
-// This is the first one (the second one is below), i.e. the video
-if ($has_cam && $has_slides && $status != 'processing' && $status != 'failed' && strtolower($origin) !== 'streaming') {
-    require 'div_media_details_camera.php';
-} // Fin colonne 2
-?>
-</div>
-
-<!-- Colonne 3 information podcast -->
-
-<div class="col-sm-4">
-<?php
+<?php 
 // If there is only one media, we display it in the right column.
 // 3 possibles scenarios: there was only a slides video, or there were 2 videos
 //    That happens if $has_slides is true (inside the "if")
 // There was only a cam video. In that case $has_slides is false, so the content of the "else" is displayed
-if ($status != 'processing' && $status != 'failed' && strtolower($origin) !== 'streaming') {
-    if ($has_slides) {
-        require 'div_media_details_slides.php';
-    } else {
+if($status != 'processing' && $status != 'failed' && strtolower($origin) !== 'streaming') {
+    echo '<div class="col-sm-4';
+    if($has_cam && $has_slides) {
+        echo '">';
         require 'div_media_details_camera.php';
+        echo '</div>';
+        echo '<div class="col-sm-4';
+    } else {
+        echo ' col-sm-offset-4';
+    }
+    
+    if ($has_slides) {
+        echo '">';
+        require 'div_media_details_slides.php';
+        echo '</div>';
+    } else {
+        echo '">';
+        require 'div_media_details_camera.php';
+        echo '</div>';
     }
 } ?>
-</div>
 
 <div style="clear: both;"></div>

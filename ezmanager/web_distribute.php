@@ -332,7 +332,6 @@ function view_embed_link() {
 function view_embed() {
     global $input;
     global $repository_path;
-    global $flash_only_browsers;
     global $template_folder;
     global $ezmanager_url;
 

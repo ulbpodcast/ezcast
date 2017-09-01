@@ -581,11 +581,14 @@ body{
     background-image:url(../images/page4/BResetStatsBackg.png);
 }
 
+.ButtonMoreOptions .icon-btn {
+    background-image:url(../images/page4/MoreOptions.png);
+}
+
 .ButtonInfoAlbum{
     margin-left:12px;
     margin-top:5px;
     margin-bottom:5px;
-
 }
 
 img.dropdown-icon {
@@ -593,13 +596,15 @@ img.dropdown-icon {
 }
 
 /* Button drop down */
-.dropdown-background-icon-button a {
-    margin-left: 10px;
+.dropdown-background-icon-button a, .dropdown-background-icon-button .icon-btn {
     padding-left: 25px !important;
-    margin-left: 10px;
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 20px;
+}
+
+.dropdown-background-icon-button a {
+    margin-left: 10px;
 }
 
 /*--Bouton triangle [fin]--*/

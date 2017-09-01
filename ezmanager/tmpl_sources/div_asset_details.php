@@ -117,11 +117,12 @@ function print_info($info, $suffix = '') {
         </div>
 
         <div class="LigneButtonRight LigneButton btn-group" role="group">
-            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" 
-                    aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-                ®More_options®
-                <span class="caret"></span>
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle dropdown-background-icon-button ButtonMoreOptions" 
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="icon-btn">
+                    ®More_options®
+                    <span class="caret"></span>
+                </span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li><span class="ButtonSuppAlbum">

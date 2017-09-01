@@ -470,7 +470,7 @@
         <label id="Graph_nbr_unique_view" lang="fr">Par utilisateur</label>
         <label id="Graph_month_view" lang="en">Number of view per month on this album</label>
         <label id="Graph_month_view" lang="fr">Nombre de vues sur l\'album par mois</label>
-        <label id="Graph_min_per_min_view" lang="en">Number of view for this video</label> // todo
+        <label id="Graph_min_per_min_view" lang="en">Measuring audience of video</label>
         <label id="Graph_min_per_min_view" lang="fr">Mesure d\'audiance de la vidéo</label>
         <label id="Graph_views" lang="en">view</label>
         <label id="Graph_views" lang="fr">vues</label>

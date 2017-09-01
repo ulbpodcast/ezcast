@@ -169,7 +169,11 @@
             En continuant à naviguer sur notre site, vous acceptez leur utilisation.</label>
         <label id="cookie_infos" lang="en">Our website uses cookies to improve your user experience. 
             By continuing to browse our website, you are agreeing to our use of cookies.</label>
-
+        <label id="authSSO" lang="fr">Authentification SSO</label>
+        <label id="authSSO" lang="en">SSO Authentication</label>
+        <label id="authLocal" lang="fr">Authentification Locale</label>
+        <label id="authLocal" lang="en">Local Authentication</label>
+        
         <label id="Deleted" lang="fr">Supprimé</label>
         <label id="Deleted" lang="en">Deleted</label>
         <label id="Album" lang="fr">Cours</label>
@@ -557,6 +561,10 @@
         <label id="Display_tab" lang="en">Show bookmarks</label>
         <label id="Comment" lang="fr">Commentaire</label>
         <label id="Comment" lang="en">Comment</label>
+        <label id="authSSO" lang="fr">Authentification SSO</label>
+        <label id="authSSO" lang="en">SSO Authentication</label>
+        <label id="authLocal" lang="fr">Authentification Locale</label>
+        <label id="authLocal" lang="en">Local Authentication</label>
         
         <!-- Video shortcuts -->
         <label id="key_space" lang="fr">Play / Pause</label>

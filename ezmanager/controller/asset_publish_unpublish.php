@@ -43,8 +43,8 @@ function index($param = array()) {
             error_print_message(ezmam_last_error());
             die;
         }
-        // moves asset bookmarks from private to public 
-        toc_album_bookmarks_swap($input['album'], $input['asset']);
+        // Move bookmarks and stats
+        move_data($input['album'], $input['asset']);
 
         require_once template_getpath('popup_asset_successfully_published.php');
         //include_once "tmpl/fr/popup_asset_successfully_published.php";
@@ -54,8 +54,8 @@ function index($param = array()) {
             error_print_message(ezmam_last_error());
             die;
         }
-        // moves asset bookmarks from public to private
-        toc_album_bookmarks_swap($input['album'], $input['asset']);
+        // Move bookmarks and stats
+        move_data($input['album'], $input['asset']);
 
         require_once template_getpath('popup_asset_successfully_unpublished.php');
     } else {
@@ -67,4 +67,13 @@ function index($param = array()) {
         error_print_message(ezmam_last_error());
         die;
     }
+}
+
+function move_data($album, $asset) {
+    // moves asset bookmarks from private to public 
+    toc_album_bookmarks_swap($album, $asset);
+    $albumTo = suffix_replace($album);
+    
+    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    db_stats_update_album($album, $albumTo);
 }

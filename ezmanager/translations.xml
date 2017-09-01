@@ -206,8 +206,10 @@
         <label id="Content_in_clipboard" lang="en">Content saved in the clipboard</label>
         <label id="developed_by" lang="fr"> est une solution propulsée par </label>
         <label id="developed_by" lang="en"> is a solution powered by </label>
-        <label id="schedule_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l'enregistrement soit publié / archivé</label>
-        <label id="schedule_at" lang="en">Select the date and hour you want the recording to be published / archived</label>
+        <label id="schedule_public_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que l\'enregistrement soit déplacé dans votre album public</label>
+        <label id="schedule_public_at" lang="en">Select the date and hour you want the recording to be move in public folder</label>
+        <label id="schedule_prive_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l\'enregistrement soit déplacé dans votre album privé</label>
+        <label id="schedule_prive_at" lang="en">Select the date and hour you want the recording to be move in private folder</label>
         
         <label id="Album_type" lang="fr">  Type d'album : </label>
         <label id="Album_type" lang="en"> Album Type : </label>	
@@ -292,7 +294,11 @@
         <label id="Moderator_manage" lang="en">Moderator management</label>
         <label id="Moderator_manage" lang="fr">Gestion des modérateurs</label>
         <label id="Regen_Intro" lang="fr">Regénérer l'intro</label>
-        <label id="Regen_Intro" lang="en">Regen Intro</label>
+        <label id="Regen_Intro" lang="en">Regen Intro</label>        
+        <label id="authSSO" lang="fr">Authentification SSO</label>
+        <label id="authSSO" lang="en">SSO Authentication</label>
+        <label id="authLocal" lang="fr">Authentification Locale</label>
+        <label id="authLocal" lang="en">Local Authentication</label>
         
         <!-- Titles -->
         <label id="Asset_sched_succeeded_title" lang="fr">Programmation d'asset terminée</label>

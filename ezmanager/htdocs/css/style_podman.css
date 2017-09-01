@@ -4,7 +4,7 @@
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
+*           Arnaud Wijns <awijns@ulb.ac.be>
 *                   Antoine Dewilde
 * UI Design by Julien Di Pietrantonio
 *
@@ -22,7 +22,7 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-	
+    
 /*---------------------------------------------- Generale ----------------------------------------------*/
 
 img, a, fieldset, ul, li, p, h1, h2, h3, h4, h5, h6, div{
@@ -64,16 +64,33 @@ body{
     padding: 0px 10px;
 }
 
-
-#login_form{
-    font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;	
+#login_form{ 
+  
+    font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;
+    font-size:12px;
+    /*  color:#000000;  */
+    color: #444444;
+    background-color: #F9F8F8;
+    /*   margin-left:30px; */
+    /*   line-height:40px; */
+    /*width: 300px; */
+    /*   height: 280px; */
+    /*   padding-left: 15px; */
+    /*  padding-right: 15px; */
+    padding:10px 25px 25px 25px;
+    /*margin:auto;*/
+    border-radius: 25px;
+    border: 1px dotted #BEBEBE;
     margin-top:50px;
+    /*  text-align: center; */
 }
 
 #login_form label {
-    min-width: 70px;
+    /*min-width: 70px;
     text-align: right;
     display: inline-block;
+    margin-bottom: 15px;
+       */               
 }
 
 #login_form h2{
@@ -113,7 +130,7 @@ body{
 }
 
 .popup h2 {
-	/* color:#004B93; */
+    /* color:#004B93; */
     color: #444444;
     font-weight:bold;
     font-size:14px;
@@ -178,7 +195,7 @@ body{
 }
 
 .header_content a:hover {
-    text-decoration:none;	
+    text-decoration:none;   
     color: #004C93;
 }
 
@@ -403,7 +420,7 @@ body{
     font-weight:bold;
     padding-left:27px;
     padding-top:3px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .ListButon.active {
@@ -605,6 +622,10 @@ img.dropdown-icon {
 
 .dropdown-background-icon-button a {
     margin-left: 10px;
+}
+
+img.dropdown-icon {
+    max-height: 20px;
 }
 
 /*--Bouton triangle [fin]--*/
@@ -1072,7 +1093,7 @@ img.dropdown-icon {
     font-weight:bold;
     margin-left: 110px;
     padding-top: 5px;
-/*	padding-left:20px;
+/*  padding-left:20px;
     padding-right:10px; */
 }
 
@@ -1209,7 +1230,7 @@ div.fakefile input {
 input.file {
     position: relative;
     text-align: right;
-	-moz-opacity:0 ;
+    -moz-opacity:0 ;
     filter:alpha(opacity: 0);
     opacity: 0;
     z-index: 2;
@@ -1282,7 +1303,7 @@ a.info:hover span{
     border: 1px solid #000033;
     height: 22px;
     width: 82px;
-	/*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
     font-size: 12px;
     color: #FFFFFF;
     font-weight: bold;
@@ -1294,7 +1315,7 @@ a.info:hover span{
     margin-left: 20px;
 }
 .button {
-	/*font-family: Geneva, Arial, Helvetica, sans-serif;*/
+    /*font-family: Geneva, Arial, Helvetica, sans-serif;*/
     font-size: 12px;
     font-weight: bold;
     color: #FFFFFF;
@@ -1337,7 +1358,7 @@ a.info:hover span{
 }
 
 #f1_upload_form {
-	 /* font-family: Geneva, Arial, Helvetica, sans-serif; */
+     /* font-family: Geneva, Arial, Helvetica, sans-serif; */
     font-size: 12px;
     font-weight: normal;
     color: #666666;
@@ -1387,7 +1408,7 @@ a.info:hover span{
     padding-bottom: 7px;
     padding-right:11px;
     font-size:14px;
-/*	font-family:Arial, Helvetica, sans-serif; */
+/*  font-family:Arial, Helvetica, sans-serif; */
 }
 
 .Bouton span{
@@ -1413,7 +1434,7 @@ a.info:hover span{
 a.greyLink {
     color:#797676;
     text-decoration:none;
-/*	font-family:Arial, Helvetica, sans-serif;  */
+/*  font-family:Arial, Helvetica, sans-serif;  */
     line-height: 1.8em;
     padding-left: 4px;
 }
@@ -1451,6 +1472,20 @@ a.greyLink.ezplayer:hover {
     padding-top: 0px;
     min-height: 600px;
     border-right: 1px solid #CFCFCF;
+}
+/* For mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        position: inherit;
+        min-height: auto;
+        display: block;
+    }
+    
+    .nav-sidebar {
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-bottom: 30px;
+    }
 }
 
 .share_log_asset {

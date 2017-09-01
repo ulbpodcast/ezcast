@@ -12,6 +12,7 @@ if(isset($timezone))
 $ezmanager_basedir = $basedir . '/ezmanager/'; // Path from the root to the source code
 $ezplayer_basedir = $basedir . '/ezplayer/'; // Path from the root to the source code
 $ezadmin_basedir = $basedir . '/ezadmin/'; 
+$template_folder = 'tmpl/';
 
 if($debug_mode) {
     error_reporting(E_ALL); 

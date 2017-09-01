@@ -1,9 +1,9 @@
 <?php
 
-require_once '../commons/lib_database.php';
+require_once __DIR__ . '/../commons/lib_database.php';
     
-if(file_exists('config.inc')) {
-    include_once 'config.inc';
+if(file_exists(__DIR__ . '/config.inc')) {
+    include_once __DIR__ . '/config.inc';
 
     $stmt_array = stats_statements_get();
     db_prepare($stmt_array);

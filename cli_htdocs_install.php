@@ -1,11 +1,8 @@
 <?php
 
-if($argc != 2) {
-    echo "Usage: cli_install_htdocs <webspace_root>";
-    exit(1);
-}
+require_once(__DIR__.'/commons/config.inc');
 
-$web_documentroot = $argv[1];
+$web_documentroot = $apache_documentroot;
 
 # places web files in the webspace
 system("cp -rp ".__DIR__."/ezadmin/htdocs/* $web_documentroot/ezadmin");

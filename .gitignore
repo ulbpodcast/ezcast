@@ -5,7 +5,6 @@
 **/ldap_servers_cred.json
 **/classroom_recorder_ip.inc
 **/admin.inc
-**/HELLO
 **/*.log
 **/*.old
 **/*.orig
@@ -23,11 +22,5 @@
 **/first_user
 ./first_user
 ./log
-**/documentation
-/documentation/**
-ezplayer/core
-ezplayer/tmpl_sources/core
-ezmanager/core
-**/*killme*
 **/.php_cs.cache
 /commons/traces_analyzing/checked_file.txt

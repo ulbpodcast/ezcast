@@ -256,30 +256,6 @@ function statements_get(){
                     'SELECT  * ' .  
                     'FROM ' . db_gettable('streams') . ' ' .
                     'WHERE cours_id=:cours_id AND asset=:asset ',
-			
-            'get_anon_assets' =>
-                'SELECT  * ' .  
-                'FROM ' . db_gettable('assets') . ' ' .
-                'WHERE anon_access=1 AND ( description LIKE :search OR title LIKE :search ) ORDER BY date_modif DESC LIMIT 100',
-                
-            'asset_create' =>
-                'INSERT INTO ' . db_gettable('assets') . '(cours_id, name, title, description, token, anon_access,date_modif) ' .
-                'VALUES (:cours_id, :name, :title, :description, :token, :anon_access, NOW() )',
-                
-            'asset_alter' =>
-                'UPDATE ' . db_gettable('assets') . ' ' .
-                'SET title = :title, description = :description, token = :token, anon_access = :anon_access' . ' ' .
-                'WHERE cours_id = :cours_id AND name = :name ',
-                
-            'get_asset_info' =>
-                'SELECT  * ' .  
-                'FROM ' . db_gettable('assets') . ' ' .
-                'WHERE cours_id=:cours_id AND name=:name ',
-                
-            'delete_asset' =>
-                'DELETE FROM ' . db_gettable('assets') . ' ' .
-                'WHERE cours_id=:cours_id AND name=:name '
-                
 	);
 }
 
@@ -908,63 +884,4 @@ function db_get_stream_info($cours_id,$asset) {
     }
     
     return $infos;	
-}
-
-function get_anon_assets($search = "") {
-    global $statements;
-    $search = '%'.$search.'%';
-
-    $statements['get_anon_assets']->bindParam(':search', $search);
-    $statements['get_anon_assets']->execute();
-    $res = $statements['get_anon_assets']->fetchAll();
-
-    return $res;	
-}
-
-
-function db_get_asset_info($album, $asset) {
-    global $statements;
-
-    $statements['get_asset_info']->bindParam(':cours_id', $album);
-    $statements['get_asset_info']->bindParam(':name', $asset);
-    $statements['get_asset_info']->execute();
-    $res = $statements['get_asset_info']->fetchAll();
-
-    return $res;	
-}
-
-function db_alter_asset($album, $asset, $title, $description, $token, $anon) {
-    global $statements;
-
-    $statements['asset_alter']->bindParam(':cours_id', $album);
-    $statements['asset_alter']->bindParam(':name', $asset);
-    $statements['asset_alter']->bindParam(':title', $title);
-    $statements['asset_alter']->bindParam(':description', $description);
-    $statements['asset_alter']->bindParam(':token', $token);
-    $statements['asset_alter']->bindParam(':anon_access', $anon);
-   
-    return $statements['asset_alter']->execute();
-}
-
-
-function db_insert_asset($album, $asset, $title, $description, $token, $anon) {
-    global $statements;
-
-    $statements['asset_create']->bindParam(':cours_id', $album);
-    $statements['asset_create']->bindParam(':name', $asset);
-    $statements['asset_create']->bindParam(':title', $title);
-    $statements['asset_create']->bindParam(':description', $description);
-    $statements['asset_create']->bindParam(':token', $token);
-    $statements['asset_create']->bindParam(':anon_access', $anon);
-   
-    return $statements['asset_create']->execute();
-}
-
-function db_delete_asset($album, $asset) {
-    global $statements;
-
-    $statements['delete_asset']->bindParam(':cours_id', $album);
-    $statements['delete_asset']->bindParam(':name', $asset);
-  
-    return $statements['delete_asset']->execute();
 }

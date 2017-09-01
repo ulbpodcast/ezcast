@@ -922,7 +922,7 @@ function get_anon_assets($search = "") {
 }
 
 
-function db_get_asset_info($album,$asset) {
+function db_get_asset_info($album, $asset) {
     global $statements;
 
     $statements['get_asset_info']->bindParam(':cours_id', $album);
@@ -933,7 +933,7 @@ function db_get_asset_info($album,$asset) {
     return $res;	
 }
 
-function db_alter_asset($album,$asset,$title,$description,$token,$anon) {
+function db_alter_asset($album, $asset, $title, $description, $token, $anon) {
     global $statements;
 
     $statements['asset_alter']->bindParam(':cours_id', $album);
@@ -947,7 +947,7 @@ function db_alter_asset($album,$asset,$title,$description,$token,$anon) {
 }
 
 
-function db_insert_asset($album,$asset,$title,$description,$token,$anon) {
+function db_insert_asset($album, $asset, $title, $description, $token, $anon) {
     global $statements;
 
     $statements['asset_create']->bindParam(':cours_id', $album);
@@ -960,7 +960,7 @@ function db_insert_asset($album,$asset,$title,$description,$token,$anon) {
     return $statements['asset_create']->execute();
 }
 
-function db_delete_asset($album,$asset) {
+function db_delete_asset($album, $asset) {
     global $statements;
 
     $statements['delete_asset']->bindParam(':cours_id', $album);

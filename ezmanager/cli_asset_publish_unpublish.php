@@ -28,6 +28,8 @@
 /**
  * @package ezcast.ezmanager.cli
  * This program is used via cron to publish or unpublish asset at a given time
+ * 
+ * TODO same file that controller "asset_publish_unpublish".  Must be merge !
  */
 require_once dirname(__FILE__) . '/config.inc';
 require_once dirname(__FILE__) . '/lib_ezmam.php';
@@ -87,8 +89,8 @@ if ($action == 'publish') {
         error_print_message(ezmam_last_error());
         die;
     }
-    // moves asset bookmarks from private to public 
-    toc_album_bookmarks_swap($album, $asset);
+    // Move bookmarks and stats
+    move_data($input['album'], $input['asset']);
 
 } else if ($action == 'unpublish') {
     $res = ezmam_asset_unpublish($album, $asset);
@@ -96,10 +98,20 @@ if ($action == 'publish') {
         error_print_message(ezmam_last_error());
         die;
     }
-    // moves asset bookmarks from public to private
-    toc_album_bookmarks_swap($album, $asset);
+    // Move bookmarks and stats
+    move_data($input['album'], $input['asset']);
 
 } else {
     error_print_message('Publish_unpublish: no operation provided');
     die;
+}
+
+
+function move_data($album, $asset) {
+    // moves asset bookmarks from private to public 
+    toc_album_bookmarks_swap($album, $asset);
+    $albumTo = suffix_replace($album);
+    
+    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    db_stats_update_album($album, $albumTo);
 }

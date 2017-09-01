@@ -71,7 +71,8 @@ Highcharts.setOptions({
             zoomType: 'x'
         },
         title: {
-            text: '®Graph_month_view®'
+            text: '®Graph_month_view®',
+            align: 'left'
         },
         rangeSelector: {
             inputDateFormat: "%b %Y",
@@ -145,7 +146,8 @@ Highcharts.setOptions({
     // Asset graphic
     Highcharts.chart('containerVideo', {
         title: {
-            text: 'Vue par asset'
+            text: 'Vue par asset',
+            align: 'left'
         },
         xAxis: {
             categories: allAssets,
@@ -195,9 +197,11 @@ containerVideo.on('mouseleave','.highcharts-legend-item', hide_tooltip);
 
 function display_tooltip(event) {
     var seriesName = $(event.currentTarget).text();
-    console.log('Serie: ' + seriesName);
     var tooltip = $('#stats_tooltip');
-    var rect = $(event.currentTarget)[0].getBoundingClientRect();
+    var rectTooltip = tooltip[0].getBoundingClientRect();
+    var distanceToMiddle = (rectTooltip.right-rectTooltip.left)/2;
+    var rectLegende = $(event.currentTarget)[0].getBoundingClientRect();
+    var middleLegend = rectLegende.left + (rectLegende.right-rectLegende.left)/2;
     var displayText = "";
     
     switch(seriesName) {
@@ -214,7 +218,7 @@ function display_tooltip(event) {
     }
     
     $('#stats_tooltip .popover-content').text(displayText);
-    tooltip.css({left:rect.left-20, top:rect.bottom});
+    tooltip.css({left:middleLegend-distanceToMiddle, top:rectLegende.bottom});
     tooltip.addClass('in');
 };
 

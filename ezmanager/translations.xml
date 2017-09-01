@@ -460,14 +460,14 @@
         <label id="Graph_nbr_view" lang="fr">Nombre de vues</label>
         <label id="Graph_nbr_view_video" lang="en">Number of views</label>
         <label id="Graph_nbr_view_video" lang="fr">Nombre de vues</label>
-        <label id="Graph_nbr_total_view" lang="en">Number of total views</label>
-        <label id="Graph_nbr_total_view" lang="fr">Nombre de vues total</label>
-        <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total views accumulated</label>
-        <label id="Graph_nbr_total_view_tooltip" lang="fr">Nombre de vue total cumulées</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of views per user</label>
-        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre de vue par utilisateur</label>
-        <label id="Graph_nbr_unique_view" lang="en">Number of unique views</label>
-        <label id="Graph_nbr_unique_view" lang="fr">Nombre de vues unique</label>
+        <label id="Graph_nbr_total_view" lang="en">Total</label>
+        <label id="Graph_nbr_total_view" lang="fr">Totales</label>
+        <label id="Graph_nbr_total_view_tooltip" lang="en">Number of total cconsultations</label>
+        <label id="Graph_nbr_total_view_tooltip" lang="fr">Nombre de consultation totales</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="en">Number of users who watched the video one or more times</label>
+        <label id="Graph_nbr_unique_view_tooltip" lang="fr">Nombre d\'utilisateur ayant regardé une ou plusieurs fois la vidéo</label>
+        <label id="Graph_nbr_unique_view" lang="en">Per user</label>
+        <label id="Graph_nbr_unique_view" lang="fr">Par utilisateur</label>
         <label id="Graph_month_view" lang="en">Number of view per month on this album</label>
         <label id="Graph_month_view" lang="fr">Nombre de vues sur l\'album par mois</label>
         <label id="Graph_min_per_min_view" lang="en">Number of view for this video</label> // todo
@@ -475,7 +475,7 @@
         <label id="Graph_views" lang="en">view</label>
         <label id="Graph_views" lang="fr">vues</label>
         <label id="Graph_cam_view" lang="en">Cam</label>
-        <label id="Graph_cam_view" lang="fr">Vidéo</label>
+        <label id="Graph_cam_view" lang="fr">Caméra</label>
         <label id="Graph_slide_view" lang="en">Slide</label>
         <label id="Graph_slide_view" lang="fr">Diaporama</label>
         <label id="Graph_time" lang="en">Time</label>

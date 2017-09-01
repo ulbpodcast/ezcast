@@ -177,8 +177,8 @@
 						<a class="btn btn-sso" href="<?php
                           global $ezplayer_safe_url;
                           echo $ezplayer_safe_url;
-                          ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">Authentification SSO</a>
-						<a class="btn btn-default" href="#" id="btndefault" title="">Authentification locale</a>
+                          ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
+						<a class="btn btn-default" href="#" id="btndefault" title="">®authLocal®</a>
 					</div>
 					
                     <form id="login_form" method="post" style="display:none;" action="<?php
@@ -211,9 +211,9 @@
                     </form>
                     
                     <div class="login_video col-md-12" style="text-align:center; padding-top:4em;">
-						<h2>Découvrez EZPlayer</h2><br />
+						<h2>®tuto_ezplayer®</h2><br />
 						<video id="tuto_video" width="720" controls="" type="video/mp4" src="./videos/tuto_fr.mp4" style="">
-                        Découvrez EZPlayer</video>
+                        ®tuto_ezplayer®</video>
 					</div>
 
                 </p>

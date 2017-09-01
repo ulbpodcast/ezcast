@@ -125,8 +125,8 @@ echo $ezmanager_url;
 						<a class="btn btn-sso" href="<?php
                           global $ezmanager_safe_url;
                           echo $ezmanager_safe_url;
-                          ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">Authentification SSO</a>
-						<a class="btn btn-default" href="#" id="btndefault" title="">Authentification locale</a>
+                          ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO® </a>
+						<a class="btn btn-default" href="#" id="btndefault" title="">®authLocal®</a>
 					</div>
 					
                     <form id="login_form" method="post" style="display:none;" action="<?php

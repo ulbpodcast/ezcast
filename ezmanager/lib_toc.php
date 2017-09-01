@@ -170,14 +170,14 @@ function toc_asset_bookmark_get($album, $asset, $timecode) {
  * @param type $asset
  */
 function toc_album_bookmarks_swap($album, $asset){
-        $bookmarks = toc_asset_bookmark_list_get($album, $asset);
-        toc_asset_bookmarks_delete_all($album, $asset);
-        $album = suffix_replace($album);
-        $count = count($bookmarks);
-        for ($index = 0; $index < $count; $index++){
-            $bookmarks[$index]['album'] = $album;
-        }
-        toc_album_bookmarks_add($bookmarks);    
+    $bookmarks = toc_asset_bookmark_list_get($album, $asset);
+    toc_asset_bookmarks_delete_all($album, $asset);
+    $album = suffix_replace($album);
+    $count = count($bookmarks);
+    for ($index = 0; $index < $count; $index++){
+        $bookmarks[$index]['album'] = $album;
+    }
+    toc_album_bookmarks_add($bookmarks);    
 }
 
 /**

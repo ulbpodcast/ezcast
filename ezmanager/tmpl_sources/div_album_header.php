@@ -80,7 +80,7 @@ Before calling this template, please define the following variables:
                 <li role="presentation" id="list" style="padding-left: 14px;"
                     <?php if(!isset($current_tab) || $current_tab == 'list' ) { echo 'class="active"'; } ?> >
                     <a href="javascript:show_album_details('<?php echo $current_album; ?>');">
-                        <img src="images/page4/list.png" style="display:inline"/> 
+                        <img src="images/page4/list.png" style="display:inline;height: 12px;"/> 
                         ®Assets_list®
                     </a>
                 </li>

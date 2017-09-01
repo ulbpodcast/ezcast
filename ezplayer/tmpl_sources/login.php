@@ -64,7 +64,7 @@
                 </div>
                 <?php } ?>
 
-                <form id="form_login" class="form-horizontal col-md-4 col-md-offset-4" style="margin-top: 50px;" method="post" action="<?php
+                <form id="form_login" class="form_login form-horizontal col-md-4 col-md-offset-4" method="post" action="<?php
                           global $ezplayer_safe_url;
                           echo $ezplayer_safe_url;
                           ?>/index.php" onsubmit="detect_flash();">

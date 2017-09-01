@@ -3,47 +3,13 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <title>®podman_page_title®</title>
-        <?php /*
-        * EZCAST EZmanager 
-        *
-        * Copyright (C) 2016 Université libre de Bruxelles
-        *
-        * Written by Michel Jansens <mjansens@ulb.ac.be>
-        * 		    Arnaud Wijns <awijns@ulb.ac.be>
-        *                   Antoine Dewilde
-        * UI Design by Julien Di Pietrantonio
-        *
-        * This software is free software; you can redistribute it and/or
-        * modify it under the terms of the GNU Lesser General Public
-        * License as published by the Free Software Foundation; either
-        * version 3 of the License, or (at your option) any later version.
-        *
-        * This software is distributed in the hope that it will be useful,
-        * but WITHOUT ANY WARRANTY; without even the implied warranty of
-        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-        * Lesser General Public License for more details.
-        *
-        * You should have received a copy of the GNU Lesser General Public
-        * License along with this software; if not, write to the Free Software
-        * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-        */
-        ?>
+
         <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
         <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
         <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
-
-        <script type="text/javascript">
-            function detect_flash() {
-                if ((navigator.mimeTypes ["application/x-shockwave-flash"] == undefined)) {
-                    document.login_form.has_flash.value = 'N';
-                }
-                else {
-                    document.login_form.has_flash.value = 'Y';
-                }
-            }
-        </script>
+        <script type="text/javascript" src="js/jQuery/jquery-2.2.4.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -57,7 +23,15 @@
                     echo '</div><br />';
                     } ?>
                     
-                    <form id="login_form" class="form-horizontal col-md-6 col-md-offset-3" method="post" action="<?php
+                     <?php if($sso_enabled) { ?>
+                    <div class="login-choices btn-center" >
+                          <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url; echo $ezplayer_safe_url;
+                          ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
+                          <a class="btn-login btn-default" href="#" id="default_auth_button" title="">®authLocal®</a>
+                    </div>
+                    <?php } ?>
+                    
+                    <form id="form_login" class="form_login form-horizontal col-md-6 col-md-offset-3" method="post" action="<?php
                           global $ezmanager_safe_url;
                           echo $ezmanager_safe_url;
                           ?>/index.php" onsubmit="detect_flash();">
@@ -106,5 +80,26 @@
 
             <?php include 'div_main_footer.php'; ?>
         </div>
+        
+        
+        <script type="text/javascript">
+            function detect_flash() {
+                if ((navigator.mimeTypes ["application/x-shockwave-flash"] == undefined)) {
+                    document.form_login.has_flash.value = 'N';
+                }
+                else {
+                    document.form_login.has_flash.value = 'Y';
+                }
+            }
+            <?php if($sso_enabled) { ?>
+                $( document ).ready(function() {
+                    $("#form_login").hide();
+                    $("#default_auth_button").click(function () {
+                        $("#form_login").slideToggle('fast');
+                        return false;
+                    });
+                });
+            <?php } ?>
+        </script>
     </body>
 </html>

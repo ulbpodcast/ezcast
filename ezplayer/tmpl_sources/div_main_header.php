@@ -73,9 +73,6 @@
             <a href="index.php?action=logout" title="®Logout_title®">
                 <span class="logout">®Logout®</span>
             </a>
-        <?php } else {
-            require_once template_getpath('popup_login.php');
-            ?>
             <a onclick="javascript:$('#popup_login').reveal($(this).data());" title="®Login_title®">
                 <span class="anonym_login">®Login®</span>
             </a>

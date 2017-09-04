@@ -98,7 +98,7 @@ function print_new_video($count) {
  * @return type
  */
 function replace_links($string) {
-    // "\**" to remove old système with '*'
+    // "\**" to remove old system with '*'
     return preg_replace("/\**(https?\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)\**/", '<a href="$1" ' .
             'target="_blank" ' .
             'onclick="server_trace(new Array(\'3\', \'description_link\', current_album, current_asset, current_tab));" ' .

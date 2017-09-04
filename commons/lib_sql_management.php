@@ -134,6 +134,7 @@ function statements_get(){
                             db_gettable('users').'.forename, '.
                             db_gettable('users').'.surname, '.
                             db_gettable('courses').'.course_code, '.
+                            db_gettable('courses').'.course_code_public, '.
                             db_gettable('courses').'.course_name '.
                     'FROM '.db_gettable('users').' '.
                     'INNER JOIN '.db_gettable('users_courses').' '.

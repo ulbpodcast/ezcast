@@ -7,7 +7,6 @@
 <link type="text/css" href="jQuery-DateTimePicker/jquery.simple-dtpicker.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="css/styleHelp.css" />
 <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
-<link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
 
 <?php
     global $apache_documentroot;

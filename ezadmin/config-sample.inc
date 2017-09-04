@@ -32,4 +32,4 @@ $courses_excluded_from_stats = array(
     "AUTO-TESTS",
 );
 
-$ezadmin_custom_logo="ezadmin.png";
+$ezadmin_custom_logo=false;

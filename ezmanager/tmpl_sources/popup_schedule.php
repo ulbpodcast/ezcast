@@ -31,7 +31,8 @@ This popup appears when the user clicks on "move this record".
 It presents the user with a list of albums he can move the asset to.
 
 You should not have to use this template on its own. however, if you do, please
-make sure $created_albums_with_descriptions is initialized and is an array containing the album names (without any suffix) as keys, and albums descriptions as values
+make sure $created_albums_with_descriptions is initialized and is an array containing the album names (without any suffix) 
+as keys, and albums descriptions as values
 for every album the user can create.
 -->
 
@@ -58,7 +59,13 @@ for every album the user can create.
 <?php } else { ?>
     <form  action="index.php" onsubmit="return false;" method="post" id="schedule_form">
         <div class="modal-body">
-            <p>®schedule_at®</p>
+            <p>
+                <?php if(album_is_public($album)) {
+                    echo '®schedule_prive_at®';
+                } else {
+                    echo '®schedule_public_at®';
+                } ?>
+            </p>
             <input type="hidden" name="action" value="schedule_asset"/>
             <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
             <input type="hidden" id="asset" name="asset" value="<?php echo $asset_name; ?>"/>

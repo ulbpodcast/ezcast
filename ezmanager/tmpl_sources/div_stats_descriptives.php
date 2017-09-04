@@ -13,6 +13,8 @@
             <br />
         <?php } ?>
         <br />
+        <h4>®Stats_table_info®</h4>
+        <br />
         <table class="table table-striped">
             <tbody>
                 <tr>
@@ -68,7 +70,8 @@ Highcharts.setOptions({
     // Month graphic
     Highcharts.stockChart('containerMonth', {
         chart: {
-            zoomType: 'x'
+            zoomType: 'x',
+            backgroundColor: 'rgba(255, 255, 255, 0)'
         },
         title: {
             text: '®Graph_month_view®',
@@ -107,14 +110,12 @@ Highcharts.setOptions({
         },
         yAxis: {
             title: {
-                text: '®Graph_nbr_view®',
-                margin: 40
+                text: '®Graph_nbr_view®'
             },
             labels: {
-                align: "right",
-                x: 25
-            }
-
+                align: "right"
+            },
+            opposite: false
         },
         legend: {
             enabled: true,
@@ -145,8 +146,12 @@ Highcharts.setOptions({
     
     // Asset graphic
     Highcharts.chart('containerVideo', {
+        chart: {
+            zoomType: 'x',
+            backgroundColor: 'rgba(255, 255, 255, 0)'
+        },
         title: {
-            text: 'Vue par asset',
+            text: '®Graph_video_view®',
             align: 'left'
         },
         xAxis: {
@@ -159,15 +164,12 @@ Highcharts.setOptions({
         },
         yAxis: { // Primary yAxis
             title: {
-                text: '®Graph_nbr_view®',
-                margin: 40
+                text: '®Graph_nbr_view®'
             },
             labels: {
-                align: "right",
-                x: 25
+                align: "right"
             },
-            opposite: true
-
+            opposite: false
         },
         tooltip: {
             shared: true

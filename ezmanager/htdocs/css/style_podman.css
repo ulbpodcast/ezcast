@@ -208,6 +208,10 @@ body{
     margin-right: 15px;
 }
 
+.logo img {
+    max-height: 20px; 
+}
+
 /*---------------------------------------------- Main [fin] ----------------------------------------------*/
 
 
@@ -574,11 +578,54 @@ body{
     background-image:url(../images/page4/BCopierBackg.png);
 }
 
+.ButtonModerator a {
+    background-image:url(../images/page4/AModeratorBackg.png);
+}
+
+.ButtonModerator a:hover {
+    background-image:url(../images/page4/BModeratorBackg.png);
+}
+
+.ButtonResetBroadcast a {
+    background-image:url(../images/page4/AResetBroadcastBackg.png);
+}
+
+.ButtonResetBroadcast a:hover {
+    background-image:url(../images/page4/BResetBroadcastBackg.png);
+}
+
+.ButtonResetStats a {
+    background-image:url(../images/page4/AResetStatsBackg.png);
+}
+
+.ButtonResetStats a:hover {
+    background-image:url(../images/page4/BResetStatsBackg.png);
+}
+
+.ButtonMoreOptions .icon-btn {
+    background-image:url(../images/page4/MoreOptions.png);
+}
+
 .ButtonInfoAlbum{
     margin-left:12px;
     margin-top:5px;
     margin-bottom:5px;
+}
 
+img.dropdown-icon {
+    max-height: 20px;
+}
+
+/* Button drop down */
+.dropdown-background-icon-button a, .dropdown-background-icon-button .icon-btn {
+    padding-left: 25px !important;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 20px;
+}
+
+.dropdown-background-icon-button a {
+    margin-left: 10px;
 }
 
 img.dropdown-icon {

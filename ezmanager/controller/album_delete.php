@@ -8,6 +8,7 @@ function index($param = array()) {
     //
     // Access checks
     //
+    //$input['album'] is actually course code here.
     if (!isset($input['album']) || !acl_has_album_permissions($input['album'])) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
         log_append('warning', 'view_asset_details: tried to access album ' . $input['album'] . ' without permission');

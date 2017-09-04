@@ -22,7 +22,7 @@
    
     //if we create a new album
     switch($input['action']) {
-        case 'create_courseAndAlbum':
+        case 'create_courseAndAlbum': //user create an arbitrary course
             // Sanity checks
             if(!isset($input['label']) || $input['label'] == "" || !isset($input['albumtype']) || $input['albumtype'] == ""  ) {
                 error_print_message("no given value");
@@ -48,20 +48,9 @@
                 $label = substr($label, 0, $max_album_label_size); 
 
             //generate real course id 
-            $id_course_input = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
-            $incremental_id = 0;
-            $course_id = $id_course_input;
-            $course = db_course_read($course_id);
-            while($course) { //if we found an already existing course, loop until we found a free id
-                $course_id = $id_course_input . $incremental_id++;
-                $course = db_course_read($course_id);				
-            }
+            $course_code_public = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
 
-            //finally, create in db
-            db_course_create($course_id, $course_code_public, $label, 0);
-            db_users_courses_create($course_id, $_SESSION['user_login']);
-            break;
-        case 'create_album':
+        case 'create_album': //user pick from a course existing in db
             // Sanity checks
             if(!isset($input['course_code']) || $input['course_code'] == "") {
                 error_print_message("no given value");
@@ -91,37 +80,18 @@
             die;
     }
     
-    //now prepare metadata for the repository
-    $metadata = array(
-        'id' => $course_id,
-        'course_code_public' => $course_code_public,							 
-        'name' => $label,
-        'title' => $label,
-        'date' => date($dir_date_format),
-        'anac' => get_anac(date('Y'), date('m')),
-        'intro' => $default_intro,
-        'credits' => $default_credits,
-        'add_title' => $default_add_title,
-        'downloadable' => $default_downloadable,
-        'type' => $album_type,
-        'official' => 'false'
-    );
-
-    // Create both the private and public album
-    ezmam_repository_path($repository_path);
-    $res = ezmam_album_new($course_id . '-priv', $metadata);
-    if (!$res) {
-        error_print_message(ezmam_last_error());
-        die;
-    }
-    $res = ezmam_album_new($course_id . '-pub', $metadata);
-    if (!$res) {
-        error_print_message(ezmam_last_error());
-        die;
-    }
-
-    // Don't forget to update the session variables!
-    acl_update_permissions_list();
+    $ok = ezmam_albums_new_course($course_code_public, $label, $label, $album_type);
     
-    require_once template_getpath('popup_album_successfully_created.php');
+    switch($input['action']) {
+        case 'create_courseAndAlbum':
+             //finally, create in db
+            db_course_create($course_id, $course_code_public, $label, 0);
+            db_users_courses_create($course_id, $_SESSION['user_login']);
+            break;
+    }
+    
+    if($ok)
+        require_once template_getpath('popup_album_successfully_created.php');
+    else
+        echo "failure";
 }

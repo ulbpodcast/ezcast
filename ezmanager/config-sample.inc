@@ -66,3 +66,5 @@ $valid_extensions = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpe
 
 // used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
 $upload_slice_size = 1024 * 1024;
+
+$ezmanager_custom_logo= false;

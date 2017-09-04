@@ -38,7 +38,7 @@
 <div class="container">
   <div id="global">
   
-    <?php include_once 'tmpl/'.get_lang().'/div_help_header.php'; ?>
+    <?php include_once 'tmpl/'.get_lang().'/div_main_header.php'; ?>
       <div id="Bloc-ensemble">
       <?php include_once 'tmpl/'.  get_lang().'/div_update_content.php'; ?>
       </div>

@@ -31,3 +31,5 @@ $courses_excluded_from_stats = array(
     "PODC-I-000",
     "AUTO-TESTS",
 );
+
+$ezadmin_custom_logo="ezadmin.png";

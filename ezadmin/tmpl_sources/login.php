@@ -7,6 +7,16 @@
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
+                
+        <?php
+            global $apache_documentroot;
+            $custom_folder = "$apache_documentroot/ezadmin/css/custom/";
+            $dir = new DirectoryIterator($custom_folder);
+            foreach ($dir as $fileinfo) {
+                if ($fileinfo->isFile())
+                    echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$fileinfo->getFilename().'"/>';
+            }
+        ?>
 
         <script type="text/javascript">
             function detect_flash() {

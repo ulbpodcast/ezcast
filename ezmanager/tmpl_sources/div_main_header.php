@@ -30,8 +30,14 @@
         <div class="logo"> 
             <?php if (file_exists("./htdocs/images/Header/organization-logo.png")){ ?>
             <a href="<?php global $organization_url; echo $organization_url;?>"><img id="organisation_logo" src="./images/Header/organization-logo.png" height="42px;"/></a>
-            <?php } ?>            
-            <a href="index.php"><img src="./images/Header/EZmanager.png" alt="" /></a>
+            <?php }     
+            
+            global $ezmanager_custom_logo;
+            $ezmanager_logo = $ezmanager_custom_logo !== false ? 
+                    "images/custom/$ezmanager_custom_logo" : 
+                    "images/Header/ezmanager.png"; //default value
+            ?>
+            <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezmanager_logo; ?>" /></a>            
         </div>
         <a href="index.php?action=logout" title="®Logout®"><span class="logout">®Logout®</span></a>
         <span style="float: right; margin: 1px 3px; margin-top: -11px; font-size: 15px;">|</span>

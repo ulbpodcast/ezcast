@@ -84,6 +84,7 @@
             
             $label = $courseinfo['course_name'];
             $album_type = "course";
+            $course_id=$course_code;
                     
             break;
         default:

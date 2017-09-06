@@ -2,14 +2,8 @@
 function index($param = array()) 
 {
     global $input;
-    global $repository_path;
-    global $dir_date_format;
-    global $default_intro;
-    global $default_add_title;
-    global $default_downloadable;
     global $basedir;
     global $repository_basedir;
-    global $default_credits;
 
     require_once $basedir.'/commons/lib_sql_management.php';
     require_once $basedir.'/commons/lib_various.php';

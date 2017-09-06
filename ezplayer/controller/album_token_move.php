@@ -26,7 +26,7 @@ function index($param = array()) {
     user_prefs_repository_path($user_files_path);
 
     user_prefs_token_swap($_SESSION['user_login'], $index, $new_index);
-    acl_update_permissions_list();
+    ezplayer_acl_update_permissions_list();
     log_append('moved_album_token', 'album token moved from ' . $index . ' to ' . $new_index);
     // lvl, action, album, index_src, index_dest
     trace_append(array('1', 'album_token_move', $album, $index, $new_index));

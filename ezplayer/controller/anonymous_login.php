@@ -81,7 +81,7 @@ function index($param = array()) {
     // 3) adds album tokens that have been consulted as anonymous
     if (isset($album_tokens)) {
         if (user_prefs_tokens_add($_SESSION['user_login'], $album_tokens) !== false)
-            acl_update_permissions_list();
+            ezplayer_acl_update_permissions_list();
     }
 
     // 4) Logging the login operation

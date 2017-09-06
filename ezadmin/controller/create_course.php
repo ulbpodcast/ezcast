@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . '/../../commons/lib_ezmam.php');
+
 function index($param = array())
 {
     global $input;

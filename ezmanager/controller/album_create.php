@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . '/../../commons/lib_ezmam.php');
+
 /**
  * All the business logic related to the album creation: this function effectively creates the album and displays a confirmation message to the user
  */

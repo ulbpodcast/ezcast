@@ -123,7 +123,7 @@ function index_asset_view($param) {
             // anonymous user : consulted albums are stored in session var
             $_SESSION['acl_album_tokens'][] = $album_token;
         }
-        acl_update_permissions_list();
+        ezplayer_acl_update_permissions_list();
     }
 
     // prepares official and personal bookmarks

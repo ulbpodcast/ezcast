@@ -49,7 +49,7 @@ function acl_init($netid) {
 
     // Retrieving the permissions
     acl_update_settings();
-    acl_update_permissions_list();
+    ezplayer_acl_update_permissions_list();
 
     // All is set, we're good to go
     return true;
@@ -68,7 +68,7 @@ function acl_exit() {
 /**
  * Updates the (locally stored) list of consulted albums and moderated albums 
  */
-function acl_update_permissions_list() {
+function ezplayer_acl_update_permissions_list() {
     global $repository_path;
 
     ezmam_repository_path($repository_path);

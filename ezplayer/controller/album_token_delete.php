@@ -21,7 +21,7 @@ function index($param = array()) {
 
     user_prefs_token_remove($_SESSION['user_login'], $album);
     user_prefs_album_bookmarks_delete_all($_SESSION['user_login'], $album);
-    acl_update_permissions_list();
+    ezplayer_acl_update_permissions_list();
     log_append('delete_album_token', 'album token removed : album -' . $album);
     // lvl, action, album
     trace_append(array('1', 'album_token_delete', $album));

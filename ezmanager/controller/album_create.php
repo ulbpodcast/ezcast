@@ -5,18 +5,11 @@
  */
  function index($param = array()) {
     global $input;
-    global $repository_path;
-    global $dir_date_format;
-    global $default_intro;
-    global $default_add_title;
-    global $default_downloadable;
-    global $default_credits;
     global $max_course_code_size;
     global $max_album_label_size;
     
     //all these values are defined in each switch case
     $course_code_public = null;
-    $course_id = null;
     $album_type = null;
     $label = null;
    
@@ -39,18 +32,20 @@
                 }
                 $course_code_public = htmlspecialchars($input['course_code']);
             }
-            // --
   
+            //sanitize course code
+            $course_code_public = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
+            //
             //enforce size limits
             if(strlen($course_code_public) > $max_course_code_size)
                 $course_code_public = substr($course_code_public, 0, $max_course_code_size);
             if(strlen($label) > $max_album_label_size)
                 $label = substr($label, 0, $max_album_label_size); 
-
-            //generate real course id 
-            $course_code_public = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
-
-        case 'create_album': //user pick from a course existing in db
+            
+            $course_id = ezmam_course_get_new_id($course_code_public);
+                
+            break;
+        case 'create_album': //user pick from a course already existing in db
             // Sanity checks
             if(!isset($input['course_code']) || $input['course_code'] == "") {
                 error_print_message("no given value");
@@ -73,22 +68,26 @@
             
             $label = $courseinfo['course_name'];
             $album_type = "course";
-                    
+       
+            //course already exists in db, so do not regenerate a new id
+            $course_id = $course_code;
+            
             break;
         default:
             echo "wrong action";
             die;
     }
     
-    $ok = ezmam_albums_new_course($course_code_public, $label, $label, $album_type);
+    $ok = ezmam_course_create_repository($course_id, $course_code_public, $label, $label, $album_type);
     
-    switch($input['action']) {
-        case 'create_courseAndAlbum':
-             //finally, create in db
-            db_course_create($course_id, $course_code_public, $label, 0);
-            db_users_courses_create($course_id, $_SESSION['user_login']);
-            break;
+    $create_in_db = $input['action'] == 'create_courseAndAlbum';
+    if($create_in_db) {
+        //finally, create course in db and link user to it
+        $ok = ezmam_course_create_db($course_id, $course_code_public, $label, 1, $_SESSION['user_login']) && $ok;
     }
+    
+    //update course list
+    acl_update_permissions_list();
     
     if($ok)
         require_once template_getpath('popup_album_successfully_created.php');

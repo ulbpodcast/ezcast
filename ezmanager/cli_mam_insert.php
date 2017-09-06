@@ -67,9 +67,9 @@ $record_date=$recording_metadata['record_date'];
 
 //check for album existence
 if($recording_metadata['moderation']=="false")
-    $album_name=$course_name."-pub";
+    $album_name = $course_name."-pub";
   else
-    $album_name=$course_name."-priv";
+    $album_name = $course_name."-priv";
 
 //create album if needed
 if(!ezmam_album_exists($album_name)){
@@ -84,8 +84,9 @@ if(!ezmam_album_exists($album_name)){
         $course_code_public = htmlspecialchars($input['course_code']);
             
     $label = $courseinfo['course_name'];
+    $course_id = $courseinfo['course_code'];
      
-    $ok = ezmam_albums_new_course($course_code_public, $label, $label, 'course');
+    $ok = ezmam_course_create_repository($course_id, $course_code_public, $label, $label, 'course');
     if(!$ok) {
         $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Album $album_name did not exist and creation failed", array("cli_mam_insert"), $asset);
         exit(4);

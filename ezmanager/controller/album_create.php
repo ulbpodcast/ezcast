@@ -86,6 +86,9 @@
         $ok = ezmam_course_create_db($course_id, $course_code_public, $label, 1, $_SESSION['user_login']) && $ok;
     }
     
+    //update course list
+    acl_update_permissions_list();
+    
     if($ok)
         require_once template_getpath('popup_album_successfully_created.php');
     else

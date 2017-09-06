@@ -160,7 +160,6 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
         }
     }
    
-    acl_update_permissions_list();
     return true;
 }
 

@@ -7,6 +7,16 @@
     <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
     <link  rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
+            
+        <?php
+            global $apache_documentroot;
+            $custom_folder = "$apache_documentroot/ezadmin/css/custom/";
+            $dir = new DirectoryIterator($custom_folder);
+            foreach ($dir as $fileinfo) {
+                if ($fileinfo->isFile())
+                    echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$fileinfo->getFilename().'"/>';
+            }
+        ?>
 
     </head>
     <body>

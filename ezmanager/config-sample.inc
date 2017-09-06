@@ -66,3 +66,6 @@ $valid_extensions = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpe
 
 // used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
 $upload_slice_size = 1024 * 1024;
+
+//path to a custom ezcadmin logo, or false to use default logo. Custom logo must be in webspace in /ezmanager/img/custom directory
+$ezmanager_custom_logo = false;

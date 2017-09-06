@@ -5,26 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <title>®podman_page_title®</title>
+        <?php include_once template_getpath('head_css_js.php'); ?>
+
         <meta name="description" content="EZManager is an web application to manage video from EZCast" />
-        <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
-        <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
-        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="bootstrap/css/dashboard.css" />
-        <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
-        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
-        <link rel="stylesheet" type="text/css" href="css/colorbox.css" />
-        <link href="css/uploadify.css" type="text/css" rel="stylesheet" />
-        <script type="text/javascript" src="js/AppearDissapear.js"></script>
-        <script type="text/javascript" src="js/hover.js"></script>
-        <script type="text/javascript" src="js/httpRequest.js"></script>
-        <script type="text/javascript" src="js/jQuery/jquery-2.2.4.min.js"></script>
-        <script src="js/jquery.colorbox.js"></script>
-        <script type="text/javascript" src="js/upload.js"></script>
-        <script type="text/javascript" src="js/clipboard.js"></script>
-        <script src="./js/highstock.js" async></script>
-        
-        <script type="text/javascript" src="jQuery-DateTimePicker/jquery.simple-dtpicker.js"></script>
-        <link type="text/css" href="jQuery-DateTimePicker/jquery.simple-dtpicker.css" rel="stylesheet" />
+
+
         <script type="text/javascript">
             /**
              * Retrieves album header and displays it in div_album_header

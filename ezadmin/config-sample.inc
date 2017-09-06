@@ -31,3 +31,6 @@ $courses_excluded_from_stats = array(
     "PODC-I-000",
     "AUTO-TESTS",
 );
+
+//path to a custom ezcadmin logo, or false to use default logo. Custom logo must be in webspace in /ezadmin/img/custom directory
+$ezadmin_custom_logo = false;

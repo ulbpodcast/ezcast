@@ -27,17 +27,15 @@
          * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
          */ ?>
     	<title>¤organization¤</title>
+        <?php include_once template_getpath('head_css_js.php'); ?>
+
     	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
-        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
-        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
-        <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
+
 
     </head>
     <body>
     	<div class="container">
-            <?php include 'div_help_header.php'; ?>
+            <?php include 'div_main_header.php'; ?>
             <div id="global">
                 <div id="login_form" class="col-md-6 col-md-offset-3">
                     ®Logout_confirmation_message®

@@ -3,17 +3,12 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <title>®podman_page_title®</title>
+        <?php include_once template_getpath('head_css_js.php'); ?>
 
-        <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
-        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/style_podman.css" />
-        <link rel="stylesheet" type="text/css" href="commons/css/common_style.css" />
-        <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
-        <script type="text/javascript" src="js/jQuery/jquery-2.2.4.min.js"></script>
     </head>
     <body>
         <div class="container">
-            <?php include 'div_help_header.php'; ?>
+            <?php include 'div_main_header.php'; ?>
             <div id="global">
                 <p>
                     <br />

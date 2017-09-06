@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -36,11 +36,13 @@ ezmam_repository_path('/path/to/test/repository');
 // Creating albums for our tests
 //
 
-if($step_by_step)
+if ($step_by_step) {
     echo 'Step by step mode enabled. Press enter between each test to continue.';
+}
 
-if($step_by_step)
+if ($step_by_step) {
     echo 'Creating album COURSE-MNEMO';
+}
 
 $metadata = array(
     'name' => 'COURSE-MNEMO-priv',
@@ -50,10 +52,12 @@ $metadata = array(
 );
 ezmam_album_new("COURSE-MNEMO-priv", $metadata);
 
-if($step_by_step)
+if ($step_by_step) {
     exec('read');
-if($step_by_step)
+}
+if ($step_by_step) {
     echo 'adding asset in COURSE-MNEMO-priv';
+}
 
 $metadata = array(
     'author' => 'X',
@@ -65,10 +69,12 @@ $metadata = array(
 );
 ezmam_asset_new("COURSE-MNEMO-priv", "2011-07-26-14h32", $metadata);
 
-if($step_by_step)
+if ($step_by_step) {
     exec('read');
-if($step_by_step)
+}
+if ($step_by_step) {
     echo 'adding asset in COURSE-MNEMO-priv';
+}
 
 $metadata = array(
     'author' => 'X',
@@ -80,10 +86,12 @@ $metadata = array(
 );
 ezmam_asset_new("COURSE-MNEMO-priv", "2011-07-27-09h28", $metadata);
 
-if($step_by_step)
+if ($step_by_step) {
     exec('read');
-if($step_by_step)
+}
+if ($step_by_step) {
     echo 'adding asset in COURSE-MNEMO-priv';
+}
 
 $metadata = array(
     'author' => 'X',
@@ -95,10 +103,12 @@ $metadata = array(
 );
 ezmam_asset_new("COURSE-MNEMO-priv", "2011-07-27-16h09", $metadata);
 
-if($step_by_step)
+if ($step_by_step) {
     exec('read');
-if($step_by_step)
+}
+if ($step_by_step) {
     echo 'adding album COURSE-MNEMO-pub';
+}
 
 $metadata = array(
     'name' => 'COURSE-MNEMO-pub',
@@ -108,10 +118,12 @@ $metadata = array(
 );
 ezmam_album_new("COURSE-MNEMO-pub", $metadata);
 
-if($step_by_step)
+if ($step_by_step) {
     exec('read');
-if($step_by_step)
+}
+if ($step_by_step) {
     echo 'adding asset in COURSE-MNEMO-pub';
+}
 
 $metadata = array(
     'author' => 'X',
@@ -123,8 +135,9 @@ $metadata = array(
 );
 ezmam_asset_new("COURSE-MNEMO-pub", "2011-07-27-14h32", $metadata);
 
-if($step_by_step)
+if ($step_by_step) {
     exec('read');
+}
 /*
 echo 'deleting album COURSE-MNEMO-pub';
 ezmam_album_delete('COURSE-MNEMO-pub');
@@ -134,10 +147,12 @@ ezmam_album_delete("FOO-I-000");*/
 
 ezmam_asset_delete("COURSE-MNEMO-pub", "2011-07-27-14h32");
 
-if($step_by_step)
+if ($step_by_step) {
     exec('read');
-if($step_by_step)
+}
+if ($step_by_step) {
     echo 'adding asset in COURSE-MNEMO-pub again';
+}
 
 $metadata = array(
     'author' => 'X',

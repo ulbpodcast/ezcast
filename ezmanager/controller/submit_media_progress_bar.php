@@ -5,9 +5,10 @@
  * @global type $submit_upload_dir
  * @global type $dir_date_format
  * @global type $head_code
- * @global type $accepted_media_types 
+ * @global type $accepted_media_types
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $submit_upload_dir;
     global $dir_date_format;
     global $head_code;
@@ -27,7 +28,6 @@ function index($param = array()) {
 
 
     if (!in_array($input['type'], $accepted_media_types)) {
-
         error_print_message(template_get_message('Invalid_type', get_lang()));
         log_append('warning', 'submit_media: ' . $input['type'] . ' is not a valid media type');
         die;
@@ -63,8 +63,17 @@ function index($param = array()) {
     // 4) Calling cli_mam_insert.php so that it adds the file into ezmam
     $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . dirname($path) . '  >>' . dirname($path) . '/mam_insert.log 2>&1"|at now';
 
-    $logger->log(EventType::ASSET_CREATED, LogLevel::NOTICE, 
-       "User ".$_SESSION['user_login']." submitted asset", array('submit_media_progress_bar'), $tmp_name, $_SESSION['user_full_name'], "todo", $input['album'], "");
+    $logger->log(
+        EventType::ASSET_CREATED,
+        LogLevel::NOTICE,
+       "User ".$_SESSION['user_login']." submitted asset",
+        array('submit_media_progress_bar'),
+        $tmp_name,
+        $_SESSION['user_full_name'],
+        "todo",
+        $input['album'],
+        ""
+    );
          
     exec($cmd, $output, $ret);
     if ($ret != 0) {

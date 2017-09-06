@@ -1,7 +1,7 @@
 <?php
 
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -111,14 +111,18 @@ if (file_exists($origin_to_process_file)) {
 // --> Uses the new values if available
 // --> Uses previous values otherwise
 
-if (!isset($rendering_array['slide_bias']) || $rendering_array['slide_bias'] === '')
+if (!isset($rendering_array['slide_bias']) || $rendering_array['slide_bias'] === '') {
     $rendering_array['slide_bias'] = 0;
-if (!isset($rendering_array['new_title']) || $rendering_array['new_title'] === '')
+}
+if (!isset($rendering_array['new_title']) || $rendering_array['new_title'] === '') {
     $rendering_array['new_title'] = $origin_asset_meta['title'];
-if (!isset($rendering_array['new_author']) || $rendering_array['new_author'] === '')
+}
+if (!isset($rendering_array['new_author']) || $rendering_array['new_author'] === '') {
     $rendering_array['new_author'] = $origin_asset_meta['author'];
-if (!isset($rendering_array['new_album']) || $rendering_array['new_album'] === '' || !ezmam_album_exists($rendering_array['new_album']))
+}
+if (!isset($rendering_array['new_album']) || $rendering_array['new_album'] === '' || !ezmam_album_exists($rendering_array['new_album'])) {
     $rendering_array['new_album'] = $rendering_array['src_album'];
+}
 if (!isset($rendering_array['new_asset']) || $rendering_array['new_asset'] === '' || ezmam_asset_exists($rendering_array['new_album'], $rendering_array['new_asset'])) {
     $rendering_array['new_asset'] = date('Y_m_d_H\hi');
     if (ezmam_asset_exists($rendering_array['new_alnum'], $rendering_array['new_asset'])) {
@@ -126,23 +130,29 @@ if (!isset($rendering_array['new_asset']) || $rendering_array['new_asset'] === '
         die;
     }
 }
-if (!isset($rendering_array['new_date']) || $rendering_array['new_date'] === '')
+if (!isset($rendering_array['new_date']) || $rendering_array['new_date'] === '') {
     $rendering_array['new_date'] = get_user_friendly_date($rendering_array['new_asset'], ' ', true, 'fr', false);
-if (!isset($rendering_array['new_album_name']) || $rendering_array['new_album_name'] === ''){
+}
+if (!isset($rendering_array['new_album_name']) || $rendering_array['new_album_name'] === '') {
     $album_meta = ezmam_album_metadata_get($rendering_array['new_album']);
     $rendering_array['new_album_name'] = '[' . suffix_remove($rendering_array['new_album']) . '] ' . get_album_title($rendering_array['new_album']);
 }
-if (!isset($rendering_array['organization']) || $rendering_array['organization'] === '')
+if (!isset($rendering_array['organization']) || $rendering_array['organization'] === '') {
     $rendering_array['organization'] = $organization_name;
-if (!isset($rendering_array['copyright']) || $rendering_array['copyright'] === '')
+}
+if (!isset($rendering_array['copyright']) || $rendering_array['copyright'] === '') {
     $rendering_array['copyright'] = $copyright;
-if (!isset($rendering_array['add_title']) || $rendering_array['add_title'] === '')
+}
+if (!isset($rendering_array['add_title']) || $rendering_array['add_title'] === '') {
     $rendering_array['add_title'] = $to_process_array['add_title'];
-if (!isset($rendering_array['intro_movie']) || $rendering_array['intro_movie'] === '')
+}
+if (!isset($rendering_array['intro_movie']) || $rendering_array['intro_movie'] === '') {
     $rendering_array['intro_movie'] = $to_process_array['intro_movie'];
-if (!isset($rendering_array['new_type']) || $rendering_array['new_type'] === '')
+}
+if (!isset($rendering_array['new_type']) || $rendering_array['new_type'] === '') {
     $rendering_array['new_type'] = $origin_asset_meta['record_type'];
-if (!isset($origin_asset_meta['super_highres']) || $origin_asset_meta['super_highres'] === ''){
+}
+if (!isset($origin_asset_meta['super_highres']) || $origin_asset_meta['super_highres'] === '') {
     $rendering_array['super_highres'] = false;
 } else {
     $rendering_array['super_highres'] = true;
@@ -159,13 +169,13 @@ print_r($rendering_array);
 $renderers = require dirname(__FILE__) . '/renderers.inc';
 $renderer = false;
 $index = 0;
-while ($renderer === false && $index < (count($renderers))){
-    if (strtolower($renderers[$index]["status"]) === "enabled"){
+while ($renderer === false && $index < (count($renderers))) {
+    if (strtolower($renderers[$index]["status"]) === "enabled") {
         $renderer = $renderers[$index];
     }
     $index++;
 }
-if ($renderer === false){
+if ($renderer === false) {
     echo 'No renderer enabled' . PHP_EOL;
     die;
 }
@@ -182,7 +192,7 @@ if (strpos($rendering_array['new_type'], 'cam') !== false) {
 }
 if (strpos($rendering_array['new_type'], 'slide') !== false) {
     $cmd = "ln -s " . $repository_path . "/" . $rendering_array['src_album'] . "/" . $rendering_array['src_asset'] . "/*_slide " . $rerender_dir . "/.";
-    print $cmd . PHP_EOL;   
+    print $cmd . PHP_EOL;
     exec($cmd);
 }
 file_put_contents($rerender_dir . '/torender.inc', '<?php return ' . var_export($rendering_array, true) . ';' . PHP_EOL . ' ?>');
@@ -203,21 +213,21 @@ for ($i = 0; $i < 3; $i++) {
     };
 }
 
-$cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' . 
-        $renderer['php'] . ' ' . $renderer['home'] . '/cli_rerender.php '. 
-        $renderer['downloaded_dir'] . '/' . $rendering_array['new_asset'] . '_' . $rendering_array['new_album'] . '_rerender' . "/" 
+$cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' .
+        $renderer['php'] . ' ' . $renderer['home'] . '/cli_rerender.php '.
+        $renderer['downloaded_dir'] . '/' . $rendering_array['new_asset'] . '_' . $rendering_array['new_album'] . '_rerender' . "/"
         . '"';
 
 print $cmd . PHP_EOL;
 exec($cmd, $out, $err);
 
-$cmd = 'scp -r ' . $renderer['client'] . '@' . $renderer['host'] . ':' . 
+$cmd = 'scp -r ' . $renderer['client'] . '@' . $renderer['host'] . ':' .
         $renderer['processed_dir'] . '/' . $rendering_array['new_asset'] . '_' . $rendering_array['new_album'] . ' ' .
         $repository_path . '/' . $rendering_array['new_album'] . '/' . $rendering_array['new_asset'];
 print $cmd . PHP_EOL;
 exec($cmd);
 
-$cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' . 
+$cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " ' .
         'rm -rf ' . $renderer['processed_dir'] . '/' . $rendering_array['new_asset'] . '_' . $rendering_array['new_album']
         . '"';
 print $cmd . PHP_EOL;
@@ -242,23 +252,28 @@ die;
  * @anonymous_key the name of root tag we don't want to get for each item
  * @return type
  */
-function xml_file2assoc_array($xml, $anonymous_key = 'anon') {
-    if (is_string($xml))
+function xml_file2assoc_array($xml, $anonymous_key = 'anon')
+{
+    if (is_string($xml)) {
         $xml = new SimpleXMLElement(file_get_contents($xml));
+    }
     $children = $xml->children();
-    if (!$children)
+    if (!$children) {
         return (string) $xml;
+    }
     $arr = array();
     foreach ($children as $key => $node) {
         $node = xml_file2assoc_array($node);
         // support for 'anon' non-associative arrays
-        if ($key == $anonymous_key)
+        if ($key == $anonymous_key) {
             $key = count($arr);
+        }
 
         // if the node is already set, put it into an array
         if (isset($arr[$key])) {
-            if (!is_array($arr[$key]) || $arr[$key][0] == null)
+            if (!is_array($arr[$key]) || $arr[$key][0] == null) {
                 $arr[$key] = array($arr[$key]);
+            }
             $arr[$key][] = $node;
         } else {
             $arr[$key] = $node;

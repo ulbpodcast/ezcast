@@ -1,7 +1,7 @@
 <?php
 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -27,4 +27,3 @@
 
 chdir("!PATH/ezmanager");
 require "web_request/web_request_for_log.php";
-?>

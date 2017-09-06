@@ -1,7 +1,7 @@
 <?php
 
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -42,7 +42,8 @@ require_once __DIR__ . '/../commons/lib_sql_management.php';
  * @desc tells the library where the repository is. CALL THIS FUNCTION BEFORE ANYTHING ELSE!!!!
  * @desc if called without parameter, returns current repository
  */
-function ezmam_repository_path($path = "") {
+function ezmam_repository_path($path = "")
+{
     // static $repository_path = false;
     global $repository_path;
 
@@ -56,10 +57,11 @@ function ezmam_repository_path($path = "") {
     }//if $ath
     //if path exists then store it
     $res = is_dir($path);
-    if ($res)
+    if ($res) {
         $repository_path = $path;
-    else
+    } else {
         ezmam_last_error("2 Error: repository path not found: $path");
+    }
     return $res;
 }
 
@@ -70,7 +72,8 @@ function ezmam_repository_path($path = "") {
  * @desc tells the library where the repository is. CALL THIS FUNCTION BEFORE ANYTHING ELSE RELATED TO RSS!!!!
  * @desc if called without parameter, returns URL to media distribution page
  */
-function ezmam_video_distribution_url($url = "") {
+function ezmam_video_distribution_url($url = "")
+{
     static $video_distribution_url;
 
     if ($url == "") {
@@ -92,12 +95,13 @@ function ezmam_video_distribution_url($url = "") {
  * @return string error message
  * @desc Store and return last error message in ezmam library
  */
-function ezmam_last_error($msg = "") {
+function ezmam_last_error($msg = "")
+{
     static $last_error = "";
 
-    if ($msg == "")
+    if ($msg == "") {
         return $last_error;
-    else {
+    } else {
         $last_error = $msg;
         return true;
     }
@@ -109,19 +113,19 @@ function ezmam_course_get_new_id($course_code)
     //find first free course_id if needed
     $incremental_id = 0;
     $course = db_course_read($course_id);
-    while($course) { //if we found an already existing course, loop until we found a free id
+    while ($course) { //if we found an already existing course, loop until we found a free id
         $course_id = $course_code . $incremental_id++;
-        $course = db_course_read($course_id);				
+        $course = db_course_read($course_id);
     }
     return $course_id;
 }
 
 //init private and public albums for given course with default metadata
 //return created course id or false on failure
-function ezmam_course_create_repository($course_id, $course_code, $name, $full_title, $album_type) 
+function ezmam_course_create_repository($course_id, $course_code, $name, $full_title, $album_type)
 {
     global $logger;
-    if(!in_array($album_type, array('course', 'other', 'channel'))) {
+    if (!in_array($album_type, array('course', 'other', 'channel'))) {
         error_print_message("wrong type");
         return false;
     }
@@ -135,7 +139,7 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
         
     $metadata = array(
         'id' => $course_id,
-        'course_code_public' => $course_code,							 
+        'course_code_public' => $course_code,
         'name' => $name,
         'title' => $full_title,
         'date' => date($dir_date_format),
@@ -151,10 +155,10 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
     // Create both the private and public album
     ezmam_repository_path($repository_path);
     $album_names = array($course_id . '-priv', $course_id . '-pub');
-    foreach($album_names as $album_name) {
+    foreach ($album_names as $album_name) {
         $res = ezmam_album_new($album_name, $metadata);
         if (!$res) {
-            error_print_message(ezmam_last_error()); 
+            error_print_message(ezmam_last_error());
             $logger->log(EventType::MANAGER_EZMAM_CREATE_COURSE, LogLevel::ERROR, "Could not create album $album_name in repository, aborting", array(__FUNCTION__));
             return false;
         }
@@ -163,19 +167,19 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
     return true;
 }
 
-function ezmam_course_create_db($course_id, $course_code_public, $label, $in_recorders, $owner = null) 
+function ezmam_course_create_db($course_id, $course_code_public, $label, $in_recorders, $owner = null)
 {
     global $logger;
     
     $valid = db_course_create($course_id, $course_code_public, $label, $in_recorders);
-    if(!$valid) {
+    if (!$valid) {
         $logger->log(EventType::MANAGER_EZMAM_CREATE_COURSE, LogLevel::ERROR, "Could not create course $course_id ($course_code_public) in db", array(__FUNCTION__));
         return false;
     }
     
-    if($owner) {
+    if ($owner) {
         $valid2 = db_users_courses_create($course_id, $owner);
-        if(!$valid2) {
+        if (!$valid2) {
             $logger->log(EventType::MANAGER_EZMAM_CREATE_COURSE, LogLevel::ERROR, "Course $course_id ($course_code_public) was created but could not bind user $owner to it", array(__FUNCTION__));
             return false;
         }
@@ -190,28 +194,33 @@ function ezmam_course_create_db($course_id, $course_code_public, $label, $in_rec
  * @param string $description description for metadata
  * @return false|error_string
  */
-function ezmam_album_new($album_name, $metadata) {
+function ezmam_album_new($album_name, $metadata)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
     //create directory
     $album_path = $repository_path . "/" . $album_name;
-    if (ezmam_album_exists($album_name))
+    if (ezmam_album_exists($album_name)) {
         return "album already exists";
+    }
     $res = mkdir($album_path);
-    if (!$res)
+    if (!$res) {
         return "could not create $album_path";
+    }
 
     // Create a token
     $res = ezmam_album_token_create($album_name);
-    if (!$res)
+    if (!$res) {
         return "could not create token for $album_path";
+    }
 
     //create the metadata
     $res = ezmam_album_metadata_set($album_name, $metadata);
-    if (!$res)
+    if (!$res) {
         return "could not create metadata for $album_path";
+    }
 
     //log the operation
     log_append('album_new', $album_name);
@@ -225,7 +234,8 @@ function ezmam_album_new($album_name, $metadata) {
  * @return bool
  * @desc tell if thet given album exists
  */
-function ezmam_album_exists($album_name) {
+function ezmam_album_exists($album_name)
+{
     return ezmam_asset_exists($album_name, "");
 }
 
@@ -244,15 +254,16 @@ function ezmam_album_list()
     $album_list = array();
     $dh = opendir($repository_path);
     while (($file = readdir($dh)) !== false) {
-        if ($file[0] == '.' || $file[0] == "_") //filter out names starting with . (including '.' and '..' )or _
+        if ($file[0] == '.' || $file[0] == "_") { //filter out names starting with . (including '.' and '..' )or _
             continue;
+        }
         
         $dir = $repository_path . "/" . $file;
-        if(!is_dir($dir))
+        if (!is_dir($dir)) {
             continue;
+        }
         
         array_push($album_list, $file); //if its a directory add it to the list
-        
     }
     
     return $album_list;
@@ -263,7 +274,8 @@ function ezmam_album_list()
  * @return array_of_assoc_array keys are: 'name' and 'metadata'
  * @desc returns an array of all albums with details in   assoc_arrays: ['name'] & ['metadata']
  */
-function ezmam_album_list_metadata() {
+function ezmam_album_list_metadata()
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -285,14 +297,15 @@ function ezmam_album_list_metadata() {
     return $album_list;
 }
 
-function ezmam_album_course_public_name_get($album) {
+function ezmam_album_course_public_name_get($album)
+{
     global $logger;
     
     $album_metadata = ezmam_album_metadata_get($album);
-    if(   isset($album_metadata['course_code_public']) 
-       && $album_metadata['course_code_public'] != '' )
-        $course_code_public = $album_metadata['course_code_public']; 
-    else if(isset($album_metadata['name'])) {
+    if (isset($album_metadata['course_code_public'])
+       && $album_metadata['course_code_public'] != '') {
+        $course_code_public = $album_metadata['course_code_public'];
+    } elseif (isset($album_metadata['name'])) {
         $course_code_public = $album_metadata['name'];
     } else {
         $logger->log(EventType::TEST, LogLevel::ERROR, "Could not get course code from album $album", array(__FUNCTION__));
@@ -306,36 +319,40 @@ function ezmam_album_course_public_name_get($album) {
  * @return false|assoc_array
  * @desc returns metadata from the album
  */
-function ezmam_album_metadata_get($album) {
+function ezmam_album_metadata_get($album)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
     $album_path = $repository_path . "/" . $album;
     $assoc_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
   
-  return $assoc_metadata;
+    return $assoc_metadata;
 }
 
 
-function ezmam_asset_meta_set($asset, $metadata_assoc_array) {
+function ezmam_asset_meta_set($asset, $metadata_assoc_array)
+{
     $repository_path = ezmam_repository_path();
     // Sanity checks
     if ($repository_path === false) {
         return false;
     }
     // if (!ezmam_album_exists($album))
-        // return false;
+    // return false;
 
     // Updating the metadata
     $album_path = $repository_path . "/" . $asset;
     $metadata_xml = assoc_array2metadata($metadata_assoc_array);
     $res = file_put_contents($album_path . "/_metadata.xml", $metadata_xml);
 
-    if (!$res)
+    if (!$res) {
         return false;
+    }
 
     // Logging the operation
     $metadata_str = '';
@@ -355,22 +372,25 @@ function ezmam_asset_meta_set($asset, $metadata_assoc_array) {
  * @return bool (true on success)
  * @desc saves the given metadata
  */
-function ezmam_album_metadata_set($album, $metadata_assoc_array, $logging = true) {
+function ezmam_album_metadata_set($album, $metadata_assoc_array, $logging = true)
+{
     $repository_path = ezmam_repository_path();
     // Sanity checks
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // Updating the metadata
     $album_path = $repository_path . "/" . $album;
     $metadata_xml = assoc_array2metadata($metadata_assoc_array);
     $res = file_put_contents($album_path . "/_metadata.xml", $metadata_xml);
 
-    if (!$res)
+    if (!$res) {
         return false;
+    }
 
     // Logging the operation
     $metadata_str = '';
@@ -393,7 +413,8 @@ function ezmam_album_metadata_set($album, $metadata_assoc_array, $logging = true
  * Deletes an album from the repository
  * @return true|false error status
  */
-function ezmam_album_delete($album_name) {
+function ezmam_album_delete($album_name)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -415,10 +436,11 @@ function ezmam_album_delete($album_name) {
 
     while (($file = readdir($dir)) !== false) {
         if ($file != "." && $file != "..") {
-            if (is_dir($path . '/' . $file))
+            if (is_dir($path . '/' . $file)) {
                 ezmam_asset_delete($album_name, $file, false);
-            else
+            } else {
                 unlink($path . '/' . $file);
+            }
         }
     }
 
@@ -455,12 +477,13 @@ function ezmam_album_delete($album_name) {
 
 
   /**
- * @param string $album 
+ * @param string $album
  * @param string $type
  * @desc regenerates the complete RSS
  */
 //TODO: Clean up!
-function ezmam_rss_generate($album, $type) {
+function ezmam_rss_generate($album, $type)
+{
     global $distribute_url;
     global $ezplayer_safe_url;
     $url = $distribute_url;
@@ -498,7 +521,13 @@ function ezmam_rss_generate($album, $type) {
                     . '&asset=' . $metadata['record_date']
                     . '&t=0';
             add_item_to_rss(
-                    $xmlh, $metadata['title'], $metadata['description'], $metadata['author'], get_RFC822_date($metadata['record_date']), $ezplayer_link, false
+                    $xmlh,
+                $metadata['title'],
+                $metadata['description'],
+                $metadata['author'],
+                get_RFC822_date($metadata['record_date']),
+                $ezplayer_link,
+                false
             );
         } else {
             // Don't forget to add both videos if it was a camslide!
@@ -514,9 +543,14 @@ function ezmam_rss_generate($album, $type) {
                 // that at least one media is available
                 if (ezmam_media_exists($album, $asset['name'], 'high_cam') || ezmam_media_exists($album, $asset['name'], 'low_cam')) {
                     add_item_to_rss(
-                            $xmlh, $title . ' (camera)', $metadata['description'] . ' (prise de vue caméra)', $metadata['author'],
-                            //preg_replace('!([0-9]{4})\_([0-9]{2})\_([0-9]{2})\_([0-9]{2})h([0-9]{2})!', '$3/$2/$1 $4:$5', $metadata['record_date']), 
-                            get_RFC822_date($metadata['record_date']), $url . $arguments, $url . '/cam.m4v' . $arguments
+                            $xmlh,
+                        $title . ' (camera)',
+                        $metadata['description'] . ' (prise de vue caméra)',
+                        $metadata['author'],
+                            //preg_replace('!([0-9]{4})\_([0-9]{2})\_([0-9]{2})\_([0-9]{2})h([0-9]{2})!', '$3/$2/$1 $4:$5', $metadata['record_date']),
+                            get_RFC822_date($metadata['record_date']),
+                        $url . $arguments,
+                        $url . '/cam.m4v' . $arguments
                     );
                 }
 
@@ -526,9 +560,14 @@ function ezmam_rss_generate($album, $type) {
                 // See above
                 if (ezmam_media_exists($album, $asset['name'], 'high_slide') || ezmam_media_exists($album, $asset['name'], 'low_slide')) {
                     add_item_to_rss(
-                            $xmlh, $title . ' (slides)', $metadata['description'] . ' (slides et commentaires)', $metadata['author'],
-                            //preg_replace('!([0-9]{4})\_([0-9]{2})\_([0-9]{2})\_([0-9]{2})h([0-9]{2})!', '$3/$2/$1 $4:$5', $metadata['record_date']), 
-                            get_RFC822_date($metadata['record_date']), $url . $arguments, $url . '/slide.m4v' . $arguments
+                            $xmlh,
+                        $title . ' (slides)',
+                        $metadata['description'] . ' (slides et commentaires)',
+                        $metadata['author'],
+                            //preg_replace('!([0-9]{4})\_([0-9]{2})\_([0-9]{2})\_([0-9]{2})h([0-9]{2})!', '$3/$2/$1 $4:$5', $metadata['record_date']),
+                            get_RFC822_date($metadata['record_date']),
+                        $url . $arguments,
+                        $url . '/slide.m4v' . $arguments
                     );
                 }
             }
@@ -541,9 +580,14 @@ function ezmam_rss_generate($album, $type) {
                 // Filter for empty assets (see above)
                 if (ezmam_media_exists($album, $asset['name'], 'high_' . $metadata['record_type']) || ezmam_media_exists($album, $asset['name'], 'low_' . $metadata['record_type'])) {
                     add_item_to_rss(
-                            $xmlh, $title, $metadata['description'], $metadata['author'],
-                            //preg_replace('!([0-9]{4})\_([0-9]{2})\_([0-9]{2})\_([0-9]{2})h([0-9]{2})!', '$3/$2/$1 $4:$5', $metadata['record_date']), 
-                            get_RFC822_date($metadata['record_date']), $url . $arguments, $url . '/' . $metadata['record_type'] . '.m4v' . $arguments
+                            $xmlh,
+                        $title,
+                        $metadata['description'],
+                        $metadata['author'],
+                            //preg_replace('!([0-9]{4})\_([0-9]{2})\_([0-9]{2})\_([0-9]{2})h([0-9]{2})!', '$3/$2/$1 $4:$5', $metadata['record_date']),
+                            get_RFC822_date($metadata['record_date']),
+                        $url . $arguments,
+                        $url . '/' . $metadata['record_type'] . '.m4v' . $arguments
                     );
                 }
             }
@@ -571,7 +615,8 @@ function ezmam_rss_generate($album, $type) {
  * @return string the XML code for an empty RSS feed
  */
 //TODO:Clean up!
-function ezmam_rss_new($album_name, $type) {
+function ezmam_rss_new($album_name, $type)
+{
     global $ezmanager_url;
     global $distribute_url;
     global $organization_name;
@@ -580,31 +625,35 @@ function ezmam_rss_new($album_name, $type) {
     //
     // Sanity checks
     //
-  $repository_path = ezmam_repository_path();
+    $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album_name))
+    if (!ezmam_album_exists($album_name)) {
         return false;
+    }
     $album_path = $repository_path . "/" . $album_name;
     $file_path = $album_path . "/$type.rss";
 
     //
     // Setting up information about the feed
     //
-  $metadata = ezmam_album_metadata_get($album_name);
+    $metadata = ezmam_album_metadata_get($album_name);
 
     // Quality
     $quality = 'EZplayer';
-    if ($type == 'high')
+    if ($type == 'high') {
         $quality = 'HD';
-    if ($type == 'low')
+    }
+    if ($type == 'low') {
         $quality = 'SD';
+    }
 
     // Feed title
     $title = $metadata['name'] . ' ' . choose_title_from_metadata($metadata) . ' (' . $quality;
-    if (album_is_private($album_name))
+    if (album_is_private($album_name)) {
         $title .= ' - album privé';
+    }
     $title .= ')';
 
     // Feed subtitle, for itunes
@@ -618,10 +667,12 @@ function ezmam_rss_new($album_name, $type) {
 
     // Path to the thumbnail image
     $thumbnail_url = $ezmanager_url . '/images/rss_logo_ezplayer.png';
-    if ($type == 'high')
+    if ($type == 'high') {
         $thumbnail_url = $ezmanager_url . '/images/rss_logo_HD.png';
-    if ($type == 'low')
+    }
+    if ($type == 'low') {
         $thumbnail_url = $ezmanager_url . '/images/rss_logo_SD.png';
+    }
 
     // Path to the file
     //$distribution_url = $ezmanager_url.'/distribute.php';
@@ -630,7 +681,7 @@ function ezmam_rss_new($album_name, $type) {
     //
     // And finally, generating the XML file
     //
-  $xmlstr = '<?xml version="1.0" encoding="UTF-8"?><rss xmlns:itunes="http://www.itunes.com/dtds/pdcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"></rss>';
+    $xmlstr = '<?xml version="1.0" encoding="UTF-8"?><rss xmlns:itunes="http://www.itunes.com/dtds/pdcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"></rss>';
     $xml = new SimpleXMLElement($xmlstr);
     $channel = $xml->addChild('channel');
 
@@ -674,21 +725,25 @@ function ezmam_rss_new($album_name, $type) {
  * @param bool(true) $relative return path relative to repository or absolute
  * @return string
  */
-function ezmam_rss_getpath($album, $quality, $relative = "true") {
+function ezmam_rss_getpath($album, $quality, $relative = "true")
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
-    if ($relative)
+    if ($relative) {
         $feed_path = $album;
-    else
+    } else {
         $feed_path = $repository_path . "/" . $album . '/_rss_' . $quality . '.xml';
+    }
 
-    if (!is_file($feed_path))
+    if (!is_file($feed_path)) {
         return false;
+    }
 
     return $feed_path;
 }
@@ -700,24 +755,27 @@ function ezmam_rss_getpath($album, $quality, $relative = "true") {
  * @param type $description
  * @param type $author
  * @param type $pubDate
- * @param type $link 
+ * @param type $link
  * @param type $media_link Link for iTunes (including a random .m4v file)
  * @return string The modified RSS feed
  */
-function add_item_to_rss(&$xmlh, $title, $description, $author, $pubDate, $link = false, $media_link = false) {
+function add_item_to_rss(&$xmlh, $title, $description, $author, $pubDate, $link = false, $media_link = false)
+{
     $item = $xmlh->channel->addChild('item');
     $item->addChild('title', $title);
     $item->addChild('description', $description);
-    //author has to be an valid email address itunes uses itunes:author with a specific namespace. Read http://stackoverflow.com/questions/2644284/add-rss-xmlns-namespace-definition-to-a-php-simplexml-document  
+    //author has to be an valid email address itunes uses itunes:author with a specific namespace. Read http://stackoverflow.com/questions/2644284/add-rss-xmlns-namespace-definition-to-a-php-simplexml-document
     //$item->addChild('author',$author);
 
     $item->addChild('pubDate', $pubDate);
-    if ($link)
+    if ($link) {
         $item->addChild('link', htmlentities($link));
+    }
     //$guid= $item->addChild('guid', uniqid());//guid should be a fixed absolute URL (if PermaLink=true which is the default) OR a unique id
     //$guid->addAttribute('isPermaLink','false');//we use a unique id so set ispermalink to false
-    if ($link)
+    if ($link) {
         $item->addChild('guid', htmlentities($link));
+    }
     if ($media_link) {
         $item->addChild('enclosure', '');
         $item->enclosure->addAttribute('url', trim($media_link));
@@ -735,20 +793,22 @@ function add_item_to_rss(&$xmlh, $title, $description, $author, $pubDate, $link 
  * @return bool
  * @desc tell if thet given asset exists
  */
-function ezmam_asset_exists($album_name, $asset_name) {
+function ezmam_asset_exists($album_name, $asset_name)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
     $path = $repository_path . "/" . $album_name;
-    if($asset_name != "") {
+    if ($asset_name != "") {
         $path .= "/" . $asset_name;
     }
     $res = file_exists($path);
     return $res;
 }
 
-function ezmam_asset_list($album) {
+function ezmam_asset_list($album)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -763,13 +823,15 @@ function ezmam_asset_list($album) {
     $album_path = $repository_path . "/" . $album;
     $dh = opendir($album_path);
     //$dh = scandir($album_path, SCANDIR_SORT_DESCENDING);
-    if (!$dh)
+    if (!$dh) {
         return false;
+    }
     while (($file = readdir($dh)) !== false) {
         //foreach($dh as $file) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
-            if (is_dir($album_path . "/" . $file))
-                array_push($asset_list, $file); //if its a directory add it to the list
+            if (is_dir($album_path . "/" . $file)) {
+                array_push($asset_list, $file);
+            } //if its a directory add it to the list
         }
     }//end while
     return $asset_list;
@@ -781,22 +843,25 @@ function ezmam_asset_list($album) {
  * @return array_of_assoc_array
  * @desc returns an array of all albums with details in   assoc_arrays: ['name'] & ['metadata']
  */
-function ezmam_asset_list_metadata($album) {
+function ezmam_asset_list_metadata($album)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
     //check if album exists
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     $asset_list = array();
     $idx = 0;
     $album_path = $repository_path . "/" . $album;
     //$dh=opendir($album_path);
     $dh = scandir($album_path, 1);
-    if (!$dh)
+    if (!$dh) {
         return false;
+    }
     //while (($file = readdir($dh)) !== false) {
     foreach ($dh as $file) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
@@ -819,15 +884,18 @@ function ezmam_asset_list_metadata($album) {
  * @return false|assoc_array
  * @desc returns  metadata associated with an asset. this returns an associative array with properties as key
  */
-function ezmam_asset_metadata_get($album, $asset) {
+function ezmam_asset_metadata_get($album, $asset)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
+    }
     $asset_path = $repository_path . "/" . $album . "/" . $asset;
     $assoc_metadata = metadata2assoc_array($asset_path . "/_metadata.xml");
     return $assoc_metadata;
@@ -842,24 +910,28 @@ function ezmam_asset_metadata_get($album, $asset) {
  * @return bool
  * @desc saves the given metadata
  */
-function ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array) {
+function ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array)
+{
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
+    }
 
     // updating metadata
     $asset_path = $repository_path . "/" . $album . "/" . $asset;
     $metadata_xml = assoc_array2metadata($metadata_assoc_array);
     $res = file_put_contents($asset_path . "/_metadata.xml", $metadata_xml);
 
-    if (!$res)
+    if (!$res) {
         return false;
+    }
 
     // Logging operation
     $metadata_str = '';
@@ -871,37 +943,41 @@ function ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array) {
     // Regenerating RSS feeds
     ezmam_rss_generate($album, "ezplayer");
     $res = ezmam_rss_generate($album, "high");
-    if (!$res)
+    if (!$res) {
         return false;
+    }
     ezmam_rss_generate($album, "low");
 
     return $res;
 }
 
 /**
- * 
+ *
  * @param string $album
  * @param string $asset
  * @param string $change_key
  * @param string $value
  * @return bool success
  */
-function ezmam_asset_status_set_properties($album, $asset, $change_key, $value) {
+function ezmam_asset_status_set_properties($album, $asset, $change_key, $value)
+{
     $metadata_assoc_array = ezmam_asset_metadata_get($album, $asset);
-    if(!$metadata_assoc_array)
+    if (!$metadata_assoc_array) {
         return false;
+    }
     
     $found = false;
     foreach ($metadata_assoc_array as $key => $val) {
-       if($key == $change_key) {
-           $metadata_assoc_array[$key] = $value;
-           $found = true;
-           break;
-       }
+        if ($key == $change_key) {
+            $metadata_assoc_array[$key] = $value;
+            $found = true;
+            break;
+        }
     }
     
-    if(!$found)
+    if (!$found) {
         return false;
+    }
     
     $res = ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array);
     return $res;
@@ -915,7 +991,8 @@ function ezmam_asset_status_set_properties($album, $asset, $change_key, $value) 
  * @return asset token, or false|error_string
  * @desc creates an asset container in the given album
  */
-function ezmam_asset_new($album_name, $asset_name, $metadata) {
+function ezmam_asset_new($album_name, $asset_name, $metadata)
+{
     global $logger;
     
     $repository_path = ezmam_repository_path();
@@ -967,34 +1044,38 @@ function ezmam_asset_new($album_name, $asset_name, $metadata) {
 }
 
 //recursive rmdir
-function rrmdir($dir) 
-{ 
-    if (!is_dir($dir))
-         return;
+function rrmdir($dir)
+{
+    if (!is_dir($dir)) {
+        return;
+    }
          
-    $objects = scandir($dir); 
-    foreach ($objects as $object) { 
-        if ($object != "." && $object != "..") { 
-            if (is_dir($dir."/".$object))
+    $objects = scandir($dir);
+    foreach ($objects as $object) {
+        if ($object != "." && $object != "..") {
+            if (is_dir($dir."/".$object)) {
                 $ok = rrmdir($dir."/".$object);
-            else
-                $ok = unlink($dir."/".$object); 
+            } else {
+                $ok = unlink($dir."/".$object);
+            }
             
-            if($ok == false)
+            if ($ok == false) {
                 return false;
+            }
         }
     }
-    return rmdir($dir); 
- }
+    return rmdir($dir);
+}
     
 /**
  * Removes an asset from the repository
  * @param string $asset_name
  * @param string $album_name
  * @param bool $rebuild_rss(true) Set to false if you don't want the RSS to be regenerated
- * @return type 
+ * @return type
  */
-function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true) {
+function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true)
+{
     global $logger;
     
     // Sanity checks
@@ -1024,10 +1105,11 @@ function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true) {
 
     while (($file = readdir($dir)) !== false) {
         if ($file != "." && $file != "..") {
-            if (is_dir($path . '/' . $file))
+            if (is_dir($path . '/' . $file)) {
                 ezmam_media_delete($album_name, $asset_time, $file);
-            else
+            } else {
                 unlink($path . '/' . $file);
+            }
         }
     }
     
@@ -1055,7 +1137,8 @@ function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true) {
     return true;
 }
 
-function ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, &$src_path, &$dst_path) {
+function ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, &$src_path, &$dst_path)
+{
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
@@ -1101,13 +1184,15 @@ function ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, &$src
  * @param type $album_dst
  * @return bool error status
  */
-function ezmam_asset_move($asset_time, $album_src, $album_dst) {
+function ezmam_asset_move($asset_time, $album_src, $album_dst)
+{
     global $logger;
     
     $src_path = '';
     $dst_path = '';
-    if(!ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, $src_path, $dst_path))
-        return false; //ezmam_copy_or_move_get_paths handles ezmam_last_error
+    if (!ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, $src_path, $dst_path)) {
+        return false;
+    } //ezmam_copy_or_move_get_paths handles ezmam_last_error
     $album_meta = ezmam_album_metadata_get($album_src);
     $course = trim($album_meta['name']);
     $asset_name = get_asset_name($course, $asset_time);
@@ -1138,26 +1223,28 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst) {
  * @param type $album_dst
  * @return bool error status
  */
-function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
+function ezmam_asset_copy($asset_time, $album_src, $album_dst)
+{
     global $logger;
     
-   $src_path = '';
-   $dst_path = '';
-   if(!ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, $src_path, $dst_path))
-        return false; //ezmam_copy_or_move_get_paths handles ezmam_last_error
+    $src_path = '';
+    $dst_path = '';
+    if (!ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, $src_path, $dst_path)) {
+        return false;
+    } //ezmam_copy_or_move_get_paths handles ezmam_last_error
    
     $album_meta = ezmam_album_metadata_get($album_src);
     $course = trim($album_meta['name']);
     $asset_name = get_asset_name($course, $asset_time);
           
-    //Copy Asset in background, and pass the metadata status to processing during the copy.  
+    //Copy Asset in background, and pass the metadata status to processing during the copy.
     $cmd1 = "mkdir $dst_path/$asset_time";
     $cmd2 = "cp $src_path/$asset_time/_metadata.xml $dst_path/$asset_time/_metadata.xml";
     $cmd3 = 'sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
     $cmd4 = 'rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/';
     $cmd5 = 'sed -i "s/<status>processing<\/status>/<status>processed<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
     $final_cmd = "($cmd1 && $cmd2 && $cmd3 && $cmd4 && $cmd5) 2>&1 > /dev/null &";
-    exec($final_cmd,$output,$res);
+    exec($final_cmd, $output, $res);
     if ($res != 0) {
         ezmam_last_error("Could not copy asset");
         $logger->log(EventType::MANAGER_ASSET_COPY, LogLevel::ERROR, "Failed to start copying asset: $asset_time, from: $album_src, to $album_dst. Cmd: $final_cmd", array(basename(__FUNCTION__)), $asset_name);
@@ -1180,7 +1267,8 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst) {
  * @param type $private_album private album name
  * @return bool error status
  */
-function ezmam_asset_publish($private_album, $asset_name) {
+function ezmam_asset_publish($private_album, $asset_name)
+{
     if (!ezmam_album_exists($private_album)) {
         ezmam_last_error("ezmam_asset_publish: private album does not exist");
         return false;
@@ -1204,7 +1292,8 @@ function ezmam_asset_publish($private_album, $asset_name) {
  * @param type $public_album public album name
  * @return bool error status
  */
-function ezmam_asset_unpublish($public_album, $asset_name) {
+function ezmam_asset_unpublish($public_album, $asset_name)
+{
     if (!ezmam_album_exists($public_album)) {
         ezmam_last_error("ezmam_asset_publish: private album does not exist");
         return false;
@@ -1229,7 +1318,8 @@ function ezmam_asset_unpublish($public_album, $asset_name) {
  * @return bool
  * @desc tell if thet given asset exists
  */
-function ezmam_media_exists($album_name, $asset_name, $media_name) {
+function ezmam_media_exists($album_name, $asset_name, $media_name)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -1238,8 +1328,9 @@ function ezmam_media_exists($album_name, $asset_name, $media_name) {
     return $res;
 }
 
-function ezmam_backup_media($album_name, $asset_name, $media_name) {
-     $repository_path = ezmam_repository_path();
+function ezmam_backup_media($album_name, $asset_name, $media_name)
+{
+    $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
@@ -1247,8 +1338,9 @@ function ezmam_backup_media($album_name, $asset_name, $media_name) {
     $media_dir_backup = $repository_path . "/" . $album_name . "/" . $asset_name . "/." . $media_name . "." . time(); //add a . before it so that its ignored in submit_itm_get_medias
     
     $exists = file_exists($repository_path . "/" . $album_name . "/" . $asset_name . "/" . $media_name);
-    if(!$exists)
+    if (!$exists) {
         return false;
+    }
     
     $rename = rename($media_dir, $media_dir_backup);
     return $rename;
@@ -1261,25 +1353,30 @@ function ezmam_backup_media($album_name, $asset_name, $media_name) {
  * @return array
  * $desc returns array of media matching $album and $asset
  */
-function ezmam_media_list($album, $asset) {
+function ezmam_media_list($album, $asset)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
     //check if album exists
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
+    }
     $media_list = array();
     $asset_path = $repository_path . "/" . $album . "/" . $asset;
     $dh = opendir($asset_path);
-    if (!$dh)
+    if (!$dh) {
         return false;
+    }
     while (($file = readdir($dh)) !== false) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
-            if (is_dir($asset_path . "/" . $file))
-                array_push($media_list, $file); //if its a directory add it to the list
+            if (is_dir($asset_path . "/" . $file)) {
+                array_push($media_list, $file);
+            } //if its a directory add it to the list
         }
     }//end while
     return $media_list;
@@ -1292,21 +1389,25 @@ function ezmam_media_list($album, $asset) {
  * @return array
  * @desc returns an array of all media in an asset with details in assoc_arrays: ['name'] & ['metadata']
  */
-function ezmam_media_list_metadata($album, $asset) {
+function ezmam_media_list_metadata($album, $asset)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
     //check if album exists
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
+    }
     $media_list = array();
     $asset_path = $repository_path . "/" . $album . "/" . $asset;
     $dh = opendir($asset_path);
-    if (!$dh)
+    if (!$dh) {
         return false;
+    }
     while (($file = readdir($dh)) !== false) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
             if (is_dir($asset_path . "/" . $file)) {
@@ -1325,21 +1426,25 @@ function ezmam_media_list_metadata($album, $asset) {
  * Returns an associative array with all the media within an asset, and their metadata.
  * Array key is the media name, value is an array with the content
  */
-function ezmam_media_list_metadata_assoc($album, $asset) {
+function ezmam_media_list_metadata_assoc($album, $asset)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
     //check if album exists
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
+    }
     $media_list = array();
     $asset_path = $repository_path . "/" . $album . "/" . $asset;
     $dh = opendir($asset_path);
-    if (!$dh)
+    if (!$dh) {
         return false;
+    }
     while (($file = readdir($dh)) !== false) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
             if (is_dir($asset_path . "/" . $file)) {
@@ -1360,17 +1465,21 @@ function ezmam_media_list_metadata_assoc($album, $asset) {
  * @return false|assoc_array
  * @desc returns  metadata associated with a media. this returns an associative array with properties as key
  */
-function ezmam_media_metadata_get($album, $asset, $media) {
+function ezmam_media_metadata_get($album, $asset, $media)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
-    if (!ezmam_media_exists($album, $asset, $media))
+    }
+    if (!ezmam_media_exists($album, $asset, $media)) {
         return false;
+    }
     $media_path = $repository_path . "/" . $album . "/" . $asset . "/" . $media . "/";
     $assoc_metadata = metadata2assoc_array($media_path . "_metadata.xml");
     return $assoc_metadata;
@@ -1385,18 +1494,22 @@ function ezmam_media_metadata_get($album, $asset, $media) {
  * @return bool
  * @desc saves the given metadata
  */
-function ezmam_media_metadata_set($album, $asset, $media, $metadata_assoc_array) {
+function ezmam_media_metadata_set($album, $asset, $media, $metadata_assoc_array)
+{
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
-    if (!ezmam_media_exists($album, $asset, $media))
+    }
+    if (!ezmam_media_exists($album, $asset, $media)) {
         return false;
+    }
 
     // Updating metadata
     $media_path = $repository_path . "/" . $album . "/" . $asset . "/" . $media;
@@ -1424,7 +1537,8 @@ function ezmam_media_metadata_set($album, $asset, $media, $metadata_assoc_array)
  * @return false|error_string
  * @desc creates an asset container in the given album
  */
-function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $media_file_path, $copy = false) {
+function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $media_file_path, $copy = false)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -1440,7 +1554,7 @@ function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $medi
         return false;
     }
     if (ezmam_media_exists($album_name, $asset_name, $media_name)) {
-        if(!ezmam_backup_media($album_name, $asset_name, $media_name)) {
+        if (!ezmam_backup_media($album_name, $asset_name, $media_name)) {
             ezmam_last_error('ezmam_media_new media ' . $media_name . ' already exists and could not be backup-ed');
             return false;
         }
@@ -1463,9 +1577,10 @@ function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $medi
             if ($return_code) {
                 ezmam_last_error("ezmam_media_new() error $return_code copying media directory $media_file_path for $album_name/$asset_name/$media_name");
                 return false;
-            } else
-                $res = true; //returncode==0 so recursive copy went well
-        }else {
+            } else {
+                $res = true;
+            } //returncode==0 so recursive copy went well
+        } else {
             $res = copy($media_file_path, $media_path . "/" . $filename);
             if (!$res) {
                 ezmam_last_error("ezmam_media_new() error copying media file/dir $media_file_path for $album_name/$asset_name/$media_name");
@@ -1473,7 +1588,6 @@ function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $medi
             }
         }
     } else {
-
         $res = rename($media_file_path, $media_path . "/" . $filename);
         if (!$res) {
             ezmam_last_error("ezmam_media_new() error moving media file $media_file_path for $album_name/$asset_name/$media_name");
@@ -1494,23 +1608,28 @@ function ezmam_media_new($album_name, $asset_name, $media_name, $metadata, $medi
  * @param bool(true) $relative return path relative to repository or absolute
  * @return string
  */
-function ezmam_media_getpath($album, $asset, $media, $relative = true) {
+function ezmam_media_getpath($album, $asset, $media, $relative = true)
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
-    if (!ezmam_media_exists($album, $asset, $media))
+    }
+    if (!ezmam_media_exists($album, $asset, $media)) {
         return false;
+    }
     $media_metadata = ezmam_media_metadata_get($album, $asset, $media);
 
-    if ($relative)
+    if ($relative) {
         $media_path = $album . "/" . $asset . "/" . $media;
-    else
+    } else {
         $media_path = $repository_path . "/" . $album . "/" . $asset . "/" . $media;
+    }
     //check if media is a file or multifiles
     if (isset($media_metadata['disposition']) && $media_metadata['disposition'] == 'file' && isset($media_metadata['filename'])) {
         //it's a single file so return a path to the file instead of directory
@@ -1525,9 +1644,10 @@ function ezmam_media_getpath($album, $asset, $media, $relative = true) {
  * @param type $album
  * @param type $asset
  * @param type $media
- * @return type 
+ * @return type
  */
-function ezmam_media_geturl($album, $asset, $media) {
+function ezmam_media_geturl($album, $asset, $media)
+{
     global $ezmanager_url;
     global $distribute_url;
 
@@ -1535,12 +1655,15 @@ function ezmam_media_geturl($album, $asset, $media) {
     if ($repository_path === false) {
         return false;
     }
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
-    if (!ezmam_asset_exists($album, $asset))
+    }
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
-    if (!ezmam_media_exists($album, $asset, $media))
+    }
+    if (!ezmam_media_exists($album, $asset, $media)) {
         return false;
+    }
 
     $media_infos = explode('_', $media);
     $type = $media_infos[1];
@@ -1555,9 +1678,10 @@ function ezmam_media_geturl($album, $asset, $media) {
  * @param type $album
  * @param type $asset
  * @param type $media
- * @return false|int The number of times the media has been viewed/downloaded 
+ * @return false|int The number of times the media has been viewed/downloaded
  */
-function ezmam_media_viewcount_get($album, $asset, $media) {
+function ezmam_media_viewcount_get($album, $asset, $media)
+{
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path == false) {
@@ -1583,17 +1707,20 @@ function ezmam_media_viewcount_get($album, $asset, $media) {
     // Reading the view count, if the file exists.
     // Note that the _viewcount file is created when a media is seen for the first time
     // (through distribute.php). So _viewcount may not exist, if the media has never been seen.
-    if (!file_exists($repository_path . '/' . $album . '/' . $asset . '/' . $media . '/_view_count'))
+    if (!file_exists($repository_path . '/' . $album . '/' . $asset . '/' . $media . '/_view_count')) {
         return 0;
+    }
 
     $vc = file_get_contents($repository_path . '/' . $album . '/' . $asset . '/' . $media . '/_view_count');
-    if ($vc === false)
+    if ($vc === false) {
         $vc = 0;
+    }
 
     return (int) $vc;
 }
 
-function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '') {
+function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '')
+{
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path == false) {
@@ -1617,8 +1744,9 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '') {
         $handle = fopen($viewcount_file, "c");
         if (flock($handle, LOCK_EX)) {
             $viewcount = file_get_contents($viewcount_file);
-            if (!$viewcount)
+            if (!$viewcount) {
                 $viewcount = 0;
+            }
             ++$viewcount;
             $res = file_put_contents($viewcount_file, $viewcount);
             flock($handle, LOCK_UN);
@@ -1663,8 +1791,9 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '') {
     $handle = fopen($viewcount_file, "c");
     if (flock($handle, LOCK_EX)) {
         $viewcount = file_get_contents($viewcount_file);
-        if (!$viewcount)
+        if (!$viewcount) {
             $viewcount = 0;
+        }
         ++$viewcount;
         $res = file_put_contents($viewcount_file, $viewcount);
         flock($handle, LOCK_UN);
@@ -1687,7 +1816,7 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '') {
       fclose($fl);
       }
       }
-     * 
+     *
      */
 
     if (!$res) {
@@ -1701,9 +1830,10 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '') {
  * @param type $album
  * @param type $asset
  * @param type $media
- * @return type 
+ * @return type
  */
-function ezmam_media_delete($album_name, $asset_name, $media_name) {
+function ezmam_media_delete($album_name, $asset_name, $media_name)
+{
     global $logger;
     
     $repository_path = ezmam_repository_path();
@@ -1728,8 +1858,9 @@ function ezmam_media_delete($album_name, $asset_name, $media_name) {
 
     $path = ezmam_repository_path() . '/' . ezmam_media_getpath($album_name, $asset_name, $media_name);
 
-    if (is_file($path))
+    if (is_file($path)) {
         $path = dirname($path);
+    }
 
     // First we empty the directory
     $dir = opendir($path);
@@ -1740,10 +1871,12 @@ function ezmam_media_delete($album_name, $asset_name, $media_name) {
 
     while (($file = readdir($dir)) !== false) {
         if ($file != "." && $file != "..") {
-            if (is_dir($path . '/' . $file))
-                exec('rm -rf ' . $path . '/' . $file); //chapterslide media are directories so we need to delete it recursively
-            else
-                unlink($path . '/' . $file); //single file media
+            if (is_dir($path . '/' . $file)) {
+                exec('rm -rf ' . $path . '/' . $file);
+            } //chapterslide media are directories so we need to delete it recursively
+            else {
+                unlink($path . '/' . $file);
+            } //single file media
         }
     }
 
@@ -1763,11 +1896,12 @@ function ezmam_media_delete($album_name, $asset_name, $media_name) {
  * @return string   new random token
  * @desc creates a random string to protect de videos
  */
-function ezmam_token_generate_random() {
-
+function ezmam_token_generate_random()
+{
     $token = "";
-    for ($idx = 0; $idx < 8; $idx++)
+    for ($idx = 0; $idx < 8; $idx++) {
         $token.= chr(rand(65, 90));
+    }
 
     return $token;
 }
@@ -1777,7 +1911,8 @@ function ezmam_token_generate_random() {
  * @param string $album The album name
  * @return bool Error status
  */
-function ezmam_album_token_create($album) {
+function ezmam_album_token_create($album)
+{
     if (!is_dir(ezmam_repository_path() . '/' . $album)) {
         ezmam_last_error("ezmam_album_token_file_create: album does not exist");
         return false;
@@ -1794,7 +1929,8 @@ function ezmam_album_token_create($album) {
  * @param string $album The album name
  * @return bool Error status
  */
-function ezmam_asset_token_create($album, $asset) {
+function ezmam_asset_token_create($album, $asset)
+{
     if (!is_dir(ezmam_repository_path() . '/' . $album . '/' . $asset)) {
         ezmam_last_error("ezmam_asset_token_file_create: asset does not exist");
         return false;
@@ -1811,7 +1947,8 @@ function ezmam_asset_token_create($album, $asset) {
  * @param token $token The token to verify
  * @return bool true|false
  */
-function ezmam_album_token_check($album, $token) {
+function ezmam_album_token_check($album, $token)
+{
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/_token')) {
         ezmam_last_error('Access denied: token does not exist');
         return false;
@@ -1834,9 +1971,10 @@ function ezmam_album_token_check($album, $token) {
 /**
  * Returns the token of a specific album
  * @param string $album the album name
- * @return string Token 
+ * @return string Token
  */
-function ezmam_album_token_get($album) {
+function ezmam_album_token_get($album)
+{
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/_token')) {
         ezmam_last_error('Access denied: token does not exist');
         return false;
@@ -1851,7 +1989,8 @@ function ezmam_album_token_get($album) {
 }
 
 
-function ezmam_album_token_manager_get($album) {
+function ezmam_album_token_manager_get($album)
+{
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager')) {
         ezmam_last_error('Access denied: token does not exist');
         return false;
@@ -1864,17 +2003,19 @@ function ezmam_album_token_manager_get($album) {
     }
     return(trim($res));
 }
-function ezmam_album_token_manager_set($album) {
-	if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager') || file_get_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager') =='' ) {
-		$token = ezmam_token_generate_random();
-		file_put_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager',$token);
-	}
+function ezmam_album_token_manager_set($album)
+{
+    if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager') || file_get_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager') =='') {
+        $token = ezmam_token_generate_random();
+        file_put_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager', $token);
+    }
 }
 
 
 
 
-function ezmam_asset_token_get($album, $asset) {
+function ezmam_asset_token_get($album, $asset)
+{
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/' . $asset . '/_token')) {
         ezmam_last_error('Access denied: token does not exist');
         return false;
@@ -1896,7 +2037,8 @@ function ezmam_asset_token_get($album, $asset) {
  * @param token $token The token to verify
  * @return bool true|false
  */
-function ezmam_asset_token_check($album, $asset, $token) {
+function ezmam_asset_token_check($album, $asset, $token)
+{
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/' . $asset . '/_token')) {
         ezmam_last_error('Access denied: token does not exist');
         return false;
@@ -1919,10 +2061,11 @@ function ezmam_asset_token_check($album, $asset, $token) {
 
 /**
  * Resets the token of a specific album, and tokens of all the assets within
- * @param type $album 
+ * @param type $album
  * @return bool error status
  */
-function ezmam_album_token_reset($album) {
+function ezmam_album_token_reset($album)
+{
     // Sanity checks
     $repository_path = ezmam_repository_path();
 
@@ -1945,8 +2088,9 @@ function ezmam_album_token_reset($album) {
         return false;
     }
     $assets = ezmam_asset_list($album);
-    foreach ($assets as $asset)
+    foreach ($assets as $asset) {
         ezmam_asset_token_reset($album, $asset, false);
+    }
 
     // Resetting the RSS feed
     ezmam_rss_generate($album, "high");
@@ -1962,11 +2106,12 @@ function ezmam_album_token_reset($album) {
 /**
  * Resets a token for a specific asset
  * @param type $asset
- * @param type $album 
+ * @param type $album
  * @param bool $logging If set to false, the operation won't be logged
  * @return bool error status
  */
-function ezmam_asset_token_reset($album, $asset, $logging = true) {
+function ezmam_asset_token_reset($album, $asset, $logging = true)
+{
     $repository_path = ezmam_repository_path();
 
     $old_token = ezmam_asset_token_get($album, $asset);
@@ -1977,16 +2122,18 @@ function ezmam_asset_token_reset($album, $asset, $logging = true) {
     }
 
     // Logging
-    if ($logging)
+    if ($logging) {
         log_append('asset_token_reset', 'Asset: ' . $asset . ', Album: ' . $album . ', Old token: ' . $old_token . ', New token: ' . $res);
+    }
 }
 
-/* Create the folder for submit before metadata because for the progress bar in flash. 
- * The progress bar need a folder created 
- * 
+/* Create the folder for submit before metadata because for the progress bar in flash.
+ * The progress bar need a folder created
+ *
  */
 
-function ezmam_media_submit($tmp_name) {
+function ezmam_media_submit($tmp_name)
+{
     global $submit_upload_dir;
     // Sanity checks
     if (!is_dir($submit_upload_dir)) {
@@ -2002,7 +2149,6 @@ function ezmam_media_submit($tmp_name) {
     mkdir($folder_path);
 
     if (!$res) {
-
         ezmam_last_error('ezmam_media_submit_create_metadata: could not save metadata');
         return false;
     }
@@ -2016,7 +2162,8 @@ function ezmam_media_submit($tmp_name) {
  * @param string $tmp_name The directory name where the file will be stored in the queue
  * @param assoc_array $metadata Metadata as used by cli_mam_insert.php
  */
-function ezmam_media_submit_create_metadata($tmp_name, $metadata) {
+function ezmam_media_submit_create_metadata($tmp_name, $metadata)
+{
     global $submit_upload_dir;
 
     // Sanity checks
@@ -2038,7 +2185,6 @@ function ezmam_media_submit_create_metadata($tmp_name, $metadata) {
     // 2) put metadata into xml file
     $res = assoc_array2metadata_file($metadata, $folder_path . '/_metadata.xml');
     if (!$res) {
-
         ezmam_last_error('ezmam_media_submit_create_metadata: could not save metadata');
         return false;
     }
@@ -2052,10 +2198,12 @@ function ezmam_media_submit_create_metadata($tmp_name, $metadata) {
  * @return assoc_array|false
  * @desc open a metadatafile (xml 1 level) and return all properties and values in an associative array
  */
-function metadata2assoc_array($meta_path) {
+function metadata2assoc_array($meta_path)
+{
     @ $xml = simplexml_load_file($meta_path);
-    if ($xml === false)
+    if ($xml === false) {
         return false;
+    }
     $assoc_array = array();
     foreach ($xml as $key => $value) {
         $assoc_array[$key] = (string) $value;
@@ -2069,7 +2217,8 @@ function metadata2assoc_array($meta_path) {
  * @return <xml_string>
  * @desc takes an assoc array and transform it in a xml metadata string (which )
  */
-function assoc_array2metadata($assoc_array) {
+function assoc_array2metadata($assoc_array)
+{
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
     $xml = new SimpleXMLElement($xmlstr);
     foreach ($assoc_array as $key => $value) {
@@ -2086,7 +2235,8 @@ function assoc_array2metadata($assoc_array) {
  * @return bool
  *
  */
-function assoc_array2metadata_file($assoc_array, $file_path) {
+function assoc_array2metadata_file($assoc_array, $file_path)
+{
     //fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($assoc_array, true));
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
     $xml = new SimpleXMLElement($xmlstr);
@@ -2096,8 +2246,9 @@ function assoc_array2metadata_file($assoc_array, $file_path) {
     $xml_txt = $xml->asXML();
     $res = file_put_contents($file_path, $xml_txt, LOCK_EX);
     //did we write all the characters
-    if ($res != strlen($xml_txt))
-        return false; //no
+    if ($res != strlen($xml_txt)) {
+        return false;
+    } //no
 
     return true;
 }

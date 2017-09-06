@@ -1,6 +1,6 @@
 <?php 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -42,63 +42,65 @@ for every album the user can create.
 </div>
 <div class="modal-body">
     <h3 class='text-center'>®addexistingCourse® </h3> <br>
-    <?php if(empty($not_created_albums_with_descriptions)) {
-        echo "<p>®All_albums_already_created®</p>";
-    } else { 
-        echo "<p>®Create_album_message®</p>"; 
-        ?>
+    <?php if (empty($not_created_albums_with_descriptions)) {
+    echo "<p>®All_albums_already_created®</p>";
+} else {
+    echo "<p>®Create_album_message®</p>"; ?>
         
         <div class="row">
             <br />
             <div class="col-md-12">
                 <table class="table table-hover text-left" >
-                    <?php foreach($not_created_albums_with_descriptions as $album_name => $album_description) {
-                        // sortir des template...
-			$cours_info=db_course_read($album_name);
-			if(isset($cours_info['course_code_public']) && $cours_info['course_code_public']!='') {
-                            $course_code_public = $cours_info['course_code_public']; 
-                        } else { 
-                            $course_code_public = $album_name;
-                        }
+                    <?php foreach ($not_created_albums_with_descriptions as $album_name => $album_description) {
+        // sortir des template...
+        $cours_info=db_course_read($album_name);
+        if (isset($cours_info['course_code_public']) && $cours_info['course_code_public']!='') {
+            $course_code_public = $cours_info['course_code_public'];
+        } else {
+            $course_code_public = $album_name;
+        }
                         
-                        // Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
-                        // with an action "create_album". Once the processing is over, this div will be updated with the confirmation message.
-                        echo '<tr>';
-                            echo '<td class="album_name col-md-2" style="font-weight: bold;">';
-                                echo '<a href="index.php?action=create_album&amp;course_code=' . $album_name . '" ' .
+        // Note: upon clicking this link, the JS function defined in show_details_functions.js will call the web_index
+        // with an action "create_album". Once the processing is over, this div will be updated with the confirmation message.
+        echo '<tr>';
+        echo '<td class="album_name col-md-2" style="font-weight: bold;">';
+        echo '<a href="index.php?action=create_album&amp;course_code=' . $album_name . '" ' .
                                         'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#create_'.$album_name.'_album"));$("#modal").modal("show"); }, 500);\' ' .
                                         'data-dismiss="modal" id="create_'.$album_name.'_album">';
-                                if(isset($course_code_public) && $course_code_public!="") {
-                                    echo $course_code_public; 
-                                } else {
-                                    echo $album_name;
-                                }
-                                echo '</a>';
-                            echo '</td>';
-                            echo '<td class="album_description">';
-                                echo $album_description;
-                            echo '</td>';
-                        echo '</tr>';
-                    } ?>
+        if (isset($course_code_public) && $course_code_public!="") {
+            echo $course_code_public;
+        } else {
+            echo $album_name;
+        }
+        echo '</a>';
+        echo '</td>';
+        echo '<td class="album_description">';
+        echo $album_description;
+        echo '</td>';
+        echo '</tr>';
+    } ?>
                 </table>
             </div>
         </div>
-    <?php }
+    <?php
+}
     
     global $enable_course_creation;
     global $enable_channel_creation;
     global $max_course_code_size;
     global $max_album_label_size;
     
-    if($enable_course_creation){ ?>
+    if ($enable_course_creation) {
+        ?>
     <hr />
     <h3 class='text-center'>®createnewCourse®</h3><br>
 
         <form class="form-horizontal" id="form_new_ablbum" action="index.php" method="post">
             <div class="form-group">
                 
-            <?php if($enable_channel_creation){ ?>
+            <?php if ($enable_channel_creation) {
+            ?>
                 <label for="selectType" class="col-sm-3 control-label">®Album_type®</label>
                 <div class="col-sm-9">
                     <select id="selectType" name="album_type" class="form-control">
@@ -107,7 +109,8 @@ for every album the user can create.
                       
                     </select>
                 </div>
-            <?php }  ?>
+            <?php
+        } ?>
             </div>
             
             <div class="form-group" id="course_code_line">
@@ -137,7 +140,8 @@ for every album the user can create.
                 </div>
             </div>
         </form>
-    <?php } ?>
+    <?php
+    } ?>
 </div>
 
 <script>		

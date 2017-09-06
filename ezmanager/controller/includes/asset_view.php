@@ -1,7 +1,8 @@
 <?php
 
 //display asset details
-function asset_view() {
+function asset_view()
+{
     global $input;
     global $repository_path;
     global $ezmanager_url;
@@ -10,15 +11,17 @@ function asset_view() {
     
 
     // Setting up various variables we'll need later
-    if (isset($input['album']))
+    if (isset($input['album'])) {
         $album = $input['album'];
-    else
+    } else {
         $album = $_SESSION['album'];
+    }
 
-    if (isset($input['asset']))
+    if (isset($input['asset'])) {
         $asset = $input['asset'];
-    else
+    } else {
         $asset = $_SESSION['asset'];
+    }
 
     ezmam_repository_path($repository_path);
 
@@ -70,7 +73,7 @@ function asset_view() {
     // Filling in the data about the media
     // all you want to know about high res camera video
     if (isset($media_metadata['high_cam'])) {
-        $filesize_cam['HD'] = (isset($media_metadata['high_cam']['file_size']) ? 
+        $filesize_cam['HD'] = (isset($media_metadata['high_cam']['file_size']) ?
                                         $media_metadata['high_cam']['file_size'] : '');
         $dimensions_cam['HD'] = $media_metadata['high_cam']['width'] . ' x ' . $media_metadata['high_cam']['height'];
         //not used // $format_cam = $media_metadata['high_cam']['videocodec'];
@@ -85,7 +88,7 @@ function asset_view() {
 
     // Everything about the high-res slides video
     if (isset($media_metadata['high_slide'])) {
-        $filesize_slides['HD'] = (isset($media_metadata['high_slide']['file_size']) ? 
+        $filesize_slides['HD'] = (isset($media_metadata['high_slide']['file_size']) ?
                                         $media_metadata['high_slide']['file_size'] : '');
         $dimensions_slides['HD'] = $media_metadata['high_slide']['width'] . ' x ' . $media_metadata['high_slide']['height'];
         //not used// $format_slides = $media_metadata['high_slides']['videocodec'];
@@ -93,22 +96,24 @@ function asset_view() {
 
     // Everything about the low-res slides
     if (isset($media_metadata['low_slide'])) {
-        $filesize_slides['SD'] = (isset($media_metadata['low_slide']['file_size']) ? 
+        $filesize_slides['SD'] = (isset($media_metadata['low_slide']['file_size']) ?
                                         $media_metadata['low_slide']['file_size'] : '');
         $dimensions_slides['SD'] = $media_metadata['low_slide']['width'] . ' x ' . $media_metadata['low_slide']['height'];
     }
 
     // To get the duration, we use the high cam media if it exists, or the high_slide
     // media otherwise. We assume at least one of these exists.
-    if(isset($media_metadata['high_cam']))
+    if (isset($media_metadata['high_cam'])) {
         $duration = $media_metadata['high_cam']['duration'];
-    else if(isset($media_metadata['high_slide']))
+    } elseif (isset($media_metadata['high_slide'])) {
         $duration = $media_metadata['high_slide']['duration'];
+    }
     
-    if (!isset($duration) || empty($duration))
+    if (!isset($duration) || empty($duration)) {
         $duration = "Error getting duration";
-    else
+    } else {
         $duration = get_user_friendly_duration($duration);
+    }
     
     $record_type = $asset_metadata['record_type'];
 
@@ -131,12 +136,13 @@ function asset_view() {
 
     $file_name = '';
     if ($origin == 'SUBMIT') {
-        if ($asset_metadata['submitted_cam'] != '' && $asset_metadata['submitted_slide'] != '')
+        if ($asset_metadata['submitted_cam'] != '' && $asset_metadata['submitted_slide'] != '') {
             $file_name = $asset_metadata['submitted_cam'] . ' & ' . $asset_metadata['submitted_slide'];
-        else if ($asset_metadata['submitted_cam'] != '')
+        } elseif ($asset_metadata['submitted_cam'] != '') {
             $file_name = $asset_metadata['submitted_cam'];
-        else
+        } else {
             $file_name = $asset_metadata['submitted_slide'];
+        }
     }
 
     //
@@ -146,10 +152,9 @@ function asset_view() {
     $_SESSION['podman_album'] = $input['album'];
     $_SESSION['podman_asset'] = $input['asset'];
 
-     global $enable_copy_asset;
+    global $enable_copy_asset;
     //
     // 4) Then display the asset and its content
     //
     require_once template_getpath('div_asset_details.php');
 }
-

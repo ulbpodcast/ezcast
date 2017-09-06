@@ -1,7 +1,7 @@
 <?php
 
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -43,7 +43,8 @@ require_once dirname(__FILE__) . '/lib_ezmam.php';
  * @param string $netid the user's netID
  * @return bool error status
  */
-function acl_init($netid) {
+function acl_init($netid)
+{
     // initializing ezmam (we'll need it later)
     global $repository_path;
     ezmam_repository_path($repository_path);
@@ -58,7 +59,8 @@ function acl_init($netid) {
 /**
  * Upon calling this function, the user will no longer be identified, and hence won't have access to any of the other ACL functions
  */
-function acl_exit() {
+function acl_exit()
+{
     unset($_SESSION['acl_created_albums']); // Array of all created albums, by album name
     unset($_SESSION['acl_created_albums_descriptions']); // Array of all created albums, by album name
     unset($_SESSION['acl_not_created_albums']); // Array of all albums the user could create bus has not, by album name
@@ -70,14 +72,16 @@ function acl_exit() {
 /**
  * Updates the (locally stored) list of albums created/not created
  */
-function acl_update_permissions_list() {
+function acl_update_permissions_list()
+{
     // Checking which courses the user can manage, which have been created, which have not
     $courses_id_list_for_author = courses_list($_SESSION['user_login']);
     $existing_albums = ezmam_album_list();
     //albums are actually courses_id with a suffix, get ids by removing those (not very robust to changes...)
     $existing_courses_id = array();
-    foreach($existing_albums as $album) 
+    foreach ($existing_albums as $album) {
         array_push($existing_courses_id, suffix_remove($album));
+    }
     
     /*print_r($courses_id_list_for_author);
     echo '<br/>';
@@ -92,12 +96,12 @@ function acl_update_permissions_list() {
     $albums_not_created_array_descriptions = array();
     
     // For each course an author can manage, we check whether or not albums exist
-    foreach($courses_id_list_for_author as $course) {
+    foreach ($courses_id_list_for_author as $course) {
         $course_infos = explode('|', $course, 2); // courses_list gives us the information as name|description, so we need to change that
         $course_id = $course_infos[0];
         $course_description = $course_infos[1];
         
-        if(in_array($course_id, $existing_courses_id)) {
+        if (in_array($course_id, $existing_courses_id)) {
             $albums_created_array[] = $course_id;
             $albums_created_array_descriptions[$course_id] = $course_description;
         } else {
@@ -120,8 +124,9 @@ function acl_update_permissions_list() {
  * @param string $album Name of the album we want to access
  * @return bool true if user can access $album, false otherwise
  */
-function acl_has_album_permissions($album) {
-    if(!acl_user_is_logged()) {
+function acl_has_album_permissions($album)
+{
+    if (!acl_user_is_logged()) {
         error_print_message('Error: acl_has_album_permissions: You are not logged in');
         return false;
     }
@@ -133,50 +138,57 @@ function acl_has_album_permissions($album) {
  * @param bool $assoc(false) If set to true, the function returns an associative array listing every album by its name (key) and its description (value). If set to false, only the album name (value) is returned
  * @return array|false An array with all album names the user can manage, or false if error occurred
  */
-function acl_authorized_albums_list($assoc = false) {
-    if(!acl_user_is_logged()) {
+function acl_authorized_albums_list($assoc = false)
+{
+    if (!acl_user_is_logged()) {
         error_print_message('Error: acl_authorized_albums_list: You are not logged in');
         return false;
     }
     
-    if($assoc)
+    if ($assoc) {
         return $_SESSION['acl_permitted_albums_descriptions'];
-    else
+    } else {
         return $_SESSION['acl_permitted_albums'];
+    }
 }
 
 /**
  * @param bool $assoc(false) If set to true, the function returns an associative array listing every album by its name (key) and its description (value). If set to false, only the album name (value) is returned
- * @return array|false An array with all the albums the user can create 
+ * @return array|false An array with all the albums the user can create
  */
-function acl_authorized_albums_list_created($assoc = false) {
-    if(!acl_user_is_logged()) {
+function acl_authorized_albums_list_created($assoc = false)
+{
+    if (!acl_user_is_logged()) {
         error_print_message('Error: acl_authorized_albums_list_created: You are not logged in');
         return false;
     }
     
-    if($assoc)
+    if ($assoc) {
         return $_SESSION['acl_created_albums_descriptions'];
-    else
+    } else {
         return $_SESSION['acl_created_albums'];
+    }
 }
 
 /**
  * @param bool $assoc(false) If set to true, the function returns an associative array listing every album by its name (key) and its description (value). If set to false, only the album name (value) is returned
- * @return array|false An array with all the album names the user can use but still hasn't 
+ * @return array|false An array with all the album names the user can use but still hasn't
  */
-function acl_authorized_albums_list_not_created($assoc = false) {
-    if(!acl_user_is_logged()) {
+function acl_authorized_albums_list_not_created($assoc = false)
+{
+    if (!acl_user_is_logged()) {
         error_print_message('Error: acl_authorized_albums_list_not_created: You are not logged in');
         return false;
     }
     
-    if($assoc)
+    if ($assoc) {
         return $_SESSION['acl_not_created_albums_descriptions'];
-    else
+    } else {
         return $_SESSION['acl_not_created_albums'];
+    }
 }
 
-function acl_user_is_logged() {
+function acl_user_is_logged()
+{
     return (isset($_SESSION['podman_logged']) && !empty($_SESSION['podman_logged']));
 }

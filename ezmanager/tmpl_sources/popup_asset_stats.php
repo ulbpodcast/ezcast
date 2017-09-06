@@ -4,27 +4,34 @@
     <h4 class="modal-title">®Stats_video_title®</h4>
 </div>
 <div class="modal-body">
-    <?php if(isset($stats['display']) && $stats['display']) { ?>
+    <?php if (isset($stats['display']) && $stats['display']) {
+    ?>
         <div id="container" style="margin: 0 auto"></div>
         <center>
             <div style="display:inline-block;width:<?php echo ($has_slides) ? '49%' : '100%'; ?>;" class="popup_video_player"
                 id="Popup_Player_<?php echo $asset; ?>_cam"></div>
-            <?php if($has_slides) { ?>
+            <?php if ($has_slides) {
+        ?>
                 <div style="display:inline-block;width: 49%;" class="popup_video_player" 
                      id="Popup_Player_<?php echo $asset; ?>_slide"></div>
-            <?php } ?>
+            <?php
+    } ?>
         </center>
         <br />
-    <?php } else { ?>
+    <?php
+} else {
+        ?>
         ®Stats_No_stats®
-    <?php } ?>
+    <?php
+    } ?>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">®Close_and_return_to_index®</button>
 </div>
 
 <script>
-<?php if(isset($stats['display']) && $stats['display']) { ?>
+<?php if (isset($stats['display']) && $stats['display']) {
+        ?>
     var chart = Highcharts.chart('container', {
         chart: {
             type: 'areaspline',
@@ -97,44 +104,53 @@
                     return '' +
                       '<b>' + this.points[0].series.name + ':</b> ' +
                     	this.points[0].y + ' ®Graph_views®<br />' +
-                    <?php if($has_slides && $has_cam) { ?>
+                    <?php if ($has_slides && $has_cam) {
+            ?>
                       '<b>' + this.points[1].series.name + ':</b> ' +
                       this.points[1].y + ' ®Graph_views®<br />'+
-                    <?php } ?>
-                    <?php if($has_cam && $has_slides) { ?>
+                    <?php
+        } ?>
+                    <?php if ($has_cam && $has_slides) {
+            ?>
                       '<b>Total:</b> ' + (this.points[0].y + this.points[1].y) + ' ®Graph_views®' + 
-                    <?php } ?>
+                    <?php
+        } ?>
                     '';
                 }
         },
         series: [
-            <?php if($has_slides) { ?>
+            <?php if ($has_slides) {
+            ?>
                 {
                     name: '®Graph_slide_view®',
                     data: <?php echo $stats['str_view_time_slide']; ?>
                 }
-            <?php }
+            <?php
+        }
         
-            if($has_slides && $has_cam) {
-                echo ',';
-            }
+        if ($has_slides && $has_cam) {
+            echo ',';
+        }
         
-            if($has_cam) { ?>
+        if ($has_cam) {
+            ?>
                 {
                     name: '®Graph_cam_view®',
                     data: <?php echo $stats['str_view_time_cam']; ?>
                 }
-            <?php } ?>
+            <?php
+        } ?>
         ]
     });
-<?php } ?>
+<?php
+    } ?>
 (function() {
-    <?php if($has_cam) {
+    <?php if ($has_cam) {
         echo "show_embed_player('".$album."', '".$asset."', 'low', 'cam', '" .
             $asset_token. "', 'Popup_Player_" . $asset . "_cam', '100%', '100%');";
     }
     
-    if($has_slides) {
+    if ($has_slides) {
         echo "show_embed_player('" . $album . "', '" . $asset . "', 'low', 'slide', '".
                 $asset_token . "', 'Popup_Player_" . $asset . "_slide', '100%', '100%');";
     } ?>

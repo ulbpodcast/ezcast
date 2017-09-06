@@ -3,7 +3,8 @@
 /**
  * Resets the RSS feed for both high and low res, and displays a confirmation message to the user
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
 

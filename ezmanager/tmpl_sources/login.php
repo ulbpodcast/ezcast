@@ -12,19 +12,21 @@
             <div id="global">
                 <p>
                     <br />
-                    <?php if(isset($error) && $error != "") { 
-                    echo '<div class="alert alert-danger col-md-4 col-md-offset-4" role="alert">';
-                        echo $error;
-                    echo '</div><br />';
-                    } ?>
+                    <?php if (isset($error) && $error != "") {
+    echo '<div class="alert alert-danger col-md-4 col-md-offset-4" role="alert">';
+    echo $error;
+    echo '</div><br />';
+} ?>
                     
-                     <?php if($sso_enabled) { ?>
+                     <?php if ($sso_enabled) {
+    ?>
                     <div class="login-choices btn-center" >
-                          <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url; echo $ezplayer_safe_url;
-                          ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
+                          <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url;
+    echo $ezplayer_safe_url; ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
                           <a class="btn-login btn-login-default btn-default" href="#" id="default_auth_button" title="">®authLocal®</a>
                     </div>
-                    <?php } ?>
+                    <?php
+} ?>
                     
                     <form id="form_login" class="form_login form-horizontal col-md-6 col-md-offset-3" method="post" action="<?php
                           global $ezmanager_safe_url;
@@ -86,7 +88,8 @@
                     document.form_login.has_flash.value = 'Y';
                 }
             }
-            <?php if($sso_enabled) { ?>
+            <?php if ($sso_enabled) {
+                              ?>
                 $( document ).ready(function() {
                     $("#form_login").hide();
                     $("#default_auth_button").click(function () {
@@ -94,7 +97,8 @@
                         return false;
                     });
                 });
-            <?php } ?>
+            <?php
+                          } ?>
         </script>
     </body>
 </html>

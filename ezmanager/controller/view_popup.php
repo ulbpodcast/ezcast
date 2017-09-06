@@ -2,9 +2,10 @@
 
 /**
  * General popup dispatcher. Depending on the value of $input['popup'], it will show the right popup.
- * @global type $input 
+ * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     if (!isset($input['popup'])) {
@@ -95,7 +96,8 @@ function index($param = array()) {
 /**
  * Displays the popup with a link to the media
  */
-function popup_media_url() {
+function popup_media_url()
+{
     global $input;
     global $repository_path;
     global $ezmanager_url;
@@ -117,9 +119,10 @@ function popup_media_url() {
  * DIsplays the popup with the embed code to copypaste
  * @global type $input
  * @global type $repository_path
- * @global type $url 
+ * @global type $url
  */
-function popup_embed_code() {
+function popup_embed_code()
+{
     global $input;
     global $repository_path;
     global $ezmanager_url;
@@ -144,8 +147,9 @@ function popup_embed_code() {
     // Retrieving the info needed for the embed code and target link
     $metadata = ezmam_media_metadata_get($input['album'], $input['asset'], $input['media']);
     $token = ezmam_asset_token_get($input['album'], $input['asset']);
-    if (!$token)
+    if (!$token) {
         $token = ezmam_album_token_get($input['album']);
+    }
 
     $media_infos = explode('_', $input['media']);
     $type = $media_infos[1];
@@ -154,12 +158,12 @@ function popup_embed_code() {
     $iframe_height = $metadata['height'] + 40;
     $iframe_width = $metadata['width'] + 30;
     // Embed code
-    $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . 
+    $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] .
             '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
-    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height . 
-            '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' . 
-            $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' . 
-            $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() . 
+    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height .
+            '" style="padding: 0;" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' .
+            $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' .
+            $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() .
             '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';
     $embed_code = htmlentities($embed_code_web, ENT_COMPAT, 'UTF-8');
 
@@ -172,9 +176,10 @@ function popup_embed_code() {
  * Displays the popup with the EZplayer link to copypaste
  * @global type $input
  * @global type $repository_path
- * @global type $url 
+ * @global type $url
  */
-function popup_ezplayer_link() {
+function popup_ezplayer_link()
+{
     global $input;
     global $ezplayer_url;
     global $repository_path;
@@ -196,8 +201,8 @@ function popup_ezplayer_link() {
         die;
     }
     $asset_meta = ezmam_asset_metadata_get($input['album'], $input['asset']);
-    $action = (isset($asset_meta['origin']) && strtolower($asset_meta['origin']) === "streaming") ? 
-            'view_asset_streaming' : 
+    $action = (isset($asset_meta['origin']) && strtolower($asset_meta['origin']) === "streaming") ?
+            'view_asset_streaming' :
             'view_asset_details';
     $token = ezmam_asset_token_get($input['album'], $input['asset']);
     $ezplayer_link = $ezplayer_url . '/index.php?'
@@ -215,9 +220,10 @@ function popup_ezplayer_link() {
  * Displays the popup with the ulb code to copypaste
  * @global type $input
  * @global type $repository_path
- * @global type $url 
+ * @global type $url
  */
-function popup_ulb_code() {
+function popup_ulb_code()
+{
     global $input;
     global $repository_path;
 
@@ -245,14 +251,16 @@ function popup_ulb_code() {
     require_once template_getpath('popup_ulb_code.php');
 }
 
-function popup_new_album() {
+function popup_new_album()
+{
     $not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
     require_once template_getpath('popup_new_album.php');
 }
 
-function popup_delete_album() {
+function popup_delete_album()
+{
     global $input;
-    if(!isset($input['album']) || !isset($input['album_id'])) {
+    if (!isset($input['album']) || !isset($input['album_id'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=delete_album&amp;album=ALBUM&amp;album_id=ALBUM-ID';
         die;
     }
@@ -261,9 +269,10 @@ function popup_delete_album() {
     require_once template_getpath('popup_delete_album.php');
 }
 
-function reset_rss_feed() {
+function reset_rss_feed()
+{
     global $input;
-    if(!isset($input['album'])) {
+    if (!isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=ALBUM';
         die;
     }
@@ -271,9 +280,10 @@ function reset_rss_feed() {
     require_once template_getpath('popup_reset_rss_feed.php');
 }
 
-function unpublish_asset() {
+function unpublish_asset()
+{
     global $input;
-    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+    if (!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=unpublish_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
@@ -283,9 +293,10 @@ function unpublish_asset() {
     require template_getpath('popup_unpublish_asset.php');
 }
 
-function publish_asset() {
+function publish_asset()
+{
     global $input;
-    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+    if (!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=publish_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
@@ -295,9 +306,10 @@ function publish_asset() {
     require template_getpath('popup_publish_asset.php');
 }
 
-function delete_asset() {
+function delete_asset()
+{
     global $input;
-    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+    if (!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=delete_asset&amp;title=TITLE&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
@@ -307,13 +319,15 @@ function delete_asset() {
     require template_getpath('popup_delete_asset.php');
 }
 
-function popup_not_available() {
+function popup_not_available()
+{
     require template_getpath('popup_not_available_while_processing.php');
 }
 
-function move_asset() {
+function move_asset()
+{
     global $input;
-    if(!isset($input['asset']) || !isset($input['album'])) {
+    if (!isset($input['asset']) || !isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=move_asset&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
@@ -324,9 +338,10 @@ function move_asset() {
     require template_getpath('popup_move_asset.php');
 }
 
-function schedule_asset() {
+function schedule_asset()
+{
     global $input;
-    if(!isset($input['asset']) || !isset($input['album'])) {
+    if (!isset($input['asset']) || !isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=schedule_asset&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
@@ -348,9 +363,10 @@ function schedule_asset() {
     require template_getpath('popup_schedule.php');
 }
 
-function regen_title() {
+function regen_title()
+{
     global $input;
-    if(!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
+    if (!isset($input['asset']) || !isset($input['album']) || !isset($input['title'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=regen_title&amp;album=ALBUM&amp;asset=ASSET&amp;title=TITLE';
         die;
     }
@@ -361,9 +377,10 @@ function regen_title() {
     require template_getpath('popup_regen_title.php');
 }
 
-function moderator_delete() {
+function moderator_delete()
+{
     global $input;
-    if(!isset($input['id_user']) || !isset($input['album'])) {
+    if (!isset($input['id_user']) || !isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=moderator_delete&amp;album=ALBUM&amp;id_user=ID_USER';
         die;
     }
@@ -373,11 +390,12 @@ function moderator_delete() {
     require template_getpath('popup_moderator_delete.php');
 }
 
-function asset_stats() {
+function asset_stats()
+{
     global $input;
     global $video_split_time;
     
-    if(!isset($input['asset']) || !isset($input['album'])) {
+    if (!isset($input['asset']) || !isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
@@ -392,34 +410,35 @@ function asset_stats() {
     $all_view_time = db_stats_video_get_view_time($album, $asset);
     
     $stats = array();
-    if(count($all_view_time) > 0) {
+    if (count($all_view_time) > 0) {
         $data_view_time = array('cam' => array(), 'slide' => array());
         $last_time = 0;
         foreach ($all_view_time as $view_time) {
-            if(!array_key_exists($view_time['type'], $data_view_time)) {
+            if (!array_key_exists($view_time['type'], $data_view_time)) {
                 $data_view_time[$view_time['type']] = array();
             }
-            while($view_time['video_time'] > $last_time) {
+            while ($view_time['video_time'] > $last_time) {
                 $data_view_time[$view_time['type']][] = 0;
                 ++$last_time;
             }
             $data_view_time[$view_time['type']][] = intval($view_time['nbr_view']);
             ++$last_time;
         }
-        $stats['display'] = TRUE;
+        $stats['display'] = true;
         $stats['str_view_time_cam'] = json_encode($data_view_time['cam']);
         $stats['str_view_time_slide'] = json_encode($data_view_time['slide']);
     } else {
-        $stats['display'] = FALSE;
+        $stats['display'] = false;
     }
     
     require template_getpath('popup_asset_stats.php');
 }
 
-function album_stats_reset() {
+function album_stats_reset()
+{
     global $input;
     
-    if(!isset($input['album'])) {
+    if (!isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=ALBUM';
         die;
     }
@@ -428,9 +447,10 @@ function album_stats_reset() {
     require template_getpath('popup_album_stats_reset.php');
 }
 
-function copy_asset() {
+function copy_asset()
+{
     global $input;
-    if(!isset($input['asset']) || !isset($input['album'])) {
+    if (!isset($input['asset']) || !isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=copy_asset&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
@@ -439,5 +459,4 @@ function copy_asset() {
     $album = $input['album'];
 
     require template_getpath('popup_copy_asset.php');
-    
 }

@@ -1,6 +1,6 @@
 <?php 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -30,7 +30,8 @@
 This is the popup displaying the URL to the media.
 You should not have to use this file on your own; if you do, make sure the variable $media_url and $media_url_web are defined
 -->
-<?php if(isset($media_url)) { ?>
+<?php if (isset($media_url)) {
+    ?>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">®Video®</h4>
@@ -47,4 +48,5 @@ You should not have to use this file on your own; if you do, make sure the varia
             </span>
         </div>
     </div>
-<?php } ?>
+<?php
+} ?>

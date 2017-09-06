@@ -1,7 +1,8 @@
 <?php
 
 
-function index($param = array()) {
+function index($param = array())
+{
     global $dir_date_format;
     global $submit_upload_dir;
     global $intros;

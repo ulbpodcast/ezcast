@@ -1,14 +1,15 @@
 <?php
 
 /**
- * Publishes or unpublishes an asset. The parameter $action tells us if we want the asset to be moved to the public 
+ * Publishes or unpublishes an asset. The parameter $action tells us if we want the asset to be moved to the public
  * ('publish') album or private ('unpublish') album.
- * 
+ *
  * @global type $input
  * @global type $repository_path
  * @param string $action publish|unpublish
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     ezmam_repository_path($repository_path);
@@ -26,7 +27,7 @@ function index($param = array()) {
         die;
     }
     
-    if(count($param) != 1) {
+    if (count($param) != 1) {
         echo 'Specify if publish or unpublish';
         die;
     }
@@ -48,7 +49,7 @@ function index($param = array()) {
 
         require_once template_getpath('popup_asset_successfully_published.php');
         //include_once "tmpl/fr/popup_asset_successfully_published.php";
-    } else if ($action == 'unpublish') {
+    } elseif ($action == 'unpublish') {
         $res = ezmam_asset_unpublish($input['album'], $input['asset']);
         if (!$res) {
             error_print_message(ezmam_last_error());
@@ -69,8 +70,9 @@ function index($param = array()) {
     }
 }
 
-function move_data($album, $asset) {
-    // moves asset bookmarks from private to public 
+function move_data($album, $asset)
+{
+    // moves asset bookmarks from private to public
     toc_album_bookmarks_swap($album, $asset);
     $albumTo = suffix_replace($album);
     

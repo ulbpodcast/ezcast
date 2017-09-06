@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -40,14 +40,14 @@ for every album the user can create.
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title">®Program® <b><?php echo htmlspecialchars($title); ?></b></h4>
 </div>
-<?php if ($asset_scheduled) { ?>
+<?php if ($asset_scheduled) {
+    ?>
     <div class="modal-body">
         <p>®Asset_sched_move®</p>
         <?php
         $date = (get_lang() == 'fr') ? new DateTimeFrench($asset_sched_date, $DTZ) : new DateTime($asset_sched_date, $DTZ);
-        $dateVerbose = (get_lang() == 'fr') ? $date->format('j F Y à H\hi') : $date->format("F j, Y, g:i a");
-        echo '<b>'.$dateVerbose.'</b>';
-        ?>
+    $dateVerbose = (get_lang() == 'fr') ? $date->format('j F Y à H\hi') : $date->format("F j, Y, g:i a");
+    echo '<b>'.$dateVerbose.'</b>'; ?>
         <br/><br/>
         <p>®Asset_sched_remove®</p>
     </div>
@@ -56,15 +56,17 @@ for every album the user can create.
             ®Delete_sched®
         </a>
     </div>
-<?php } else { ?>
+<?php
+} else {
+        ?>
     <form  action="index.php" onsubmit="return false;" method="post" id="schedule_form">
         <div class="modal-body">
             <p>
-                <?php if(album_is_public($album)) {
-                    echo '®schedule_prive_at®';
-                } else {
-                    echo '®schedule_public_at®';
-                } ?>
+                <?php if (album_is_public($album)) {
+            echo '®schedule_prive_at®';
+        } else {
+            echo '®schedule_public_at®';
+        } ?>
             </p>
             <input type="hidden" name="action" value="schedule_asset"/>
             <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
@@ -96,4 +98,5 @@ for every album the user can create.
             <a class="btn btn-default" href="javascript:submit_schedule_form();">®Program®</a>
         </div>
     </form>
-<?php } ?>
+<?php
+    } ?>

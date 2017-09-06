@@ -3,7 +3,8 @@
 /**
  * Effectively deletes an asset from the repository, and displays a nice message to the user
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $logger;
@@ -21,16 +22,16 @@ function index($param = array()) {
     if (!acl_has_album_permissions($input['album'])) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
         log_append('warning', 'delete_asset: tried to access album ' . $input['album'] . ' without permission');
-        $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::WARNING, 'delete_asset: tried to access album ' . 
+        $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::WARNING, 'delete_asset: tried to access album ' .
             $input['album'] . ' without permission', array(basename(__FILE__)), $input['asset']);
         die;
     }
 
     if (!ezmam_asset_exists($input['album'], $input['asset'])) {
         error_print_message(template_get_message('Non-existant_asset', get_lang()));
-        log_append('warning', 'delete_asset: tried to access asset ' . $input['asset'] . ' of album ' . 
+        log_append('warning', 'delete_asset: tried to access asset ' . $input['asset'] . ' of album ' .
             $input['album'] . ' which does not exist');
-        $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::WARNING, 'delete_asset: tried to access asset ' . 
+        $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::WARNING, 'delete_asset: tried to access asset ' .
             $input['asset'] . ' of album ' . $input['album'] . ' which does not exist', array(basename(__FILE__)), $input['asset']);
         die;
     }

@@ -1,6 +1,6 @@
 <?php 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -44,28 +44,28 @@ It is part of div_asset_details and has been split apart for readability.
     <p><span class="infosAvance">®Filesize_SD®&nbsp;:</span> <?php print_info($filesize_cam['SD'], ' ®Megabyte_unit®'); ?></p>
     <p><span class="infosAvance">®Dimensions_HD®&nbsp;:</span> <?php print_info($dimensions_cam['HD']); ?></p>
     <p><span class="infosAvance">®Dimensions_SD®&nbsp;:</span> <?php print_info($dimensions_cam['SD']); ?></p>
-    <!--  <p><span class="infosAvance">®View_count®&nbsp;:</span> <?php //echo $view_count_cam; ?></p> -->
+    <!--  <p><span class="infosAvance">®View_count®&nbsp;:</span> <?php //echo $view_count_cam;?></p> -->
 </div>
 <!-- Links to media -->
 <span class="ButtonPublication"> <a href="javascript:visibilite('Publication_<?php echo $asset; ?>_1');">®Publication®</a></span>
 
 
-<!--div class="Publication" id="Publication_<?php // echo $asset; ?>_1" style="display:none">
+<!--div class="Publication" id="Publication_<?php // echo $asset;?>_1" style="display:none">
     <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
-        // echo $album; ?>&amp;asset=<?php // echo $asset; ?>&amp;media=high_cam');">+ ®high_res®</a></p>
+        // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=high_cam');">+ ®high_res®</a></p>
     <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
-        // echo $album; ?>&amp;asset=<?php // echo $asset; ?>&amp;media=low_cam');">+ ®low_res®</a></p>
+        // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=low_cam');">+ ®low_res®</a></p>
 </div-->
 
 <!-- Links to embed player -->
-<!--span class="ButtonEmbed"> <a href="javascript:visibilite('Embed_<?php // echo $asset; ?>_1');">®Embed®</a> </span>
+<!--span class="ButtonEmbed"> <a href="javascript:visibilite('Embed_<?php // echo $asset;?>_1');">®Embed®</a> </span>
 
-<div class="Embed" id="Embed_<?php // echo $asset; ?>_1" style="display:none">
+<div class="Embed" id="Embed_<?php // echo $asset;?>_1" style="display:none">
     <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
-        // echo $album; ?>&amp;asset=<?php // echo $asset; ?>&amp;media=high_cam');">+ ®high_res®</a>
+        // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=high_cam');">+ ®high_res®</a>
     </p>
     <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
-        // echo $album; ?>&amp;asset=<?php // echo $asset; ?>&amp;media=low_cam');">+ ®low_res®</a>
+        // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=low_cam');">+ ®low_res®</a>
     </p>
 
 </div-->

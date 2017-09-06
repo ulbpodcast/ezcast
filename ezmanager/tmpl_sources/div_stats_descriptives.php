@@ -1,17 +1,21 @@
 <div id="div_stats_descriptives">
     <div class="BlocPodcastMenu">
-        <?php if(isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) { ?>
+        <?php if (isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) {
+    ?>
             <div id="containerMonth" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
             <br />
             <hr />
             <br />
-        <?php } ?>
-        <?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
+        <?php
+} ?>
+        <?php if (isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) {
+        ?>
             <div id="containerVideo" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
             <br />
             <hr />
             <br />
-        <?php } ?>
+        <?php
+    } ?>
         <br />
         <h4>®Stats_table_info®</h4>
         <br />
@@ -66,7 +70,8 @@ Highcharts.setOptions({
     }
 });
 
-<?php if(isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) { ?>
+<?php if (isset($stats['graph']['album']['display']) && $stats['graph']['album']['display']) {
+        ?>
     // Month graphic
     Highcharts.stockChart('containerMonth', {
         chart: {
@@ -138,10 +143,12 @@ Highcharts.setOptions({
             data: <?php echo $stats['graph']['album']['str_uniqueview']; ?>
         }]
     });
-<?php } ?>
+<?php
+    } ?>
 
 
-<?php if(isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) { ?>
+<?php if (isset($stats['graph']['video']['display']) && $stats['graph']['video']['display']) {
+        ?>
     var allAssets = <?php echo $stats['graph']['video']['str_all_asset']; ?>;
     
     // Asset graphic
@@ -186,7 +193,8 @@ Highcharts.setOptions({
                 data: <?php echo $stats['graph']['video']['str_unique_view']; ?>
             }]
     });
-<?php } ?>
+<?php
+    } ?>
 
 var containerMonth = $('#containerMonth');
 var containerVideo = $('#containerVideo');

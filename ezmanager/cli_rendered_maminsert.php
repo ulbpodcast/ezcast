@@ -29,17 +29,20 @@ $asset = $argv[2];
 $render_dir = $argv[3];
 
 //check if given asset exists
-if (!ezmam_asset_exists($album, $asset))
+if (!ezmam_asset_exists($album, $asset)) {
     myerror("ezmam did not find referenced asset: $album, $asset");
+}
 
 //check if intro-title-movie had done its job
 var_dump($render_dir . "/processing.xml");
 $resultprocessing_assoc = metadata2assoc_array($render_dir . "/processing.xml");
-if (!is_array($resultprocessing_assoc))
+if (!is_array($resultprocessing_assoc)) {
     myerror("could not get result metadata");
+}
 $status = $resultprocessing_assoc['status'];
-if ($status != "processed")
+if ($status != "processed") {
     myerror("processing return status: $status");
+}
 //intro-title-movie and compress high/low done, so lets insert them in our asset
 $media_files = glob("$render_dir/*.mov");
 //scan for all rendered medias (starting with 'high_' or 'low_' and continues with 'slide_' or 'cam_')
@@ -70,19 +73,22 @@ rename($render_dir, $render_root_path . '/processed/' . basename($render_dir));
 
 // delete video files that are already in the repository (original cam and slide)
 foreach (glob($render_root_path . '/processed/' . basename($render_dir) . '/*') as $f) {
-    if ((strpos($f, "cam") !== false || strpos($f, "slide") !== false) && !strpos($f, "xml"))
+    if ((strpos($f, "cam") !== false || strpos($f, "slide") !== false) && !strpos($f, "xml")) {
         unlink($f);
+    }
 }
 
 $asset_meta = ezmam_asset_metadata_get($album, $asset);
 //if we found the duration of the encoded videos set the asset's duration
-if (isset($duration) && is_numeric($duration))
+if (isset($duration) && is_numeric($duration)) {
     $asset_meta['duration'] = round($duration);
+}
 
 $asset_meta['status'] = 'processed';
 $res = ezmam_asset_metadata_set($album, $asset, $asset_meta);
-if (!$res)
+if (!$res) {
     print "asset metadata set error:" . ezmam_last_error() . "\n";
+}
 
 $pos = strrpos($album, "-");
 $album_without_mod = substr($album, 0, $pos);
@@ -91,17 +97,20 @@ $logger->log(EventType::ASSET_FINALIZED, LogLevel::NOTICE, "Asset succesfully fi
 
 
 
-function high_low_media_mam_insert($album, $asset, $high_low, $cam_slide, $processing_assoc, $render_dir) {
+function high_low_media_mam_insert($album, $asset, $high_low, $cam_slide, $processing_assoc, $render_dir)
+{
     global $title, $duration;
     //get qtinfo assoc info
     $qtinfo_assoc = metadata2assoc_array($render_dir . "/{$high_low}_{$cam_slide}_qtinfo.xml");
-    if (!is_array($qtinfo_assoc))
+    if (!is_array($qtinfo_assoc)) {
         myerror("error in intro-title-movie {$high_low}_{$cam_slide}_qtinfo.xml missing/corrupted");
+    }
     //first copy most of the parameters from original media
     $movie_filename = $high_low . '_' . $cam_slide . '.mov';
     $media_meta['duration'] = $qtinfo_assoc['duration'];
-    if (isset($qtinfo_assoc['duration']))
+    if (isset($qtinfo_assoc['duration'])) {
         $duration = $qtinfo_assoc['duration'];
+    }
     $media_meta['height'] = $qtinfo_assoc['height'];
     $media_meta['width'] = $qtinfo_assoc['width'];
     $media_meta['videocodec'] = $qtinfo_assoc['videoCodec'];
@@ -112,26 +121,29 @@ function high_low_media_mam_insert($album, $asset, $high_low, $cam_slide, $proce
     $media_meta['disposition'] = "file";
     $media_meta['duration'] = $qtinfo_assoc['duration'];
     $media = $high_low . '_' . $cam_slide;
-    if (!isset($duration))
+    if (!isset($duration)) {
         $duration = $qtinfo_assoc['duration'];
+    }
     //put  the media in the repository
     //use copy option to have the right owner
     print "insert media $album $asset $media\n";
     $res = ezmam_media_new($album, $asset, $media, $media_meta, $render_dir . '/' . $movie_filename);
-    if (!$res)
+    if (!$res) {
         myerror("could not add media to repository: " . ezmam_last_error());
+    }
     // remove processed video (owned by remote user but we are owner of upper dir)
     //unlink($media_file_path);
     return true;
 }
 
-function myerror($msg) {
+function myerror($msg)
+{
     print $msg . "\n";
     exit(1);
 }
 
-function update_originals_meta($album, $asset, $qtinfo_filepath) {
-
+function update_originals_meta($album, $asset, $qtinfo_filepath)
+{
     $qtinfo_assoc = metadata2assoc_array($qtinfo_filepath);
     //dig media name according to qtinfo filename
     $qtinfofile = basename($qtinfo_filepath);
@@ -141,10 +153,12 @@ function update_originals_meta($album, $asset, $qtinfo_filepath) {
     $media_meta['duration'] = $qtinfo_assoc['duration'];
     $media_meta['height'] = $qtinfo_assoc['height'];
     $media_meta['width'] = $qtinfo_assoc['width'];
-    if (isset($qtinfo_assoc['videoCodec']))
+    if (isset($qtinfo_assoc['videoCodec'])) {
         $media_meta['videocodec'] = $qtinfo_assoc['videoCodec'];
-    if (isset($qtinfo_assoc['audioCodec']))
+    }
+    if (isset($qtinfo_assoc['audioCodec'])) {
         $media_meta['audiocodec'] = $qtinfo_assoc['audioCodec'];
+    }
 
     //update  originals meta
     print "update media metadata $album $asset $media\n";
@@ -157,7 +171,8 @@ function update_originals_meta($album, $asset, $qtinfo_filepath) {
  * @param string $asset
  * @param string $chapter_slide_dir
  */
-function insert_chapterslide_media($album, $asset, $chapter_slide_dir) {
+function insert_chapterslide_media($album, $asset, $chapter_slide_dir)
+{
     $media = "chapter_slide";
     $media_meta['filename'] = "chapter_slide";
     $media_meta['disposition'] = "directory"; //not a simple file, but a directory with a chapters.xml and chapter<n>.png

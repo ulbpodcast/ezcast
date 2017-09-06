@@ -4,7 +4,8 @@
 /**
  * Displays the stast informations
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $distribute_url;
@@ -14,8 +15,8 @@ function index($param = array()) {
     global $trace_on;
     global $display_trace_stats;
     
-    if(!$trace_on || !$display_trace_stats) {
-       die;
+    if (!$trace_on || !$display_trace_stats) {
+        die;
     }
     
     if (isset($input['album'])) {
@@ -40,12 +41,12 @@ function index($param = array()) {
     //
     $metadata = ezmam_album_metadata_get($album);
     
-    if(isset($metadata['id'])) {
+    if (isset($metadata['id'])) {
         $album_id = $metadata['id'];
     } else {
         $album_id = $metadata['name'];
     }
-    if(isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
+    if (isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
         $course_code_public = $metadata['course_code_public'];
     }
     
@@ -61,29 +62,33 @@ function index($param = array()) {
     include template_getpath('div_stats_descriptives.php');
 }
 
-function convertPHPArrayToJSArray($data) {
+function convertPHPArrayToJSArray($data)
+{
     return json_encode(
                 array_map(
-                  function($key, $value) { return array($key, intval($value)); },
+                  function ($key, $value) {
+                      return array($key, intval($value));
+                  },
                   array_keys($data),
                   array_values($data)
                 )
               );
 }
 
-function load_stats($album) {
+function load_stats($album)
+{
     require_once dirname(__FILE__) . '/../lib_sql_stats.php';
     
     $stats = array();
     $all_album_data = db_stats_album_get_month_data($album);
     $all_video_data = db_stats_video_get_month_data($album);
     $stats['descriptive'] = array(
-        'bookmark_personal' => 0, 
-        'bookmark_official' => 0, 
+        'bookmark_personal' => 0,
+        'bookmark_official' => 0,
         'access' => 0,
         'threads' => 0);
     $album_infos = db_stats_album_infos_get($album);
-    if(count($album_infos) > 0) {
+    if (count($album_infos) > 0) {
         $stats['descriptive'] = $album_infos[0];
     }
     
@@ -91,7 +96,7 @@ function load_stats($album) {
     $stats['graph']['album'] = calcul_graph_album($all_album_data, $stats['calculate']);
     $stats['graph']['video'] = calcul_graph_video($all_video_data, $stats['calculate']);
     
-    if($stats['calculate']['view_unique'] > 0) {
+    if ($stats['calculate']['view_unique'] > 0) {
         $total_bookmarks = $stats['descriptive']['bookmark_personal'] + $stats['descriptive']['bookmark_official'];
         $stats['calculate']['bookmarks_view_ratio'] = round(($total_bookmarks / $stats['calculate']['view_unique'])*100, 2);
     } else {
@@ -101,30 +106,31 @@ function load_stats($album) {
     return $stats;
 }
 
-function calcul_graph_album($all_album_data, &$calculate_stats) {
+function calcul_graph_album($all_album_data, &$calculate_stats)
+{
     $result = array();
     $data = array(
             'total_view' => array(),
             'unique_view' => array()
             );
     
-    if(count($all_album_data) > 0) {
-        $result['display'] = TRUE;
+    if (count($all_album_data) > 0) {
+        $result['display'] = true;
         
-        foreach($all_album_data as $album_data) {
+        foreach ($all_album_data as $album_data) {
             // TODO remove: it's only for debug
-//            $strTime = strtotime("02-" . $album_data['month']);
-//            $data['total_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_total']-10;
-//            $data['unique_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_unique']-10;
-//            
-//            $data['total_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_total']-1;
-//            $data['unique_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_unique']-5;
-//            
-//            $data['total_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_total']-30;
-//            $data['unique_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_unique']-12;
-//            
-//            $data['total_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_total']-6;
-//            $data['unique_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_unique']-4;
+            //            $strTime = strtotime("02-" . $album_data['month']);
+            //            $data['total_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_total']-10;
+            //            $data['unique_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_unique']-10;
+            //
+            //            $data['total_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_total']-1;
+            //            $data['unique_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_unique']-5;
+            //
+            //            $data['total_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_total']-30;
+            //            $data['unique_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_unique']-12;
+            //
+            //            $data['total_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_total']-6;
+            //            $data['unique_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_unique']-4;
 
             $time = strtotime("02-" . $album_data['month']) . "000";
             $data['total_view'][$time] = $album_data['total_view_total'];
@@ -135,23 +141,23 @@ function calcul_graph_album($all_album_data, &$calculate_stats) {
 
         $result['str_totalview'] = convertPHPArrayToJSArray($data['total_view']);
         $result['str_uniqueview'] = convertPHPArrayToJSArray($data['unique_view']);
-        
     } else {
-        $result['display'] = FALSE;
+        $result['display'] = false;
     }
     
     return $result;
 }
 
-function calcul_graph_video($all_video_data) {
+function calcul_graph_video($all_video_data)
+{
     $result = array();
-    if(count($all_video_data) > 0) {
-        $result['display'] = TRUE;
+    if (count($all_video_data) > 0) {
+        $result['display'] = true;
         $result['str_all_asset'] = json_encode(array_column($all_video_data, 'asset_name'));
         $result['str_total_view'] = json_encode(array_map('intval', array_column($all_video_data, 'total_view_total')));
         $result['str_unique_view'] = json_encode(array_map('intval', array_column($all_video_data, 'total_view_unique')));
     } else {
-        $result['display'] = FALSE;
+        $result['display'] = false;
     }
     
     return $result;

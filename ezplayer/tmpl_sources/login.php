@@ -110,8 +110,7 @@
                         <input type="submit" name="logged_session" class="btn btn-default login" value="®login®" tabindex="4"/>
                       </div>
                     </div>
-                </form>
-                
+                </form>                
                 
                 <div class="login_video col-md-12">
                     <h2>®tuto_ezplayer®</h2>
@@ -120,9 +119,7 @@
                 </div>
 
             </div>
-
-<?php include 'div_main_footer.php'; ?>
-
+            <?php include 'div_main_footer.php'; ?>
         </div>
         
         <script type="text/javascript">
@@ -137,6 +134,9 @@
             <?php if($sso_enabled) { ?>
                 $( document ).ready(function() {
                     $("#form_login").hide();
+                    <?php if(isset($error) && $error != "") { ?>
+                        $("#form_login").show();      
+                    <?php } ?>
                     $("#default_auth_button").click(function () {
                         $("#form_login").slideToggle('fast');
                         return false;

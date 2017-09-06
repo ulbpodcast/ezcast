@@ -84,7 +84,6 @@ function courses_list($netid = "") {
             $result[$value['course_code']] = $value['course_code'] . '|' . $value['course_name'];
         }
     }
-    db_close();
 
     return $result;
 }

@@ -167,7 +167,6 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
 function ezmam_course_create_db($course_id, $course_code_public, $label, $in_recorders, $owner = null) 
 {
     global $logger;
-    global $db_object;
     
     $valid = db_course_create($course_id, $course_code_public, $label, $in_recorders);
     if(!$valid) {

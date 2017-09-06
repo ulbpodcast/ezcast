@@ -1,5 +1,7 @@
 <?php 
 
+/* Generate dummy traces for testing purposes */
+
 date_default_timezone_set('Europe/Brussels');
 $filename = "generate.trace";
 
@@ -223,7 +225,7 @@ for ($i=1; $i < count($argv); ++$i) {
             if (isset($argv[$i+1])) {
                 $filename = $argv[++$i];
             } else {
-                echo 'File name is not define !' . PHP_EOL;
+                echo 'File name is not defined!' . PHP_EOL;
                 help_view();
                 return;
             }
@@ -234,7 +236,7 @@ for ($i=1; $i < count($argv); ++$i) {
             if (isset($argv[$i+1])) {
                 $nbr_cours = $argv[++$i];
             } else {
-                echo 'Number of cours is not define !' . PHP_EOL;
+                echo 'Number of cours is not defined!' . PHP_EOL;
                 help_view();
                 return;
             }
@@ -245,7 +247,7 @@ for ($i=1; $i < count($argv); ++$i) {
             if (isset($argv[$i+1])) {
                 $nbr_video = $argv[++$i];
             } else {
-                echo 'Number of videos is not define !' . PHP_EOL;
+                echo 'Number of videos is not defined!' . PHP_EOL;
                 help_view();
                 return;
             }
@@ -256,7 +258,7 @@ for ($i=1; $i < count($argv); ++$i) {
             if (isset($argv[$i+1])) {
                 $nbr_users = $argv[++$i];
             } else {
-                echo 'Number of users is not define !' . PHP_EOL;
+                echo 'Number of users is not defined!' . PHP_EOL;
                 help_view();
                 return;
             }
@@ -266,14 +268,14 @@ for ($i=1; $i < count($argv); ++$i) {
             if (isset($argv[$i+1])) {
                 $max_time_video = $argv[++$i];
             } else {
-                echo 'The maximum of video time is not define !' . PHP_EOL;
+                echo 'The maximum of video time is not defined!' . PHP_EOL;
                 help_view();
                 return;
             }
             break;
 
         default:
-            echo 'Command: ' . $argv[$i] . ' is not valide !' . PHP_EOL;
+            echo 'Command: ' . $argv[$i] . ' is not valid!' . PHP_EOL;
             help_view();
             return;
     }

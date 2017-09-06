@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <?php /*
-        * EZCAST EZmanager 
+        * EZCAST EZmanager
         *
         * Copyright (C) 2016 Université libre de Bruxelles
         *

@@ -42,7 +42,8 @@
 
     <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
-        <?php if ($asset_meta['record_type'] === 'camslide') { ?>
+        <?php if ($asset_meta['record_type'] === 'camslide') {
+    ?>
             <div class="video_controls streaming">
                 <ul>
 
@@ -52,7 +53,8 @@
                     </li>
                 </ul>
             </div>
-        <?php } ?>
+        <?php
+} ?>
     </div>
 </div>
 <script>
@@ -131,7 +133,7 @@
         var autoplay = "autoplay",
                 loop = "",
                 cast = "",
-                controls = "<?php echo (in_array(strtolower($_SESSION['user_os']), array('linux', 'windows', 'os x')) ? "" : "controls"); ?>";
+                controls = "<?php echo(in_array(strtolower($_SESSION['user_os']), array('linux', 'windows', 'os x')) ? "" : "controls"); ?>";
         //        controls = "";
         var hlsurl = data.stream_url;
         var poster = data.poster;

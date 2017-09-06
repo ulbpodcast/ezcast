@@ -1,6 +1,6 @@
 <?php 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -27,10 +27,10 @@
 <div id="div_ezplayer_url">
     <div class="BlocPodcastMenu">
         <?php 
-        if(!$public_album) {
+        if (!$public_album) {
             echo '<br />';
             echo "<div class=\"alert alert-danger text-center\" role=\"alert\">";
-                echo "®Player_url_private_alert®";
+            echo "®Player_url_private_alert®";
             echo "</div>";
         }
         ?>

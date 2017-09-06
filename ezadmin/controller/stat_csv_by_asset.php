@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     $filename = "./csv_assets.csv";
     $header = array('First post datetime', 'Album name', 'Asset', 'Discussions');
 
@@ -12,7 +13,7 @@ function index($param = array()) {
         fputcsv($handle, $fields);
     }
     fclose($handle);
-    if (file_exists($filename)) {   
+    if (file_exists($filename)) {
         header("Cache-Control: public");
         header("Content-Description: File Transfer");
         header("Content-Disposition: attachment; filename=assets.csv");

@@ -37,32 +37,36 @@ require_once dirname(__FILE__) . '/../commons/lib_template.php';
  * Trims the '-priv' or '-pub' suffix from an album name
  * TODO: check that it's only the end of the name that's removed
  * @param string $album_name
- * @return string 
+ * @return string
  */
-function suffix_remove($album_name) {
+function suffix_remove($album_name)
+{
     $res = $album_name;
 
-    if (substr($album_name, -4) == "-pub")
+    if (substr($album_name, -4) == "-pub") {
         $res = substr($album_name, 0, -4);
-    else if (substr($album_name, -5) == '-priv')
+    } elseif (substr($album_name, -5) == '-priv') {
         $res = substr($album_name, 0, -5);
+    }
 
     return $res;
 }
 
 /**
  * Changes "priv" to "pub" and controversely. If the album name has neither suffix, returns the same string.
- * @param type $album_name 
+ * @param type $album_name
  * @return string
  */
-function suffix_replace($album_name) {
+function suffix_replace($album_name)
+{
     $res = $album_name;
     $res = suffix_remove($album_name);
 
-    if (substr($album_name, -4) == "-pub")
+    if (substr($album_name, -4) == "-pub") {
         $res .= '-priv';
-    else if (substr($album_name, -5) == '-priv')
+    } elseif (substr($album_name, -5) == '-priv') {
         $res .= '-pub';
+    }
 
     return $res;
 }
@@ -70,32 +74,36 @@ function suffix_replace($album_name) {
 /**
  * Returns an album suffix based on its name
  * @param type $album_name
- * @return string|false the suffix (with the initial hyphen) if all went well, false otherwise 
+ * @return string|false the suffix (with the initial hyphen) if all went well, false otherwise
  */
-function suffix_get($album_name) {
-    if (substr($album_name, -4) == "-pub")
+function suffix_get($album_name)
+{
+    if (substr($album_name, -4) == "-pub") {
         return '-pub';
-    else if (substr($album_name, -5) == '-priv')
+    } elseif (substr($album_name, -5) == '-priv') {
         return '-priv';
-    else
+    } else {
         return false;
+    }
 }
 
 /**
  * Checks whether an album is private based on its suffix
  * @param type $album_name
- * @return bool true if album is private 
+ * @return bool true if album is private
  */
-function album_is_private($album_name) {
+function album_is_private($album_name)
+{
     return (suffix_get($album_name) == '-priv');
 }
 
 /**
  * Checks whether an album is public based on its suffix
  * @param type $album_name
- * @return bool true if album is public 
+ * @return bool true if album is public
  */
-function album_is_public($album_name) {
+function album_is_public($album_name)
+{
     return (suffix_get($album_name) == '-pub');
 }
 
@@ -108,9 +116,11 @@ function album_is_public($album_name) {
  * @param bool $long_date if set to true, the date will be a "gramatically correct" date, instead of a "easily computable" one
  * @return string The date in format dd_mmmm_YYYY_HH:ii
  */
-function get_user_friendly_date($date, $space_char = '_', $long_months_names = true, $lang = 'fr', $long_date = false) {
-    if (!isset($date) || empty($date))
+function get_user_friendly_date($date, $space_char = '_', $long_months_names = true, $lang = 'fr', $long_date = false)
+{
+    if (!isset($date) || empty($date)) {
         return null;
+    }
 
     $matches = array();
     preg_match('!(\d{4})\_(\d{2})\_(\d{2})\_(\d{2})h(\d{2})!', $date, $matches);
@@ -121,18 +131,21 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
     if ($long_months_names) {
         template_load_dictionnary('translations.xml');
 
-        if ($lang == 'fr-ASCII')
+        if ($lang == 'fr-ASCII') {
             $new_date .= str_replace(array('é', 'û'), array('e', 'u'), template_get_message('month_' . $matches[2], 'fr'));
-        else
+        } else {
             $new_date .= template_get_message('month_' . $matches[2], $lang);
+        }
     }
     // Otherwise, we just display the month as a number
-    else
+    else {
         $new_date .= $matches[2];
+    }
 
     $new_date .= $space_char . $matches[1]; // year
-    if ($long_date)
-        $new_date .= $space_char . $at; // Separator between date and hour
+    if ($long_date) {
+        $new_date .= $space_char . $at;
+    } // Separator between date and hour
 
     $new_date .= $space_char . $matches[4] . 'h' . $matches[5]; // Hours and minutes
 
@@ -143,7 +156,8 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
  * Returns a date in RFC822 format from a date in "our" format
  * @param type $date Date in format YYYY_mm_dd_HHhii
  */
-function get_RFC822_date($date) {
+function get_RFC822_date($date)
+{
     //$date_array = date_parse_from_format('Y_m_d_H:i', $date);
     list($year, $month, $day, $hourandminutes) = explode('_', $date);
     list($hours, $minutes) = explode('h', $hourandminutes);
@@ -157,29 +171,34 @@ function get_RFC822_date($date) {
  * @param float $duration A duration in seconds
  * @return string A duration in hours, minutes, seconds
  */
-function get_user_friendly_duration($duration) {
-    if (!isset($duration) || empty($duration))
+function get_user_friendly_duration($duration)
+{
+    if (!isset($duration) || empty($duration)) {
         return null;
+    }
 
     $res = round($duration);
-    if ($res < 60)
+    if ($res < 60) {
         $res .= ' sec';
-    else
+    } else {
         $res = round($res / 60) . ' min. ' . ($res % 60) . ' sec.';
+    }
     return $res;
 }
 
 /**
  * Takes a date as a year and month, and returns a string representing the academic year thereof
  * @param string $year
- * @param string $month 
+ * @param string $month
  * @return A string of format currentYear-nextYear
  */
-function get_anac($year, $month) {
+function get_anac($year, $month)
+{
     $year_start = (int) $year;
     // Before July 2011, the academic year is 2010-2011, so the starting year is "one year before" current date
-    if ((int) $month <= 6)
+    if ((int) $month <= 6) {
         --$year_start;
+    }
 
     $year_end = $year_start + 1;
 
@@ -188,12 +207,13 @@ function get_anac($year, $month) {
 
 /**
  * Returns the asset full title from an asset name
- * @global type $repository_path 
- * @param type $album 
+ * @global type $repository_path
+ * @param type $album
  * @param type $asset the original asset name
  * @return boolean|string the asset full title if the asset exists ; false otherwise
  */
-function get_asset_title($album, $asset) {
+function get_asset_title($album, $asset)
+{
     global $repository_path;
     global $template_folder;
 
@@ -226,7 +246,8 @@ function get_asset_title($album, $asset) {
  * @param bool $itunes_friendly If set to true, the link will include a fake .m4v file
  * @return string Media
  */
-function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes_friendly = false) {
+function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes_friendly = false)
+{
     global $ezplayer_url;
     global $distribute_url;
     global $repository_path;
@@ -249,8 +270,9 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
     // We take the asset's token if it exists.
     // If not, then we use the album's token instead.
     $token = ezmam_asset_token_get($album, $asset);
-    if (!$token)
+    if (!$token) {
         $token = ezmam_album_token_get($album);
+    }
 
     if (!$token) {
         error_print_message('get_link_to_media: ' . ezmam_last_error());
@@ -262,13 +284,15 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
     $type = $media_infos[1];
 
     $resurl = $distribute_url;
-    if ($itunes_friendly)
+    if ($itunes_friendly) {
         $resurl.= '/' . $type . '.m4v';
+    }
     $resurl.= '?action=media&album=' . $album . '&asset=' . $asset . '&type=' . $type . '&quality=' . $quality . '&token=' . $token;
-    if ($htmlentities)
+    if ($htmlentities) {
         return htmlentities($resurl);
-    else
+    } else {
         return $resurl;
+    }
 }
 
 /**
@@ -279,7 +303,8 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
  * @param string $media
  * @return string Media
  */
-function get_code_to_media($album, $asset, $media) {
+function get_code_to_media($album, $asset, $media)
+{
     global $ezplayer_url;
     global $distribute_url;
     global $repository_path;
@@ -302,8 +327,9 @@ function get_code_to_media($album, $asset, $media) {
     // We take the asset's token if it exists.
     // If not, then we use the album's token instead.
     $token = ezmam_asset_token_get($album, $asset);
-    if (!$token)
+    if (!$token) {
         $token = ezmam_album_token_get($album);
+    }
 
     if (!$token) {
         error_print_message('get_link_to_media: ' . ezmam_last_error());
@@ -323,14 +349,16 @@ function get_code_to_media($album, $asset, $media) {
  * @param string $beginning begins with
  * @return bool
  */
-function str_begins_with($string, $beginning) {
+function str_begins_with($string, $beginning)
+{
     $beglen = strlen($beginning);
     $stringbeg = substr($string, 0, $beglen);
 
-    if ($stingbeg == $beginning)
+    if ($stingbeg == $beginning) {
         return true;
-    else
+    } else {
         return false;
+    }
 }
 
 /**
@@ -338,11 +366,13 @@ function str_begins_with($string, $beginning) {
  * @param <type> $filename
  * @return false|assoc_array
  */
-function file_get_extension($filename) {
+function file_get_extension($filename)
+{
     //search last dot in filename
     $pos_dot = strrpos($filename, '.');
-    if ($pos_dot === false)
+    if ($pos_dot === false) {
         return array('name' => $filename, 'ext' => "");
+    }
 
     $ext_part = substr($filename, $pos_dot + 1);
     $name_part = substr($filename, 0, $pos_dot);
@@ -353,7 +383,7 @@ function file_get_extension($filename) {
 
 /**
  * Sets the current language to the one chosen in parameter
- * @param type $lang 
+ * @param type $lang
  */
 //function set_lang($lang) {
 //    $_SESSION['lang'] = $lang;
@@ -361,7 +391,7 @@ function file_get_extension($filename) {
 
 /**
  * Returns current chosen language
- * @return string(fr|en) 
+ * @return string(fr|en)
  */
 //function get_lang() {
 //    //if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
@@ -373,12 +403,13 @@ function file_get_extension($filename) {
 //}
 
 /**
- * Isolates keywords from a string 
+ * Isolates keywords from a string
  * Each keyword must be surrounded by a '#' tag (i.e: #keyword#)
  * @param type $string
  * @return string
  */
-function get_keywords(&$string) {
+function get_keywords(&$string)
+{
     $keywords = array();
     $string_length = strlen($string);
     // loop on the text
@@ -395,13 +426,13 @@ function get_keywords(&$string) {
             }
             // if it ends by '#', it is a keyword
             if ($string[$j] == "#") {
-                // pushes the keyword in the array 
+                // pushes the keyword in the array
                 $keywords[] = trim($keyword);
                 // removes the '#' tags from the text
                 $string[$i] = ' ';
                 $string[$j] = ' ';
                 // if it ends by '@' it is not a keyword but a link (we keep it)
-            } else if ($string[$j] == "@") {
+            } elseif ($string[$j] == "@") {
                 while ($j <= $string_length && $string[$j] != " ") {
                     $j++;
                 }
@@ -418,7 +449,8 @@ function get_keywords(&$string) {
  * @param string $string
  * @return string
  */
-function surround_url($string) {
+function surround_url($string)
+{
     // checks for http url
     $pos = 0;
     // all prefixes we want to surround
@@ -431,29 +463,31 @@ function surround_url($string) {
         foreach ($patterns as $pattern) {
             // searches from the last known position
             $tmp_pos = stripos($string, $pattern, $pos);
-            if (!($tmp_pos === false)) // pattern found
+            if (!($tmp_pos === false)) { // pattern found
                 $pos_array[] = $tmp_pos;
+            }
         }
         // saves the position of the first encountered pattern
         $pos = (empty($pos_array)) ? -1 : min($pos_array);
-        if ($pos != -1) { // ends if there is no pattern found 
+        if ($pos != -1) { // ends if there is no pattern found
             if ($pos == 0 || $string[$pos - 1] != '*') { // the url is not yet surrounded
                 // adds a '*' tag before the url
                 $string = substr($string, 0, $pos) . "**" . substr($string, $pos);
                 // moves to the end of the url
-                while ($pos < strlen($string) && !in_array($string[$pos],$end_of_line)) {
+                while ($pos < strlen($string) && !in_array($string[$pos], $end_of_line)) {
                     $pos++;
                 }
                 // if the url ends with a '.', excludes it from the surrounding
-                if ($string[$pos - 1] == '.')
+                if ($string[$pos - 1] == '.') {
                     $pos--;
+                }
                 // adds a '*' at the end of the url
                 $string = substr($string, 0, $pos) . "**" . substr($string, $pos);
                 
                 $pos+=2;
             } else { // the url is already surrounded, just move to the next '*' tag
                 $tmp_pos = stripos(substr($string, $pos), '**');
-                if ($tmp_pos !== false){
+                if ($tmp_pos !== false) {
                     $pos += $tmp_pos - 1;
                 } else {
                     $pos = -1;
@@ -471,7 +505,8 @@ function surround_url($string) {
  * @param type $string
  * @return type
  */
-function safe_text($string){
+function safe_text($string)
+{
     // remove php and javascript tags
     $string = preg_replace('/(<\?{1}[pP\s]{1}.+\?>)/Us', "", $string);
     $string = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $string);
@@ -504,7 +539,8 @@ function safe_text($string){
  * @param type $value
  * @return type
  */
-function asset_meta_update($album, $asset, $key, $value) {
+function asset_meta_update($album, $asset, $key, $value)
+{
     global $repository_basedir;
     $path_to_metadata = $repository_basedir . "/repository/" . $album . "/" . $asset . "/_metadata.xml";
     $metadata = simplexml_load_file($path_to_metadata);
@@ -522,7 +558,8 @@ function asset_meta_update($album, $asset, $key, $value) {
  * @param type $asset
  * @return type
  */
-function asset_meta_get($album, $asset) {
+function asset_meta_get($album, $asset)
+{
     global $repository_basedir;
     $path_to_metadata = $repository_basedir . "/repository/" . $album . "/" . $asset . "/_metadata.xml";
     $metadata = simplexml_load_file($path_to_metadata);
@@ -536,23 +573,28 @@ function asset_meta_get($album, $asset) {
  * @anonymous_key the name of root tag we don't want to get for each item
  * @return type
  */
-function xml_file2assoc_array($xml, $anonymous_key = 'anon') {
-    if (is_string($xml))
+function xml_file2assoc_array($xml, $anonymous_key = 'anon')
+{
+    if (is_string($xml)) {
         $xml = new SimpleXMLElement($xml);
+    }
     $children = $xml->children();
-    if (!$children)
+    if (!$children) {
         return (string) $xml;
+    }
     $arr = array();
     foreach ($children as $key => $node) {
         $node = xml_file2assoc_array($node);
         // support for 'anon' non-associative arrays
-        if ($key == $anonymous_key)
+        if ($key == $anonymous_key) {
             $key = count($arr);
+        }
 
         // if the node is already set, put it into an array
         if (isset($arr[$key])) {
-            if (!is_array($arr[$key]) || $arr[$key][0] == null)
+            if (!is_array($arr[$key]) || $arr[$key][0] == null) {
                 $arr[$key] = array($arr[$key]);
+            }
             $arr[$key][] = $node;
         } else {
             $arr[$key] = $node;
@@ -561,7 +603,8 @@ function xml_file2assoc_array($xml, $anonymous_key = 'anon') {
     return $arr;
 }
 
-function simple_assoc_array2xml_file($assoc_array, $file_path, $global) {
+function simple_assoc_array2xml_file($assoc_array, $file_path, $global)
+{
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
     $xml = new SimpleXMLElement($xmlstr);
     foreach ($assoc_array as $key => $value) {
@@ -580,7 +623,8 @@ function simple_assoc_array2xml_file($assoc_array, $file_path, $global) {
  * @param type $each each item of the xml file
  * @return boolean
  */
-function assoc_array2xml_file($array, $file_path, $global = 'bookmarks', $each = 'bookmark') {
+function assoc_array2xml_file($array, $file_path, $global = 'bookmarks', $each = 'bookmark')
+{
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
     $xml = new SimpleXMLElement($xmlstr);
     foreach ($array as $assoc_array) {
@@ -592,8 +636,9 @@ function assoc_array2xml_file($array, $file_path, $global = 'bookmarks', $each =
     $xml_txt = $xml->asXML();
     $res = file_put_contents($file_path, $xml_txt, LOCK_EX);
     //did we write all the characters
-    if ($res != strlen($xml_txt))
-        return false; //no
+    if ($res != strlen($xml_txt)) {
+        return false;
+    } //no
 
     return true;
 }
@@ -603,7 +648,8 @@ function assoc_array2xml_file($array, $file_path, $global = 'bookmarks', $each =
  * @param type $array the list of album tokens
  * @return boolean
  */
-function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark') {
+function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark')
+{
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<$global>\n</$global>\n";
     $xml = new SimpleXMLElement($xmlstr);
     foreach ($array as $assoc_array) {
@@ -621,16 +667,17 @@ function assoc_array2xml_string($array, $global = 'bookmarks', $each = 'bookmark
  * Searches a specific pattern in a bookmarks list
  * @param type $search the pattern to search (array containing a selection of words to find)
  * @param type $bookmarks the eligible bookmarks list
- * @param type $fields the bookmark fields where to search : 
+ * @param type $fields the bookmark fields where to search :
  * it can be the title, the description and/or the keywords
  * @return the matching bookmarks list
  */
-function search_in_array($search, $bookmarks, $fields, $level) {
+function search_in_array($search, $bookmarks, $fields, $level)
+{
 
     // set $relevancy to true if the result is aimed to be sorted by relevancy.
     // With $relevancy = false, as soon as a word is found in any of the fields,
     // we stop the search and check for the next bookmark.
-    // With $relevancy = true, we search for every words in every fields and 
+    // With $relevancy = true, we search for every words in every fields and
     // give a score to each bookmark, according to certain rules.
     $relevancy = false;
     $score = 0;
@@ -639,7 +686,7 @@ function search_in_array($search, $bookmarks, $fields, $level) {
         if ($level == 0 || $bookmark['level'] == $level) {
             foreach ($search as $word) {
                 foreach ($fields as $field) {
-                    // Does the field contain the word ? 
+                    // Does the field contain the word ?
                     $offset = stripos($bookmark[$field], $word);
                     if ($offset !== false) {
                         if ($relevancy) {
@@ -648,14 +695,18 @@ function search_in_array($search, $bookmarks, $fields, $level) {
                             $score++;
 
                             // there is nothing before and/or after the word, we increment the score
-                            if ($offset == 0)
+                            if ($offset == 0) {
                                 $score++;
-                            if ($last_index == strlen($bookmark[$field]))
+                            }
+                            if ($last_index == strlen($bookmark[$field])) {
                                 $score++;
-                            if ($offset > 0 && $bookmark[$field][$offset - 1] == ' ')
+                            }
+                            if ($offset > 0 && $bookmark[$field][$offset - 1] == ' ') {
                                 $score++;
-                            if ($last_index < strlen($bookmark[$field]) && $bookmark[$field][$last_index] == ' ')
+                            }
+                            if ($last_index < strlen($bookmark[$field]) && $bookmark[$field][$last_index] == ' ') {
                                 $score++;
+                            }
 
                             // There are multiple occurences of the word, we increment the score
                             $count = substr_count(strtoupper($bookmark[$field]), strtoupper($word));
@@ -689,7 +740,8 @@ function search_in_array($search, $bookmarks, $fields, $level) {
  * @param type $parent
  * @return array
  */
-function get_comment_childs($fullList, $parent) {
+function get_comment_childs($fullList, $parent)
+{
     $childs = array();
     foreach ($fullList as $child) {
         if ($child['parent'] == $parent['id']) {
@@ -713,10 +765,11 @@ function get_comment_childs($fullList, $parent) {
  * @param type $fullList
  * @return array
  */
-function get_main_comments($fullList) {
+function get_main_comments($fullList)
+{
     $without_parents = array();
     foreach ($fullList as $comment) {
-        if ($comment['parent'] == NULL) {
+        if ($comment['parent'] == null) {
             $comment['level'] = 'level-0';
             $without_parents[] = $comment;
         }
@@ -730,16 +783,19 @@ function get_main_comments($fullList) {
  * @param type $all
  * @param type $asset
  */
-function threads_sort_get_by_asset($all, $asset) {
+function threads_sort_get_by_asset($all, $asset)
+{
     $ret = array();
     foreach ($all as $thread) {
-        if ($thread['assetName'] == $asset)
+        if ($thread['assetName'] == $asset) {
             $ret[] = $thread;
+        }
     }
     return $ret;
 }
 
-function thread_is_archive($album, $asset) {
+function thread_is_archive($album, $asset)
+{
     return !ezmam_asset_exists($album, $asset);
 }
 
@@ -751,7 +807,8 @@ function thread_is_archive($album, $asset) {
  * @param string $needle
  * @return boolean
  */
-function startsWith($haystack, $needle) {
+function startsWith($haystack, $needle)
+{
     return $needle === "" || strpos($haystack, $needle) === 0;
 }
 
@@ -761,6 +818,7 @@ function startsWith($haystack, $needle) {
  * @param string $needle
  * @return boolean
  */
-function endsWith($haystack, $needle) {
+function endsWith($haystack, $needle)
+{
     return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
 }

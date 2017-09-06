@@ -2,7 +2,7 @@
 
 /**
  * Displays the list of all assets from the selected album
- * @refresh_center determines if we need to refresh the whole page / the center 
+ * @refresh_center determines if we need to refresh the whole page / the center
  * of the page or another part of the page (mainly the right side)
  * @global type $input
  * @global type $repository_path
@@ -10,11 +10,13 @@
  * @global type $assets_list
  * @global string $panel_display
  */
-function index($param = array()) {
+function index($param = array())
+{
     index_asset_view($param);
 }
  
-function index_asset_view($param) {
+function index_asset_view($param)
+{
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -54,10 +56,9 @@ function index_asset_view($param) {
     // 0) Sanity checks
 
     if (!ezmam_album_exists($album)) {
-        
-        if ($input['click']) // refresh a part of the page
+        if ($input['click']) { // refresh a part of the page
             include_once template_getpath('error_album_not_found.php');
-        else { // refresh the whole page
+        } else { // refresh the whole page
             $error_path = template_getpath('error_album_not_found.php');
             include_once template_getpath('main.php');
         }
@@ -67,7 +68,6 @@ function index_asset_view($param) {
 
     // Authorization check
     if (!ezmam_album_token_check($album, $token)) {
-
         if ($input['click']) {
             include_once template_getpath('error_permission_denied.php');
         } else {
@@ -88,7 +88,7 @@ function index_asset_view($param) {
         $assets_list[$index]['token'] = ezmam_asset_token_get($album, $assets_list[$index]['name']);
     }
 
-    // 2) Save current album    
+    // 2) Save current album
 
     log_append('view_album_assets: ' . $album);
     $_SESSION['ezplayer_mode'] = 'view_album_assets'; // used in 'div_assets_center.php' and 'div_thread_details.php'
@@ -97,16 +97,16 @@ function index_asset_view($param) {
     $_SESSION['token'] = $token;
 
     // 3) Add current album to the album list
-	
+    
     $album_name = get_album_title($album);
     $album_title = ezmam_album_metadata_get($album);
     $course_code_public = "";
-    if(isset($album_title['course_code_public'])) {
+    if (isset($album_title['course_code_public'])) {
         $course_code_public = $album_title['course_code_public'];
-    }	
-	
+    }
+    
     $album_token = array(
-            'title' => $album_name, 
+            'title' => $album_name,
             'album' => $album,
             'course_code_public' => $course_code_public,
             'token' => $token
@@ -134,8 +134,9 @@ function index_asset_view($param) {
         $threads = threads_select_by_album($album, $cache_limit);
         // removes the deleted threads or threads on deleted assets
         foreach ($threads as &$thread) {
-            if (!thread_is_archive($thread['albumName'], $thread['assetName']))
+            if (!thread_is_archive($thread['albumName'], $thread['assetName'])) {
                 $threads_list[] = $thread;
+            }
         }
     }
     
@@ -145,7 +146,7 @@ function index_asset_view($param) {
         include_once template_getpath('div_assets_center.php');
     } else {// accessed by the UV or shared link
         // lvl, action, album, origin
-        if(!array_key_exists('no_trace', $input) || !$input['no_trace']) {
+        if (!array_key_exists('no_trace', $input) || !$input['no_trace']) {
             trace_append(array('2', 'view_album_assets', $album, 'from_external'));
         }
         include_once template_getpath('main.php');

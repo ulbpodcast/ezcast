@@ -30,21 +30,29 @@ include_once 'lib_print.php';
 ?> 
 
 <h2><b style="text-transform:uppercase;"><?php echo suffix_remove($album); ?></b> // <?php echo get_album_title($album); ?></h2>
-<?php if (isset($asset_meta['title'])) { ?>
+<?php if (isset($asset_meta['title'])) {
+    ?>
     <h3><?php echo $asset_meta['title']; ?></h3>
-<?php } ?>
+<?php
+} ?>
 <br/><p>®Select_bookmarks_message®</p>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
 
-<?php if (isset($bookmarks) && count($bookmarks) > 0) { ?>
+<?php if (isset($bookmarks) && count($bookmarks) > 0) {
+        ?>
     <form action="index.php?action=bookmarks_export" method="post" id="select_export_bookmark_form" name="export_bookmark_form" onsubmit="return false">
-        <input type="hidden" name="album" id="export_album" value="<?php if(isset($album)) { echo $album; } ?>"/>
-        <input type="hidden" name="asset" id="export_asset" value="<?php if(isset($asset_meta['record_date'])) { echo $asset_meta['record_date']; }; ?>"/>
+        <input type="hidden" name="album" id="export_album" value="<?php if (isset($album)) {
+            echo $album;
+        } ?>"/>
+        <input type="hidden" name="asset" id="export_asset" value="<?php if (isset($asset_meta['record_date'])) {
+            echo $asset_meta['record_date'];
+        }; ?>"/>
         <input type="hidden" name="target" id="export_toc_target" value="<?php echo $tab; ?>"/><br/>
         <ul>
-            <li style="border-bottom: solid 1px #cccccc;"><input type="checkbox" onclick="toggle_checkboxes(this, 'export_selection[]')" name="check_all"/><span class="<?php echo (($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Date®</b></span><span class="<?php echo (($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Bookmark®</b></span></li>
-            <?php foreach ($bookmarks as $index => $bookmark) { ?>
+            <li style="border-bottom: solid 1px #cccccc;"><input type="checkbox" onclick="toggle_checkboxes(this, 'export_selection[]')" name="check_all"/><span class="<?php echo(($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Date®</b></span><span class="<?php echo(($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Bookmark®</b></span></li>
+            <?php foreach ($bookmarks as $index => $bookmark) {
+            ?>
                 <li>
                     <input style="float: left;" type="checkbox" name="export_selection[]" value="<?php echo $index ?>"/>
                     <div style="display: inline-block; width: 457px; padding-left: 8px;">
@@ -54,12 +62,16 @@ include_once 'lib_print.php';
                         <?php print_bookmark_title($bookmark['title']); ?> 
                     </div>
                 </li>
-            <?php } ?>
+            <?php
+        } ?>
         </ul><br/>
         <a href="#" onclick="document.export_bookmark_form.submit(); close_popup();
                 return false;" id="export_button" class="simple-button blue" title="®Export_selected_bookmarks®">®Export®</a>
         <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>
     </form>
-<?php } else { ?>
+<?php
+    } else {
+        ?>
     ®No_bookmarks®
-<?php } ?>
+<?php
+    } ?>

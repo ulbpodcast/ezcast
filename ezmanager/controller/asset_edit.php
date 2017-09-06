@@ -4,9 +4,10 @@ require_once(__DIR__ . '/includes/asset_view.php');
 
 /**
  * Edits asset data and re-draws the asset details
- * @global type $input 
+ * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $title_max_length;

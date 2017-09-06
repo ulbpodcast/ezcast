@@ -1,33 +1,44 @@
-<?php if($max > 0) { ?>
+<?php if ($max > 0) {
+    ?>
 
 <div class="text-center">
     <ul class="pagination">
-        <li <?php if($input['page'] == 1) { echo 'class="disabled"'; } ?>>
+        <li <?php if ($input['page'] == 1) {
+        echo 'class="disabled"';
+    } ?>>
             <a href="#" data-page="<?php echo $input['page']-1 ?>">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
         <li <?php echo $input['page'] == 1 ? 'class="active"' : ''?>><a href="#" data-page="1">1</a></li>
         
-        <?php if($input['page'] > 5) { ?>
+        <?php if ($input['page'] > 5) {
+        ?>
            <li><a href="#" data-page="0">...</a></li>
-        <?php } ?>
+        <?php
+    } ?>
            
          <?php $start = $input['page'] > 4 ? $input['page']-3 : 2 ?>
            
-        <?php for($i = $start; $i < $max && $i < $start+7; ++$i){ ?>
+        <?php for ($i = $start; $i < $max && $i < $start+7; ++$i) {
+        ?>
            <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>>
                <a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a>
            </li>
-        <?php } ?>
+        <?php
+    } ?>
         
-        <?php if($input['page']+7 < $max) { ?>
+        <?php if ($input['page']+7 < $max) {
+        ?>
            <li><a href="#" data-page="0">...</a></li>
-        <?php } ?> 
+        <?php
+    } ?> 
            
-        <?php if($max != 1) { ?>
+        <?php if ($max != 1) {
+        ?>
         <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
-        <?php } ?>
+        <?php
+    } ?>
         <li>
             <a href="#" data-page="<?php echo $input['page']+1 ?>">
                 <span aria-hidden="true">&raquo;</span>
@@ -36,7 +47,8 @@
     </ul>
 </div>
 
-<?php } ?>
+<?php
+} ?>
 
 <table class="table table-striped table-hover table-condensed table-responsive users">
     <tr>
@@ -46,13 +58,18 @@
         <th>®is_admin_title®</th>
     </tr>
     
-    <?php foreach($users as $user) {
-     
+    <?php foreach ($users as $user) {
         ?>
         <tr>
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['user_ID']; ?></a></td>
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
-            <td><span class="label <?php if($user['origin'] == 'internal') echo 'label-info'; ?>"><?php if($user['origin'] == 'internal') echo '®intern®'; else echo '®extern®'; ?></span></td>
+            <td><span class="label <?php if ($user['origin'] == 'internal') {
+            echo 'label-info';
+        } ?>"><?php if ($user['origin'] == 'internal') {
+            echo '®intern®';
+        } else {
+            echo '®extern®';
+        } ?></span></td>
             <td><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
         </tr>
         <?php

@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $_POST;
     
     $datePicked = $_POST['datePicked'];

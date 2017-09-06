@@ -1,7 +1,8 @@
 <?php
 
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     $res = media_submit_error($input['id']);

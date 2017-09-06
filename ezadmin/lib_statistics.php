@@ -1,6 +1,6 @@
 <?php
 /*
-* EZCAST EZadmin 
+* EZCAST EZadmin
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -34,7 +34,8 @@ require_once 'lib_sql_stats.php';
  * Returns an array with all albums
  * @return type
  */
-function stat_album_get_all($colOrder = "", $orderSort = "") {
+function stat_album_get_all($colOrder = "", $orderSort = "")
+{
     return album_get_all($colOrder, $orderSort);
 }
 
@@ -43,7 +44,8 @@ function stat_album_get_all($colOrder = "", $orderSort = "") {
  * @param string $albumName
  * @return numeric
  */
-function stat_threads_count_by_album($albumName) {
+function stat_threads_count_by_album($albumName)
+{
     return threads_count_by_album($albumName);
 }
 
@@ -55,7 +57,8 @@ function stat_threads_count_by_album($albumName) {
  * @param string $currentMonth
  * @return numeric
  */
-function stat_threads_count_by_album_and_month($albumName, $currentMonth) {
+function stat_threads_count_by_album_and_month($albumName, $currentMonth)
+{
     return threads_count_by_album_and_month($albumName, $currentMonth);
 }
 /**
@@ -64,7 +67,8 @@ function stat_threads_count_by_album_and_month($albumName, $currentMonth) {
  * @param string $currentMonth
  * @return numeric
  */
-function stat_comments_count_by_album_and_month($albumName, $currentMonth) {
+function stat_comments_count_by_album_and_month($albumName, $currentMonth)
+{
     return comments_count_by_album_and_month($albumName, $currentMonth);
 }
 
@@ -77,7 +81,8 @@ function stat_comments_count_by_album_and_month($albumName, $currentMonth) {
  * @param date $later
  * @return numeric
  */
-function stat_threads_count_by_album_and_date_interval($albumName, $earlier, $later) {
+function stat_threads_count_by_album_and_date_interval($albumName, $earlier, $later)
+{
     return threads_count_by_album_and_date_interval($albumName, $earlier, $later);
 }
 
@@ -88,7 +93,8 @@ function stat_threads_count_by_album_and_date_interval($albumName, $earlier, $la
  * @param date $later
  * @return numeric
  */
-function stat_comments_count_by_album_and_date_interval($albumName, $earlier, $later) {
+function stat_comments_count_by_album_and_date_interval($albumName, $earlier, $later)
+{
     return comments_count_by_album_and_date_interval($albumName, $earlier, $later);
 }
 
@@ -97,7 +103,8 @@ function stat_comments_count_by_album_and_date_interval($albumName, $earlier, $l
  * @param type $albumName
  * @return numeric
  */
-function stat_comments_count_by_album($albumName) {
+function stat_comments_count_by_album($albumName)
+{
     return comments_count_by_album($albumName);
 }
 
@@ -105,7 +112,8 @@ function stat_comments_count_by_album($albumName) {
  * Returns the number of threads
  * @return numeric number of theads
  */
-function stat_threads_count_all() {
+function stat_threads_count_all()
+{
     return threads_count_all();
 }
 
@@ -113,12 +121,13 @@ function stat_threads_count_all() {
  * Returns the number of comments
  * @return numeric
  */
-function stat_get_nb_comments() {
+function stat_get_nb_comments()
+{
     return comments_count_all();
 }
 
 /**
- * Sets a month's stats 
+ * Sets a month's stats
  * @return boolean
  */
 //function stat_get_by_month() {
@@ -145,7 +154,8 @@ function stat_get_nb_comments() {
  * Returns the oldest date saved
  * @return datetime
  */
-function get_oldest_date() {
+function get_oldest_date()
+{
     return date_select_oldest();
 }
 
@@ -153,7 +163,8 @@ function get_oldest_date() {
  * Returns the rewest date saved
  * @return datetime
  */
-function get_newest_date() {
+function get_newest_date()
+{
     return date_select_newest();
 }
 
@@ -161,6 +172,7 @@ function get_newest_date() {
  * Returns an array with threads and comments count grouped by asset
  * @return array threads count
  */
-function stat_threads_count_all_by_asset() {
+function stat_threads_count_all_by_asset()
+{
     return threads_count_all_by_asset();
 }

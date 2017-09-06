@@ -8,9 +8,9 @@
 
 /*
     Here is a PlantUML diagram for status decision
- * 
- * 
- * 
+ *
+ *
+ *
     @startuml
     title Automatic cron
 
@@ -21,7 +21,7 @@
     skinparam shadowing false
 
     'taille de l'image
-    skinparam dpi 200 
+    skinparam dpi 200
 
     'couleurs
     skinparam activity {
@@ -70,20 +70,21 @@ const LOG_LEVEL_WARNING_THRESHOLD = LogLevel::ERROR; //if an event of this level
 
 /**
  * Database request to get all event from assets having no status
- * 
+ *
  * @param boolean $check_all check all event or juste the last two weeks
  * @global PDO $db_object
  * @return Array with the result
  */
-function get_db_event_status_not_check($check_all, $specific_asset) {
+function get_db_event_status_not_check($check_all, $specific_asset)
+{
     global $db_object;
 
     $strSQL = 'SELECT event.asset, event.event_time, event.loglevel, event.type_id '
             . 'FROM ' . db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' event ' .
             ' WHERE ';
-    if($specific_asset != null) {
+    if ($specific_asset != null) {
         $strSQL .= "event.asset = '$specific_asset' AND";
-    } else  if(!$check_all) {
+    } elseif (!$check_all) {
         $strSQL .= 'event.event_time >= DATE_SUB(curdate(), INTERVAL 1 WEEK) AND';
     }
     $strSQL .= ' NOT EXISTS ('.
@@ -99,13 +100,14 @@ function get_db_event_status_not_check($check_all, $specific_asset) {
 
 /**
  * Database request to add an event status
- * 
+ *
  * @global PDO $db_object
  * @param String $asset witch record
  * @param int $status who represent an EventType
  * @param String $description of the status
  */
-function add_db_event_status($asset, $status, $description) {
+function add_db_event_status($asset, $status, $description)
+{
     global $db_object;
     global $logger;
     
@@ -126,25 +128,26 @@ function add_db_event_status($asset, $status, $description) {
 
 /**
  * Select the asset who must be check and saved them in two list
- * 
- * @param boolean $check_all 
+ *
+ * @param boolean $check_all
  * @global Array $resListAsset dictionnary with asset in key and array with info in value
  * @global Array $listAsset List of the asset who must be check (timeout in value if it's timeout)
  */
-function select_asset_to_check($check_all, $specific_asset) {
+function select_asset_to_check($check_all, $specific_asset)
+{
     global $resListAsset;
     global $listAsset;
     global $logger;
     
-    if($specific_asset) {
+    if ($specific_asset) {
         echo "Checking asset $specific_asset" . PHP_EOL;
-    } else if ($check_all) {
+    } elseif ($check_all) {
         echo 'Check all event'.PHP_EOL;
     }
     
     $allEvent = get_db_event_status_not_check($check_all, $specific_asset);
 
-    if($specific_asset && empty($allEvent)) {
+    if ($specific_asset && empty($allEvent)) {
         echo "Could not find any event for asset $specific_asset" . PHP_EOL;
     }
     
@@ -152,24 +155,24 @@ function select_asset_to_check($check_all, $specific_asset) {
     foreach ($allEvent as $event) {
         $asset = $event['asset'];
 
-        if(array_key_exists($asset, $resListAsset)) {
+        if (array_key_exists($asset, $resListAsset)) {
             array_push($resListAsset[$asset], $event);
         } else {
             $resListAsset[$asset] = array($event);
         }
 
         //stop looking if we already got a status for this asset
-        if(array_key_exists($asset, $listAsset) && ($listAsset[$asset] == "final" || $listAsset[$asset] == "cancel")) {
+        if (array_key_exists($asset, $listAsset) && ($listAsset[$asset] == "final" || $listAsset[$asset] == "cancel")) {
             continue;
         }
 
-        if($event['type_id'] == EventType::$event_type_id[EventType::ASSET_FINALIZED]) {
+        if ($event['type_id'] == EventType::$event_type_id[EventType::ASSET_FINALIZED]) {
             $listAsset[$asset] = "final";
             $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found finalization event for asset $asset", array(__FUNCTION__), $asset);
-        } else if ($event['type_id'] == EventType::$event_type_id[EventType::ASSET_CANCELED]) {
+        } elseif ($event['type_id'] == EventType::$event_type_id[EventType::ASSET_CANCELED]) {
             $listAsset[$asset] = "cancel";
             $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Found cancel event for asset $asset", array(__FUNCTION__), $asset);
-        } else if(time()-strtotime($event['event_time']) > TIME_LIMIT) {
+        } elseif (time()-strtotime($event['event_time']) > TIME_LIMIT) {
             $listAsset[$asset] = "timeout"; //Default to timeout, may be overwritten in the next loops
         }
     }
@@ -177,21 +180,21 @@ function select_asset_to_check($check_all, $specific_asset) {
 
 /**
  * Calcul the status and send it to the database
- * 
+ *
  * @global Array $listAsset list of all the asset which must be check
  * @global Array $resListAsset dictionnary of all events (asset in key and
  * all event about this in value)
  */
-function write_asset_status() {
+function write_asset_status()
+{
     global $listAsset;
     global $resListAsset;
     
-    foreach($listAsset as $asset => $inListBecause) {
-
-        switch($inListBecause) {
+    foreach ($listAsset as $asset => $inListBecause) {
+        switch ($inListBecause) {
             case "timeout":
                  // End with an time out
-                add_db_event_status($asset, EventStatus::AUTO_FAILURE, 'Time out after: ' . 
+                add_db_event_status($asset, EventStatus::AUTO_FAILURE, 'Time out after: ' .
                         TIME_LIMIT . ' seconds');
                 break;
             case "cancel":
@@ -199,15 +202,15 @@ function write_asset_status() {
                 break;
             case "final":
                  $maxLogLevel = 7;
-                foreach($resListAsset[$asset] as $assetInfo) {
-                    if($assetInfo['loglevel'] < $maxLogLevel) {
+                foreach ($resListAsset[$asset] as $assetInfo) {
+                    if ($assetInfo['loglevel'] < $maxLogLevel) {
                         $maxLogLevel = $assetInfo['loglevel'];
                     }
                 }
 
-                if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_ERROR_THRESHOLD]) {
+                if ($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_ERROR_THRESHOLD]) {
                     $eventStatus = EventStatus::AUTO_SUCCESS_ERRORS;
-                } else if($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_WARNING_THRESHOLD]) {
+                } elseif ($maxLogLevel <= LogLevel::$log_levels[LOG_LEVEL_WARNING_THRESHOLD]) {
                     $eventStatus = EventStatus::AUTO_SUCCESS_WARNINGS;
                 } else {
                     $eventStatus = EventStatus::AUTO_SUCCESS;
@@ -221,19 +224,19 @@ function write_asset_status() {
 
 $logger->log(EventType::MANAGER_FILL_STATUS, LogLevel::DEBUG, "Cli fill status started", array(__FUNCTION__));
 
-// Dictionnary with asset in key and event info (array) in value 
+// Dictionnary with asset in key and event info (array) in value
 $resListAsset = array();
-// For each asset 'final' or 'timeout' status 
+// For each asset 'final' or 'timeout' status
 $listAsset = array();
 
 $fill_all = false;
 $specific_asset = null;
-if($argc > 1 )
-{
-    if($argv[1] == 'all')
+if ($argc > 1) {
+    if ($argv[1] == 'all') {
         $fill_all = true;
-    else
+    } else {
         $specific_asset = trim($argv[1]);
+    }
 }
 select_asset_to_check($fill_all, $specific_asset);
 write_asset_status();

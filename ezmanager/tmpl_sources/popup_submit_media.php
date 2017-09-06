@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -34,9 +34,9 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 
 $album_path = $repository_path . "/" . $album."-pub";
 $album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
-if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
-    $course_code_public = $album_metadata['course_code_public']; 
-} else { 
+if (isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
+    $course_code_public = $album_metadata['course_code_public'];
+} else {
     $course_code_public = $album;
 }
 ?>
@@ -119,12 +119,12 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
                     <select class="form-control" name="intro" id="intro">
                         <option value="">®None_intro®</option>
                         <?php foreach ($intros as $intro) {
-                            echo '<option ';
-                            if ($intro['value'] == $album_intro) {
-                                echo 'selected="selected" ';
-                            }
-                            echo 'value="'.$intro['value'].'">'.$intro['label'].'</option>';
-                        } ?>
+    echo '<option ';
+    if ($intro['value'] == $album_intro) {
+        echo 'selected="selected" ';
+    }
+    echo 'value="'.$intro['value'].'">'.$intro['label'].'</option>';
+} ?>
                     </select>
                 </div>
             </div>
@@ -140,12 +140,12 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
                     <select class="form-control" name="add_title" id="add_title">
                         <option value="false">®None_titling®</option>
                         <?php foreach ($titlings as $titling) {
-                            echo '<option ';
-                            if ($titling['value'] == $add_title) {
-                                echo 'selected="selected" ';
-                            }
-                            echo 'value="'.$titling['value'].'">'.$titling['label'].'</option>';
-                        } ?>
+    echo '<option ';
+    if ($titling['value'] == $add_title) {
+        echo 'selected="selected" ';
+    }
+    echo 'value="'.$titling['value'].'">'.$titling['label'].'</option>';
+} ?>
                     </select>
                 </div>
             </div>
@@ -161,12 +161,12 @@ if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_
                     <select class="form-control" name="credits" id="credits">
                         <option value="false">®None_credits®</option>
                         <?php foreach ($credits as $credit) {
-                            echo '<option ';
-                            if ($credit['value'] == $album_credits) {
-                                echo 'selected="selected" ';
-                            }
-                            echo 'value="'.$credit['value'].'">'.$credit['label'].'</option>';
-                        } ?>
+    echo '<option ';
+    if ($credit['value'] == $album_credits) {
+        echo 'selected="selected" ';
+    }
+    echo 'value="'.$credit['value'].'">'.$credit['label'].'</option>';
+} ?>
                     </select>
                 </div>
             </div>

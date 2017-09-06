@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Processes media submission 
+ * Processes media submission
  * Used only by old web browsers (when xhr2 is not supported)
- * @global type $input 
+ * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $php_cli_cmd;
     global $recorder_mam_insert_pgm;
@@ -19,7 +20,7 @@ function index($param = array()) {
     if (!isset($title) || empty($title)) {
         error_print_message('no Title');
         die;
-    } else if(count($title) > 70) {
+    } elseif (count($title) > 70) {
         error_print_message('Title too long');
         die;
     }
@@ -64,7 +65,7 @@ function index($param = array()) {
         'downloadable' => $input['downloadable'],
         'ratio' => $input['ratio']
     );
-//    assoc_array2metadata_file($metadata, './metadata_tmp.xml');
+    //    assoc_array2metadata_file($metadata, './metadata_tmp.xml');
     $res = media_submit_create_metadata($tmp_name, $metadata);
     echo $res;
     if (!$res) {
@@ -85,8 +86,17 @@ function index($param = array()) {
     // 4) Calling cli_mam_insert.php so that it adds the file into ezmam
     $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . dirname($path) . ' >>' . dirname($path) . '/mam_insert.log 2>&1"|at now';
 
-    $logger->log(EventType::ASSET_CREATED, LogLevel::NOTICE, 
-       "User ".$_SESSION['user_login']." submitted asset", array('submit_media'), $tmp_name, $_SESSION['user_full_name'], "todo", $input['album'], "");
+    $logger->log(
+        EventType::ASSET_CREATED,
+        LogLevel::NOTICE,
+       "User ".$_SESSION['user_login']." submitted asset",
+        array('submit_media'),
+        $tmp_name,
+        $_SESSION['user_full_name'],
+        "todo",
+        $input['album'],
+        ""
+    );
          
     exec($cmd, $output, $ret);
 

@@ -14,7 +14,9 @@
             /**
              * Retrieves album header and displays it in div_album_header
              */
-            var current_album = '<?php if (isset($_SESSION['podman_album'])) echo $_SESSION['podman_album']; ?>';
+            var current_album = '<?php if (isset($_SESSION['podman_album'])) {
+    echo $_SESSION['podman_album'];
+} ?>';
             var tab = 'list';
             
             // Render a styled file input in the submit form
@@ -163,7 +165,9 @@
         <script type="text/javascript" src="js/jquery.uploadify.v2.1.4.js"></script>
         <!-- End script submit -->
 
-        <?php if (isset($head_code)) echo $head_code; ?>
+        <?php if (isset($head_code)) {
+                        echo $head_code;
+                    } ?>
     </head>
     <body>
         <div class="container">
@@ -172,7 +176,8 @@
             
             <?php 
             //Add popup to inform user that the course is correctly added
-            if (isset($_SESSION['modoAdded'])){ ?>          
+            if (isset($_SESSION['modoAdded'])) {
+                ?>          
                         <!-- Modal -->
                 <div class="modal fade" id="modoAdded" tabindex="-1" role="dialog" aria-labelledby="modoAddedLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -196,7 +201,7 @@
                     $('#modoAdded').modal('show');
                 });
                 </script>
-            <?php unset ($_SESSION['modoAdded']);
+            <?php unset($_SESSION['modoAdded']);
             } ?>
           
             <div id="global" class="row">
@@ -210,7 +215,7 @@
                 </div>
                 <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" 
                     onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php 
-                    // echo get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang(); ?>.png" name="Image5" 
+                    // echo get_lang();?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang();?>.png" name="Image5" 
                     width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div> -->
                 <!-- "New album" button, END -->          
 
@@ -227,7 +232,7 @@
                         // If we are in redraw mode, we fill the content of the div
                         if ($redraw && isset($current_album)) {
                             global $trace_on;
-                            global $display_trace_stats;                           
+                            global $display_trace_stats;
                             require 'div_album_header.php';
                         }
                         ?>

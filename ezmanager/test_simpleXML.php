@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -62,4 +62,3 @@ echo $xml->movie->{'great-lines'}->line;
 $xml->asXML("testxml.xml");
 $downloadxml = simplexml_load_file("./testxml.xml");
 $downloadxml = simplexml_load_file("./testxml.xml");
-?>

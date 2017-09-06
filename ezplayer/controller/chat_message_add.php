@@ -5,7 +5,8 @@
  * @global type $input
  * @return boolean
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
 
@@ -38,7 +39,7 @@ function index($param = array()) {
     $message = str_replace(PHP_EOL, '<br/>', $message); // TODO why not nl2br ?
     
     $record_date = $asset_meta['record_date'];
-    if($album == '' || $message == '' || $record_date = '') {
+    if ($album == '' || $message == '' || $record_date = '') {
         return false;
     }
     

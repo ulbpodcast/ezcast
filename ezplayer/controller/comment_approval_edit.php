@@ -4,7 +4,8 @@
  * Updates a comments's aproval
  * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     $commentId = intval($input['approved_comment']);
 

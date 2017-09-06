@@ -4,7 +4,8 @@
  * Return a specific thread to display in a popup (delete)
  * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     $thread_id = $input['thread_id'];

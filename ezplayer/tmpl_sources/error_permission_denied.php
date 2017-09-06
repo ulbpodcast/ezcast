@@ -27,7 +27,8 @@
 
 <div class="error_message">
     ®Unauthorized®
-    <?php if (acl_has_album_permissions($album)) { ?>
+    <?php if (acl_has_album_permissions($album)) {
+    ?>
         <div style="margin-top: 18px;">
             ®Error_permission_denied®
             <form action="index.php?action=bookmarks_album_export" method="post" name="export_album_bookmarks_form" onsubmit="return false">
@@ -38,7 +39,8 @@
                 <a class="button" style="width:300px;" href="#" onclick="document.export_album_bookmarks_form.submit(); return false;">®Export_album_bookmarks®</a>
             
         </div>
-    <?php } ?>
+    <?php
+} ?>
     <div style="margin-top: 18px;">
         <a class="button" style="width:250px;" href="index.php">®Back_to_home®</a>
     </div>

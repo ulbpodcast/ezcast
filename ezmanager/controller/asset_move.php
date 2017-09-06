@@ -3,14 +3,15 @@
 /**
  * Moves asset from $input['from'] to $input['to']
  * @global type $input
- * @global type $repository_path 
+ * @global type $repository_path
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $regenerate_title_mode;
 
-	
+    
     ezmam_repository_path($repository_path);
 
     //
@@ -41,7 +42,7 @@ function index($param = array()) {
     toc_asset_bookmarks_delete_all($input['from'], $input['asset']);
     //
     // Moving the asset
-    // TODO: the moving won't work if there is a different asset with the same name in dest folder. 
+    // TODO: the moving won't work if there is a different asset with the same name in dest folder.
     // Should be corrected in the future (new asset renamed)
     //
     $res = ezmam_asset_move($input['asset'], $input['from'], $input['to']);
@@ -62,12 +63,12 @@ function index($param = array()) {
 
     // include_once $basedir.'/ezmanager/'.template_getpath('popup_asset_successfully_moved.php');
 
-    // regegerate intro	
+    // regegerate intro
     if ($regenerate_title_mode=='auto') {
-        update_title($input['to'],$input['asset']);
+        update_title($input['to'], $input['asset']);
     }
-	
-	
+    
+    
     $album = $input['from'];
     include_once template_getpath('popup_asset_successfully_moved.php');
 }

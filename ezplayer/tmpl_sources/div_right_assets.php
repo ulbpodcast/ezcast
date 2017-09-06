@@ -41,10 +41,12 @@ include_once 'lib_print.php';
     history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + 
                 '<?php echo $_SESSION['token']; ?>'}, '', '');
 
-<?php if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (isset($official_bookmarks) 
-        && sizeof($official_bookmarks) != 0))) { ?>
+<?php if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (isset($official_bookmarks)
+        && sizeof($official_bookmarks) != 0))) {
+    ?>
         current_tab = 'toc';
-<?php } ?>
+<?php
+} ?>
 
     if (current_tab == 'toc') {
         setActivePane('.toc_button');
@@ -63,12 +65,13 @@ include_once 'lib_print.php';
 
 <div id="side_menu">
 
-    <?php if (acl_user_is_logged()) { ?>
+    <?php if (acl_user_is_logged()) {
+        ?>
         <div class="bookmarks_button active dir"><a onclick="setActivePane('.bookmarks_button');
             server_trace(new Array('2', 'bookmarks_swap', current_album, current_asset, current_tab));" 
             href="#album_bookmarks" title="®Display_bookmarks®"></a></div>
             <?php
-        }
+    }
         ?>
     <div class="toc_button dir">
         <a onclick="setActivePane('.toc_button');
@@ -118,7 +121,8 @@ include_once 'lib_print.php';
                     ®Export_bookmarks®
                 </a>
             </li>  
-            <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
+            <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) {
+            ?>
                 <li>
                     <a href="javascript:popup_bookmarks_import();" title="®Import_album_bookmarks®">
                         ®Import_bookmarks®
@@ -130,7 +134,8 @@ include_once 'lib_print.php';
                         ®Delete_bookmarks®
                     </a>
                 </li>
-            <?php } ?>
+            <?php
+        } ?>
         </ul>
     </div>
 </div>
@@ -140,15 +145,16 @@ the pane displays the list of all assets contained in the selected album
 -->
 <div id="side_pane">
     <div id="side-pane-scroll-area">
-        <?php if (acl_user_is_logged()) { ?>
+        <?php if (acl_user_is_logged()) {
+            ?>
             <div class="side_pane_content" id="album_bookmarks">
                 <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.bookmark_scroll');"></a></div>
                 <?php if (!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) {
-                    ?>
+                ?>
                     <div class="no_content">®No_bookmarks®</div>
                     <?php
-                } else {
-                    ?>
+            } else {
+                ?>
                     <ul class="bookmark_scroll">
                         <?php
                         foreach ($personal_bookmarks as $index => $bookmark) {
@@ -158,8 +164,13 @@ the pane displays the list of all assets contained in the selected album
                                 <a class="item blue" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '
                                     <?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '
                                         <?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">                                    
-                                    <?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, 
-                                            get_lang(), false), 0, 10)); ?> <?php echo 
+                                    <?php print_info(substr(get_user_friendly_date(
+                                $bookmark['asset'],
+                                '/',
+                                false,
+                                            get_lang(),
+                                false
+                            ), 0, 10)); ?> <?php echo
                                             get_asset_title($bookmark['album'], $bookmark['asset']); ?>
                                     <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
                                 </a>
@@ -180,22 +191,22 @@ the pane displays the list of all assets contained in the selected album
                                 </div>
                             </li>
                             <?php
-                        }
-                        ?>
+                        } ?>
                     </ul>
-                <?php }
-                ?>
+                <?php
+            } ?>
                 <div class="side_pane_down"><a href="javascript:bookmarks_scroll('up','.bookmark_scroll');"></a></div>
             </div>
-        <?php } ?>
+        <?php
+        } ?>
         <div class="side_pane_content" id="album_toc">
             <div class="side_pane_up"><a href="javascript:bookmarks_scroll('down','.toc_scroll');"></a></div>
             <?php if (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0) {
-                ?>
+            ?>
                 <div class="no_content">®No_toc®</div>
                 <?php
-            } else {
-                ?>
+        } else {
+            ?>
                 <ul class="toc_scroll">
                     <?php
                     foreach ($official_bookmarks as $index => $bookmark) {
@@ -220,7 +231,8 @@ the pane displays the list of all assets contained in the selected album
                                     <div class="orange-title" style="margin-top: 6px;">®Keywords® : </div>
                                     <?php print_search($bookmark['keywords']); ?>
                                 </div>
-                                <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) { ?>
+                                <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) {
+                            ?>
                                     <div class="bookmark_options">
                                         <a class="delete-button" title="®Delete_bookmark®" 
                                            href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '
@@ -228,14 +240,15 @@ the pane displays the list of all assets contained in the selected album
                                                 <?php echo $bookmark['timecode']; ?>', 'official', 'assets', 'remove')">
                                         </a>
                                     </div>
-                                <?php } ?>
+                                <?php
+                        } ?>
                             </div>
                         </li>
                         <?php
-                    }
-                    ?>
+                    } ?>
                 </ul>
-            <?php }
+            <?php
+        }
             ?>
             <div class="side_pane_down"><a href="javascript:bookmarks_scroll('up','.toc_scroll');"></a></div>
         </div>

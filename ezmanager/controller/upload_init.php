@@ -1,7 +1,8 @@
 <?php
 
 // used by web worker from js/uploadfile.js to submit metadata over the file
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $submit_upload_dir;
     global $dir_date_format;

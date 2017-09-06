@@ -6,7 +6,8 @@
  * @global type $user_files_path
  * @global type $repository_path
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -22,8 +23,9 @@ function index($param = array()) {
 
     // name for the file to be saved
     $filename = (get_lang() == 'fr') ? 'signets' : 'bookmarks';
-    if ($target == 'official')
+    if ($target == 'official') {
         $filename .= (get_lang() == 'fr') ? '_officiels' : '_official';
+    }
     $filename .= '_' . suffix_remove($album);
     if (isset($asset) && $asset != '') {
         $filename .= '_' . $asset;
@@ -37,7 +39,7 @@ function index($param = array()) {
         $bookmarks = user_prefs_asset_bookmarks_selection_get($_SESSION['user_login'], $album, $asset, $selection);
     }
     
-    if($bookmarks == false) {
+    if ($bookmarks == false) {
         echo "Failed to export bookmarks";
         return;
     }
@@ -53,17 +55,17 @@ function index($param = array()) {
 
     // Formating XML for pretty display
     $dom = new DOMDocument();
-    $dom->preserveWhiteSpace = FALSE;
+    $dom->preserveWhiteSpace = false;
     $dom->loadXML($xml_txt);
-    $dom->formatOutput = TRUE;
+    $dom->formatOutput = true;
     ob_clean();
     flush();
     echo $dom->saveXml();
 
     log_append('export_bookmarks: bookmarks exported from the album ' . $album);
-    // lvl, action, album, asset, target (from official|personal), number of exported bookmarks 
-    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_export', $album, 
-        $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', 
-        $target == '' ? 'personal' : $target, 
+    // lvl, action, album, asset, target (from official|personal), number of exported bookmarks
+    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_export', $album,
+        $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-',
+        $target == '' ? 'personal' : $target,
         count($selection)));
 }

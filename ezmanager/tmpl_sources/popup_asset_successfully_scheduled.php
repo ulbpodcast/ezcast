@@ -1,6 +1,6 @@
 <?php 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -36,11 +36,15 @@ However, if you do, please make sure that $public_album_url is declared and set 
     <h4 class="modal-title">®Asset_sched_succeeded_title®</h4>
 </div>
 <div class="modal-body">
-    <?php if ($action == "publish"){ ?>
+    <?php if ($action == "publish") {
+    ?>
         <p>®Asset_sched_publish®</p>
-    <?php } else { ?>
+    <?php
+} else {
+        ?>
         <p>®Asset_sched_unpublish®</p>
-    <?php } 
+    <?php
+    }
 
     $date = (get_lang() == 'fr') ? new DateTimeFrench($input['date'], $DTZ) : new DateTime($input['date'], $DTZ);
     $dateVerbose = (get_lang() == 'fr') ? $date->format('j F Y à H\hi') : $date->format("F j, Y, g:i a");

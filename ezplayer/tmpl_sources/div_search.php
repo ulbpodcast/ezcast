@@ -41,22 +41,35 @@
         if (!isset($search_albums) || count($search_albums) < 1) {
             ?>
             <ul class="search_albums"><li style="border:none;">®No_album®</li></ul>
-        <?php } else { ?>
+        <?php
+        } else {
+            ?>
             <ul class="search_albums">
-                <?php foreach ($search_albums as $selected_album) { ?>
-                    <li><label><input tabindex='4' type="checkbox" name="albums[]" <?php if ($_SESSION['album'] == '' || $_SESSION['album'] == $selected_album) echo 'checked'; ?>  value="<?php echo $selected_album ?>"/><?php echo get_album_title($selected_album); ?></label></li>
-                <?php } ?>
+                <?php foreach ($search_albums as $selected_album) {
+                ?>
+                    <li><label><input tabindex='4' type="checkbox" name="albums[]" <?php if ($_SESSION['album'] == '' || $_SESSION['album'] == $selected_album) {
+                    echo 'checked';
+                } ?>  value="<?php echo $selected_album ?>"/><?php echo get_album_title($selected_album); ?></label></li>
+                <?php
+            } ?>
             </ul>
-        <?php } ?>
+        <?php
+        } ?>
         <div class="search_current">
-            <?php if (isset($_SESSION['album']) && $_SESSION['album'] != '') { ?>
+            <?php if (isset($_SESSION['album']) && $_SESSION['album'] != '') {
+            ?>
                 ®Search_album®
-                <?php if (isset($_SESSION['asset']) && $_SESSION['asset'] != '') { ?>
+                <?php if (isset($_SESSION['asset']) && $_SESSION['asset'] != '') {
+                ?>
                     ®Search_asset®
-                <?php } ?>
-            <?php } else { ?>
+                <?php
+            } ?>
+            <?php
+        } else {
+            ?>
                 ®Search_global®
-            <?php } ?>
+            <?php
+        } ?>
         </div> 
         <div class="search-label">®Search_among® : </div>
         <div class="search_cat">

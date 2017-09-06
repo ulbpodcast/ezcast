@@ -34,14 +34,15 @@ include_once '../commons/config.inc';
 
 //===== C A C H E   Lv. 2 ======================================================
 /**
- * Check either a thread cache exists for an album 
+ * Check either a thread cache exists for an album
  * @param type $albumName
  */
-function cache_album_threads_isset($album){
-    global $repository_basedir;   
+function cache_album_threads_isset($album)
+{
+    global $repository_basedir;
     $path_cache_album_threads_file = $repository_basedir."/repository/".$album."/_cache_album_threads.json";
     
-    $isset = file_exists($path_cache_album_threads_file); 
+    $isset = file_exists($path_cache_album_threads_file);
     
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache is set (Album threads) ? ".($isset ? 'true' : 'false').PHP_EOL, FILE_APPEND);
@@ -56,8 +57,9 @@ function cache_album_threads_isset($album){
  * @param int $limite number of value needed
  * @return array
  */
-function cache_album_threads_get($album, $limit){
-    global $repository_basedir;   
+function cache_album_threads_get($album, $limit)
+{
+    global $repository_basedir;
     $path_cache_album_threads_file = $repository_basedir."/repository/".$album."/_cache_album_threads.json";
     
     $json_data = file_get_contents($path_cache_album_threads_file);
@@ -65,8 +67,9 @@ function cache_album_threads_get($album, $limit){
     
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache get (Album threads) : ".$album.PHP_EOL, FILE_APPEND);
-    if($limit == 0)
+    if ($limit == 0) {
         return $threads_array;
+    }
     return array_slice($threads_array, 0, $limit);
 }
 
@@ -75,14 +78,15 @@ function cache_album_threads_get($album, $limit){
  * @global type $repository_basedir
  * @param type $album
  */
-function cache_album_threads_unset($album){
+function cache_album_threads_unset($album)
+{
     global $repository_basedir;
     $path_cache_album_threads_file = $repository_basedir."/repository/".$album."/_cache_album_threads.json";
     
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Album threads) ".PHP_EOL, FILE_APPEND);
     
-    if(file_exists($path_cache_album_threads_file)) {
+    if (file_exists($path_cache_album_threads_file)) {
         unlink($path_cache_album_threads_file);
     }
 }
@@ -93,7 +97,8 @@ function cache_album_threads_unset($album){
  * @param string $album
  * @param array $threads_array
  */
-function cache_album_threads_set($album, $threads_array){
+function cache_album_threads_set($album, $threads_array)
+{
     global $repository_basedir;
     $path_cache_album_threads_file = $repository_basedir."/repository/".$album."/_cache_album_threads.json";
     
@@ -101,22 +106,23 @@ function cache_album_threads_set($album, $threads_array){
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache set (Album threads) ".$album.PHP_EOL, FILE_APPEND);
     
     file_put_contents($path_cache_album_threads_file, json_encode($threads_array));
-    
 }
 
 //==============================================================================
 //===== C A C H E   Lv. 3 ======================================================
 /**
- * Replace the asset's content 
+ * Replace the asset's content
  * @global string $repository_basedir
  * @param string $album
  * @param string $asset
  * @param array $threads_array
  */
-function cache_asset_threads_set($album, $asset,$threads_array){
+function cache_asset_threads_set($album, $asset, $threads_array)
+{
     global $repository_basedir;
-    if(!$threads_array)
+    if (!$threads_array) {
         return;
+    }
     $path_to_threadsfile = $repository_basedir."/repository/".$album."/".$asset."/_threads.json";
     
     // --- LOG
@@ -130,7 +136,8 @@ function cache_asset_threads_set($album, $asset,$threads_array){
  * @param string $albumName
  * @param string $asset the asset name
  */
-function cache_asset_threads_isset($album, $asset){
+function cache_asset_threads_isset($album, $asset)
+{
     global $repository_basedir;
     
     $path_to_threadsfile = $repository_basedir."/repository/".$album."/".$asset."/_threads.json";
@@ -148,7 +155,8 @@ function cache_asset_threads_isset($album, $asset){
  * @param string $asset
  * @return array
  */
-function cache_asset_threads_get($album, $asset){
+function cache_asset_threads_get($album, $asset)
+{
     global $repository_basedir;
     
     $path_to_threadsfile = $repository_basedir."/repository/".$album."/".$asset."/_threads.json";
@@ -156,8 +164,8 @@ function cache_asset_threads_get($album, $asset){
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache get (Asset threads) : ".$album.' / '.$asset.PHP_EOL, FILE_APPEND);
     $file_content = json_decode($json_data, true);
-    if( !$file_content){
-        cache_asset_threads_unset ($album, $asset);
+    if (!$file_content) {
+        cache_asset_threads_unset($album, $asset);
     }
     return $file_content;
 }
@@ -167,27 +175,30 @@ function cache_asset_threads_get($album, $asset){
  * @param string $album asset's album name
  * @param string $asset asset folder name
  */
-function cache_asset_threads_unset($album, $asset){
+function cache_asset_threads_unset($album, $asset)
+{
     global $repository_basedir;
     $path_to_threadsfile = $repository_basedir."/repository/".$album."/".$asset."/_threads.json";
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Asset threads) ".PHP_EOL, FILE_APPEND);
-    if(file_exists($path_to_threadsfile)) {
-        unlink($path_to_threadsfile);  
+    if (file_exists($path_to_threadsfile)) {
+        unlink($path_to_threadsfile);
     }
 }
 
 /**
- * Replace the asset's chat message cache content 
+ * Replace the asset's chat message cache content
  * @global string $repository_basedir
  * @param string $album
  * @param string $asset
  * @param array $messages_array
  */
-function cache_asset_chat_set($album, $asset,$messages_array){
+function cache_asset_chat_set($album, $asset, $messages_array)
+{
     global $repository_basedir;
-    if(!$messages_array)
+    if (!$messages_array) {
         return;
+    }
     $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
     
     // --- LOG
@@ -201,7 +212,8 @@ function cache_asset_chat_set($album, $asset,$messages_array){
  * @param string $albumName
  * @param string $asset the asset name
  */
-function cache_asset_chat_isset($album, $asset){
+function cache_asset_chat_isset($album, $asset)
+{
     global $repository_basedir;
     
     $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
@@ -219,7 +231,8 @@ function cache_asset_chat_isset($album, $asset){
  * @param string $asset
  * @return array
  */
-function cache_asset_chat_get($album, $asset){
+function cache_asset_chat_get($album, $asset)
+{
     global $repository_basedir;
     
     $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
@@ -227,8 +240,8 @@ function cache_asset_chat_get($album, $asset){
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache get (Asset chat) : ".$album.' / '.$asset.PHP_EOL, FILE_APPEND);
     $file_content = json_decode($json_data, true);
-    if( !$file_content){
-        cache_asset_chat_unset ($album, $asset);
+    if (!$file_content) {
+        cache_asset_chat_unset($album, $asset);
     }
     return $file_content;
 }
@@ -238,12 +251,13 @@ function cache_asset_chat_get($album, $asset){
  * @param string $album asset's album name
  * @param string $asset asset folder name
  */
-function cache_asset_chat_unset($album, $asset){
+function cache_asset_chat_unset($album, $asset)
+{
     global $repository_basedir;
     $path_to_messagesfile = $repository_basedir."/repository/".$album."/".$asset."/_chat_messages.json";
     // --- LOG
     file_put_contents($repository_basedir."/log/cache.log", date('Y-m-d H:i:s')." // Cache unset (Asset chat) ".PHP_EOL, FILE_APPEND);
-    unlink($path_to_messagesfile);  
+    unlink($path_to_messagesfile);
 }
 
 //==============================================================================

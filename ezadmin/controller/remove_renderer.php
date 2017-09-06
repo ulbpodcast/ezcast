@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     if (!renderer_delete(trim($input['name']))) {

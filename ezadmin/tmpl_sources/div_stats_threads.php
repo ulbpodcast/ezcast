@@ -9,8 +9,7 @@
 
 echo '<script>';
 foreach ($allAlbums as $albumArr) {
-    $nbThreads = stat_threads_count_by_album($albumArr["albumName"]);
-    ?>
+    $nbThreads = stat_threads_count_by_album($albumArr["albumName"]); ?>
 
         dataArrayPieChart[ind] = [<?php echo json_encode($albumArr["albumName"]); ?>, <?php echo $nbThreads; ?>];
         ind += 1;
@@ -26,7 +25,7 @@ echo '</script>';
 
 <h4>®stats_general_title®</h4>
 <div class="container">
-    <h5>®stats_since® <?php echo "[$minCreationDate]"//echo $minDateFr->format('l j F Y');   ?></h5>
+    <h5>®stats_since® <?php echo "[$minCreationDate]"//echo $minDateFr->format('l j F Y');?></h5>
     <p><b><?php echo $threadsCount; ?></b> ®stats_discussions_created®</p>
     <p><b><?php echo $commentsCount; ?></b> ®stats_comments_created®</p>
 </div>
@@ -59,7 +58,7 @@ echo '</script>';
                 </span>
             </div>
 <!--            <input type="text" id="dpMonths" class="form-control" data-date-format="mm/yyyy" 
-                   value="<?php //echo $todayMY; ?>" placeholdorm-controler="Click me!" 
+                   value="<?php //echo $todayMY;?>" placeholdorm-controler="Click me!" 
                    data-date-viewmode="years" data-date-minviewmode="months" />-->
         </div>
         <a id="submit-month-search" class="btn btn-success btn-search" 

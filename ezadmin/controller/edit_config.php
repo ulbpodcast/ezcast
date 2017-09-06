@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     if (isset($input['confirm']) && !empty($input['confirm'])) {
@@ -21,4 +22,3 @@ function index($param = array()) {
     include template_getpath('div_edit_config.php');
     include template_getpath('div_main_footer.php');
 }
-

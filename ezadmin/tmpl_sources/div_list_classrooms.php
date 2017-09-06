@@ -1,7 +1,7 @@
 <?php 
-if(isset($pagination)) {
+if (isset($pagination)) {
     $pagination->insert();
-} 
+}
 ?>
 
 <form class="classroom_update" style="display:hidden" method="POST">
@@ -26,8 +26,8 @@ if(isset($pagination)) {
     </tr>
     
     <?php 
-        foreach($listClassrooms as $currClass) {
-        ?>
+        foreach ($listClassrooms as $currClass) {
+            ?>
         <tr class="line_classroom <?php echo $currClass['enabled'] ? 'enable' : ''; ?>" 
             id="<?php echo preg_replace('/[\s.]+/', '', $currClass['room_ID']); ?>">
             <td style="text-align: center;" class="status"> <?php echo $currClass['enabled'] ? "<img style='height: 16px;' src='img/loading_transparent.gif'/>" : ''; ?></td>
@@ -64,22 +64,26 @@ if(isset($pagination)) {
                 </div>
             </td>
             <td class="ip_remote">
-                <?php if(array_key_exists('IP_remote', $currClass)) { ?>
+                <?php if (array_key_exists('IP_remote', $currClass)) {
+                ?>
                     <div class="view">
                         <a target="_blank" href="http://<?php echo $currClass['IP_remote']; ?>/ezrecorder/">
                             <?php echo $currClass['IP_remote'] ?>
                         </a> 
-                        <?php if(isset($currClass['IP_remote']) && $currClass['IP_remote'] != "") { ?>
+                        <?php if (isset($currClass['IP_remote']) && $currClass['IP_remote'] != "") {
+                    ?>
                             <a target="_blank" href="vnc://<?php echo $currClass['IP_remote']; ?>/">
                                 (VNC)
                             </a>
-                        <?php } ?>
+                        <?php
+                } ?>
                     </div>
                     <div class="edit" style="display:none;">
                         <input class="form-control input-xsm" type="text" name="ip_remote" 
                                value="<?php echo htmlspecialchars($currClass['IP_remote']) ?>" />
                     </div>
-                <?php } ?>
+                <?php
+            } ?>
             </td>
             <td style="text-align: center;">
                 <span class="glyphicon glyphicon-<?php echo $currClass['enabled'] ? 'ok' : 'remove'; ?>"></span>
@@ -129,8 +133,8 @@ if(isset($pagination)) {
                 </div>
             </td>
         </tr>
-        <?php 
-    }
+        <?php
+        }
     ?>
 </table>
 
@@ -271,19 +275,25 @@ $(function() {
             $('#' + classroom + '_recording .asset').html(data.asset + ' <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>');
             $('#' + classroom + '_recording .asset').attr("href", './index.php?action=view_events&post=&startDate=0&asset=' + data.asset);
         } else {
-            <?php if($onlyRecording) { ?>
+            <?php if ($onlyRecording) {
+        ?>
                 $('#' + classroom).hide();
-            <?php } ?>
+            <?php
+    } ?>
         }
     }
     
     function classroom_offline(classroom) {
-        <?php if($onlyOnline) { ?>
+        <?php if ($onlyOnline) {
+        ?>
             $('#' + classroom).hide();
-        <?php } else { ?>
+        <?php
+    } else {
+        ?>
             $('#' + classroom + ' .status').html("<span title=\"®no_ping®\"><span class=" + 
                         "\"glyphicon glyphicon-warning-sign\"></span></span>");
-        <?php } ?>
+        <?php
+    } ?>
     }
    
     function updateStatus(classroom) {

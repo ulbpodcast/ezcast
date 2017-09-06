@@ -1,7 +1,7 @@
 <?php
 
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -34,8 +34,9 @@ $album = $argv[1];
 $asset = $argv[2];
 
 
-if (!isset($album) || $album == '' || !isset($asset) || $asset == '')
+if (!isset($album) || $album == '' || !isset($asset) || $asset == '') {
     die;
+}
  
 system("rm -rf " . $apache_documentroot . '/ezplayer/videos/' . $album . '/' . $asset . '/');
 
@@ -43,14 +44,16 @@ if (is_dir_empty($apache_documentroot . '/ezplayer/videos/' . $album)) {
     system("rm -rf " . $apache_documentroot . '/ezplayer/videos/' . $album);
 }
 
-function is_dir_empty($dir) {
-    if (!is_readable($dir))
-        return NULL;
+function is_dir_empty($dir)
+{
+    if (!is_readable($dir)) {
+        return null;
+    }
     $handle = opendir($dir);
     while (false !== ($entry = readdir($handle))) {
         if ($entry != "." && $entry != "..") {
-            return FALSE;
+            return false;
         }
     }
-    return TRUE;
+    return true;
 }

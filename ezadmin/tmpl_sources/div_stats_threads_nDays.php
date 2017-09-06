@@ -14,16 +14,14 @@ if (isset($_SESSION['nDaysStats'])) {
     foreach ($allAlbums as $albumArr) {
         $nbThreadsNDays = stat_threads_count_by_album_and_date_interval($albumArr["albumName"], $_SESSION['nDaysStats']['nDaysEarlier'], $_SESSION['nDaysStats']['nDaysLater']);
         if ($nbThreadsNDays != "0") {
-            $allAlbumsNDays[] = $albumArr;
-            ?>
+            $allAlbumsNDays[] = $albumArr; ?>
             <script>
                 dataArrayPieChartNDays[ind3] = [<?php echo json_encode($albumArr["albumName"]); ?>, <?php echo $nbThreadsNDays; ?>];
                 ind3 += 1;
             </script>
             <?php
         }
-    }
-    ?>
+    } ?>
     <script>
         var pieChartNDays = jQuery.jqplot('pieChartNDays', [dataArrayPieChartNDays],
                 {
@@ -63,7 +61,7 @@ if (isset($_SESSION['nDaysStats'])) {
     </div>
 <?php
 } else {
-    echo '<label class="label label-info">NO DATA</label>';
-}
+        echo '<label class="label label-info">NO DATA</label>';
+    }
 ?>
 

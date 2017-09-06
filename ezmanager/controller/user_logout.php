@@ -3,7 +3,8 @@
 /**
  * Logs the user out, i.e. destroys all the data stored about them
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $ezmanager_url;
     // 1) Deleting the ACLs from the session var
     acl_exit();

@@ -51,12 +51,11 @@ include_once 'lib_print.php';
             include_once 'div_result_bookmarks.php';
         }
         
-        if (isset($bookmarks_toc) && sizeof($bookmarks_toc) > 0){         
+        if (isset($bookmarks_toc) && sizeof($bookmarks_toc) > 0) {
             include_once 'div_result_toc.php';
         } ?>
 
         <?php
-        
     }
     ?>
 </div>

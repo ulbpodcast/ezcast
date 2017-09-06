@@ -9,8 +9,8 @@
  * ]
  */
 $update_list = [
-    "1.0.0" => 
-        array("1.0.1", 
+    "1.0.0" =>
+        array("1.0.1",
             array(
                 'ALTER TABLE !PREFIX!courses ADD COLUMN `course_code_public` varchar(50) NOT NULL AFTER `course_code`;',
               
@@ -36,7 +36,7 @@ $update_list = [
                         '`nbr_view` int(11) NOT NULL, ' .
                         '`video_time` int(11) NOT NULL, ' .
                         'PRIMARY KEY (`id`), ' .
-                        'UNIQUE KEY(`visibility`, `asset`, `album`, `type`, `video_time`)' . 
+                        'UNIQUE KEY(`visibility`, `asset`, `album`, `type`, `video_time`)' .
                     ') ENGINE=InnoDB DEFAULT CHARSET=utf8;',
                 
                 'CREATE TABLE IF NOT EXISTS `!PREFIX!stats_video_infos` (' .
@@ -49,7 +49,7 @@ $update_list = [
                         '`nbr_thread` int(11) NOT NULL, ' .
                         '`nbr_access` int(11) NOT NULL, ' .
                         'PRIMARY KEY (`id`), ' .
-                        'UNIQUE KEY(`visibility`, `asset`,`album`)' . 
+                        'UNIQUE KEY(`visibility`, `asset`,`album`)' .
                     ') ENGINE=InnoDB DEFAULT CHARSET=utf8;'
             )
         )

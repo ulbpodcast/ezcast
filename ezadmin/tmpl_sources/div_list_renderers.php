@@ -25,18 +25,21 @@ require_once 'config.inc';
     require_once '../commons/lib_scheduling.php';
     foreach ($renderers as $r) {
         //todo, move this in javascript, ping shouldn't lock page loading
-        exec('ping -c 1 '.$r['host'], $output, $return_val); 
-        if($return_val != 0){
+        exec('ping -c 1 '.$r['host'], $output, $return_val);
+        if ($return_val != 0) {
             $r['no_ping'] = true;
         } else {
             $r['no_ping'] = false;
             $r = lib_scheduling_renderer_metadata($r);
         }
-        //var_dump($r2);
-        ?>
+        //var_dump($r2); ?>
         <tr class="<?php echo $class; ?>">
-            <td><?php if($r['no_ping'] === true) echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
-                      if(isset($r['ssh_error']) && $r['ssh_error'] === true) echo '<span title="®ssh_error®"><span class="glyphicon glyphicon-warning-sign"></span></span>';?></td>
+            <td><?php if ($r['no_ping'] === true) {
+            echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
+        }
+        if (isset($r['ssh_error']) && $r['ssh_error'] === true) {
+            echo '<span title="®ssh_error®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
+        } ?></td>
             <td><?php echo $r['performance_idx']; ?></td>
             <td class="renderer_name"><?php echo $r['name']; ?></td>
             <td><?php echo $r['host']; ?></td>

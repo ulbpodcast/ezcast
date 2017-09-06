@@ -9,7 +9,8 @@
  * @global type $album
  * @global type $asset
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $imported_bookmarks;
     global $repository_path;
     global $user_files_path;
@@ -21,7 +22,7 @@ function index($param = array()) {
     $asset = $_POST['asset']; // the asset user wants to import in
     $target = $_POST['target']; // personal bookmarks or table of contents
     
-    if(!in_array($target, array('official', 'custom'))) {
+    if (!in_array($target, array('official', 'custom'))) {
         return false;
     }
     
@@ -29,7 +30,7 @@ function index($param = array()) {
     $_SESSION['asset'] = $asset;
     $_SESSION['target'] = $target;
 
-    // 1) Sanity checks       
+    // 1) Sanity checks
     if ($_FILES['XMLbookmarks']['error'] > 0) {
         error_print_message(template_get_message('upload_error', get_lang()));
         log_append('error', 'upload_bookmarks: an error occurred during file upload (code ' . $_FILES['XMLbookmarks']['error']);
@@ -48,13 +49,13 @@ function index($param = array()) {
         die;
     }
 
-    // 2) Validates the XML file and converts it in associative array 
+    // 2) Validates the XML file and converts it in associative array
 
     if (file_exists($_FILES['XMLbookmarks']['tmp_name'])) {
 
         // Validates XML structure
         $xml_dom = new DOMDocument();
-        // trim heading and trailing white spaces 
+        // trim heading and trailing white spaces
         // because blank lines in top and end of XML file lead to
         // validation error
         file_put_contents($_FILES['XMLbookmarks']['tmp_name'], trim(file_get_contents($_FILES['XMLbookmarks']['tmp_name'])));

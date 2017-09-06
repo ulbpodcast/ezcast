@@ -24,9 +24,10 @@ $input = array_merge($_GET, $_POST);
 /**
  * Displays the main frame, without anything on the right side
  */
-function albums_view() {
+function albums_view()
+{
     // TODO
-   // include_once template_getpath('main.php');
+    // include_once template_getpath('main.php');
     echo "<!DOCTYPE html>
 <html lang=\"en\">
     <head>
@@ -36,6 +37,3 @@ function albums_view() {
     <body>Hello World</body>
 </html>";
 }
-
-
-?>

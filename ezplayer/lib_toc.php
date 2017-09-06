@@ -35,20 +35,21 @@ require_once 'lib_ezmam.php';
 
 
 /**
- * Searches a specific pattern in one or more albums / assets / fields 
+ * Searches a specific pattern in one or more albums / assets / fields
  * @param type $search the pattern to search (array containing a selection of words to find)
- * @param type $fields the bookmark fields where to search : 
+ * @param type $fields the bookmark fields where to search :
  * it can be the title, the description and/or the keywords
  * @param type $level the level where to search
  * @param type $albums an array containing the albums where to search
  * @param type $asset a string containing a specific asset
- * @return the list of matching bookmarks; false if an error occurs; null 
+ * @return the list of matching bookmarks; false if an error occurs; null
  * no bookmark matches the pattern
  */
-function toc_bookmarks_search($search, $fields, $level, $albums, $asset = '') {
-
-    if (!isset($level) || $level < 0 || $level > 4)
+function toc_bookmarks_search($search, $fields, $level, $albums, $asset = '')
+{
+    if (!isset($level) || $level < 0 || $level > 4) {
         $level = 0;
+    }
 
     $bookmarks = array();
 
@@ -64,22 +65,25 @@ function toc_bookmarks_search($search, $fields, $level, $albums, $asset = '') {
         }
     }
 
-    if ((!isset($search) || count($search) == 0) && $level == 0)
+    if ((!isset($search) || count($search) == 0) && $level == 0) {
         return $bookmarks;
+    }
 
     return search_in_array($search, $bookmarks, $fields, $level);
 }
 
 /**
  * Returns the list of (official) bookmarks for a given album
- * @param type $album the name of the album 
+ * @param type $album the name of the album
  * @return the list of bookmarks for a given album; false if an error occurs
  */
-function toc_album_bookmarks_list_get($album) {
+function toc_album_bookmarks_list_get($album)
+{
     // Sanity check
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set repository path
     $toc_path = ezmam_repository_path();
@@ -93,8 +97,9 @@ function toc_album_bookmarks_list_get($album) {
     // 3) if the xml file exists, it is converted in associative array
     if (file_exists($toc_path . "/_bookmarks.xml")) {
         $xml = simplexml_load_file($toc_path . "/_bookmarks.xml");
-        if (!$xml)
+        if (!$xml) {
             return false;
+        }
         $assoc_album_bookmarks = xml_file2assoc_array($xml, 'bookmark');
     }
 
@@ -105,10 +110,11 @@ function toc_album_bookmarks_list_get($album) {
  * Returns the list of (official) bookmarks for a specific asset in a given album
  * @param type $album the name of the album
  * @param type $asset the name of the asset
- * @return boolean|array the list of bookmarks related to the given asset, 
+ * @return boolean|array the list of bookmarks related to the given asset,
  * false if an error occurs
  */
-function toc_asset_bookmark_list_get($album, $asset) {
+function toc_asset_bookmark_list_get($album, $asset)
+{
     $assoc_album_bookmarks = toc_album_bookmarks_list_get($album);
     if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false ||
             empty($assoc_album_bookmarks)) {
@@ -126,7 +132,7 @@ function toc_asset_bookmark_list_get($album, $asset) {
         }
         ++$index;
         //update ref_asset for next loop
-        if($index < $count) {
+        if ($index < $count) {
             $ref_asset = $assoc_album_bookmarks[$index]['asset'];
         }
     }
@@ -141,7 +147,8 @@ function toc_asset_bookmark_list_get($album, $asset) {
  * @param type $selection a selection of indexes in the bookmark list
  * @return boolean|array the list of selected bookmarks; false if an error occurs
  */
-function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
+function toc_asset_bookmarks_selection_get($album, $asset, $selection)
+{
     $bookmarks_list;
     $selected_bookmarks = array();
     
@@ -156,7 +163,7 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
         $bookmarks_list = toc_asset_bookmark_list_get($album, $asset);
     }
     
-    if($bookmarks_list == false) {
+    if ($bookmarks_list == false) {
         //echo "(2)";
         return false;
     }
@@ -183,7 +190,8 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection) {
  * @param type $timecode the timecode of the bookmark
  * @return boolean true if the bookmark exists; false otherwise
  */
-function toc_asset_bookmark_exists($album, $asset, $timecode) {
+function toc_asset_bookmark_exists($album, $asset, $timecode)
+{
     $assoc_asset_bookmarks = toc_album_bookmarks_list_get($album);
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['asset'] == $asset
@@ -201,7 +209,8 @@ function toc_asset_bookmark_exists($album, $asset, $timecode) {
  * @param type $timecode the timecode of the bookmark
  * @return the bookmark if it exists; false otherwise
  */
-function toc_asset_bookmark_get($album, $asset, $timecode) {
+function toc_asset_bookmark_get($album, $asset, $timecode)
+{
     $assoc_asset_bookmarks = toc_album_bookmarks_list_get($album);
     foreach ($assoc_asset_bookmarks as $bookmark) {
         if ($bookmark['asset'] == $asset
@@ -217,15 +226,16 @@ function toc_asset_bookmark_get($album, $asset, $timecode) {
  * @param type $album
  * @param type $asset
  */
-function toc_album_bookmarks_swap($album, $asset){
-        $bookmarks = toc_asset_bookmark_list_get($album, $asset);
-        toc_asset_bookmarks_delete_all($album, $asset);
-        $album = suffix_replace($album);
-        $count = count($bookmarks);
-        for ($index = 0; $index < $count; $index++){
-            $bookmarks[$index]['album'] = $album;
-        }
-        toc_album_bookmarks_add($bookmarks);    
+function toc_album_bookmarks_swap($album, $asset)
+{
+    $bookmarks = toc_asset_bookmark_list_get($album, $asset);
+    toc_asset_bookmarks_delete_all($album, $asset);
+    $album = suffix_replace($album);
+    $count = count($bookmarks);
+    for ($index = 0; $index < $count; $index++) {
+        $bookmarks[$index]['album'] = $album;
+    }
+    toc_album_bookmarks_add($bookmarks);
 }
 
 /**
@@ -240,17 +250,21 @@ function toc_album_bookmarks_swap($album, $asset){
  * @return boolean true if the bookmark has been added to the table of contents;
  * false otherwise
  */
-function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $description = '', $keywords = '', $level = '1', $type = '') {
+function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $description = '', $keywords = '', $level = '1', $type = '')
+{
     // Sanity check
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
-    if (!ezmam_asset_exists($album, $asset))
+    if (!ezmam_asset_exists($album, $asset)) {
         return false;
+    }
 
-    if (!isset($timecode) || $timecode == '' || $timecode < 0)
+    if (!isset($timecode) || $timecode == '' || $timecode < 0) {
         return false;
+    }
 
     // 1) set the repository path
     $toc_path = ezmam_repository_path();
@@ -276,9 +290,9 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
             ++$index;
             $asset_ref = $bookmarks_list[$index]['asset'];
             $timecode_ref = $bookmarks_list[$index]['timecode'];
-        } while($index < ($count-1) && $asset > $asset_ref);
+        } while ($index < ($count-1) && $asset > $asset_ref);
         
-        // if the asset already contains bookmarks, loop while 
+        // if the asset already contains bookmarks, loop while
         // timecode is bigger than reference timecode
         while ($index < ($count-1) && $asset == $asset_ref && $timecode > $timecode_ref) {
             ++$index;
@@ -286,17 +300,21 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
             $asset_ref = $bookmarks_list[$index]['asset'];
         }
 
-        if ($index < 0) // no bookmarks yet
+        if ($index < 0) { // no bookmarks yet
             $index = 0;
-        if ($index > $count) // bookmark is in last position in the table of contents
+        }
+        if ($index > $count) { // bookmark is in last position in the table of contents
             --$index;
+        }
     }
     
-        // extract keywords from the description
+    // extract keywords from the description
     $keywords_array = get_keywords($description);
     // and save them as keywords
-    foreach ($keywords_array as $keyword){
-        if (strlen($keywords) > 0) $keywords .= ', ';
+    foreach ($keywords_array as $keyword) {
+        if (strlen($keywords) > 0) {
+            $keywords .= ', ';
+        }
         $keywords .= $keyword;
     }
     
@@ -315,15 +333,18 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
  * @param type $bookmarks an array of bookmarks
  * @return boolean true if the bookmarks have been added; false otherwise
  */
-function toc_album_bookmarks_add($bookmarks) {
+function toc_album_bookmarks_add($bookmarks)
+{
     // Sanity check
-    if (!isset($bookmarks) || count($bookmarks) == 0)
+    if (!isset($bookmarks) || count($bookmarks) == 0) {
         return false;
+    }
 
     $album = $bookmarks[0]['album'];
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $toc_path = ezmam_repository_path();
@@ -336,14 +357,14 @@ function toc_album_bookmarks_add($bookmarks) {
     // Get the bookmarks list
     $bookmarks_list = toc_album_bookmarks_list_get($album);
 
-    if (!isset($bookmarks_list) || $bookmarks_list == false)
+    if (!isset($bookmarks_list) || $bookmarks_list == false) {
         $bookmarks_list = array();
+    }
 
     foreach ($bookmarks as $bookmark) {
         if ($bookmark['album'] == $album
                 && ezmam_asset_exists($album, $bookmark['asset'])
                 && $bookmark['timecode'] >= 0) {
-
             $count = count($bookmarks_list);
             $index = 0;
 
@@ -357,7 +378,7 @@ function toc_album_bookmarks_add($bookmarks) {
                     $asset_ref = $bookmarks_list[$index]['asset'];
                     $timecode_ref = $bookmarks_list[$index]['timecode'];
                 }
-                // if the asset already contains bookmarks, loop while 
+                // if the asset already contains bookmarks, loop while
                 // timecode is bigger than reference timecode
                 while ($index < $count
                 && $bookmark['asset'] == $asset_ref
@@ -367,10 +388,12 @@ function toc_album_bookmarks_add($bookmarks) {
                     $asset_ref = $bookmarks_list[$index]['asset'];
                 }
 
-                if ($index < 0) // no bookmark yet
+                if ($index < 0) { // no bookmark yet
                     $index = 0;
-                if ($index > $count) // add in last index
+                }
+                if ($index > $count) { // add in last index
                     --$index;
+                }
                 if ($bookmark['asset'] == $bookmarks_list[$index - 1]['asset']
                         && $bookmark['timecode'] == $bookmarks_list[$index - 1]['timecode']) {
                     $bookmarks_list[$index - 1] = $bookmark;
@@ -391,18 +414,21 @@ function toc_album_bookmarks_add($bookmarks) {
 /**
  * Removes a specific bookmark from the bookmarks file (table of contents).
  * If it is the last bookmark contained in the file, the file is deleted.
- * @param type $album the album of the bookmark 
+ * @param type $album the album of the bookmark
  * @param type $asset the asset of the bookmark
  * @param type $timecode the timecode of the bookmark
  * @return an array of bookmarks if the bookmark has been deleted; false otherwise
  */
-function toc_asset_bookmark_delete($album, $asset, $timecode) {
+function toc_asset_bookmark_delete($album, $asset, $timecode)
+{
     // Sanity check
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
-    if (!isset($timecode) || $timecode == '' || $timecode < 0)
+    if (!isset($timecode) || $timecode == '' || $timecode < 0) {
         return false;
+    }
 
     // 1) set the repository path
     $toc_path = ezmam_repository_path();
@@ -436,15 +462,18 @@ function toc_asset_bookmark_delete($album, $asset, $timecode) {
  * @param type $bookmarks
  * @return boolean
  */
-function toc_album_bookmarks_delete($bookmarks) {
+function toc_album_bookmarks_delete($bookmarks)
+{
     // Sanity check
-    if (!isset($bookmarks) || count($bookmarks) == 0)
+    if (!isset($bookmarks) || count($bookmarks) == 0) {
         return false;
+    }
 
     $album = $bookmarks[0]['album'];
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $toc_path = ezmam_repository_path();
@@ -484,11 +513,13 @@ function toc_album_bookmarks_delete($bookmarks) {
  * @param type $asset the asset we want to remove bookmarks from
  * @return an array of bookmarks if the bookmarks have been deleted; false otherwise
  */
-function toc_asset_bookmarks_delete_all($album, $asset) {
+function toc_asset_bookmarks_delete_all($album, $asset)
+{
     // Sanity check
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $toc_path = ezmam_repository_path();
@@ -517,11 +548,13 @@ function toc_asset_bookmarks_delete_all($album, $asset) {
  * @param type $album the album containing bookmarks
  * @return boolean true if the file has been deleted; false otherwise
  */
-function toc_album_bookmarks_delete_all($album) {
+function toc_album_bookmarks_delete_all($album)
+{
     // Sanity check
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $toc_path = ezmam_repository_path();

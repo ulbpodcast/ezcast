@@ -11,7 +11,9 @@
             <div class="col-md-4 col-md-offset-3">
                 <label class="sr-only" for="classroom">®monit_classroom®</label>
                 <input type="text" class="form-control classroomSuggest" name="classroom" id="context" placeholder="®monit_classroom®"
-                    value="<?php if(isset($input) && array_key_exists('classroom', $input)) { echo $input['classroom']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('classroom', $input)) {
+    echo $input['classroom'];
+} ?>">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-block btn-success">
@@ -24,7 +26,8 @@
 </form>
 
 
-<?php if($dateEvent == "[]") { ?>
+<?php if ($dateEvent == "[]") {
+    ?>
     <div class="col-md-offset-2 col-md-8 alert alert-warning alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -32,7 +35,8 @@
         ®calendar_no_result®
     </div>
     <br />
-<?php } ?>
+<?php
+} ?>
 
 <div ng-app="mwl.calendar.docs">
     <div ng-controller="KitchenSinkCtrl as vm">

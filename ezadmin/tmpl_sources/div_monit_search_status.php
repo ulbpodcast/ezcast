@@ -36,7 +36,7 @@
                     <?php
                     foreach (EventStatus::getAllEventStatus() as $status) {
                         echo '<option value="'.$status.'"';
-                        if(isset($input) && array_key_exists('status', $input) && 
+                        if (isset($input) && array_key_exists('status', $input) &&
                                 is_array($input['status']) && in_array($status, $input['status'])) {
                             echo ' selected';
                         }
@@ -66,7 +66,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
                 <?php
-                if(isset($input) && array_key_exists('startDate', $input) && $input['startDate'] != 0) {
+                if (isset($input) && array_key_exists('startDate', $input) && $input['startDate'] != 0) {
                     echo "defaultDate: new Date('".$input['startDate']."')";
                 } else {
                     echo 'defaultDate: moment().subtract(4, \'month\')';
@@ -80,7 +80,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
                 <?php
-                if(isset($input) && array_key_exists('endDate', $input) && $input['endDate'] != 0) {
+                if (isset($input) && array_key_exists('endDate', $input) && $input['endDate'] != 0) {
                     echo "defaultDate: new Date('".$input['endDate']."')";
                 } else {
                     echo 'defaultDate: moment().add(1, \'days\')';
@@ -104,13 +104,17 @@
             <div class="col-md-5">
                 <label class="sr-only" for="asset">®monit_asset®</label>
                 <input type="text" class="form-control" name="asset" id="asset" placeholder="®monit_asset®"
-                    value="<?php if(isset($input) && array_key_exists('asset', $input)) { echo $input['asset']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('asset', $input)) {
+                    echo $input['asset'];
+                } ?>">
             </div>
             <div class="col-md-3">
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" name="view_all" 
-                            <?php if(isset($input) && array_key_exists('view_all', $input)) { echo 'checked'; } ?>> 
+                            <?php if (isset($input) && array_key_exists('view_all', $input)) {
+                    echo 'checked';
+                } ?>> 
                         ®monit_view_all®
                     </label>
                 </div>

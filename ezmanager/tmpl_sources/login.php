@@ -16,7 +16,8 @@
                           ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
                           <a class="btn-login btn-login-default btn-default" href="#" id="default_auth_button" title="">®authLocal®</a>
                     </div>
-                    <?php } ?>
+                    <?php
+} ?>
                     
                     <br />
                     
@@ -84,7 +85,8 @@
                     document.form_login.has_flash.value = 'Y';
                 }
             }
-            <?php if($sso_enabled) { ?>
+            <?php if ($sso_enabled) {
+                              ?>
                 $( document ).ready(function() {
                     $("#form_login").hide();
                     <?php if(isset($error) && $error != "") { ?>
@@ -95,7 +97,8 @@
                         return false;
                     });
                 });
-            <?php } ?>
+            <?php
+                          } ?>
         </script>
     </body>
 </html>

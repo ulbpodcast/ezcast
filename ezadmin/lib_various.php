@@ -1,7 +1,7 @@
 <?php
 
 /*
- * EZCAST EZadmin 
+ * EZCAST EZadmin
  * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -33,7 +33,8 @@ require_once(__DIR__."/../commons/lib_database.php");
 /**
  * Parses the config file and returns the settings that can be changed in it.
  */
-function parse_config_file() {
+function parse_config_file()
+{
     include 'config.inc';
 
     $res = array(
@@ -53,7 +54,8 @@ function parse_config_file() {
  * @param type $recorder_password_storage_option
  * @param type $use_user_name_option
  */
-function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_user_name_option) {
+function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_user_name_option)
+{
     $config = file_get_contents('config.inc');
 
     $conf1 = ($recorder_option) ? 'true' : 'false';
@@ -95,12 +97,34 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
  * @param type $use_user_name
  * @param type $https_ready
  */
-function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repository_basedir, $organization_name, 
-        $organization_url, $copyright, $mailto_alert, $basedir, $db_type, $db_host, $db_login, $db_passwd, $db_name, 
-        $db_prefix, $recorder_user, $recorder_basedir, $ezmanager_host, $ezmanager_url, $classrooms_category_enabled, 
-        $add_users_enable, $recorder_password_storage_enabled, $use_user_name, $https_ready) {
-    $global_config = (file_exists('../commons/config.inc')) ? 
-            file_get_contents('../commons/config.inc') : 
+function edit_config_file(
+    $php_cli_cmd,
+    $rsync_pgm,
+    $application_url,
+    $repository_basedir,
+    $organization_name,
+        $organization_url,
+    $copyright,
+    $mailto_alert,
+    $basedir,
+    $db_type,
+    $db_host,
+    $db_login,
+    $db_passwd,
+    $db_name,
+        $db_prefix,
+    $recorder_user,
+    $recorder_basedir,
+    $ezmanager_host,
+    $ezmanager_url,
+    $classrooms_category_enabled,
+        $add_users_enable,
+    $recorder_password_storage_enabled,
+    $use_user_name,
+    $https_ready
+) {
+    $global_config = (file_exists('../commons/config.inc')) ?
+            file_get_contents('../commons/config.inc') :
             file_get_contents('../commons/config-sample.inc');
 
     $conf = ($https_ready) ? 'true' : 'false';
@@ -147,7 +171,8 @@ function edit_config_file($php_cli_cmd, $rsync_pgm, $application_url, $repositor
  * Returns the list of admins
  * @return array
  */
-function parse_admin_file() {
+function parse_admin_file()
+{
     include 'admin.inc';
 
     $admins = array();
@@ -163,8 +188,8 @@ function parse_admin_file() {
     return $admins;
 }
 
-function renderer_exists($name) {
-
+function renderer_exists($name)
+{
     if (file_exists('renderers.inc')) {
         $renderers = require_once 'renderers.inc';
         foreach ($renderers as $index => $renderer) {
@@ -178,8 +203,8 @@ function renderer_exists($name) {
     return false;
 }
 
-function renderer_get($name) {
-
+function renderer_get($name)
+{
     if (file_exists('renderers.inc')) {
         $renderers = require_once 'renderers.inc';
         foreach ($renderers as $renderer) {
@@ -191,7 +216,8 @@ function renderer_get($name) {
     return false;
 }
 
-function renderer_update_enabled($name, $enable, &$error) {
+function renderer_update_enabled($name, $enable, &$error)
+{
     $renderer_index = renderer_exists($name);
 
     if ($renderer_index === false) {
@@ -223,14 +249,16 @@ function renderer_update_enabled($name, $enable, &$error) {
         return false;
     }
 
-    if (file_exists('./renderers.inc.old'))
+    if (file_exists('./renderers.inc.old')) {
         unlink('./renderers.inc.old');
+    }
     rename('./renderers.inc', './renderers.inc.old');
     rename('./renderers_tmp.inc', './renderers.inc');
     return true;
 }
 
-function renderer_delete($name) {
+function renderer_delete($name)
+{
     $renderer_index = renderer_exists($name);
 
     if ($renderer_index === false) {
@@ -252,14 +280,16 @@ function renderer_delete($name) {
         return false;
     }
 
-    if (file_exists('./renderers.inc.old'))
+    if (file_exists('./renderers.inc.old')) {
         unlink('./renderers.inc.old');
+    }
     rename('./renderers.inc', './renderers.inc.old');
     rename('./renderers_tmp.inc', './renderers.inc');
     return true;
 }
 
-function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_cli) {
+function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_cli)
+{
     if (!file_exists('renderers.inc')) {
         $renderers = array();
     } else {
@@ -285,11 +315,13 @@ function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_
     $string .= PHP_EOL . "?>";
 
     $res = file_put_contents('renderers_tmp.inc', $string);
-    if ($res === false)
+    if ($res === false) {
         return false;
+    }
 
-    if (file_exists('./renderers.inc.old'))
+    if (file_exists('./renderers.inc.old')) {
         unlink('./renderers.inc.old');
+    }
     rename('./renderers.inc', './renderers.inc.old');
     rename('./renderers_tmp.inc', './renderers.inc');
     return true;
@@ -300,7 +332,8 @@ function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_
  * @param type $netid
  * @return boolean
  */
-function add_admin_to_file($netid) {
+function add_admin_to_file($netid)
+{
     if (!file_exists('admin.inc')) {
         file_put_contents('admin.inc', "<?php" . PHP_EOL);
         file_put_contents('admin.inc', "?>", FILE_APPEND);
@@ -314,11 +347,13 @@ function add_admin_to_file($netid) {
     $admins[$size - 1] = '$users["' . $netid . '"]=1;' . PHP_EOL;
 
     $res = file_put_contents('admin_tmp.inc', implode('', $admins));
-    if ($res === false)
+    if ($res === false) {
         return false;
+    }
 
-    if (file_exists('./admin.inc.old'))
+    if (file_exists('./admin.inc.old')) {
         unlink('./admin.inc.old');
+    }
     rename('./admin.inc', './admin.inc.old');
     rename('./admin_tmp.inc', './admin.inc');
 }
@@ -328,17 +363,21 @@ function add_admin_to_file($netid) {
  * @param type $netid
  * @return boolean
  */
-function remove_admin_from_file($netid) {
-    if (!file_exists('admin.inc'))
+function remove_admin_from_file($netid)
+{
+    if (!file_exists('admin.inc')) {
         return false;
+    }
     $new_admins = preg_grep('/' . $netid . '"]/', file('admin.inc'), true);
 
     $res = file_put_contents('admin_tmp.inc', implode('', $new_admins));
-    if ($res === false)
+    if ($res === false) {
         return false;
+    }
 
-    if (file_exists('./admin.inc.old'))
+    if (file_exists('./admin.inc.old')) {
         unlink('./admin.inc.old');
+    }
     rename('./admin.inc', './admin.inc.old');
     rename('./admin_tmp.inc', './admin.inc');
 }
@@ -347,7 +386,8 @@ function remove_admin_from_file($netid) {
  * Overwrites the admin.inc files on the recorders and ezmanager
  * with the "new" admins as set in the DB
  */
-function push_admins_to_recorders_ezmanager() {
+function push_admins_to_recorders_ezmanager()
+{
     global $recorder_user;
     global $recorder_basedir;
     global $recorder_subdir;
@@ -379,7 +419,7 @@ function push_admins_to_recorders_ezmanager() {
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 ./var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' . 
+            $cmd = 'scp -o ConnectTimeout=10 ./var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' .
                     $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
         }
@@ -389,14 +429,14 @@ function push_admins_to_recorders_ezmanager() {
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
         // Local copy
         $res = file_put_contents($ezmanager_basedir . $ezmanager_subdir . '/admin.inc', $admins_str);
-        if ($res === false)
+        if ($res === false) {
             return false;
-    }
-    else {
+        }
+    } else {
         // Remote copy
         exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 ./var/admin.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' . 
+            $cmd = 'scp -o ConnectTimeout=10 ./var/admin.inc ' . $ezmanager_user . '@' . $ezmanager_host . ':' .
                     $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
             if ($return_val == 0) {
@@ -407,8 +447,9 @@ function push_admins_to_recorders_ezmanager() {
 
     // Copying on ezplayer
     $res = file_put_contents($ezplayer_basedir . $ezplayer_subdir . '/admin.inc', $admins_str);
-    if ($res === false)
+    if ($res === false) {
         return false;
+    }
 
     return true;
 }
@@ -416,11 +457,12 @@ function push_admins_to_recorders_ezmanager() {
 /**
  * Pushes users (htpasswd) and associations between users and courses (courselist.php)
  */
-function push_users_courses_to_recorder(&$failed_cmd) {
+function push_users_courses_to_recorder(&$failed_cmd)
+{
     global $recorder_user;
     global $recorder_basedir;
     global $recorder_subdir;
-    global $recorder_password_storage_enabled;	
+    global $recorder_password_storage_enabled;
         
     if (!db_ready()) {
         $statements = statements_get();
@@ -444,13 +486,13 @@ function push_users_courses_to_recorder(&$failed_cmd) {
     //courselist.php
     $courselist = '<?php' . PHP_EOL;
     
-    foreach ($users as $u) {        
+    foreach ($users as $u) {
         $courseCode = (isset($u['course_code_public']) && !empty($u['course_code_public'])) ? $u['course_code_public'] : $u['course_code'];
-        $title = (isset($u['shortname']) && !empty($u['shortname'])) ? $u['shortname'] : $u['course_name'];        
+        $title = (isset($u['shortname']) && !empty($u['shortname'])) ? $u['shortname'] : $u['course_name'];
         $courselist .= '$course[\'' . $u['user_ID'] . '\'][\'' . $u['course_code'] . '\'] = "' . $courseCode.'-'.$title . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL;
-    } 
+    }
     
     $courselist .= '?>';
     file_put_contents('var/courselist.php', $courselist);
@@ -461,14 +503,14 @@ function push_users_courses_to_recorder(&$failed_cmd) {
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' . 
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' .
                     $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
                 $error = true;
             }
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] . 
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/courselist.php ' . $recorder_user . '@' . $c['IP'] .
                     ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
@@ -487,7 +529,8 @@ function push_users_courses_to_recorder(&$failed_cmd) {
 /**
  * Overwrites classroom_recorder_ip.inc in ezmanager
  */
-function push_classrooms_to_ezmanager() {
+function push_classrooms_to_ezmanager()
+{
     global $ezmanager_host;
     global $ezmanager_user;
     global $ezmanager_basedir;
@@ -499,10 +542,11 @@ function push_classrooms_to_ezmanager() {
     $incfile .= '$idx=0;' . PHP_EOL . PHP_EOL;
 
     foreach ($classrooms as $c) {
-        if (!empty($c['name']))
+        if (!empty($c['name'])) {
             $incfile .= '//' . $c['name'] . PHP_EOL;
-        else
+        } else {
             $incfile .= '//' . $c['room_ID'] . PHP_EOL;
+        }
 
         $incfile .= '$podcv_ip[$idx]="' . $c['IP'] . '";' . PHP_EOL;
         $incfile .= '$podcs_ip[$idx]="' . $c['IP_remote'] . '";' . PHP_EOL;
@@ -517,14 +561,14 @@ function push_classrooms_to_ezmanager() {
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
         // Local copy
         $res = file_put_contents($ezmanager_basedir . $ezmanager_subdir . '/classroom_recorder_ip.inc', $incfile);
-        if ($res === false)
+        if ($res === false) {
             return false;
-    }
-    else {
+        }
+    } else {
         // Remote copy
         exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/classroom_recorder_ip.inc ' . $ezmanager_user . 
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/classroom_recorder_ip.inc ' . $ezmanager_user .
                     '@' . $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
         }
@@ -540,7 +584,8 @@ function push_classrooms_to_ezmanager() {
 /**
  * Overwrites renderers.inc in ezmanager
  */
-function push_renderers_to_ezmanager() {
+function push_renderers_to_ezmanager()
+{
     global $ezmanager_host;
     global $ezmanager_user;
     global $ezmanager_basedir;
@@ -551,14 +596,14 @@ function push_renderers_to_ezmanager() {
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
         // Local copy
         $res = copy('renderers.inc', $ezmanager_basedir . $ezmanager_subdir . '/renderers.inc');
-        if ($res === false)
+        if ($res === false) {
             return false;
-    }
-    else {
+        }
+    } else {
         // Remote copy
         exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./renderers.inc ' . $ezmanager_user . '@' . 
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./renderers.inc ' . $ezmanager_user . '@' .
                     $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
         }
@@ -580,7 +625,8 @@ function push_renderers_to_ezmanager() {
  * @global type $basedir
  * @return boolean
  */
-function push_users_to_ezmanager() {
+function push_users_to_ezmanager()
+{
     global $ezmanager_host;
     global $ezmanager_user;
     global $ezmanager_basedir;
@@ -602,12 +648,12 @@ function push_users_to_ezmanager() {
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
         // Local copy
         $res = file_put_contents($basedir . '/commons/pwfile.inc', $pwfile);
-        if ($res === false)
+        if ($res === false) {
             return false;
-    }
-    else {
+        }
+    } else {
         // Remote copy
-        $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/pwfile.inc ' . $ezmanager_user . '@' . $ezmanager_host . 
+        $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./var/pwfile.inc ' . $ezmanager_user . '@' . $ezmanager_host .
                 ':' . $ezmanager_basedir . $ezmanager_subdir;
         exec($cmd, $output, $return_var);
 
@@ -623,12 +669,14 @@ function push_users_to_ezmanager() {
  * @param string $ipstr
  * @desc ckeck ip syntax
  */
-function checkipsyntax($ipstr) {
+function checkipsyntax($ipstr)
+{
     $res = ipstr2num($ipstr, $net1, $net2, $subnet, $node);
-    if ($res > 0)
+    if ($res > 0) {
         return "Not a valid IP address ($res)";
-    else
+    } else {
         return "";
+    }
 }
 
 /**
@@ -641,41 +689,55 @@ function checkipsyntax($ipstr) {
  * @param $nodenum ip4
  * @desc converts ip string to 4 numbers
  */
-function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node) {
+function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node)
+{
     $res = preg_match("/^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/", $ipstr, $regs);
-    if (!$res)
+    if (!$res) {
         return 1;
+    }
     $returncode = 0;
     $net1 = $regs[1];
-    if ($net1 + 0 > 255)
+    if ($net1 + 0 > 255) {
         $returncode+=2;
+    }
     $net2 = $regs[2];
-    if ($net2 + 0 > 255)
+    if ($net2 + 0 > 255) {
         $returncode+=4;
+    }
     $subnet = $regs[3];
-    if ($subnet + 0 > 255)
+    if ($subnet + 0 > 255) {
         $returncode+=8;
+    }
     $node = $regs[4];
-    if ($node + 0 > 255)
+    if ($node + 0 > 255) {
         $returncode+=16;
+    }
     return $returncode;
 }
 
-function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts = true) {
+function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts = true)
+{
     include 'config.inc';
-    // test the SSH connection  
-    exec("ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"", 
-            $output, $returncode);
+    // test the SSH connection
+    exec(
+  
+        "ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"",
+            $output,
+  
+        $returncode
+  
+    );
 
     if ($update_known_hosts && $returncode) {
-        // SSH connection failed so we verify that the remote renderer is in 
+        // SSH connection failed so we verify that the remote renderer is in
         // the 'known_hosts' file, if not we add it and retry to connect via SSH
         // find .ssh/known_hosts file
 
-        if ($ssh_pub_key_location == "")
+        if ($ssh_pub_key_location == "") {
             $ssh_known_hosts = "~$apache_username/.ssh/known_hosts";
-        else
+        } else {
             $ssh_known_hosts = dirname($ssh_pub_key_location) . "/known_hosts";
+        }
 
         // changes user's relative path in absolute path (required for file_exists(...))
         $ssh_known_hosts = exec("echo `echo $ssh_known_hosts`");
@@ -699,23 +761,27 @@ function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts
             }
         }
         // tests the SSH connection
-        exec("ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"", 
-                $output, $returncode);
+        exec(
+            "ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"",
+                $output,
+            $returncode
+        );
         return $returncode ? false : true;
-    } else if ($returncode) {
+    } elseif ($returncode) {
         return false;
     } else {
         return true;
     }
 }
 
-function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
-    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php)
+{
+    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
             " \"if [ -e " . $remote_php . " ]; then echo 'exists'; fi;\"") != 'exists') {
         // PHP binary doesn't exist on remote renderer
         return "php_not_found";
     } else {
-        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                 " \"$remote_php -v\"", $output, $returncode);
         if (strpos(strtoupper($output[0]), 'PHP') === false) {
             // PHP not found on remote renderer
@@ -728,7 +794,7 @@ function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
                 return "php_deprecated";
             } else {
                 // Test PHP modules
-                exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+                exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                         " \"$remote_php -m\"", $output, $returncode);
                 if (!in_array("SimpleXML", $output)) {
                     return "php_missing_xml";
@@ -748,14 +814,14 @@ function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php) {
     }
 }
 
-function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg, $aac_experimental = false) {
-
-    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " . 
+function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg, $aac_experimental = false)
+{
+    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " .
             $remote_ffmpeg . " ]; then echo 'exists'; fi;\"") != 'exists') {
         // FFMPEG binary doesn't exist on remote renderer
         return "ffmpeg_not_found";
     } else {
-        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                 " \"$remote_ffmpeg -version\"", $output, $returncode);
         if (strpos(strtoupper($output[0]), 'FFMPEG') === false) {
             // FFMPEG not found on remote renderer
@@ -763,12 +829,12 @@ function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg
         } else {
             // Test FFMPEG codecs
             $aac_codec = ($aac_experimental) ? 'aac' : 'libfdk_aac';
-            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                     " \"$remote_ffmpeg -codecs | grep '$aac_codec'\"");
             if (strpos(strtoupper($output), 'AAC') === false) {
                 return "missing_codec_aac";
             }
-            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+            $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                     " \"$remote_ffmpeg -codecs | grep 'h264'\"");
             if (strpos(strtoupper($output), 'H.264') === false) {
                 return "missing_codec_h264";
@@ -778,13 +844,14 @@ function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg
     }
 }
 
-function test_ffprobe_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffprobe) {
-    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+function test_ffprobe_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffprobe)
+{
+    if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
             " \"if [ -e " . $remote_ffprobe . " ]; then echo 'exists'; fi;\"") != 'exists') {
         // FFPROBE binary doesn't exist on remote renderer
         return "ffprobe_not_found";
     } else {
-        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                 " \"$remote_ffprobe -version\"", $output, $returncode);
         if (strpos(strtoupper($output[0]), 'FFPROBE') === false) {
             // FFMPEG not found on remote renderer
@@ -794,9 +861,10 @@ function test_ffprobe_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffpro
     }
 }
 
-function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_test_script, &$error) {
+function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_test_script, &$error)
+{
     if (ssh_connection_test($ssh_user, $ssh_host, $ssh_timeout)) {
-        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . 
+        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                 " \"$remote_php $remote_test_script\"", $output, $returncode);
         if ($returncode || in_array("test ok", $output) === false) {
             $error = $output[0];
@@ -811,12 +879,13 @@ function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_
 
 /**
  * Check if a key is in the array
- * 
+ *
  * @param String $key to test
  * @param Array $array to test
  * @return mixed the value of the array key or empty string if not exist
  */
-function empty_str_if_not_def($key, $array) {
+function empty_str_if_not_def($key, $array)
+{
     if (array_key_exists($key, $array)) {
         return $array[$key];
     }
@@ -824,7 +893,8 @@ function empty_str_if_not_def($key, $array) {
 }
 
 
-function array_increment_or_init_static(&$array, $key) {
+function array_increment_or_init_static(&$array, $key)
+{
     if (array_key_exists($key, $array)) {
         ++$array[$key];
     } else {
@@ -832,7 +902,8 @@ function array_increment_or_init_static(&$array, $key) {
     }
 }
 
-function array_increment_or_init(&$array, &$key) {
+function array_increment_or_init(&$array, &$key)
+{
     if (array_key_exists($key, $array)) {
         ++$array[$key];
     } else {

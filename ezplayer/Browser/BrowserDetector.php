@@ -143,7 +143,7 @@ class BrowserDetector implements DetectorInterface
             }
             return true;
         } // Test for versions > 1.5 and < 11
-        else if (stripos($userAgent->getUserAgentString(), 'msie') !== false && stripos($userAgent->getUserAgentString(), 'opera') === false) {
+        elseif (stripos($userAgent->getUserAgentString(), 'msie') !== false && stripos($userAgent->getUserAgentString(), 'opera') === false) {
             // See if the browser is the odd MSN Explorer
             if (stripos($userAgent->getUserAgentString(), 'msnb') !== false) {
                 $aresult = explode(' ', stristr(str_replace(';', '; ', $userAgent->getUserAgentString()), 'MSN'));
@@ -156,7 +156,7 @@ class BrowserDetector implements DetectorInterface
             $browser->setVersion(str_replace(array('(', ')', ';'), '', $aresult[1]));
             return true;
         } // Test for versions >= 11
-        else if (stripos($userAgent->getUserAgentString(), 'trident') !== false) {
+        elseif (stripos($userAgent->getUserAgentString(), 'trident') !== false) {
             $browser->setName($browser::IE);
 
             preg_match('/rv:(\d+\.\d+)/', $userAgent->getUserAgentString(), $matches);
@@ -167,7 +167,7 @@ class BrowserDetector implements DetectorInterface
                 return false;
             }
         } // Test for Pocket IE
-        else if (stripos($userAgent->getUserAgentString(), 'mspie') !== false || stripos($userAgent->getUserAgentString(), 'pocket') !== false) {
+        elseif (stripos($userAgent->getUserAgentString(), 'mspie') !== false || stripos($userAgent->getUserAgentString(), 'pocket') !== false) {
             $aresult = explode(' ', stristr($userAgent->getUserAgentString(), 'mspie'));
             $browser->setName($browser::POCKET_IE);
 

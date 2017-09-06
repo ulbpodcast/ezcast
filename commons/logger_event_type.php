@@ -3,7 +3,8 @@
 // This file is shared between server and recorder and should be kept identical in both projects.
 // !!! When adding a new type, add a class member + add it's ID into the $event_type_id array
 
-class EventType {
+class EventType
+{
     // Commons
     const TEST                               = "test";
     const LOGGER                             = "logger";
@@ -119,7 +120,7 @@ class EventType {
         
         // EZAdmin: 2000->2999
        
-        // EZManager: 3000->3999 
+        // EZManager: 3000->3999
         EventType::MANAGER_LOG_SYNC                           => 3000,
         EventType::MANAGER_UPLOAD_TO_EZCAST                   => 3001,
         EventType::MANAGER_REQUEST_FROM_RECORDER              => 3002,

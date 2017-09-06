@@ -1,7 +1,8 @@
 <?php
 
 
-function index($param = array()) {
+function index($param = array())
+{
     global $intros;
     global $credits;
     global $titlings;
@@ -22,7 +23,7 @@ function index($param = array()) {
 
     // for preselection in the form
     $album_intro = $album_meta['intro'];
-    if(isset($album_meta['credits'])) {
+    if (isset($album_meta['credits'])) {
         $album_credits = $album_meta['credits'];
     }
     if (isset($album_meta['add_title'])) {

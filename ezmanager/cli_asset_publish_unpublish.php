@@ -1,7 +1,7 @@
 <?php
 
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -28,7 +28,7 @@
 /**
  * @package ezcast.ezmanager.cli
  * This program is used via cron to publish or unpublish asset at a given time
- * 
+ *
  * TODO same file that controller "asset_publish_unpublish".  Must be merge !
  */
 require_once dirname(__FILE__) . '/config.inc';
@@ -59,15 +59,15 @@ ezmam_repository_path($repository_path);
 // Usual sanity checks
 //
     if (!isset($album) || !isset($asset)) {
-    echo "usage: " . $argv[0] . ' <album> <asset> <action>
+        echo "usage: " . $argv[0] . ' <album> <asset> <action>
         Where <album> is the mnemonic of the album containing the asset
         --> ULB-Podcast-pub for instance
         <asset> is the id of the asset
         --> 2015_09_14_08h00 for instance
         <action> is the action proceeded by this script
         --> publish | unpublish';
-    die;
-}
+        die;
+    }
 
 if (!ezmam_album_exists($album) || !ezmam_asset_exists($album, $asset)) {
     error_print_message(ezmam_last_error());
@@ -91,8 +91,7 @@ if ($action == 'publish') {
     }
     // Move bookmarks and stats
     move_data($album, $asset);
-
-} else if ($action == 'unpublish') {
+} elseif ($action == 'unpublish') {
     $res = ezmam_asset_unpublish($album, $asset);
     if (!$res) {
         error_print_message(ezmam_last_error());
@@ -100,15 +99,15 @@ if ($action == 'publish') {
     }
     // Move bookmarks and stats
     move_data($album, $asset);
-
 } else {
     error_print_message('Publish_unpublish: no operation provided');
     die;
 }
 
 
-function move_data($album, $asset) {
-    // moves asset bookmarks from private to public 
+function move_data($album, $asset)
+{
+    // moves asset bookmarks from private to public
     toc_album_bookmarks_swap($album, $asset);
     $albumTo = suffix_replace($album);
     

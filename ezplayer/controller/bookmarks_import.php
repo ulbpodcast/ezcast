@@ -6,7 +6,8 @@
  * @global type $user_files_path
  * @global type $repository_path
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -21,7 +22,7 @@ function index($param = array()) {
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);
 
-    // keeps only the selected bookmarks 
+    // keeps only the selected bookmarks
     foreach ($selection as $index) {
         array_push($selected_bookmarks, $imported_bookmarks[$index]);
     }
@@ -36,7 +37,7 @@ function index($param = array()) {
 
     log_append('import_bookmarks: bookmarks added to the album ' . $album);
     // lvl, action, album, asset, target (in official|personal), number of selected bookmarks, number of uploaded bookmarks
-    trace_append(array($input['source'] == 'assets' ? '2' : '3', 'bookmarks_import', $album, 
+    trace_append(array($input['source'] == 'assets' ? '2' : '3', 'bookmarks_import', $album,
         $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target, count($selection), count($imported_bookmarks)));
     
     // determines the page to display

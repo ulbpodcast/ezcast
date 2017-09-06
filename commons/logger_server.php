@@ -3,33 +3,36 @@
 require_once(__DIR__ . '/lib_database.php');
 require_once("logger.php");
 
-class ServerLogger extends Logger {
-    
+class ServerLogger extends Logger
+{
     const EVENT_TABLE_NAME = "events";
-    const EVENT_STATUS_TABLE_NAME = "event_status";    
+    const EVENT_STATUS_TABLE_NAME = "event_status";
     const EVENT_LAST_INDEXES_TABLE_NAME = "event_last_indexes";
     const EVENT_ASSET_PARENT_TABLE_NAME = "event_asset_parent";
     const EVENT_ASSET_INFO_TABLE_NAME = "asset_infos";
     
     private $statement = array();
     
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         
         global $in_install;
-        if($in_install == true) {
+        if ($in_install == true) {
             return; //no database when still in installation
         }
         
         global $db_object;
-        if($db_object == null) { //db is not yet prepared yet
-            db_prepare(); 
+        if ($db_object == null) { //db is not yet prepared yet
+            db_prepare();
         }
         
         $this->statement['insert_log'] = $db_object->prepare(
           'REPLACE INTO '. db_gettable(ServerLogger::EVENT_TABLE_NAME) . ' (`asset`, `origin`, `classroom_id`, `classroom_event_id`, '
                 . '`event_time`, `type_id`, `context`, `loglevel`, `message`) VALUES (' .
-          ':asset, :origin, :classroom_id, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)');
+          ':asset, :origin, :classroom_id, :classroom_event_id, :event_time, :type_id, :context, :loglevel, :message)'
+        
+        );
         
         $this->statement['insert_asset_info'] = $db_object->prepare(
             'REPLACE INTO ' . db_gettable(ServerLogger::EVENT_ASSET_INFO_TABLE_NAME) . ' (asset, ' .
@@ -45,13 +48,12 @@ class ServerLogger extends Logger {
         
         
         foreach ($this->statement as $state) {
-            if($state == false) {
+            if ($state == false) {
                 echo __CLASS__ . ": Prepared statement failed";
                 print_r($this->db->errorInfo());
                 throw new Exception("Prepared statement failed");
             }
         }
-        
     }
     
     
@@ -67,34 +69,84 @@ class ServerLogger extends Logger {
      * @param AssetLogInfo $asset_info Additional information about asset if any, in the form of a AssetLogInfo structure
      * @return LogData temporary data, used by children functions
      */
-    public function log($type, $level, $message, array $context = array(), $asset = "dummy", 
-            $author = null, $cam_slide = null, $course = null, $classroom = null)
-    {
+    public function log(
+        $type,
+        $level,
+        $message,
+        array $context = array(),
+        $asset = "dummy",
+            $author = null,
+        $cam_slide = null,
+        $course = null,
+        $classroom = null
+    ) {
         global $in_install;
-        if($in_install == true) {
+        if ($in_install == true) {
             return; //no database when still in installation
         }
         
         $tempLogData = parent::_log($type, $level, $message, $context, $asset, $author, $cam_slide, $course, $classroom);
         
         global $appname; // to be used as origin
-        if(!isset($appname))
+        if (!isset($appname)) {
             $appname = "?";
+        }
             
-        $this->insert_log($tempLogData->type_id, $tempLogData->log_level_integer, 
-                $message, $tempLogData->context, $asset, $appname, 
-                $classroom, $course, $author, 
-                $cam_slide, date('Y-m-d H:i:s'));
+        $this->insert_log(
+            
+            $tempLogData->type_id,
+            
+            $tempLogData->log_level_integer,
+                $message,
+            
+            $tempLogData->context,
+            
+            $asset,
+            
+            $appname,
+                $classroom,
+            
+            $course,
+            
+            $author,
+                $cam_slide,
+            
+            date('Y-m-d H:i:s')
+            
+        );
         
         return $tempLogData;
     }
     
-    public function insert_log($type, $level, $message, $context, $asset, $origin, 
-            $classroom, $course, $author, $cam_slide, $event_time, $classroom_event_id = null) {
-        
+    public function insert_log(
+    
+        $type,
+    
+        $level,
+    
+        $message,
+    
+        $context,
+    
+        $asset,
+    
+        $origin,
+            $classroom,
+    
+        $course,
+    
+        $author,
+    
+        $cam_slide,
+    
+        $event_time,
+    
+        $classroom_event_id = null
+    
+    ) {
         $type_name = $this->get_type_name($type);
         
-        switch($type_name) {
+        switch ($type_name) {
             case EventType::ASSET_CREATED:
                 $this->insert_asset_infos($asset, $event_time, $classroom, $course, $author, $cam_slide);
                 break;
@@ -106,7 +158,7 @@ class ServerLogger extends Logger {
         $this->statement['insert_log']->bindParam(':asset', $asset);
         $this->statement['insert_log']->bindParam(':origin', $origin);
         $this->statement['insert_log']->bindParam(':classroom_id', $classroom);
-        $this->statement['insert_log']->bindParam(':type_id', $type);        
+        $this->statement['insert_log']->bindParam(':type_id', $type);
         $this->statement['insert_log']->bindParam(':context', $context);
         $this->statement['insert_log']->bindParam(':loglevel', $level);
         $this->statement['insert_log']->bindParam(':message', $message);
@@ -116,7 +168,8 @@ class ServerLogger extends Logger {
         $this->try_exec($this->statement['insert_log']);
     }
     
-    public function insert_asset_infos($asset, $start_date, $classroom, $course, $author, $cam_slide) {
+    public function insert_asset_infos($asset, $start_date, $classroom, $course, $author, $cam_slide)
+    {
         $this->statement['insert_asset_info']->bindParam(':asset', $asset);
         $this->statement['insert_asset_info']->bindParam(':start_time', $start_date);
         $this->statement['insert_asset_info']->bindParam(':asset_classroom_id', $classroom);
@@ -127,16 +180,18 @@ class ServerLogger extends Logger {
         $this->try_exec($this->statement['insert_asset_info']);
     }
     
-    public function update_asset_infos_end($asset, $end_date) {
+    public function update_asset_infos_end($asset, $end_date)
+    {
         $this->statement['update_asset_info']->bindParam(':end_time', $end_date);
         $this->statement['update_asset_info']->bindParam(':asset', $asset);
         
         $this->try_exec($this->statement['update_asset_info']);
     }
     
-    public function try_exec(&$statement) {
+    public function try_exec(&$statement)
+    {
         try {
-             $statement->execute();
+            $statement->execute();
         } catch (Exception $ex) {
             trigger_error("LoggerSever exception: ". $ex->getMessage());
             //something went wrong. How to report this ?

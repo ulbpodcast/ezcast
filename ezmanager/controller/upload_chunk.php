@@ -1,10 +1,11 @@
 <?php
 
 // used by web worker from js/uploadfile.js to upload chunk of file
-// The upload is serial which means that each slice of file is the sequel of 
+// The upload is serial which means that each slice of file is the sequel of
 // the previous one. We can then append each slice to the previous one to
 // create the movie file.
-function index($param = array()) {
+function index($param = array())
+{
     global $accepted_media_types;
     global $upload_slice_size;
 
@@ -23,7 +24,7 @@ function index($param = array()) {
 
     $path = $_SESSION[$id]['path'];
 
-// path must be in proper format
+    // path must be in proper format
     if (!isset($path)) {
         log_append('warning', 'upload_chunk: ' . ' cannot find file upload path');
         $array["error"] = template_get_message('Invalid_path', get_lang());
@@ -31,7 +32,7 @@ function index($param = array()) {
         die;
     }
 
-// type must be in proper format
+    // type must be in proper format
     if (!isset($type) || !in_array($type, $accepted_media_types)) {
         log_append('warning', 'upload_chunk: ' . $input['type'] . ' is not a valid media type');
         $array["error"] = template_get_message('Invalid_type', get_lang());
@@ -39,7 +40,7 @@ function index($param = array()) {
         die;
     }
 
-// index must be set, and number
+    // index must be set, and number
     if (!isset($index) || !preg_match('/^[0-9]+$/', $index)) {
         log_append('warning', 'upload_chunk: ' . $index . ' is not a valid index');
         $array["error"] = template_get_message('Invalid_index', get_lang());
@@ -58,7 +59,7 @@ function index($param = array()) {
         die;
     }
 
-// we store chunks in directory named after filename
+    // we store chunks in directory named after filename
     /*    if (!file_exists("$path/" . $type . '/')) {
       mkdir("$path/" . $type . '/');
       }
@@ -83,8 +84,7 @@ function index($param = array()) {
 
     // the incoming stream is put at the end of the file
     $input = fopen("php://input", "r");
-    if($input == false)
-    {
+    if ($input == false) {
         log_append('warning', "error opening php input stream");
         $array["error"] = template_get_message('write_error', get_lang());
         echo json_encode($array);

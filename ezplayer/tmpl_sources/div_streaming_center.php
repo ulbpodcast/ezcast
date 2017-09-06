@@ -59,11 +59,11 @@ include_once 'lib_print.php';
         <?php
         if (acl_has_album_permissions($album)) {
             $token = acl_token_get($album);
-            $token = $token['token'];
-            ?>
+            $token = $token['token']; ?>
             <div class="right-arrow"></div>
             <a  href="javascript:player_kill();show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" title="®Back_to_album®">(<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?></a>   
-        <?php } ?>
+        <?php
+        } ?>
         <div class="right-arrow"></div><?php print_info($asset_meta['title']); ?>
     </div>
 

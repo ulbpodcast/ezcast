@@ -49,7 +49,7 @@ if (!user_logged_in()) {
     // session somehow and are trying to load part of a page through AJAX call.
     // We do not want the login page to be displayed randomly inside a div,
     // so we refresh the whole page to get a full-page login form.
-    else if (isset($input['action']) && $input['action'] != 'login' && $input['action'] != 'logout') {
+    elseif (isset($input['action']) && $input['action'] != 'login' && $input['action'] != 'logout') {
         view_login_form();
     }
     // Step 1: Displaying the login form
@@ -57,10 +57,10 @@ if (!user_logged_in()) {
     else {
         view_login_form();
     }
-// At this point of the code, the user is supposed to be logged in.
+    // At this point of the code, the user is supposed to be logged in.
 // We check whether they specified an action to perform. If not, it means they landed
 // here through a page reload, so we check the session variables to restore the page as it was.
-} else if (isset($_SESSION['podcastcours_logged']) && (!isset($input['action']) || empty($input['action']))) {
+} elseif (isset($_SESSION['podcastcours_logged']) && (!isset($input['action']) || empty($input['action']))) {
     redraw_page();
 }
 
@@ -289,7 +289,8 @@ else {
  * Helper function
  * @return bool true if the user is already logged in; false otherwise
  */
-function user_logged_in() {
+function user_logged_in()
+{
     return isset($_SESSION['podcastcours_logged']);
 }
 
@@ -300,7 +301,8 @@ function user_logged_in() {
 /**
  * Displays the login form
  */
-function view_login_form() {
+function view_login_form()
+{
     global $ezadmin_url;
     global $error, $input;
 
@@ -315,7 +317,8 @@ function view_login_form() {
 /**
  * Displays the main frame, without anything on the right side
  */
-function albums_view() {
+function albums_view()
+{
     // TODO
     include_once template_getpath('main.php');
 }
@@ -324,7 +327,8 @@ function albums_view() {
  * This function is called whenever the user chose to refresh the page.
  * It reloads the page as it was
  */
-function redraw_page() {
+function redraw_page()
+{
     // Update stuff
     // Whatever happens, the first thing to do is display the whole page.
     albums_view();
@@ -334,7 +338,7 @@ function redraw_page() {
 
 /**
  * Reloads the whole page
- * 
+ *
  * TODO NOT USED
  */
 //function refresh_page() {
@@ -353,7 +357,8 @@ function redraw_page() {
  * @param string $login
  * @param string $passwd
  */
-function user_login($login, $passwd) {
+function user_login($login, $passwd)
+{
     global $input;
     global $template_folder;
     global $error;
@@ -368,7 +373,7 @@ function user_login($login, $passwd) {
 
     $login_parts = explode("/", $login);
 
-    // checks if runas 
+    // checks if runas
     if (count($login_parts) >= 2) {
         $error = "No runas here !";
         view_login_form();
@@ -422,9 +427,11 @@ function user_login($login, $passwd) {
 /**
  * Changes have been made but not saved yet: we display an alert
  */
-function notify_changes($enable = true) {
-    if($enable)
+function notify_changes($enable = true)
+{
+    if ($enable) {
         $_SESSION['changes_to_push'] = true;
-    else
+    } else {
         unset($_SESSION['changes_to_push']);
+    }
 }

@@ -6,7 +6,8 @@
  * @global type $user_files_path
  * @global type $repository_path
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $user_files_path;
     global $repository_path;
@@ -32,8 +33,8 @@ function index($param = array()) {
     }
 
     log_append('delete_bookmarks: ' . count($selection) . ' bookmarks deleted from the album ' . $album);
-    // lvl, action, album, asset, target (from official|personal), number of deleted bookmarks 
-    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_delete', $album, 
+    // lvl, action, album, asset, target (from official|personal), number of deleted bookmarks
+    trace_append(array($_SESSION['asset'] == '' ? '2' : '3', 'bookmarks_delete', $album,
         $_SESSION['asset'] != '' ? $_SESSION['asset'] : '-', $target == '' ? 'custom' : $target, count($selection)));
     if ($input['source'] == 'assets') {
         // album token needed to display the album assets

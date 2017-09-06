@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     $users = array();
@@ -42,4 +43,3 @@ function index($param = array()) {
     }
     include template_getpath('div_main_footer.php');
 }
-

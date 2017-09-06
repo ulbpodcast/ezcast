@@ -81,12 +81,14 @@
         <div class="video_controls streaming">
             <ul>
 
-                <?php if ($asset_meta['record_type'] === 'camslide') { ?>
+                <?php if ($asset_meta['record_type'] === 'camslide') {
+    ?>
                     <li>
                         <a class="movie-button <?php echo ($_SESSION['current_type'] === 'cam') ? 'active' : ''; ?>" title="®Watch_video®" href="javascript:switch_prepare('cam');"></a>
                         <a class="slide-button <?php echo ($_SESSION['current_type'] === 'slide') ? 'active' : ''; ?>" title="®Watch_slide®" href="javascript:switch_prepare('slide');"></a>
                     </li>
-                <?php } ?>
+                <?php
+} ?>
                 <li>
                     <a class="fullscreen-button" href="javascript:player_streaming_fullscreen(!fullscreen);" title="®Toggle_fullscreen®" ></a>
                 </li>   

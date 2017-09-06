@@ -5,7 +5,8 @@ require_once __DIR__."/../classroom_recorder_ip.inc"; //valid ip file
 //global variable for usage in requests
 $caller_ip = trim($_SERVER["REMOTE_ADDR"]);
 
-function is_authorized_caller() {
+function is_authorized_caller()
+{
     global $podcv_ip;
     global $podcs_ip;
     global $caller_ip;

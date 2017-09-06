@@ -1,11 +1,12 @@
 <?php
 
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     
-    if(count($param) == 1) {
-        switch($param[0]) {
+    if (count($param) == 1) {
+        switch ($param[0]) {
             case 'add':
                 thread_add();
                 break;
@@ -39,7 +40,6 @@ function index($param = array()) {
     
     $_SESSION['current_thread'] = '';
     include_once template_getpath('div_threads_list.php');
-    
 }
 
 
@@ -48,7 +48,8 @@ function index($param = array()) {
  * @global type $input
  * @return boolean
  */
-function thread_add() {
+function thread_add()
+{
     global $input;
 
     $thread_album = $input['album'];
@@ -59,8 +60,9 @@ function thread_add() {
     $thread_description = surround_url($input['description']);
     $thread_visibility = (array_key_exists('visibility', $input) && $input['visibility'] == "on") ? '1' : '0';
 
-    if (!acl_user_is_logged())
+    if (!acl_user_is_logged()) {
         return false;
+    }
     if (is_nan($thread_timecode)) {
         $thread_timecode = 0;
     }
@@ -96,7 +98,8 @@ function thread_add() {
  * @global array $input
  * @return boolean
  */
-function thread_delete() {
+function thread_delete()
+{
     global $input;
 
     $id = $input['thread_id'];

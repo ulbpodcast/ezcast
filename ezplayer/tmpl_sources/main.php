@@ -2,7 +2,7 @@
 <?php
 /* Main template.
  * This template is the main frame, the content divs are dynamically filled as the user clicks.
- * 
+ *
  * WARNING: Please call template_repository_path() BEFORE including this template
  */
 ?>
@@ -25,22 +25,25 @@ global $trace_on;
 if ($trace_on) {
     ?>
                 var trace_on = true;
-<?php } else { ?>
+<?php
+} else {
+        ?>
                 var trace_on = false;
-<?php } ?>
+<?php
+    } ?>
         </script>
         <script type="text/javascript" src="lib/tinymce/tinymce.min.js"></script>
         <script type="text/javascript" src="js/jQuery/jquery-2.1.3.min.js"></script>
         <?php
         global $streaming_video_player;
         switch ($streaming_video_player) {
-            case 'momovi' :
+            case 'momovi':
                 ?>
                 <script src="momovi/static/js/video.js"></script>
                 <script src="momovi/static/js/jquery.ba-throttle-debounce.min.js"></script>
                 <?php
                 break;
-            case 'flowplayer' :
+            case 'flowplayer':
                 ?>
                 <link rel="stylesheet" href="flowplayer-6/skin/functional.css">
                 <script src="flowplayer-6/flowplayer.min.js"></script>
@@ -745,33 +748,40 @@ if ($trace_on) {
 
         </script>
 
-        <?php if (isset($head_code)) echo $head_code; ?>
+        <?php if (isset($head_code)) {
+            echo $head_code;
+        } ?>
     </head>
     <body>
         <?php
         // Displays a warning message if the brower is not fully supported
         $warning = true;
         switch (strtolower($_SESSION['browser_name'])) {
-            case 'safari' :
-                if ($_SESSION['browser_version'] >= 5)
+            case 'safari':
+                if ($_SESSION['browser_version'] >= 5) {
                     $warning = false;
+                }
                 break;
-            case 'chrome' :
-                if ($_SESSION['browser_version'] >= 4)
+            case 'chrome':
+                if ($_SESSION['browser_version'] >= 4) {
                     $warning = false;
+                }
                 break;
-            case 'internet explorer' :
-                if ($_SESSION['browser_version'] >= 9)
+            case 'internet explorer':
+                if ($_SESSION['browser_version'] >= 9) {
                     $warning = false;
+                }
                 break;
-            case 'opera' :
-                if ($_SESSION['browser_version'] >= 26)
+            case 'opera':
+                if ($_SESSION['browser_version'] >= 26) {
                     $warning = false;
+                }
                 break;
-            case 'firefox' :
-                if (($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || 
-                        $_SESSION['user_os'] == "Android")) || $_SESSION['browser_version'] >= 35)
+            case 'firefox':
+                if (($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" ||
+                        $_SESSION['user_os'] == "Android")) || $_SESSION['browser_version'] >= 35) {
                     $warning = false;
+                }
                 break;
         }
         if ($warning) {
@@ -785,14 +795,17 @@ if ($trace_on) {
                         <li><b>Safari 5+</b> | </li>
                         <li><b>Google Chrome</b> | </li>
                         <li><b>Opera 26+</b> </li>
-                        <?php if ($_SESSION['user_os'] == "Windows") { ?>
+                        <?php if ($_SESSION['user_os'] == "Windows") {
+                ?>
                             <li> | <b>Internet Explorer 9+</b> | </li>
                             <li><b>Firefox 22+</b></li>
-    <?php } ?>
+    <?php
+            } ?>
                     </ul>
                 </div>       
             </div>
-                <?php } ?>
+                <?php
+        } ?>
         <div class="container">
             <div id="header_wrapper">
 <?php include_once template_getpath('div_main_header.php'); ?>
@@ -802,9 +815,9 @@ if ($trace_on) {
                     <?php
                     if (isset($error_path) && !empty($error_path)) {
                         include_once $error_path;
-                    } else if ($_SESSION['ezplayer_mode'] == 'view_main') {
+                    } elseif ($_SESSION['ezplayer_mode'] == 'view_main') {
                         include_once template_getpath('div_main_center.php');
-                    } else if ($_SESSION['ezplayer_mode'] == 'view_asset_streaming') {
+                    } elseif ($_SESSION['ezplayer_mode'] == 'view_asset_streaming') {
                         include_once template_getpath("div_streaming_center.php");
                     } else {
                         include_once template_getpath('div_assets_center.php');
@@ -815,12 +828,12 @@ if ($trace_on) {
 
             <?php
             if ($_SESSION["show_message"]) {
-                include_once template_getpath('popup_message_of_day.php');
-                ?>
+                include_once template_getpath('popup_message_of_day.php'); ?>
                 <script>
                     $('#popup_message_of_day').reveal($(this).data());
                 </script>           
-            <?php } ?>
+            <?php
+            } ?>
             <!-- FOOTER - INFOS COPYRIGHT -->
             <?php include_once template_getpath('div_main_footer.php'); ?>
             <!-- FOOTER - INFOS COPYRIGHT [FIN] -->

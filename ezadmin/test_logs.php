@@ -1,6 +1,6 @@
 <?php
 /*
-* EZCAST EZadmin 
+* EZCAST EZadmin
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>

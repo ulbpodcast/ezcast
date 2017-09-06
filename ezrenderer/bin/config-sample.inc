@@ -38,6 +38,8 @@ $enable_audio_sync = false;
 $performance_idx = 1; // Arbitrary number reflecting the performance of the machine. Float number between 0 and 1.
 $num_threads = 4; // Number of threads used for one encoding.
 $num_jobs = 4; // Number of jobs allowed to run simultaneously. Ideally <= (num_cores / num_threads)
+$title_duration = 8; // duration of the title (in seconds)
+
 
 $default_add_title = "FlyingTitle";
 

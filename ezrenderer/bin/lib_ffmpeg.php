@@ -427,9 +427,10 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8) {
  * @param type $duration
  * @return boolean
  */
-function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
-    global $ffmpegpath, $encoders_path, $aac_experimental;
-
+function movie_title_from_image($movieout, $imagein, $encoder) {
+    global $ffmpegpath, $encoders_path, $aac_experimental, $title_duration;
+    $duration = $title_duration;
+    
     $movieout = escape_path($movieout);
 
     $encoder_values = explode('_', $encoder);

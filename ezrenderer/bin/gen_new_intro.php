@@ -54,7 +54,7 @@ if ($res){
 else 
     print "\n metadata import failed \n";
 
-if (isset($title_assoc['add_title']) && $title_assoc['add_title'] != 'false' && $title_assoc['add_title'] != ''){
+if (isset($title_assoc['add_title']) && $title_assoc['add_title'] != 'false' && $title_assoc['add_title'] != '' && isset($title_assoc['intro_time']) && $title_assoc['intro_time'] != '' && isset($title_assoc['title_time']) && $title_assoc['title_time'] != '' && isset($title_assoc['intro']) && $title_assoc['intro'] != ''){
 	print "\n------------------------ Title exists------------------------\n";	
 	$months = array("janvier", "février", "mars", "avril", "mai", "juin",
     "juillet", "août", "septembre", "octobre", "novembre", "décembre");
@@ -136,6 +136,8 @@ if (isset($title_assoc['add_title']) && $title_assoc['add_title'] != 'false' && 
 	}
 	
 }
+else 
+    print("\n Error occured, unable to  Regenerate intro \n"); 
 
 // create filetitle.mov
 function create_file_title($processing,$title_assoc,$record_types){

@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -26,25 +26,33 @@
 
 include "config.inc";
 set_time_limit(0);
-$input=array_merge($_GET,$_POST);
+$input=array_merge($_GET, $_POST);
 
 //check whether upload has a good file
 $upload_err=$_FILES['userfile']['error'];
-if($upload_err!=0){
-  print "UPLOAD_ERROR:".$upload_err;
- die;
+if ($upload_err!=0) {
+    print "UPLOAD_ERROR:".$upload_err;
+    die;
 }
 
 //get input parameters
 $doctype=$input['document_type'];
 $recording_name=$input['recording_name'];
 $recording_name_sanitized=str_to_safedir($recording_name);
-if($doctype=="slide")$filename="original_slide.mp4";
-if($doctype=="cam")$filename="original_cam.mp4";
-if($doctype=="metadata")$filename="_metadata.xml";
+if ($doctype=="slide") {
+    $filename="original_slide.mp4";
+}
+if ($doctype=="cam") {
+    $filename="original_cam.mp4";
+}
+if ($doctype=="metadata") {
+    $filename="_metadata.xml";
+}
 
 //creates a directory that will contain slide, camera and record metadata
-if(!file_exists($recorder_uploads_dir."/".$recording_name_sanitized))  mkdir($recorder_uploads_dir."/".$recording_name_sanitized);
+if (!file_exists($recorder_uploads_dir."/".$recording_name_sanitized)) {
+    mkdir($recorder_uploads_dir."/".$recording_name_sanitized);
+}
 $uploadfile = $recorder_uploads_dir ."/".$recording_name_sanitized."/". $filename;
 print "uploadfile $uploadfile <br>\n";
 echo '<pre>';
@@ -67,13 +75,15 @@ print "</pre>";
  * @return string
  * @desc returns a directory safe
  */
-function str_to_safedir($string){
-  $toalnum="";
-  for($idx=0;$idx<strlen($string);$idx++)
-    if(ctype_alnum($string[$idx]) || $string[$idx]=="-")
-     $toalnum.=$string[$idx];
-     else
-     $toalnum.="_";
-  return $toalnum;
+function str_to_safedir($string)
+{
+    $toalnum="";
+    for ($idx=0;$idx<strlen($string);$idx++) {
+        if (ctype_alnum($string[$idx]) || $string[$idx]=="-") {
+            $toalnum.=$string[$idx];
+        } else {
+            $toalnum.="_";
+        }
+    }
+    return $toalnum;
 }
-?>

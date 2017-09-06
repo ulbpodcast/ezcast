@@ -4,7 +4,8 @@
  * Enables/disables Admin mode
  * @return boolean
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $ezplayer_url;
 

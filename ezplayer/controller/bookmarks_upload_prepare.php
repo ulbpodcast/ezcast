@@ -5,7 +5,8 @@
  * @global type $album
  * @global type $asset
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $album;
     global $asset;
 

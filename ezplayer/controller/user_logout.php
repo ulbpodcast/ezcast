@@ -3,7 +3,8 @@
 /**
  * Logs the user out, i.e. destroys all the data stored about them
  */
-function index($param = array()) {
+function index($param = array())
+{
     logout();
     global $ezplayer_url;
    

@@ -26,7 +26,8 @@
 
 require_once 'config.inc';
 
-function test_php() {
+function test_php()
+{
     global $php_cli_cmd;
     
     if (exec("if [ -e " . $php_cli_cmd . " ]; then echo 'exists'; fi;") != 'exists') {
@@ -58,7 +59,7 @@ function test_php() {
                     die;
                 }
                 $gd_info = gd_info();
-                if (!$gd_info['FreeType Support']){
+                if (!$gd_info['FreeType Support']) {
                     echo "gd_missing_freetype";
                     die;
                 }
@@ -67,7 +68,8 @@ function test_php() {
     }
 }
 
-function test_ffmpeg($aac_experimental = false) {
+function test_ffmpeg($aac_experimental = false)
+{
     global $ffmpegpath;
     
     if (exec("if [ -e " . $ffmpegpath . " ]; then echo 'exists'; fi;") != 'exists') {
@@ -97,7 +99,8 @@ function test_ffmpeg($aac_experimental = false) {
     }
 }
 
-function test_ffprobe() {
+function test_ffprobe()
+{
     global $ffprobepath;
     
     if (exec("if [ -e " . $ffprobepath . " ]; then echo 'exists'; fi;") != 'exists') {
@@ -115,8 +118,8 @@ function test_ffprobe() {
 }
 
 test_php();
-if ($encoding_pgm['name'] == 'ffmpeg' || $encoding_pgm['name'] == 'ffmpeg_exp'){
-test_ffprobe();
+if ($encoding_pgm['name'] == 'ffmpeg' || $encoding_pgm['name'] == 'ffmpeg_exp') {
+    test_ffprobe();
     test_ffmpeg($encoding_pgm['name'] == 'ffmpeg_exp');
 }
 echo "test ok";

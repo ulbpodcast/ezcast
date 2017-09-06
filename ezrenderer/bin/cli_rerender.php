@@ -81,8 +81,9 @@ foreach ($record_types as $record_type) {
             $files_to_edit['high_' . $record_type]['bias'] = $bias;
             movie_qtinfo($rendering_dir . '/high_' . $record_type . '/high_' . $record_type . '.mov', $qtinfo_high);
             $intro_movie = $intros_dir . "/" . $new_asset_array['intro_movie'] . "/" . $intro_movies[$qtinfo_high['aspectRatio']];
-            if (!file_exists($intro_movie))
+            if (!file_exists($intro_movie)) {
                 $intro_movie = $intros_dir . "/" . $new_asset_array['intro_movie'] . "/" . $intro_movies['default'];
+            }
             $files_to_edit['high_' . $record_type]['intro_movie'] = $intro_movie;
             if ($new_asset_array['super_highres'] == '1') {
                 $encoder = 'libx264_superhigh_' . $qtinfo_high['width'] . 'x' . $qtinfo_high['height'];
@@ -100,8 +101,9 @@ foreach ($record_types as $record_type) {
             $files_to_edit['low_' . $record_type]['bias'] = $bias;
             movie_qtinfo($rendering_dir . '/low_' . $record_type . '/low_' . $record_type . '.mov', $qtinfo_low);
             $intro_movie = $intros_dir . "/" . $new_asset_array['intro_movie'] . "/" . $intro_movies[$qtinfo_low['aspectRatio']];
-            if (!file_exists($intro_movie))
+            if (!file_exists($intro_movie)) {
                 $intro_movie = $intros_dir . "/" . $new_asset_array['intro_movie'] . "/" . $intro_movies['default'];
+            }
             $files_to_edit['low_' . $record_type]['intro_movie'] = $intro_movie;
             $encoder = 'libx264_low_' . $qtinfo_low['width'] . 'x' . $qtinfo_low['height'];
             $files_to_edit['low_' . $record_type]['encoder'] = $encoder;

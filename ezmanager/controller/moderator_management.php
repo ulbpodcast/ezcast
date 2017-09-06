@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $intros;
     global $credits;
     global $titlings;
@@ -18,10 +19,11 @@ function index($param = array()) {
     global $trace_on;
     global $display_trace_stats;
     
-    if (isset($input['album']))
+    if (isset($input['album'])) {
         $album = $input['album'];
-    else
+    } else {
         $album = $_SESSION['podman_album'];
+    }
     $current_album = $album;
     
     ezmam_repository_path($repository_path);
@@ -39,12 +41,12 @@ function index($param = array()) {
     //
     $metadata = ezmam_album_metadata_get($album);
     
-    if(isset($metadata['id'])) {
+    if (isset($metadata['id'])) {
         $album_id = $metadata['id'];
     } else {
         $album_id = $metadata['name'];
     }
-    if(isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
+    if (isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
         $course_code_public = $metadata['course_code_public'];
     }
     
@@ -52,10 +54,10 @@ function index($param = array()) {
     $album_name = suffix_remove($album); // "user-friendly" album name, used for display
     $title = choose_title_from_metadata($metadata);
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
-    $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $album . "&tokenmanager=" . 
+    $manager_full_url = $ezmanager_url . "?action=add_moderator&album=" . $album . "&tokenmanager=" .
             ezmam_album_token_manager_get($album);
     $current_tab = 'ezmanager';
-	
+    
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);
     $visibility = ($moderation) ? '-priv' : '-pub';

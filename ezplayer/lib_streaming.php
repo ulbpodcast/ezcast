@@ -8,7 +8,8 @@ require_once dirname(__FILE__) . '/../commons/lib_template.php';
  * Reloads the streaming player
  * @param type $display
  */
-function asset_streaming_player_update($display = true) {
+function asset_streaming_player_update($display = true)
+{
     global $input;
     global $asset_meta;
     global $m3u8_live_stream;
@@ -31,15 +32,16 @@ function asset_streaming_player_update($display = true) {
     $asset_token = ezmam_asset_token_get($album, $asset);
 
     $m3u8_file = $m3u8_master_filename;
-    if($streaming_video_alternate_server_enable_redirect) {
+    if ($streaming_video_alternate_server_enable_redirect) {
         $random = rand() % 100;
-        if($random < $streaming_video_alternate_server_redirect_chance)
+        if ($random < $streaming_video_alternate_server_redirect_chance) {
             $m3u8_file = $m3u8_external_master_filename;
+        }
     }
     
     //should contain cam or slide
     $type = $asset_meta['record_type'] == 'camslide' ? $input['type'] : $asset_meta['record_type'];
-    if(!in_array($type, array('cam', 'slide'))) {
+    if (!in_array($type, array('cam', 'slide'))) {
         $logger->log(EventType::MANAGER_STREAMING, LogLevel::WARNING, "Trying to use wrong record type '.$type."
                 . "'. Resetting to 'cam'", array(__FUNCTION__));
         $type = 'cam';
@@ -51,7 +53,7 @@ function asset_streaming_player_update($display = true) {
 
     $_SESSION['current_type'] = $type;
 
-    if ($display) { // the whole page must be displayed        
+    if ($display) { // the whole page must be displayed
         if ($is_android) {
             include_once template_getpath("div_streaming_player_android.php");
         } else {
@@ -71,7 +73,8 @@ function asset_streaming_player_update($display = true) {
  * @param type $display
  * @return boolean
  */
-function asset_streaming_chat_update($display = true) {
+function asset_streaming_chat_update($display = true)
+{
     global $input;
     global $repository_path;
     global $chat_messages;
@@ -115,7 +118,8 @@ function asset_streaming_chat_update($display = true) {
  * @param type $display
  * @return boolean
  */
-function asset_streaming_chat_get_last($display = true) {
+function asset_streaming_chat_get_last($display = true)
+{
     global $input;
     global $repository_path;
     global $chat_messages;
@@ -162,7 +166,8 @@ function asset_streaming_chat_get_last($display = true) {
 /**
  * Displays the asset details and video player for live HLS stream
  */
-function asset_streaming_view($refresh_center = true) {
+function asset_streaming_view($refresh_center = true)
+{
     global $input;
     global $repository_path;
     global $album;
@@ -194,9 +199,9 @@ function asset_streaming_view($refresh_center = true) {
     // Sanity checks
     //
     if (!isset($album) || !ezmam_album_exists($album)) {
-        if ($input['click']) // refresh a part of the page
+        if ($input['click']) { // refresh a part of the page
             include_once template_getpath('error_album_not_found.php');
-        else { // refresh the whole page
+        } else { // refresh the whole page
             $error_path = template_getpath('error_album_not_found.php');
             include_once template_getpath('main.php');
         }
@@ -205,9 +210,9 @@ function asset_streaming_view($refresh_center = true) {
     }
 
     if (!ezmam_asset_exists($album, $asset)) {
-        if ($input['click'])
+        if ($input['click']) {
             include_once template_getpath('error_asset_not_found.php');
-        else {
+        } else {
             $error_path = template_getpath('error_asset_not_found.php');
             include_once template_getpath('main.php');
         }
@@ -224,14 +229,15 @@ function asset_streaming_view($refresh_center = true) {
                 $error_path = template_getpath('error_permission_denied.php');
                 include_once template_getpath('main.php');
             }
-            log_append('warning', 'view_asset_streaming: tried to access asset ' . $input['asset'] . 
+            log_append('warning', 'view_asset_streaming: tried to access asset ' . $input['asset'] .
                     'in album ' . $input['album'] . ' with invalid token ' . $input['asset_token']);
             die;
         }
     }
 
-    if (!isset($asset_token) || $asset_token == '')
+    if (!isset($asset_token) || $asset_token == '') {
         $asset_token = ezmam_asset_token_get($album, $asset);
+    }
 
     $_SESSION['album'] = $album;
     $_SESSION['asset'] = $asset;

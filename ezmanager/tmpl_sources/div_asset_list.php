@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -48,7 +48,8 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 // However, get_user_friendly_date returns dd-mm-YYYY-HH-ii, so we need to remove the last part
                 $date = get_user_friendly_date($metadata['record_date'], '-', false);
                 $date = substr($date, 0, -6);
-                if (isset($metadata['origin']) && $metadata['origin'] === 'streaming'){ ?>
+                if (isset($metadata['origin']) && $metadata['origin'] === 'streaming') {
+                    ?>
                     <div>
                         <div id="asset_<?php echo $asset_name; ?>" class="ListButon ButtonTriangleProcessing"> 
                             <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 
@@ -70,43 +71,47 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                             <!-- Asset details go here -->
                         </div>
                     </div>
-                <?php } else { ?>
+                <?php
+                } else {
+                    ?>
                     <div>
                         <button role="button" id="is_downloadable_<?php echo $asset_name; ?>" 
                             title="®Allow_download®" class="btn btn-xs download_small_button <?php 
                                 echo (!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') ? "btn-success" : "btn-danger"; ?>"
                             onclick="update_download('<?php echo $album_name . (($public_album) ? '-pub' : '-priv') . "', '" .
                                 $asset_name; ?>')">
-                            <?php if(!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') {
-                                echo "®Download_allowed®";
-                            } else {
-                                echo "®Download_forbidden®"; 
-                            } ?>
+                            <?php if (!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') {
+                                    echo "®Download_allowed®";
+                                } else {
+                                    echo "®Download_forbidden®";
+                                } ?>
                         </button>
-                        <?php if(isset($metadata['scheduled']) && $metadata["scheduled"] == true){ ?>
+                        <?php if (isset($metadata['scheduled']) && $metadata["scheduled"] == true) {
+                                    ?>
                             <img src="images/page4/sched.png" style="float: right; width: 24px; padding: 3px;" 
                                 title="<?php echo $metadata['schedule_date']; ?>">
-                        <?php } ?>
+                        <?php
+                                } ?>
                         <div id="asset_<?php echo $asset_name; ?>_line"  class="ListButon StatusButton StatusButton<?php 
                             if ($status == 'failed') {
                                 echo 'Error';
-                            } else if ($status == 'processing') {
+                            } elseif ($status == 'processing') {
                                 echo 'Processing';
                             } ?>">
                             <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"
-                               <?php if($status == 'failed') {
-                                   echo 'style="color: #d9534f;" ';
-                               } else if($status == 'processing') {
-                                   echo 'style="color: #5cb85c;" ';
-                               } ?> > 
+                               <?php if ($status == 'failed') {
+                                echo 'style="color: #d9534f;" ';
+                            } elseif ($status == 'processing') {
+                                echo 'style="color: #5cb85c;" ';
+                            } ?> > 
                                 <span 
-                                    <?php if($status == 'failed') {
-                                        echo 'class="glyphicon glyphicon-warning-sign" ';
-                                    } else if($status == 'processing') {
-                                        echo 'class="glyphicon glyphicon-refresh" ';
-                                    } else {
-                                        echo 'class="glyphicon glyphicon-triangle glyphicon-triangle-right" ';
-                                    } ?>
+                                    <?php if ($status == 'failed') {
+                                echo 'class="glyphicon glyphicon-warning-sign" ';
+                            } elseif ($status == 'processing') {
+                                echo 'class="glyphicon glyphicon-refresh" ';
+                            } else {
+                                echo 'class="glyphicon glyphicon-triangle glyphicon-triangle-right" ';
+                            } ?>
                                     id="asset_<?php echo $asset_name; ?>_glyphicon" 
                                     aria-hidden="true"></span>
                                 <?php echo $date; ?> 
@@ -120,9 +125,10 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                             <!-- Asset details go here -->
                         </div>
                     </div>
-                <?php }
+                <?php
+                }
             } // Foreach
-        } // If asset ?>
+        } // If asset?>
     </div>
 </div>
 

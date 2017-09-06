@@ -7,12 +7,22 @@
     
     <input type="hidden" name="post"/>
     <input type="hidden" name="page" value="1" />
-    <input type="hidden" name="col" value="<?php if(isset($input) && isset($input['col'])) echo $input['col'] ?>" />
-    <input type="hidden" name="order" value="<?php if(isset($input) && isset($input['order'])) echo $input['order'] ?>" />
+    <input type="hidden" name="col" value="<?php if (isset($input) && isset($input['col'])) {
+    echo $input['col'];
+} ?>" />
+    <input type="hidden" name="order" value="<?php if (isset($input) && isset($input['order'])) {
+    echo $input['order'];
+} ?>" />
     
-    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®user_ID®" title="®user_ID®" name="user_ID" value="<?php if(isset($input) && isset($input['user_ID'])) echo $input['user_ID']; ?>" />
-    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®forename®" title="®forename®" name="forename" value="<?php if(isset($input) && isset($input['forename'])) echo $input['forename']; ?>" />
-    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®surname®" title="®surname®" name="surname" value="<?php if(isset($input) && isset($input['surname'])) echo $input['surname']; ?>" />
+    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®user_ID®" title="®user_ID®" name="user_ID" value="<?php if (isset($input) && isset($input['user_ID'])) {
+    echo $input['user_ID'];
+} ?>" />
+    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®forename®" title="®forename®" name="forename" value="<?php if (isset($input) && isset($input['forename'])) {
+    echo $input['forename'];
+} ?>" />
+    <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®surname®" title="®surname®" name="surname" value="<?php if (isset($input) && isset($input['surname'])) {
+    echo $input['surname'];
+} ?>" />
     
     <input type="submit" name="search" value="®search®" class="btn btn-primary">
     <input type="reset" name="reset" value="®reset®" class="btn"> <br />

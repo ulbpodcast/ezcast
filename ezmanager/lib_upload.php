@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -28,19 +28,18 @@
  * @package ezcast.ezmanager.lib.upload
  */
 
-function media_submit_create_metadata($tmp_name, $metadata) {
-   
-    
+function media_submit_create_metadata($tmp_name, $metadata)
+{
     global $submit_upload_dir;
     
    
     // Sanity checks
-    if(!is_dir($submit_upload_dir)) {
+    if (!is_dir($submit_upload_dir)) {
         ezmam_last_error($submit_upload_dir.' is not a directory');
         return false;
     }
     
-    if(!$metadata) {
+    if (!$metadata) {
         ezmam_last_error('not metadata provided');
         return false;
     }
@@ -48,7 +47,7 @@ function media_submit_create_metadata($tmp_name, $metadata) {
     // 1) create directory
     $folder_path = $submit_upload_dir.'/'.$tmp_name;
     
-    if(file_exists($folder_path)){
+    if (file_exists($folder_path)) {
         ezmam_last_error('Asset already exists. Wait one minute before retrying.');
         return false;
     }
@@ -57,8 +56,7 @@ function media_submit_create_metadata($tmp_name, $metadata) {
     
     // 2) put metadata into xml file
     $res = assoc_array2metadata_file($metadata, $folder_path.'/metadata.xml');
-    if(!$res) {
-        
+    if (!$res) {
         ezmam_last_error('ezmam_media_submit_create_metadata: could not save metadata');
         return false;
     }
@@ -66,26 +64,27 @@ function media_submit_create_metadata($tmp_name, $metadata) {
     return true;
 }
 
-function media_submit_error($tmp_name){
+function media_submit_error($tmp_name)
+{
     global $submit_upload_dir;
     global $submit_upload_failed_dir;
     
     // Sanity checks
-    if(!is_dir($submit_upload_dir)) {
+    if (!is_dir($submit_upload_dir)) {
         ezmam_last_error($submit_upload_dir.' is not a directory');
         return false;
     }
     
-    if(!is_dir($submit_upload_failed_dir)) {
+    if (!is_dir($submit_upload_failed_dir)) {
         ezmam_last_error($submit_upload_failed_dir.' is not a directory');
         return false;
     }
     
-     $folder_path = $submit_upload_dir.'/'.$tmp_name;
+    $folder_path = $submit_upload_dir.'/'.$tmp_name;
     
-    if(file_exists($folder_path)){
+    if (file_exists($folder_path)) {
         rename($folder_path, $submit_upload_failed_dir.'/'.$tmp_name);
-    } else {        
+    } else {
         ezmam_last_error('Asset does not exist.');
         return false;
     }

@@ -29,14 +29,17 @@
 include_once 'lib_print.php';
 ?> 
     <h2><b style="text-transform:uppercase;"><?php echo suffix_remove($album); ?></b> // <?php echo get_album_title($album); ?></h2>
-    <?php if (isset($asset_meta['title'])){ ?>
+    <?php if (isset($asset_meta['title'])) {
+    ?>
         <h3><?php echo $asset_meta['title']; ?></h3>
-    <?php } ?>
+    <?php
+} ?>
     <br/><p>®Delete_bookmarks_message®</p>
     <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
     <br/>
 
-    <?php if (isset($bookmarks) && count($bookmarks) > 0){ ?>
+    <?php if (isset($bookmarks) && count($bookmarks) > 0) {
+        ?>
     <form action="index.php?action=bookmarks_delete" method="post" id="select_delete_bookmark_form" name="delete_bookmarks_form" onsubmit="return false">
         <input type="hidden" name="album" id="delete_album" value="<?php echo $album; ?>"/>
         <input type="hidden" name="asset" id="delete_asset" value="<?php echo $asset_meta['record_date']; ?>"/>
@@ -44,14 +47,15 @@ include_once 'lib_print.php';
         <ul>
             <li style="border-bottom: solid 1px #cccccc;">
                 <input type="checkbox" onclick="toggle_checkboxes(this, 'delete_selection[]')" name="check_all"/>
-                <span class="<?php echo (($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>">
+                <span class="<?php echo(($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>">
                     <b>®Date®</b>
                 </span>
-                <span class="<?php echo (($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>">
+                <span class="<?php echo(($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>">
                     <b>®Bookmark®</b>
                 </span>
             </li>
-        <?php foreach ($bookmarks as $index => $bookmark){ ?>
+        <?php foreach ($bookmarks as $index => $bookmark) {
+            ?>
             <li>
                 <input style="float: left;" type="checkbox" name="delete_selection[]" value="<?php echo $index ?>"/>
                 <div style="display: inline-block; width: 457px; padding-left: 8px;">
@@ -63,7 +67,8 @@ include_once 'lib_print.php';
                 <?php print_bookmark_title($bookmark['title']); ?> 
                 </div>
             </li>
-        <?php } ?>
+        <?php
+        } ?>
         </ul><br/>
         <a href="#" onclick="bookmarks_delete_form_submit('<?php echo $source; ?>');" id="delete_button" 
            class="delete-button-confirm" title="®Delete_selected_bookmarks®">
@@ -71,6 +76,9 @@ include_once 'lib_print.php';
         </a>
         <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>
     </form>
-    <?php } else { ?>
+    <?php
+    } else {
+        ?>
         ®No_bookmarks®
-    <?php } ?>
+    <?php
+    } ?>

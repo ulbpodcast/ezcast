@@ -7,7 +7,8 @@
  * @global type $repository_path
  * @global type $ezmanager_url
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $ezmanager_url;
@@ -18,10 +19,10 @@ function index($param = array()) {
     $album['rss'] = $ezmanager_url . "/distribute.php?action=rss&album=" . $album['album'] . "&quality=ezplayer&token=" . $album['token'];
 
     switch ($input['display']) {
-        case 'delete' :
+        case 'delete':
             include_once template_getpath('popup_album_delete.php');
             break;
-        case 'rss' :
+        case 'rss':
             include_once template_getpath('popup_album_rss_share.php');
             break;
     }

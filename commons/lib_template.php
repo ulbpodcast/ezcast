@@ -1,7 +1,7 @@
 <?php
 
 /*
-* EZCAST Commons 
+* EZCAST Commons
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -53,32 +53,32 @@ $accepted_file_extensions = array('.html', '.xhtml', '.xml', '.htm', '.php'); //
  * Sets up or returns the "repository", i.e. the folder in which the (parsed) template files are stored
  * Warning: please use this function *before* any call to template_display()
  * @param string $path Path to the folder containing parsed templates
- * @return string|false Either the path to the templates repository, or an error status 
+ * @return string|false Either the path to the templates repository, or an error status
  */
-function template_repository_path($path="") {
+function template_repository_path($path="")
+{
     static $tmpl_repository_path=false;
     
-      if($path==""){
-        if($tmpl_repository_path===false){
-          template_last_error("1 Error: repository path not defined");
-          trigger_error("Repository path not defined", E_USER_WARNING);
-          return false;
-         }
-        else{
-          return $tmpl_repository_path;
-         }//if $repository_path
-       }//if $ath
+    if ($path=="") {
+        if ($tmpl_repository_path===false) {
+            template_last_error("1 Error: repository path not defined");
+            trigger_error("Repository path not defined", E_USER_WARNING);
+            return false;
+        } else {
+            return $tmpl_repository_path;
+        }//if $repository_path
+    }//if $ath
 
       //if path exists then store it
-      $res=is_dir($path);
-      if($res)
+    $res=is_dir($path);
+    if ($res) {
         $tmpl_repository_path=$path;
-       else {
-        template_last_error ("2 Error: repository path not found: $path");
+    } else {
+        template_last_error("2 Error: repository path not found: $path");
         trigger_error("Tried to define repository path but is was not found: $path", E_USER_WARNING);
-       }
+    }
        
-      return $res;
+    return $res;
 }
 
 /**
@@ -86,21 +86,23 @@ function template_repository_path($path="") {
  * @param string $tmpl_name Template name, including extension
  * @param bool $include_once(true) if set to false, the function will use include instead of include_once
  */
-function template_display($tmpl_name, $include_once = false) {
+function template_display($tmpl_name, $include_once = false)
+{
     require template_getpath($tmpl_name);
 }
 
 /**
  * Returns the path to a specified template
- * @param type $tmpl_name 
+ * @param type $tmpl_name
  */
-function template_getpath($tmpl_name) {
+function template_getpath($tmpl_name)
+{
     $path = template_repository_path();
-    if($path === false) {
+    if ($path === false) {
         template_last_error("Error: template repository not found");
     }
     
-    if(!file_exists($path.'/'.$tmpl_name)) {
+    if (!file_exists($path.'/'.$tmpl_name)) {
         template_last_error("Error: template $tmpl_name not found");
     }
  
@@ -116,11 +118,12 @@ function template_getpath($tmpl_name) {
 
 /**
  * Returns all the HTML files within the $source_folder folder
- * @param string $source_folder 
+ * @param string $source_folder
  * @return array List of filenames to template files
  */
-function template_list_files($source_folder) {
-    if(!is_dir($source_folder)) {
+function template_list_files($source_folder)
+{
+    if (!is_dir($source_folder)) {
         template_last_error("$source_folder is not a directory");
         return false;
     }
@@ -128,11 +131,13 @@ function template_list_files($source_folder) {
     $folder = glob($source_folder.'/*');
     $res = array();
     
-    foreach($folder as $entry) {
-        if(is_dir($entry))
-            $res = array_merge($res, template_list_files($entry)); //dig the template source dir recursively
-        else
+    foreach ($folder as $entry) {
+        if (is_dir($entry)) {
+            $res = array_merge($res, template_list_files($entry));
+        } //dig the template source dir recursively
+        else {
             $res[] = $entry;
+        }
     }
     
     return $res;
@@ -149,18 +154,19 @@ function template_list_files($source_folder) {
  * *** Update 2016/07/15
  * Add institution customization based on $organization_name and $lang
  */
-function template_parse($file, $lang, $output_folder, $translation_xml_file) {
+function template_parse($file, $lang, $output_folder, $translation_xml_file)
+{
     global $dictionnary_xml;
-	global $organization_name;
+    global $organization_name;
     //
     // 1) Sanity checks
     //
-    if(!is_dir($output_folder)) {
+    if (!is_dir($output_folder)) {
         template_last_error("Output folder $output_folder does not exist!");
         return false;
     }
     
-    if(!file_exists($file)) {
+    if (!file_exists($file)) {
         template_last_error("Input file $file does not exist");
         return false;
     }
@@ -187,7 +193,7 @@ function template_parse($file, $lang, $output_folder, $translation_xml_file) {
     foreach($labels as $label) {
         $keyword = '®'.$label['id'].'®';
         $label = (string) $label;
-        
+
         $data = preg_replace('!'.$keyword.'!iU', $label, $data);
     }*/
     
@@ -203,11 +209,13 @@ function template_parse($file, $lang, $output_folder, $translation_xml_file) {
     //$subfolder = strstr($file, '/'); // We want the result to be in the same subfolder as the input, but without the source_folder part.
     $subfolder = substr(strrchr($file, "/"), 1); // We want only the file name, not the path
     $output_file = $output_folder.'/'.$lang.'/'.$subfolder;
-    if(!file_exists($output_folder.'/'.$lang))
-        mkdir($output_folder.'/'.$lang);//dest dir doesn't exist so create it
+    if (!file_exists($output_folder.'/'.$lang)) {
+        mkdir($output_folder.'/'.$lang);
+    }//dest dir doesn't exist so create it
     
-    if(file_exists($output_file))
+    if (file_exists($output_file)) {
         unlink($output_file);
+    }
     
     file_put_contents($output_file, $data);
 }
@@ -215,12 +223,13 @@ function template_parse($file, $lang, $output_folder, $translation_xml_file) {
 /**
  * Loads the dictionnary in $file and puts the result in $dictionnary_xml
  * Call this function *before* trying to access the dictionnary
- * @param type $file 
+ * @param type $file
  */
-function template_load_dictionnary($file) {
+function template_load_dictionnary($file)
+{
     global $dictionnary_xml;
     
-    if(!file_exists($file)) {
+    if (!file_exists($file)) {
         template_last_error("File $file does not exist");
         return false;
     }
@@ -235,17 +244,18 @@ function template_load_dictionnary($file) {
  * @param type $lang The language to translate the label into
  * @return string the new label
  */
-function template_get_label($id, $lang) {
+function template_get_label($id, $lang)
+{
     global $dictionnary_xml;
     
-    if($dictionnary_xml == null) {
+    if ($dictionnary_xml == null) {
         template_last_error("Please load dictionnary before anything else");
         return false;
     }
     //fetch the element matching given id and language in xml stucture via xpath
     $res = $dictionnary_xml->xpath("/data/labels/label[@id='$id' and @lang='$lang']");
     
-    if(!$res) {
+    if (!$res) {
         template_last_warning('Label '.$id.' not found for lang '.$lang);
         return '';
     }
@@ -263,23 +273,25 @@ function template_get_label($id, $lang) {
  * @param type $lang The language to translate the label into
  * @return string the new label
  */
-function template_get_info($id, $organization, $lang) {
+function template_get_info($id, $organization, $lang)
+{
     global $dictionnary_xml;
     
-    if($dictionnary_xml == null) {
+    if ($dictionnary_xml == null) {
         template_last_error("Please load dictionnary before anything else");
         return false;
     }
     //fetch the element matching given id and language in xml stucture via xpath
     $res = $dictionnary_xml->xpath("/data/infos/info[@id='$id' and @organization='$organization' and @lang='$lang']");
     
-    if(!$res) {
+    if (!$res) {
         //return first translation found instead
         $res = $dictionnary_xml->xpath("/data/infos/info[@id='$id' and @lang='$lang']");
-        if(!$res)
+        if (!$res) {
             template_last_warning('Information '.$id.' not found for lang '.$lang.' and organization '.$organization. '.');
-        else
+        } else {
             template_last_warning('Information '.$id.' not found for lang '.$lang.' and organization '.$organization. '. Returning first translation found instead');
+        }
     }
     
     $res = $res[0];
@@ -290,19 +302,20 @@ function template_get_info($id, $organization, $lang) {
 /**
  * Returns the *message* given as a parameter, in the language given as another parameter
  * @param type $id
- * @param type $lang 
+ * @param type $lang
  */
-function template_get_message($id, $lang) {
+function template_get_message($id, $lang)
+{
     global $dictionnary_xml;
     
-    if($dictionnary_xml == null) {
+    if ($dictionnary_xml == null) {
         template_last_error("Please load dictionnary before anything else");
         return false;
     }
     //fetch the element matching given id and language in xml stucture via xpath
     $res = $dictionnary_xml->xpath("/data/messages/message[@id='$id' and @lang='$lang']");
     
-    if(!$res) {
+    if (!$res) {
         template_last_warning('Message '.$id.' not found for lang '.$lang);
         return '';
     }
@@ -317,31 +330,33 @@ function template_get_message($id, $lang) {
  * @return string error message
  * @desc Store and return last error message in ezmam library
  */
-function template_last_error($msg=""){
+function template_last_error($msg="")
+{
     static  $last_error="";
     global $error_visible;
 
-  if($msg=="") {
-      return $last_error;
-  }
-   else{
-       $last_error=$msg;
-       if($error_visible)
-          echo 'Error: '.$msg . PHP_EOL;
-       return true;
-       }
+    if ($msg=="") {
+        return $last_error;
+    } else {
+        $last_error=$msg;
+        if ($error_visible) {
+            echo 'Error: '.$msg . PHP_EOL;
+        }
+        return true;
+    }
 }
 
-function template_last_warning($msg="") {
+function template_last_warning($msg="")
+{
     static $last_warning = "";
     global $warning_visible;
     
     
-    if($msg=="")
+    if ($msg=="") {
         return $last_warning;
-    else {
+    } else {
         $last_warning = $msg;
-        if($warning_visible) {
+        if ($warning_visible) {
             echo 'Warning: ' . $msg . PHP_EOL;
         }
         return true;
@@ -352,29 +367,33 @@ function template_last_warning($msg="") {
  * If this function is called, errors are printed on screen instead of just
  * put in a log
  */
-function template_set_errors_visible() {
+function template_set_errors_visible()
+{
     global $error_visible;
     $error_visible = true;
 }
 
-function template_set_warnings_visible() {
+function template_set_warnings_visible()
+{
     global $warning_visible;
     $warning_visible = true;
 }
 
-function set_lang($lang) {
+function set_lang($lang)
+{
     $_SESSION['lang'] = $lang;
 }
 
 /**
  * Returns current chosen language
- * @return string(fr|en) 
+ * @return string(fr|en)
  */
-function get_lang() {
+function get_lang()
+{
     //if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
-    if(isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
+    if (isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
         return $_SESSION['lang'];
-    }
-    else
+    } else {
         return 'fr';
+    }
 }

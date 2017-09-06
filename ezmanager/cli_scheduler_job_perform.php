@@ -8,7 +8,7 @@ include_once __DIR__.'/config.inc';
 require_once __DIR__.'/../commons/lib_scheduling.php';
 include_once __DIR__.'/lib_ezmam.php';
 
-if($argc != 2) {
+if ($argc != 2) {
     echo "Usage: cli_scheduler_job_perform <job_uid>" . PHP_EOL;
     $logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "cli_scheduler_job_perform called with wrong arg count $argc", array(basename(__FILE__)));
     exit(1);
@@ -35,23 +35,28 @@ $job_dir = basename($job['location']);
 $cmd = $rsync_pgm . ' -L -r -e ssh -tv  --partial-dir=' . $renderer['downloading_dir'] . ' ' . $job['location'] . ' ' . $renderer['client'] . '@' . $renderer['host'] .  ':' . $renderer['downloaded_dir']  . ' 2>&1';
 echo $cmd . PHP_EOL;
 // try 3 times
-for($i = 0; $i < 3; $i++) {
+for ($i = 0; $i < 3; $i++) {
     exec($cmd, $out, $err);
-    if($err) {
+    if ($err) {
         lib_scheduling_warning('Scheduler::job_perform[wait]{rsync: ' . $cmd. '}('  . $err . ') |::>' . implode("\n", $out) . ' <::|');
         sleep(600);
+    } else {
+        break;
     }
-    else break;
 }
 
 // Send fail
-if($err) {
+if ($err) {
     lib_scheduling_error('Scheduler::job_perform[fail]{rsync: ' . $cmd . '}('  . $err . ') |::> ' . implode("\n", $out) . ' <::|');
     $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Failed to send video to renderer for job $uid. Location: ". $job['location'] . ". Cmd was $cmd", array(basename(__FILE__)));
 
     // tag the renderer as not repsonding
     $renderers = lib_scheduling_renderer_list();
-    foreach($renderers as $_) if($_['host'] == $renderer['host']) $_['status'] = 'not responding';
+    foreach ($renderers as $_) {
+        if ($_['host'] == $renderer['host']) {
+            $_['status'] = 'not responding';
+        }
+    }
     lib_scheduling_renderer_generate($renderers);
     lib_scheduling_alert('Scheduler::job_perform[not responding]{renderer: ' . $renderer['host'] . '}');
 
@@ -73,7 +78,7 @@ echo "Output result in " .$job['location'] . PHP_EOL;
 file_put_contents($job['location']. '/renderer.log', implode("\n", $cmdoutput));
 
 // Rendering fail
-if($returncode) {
+if ($returncode) {
     $asset_meta['status']='failed';
     $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
     lib_scheduling_error('Scheduler::job_perform[fail]{encode: ' . $cmd . '}('  . $returncode . ')[' . $dt .' sec]');
@@ -94,17 +99,18 @@ $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
 $cmd = $rsync_pgm . ' -L -r -e ssh -tv  --partial-dir=' . $render_finished_partial_upload_dir  . ' ' . $renderer['client'] . '@' . $renderer['host'] . ':' . $renderer['processed_dir'] . '/' . $job_dir . ' ' . dirname($job['location'] . ' 2>&1');
 
 // try 3 times
-for($i = 0; $i < 3; $i++) {
+for ($i = 0; $i < 3; $i++) {
     exec($cmd, $out, $err);
-    if($err) {
+    if ($err) {
         lib_scheduling_warning('Scheduler::job_perform[wait]{rsync: ' . $cmd. '}('  . $err . ') |::>' . implode("\n", $out) . ' <::|');
         sleep(600);
+    } else {
+        break;
     }
-    else break;
 }
 
 // Retrieve fail
-if($err) {
+if ($err) {
     $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Failed to retrieve resulting videos for job $uid. Album $album. Asset: $asset. Cmd was: $cmd", array(basename(__FILE__)));
     lib_scheduling_error('Scheduler::job_perform[fail]{rsync: ' . $cmd . '}('  . $err . ') |::>' . implode("\n", $out) . ' <::|');
     lib_scheduling_file_move(lib_scheduling_config('processing-path') . '/' . $job['basename'], lib_scheduling_config('failed-path') . '/' . $job['basename']);
@@ -118,19 +124,19 @@ lib_scheduling_file_move(lib_scheduling_config('processing-path') . '/' . $job['
 lib_scheduling_file_move($job['location'], $render_finished_upload_dir . '/' . $job_dir);
 
 // Now that the files have been copied on EZcast server, we delete them from EZrenderer
-if(   $renderer['processed_dir'] . '/' . $job_dir != '' 
+if ($renderer['processed_dir'] . '/' . $job_dir != ''
    && $renderer['processed_dir'] . '/' . $job_dir != '/') {
-        $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " rm -rf  ' . $renderer['processed_dir'] . '/' . $job_dir . ' 2>&1"';
-        exec($cmd, $out, $err);
-        if($err != 0) {
-            $logger->log(EventType::MANAGER_RENDERING, LogLevel::ERROR, "Failed to delete videos on renderer for job $uid. Album $album. Asset: $asset. Renderer: " . $renderer['host'], array(basename(__FILE__)));
-        }
+    $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' " rm -rf  ' . $renderer['processed_dir'] . '/' . $job_dir . ' 2>&1"';
+    exec($cmd, $out, $err);
+    if ($err != 0) {
+        $logger->log(EventType::MANAGER_RENDERING, LogLevel::ERROR, "Failed to delete videos on renderer for job $uid. Album $album. Asset: $asset. Renderer: " . $renderer['host'], array(basename(__FILE__)));
+    }
 }
 
 // Now run cli_render_maminsert
 $cmd="$php_cli_cmd ". __DIR__."/cli_rendered_maminsert.php  $album $asset $render_finished_upload_dir/$job_dir >> $render_finished_upload_dir/$job_dir/rendered_maminsert.log 2>&1";
 exec($cmd, $cmdoutput, $returncode);
-if($returncode != 0) {
+if ($returncode != 0) {
     //non zero return code -> something bad happened
     $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Call to cli_rendered_maminsert failed. Cmd was $cmd", array(basename(__FILE__)));
     $msg = "Submit_intro_title_movie failed";
@@ -144,12 +150,14 @@ scheduler_schedule();
 
 exit(0);
 
-function set_rendering_failure($album, $asset, $asset_meta) {
+function set_rendering_failure($album, $asset, $asset_meta)
+{
     $asset_meta['status']='failed';
     ezmam_asset_metadata_set($album, $asset, $asset_meta);
 }
 
-function job_perform_shutdown_function() { 
+function job_perform_shutdown_function()
+{
     global $job;
     global $cmd;
     global $logger;
@@ -174,7 +182,6 @@ function job_perform_shutdown_function() {
 
         global $uid;
         $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Rendering script crashed for job $uid. More completed output in $file", array(basename(__FILE__)));
-
     }
     
     //call default shutdown_handler

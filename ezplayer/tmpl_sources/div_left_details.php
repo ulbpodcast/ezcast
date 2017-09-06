@@ -28,21 +28,25 @@
 <?php
 $playbackRate = false;
 switch (strtolower($_SESSION['browser_name'])) {
-    case 'safari' :
-        if ($_SESSION['user_os'] != 'iOS')
+    case 'safari':
+        if ($_SESSION['user_os'] != 'iOS') {
             $playbackRate = true;
+        }
         break;
-    case 'chrome' :
-        if ($_SESSION['browser_version'] >= 4)
+    case 'chrome':
+        if ($_SESSION['browser_version'] >= 4) {
             $playbackRate = true;
+        }
         break;
-    case 'ie' :
-        if ($_SESSION['browser_version'] >= 9)
+    case 'ie':
+        if ($_SESSION['browser_version'] >= 9) {
             $playbackRate = true;
+        }
         break;
-    case 'firefox' :
-        if ($_SESSION['browser_version'] >= 22)
+    case 'firefox':
+        if ($_SESSION['browser_version'] >= 22) {
             $playbackRate = true;
+        }
         break;
 }
 ?> 
@@ -57,19 +61,19 @@ switch (strtolower($_SESSION['browser_name'])) {
         <?php
         if (acl_has_album_permissions($album)) {
             $token = acl_token_get($album);
-            $token = $token['token'];
-            ?>
+            $token = $token['token']; ?>
             <div class="right-arrow"></div>
             <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" 
                 title="®Back_to_album®">
-                (<?php if(isset($course_code_public) && $course_code_public!="") {
-                    echo $course_code_public; 
-                } else {
-                    echo suffix_remove($album); 
-                } ?>) 
+                (<?php if (isset($course_code_public) && $course_code_public!="") {
+                echo $course_code_public;
+            } else {
+                echo suffix_remove($album);
+            } ?>) 
                 <?php  echo get_album_title($album); ?>
             </a>
-        <?php } ?>
+        <?php
+        } ?>
         <div class="right-arrow"></div><?php print_info($asset_meta['title']); ?>
     </div>
 
@@ -95,7 +99,8 @@ switch (strtolower($_SESSION['browser_name'])) {
             <div class="shortcuts_tab"><a href="javascript:player_shortcuts_toggle();"></a></div>
         </div>
 
-        <?php if (acl_display_thread_notification()) { ?>
+        <?php if (acl_display_thread_notification()) {
+            ?>
             <script>
                 display_threads_notif = true;
             </script>
@@ -103,44 +108,53 @@ switch (strtolower($_SESSION['browser_name'])) {
                 <div class='notifications_title'><b>®Current_discussions®</b></div>
                 <div id='notifications'></div>
             </div>
-        <?php } ?>
+        <?php
+        } ?>
 
         <video id="main_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls 
                controlsList="nodownload" src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
             <source id="main_video_source"
-                    <?php if(array_key_exists('low_slide_src', $asset_meta)) { ?>
+                    <?php if (array_key_exists('low_slide_src', $asset_meta)) {
+            ?>
                     high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
                     low_slide_src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>"
-                    <?php } ?>
-                    <?php if(array_key_exists('low_cam_src', $asset_meta)) { ?>
+                    <?php
+        } ?>
+                    <?php if (array_key_exists('low_cam_src', $asset_meta)) {
+            ?>
                     high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>"
                     low_cam_src="<?php echo $asset_meta['low_cam_src'] . '&origin=' . $appname; ?>"
-                    <?php } ?>>  
+                    <?php
+        } ?>>  
         </video>
 
-        <?php if ($asset_meta['record_type'] == 'camslide') { ?>
+        <?php if ($asset_meta['record_type'] == 'camslide') {
+            ?>
             <video id="secondary_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls 
                    controlsList="nodownload" src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>" 
                    preload="metadata" type="video/mp4">
             </video>
-        <?php } ?>
+        <?php
+        } ?>
 
         <div id="load_warn">®Load_for_switch®</div>
 
 
         <script>
             type = 'cam';
-<?php if (isset($_SESSION['loaded_type'])) { ?>
+<?php if (isset($_SESSION['loaded_type'])) {
+            ?>
                 type = '<?php echo $_SESSION['loaded_type']; ?>';
 <?php
-} else {
-    if (isset($asset_meta['record_type']) && $asset_meta['record_type'] != 'camslide') {
-        ?>
+        } else {
+            if (isset($asset_meta['record_type']) && $asset_meta['record_type'] != 'camslide') {
+                ?>
                     type = '<?php echo $asset_meta['record_type'] ?>';
-    <?php }
-}
+    <?php
+            }
+        }
 ?>
-            time = <?php echo (isset($timecode) ? $timecode : 0) ?>;
+            time = <?php echo(isset($timecode) ? $timecode : 0) ?>;
 
             player_prepare('low', type, time);
         </script>
@@ -150,38 +164,46 @@ switch (strtolower($_SESSION['browser_name'])) {
 
         <div class="video_controls">
             <ul>
-<?php if ($playbackRate) { ?>
+<?php if ($playbackRate) {
+    ?>
                     <li>
                         <a id="toggleRate" href="javascript:player_playbackspeed_toggle();" title="®Change_speedrate®">1.0x</a> 
                     </li>
                     <?php
-                }
+}
                 if (isset($asset_meta['record_type']) && $asset_meta['record_type'] == 'camslide') {
                     ?>
                     <li>
                         <a class="movie-button active" title="®Watch_video®" href="javascript:player_video_type_set('cam');"></a>
                         <a class="slide-button" title="®Watch_slide®" href="javascript:player_video_type_set('slide');"></a>
                     </li>
-<?php } ?>
+<?php
+                } ?>
                 <li>
                     <a class="high-button" title="®Watch_high®" href="javascript:player_video_quality_set('high');"></a>
                     <a class="low-button active" title="®Watch_low®" href="javascript:player_video_quality_set('low');"></a>
                 </li>
-                    <?php if (acl_user_is_logged()) { ?>
+                    <?php if (acl_user_is_logged()) {
+                    ?>
                     <li>
-                        <?php if (acl_has_album_permissions($album)){ ?>
+                        <?php if (acl_has_album_permissions($album)) {
+                        ?>
                         <a class="add-bookmark-button" title="®Add_bookmark®" href="javascript:player_bookmark_form_toggle('personal');"></a>
-                        <?php }
-                        if (acl_has_album_moderation($album) || acl_is_admin()) { ?>
+                        <?php
+                    }
+                    if (acl_has_album_moderation($album) || acl_is_admin()) {
+                        ?>
                             <a class="add-toc-button" title="®Add_toc®" href="javascript:player_bookmark_form_toggle('official');"></a>
                             <?php
-                        }
-                        if (acl_display_threads()) {
-                            ?>
+                    }
+                    if (acl_display_threads()) {
+                        ?>
                             <a class="add-thread-button" title="®Add_discussion®" href="javascript:player_thread_form_toggle();"></a>
-                    <?php } ?>
+                    <?php
+                    } ?>
                     </li>
-<?php } ?>                
+<?php
+                } ?>                
                 <li>
                     <a class="share-button" href="javascript:popup_asset(current_album, current_asset, time, type, 'share_time')" title="®Share_time®" 
                        onclick="player_video_link()"></a>

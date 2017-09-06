@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
 
@@ -12,5 +13,5 @@ function index($param = array()) {
         log_append('warning', 'view_asset_details: tried to access album ' . $input['album'] . ' without permission');
         die;
     }
-    update_title($input['album'],$input['asset']);
+    update_title($input['album'], $input['asset']);
 }

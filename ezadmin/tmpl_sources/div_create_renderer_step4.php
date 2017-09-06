@@ -39,12 +39,16 @@
 <div id="main_step_4">
     <form method="POST" class="form-horizontal">
 
-        <?php if ($error) { ?>
+        <?php if ($error) {
+    ?>
             <div class="alert alert-danger"><?php echo $error ?></div>
-        <?php } ?>
-        <?php if (isset($tests_success) && $tests_success) { ?>
+        <?php
+} ?>
+        <?php if (isset($tests_success) && $tests_success) {
+        ?>
             <div class="alert alert-success">®configuration_success®</div>
-        <?php } ?>
+        <?php
+    } ?>
         <input type="hidden" name="renderer_step" value="4"/>
 
         ®create_renderer_step_4_message®<br/><br/>

@@ -35,8 +35,8 @@ require_once '../commons/lib_database.php';
 $stmts = threads_statements_get();
 db_prepare($stmts);
 
-function threads_statements_get() {
-
+function threads_statements_get()
+{
     return array(
         /*         * ******* T H R E A D S ******** */
         'thread_insert' =>
@@ -152,7 +152,7 @@ function threads_statements_get() {
         'vote_user_get' =>
             'SELECT COUNT(*) AS row, voteType FROM ' . db_gettable('votes') . ' ' .
             'WHERE login = :login AND comment = :comment',
-        'vote_cancel' => 
+        'vote_cancel' =>
             'DELETE FROM ' . db_gettable('votes') . ' ' .
             'WHERE login = :login AND comment = :comment',
         'vote_delete' =>
@@ -168,12 +168,13 @@ function threads_statements_get() {
  * @param type $values
  * @return boolean errorflag
  */
-function thread_insert($values) {
+function thread_insert($values)
+{
     global $statements;
     global $db_object;
-//    foreach ($values as $row => $value) {
-//        $statements['thread_insert']->bindParam(':'.$row, $value);
-//    }
+    //    foreach ($values as $row => $value) {
+    //        $statements['thread_insert']->bindParam(':'.$row, $value);
+    //    }
     $statements['thread_insert']->bindParam(':title', $values['title']);
     $statements['thread_insert']->bindParam(':message', $values['message']);
     $statements['thread_insert']->bindParam(':timecode', $values['timecode']);
@@ -206,7 +207,8 @@ function thread_insert($values) {
  * @param type $asset
  * @return boolean
  */
-function thread_update($id, $title, $message, $timecode, $album, $author = 'Unknown') {
+function thread_update($id, $title, $message, $timecode, $album, $author = 'Unknown')
+{
     global $statements;
 
     $date = date('Y-m-d H:i:s');
@@ -227,7 +229,8 @@ function thread_update($id, $title, $message, $timecode, $album, $author = 'Unkn
  * @global null $db
  * @return Array
  */
-function thread_select_all() {
+function thread_select_all()
+{
     global $statements;
 
     $statements['threads_select_all']->execute();
@@ -241,7 +244,8 @@ function thread_select_all() {
  * @param string $asset
  * @return array
  */
-function threads_select_by_asset($album, $asset) {
+function threads_select_by_asset($album, $asset)
+{
     global $statements;
 
     if (cache_asset_threads_isset($album, $asset)) {
@@ -265,7 +269,8 @@ function threads_select_by_asset($album, $asset) {
  * @global type $current_thread
  * @return type
  */
-function thread_select_by_id($id = '') {
+function thread_select_by_id($id = '')
+{
     global $statements;
     if ($id == '') {
         return false;
@@ -286,7 +291,8 @@ function thread_select_by_id($id = '') {
  * @param type $asset
  * @return boolean errorflag
  */
-function thread_delete_by_id($id, $album, $asset) {
+function thread_delete_by_id($id, $album, $asset)
+{
     global $statements;
     $statements['thread_delete_by_id']->bindValue(':deleted', '1');
     $statements['thread_delete_by_id']->bindParam(':id', $id);
@@ -304,7 +310,8 @@ function thread_delete_by_id($id, $album, $asset) {
  * @param type $album
  * @return type
  */
-function threads_select_by_album($album, $limit) {
+function threads_select_by_album($album, $limit)
+{
     global $statements;
 
     if (cache_album_threads_isset($album)) {
@@ -316,8 +323,9 @@ function threads_select_by_album($album, $limit) {
     $res = $statements['threads_select_by_album']->fetchAll(PDO::FETCH_ASSOC);
 
     cache_album_threads_set($album, $res);
-    if ($limit == 0)
+    if ($limit == 0) {
         return $res;
+    }
     return array_slice($res, 0, $limit);
 }
 
@@ -327,7 +335,8 @@ function threads_select_by_album($album, $limit) {
  * @param type $_id
  * @return type
  */
-function thread_update_lastEdit($id, $author = "Unknown") {
+function thread_update_lastEdit($id, $author = "Unknown")
+{
     global $statements;
     $date = date('Y-m-d H:i:s');
     $statements['thread_update_lastEdit']->bindParam(':lastEditDate', $date);
@@ -344,7 +353,8 @@ function thread_update_lastEdit($id, $author = "Unknown") {
  * @param type $_id
  * @return type
  */
-function thread_update_nbComments($id, $up) {
+function thread_update_nbComments($id, $up)
+{
     global $statements;
     if ($up) {
         $statements['thread_inc_nbComments']->bindParam(':id', $id);
@@ -363,7 +373,8 @@ function thread_update_nbComments($id, $up) {
  * @param type $_id
  * @return type
  */
-function thread_reinit_nbComments($id) {
+function thread_reinit_nbComments($id)
+{
     global $statements;
     $statements['thread_reinit_nbComments']->bindParam(':id', $id);
     $res = $statements['thread_reinit_nbComments']->execute();
@@ -371,20 +382,23 @@ function thread_reinit_nbComments($id) {
     return $res;
 }
 
-function thread_search($words, $fields, $albums, $asset = '') {
+function thread_search($words, $fields, $albums, $asset = '')
+{
     global $db_object;
 
     // set $relevancy to true if the result is aimed to be sorted by relevancy.
     // With $relevancy = false, as soon as a word is found in any of the fields,
     // we stop the search and check for the next discussion.
-    // With $relevancy = true, we search for every words in every fields and 
+    // With $relevancy = true, we search for every words in every fields and
     // give a score to each discussion, according to certain rules.
     $relevancy = true;
 
-    if (count($fields) <= 0)
+    if (count($fields) <= 0) {
         return null;
-    if (count($albums) <= 0)
+    }
+    if (count($albums) <= 0) {
         return null;
+    }
 
     $albums_in_query = implode(',', array_fill(0, count($albums), '?'));
 
@@ -508,14 +522,18 @@ function thread_search($words, $fields, $albums, $asset = '') {
                     $score++;
 
                     // there is nothing before and/or after the word, we increment the score
-                    if ($offset == 0)
+                    if ($offset == 0) {
                         $score++;
-                    if ($last_index == strlen($thread['title']))
+                    }
+                    if ($last_index == strlen($thread['title'])) {
                         $score++;
-                    if ($offset > 0 && $thread['title'][$offset - 1] == ' ')
+                    }
+                    if ($offset > 0 && $thread['title'][$offset - 1] == ' ') {
                         $score++;
-                    if ($last_index < strlen($thread['title']) && $thread['title'][$last_index] == ' ')
+                    }
+                    if ($last_index < strlen($thread['title']) && $thread['title'][$last_index] == ' ') {
                         $score++;
+                    }
 
                     // There are multiple occurences of the word, we increment the score
                     $count = substr_count(strtoupper($thread['title']), strtoupper($word));
@@ -545,14 +563,18 @@ function thread_search($words, $fields, $albums, $asset = '') {
                     $score++;
 
                     // there is nothing before and/or after the word, we increment the score
-                    if ($offset == 0)
+                    if ($offset == 0) {
                         $score++;
-                    if ($last_index == strlen($thread['message']))
+                    }
+                    if ($last_index == strlen($thread['message'])) {
                         $score++;
-                    if ($offset > 0 && $thread['message'][$offset - 1] == ' ')
+                    }
+                    if ($offset > 0 && $thread['message'][$offset - 1] == ' ') {
                         $score++;
-                    if ($last_index < strlen($thread['message']) && $thread['message'][$last_index] == ' ')
+                    }
+                    if ($last_index < strlen($thread['message']) && $thread['message'][$last_index] == ' ') {
                         $score++;
+                    }
 
                     // There are multiple occurences of the word, we increment the score
                     $count = substr_count(strtoupper($thread['message']), strtoupper($word));
@@ -565,11 +587,13 @@ function thread_search($words, $fields, $albums, $asset = '') {
 
         if (isset($threads_array[$thread['albumName']][$thread['assetName']][$thread['id']])) {
             // updates the score of the thread
-            if ($relevancy)
+            if ($relevancy) {
                 $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['score'] += $score;
+            }
         } else {
-            if ($relevancy)
+            if ($relevancy) {
                 $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['score'] = $score;
+            }
             $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['title'] = $thread['title'];
             $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['message'] = $thread['message'];
             $threads_array[$thread['albumName']][$thread['assetName']][$thread['id']]['timecode'] = $thread['timecode'];
@@ -590,14 +614,18 @@ function thread_search($words, $fields, $albums, $asset = '') {
                     $score++;
 
                     // there is nothing before and/or after the word, we increment the score
-                    if ($offset == 0)
+                    if ($offset == 0) {
                         $score++;
-                    if ($last_index == strlen($thread_comment['message']))
+                    }
+                    if ($last_index == strlen($thread_comment['message'])) {
                         $score++;
-                    if ($offset > 0 && $thread_comment['message'][$offset - 1] == ' ')
+                    }
+                    if ($offset > 0 && $thread_comment['message'][$offset - 1] == ' ') {
                         $score++;
-                    if ($last_index < strlen($thread_comment['message']) && $thread_comment['message'][$last_index] == ' ')
+                    }
+                    if ($last_index < strlen($thread_comment['message']) && $thread_comment['message'][$last_index] == ' ') {
                         $score++;
+                    }
 
                     // There are multiple occurences of the word, we increment the score
                     $count = substr_count(strtoupper($thread_comment['message']), strtoupper($word));
@@ -611,12 +639,14 @@ function thread_search($words, $fields, $albums, $asset = '') {
         // the thread is already in the list
         if (isset($threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']])) {
             // updates the score of the thread
-            if ($relevancy)
+            if ($relevancy) {
                 $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['score'] += $score;
+            }
             $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['comments'][$thread_comment['id']] = $thread_comment['message'];
         } else {
-            if ($relevancy)
+            if ($relevancy) {
                 $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['score'] = $score;
+            }
             $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['title'] = $thread_comment['title'];
             $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['message'] = $thread_comment['thread_message'];
             $threads_array[$thread_comment['albumName']][$thread_comment['assetName']][$thread_comment['thread']]['timecode'] = $thread_comment['timecode'];
@@ -627,13 +657,16 @@ function thread_search($words, $fields, $albums, $asset = '') {
     return $threads_array;
 }
 
-function thread_search_old($words, $fields, $albums, $asset = '') {
+function thread_search_old($words, $fields, $albums, $asset = '')
+{
     global $db_object;
 
-    if (count($fields) <= 0)
+    if (count($fields) <= 0) {
         return null;
-    if (count($albums) <= 0)
+    }
+    if (count($albums) <= 0) {
         return null;
+    }
 
     // db columns where we can do a search
     $accepted_fields = array(
@@ -656,12 +689,12 @@ function thread_search_old($words, $fields, $albums, $asset = '') {
     $albums_in_query = implode(',', array_fill(0, count($albums), '?'));
 
     switch (count($words)) {
-        case 0 :
+        case 0:
             $where = '';
             // stmt will be:
-            // SELECT ... FROM threads 
+            // SELECT ... FROM threads
             break;
-        case 1 :
+        case 1:
             $where = '';
             foreach ($fields_in_query_thread as $field => $column) {
                 $where .= ($where == '') ? 'WHERE ' : ' OR ';
@@ -723,7 +756,7 @@ function thread_search_old($words, $fields, $albums, $asset = '') {
      */
 
     // converts fields array in string to inject in the prepared query
-    // we can't use db->quote() or bind param because it adds quotes 
+    // we can't use db->quote() or bind param because it adds quotes
     // and we can't have quotes in SQL 'MATCH' instruction
     $fields_in_query_thread = implode(',', $fields_in_query_thread);
     $fields_in_query_comment = implode(',', $fields_in_query_comment);
@@ -731,7 +764,7 @@ function thread_search_old($words, $fields, $albums, $asset = '') {
     // for each album in the array, adds a parameter in the prepared statement
     $albums_in_query = implode(',', array_fill(0, count($albums), '?'));
 
-    // for each word to search, adds the word in a string 
+    // for each word to search, adds the word in a string
     // for SQL 'AGAINST' instruction
     foreach ($words as $word) {
         $search .= '+' . $word . '* ';
@@ -834,12 +867,13 @@ function thread_search_old($words, $fields, $albums, $asset = '') {
  * @param type $values
  * @return boolean errorflag
  */
-function comment_insert($values) {
+function comment_insert($values)
+{
     global $statements;
 
-//    foreach ($values as $row => $value) {
-//        $statements['comment_insert']->bindParam(':'.$row, $value);
-//    }
+    //    foreach ($values as $row => $value) {
+    //        $statements['comment_insert']->bindParam(':'.$row, $value);
+    //    }
     if (!isset($values['parent'])) {
         $statements['comment_insert']->bindParam(':message', $values['message']);
         $statements['comment_insert']->bindParam(':thread', $values['thread']);
@@ -861,9 +895,10 @@ function comment_insert($values) {
     }
 
     if ($res) {
-        thread_update_nbComments($values['thread'], TRUE);
-        if (isset($values['parent']))
-            comment_update_nbChild($values['parent'], TRUE);
+        thread_update_nbComments($values['thread'], true);
+        if (isset($values['parent'])) {
+            comment_update_nbChild($values['parent'], true);
+        }
     }
 
     thread_update_lastEdit($values['thread'], $values['authorFullName']);
@@ -881,10 +916,11 @@ function comment_insert($values) {
  * @param string $album
  * @param string $asset
  * @param string $thread
- * 
+ *
  * @return boolean true if succed
  */
-function comment_update($id, $message, $album, $asset, $thread, $author = 'Unknown') {
+function comment_update($id, $message, $album, $asset, $thread, $author = 'Unknown')
+{
     global $statements;
     $date = date('Y-m-d H:i:s');
     $statements['comment_update']->bindParam(':message', $message);
@@ -905,7 +941,8 @@ function comment_update($id, $message, $album, $asset, $thread, $author = 'Unkno
  * @param boolean $up true to add one and false to remove one
  * @return boolean
  */
-function comment_update_nbChild($_id, $up) {
+function comment_update_nbChild($_id, $up)
+{
     global $statements;
     if ($up) {
         $statements['comment_update_nbChild_up']->bindParam(':id', $_id);
@@ -923,7 +960,8 @@ function comment_update_nbChild($_id, $up) {
  * @param int $_id
  * @return array
  */
-function comment_select_by_id($id) {
+function comment_select_by_id($id)
+{
     global $statements;
 
     $statements['comment_select_by_id']->bindParam(':id', $id);
@@ -936,9 +974,10 @@ function comment_select_by_id($id) {
  * Returns an array with the comments posted on the current thread
  * @global type $db
  * @global int $current_thread
- * @return array 
+ * @return array
  */
-function comment_select_by_thread($thread_id = '') {
+function comment_select_by_thread($thread_id = '')
+{
     global $statements;
     if ($thread_id == '') {
         $thread_id = $_SESSION['current_thread'];
@@ -953,7 +992,8 @@ function comment_select_by_thread($thread_id = '') {
  * Returns an array containing all childs of the given comment
  * @param type $id
  */
-function comment_children_get($id) {
+function comment_children_get($id)
+{
     global $statements;
 
     $statements['comment_children_get']->bindParam(':parent', $id);
@@ -968,22 +1008,24 @@ function comment_children_get($id) {
  * @param int $id
  * @return boolean error flag
  */
-function comment_delete_by_id($id) {
+function comment_delete_by_id($id)
+{
     global $statements;
 
     $comment = comment_select_by_id($id);
     $statements['comment_delete_by_id']->bindParam(':id', $id);
     $res = $statements['comment_delete_by_id']->execute();
     if ($res) {
-        thread_update_nbComments($comment['thread'], FALSE);
+        thread_update_nbComments($comment['thread'], false);
         if ($comment['nbChilds'] > 0) {
             $children = comment_children_get($id);
             foreach ($children as $child) {
                 comment_delete_by_id($child['id']);
             }
         }
-        if ($comment['parent'] != NULL)
-            comment_update_nbChild($comment['parent'], FALSE);
+        if ($comment['parent'] != null) {
+            comment_update_nbChild($comment['parent'], false);
+        }
     }
 
 
@@ -997,7 +1039,8 @@ function comment_delete_by_id($id) {
  * @param int $_id
  * @return boolean errorflag
  */
-function comment_delete_by_thread($thread_id = '') {
+function comment_delete_by_thread($thread_id = '')
+{
     global $statements;
     if ($thread_id == '') {
         $thread_id = $_SESSION['current_thread'];
@@ -1014,7 +1057,8 @@ function comment_delete_by_thread($thread_id = '') {
  * @param int $_comId
  * @return boolean errorflag
  */
-function comment_update_approval($_comId) {
+function comment_update_approval($_comId)
+{
     global $statements;
 
     $comment = comment_select_by_id($_comId);
@@ -1025,7 +1069,8 @@ function comment_update_approval($_comId) {
     return $statements['comment_update_approval']->execute();
 }
 
-function comment_approval_remove($comment_id){
+function comment_approval_remove($comment_id)
+{
     global $statements;
         
     $approval = '0';
@@ -1041,7 +1086,8 @@ function comment_approval_remove($comment_id){
  * @global int $current_thread
  * @return array
  */
-function comment_select_best($thread_id = '') {
+function comment_select_best($thread_id = '')
+{
     global $statements;
     if (!$thread_id) {
         $thread_id = $_SESSION['current_thread'];
@@ -1060,7 +1106,8 @@ function comment_select_best($thread_id = '') {
  * @param type $values
  * @return type
  */
-function vote_insert($values) {
+function vote_insert($values)
+{
     global $statements;
     
     
@@ -1071,7 +1118,7 @@ function vote_insert($values) {
     $double = false;
     
     // If player already vote and vote same that now
-    if($votePlayer['row'] > 0 && $votePlayer['voteType'] == $values['voteType']) {
+    if ($votePlayer['row'] > 0 && $votePlayer['voteType'] == $values['voteType']) {
         $values['voteType'] = -$values['voteType'];
         
         $res = 0;
@@ -1079,7 +1126,6 @@ function vote_insert($values) {
         $statements['vote_cancel']->bindParam(":login", $values['login']);
         $statements['vote_cancel']->bindParam(":comment", $values['comment']);
         $statements['vote_cancel']->execute();
-        
     } else { // else
         // Change the vote table with the new value
         $statements['vote_insert']->bindParam(":login", $values['login']);
@@ -1089,7 +1135,7 @@ function vote_insert($values) {
         $res = $values['voteType'];
         
         // If already vote, double the value
-        if($votePlayer['row'] > 0) {
+        if ($votePlayer['row'] > 0) {
             $double = true;
         }
     }
@@ -1104,7 +1150,8 @@ function vote_insert($values) {
  * @param type $comment_id
  * @return type
  */
-function vote_delete($comment_id) {
+function vote_delete($comment_id)
+{
     global $statements;
 
     $statements['vote_delete']->bindParam(":comment", $comment_id);
@@ -1121,7 +1168,8 @@ function vote_delete($comment_id) {
  * @param type $comment_id
  * @return type
  */
-function comment_score_init($comment_id) {
+function comment_score_init($comment_id)
+{
     global $statements;
 
     $statements['comment_score_init']->bindParam(':id', $comment_id);
@@ -1130,11 +1178,12 @@ function comment_score_init($comment_id) {
     return $res;
 }
 
-function comment_update_score($_id, $up, $double = false) {
+function comment_update_score($_id, $up, $double = false)
+{
     global $statements;
     
     $strStatement = 'comment_update_score_';
-    if($double) {
+    if ($double) {
         $strStatement .= 'double_';
     }
     
@@ -1155,7 +1204,8 @@ function comment_update_score($_id, $up, $double = false) {
  * @global int $current_thread
  * @param int $_id
  */
-function thread_set_current_thread($_id) {
+function thread_set_current_thread($_id)
+{
     global $current_thread;
     $current_thread = $_id;
     $_SESSION['current_thread'] = $_id;

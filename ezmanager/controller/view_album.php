@@ -4,7 +4,8 @@
 /**
  * Displays the album passed in GET or POST "album" parameter, if it exists and is managable by the user.
  */
-function index($param = array()) {
+function index($param = array())
+{
     // Initialization: we retrieve various variable we'll need later on
     global $input;
     global $repository_path;
@@ -17,13 +18,13 @@ function index($param = array()) {
     global $display_trace_stats;
     // global $ezmanager_url;
 
-    if (isset($input['tokenmanager'])){
+    if (isset($input['tokenmanager'])) {
         // add course to user in DB
-    }	
+    }
     
-    if (isset($input['album']))
+    if (isset($input['album'])) {
         $album = $input['album'];
-    else {
+    } else {
         $album = $_SESSION['podman_album'];
     }
     $current_album = $album;
@@ -47,12 +48,12 @@ function index($param = array()) {
     // 2) We set the variables used in the template with the correct values
     //
     $album_name_full = $album; // complete album name, used for div identification
-    if(isset($metadata['id'])) {
+    if (isset($metadata['id'])) {
         $album_id = $metadata['id'];
     } else {
         $album_id = $metadata['name'];
     }
-    if(isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
+    if (isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
         $course_code_public = $metadata['course_code_public'];
     }
     $album_name = $metadata['name'];
@@ -68,7 +69,7 @@ function index($param = array()) {
     $hd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=high&token=' . ezmam_album_token_get($album);
     $sd_rss_url_web = $distribute_url . '?action=rss&album=' . $album . '&quality=low&token=' . ezmam_album_token_get($album);
     $player_full_url = $ezplayer_url . "?action=view_album_assets&album=" . $album . "&token=" . ezmam_album_token_get($album);
-    ezmam_album_token_manager_set($album);	
+    ezmam_album_token_manager_set($album);
     $assets = ezmam_asset_list_metadata($album_name_full);
 
     //
@@ -85,4 +86,3 @@ function index($param = array()) {
     include template_getpath('div_album_header.php');
     include template_getpath('div_asset_list.php');
 }
-

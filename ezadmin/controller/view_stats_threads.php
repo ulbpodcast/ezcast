@@ -1,12 +1,13 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     
     /// Load Helper ///
     include_once '../commons/view_helpers/helper_sort_col.php';
     
-    if(array_key_exists('col', $input) && array_key_exists('order', $input)) {
+    if (array_key_exists('col', $input) && array_key_exists('order', $input)) {
         $colOrder = new Sort_colonne($input['col'], $input['order']);
     } else {
         $colOrder = new Sort_colonne('albumName', 'ASC');

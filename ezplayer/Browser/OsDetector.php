@@ -51,7 +51,7 @@ class OsDetector implements DetectorInterface
         if (stripos($userAgent->getUserAgentString(), 'opera mini') !== false) {
             $os->setIsMobile(true);
         } // Set is mobile for Pocket IE
-        else if (stripos($userAgent->getUserAgentString(), 'mspie') !== false || stripos($userAgent->getUserAgentString(), 'pocket') !== false) {
+        elseif (stripos($userAgent->getUserAgentString(), 'mspie') !== false || stripos($userAgent->getUserAgentString(), 'pocket') !== false) {
             $os->setIsMobile(true);
         }
     }
@@ -134,7 +134,7 @@ class OsDetector implements DetectorInterface
             }
             return true;
         } // Windows Me, Windows 98, Windows 95, Windows CE
-        else if (preg_match('/(Windows 98; Win 9x 4\.90|Windows 98|Windows 95|Windows CE)/i', $userAgent->getUserAgentString(), $matches)) {
+        elseif (preg_match('/(Windows 98; Win 9x 4\.90|Windows 98|Windows 95|Windows CE)/i', $userAgent->getUserAgentString(), $matches)) {
             $os->setName($os::WINDOWS);
             switch (strtolower($matches[0])) {
                 case 'windows 98; win 9x 4.90':

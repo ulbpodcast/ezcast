@@ -65,17 +65,20 @@
         <script src="bootstrap/js/bootstrap-dropdown.js"></script>
     </head>
 
-    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && $GLOBALS['debugmode'] == "devl") echo 'background="#99ff99"' ?>>
+    <body link="#000088" vlink="#000044" alink="#0000ff" <?php if (isset($GLOBALS['debugmode']) && $GLOBALS['debugmode'] == "devl") {
+    echo 'background="#99ff99"';
+} ?>>
         <div class="container_ezplayer">
             <?php include_once template_getpath('div_header.php'); ?>
             <div id="global">
             <h1>®install_title®</h1>
             <?php foreach ($errors as $e) {
-                ?>
+    ?>
                 <div class="alert alert-error">
                     <?php echo $e; ?>
                 </div>
-                <?php }
+                <?php
+}
             ?>
                 <form method="POST" class="form-horizontal" enctype="multipart/form-data" >
                 <div class="wizard">

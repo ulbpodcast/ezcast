@@ -35,7 +35,9 @@
                     <br />
                     <label>
                         <input type="checkbox" name="general"
-                            <?php if(isset($input) && array_key_exists('general', $input)) { echo 'checked'; } ?>> 
+                            <?php if (isset($input) && array_key_exists('general', $input)) {
+    echo 'checked';
+} ?>> 
                         ®report_form_general®
                     </label>
                 </div>
@@ -45,7 +47,9 @@
                     <br />
                     <label>
                         <input type="checkbox" name="ezplayer" 
-                            <?php if(isset($input) && array_key_exists('ezplayer', $input)) { echo 'checked'; } ?>> 
+                            <?php if (isset($input) && array_key_exists('ezplayer', $input)) {
+    echo 'checked';
+} ?>> 
                         ®report_form_ezplayer®
                     </label>
                 </div>
@@ -71,7 +75,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD',
                 <?php
-                if(isset($input) && array_key_exists('start_date', $input)) {
+                if (isset($input) && array_key_exists('start_date', $input)) {
                     echo "defaultDate: new Date('".$input['start_date']."')";
                 } else {
                     echo 'defaultDate: moment().subtract(6, \'month\')';
@@ -85,7 +89,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD',
                 <?php
-                if(isset($input) && array_key_exists('end_date', $input)) {
+                if (isset($input) && array_key_exists('end_date', $input)) {
                     echo "defaultDate: new Date('".$input['end_date']."')";
                 } else {
                     echo 'defaultDate: moment().add(1, \'days\')';
@@ -107,8 +111,8 @@
 </form>
 
 <br /><br />
-<?php if(array_key_exists('post', $input)) { 
-?>
+<?php if (array_key_exists('post', $input)) {
+                    ?>
 
 <div class="alert alert-info alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -122,9 +126,11 @@
     <thead> 
         <tr> 
             <th class="col-md-10"></th> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <th class="col-md-1">®report_column_general®</th> 
-            <?php } ?>
+            <?php
+                    } ?>
             <th class="col-md-1">®report_column_date®</th> 
         </tr> 
     </thead> 
@@ -135,9 +141,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_row_all_author®
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_nbr_list_all_author(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_nbr_date_list_author(); ?></td> 
         </tr>
         <tr>
@@ -145,12 +153,16 @@
                 <div class="accordian-body collapse list_all_author" style="padding: 5px" id="list_all_author" 
                      aria-labelledby="list_all_author">
                     <?php $i=0;
-                    foreach($report->get_date_list_author() as $author => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
+                    foreach ($report->get_date_list_author() as $author => $nbr) {
+                        if (++$i > $MAX_DETAILS_LIST) {
+                            break;
+                        }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'.$author.'</div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                    }
+                    if ($i >= $MAX_DETAILS_LIST) {
+                        echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                    } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -162,9 +174,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_row_submit_author®
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_nbr_list_all_submit_author(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_nbr_date_list_submit_author(); ?></td> 
         </tr>
         <tr>
@@ -172,12 +186,16 @@
                 <div class="accordian-body collapse list_submit_author" style="padding: 5px" id="list_submit_author" 
                      aria-labelledby="list_submit_author">
                     <?php $i=0;
-                    foreach($report->get_date_list_submit_author() as $author => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
+                    foreach ($report->get_date_list_submit_author() as $author => $nbr) {
+                        if (++$i > $MAX_DETAILS_LIST) {
+                            break;
+                        }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'.$author.'</div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                    }
+                    if ($i >= $MAX_DETAILS_LIST) {
+                        echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                    } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -189,9 +207,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_row_record_author®
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_nbr_list_all_record_author(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_nbr_date_list_record_author(); ?></td> 
         </tr>
         <tr>
@@ -199,12 +219,16 @@
                 <div class="accordian-body collapse list_record_author" style="padding: 5px" id="list_record_author" 
                      aria-labelledby="list_record_author">
                     <?php $i=0;
-                    foreach($report->get_date_list_record_author() as $author => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
+                    foreach ($report->get_date_list_record_author() as $author => $nbr) {
+                        if (++$i > $MAX_DETAILS_LIST) {
+                            break;
+                        }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'.$author.'</div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                    }
+                    if ($i >= $MAX_DETAILS_LIST) {
+                        echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                    } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -216,9 +240,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_row_list_cours®
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_nbr_list_all_cours(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_nbr_date_list_cours(); ?></td> 
         </tr>
         <tr>
@@ -226,12 +252,16 @@
                 <div class="accordian-body collapse list_cours" style="padding: 5px" id="list_cours" 
                      aria-labelledby="list_cours">
                     <?php $i=0;
-                    foreach($report->get_date_list_cours() as $cours => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
+                    foreach ($report->get_date_list_cours() as $cours => $nbr) {
+                        if (++$i > $MAX_DETAILS_LIST) {
+                            break;
+                        }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'.$cours.'</div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                    }
+                    if ($i >= $MAX_DETAILS_LIST) {
+                        echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                    } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -243,9 +273,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_row_list_cours_submit®
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_nbr_list_all_cours_submit(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_nbr_date_list_cours_submit(); ?></td> 
         </tr>
         <tr>
@@ -253,12 +285,16 @@
                 <div class="accordian-body collapse list_cours_submit" style="padding: 5px" id="list_cours_submit" 
                      aria-labelledby="list_cours_submit">
                     <?php $i=0;
-                    foreach($report->get_date_list_cours_submit() as $cours => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
+                    foreach ($report->get_date_list_cours_submit() as $cours => $nbr) {
+                        if (++$i > $MAX_DETAILS_LIST) {
+                            break;
+                        }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'.$cours.'</div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                    }
+                    if ($i >= $MAX_DETAILS_LIST) {
+                        echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                    } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -270,9 +306,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_row_list_cours_record®
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_nbr_list_all_cours_record(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_nbr_date_list_cours_record(); ?></td> 
         </tr>
         <tr>
@@ -280,12 +318,16 @@
                 <div class="accordian-body collapse list_cours_record" style="padding: 5px" id="list_cours_record" 
                      aria-labelledby="list_cours_record">
                     <?php $i=0;
-                    foreach($report->get_date_list_cours_record() as $cours => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
+                    foreach ($report->get_date_list_cours_record() as $cours => $nbr) {
+                        if (++$i > $MAX_DETAILS_LIST) {
+                            break;
+                        }
                         echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                         echo '<div class="col-md-10">'.$cours.'</div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                    }
+                    if ($i >= $MAX_DETAILS_LIST) {
+                        echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                    } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -301,9 +343,11 @@
                     ®report_row_no_delete_test®
                 </p>
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_count_total_asset(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_date_count_asset(); ?></td> 
         </tr>
         <tr> 
@@ -314,9 +358,11 @@
                     ®report_row_no_delete_test®
                 </p>
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_count_submit_asset(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_date_count_submit_asset(); ?></td> 
         </tr>
         <tr> 
@@ -327,25 +373,30 @@
                     ®report_row_no_delete_test®
                 </p>
             </td> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                        ?>
             <td><?php echo $report->get_count_record_asset(); ?></td>
-            <?php } ?>
+            <?php
+                    } ?>
             <td><?php echo $report->get_date_count_record_asset(); ?></td> 
         </tr>
         
     </tbody> 
 </table>
 
-<?php if($ezplayer) { ?>
+<?php if ($ezplayer) {
+                        ?>
 <br />
 <h4>EZPlayer</h4>
 <table class="table table-bordered table-hover"> 
     <thead> 
         <tr> 
             <th class="col-md-10"></th> 
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <th class="col-md-1">®report_column_general®</th> 
-            <?php } ?>
+            <?php
+                        } ?>
             <th class="col-md-1">®report_column_date®</th> 
         </tr> 
     </thead> 
@@ -354,18 +405,22 @@
             <td>
                 ®report_ezplayer_row_total_users®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_nbr_total_user(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td>/</td> 
         </tr>
         <tr> 
             <td>
                 ®report_ezplayer_row_total_thread®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_total_thread(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_date_total_thread(); ?></td> 
         </tr>
         
@@ -375,9 +430,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_ezplayer_row_course_thread®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_nbr_list_cours_thread(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_nbr_date_cours_thread(); ?></td> 
         </tr>
         <tr>
@@ -385,16 +442,20 @@
                 <div class="accordian-body collapse list_cours_thread" style="padding: 5px" id="list_cours_thread" 
                      aria-labelledby="list_cours_thread">
                     <?php $i=0;
-                    foreach($report->get_ezplayer_date_cours_thread() as $cours => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
-                        echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
-                        echo '<div class="col-md-10">'
+                        foreach ($report->get_ezplayer_date_cours_thread() as $cours => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
+                            echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
+                            echo '<div class="col-md-10">'
                             . '<a class="hidden-print-link" target="_blank" '
                                 . 'href="index.php?action=view_course_details&course_code='.$cours.'" >'
                             .$cours
                             . '</a></div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -404,9 +465,11 @@
             <td>
                 ®report_ezplayer_row_total_comment®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_total_comment(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_date_nbr_comment(); ?></td> 
         </tr>
         
@@ -416,9 +479,11 @@
                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                 ®report_ezplayer_row_course_comment®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_nbr_list_cours_comment(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_nbr_date_cours_comment(); ?></td> 
         </tr>
         <tr>
@@ -426,16 +491,20 @@
                 <div class="accordian-body collapse list_cours_comment" style="padding: 5px" id="list_cours_comment" 
                      aria-labelledby="list_cours_comment">
                     <?php $i=0;
-                    foreach($report->get_ezplayer_date_cours_comment() as $cours => $nbr) { 
-                        if(++$i > $MAX_DETAILS_LIST) { break; }
-                        echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
-                        echo '<div class="col-md-10">'
+                        foreach ($report->get_ezplayer_date_cours_comment() as $cours => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
+                            echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
+                            echo '<div class="col-md-10">'
                             . '<a href="index.php?action=view_course_details&course_code='.$cours.'"'
                                 . ' class="hidden-print-link" target="_blank">'
                             .$cours
                             . '</a></div>';
-                    } 
-                    if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                     <div class="col-md-12"><br /></div>
                 </div>
             </td>
@@ -445,9 +514,11 @@
             <td>
                 ®report_ezplayer_row_total_bookmark®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_total_bookmark(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_date_total_bookmark(); ?></td> 
         </tr>
         
@@ -455,9 +526,11 @@
             <td>
                 ®report_ezplayer_row_bookmark_official®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_total_offi_bookmark(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_date_offi_bookmark(); ?></td> 
         </tr>
         
@@ -465,9 +538,11 @@
             <td>
                 ®report_ezplayer_row_bookmark_personal®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_total_pers_bookmark(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_date_pers_bookmark(); ?></td> 
         </tr>
         
@@ -475,9 +550,11 @@
             <td>
                 ®report_ezplayer_row_bookmark_user_official®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_nbr_list_user_offi_bookmark(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_nbr_date_user_offi_bookmark(); ?></td> 
         </tr>
         
@@ -485,19 +562,23 @@
             <td>
                 ®report_ezplayer_row_bookmark_user_personal®
             </td>
-            <?php if($general) { ?>
+            <?php if ($general) {
+                            ?>
             <td><?php echo $report->get_ezplayer_nbr_list_user_pers_bookmark(); ?></td>
-            <?php } ?>
+            <?php
+                        } ?>
             <td><?php echo $report->get_ezplayer_nbr_date_user_pers_bookmark(); ?></td> 
         </tr>
         
     </tbody>
 </table>
-<?php } ?>
+<?php
+                    } ?>
 
 <h3>®report_title_date_info®</h3>
 
-<?php if(!empty($allClassRoom)) { ?>
+<?php if (!empty($allClassRoom)) {
+                        ?>
 <div class="col-md-12">
     <h5>®report_classroom_utilisation®</h5>
     <table class="table table-bordered table-hover"> 
@@ -509,12 +590,12 @@
             </tr> 
         </thead> 
         <tbody> 
-            <?php foreach($allClassRoom as $classroom => $value) {
-                echo '<tr>';
-                echo '<td>'.$classroom.'</td>';
-                echo '<td>'.$value['nbr'].'</td>';
-                echo '<td>'.convert_seconds($value['time']).'</td>';
-            } ?>
+            <?php foreach ($allClassRoom as $classroom => $value) {
+                            echo '<tr>';
+                            echo '<td>'.$classroom.'</td>';
+                            echo '<td>'.$value['nbr'].'</td>';
+                            echo '<td>'.convert_seconds($value['time']).'</td>';
+                        } ?>
             <tr class="warning"> 
                 <td>
                     ®report_total_submit®
@@ -533,7 +614,7 @@
                 <td>
                     ®report_total®
                 </td>
-                <td><?php echo ($totalSubmit['nbr']+$totalClassroom['nbr']); ?></td>
+                <td><?php echo($totalSubmit['nbr']+$totalClassroom['nbr']); ?></td>
                 <td><?php echo convert_seconds($totalSubmit['time']+$totalClassroom['time']); ?></td> 
             </tr>
         </tbody>
@@ -616,12 +697,16 @@
                 type: 'column',
                 name: "<?php echo ucfirst("®report_record_time®"); ?>",
                 yAxis: 1,
-                data: [<?php echo implode(', ', array_map(function ($ar) {return $ar['time'];}, $allClassRoom)); ?>]
+                data: [<?php echo implode(', ', array_map(function ($ar) {
+                            return $ar['time'];
+                        }, $allClassRoom)); ?>]
 
             }, {
                 type: 'column',
                 name: "<?php echo ucfirst("®report_nbr_record®"); ?>",
-                data: [<?php echo implode(', ', array_map(function ($ar) {return $ar['nbr'];}, $allClassRoom)); ?>]
+                data: [<?php echo implode(', ', array_map(function ($ar) {
+                            return $ar['nbr'];
+                        }, $allClassRoom)); ?>]
             }]
         });
     });
@@ -657,16 +742,18 @@
 <div class="col-md-2 col-print-md-12">
     <h5>®report_classroom_unused®</h5>
     <ul>
-    <?php foreach($classroom_not_use as $classroom) {
-        echo '<li>'.$classroom.'</li>';
-    } ?>
+    <?php foreach ($classroom_not_use as $classroom) {
+                            echo '<li>'.$classroom.'</li>';
+                        } ?>
     </ul>
 </div>
 
 
-<?php } ?>
+<?php
+                    } ?>
 
-<?php if($ezplayer) { ?>
+<?php if ($ezplayer) {
+                        ?>
 <div class="col-md-12"><br />
     <h4>®report_form_ezplayer®</h4>
     <table class="table table-bordered table-hover"> 
@@ -692,12 +779,16 @@
                         <div class="col-md-2"><b>®report_nbr_connexion®</b></div>
                         <div class="col-md-10"><b>®report_user®</b></div>
                         <?php $i=0;
-                        foreach($report->get_ezplayer_date_list_user_login() as $user => $nbr) { 
-                            if(++$i > $MAX_DETAILS_LIST) { break; }
+                        foreach ($report->get_ezplayer_date_list_user_login() as $user => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.$user.'</div>';
-                        } 
-                        if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                         <div class="col-md-12"><br /></div>
                     </div>
                 </td>
@@ -725,14 +816,19 @@
                         <div class="col-md-2 col-md-offset-1"><b>®report_browser®</b></div>
                         <div class="col-md-7"><b>®report_os®</b></div>
                         <?php $i=0;
-                        foreach($report->get_ezplayer_date_list_user_browser() as $browser => $nbr) { 
-                            if(++$i > $MAX_DETAILS_LIST) { break; } $strBrowser = explode('|', $browser);
+                        foreach ($report->get_ezplayer_date_list_user_browser() as $browser => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
+                            $strBrowser = explode('|', $browser);
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-1">'.calcul_percent($nbr, $totalBrowser).'%</div>';
                             echo '<div class="col-md-2">'.$strBrowser[0].'</div>';
                             echo '<div class="col-md-7">'.$strBrowser[1].'</div>';
-                        } 
-                        if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                         <div class="col-md-12"><br /></div>
                     </div>
                 </td>
@@ -751,12 +847,16 @@
                     <div class="accordian-body collapse list_album" style="padding: 5px" id="list_album" 
                          aria-labelledby="list_album">
                         <?php $i=0;
-                        foreach($report->get_ezplayer_date_list_album() as $album => $nbr) { 
-                            if(++$i > $MAX_DETAILS_LIST) { break; }
+                        foreach ($report->get_ezplayer_date_list_album() as $album => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.$album.'</div>';
-                        } 
-                        if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                         <div class="col-md-12"><br /></div>
                     </div>
                 </td>
@@ -779,12 +879,16 @@
                     <div class="accordian-body collapse list_album_click" style="padding: 5px" id="list_album_click" 
                          aria-labelledby="list_album_click">
                         <?php $i=0;
-                        foreach($report->get_ezplayer_date_list_album_click() as $album => $nbr) { 
-                            if(++$i > $MAX_DETAILS_LIST) { break; }
+                        foreach ($report->get_ezplayer_date_list_album_click() as $album => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.$album.'</div>';
-                        } 
-                        if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                         <div class="col-md-12"><br /></div>
                     </div>
                 </td>
@@ -823,16 +927,20 @@
                         <div class="col-md-10"><b>®report_asset®</b></div>
                         <div class="col-md-12"></div>
                         <?php $i=0;
-                        foreach($report->get_ezplayer_date_unique_asset() as $asset => $nbr) { 
-                            if(++$i > $MAX_DETAILS_LIST) { break; }
+                        foreach ($report->get_ezplayer_date_unique_asset() as $asset => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.
                                     '<a href="./index.php?action=view_events&post=&asset='.$asset.'"'
                                     . 'target="_blank" class="hidden-print-link" >'.
                                     $asset
                                     .'</a></div>';
-                        } 
-                        if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                         <div class="col-md-12"><br /></div>
                     </div>
                 </td>
@@ -853,12 +961,16 @@
                         <div class="col-md-10"><b>®report_cours®</b></div>
                         <div class="col-md-12"></div>
                         <?php $i=0;
-                        foreach($report->get_ezplayer_date_cours_pers_bookmark() as $cours => $nbr) { 
-                            if(++$i > $MAX_DETAILS_LIST) { break; }
+                        foreach ($report->get_ezplayer_date_cours_pers_bookmark() as $cours => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.$cours.'</div>';
-                        } 
-                        if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                         <div class="col-md-12"><br /></div>
                     </div>
                 </td>
@@ -878,12 +990,16 @@
                         <div class="col-md-2"><b>®report_bookmark_add®</b></div>
                         <div class="col-md-10"><b>®report_user®</b></div>
                         <?php $i=0;
-                        foreach($report->get_ezplayer_date_user_offi_bookmark() as $user => $nbr) { 
-                            if(++$i > $MAX_DETAILS_LIST) { break; }
+                        foreach ($report->get_ezplayer_date_user_offi_bookmark() as $user => $nbr) {
+                            if (++$i > $MAX_DETAILS_LIST) {
+                                break;
+                            }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.$user.'</div>';
-                        } 
-                        if($i >= $MAX_DETAILS_LIST) { echo '<div class="col-md-10 col-md-offset-2">...</div>'; }?>
+                        }
+                        if ($i >= $MAX_DETAILS_LIST) {
+                            echo '<div class="col-md-10 col-md-offset-2">...</div>';
+                        } ?>
                         <div class="col-md-12"><br /></div>
                     </div>
                 </td>
@@ -892,7 +1008,8 @@
         </tbody>
     </table>
     
-    <?php if($json_view_asset_data != "[[]]") { ?>
+    <?php if ($json_view_asset_data != "[[]]") {
+                            ?>
     <div class="col-md-12">
         <br /><br />
         <div id="container_asset_view" style="height: 500px; width: 100%"></div>
@@ -925,9 +1042,10 @@
         <br />
     </div>
     
-    <?php }
-echo '</div>';
-}?>
+    <?php
+                        }
+                        echo '</div>';
+                    } ?>
 
 <div id="container_status_percent" class="col-md-6 col-print-md-12 text-center" style="height: 400px; margin: 0 auto"></div>
 <script>
@@ -1011,16 +1129,16 @@ $(function () {
             colorByPoint: true,
             data: [
                 <?php $i = 0;
-                foreach ($nbr_camslide as $infos) { ++$i;
-                    if($i > 1) {
-                        echo ',';
-                    }
-                    echo '{';
-                    echo 'name: "'.ucfirst($infos['cam_slide']).'",';
-                    echo 'y: '.calcul_percent($infos['total_type'], $total_nbr_camslide);
-                    echo '}';
-                }
-                ?>
+                    foreach ($nbr_camslide as $infos) {
+                        ++$i;
+                        if ($i > 1) {
+                            echo ',';
+                        }
+                        echo '{';
+                        echo 'name: "'.ucfirst($infos['cam_slide']).'",';
+                        echo 'y: '.calcul_percent($infos['total_type'], $total_nbr_camslide);
+                        echo '}';
+                    } ?>
                 ]
         }]
     });
@@ -1077,7 +1195,8 @@ $(function() {
 });
 </script>
 
-<?php if($ezplayer) { ?>
+<?php if ($ezplayer) {
+                        ?>
 <div class="col-md-6 col-print-md-12 add-print-space">
     <div id="container_browser" style="height: 500px; width: 100%"></div>
 </div>
@@ -1114,13 +1233,16 @@ $(function() {
         series: [{
             colorByPoint: true,
             data: [<?php $i =0;
-            foreach($report->get_ezplayer_date_list_user_system() as $browser => $nbr) { ++$i;
-                if($i > 1) { echo ','; }
-                echo '{'; 
-                echo 'name: "'.$browser.'",';
-                echo 'y: '.calcul_percent($nbr, $totalBrowser);
-                echo '}';
-            } ?> ]
+                        foreach ($report->get_ezplayer_date_list_user_system() as $browser => $nbr) {
+                            ++$i;
+                            if ($i > 1) {
+                                echo ',';
+                            }
+                            echo '{';
+                            echo 'name: "'.$browser.'",';
+                            echo 'y: '.calcul_percent($nbr, $totalBrowser);
+                            echo '}';
+                        } ?> ]
             }]
     });
 });
@@ -1164,18 +1286,21 @@ $(function() {
         series: [{
             colorByPoint: true,
             data: [<?php $i =0;
-            foreach($report->get_ezplayer_date_list_user_os() as $browser => $nbr) { ++$i;
-                if($i > 1) { echo ','; }
-                echo '{'; 
-                echo 'name: "'.$browser.'",';
-                echo 'y: '.calcul_percent($nbr, $totalBrowser);
-                echo '}';
-            } ?> ]
+                        foreach ($report->get_ezplayer_date_list_user_os() as $browser => $nbr) {
+                            ++$i;
+                            if ($i > 1) {
+                                echo ',';
+                            }
+                            echo '{';
+                            echo 'name: "'.$browser.'",';
+                            echo 'y: '.calcul_percent($nbr, $totalBrowser);
+                            echo '}';
+                        } ?> ]
             }]
     });
 });
 </script>
 
-<?php 
-}
-} // if post
+<?php
+                    }
+                } // if post

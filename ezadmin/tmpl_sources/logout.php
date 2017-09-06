@@ -13,8 +13,9 @@
             $custom_folder = "$apache_documentroot/ezadmin/css/custom/";
             $dir = new DirectoryIterator($custom_folder);
             foreach ($dir as $fileinfo) {
-                if ($fileinfo->isFile())
+                if ($fileinfo->isFile()) {
                     echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$fileinfo->getFilename().'"/>';
+                }
             }
         ?>
 

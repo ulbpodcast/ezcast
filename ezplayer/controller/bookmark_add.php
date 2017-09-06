@@ -6,7 +6,8 @@
  * @global type $repository_path
  * @global type $user_files_path
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -34,13 +35,13 @@ function index($param = array()) {
         $bookmark_type = '';
     }
     
-    if(!isset($bookmark_source) || ($bookmark_source != 'personal' && $bookmark_source != 'official')) {
+    if (!isset($bookmark_source) || ($bookmark_source != 'personal' && $bookmark_source != 'official')) {
         $bookmark_source = '';
     }
     
     $str_bookmark_keywords = "";
-    foreach(explode(",", $bookmark_keywords) as $keyword) {
-        if($str_bookmark_keywords != "") {
+    foreach (explode(",", $bookmark_keywords) as $keyword) {
+        if ($str_bookmark_keywords != "") {
             $str_bookmark_keywords .= ",";
         }
         $str_bookmark_keywords .= trim($keyword);
@@ -52,15 +53,30 @@ function index($param = array()) {
     user_prefs_repository_path($user_files_path);
 
     if ($bookmark_source == 'personal') { // personal bookmarks
-        user_prefs_asset_bookmark_add($_SESSION['user_login'], $bookmark_album, $bookmark_asset, 
-                $bookmark_timecode, $bookmark_title, $bookmark_description, $bookmark_keywords, 
-                $bookmark_level, $bookmark_type);
+        user_prefs_asset_bookmark_add(
+            $_SESSION['user_login'],
+            $bookmark_album,
+            $bookmark_asset,
+                $bookmark_timecode,
+            $bookmark_title,
+            $bookmark_description,
+            $bookmark_keywords,
+                $bookmark_level,
+            $bookmark_type
+        );
         
-    // table of contents
-    } else if (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
-        toc_asset_bookmark_add($bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_title, 
-                $bookmark_description, $bookmark_keywords, $bookmark_level, $bookmark_type);
-        
+        // table of contents
+    } elseif (acl_user_is_logged() && acl_has_album_moderation($bookmark_album)) {
+        toc_asset_bookmark_add(
+            $bookmark_album,
+            $bookmark_asset,
+            $bookmark_timecode,
+            $bookmark_title,
+                $bookmark_description,
+            $bookmark_keywords,
+            $bookmark_level,
+            $bookmark_type
+        );
     }
     
     log_append('add_asset_bookmark', 'bookmark added : album -' . $bookmark_album . PHP_EOL .
@@ -68,8 +84,8 @@ function index($param = array()) {
             'timecode - ' . $bookmark_timecode);
     
     // lvl, action, album, asset, timecode, target (personal|official), type (cam|slide), title, descr, keywords, bookmark_lvl
-    if($bookmark_type != '' && $bookmark_source != '') { // TODO error if not define
-        trace_append(array('3', (array_key_exists('edit', $input) && $input['edit']) ? 'asset_bookmark_edit' : 'asset_bookmark_add', 
+    if ($bookmark_type != '' && $bookmark_source != '') { // TODO error if not define
+        trace_append(array('3', (array_key_exists('edit', $input) && $input['edit']) ? 'asset_bookmark_edit' : 'asset_bookmark_add',
             $bookmark_album, $bookmark_asset, $bookmark_timecode, $bookmark_source, $bookmark_type,
             $bookmark_title, $bookmark_description, $bookmark_keywords, $bookmark_level));
     }

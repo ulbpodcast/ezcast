@@ -30,14 +30,17 @@
  * @return assoc_array|false
  * @desc open a metadatafile (xml 1 level) and return all properties and values in an associative array
  */
-function metadata2assoc_array($meta_path){
-@   $xml= simplexml_load_file($meta_path);
-   if($xml===false)return false;
-   $assoc_array=array();
+function metadata2assoc_array($meta_path)
+{
+    @   $xml= simplexml_load_file($meta_path);
+    if ($xml===false) {
+        return false;
+    }
+    $assoc_array=array();
     foreach ($xml as $key => $value) {
         $assoc_array[$key]=(string)$value;
     }
- return $assoc_array;
+    return $assoc_array;
 }
 
 /**
@@ -46,14 +49,15 @@ function metadata2assoc_array($meta_path){
  * @return <xml_string>
  * @desc takes an assoc array and transform it in a xml metadata string
  */
-function assoc_array2metadata($assoc_array){
- $xmlstr="<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
- $xml = new SimpleXMLElement($xmlstr);
- foreach ($assoc_array as $key => $value) {
-  $xml->addChild($key,$value);
- }
- $xml_txt=$xml->asXML();
- return $xml_txt;
+function assoc_array2metadata($assoc_array)
+{
+    $xmlstr="<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
+    $xml = new SimpleXMLElement($xmlstr);
+    foreach ($assoc_array as $key => $value) {
+        $xml->addChild($key, $value);
+    }
+    $xml_txt=$xml->asXML();
+    return $xml_txt;
 }
 
 /**
@@ -63,18 +67,20 @@ function assoc_array2metadata($assoc_array){
  * @return bool
  *
  */
-function assoc_array2metadata_file($assoc_array,$file_path){
+function assoc_array2metadata_file($assoc_array, $file_path)
+{
     $xmlstr="<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
     $xml = new SimpleXMLElement($xmlstr);
     foreach ($assoc_array as $key => $value) {
-        $xml->addChild($key,$value);
+        $xml->addChild($key, $value);
     }
     $xml_txt=$xml->asXML();
-    $res=file_put_contents($file_path,$xml_txt,LOCK_EX);
+    $res=file_put_contents($file_path, $xml_txt, LOCK_EX);
     
     //did we write all the characters
-    if($res!=strlen($xml_txt))
-        return false;//no
+    if ($res!=strlen($xml_txt)) {
+        return false;
+    }//no
 
     return true;
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * EZCAST EZadmin 
+ * EZCAST EZadmin
  * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -42,7 +42,8 @@ $db_prepared = false;
 /**
  * Verifies that the DB exists and answers correctly with the given credentials
  */
-function db_ping($type, $host, $login, $passwd, $dbname) {
+function db_ping($type, $host, $login, $passwd, $dbname)
+{
     try {
         $db = new PDO("$type:host=$host;dbname=$dbname;charset=utf8", $login, $passwd);
     } catch (PDOException $e) {
@@ -60,7 +61,8 @@ function db_ping($type, $host, $login, $passwd, $dbname) {
  * Throws an exception if connection failed
  */
 
-function db_prepare(&$stmt_array = array()) {
+function db_prepare(&$stmt_array = array())
+{
     global $db_object;
     global $db_type;
     global $db_host;
@@ -71,7 +73,7 @@ function db_prepare(&$stmt_array = array()) {
     global $statements;
     global $debug_mode;
     
-    if($db_object == null) {
+    if ($db_object == null) {
         try {
             $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
         } catch (PDOException $e) {
@@ -86,14 +88,15 @@ function db_prepare(&$stmt_array = array()) {
     $db_prepared = true;
     $stmt_array = $statements;
 
-    if($debug_mode) {
+    if ($debug_mode) {
         $db_object->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     
     return $db_object;
 }
 
-function db_close() {
+function db_close()
+{
     global $db_object;
     global $statements;
     global $db_prepared;
@@ -103,7 +106,8 @@ function db_close() {
     $db_prepared = false;
 }
 
-function db_ready() {
+function db_ready()
+{
     global $db_prepared;
 
     return $db_prepared;
@@ -114,9 +118,10 @@ function db_ready() {
  * @global array $statements
  * @global string $db_object
  * @param type $statement_name
- * @param type $statement 
+ * @param type $statement
  */
-function db_statement_prepare($statement_name, $statement) {
+function db_statement_prepare($statement_name, $statement)
+{
     global $statements;
     global $db_object;
 
@@ -126,13 +131,15 @@ function db_statement_prepare($statement_name, $statement) {
 /**
  * Transforms HTML-friendly input into SQL-friendly input.
  * @param type $input
- * @return type 
+ * @return type
  */
-function db_sanitize($input) {
+function db_sanitize($input)
+{
     return (empty($input)) ? '%' : '%' . $input . '%';
 }
 
-function db_gettable($tableID) {
+function db_gettable($tableID)
+{
     global $db_prefix;
     return $db_prefix . $tableID;
 }

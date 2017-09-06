@@ -4,7 +4,8 @@
 /**
  * Displays the stast informations
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $distribute_url;
@@ -36,18 +37,18 @@ function index($param = array()) {
     // 1) We retrieve the metadata relating to the album
     //
     $metadata = ezmam_album_metadata_get($album);
-    if($metadata === false) {
+    if ($metadata === false) {
         $logger->log(EventType::TEST, LogLevel::ERROR, "Failed to get metadata for album $album", array(__FUNCTION__));
         error_print_message("Could not get metadata", get_lang());
         return false;
     }
     
-    if(isset($metadata['id'])) {
+    if (isset($metadata['id'])) {
         $album_id = $metadata['id'];
     } else {
         $album_id = $metadata['name'];
     }
-    if(isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
+    if (isset($metadata['course_code_public']) && $metadata['course_code_public'] != "") {
         $course_code_public = $metadata['course_code_public'];
     }
     

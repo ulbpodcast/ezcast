@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -37,32 +37,36 @@ require_once dirname(__FILE__) . '/../commons/lib_template.php';
  * Trims the '-priv' or '-pub' suffix from an album name
  * TODO: check that it's only the end of the name that's removed
  * @param string $album_name
- * @return string 
+ * @return string
  */
-function suffix_remove($album_name) {
+function suffix_remove($album_name)
+{
     $res = $album_name;
     
-    if(substr($album_name, -4) == "-pub")
+    if (substr($album_name, -4) == "-pub") {
         $res = substr($album_name, 0, -4);
-    else if(substr($album_name, -5) == '-priv')
+    } elseif (substr($album_name, -5) == '-priv') {
         $res = substr($album_name, 0, -5);
+    }
     
     return $res;
 }
 
 /**
  * Changes "priv" to "pub" and controversely. If the album name has neither suffix, returns the same string.
- * @param type $album_name 
+ * @param type $album_name
  * @return string
  */
-function suffix_replace($album_name) {
+function suffix_replace($album_name)
+{
     $res = $album_name;
     $res = suffix_remove($album_name);
     
-    if(substr($album_name, -4) == "-pub")
+    if (substr($album_name, -4) == "-pub") {
         $res .= '-priv';
-    else if(substr($album_name, -5) == '-priv')
+    } elseif (substr($album_name, -5) == '-priv') {
         $res .= '-pub';
+    }
     
     return $res;
 }
@@ -70,32 +74,36 @@ function suffix_replace($album_name) {
 /**
  * Returns an album suffix based on its name
  * @param type $album_name
- * @return string|false the suffix (with the initial hyphen) if all went well, false otherwise 
+ * @return string|false the suffix (with the initial hyphen) if all went well, false otherwise
  */
-function suffix_get($album_name) {
-    if(substr($album_name, -4) == "-pub")
+function suffix_get($album_name)
+{
+    if (substr($album_name, -4) == "-pub") {
         return '-pub';
-    else if(substr($album_name, -5) == '-priv')
+    } elseif (substr($album_name, -5) == '-priv') {
         return '-priv';
-    else
+    } else {
         return false;
+    }
 }
 
 /**
  * Checks whether an album is private based on its suffix
  * @param type $album_name
- * @return bool true if album is private 
+ * @return bool true if album is private
  */
-function album_is_private($album_name) {
+function album_is_private($album_name)
+{
     return (suffix_get($album_name) == '-priv');
 }
 
 /**
  * Checks whether an album is public based on its suffix
  * @param type $album_name
- * @return bool true if album is public 
+ * @return bool true if album is public
  */
-function album_is_public($album_name) {
+function album_is_public($album_name)
+{
     return (suffix_get($album_name) == '-pub');
 }
 
@@ -108,9 +116,11 @@ function album_is_public($album_name) {
  * @param bool $long_date if set to true, the date will be a "gramatically correct" date, instead of a "easily computable" one
  * @return string The date in format dd_mmmm_YYYY_HH:ii
  */
-function get_user_friendly_date($date, $space_char = '_', $long_months_names = true, $lang = 'fr', $long_date = false) {
-    if(!isset($date) || empty($date))
+function get_user_friendly_date($date, $space_char = '_', $long_months_names = true, $lang = 'fr', $long_date = false)
+{
+    if (!isset($date) || empty($date)) {
         return null;
+    }
     
     $matches = array();
     preg_match('!(\d{4})\_(\d{2})\_(\d{2})\_(\d{2})h(\d{2})!', $date, $matches);
@@ -118,21 +128,24 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
     $new_date = $matches[3] . $space_char; // Day
     // If we want long month names (in letters, that is), we retrieve these names
     // from the translations file, and remove the non-ASCII characters if needed
-    if($long_months_names) {
+    if ($long_months_names) {
         template_load_dictionnary('translations.xml');
         
-        if($lang == 'fr-ASCII')
+        if ($lang == 'fr-ASCII') {
             $new_date .= str_replace(array('é', 'û'), array('e', 'u'), template_get_label('month_'.$matches[2], 'fr'));
-        else
+        } else {
             $new_date .= template_get_label('month_'.$matches[2], $lang);
+        }
     }
     // Otherwise, we just display the month as a number
-    else
+    else {
         $new_date .= $matches[2];
+    }
     
     $new_date .= $space_char . $matches[1]; // year
-    if($long_date)
-        $new_date .= $space_char; // Separator between date and hour
+    if ($long_date) {
+        $new_date .= $space_char;
+    } // Separator between date and hour
     
     $new_date .= $space_char . $matches[4] . 'h' . $matches[5]; // Hours and minutes
     
@@ -143,7 +156,8 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
  * Returns a date in RFC822 format from a date in "our" format
  * @param type $date Date in format YYYY_mm_dd_HHhii
  */
-function get_RFC822_date($date) {
+function get_RFC822_date($date)
+{
     //$date_array = date_parse_from_format('Y_m_d_H:i', $date);
     list($year, $month, $day, $hourandminutes) = explode('_', $date);
     list($hours, $minutes) = explode('h', $hourandminutes);
@@ -157,29 +171,34 @@ function get_RFC822_date($date) {
  * @param float $duration A duration in seconds
  * @return string A duration in hours, minutes, seconds
  */
-function get_user_friendly_duration($duration) {
-    if(!isset($duration) || empty($duration))
+function get_user_friendly_duration($duration)
+{
+    if (!isset($duration) || empty($duration)) {
         return null;
+    }
     
     $res= round($duration);
-    if($res < 60)
+    if ($res < 60) {
         $res .= ' sec';
-    else
+    } else {
         $res = round($res / 60) . ' min. ' . ($res % 60) . ' sec.';
+    }
     return $res;
 }
 
 /**
  * Takes a date as a year and month, and returns a string representing the academic year thereof
  * @param string $year
- * @param string $month 
+ * @param string $month
  * @return A string of format currentYear-nextYear
  */
-function get_anac($year, $month) {
+function get_anac($year, $month)
+{
     $year_start = (int) $year;
     // Before July 2011, the academic year is 2010-2011, so the starting year is "one year before" current date
-    if((int) $month <= 6)
+    if ((int) $month <= 6) {
         --$year_start;
+    }
     
     $year_end = $year_start + 1;
     
@@ -196,7 +215,8 @@ function get_anac($year, $month) {
  * @param bool $itunes_friendly If set to true, the link will include a fake .m4v file
  * @return string Media
  */
-function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes_friendly = false) {
+function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes_friendly = false)
+{
     global $ezmanager_url;
     global $distribute_url;
     global $repository_path;
@@ -206,12 +226,12 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
     //
     // Usual sanity checks
     //
-    if(!ezmam_album_exists($album)) {
+    if (!ezmam_album_exists($album)) {
         error_print_message('get_link_to_media: Album '.$album.' does not exist');
         return false;
     }
     
-    if(!ezmam_asset_exists($album, $asset)) {
+    if (!ezmam_asset_exists($album, $asset)) {
         error_print_message('get_link_to_media: Asset '.$asset.' does not exist');
         return false;
     }
@@ -219,10 +239,11 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
     // We take the asset's token if it exists.
     // If not, then we use the album's token instead.
     $token = ezmam_asset_token_get($album, $asset);
-    if(!$token)
+    if (!$token) {
         $token = ezmam_album_token_get($album);
+    }
     
-    if(!$token) {
+    if (!$token) {
         error_print_message('get_link_to_media: '.ezmam_last_error());
         return false;
     }
@@ -232,13 +253,15 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
     $type=$media_infos[1];
     
     $resurl = $distribute_url;
-    if($itunes_friendly)
+    if ($itunes_friendly) {
         $resurl.= '/'.$type.'.m4v';
+    }
     $resurl.= '?action=media&album='.$album.'&asset='.$asset.'&type='.$type.'&quality='.$quality.'&token='.$token;
-    if($htmlentities)
+    if ($htmlentities) {
         return htmlentities($resurl);
-    else
+    } else {
         return $resurl;
+    }
 }
 
 /**
@@ -249,7 +272,8 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
  * @param string $media
  * @return string Media
  */
-function get_code_to_media($album, $asset, $media) {
+function get_code_to_media($album, $asset, $media)
+{
     global $ezmanager_url;
     global $distribute_url;
     global $repository_path;
@@ -259,12 +283,12 @@ function get_code_to_media($album, $asset, $media) {
     //
     // Usual sanity checks
     //
-    if(!ezmam_album_exists($album)) {
+    if (!ezmam_album_exists($album)) {
         error_print_message('get_link_to_media: Album '.$album.' does not exist');
         return false;
     }
     
-    if(!ezmam_asset_exists($album, $asset)) {
+    if (!ezmam_asset_exists($album, $asset)) {
         error_print_message('get_link_to_media: Asset '.$asset.' does not exist');
         return false;
     }
@@ -272,10 +296,11 @@ function get_code_to_media($album, $asset, $media) {
     // We take the asset's token if it exists.
     // If not, then we use the album's token instead.
     $token = ezmam_asset_token_get($album, $asset);
-    if(!$token)
+    if (!$token) {
         $token = ezmam_album_token_get($album);
+    }
     
-    if(!$token) {
+    if (!$token) {
         error_print_message('get_link_to_media: '.ezmam_last_error());
         return false;
     }
@@ -294,14 +319,16 @@ function get_code_to_media($album, $asset, $media) {
  * @param string $beginning begins with
  * @return bool
  */
-function str_begins_with($string,$beginning){
- $beglen=strlen($beginning);
- $stringbeg=substr($string,0, $beglen);
+function str_begins_with($string, $beginning)
+{
+    $beglen=strlen($beginning);
+    $stringbeg=substr($string, 0, $beglen);
 
- if($stingbeg==$beginning)
-     return true;
-  else
-     return false;
+    if ($stingbeg==$beginning) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -309,29 +336,29 @@ function str_begins_with($string,$beginning){
  * @param <type> $filename
  * @return false|assoc_array
  */
-function file_get_extension($filename){
- //search last dot in filename
- $pos_dot=strrpos($filename, '.');
- if($pos_dot===false)return array('name'=>$filename,'ext'=>"");
+function file_get_extension($filename)
+{
+    //search last dot in filename
+    $pos_dot=strrpos($filename, '.');
+    if ($pos_dot===false) {
+        return array('name'=>$filename,'ext'=>"");
+    }
 
- $ext_part=substr($filename, $pos_dot+1);
- $name_part=substr($filename,0,$pos_dot);
- $result_assoc['name']=$name_part;
- $result_assoc['ext']=$ext_part;
- return $result_assoc;
+    $ext_part=substr($filename, $pos_dot+1);
+    $name_part=substr($filename, 0, $pos_dot);
+    $result_assoc['name']=$name_part;
+    $result_assoc['ext']=$ext_part;
+    return $result_assoc;
 }
 
 
 
 
-function update_title($album,$asset){
-	
-	global $ezmanager_basedir;
-	global $php_cli_cmd;
-	
-	$cmd=$php_cli_cmd.' '.$ezmanager_basedir.'/cli_update_title.php '.$album.' '.$asset.' > /dev/null 2>&1 &';
-	exec($cmd, $cmdoutput, $returncode );
-
+function update_title($album, $asset)
+{
+    global $ezmanager_basedir;
+    global $php_cli_cmd;
+    
+    $cmd=$php_cli_cmd.' '.$ezmanager_basedir.'/cli_update_title.php '.$album.' '.$asset.' > /dev/null 2>&1 &';
+    exec($cmd, $cmdoutput, $returncode);
 }
-
-

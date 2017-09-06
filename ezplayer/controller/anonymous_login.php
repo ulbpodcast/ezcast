@@ -1,7 +1,7 @@
 <?php
 
 /**
- * logs in an anonymous user 
+ * logs in an anonymous user
  * The previously anonymous user now authenticates
  * @global array $input
  * @global type $template_folder
@@ -10,7 +10,8 @@
  * @global type $user_files_path
  * @global type $ezplayer_url
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $login_error;
     global $repository_path;
@@ -36,7 +37,7 @@ function index($param = array()) {
         die;
     }
 
-    // checks if runas 
+    // checks if runas
     if (count($login_parts) == 2) {
         if (!file_exists('admin.inc')) {
             $error = "Not admin. runas login failed";
@@ -80,15 +81,16 @@ function index($param = array()) {
 
     // 3) adds album tokens that have been consulted as anonymous
     if (isset($album_tokens)) {
-        if (user_prefs_tokens_add($_SESSION['user_login'], $album_tokens) !== false)
+        if (user_prefs_tokens_add($_SESSION['user_login'], $album_tokens) !== false) {
             ezplayer_acl_update_permissions_list();
+        }
     }
 
     // 4) Logging the login operation
     log_append("anonymous user logged in");
     // lvl, action, browser_name, browser_version, user_os, browser_full_info
     $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
-    trace_append(array($lvl, "login_from_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'], 
+    trace_append(array($lvl, "login_from_anonymous", $_SESSION['browser_name'], $_SESSION['browser_version'],
         $_SESSION['user_os'], $_SESSION['browser_full'], session_id()));
 
     if (count($input) > 0) {

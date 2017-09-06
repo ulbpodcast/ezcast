@@ -27,8 +27,8 @@
 include_once 'config.inc';
 
 // Generates an image using title_array for text to display
-function gd_image_create($title_array, $width, $height, $file) {
-
+function gd_image_create($title_array, $width, $height, $file)
+{
     global $fontfile;
     global $quality;
     global $fontratio;
@@ -45,8 +45,8 @@ function gd_image_create($title_array, $width, $height, $file) {
     if (isset($title_array['album'])) {
         // font size relative to the global height of the image
         $fontsize = $height / (32 * $fontratio);
-     //   gd_push_text($img, $fontsize, $txt_color['blue'], wordwrap($title_array['album'], 45,"\n"), ($height * 0.25));
-                $dimensions = imagettfbbox($fontsize, 0, $fontfile, $title_array['album']);
+        //   gd_push_text($img, $fontsize, $txt_color['blue'], wordwrap($title_array['album'], 45,"\n"), ($height * 0.25));
+        $dimensions = imagettfbbox($fontsize, 0, $fontfile, $title_array['album']);
         $txt_height = $dimensions[1] - $dimensions[7];
 
         // splits the string in multiple strings if its size is too long
@@ -68,7 +68,6 @@ function gd_image_create($title_array, $width, $height, $file) {
     }
 
     if (isset($title_array['title'])) {
-
         $fontsize = $height / (25 * $fontratio);
 
         $dimensions = imagettfbbox($fontsize, 0, $fontfile, $title_array['title']);
@@ -83,19 +82,16 @@ function gd_image_create($title_array, $width, $height, $file) {
     }
 
     if (isset($title_array['author'])) {
-
         $fontsize = $height / (32 * $fontratio);
         gd_push_text($img, $fontsize, $txt_color['white'], $title_array['author'], ($height * 0.70));
     }
 
     if (isset($title_array['date']) && $title_array['hide_date'] != true) {
-
         $fontsize = $height / (42 * $fontratio);
         gd_push_text($img, $fontsize, $txt_color['white'], $title_array['date'], ($height * 0.75));
     }
 
     if (isset($title_array['copyright']) || isset($title_array['organization'])) {
-
         $string = $title_array['copyright'] .
                 (isset($title_array['copyright']) && isset($title_array['organization']) ? " - " : "") .
                 $title_array['organization'];
@@ -109,8 +105,8 @@ function gd_image_create($title_array, $width, $height, $file) {
 }
 
 // Adds the text to the image
-function gd_push_text($img, $fontsize, $txt_color, $string, $top) {
-
+function gd_push_text($img, $fontsize, $txt_color, $string, $top)
+{
     global $fontfile;
 
     // global height of the generated image
@@ -129,8 +125,8 @@ function gd_push_text($img, $fontsize, $txt_color, $string, $top) {
     imagettftext($img, $fontsize, 0, $x, $y, $txt_color, $fontfile, $string);
 }
 
-function gd_center_text($string, $font_size, $img_width) {
-
+function gd_center_text($string, $font_size, $img_width)
+{
     global $fontfile;
 
     $dimensions = imagettfbbox($font_size, 0, $fontfile, $string);
@@ -138,12 +134,12 @@ function gd_center_text($string, $font_size, $img_width) {
     return ceil(($img_width - $dimensions[4]) / 2);
 }
 
-function gd_gradient($image_width, $image_height, $c1_r, $c1_g, $c1_b, $c2_r, $c2_g, $c2_b, $vertical = false) {
-
+function gd_gradient($image_width, $image_height, $c1_r, $c1_g, $c1_b, $c2_r, $c2_g, $c2_b, $vertical = false)
+{
     global $quality;
     global $file;
 
-// first: lets type cast;
+    // first: lets type cast;
     $image_width = (integer) $image_width;
     $image_height = (integer) $image_height;
     $c1_r = (integer) $c1_r;
@@ -154,10 +150,10 @@ function gd_gradient($image_width, $image_height, $c1_r, $c1_g, $c1_b, $c2_r, $c
     $c2_b = (integer) $c2_b;
     $vertical = (bool) $vertical;
 
-// create a image
+    // create a image
     $image = imagecreatetruecolor($image_width, $image_height);
 
-// make the gradient
+    // make the gradient
     for ($i = 0; $i < $image_height; $i++) {
         $color_r = floor($i * ($c2_r - $c1_r) / $image_height) + $c1_r;
         $color_g = floor($i * ($c2_g - $c1_g) / $image_height) + $c1_g;
@@ -169,10 +165,12 @@ function gd_gradient($image_width, $image_height, $c1_r, $c1_g, $c1_b, $c2_r, $c
     }
 }
 
-function split_title($string, $line_length = 35) {
+function split_title($string, $line_length = 35)
+{
     $result = array();
-    if (strlen($string) <= $line_length)
+    if (strlen($string) <= $line_length) {
         return array($string);
+    }
     // isolates each words of the string
     $words = explode(' ', $string);
     $tmp = '';
@@ -190,14 +188,16 @@ function split_title($string, $line_length = 35) {
     }
     return $result;
 }
-function get_title_info($title_meta_path, $title_filename, &$title_assoc) {
+function get_title_info($title_meta_path, $title_filename, &$title_assoc)
+{
     if (!file_exists($title_meta_path . "/" . $title_filename)) {
         $title_assoc = false;
         return true; //no title file means no title to generate
     }
     $title_assoc = metadata2assoc_array($title_meta_path . "/" . $title_filename);
-    if (!is_array($title_assoc))
+    if (!is_array($title_assoc)) {
         myerror("Title metadata file read error $title_meta_path/$title_filename\n");
+    }
 
     //check if we dont have any invalid properties
     $valid_title_elems = array("album", "title", "author", "date", "organization", "copyright", "keywords");
@@ -217,40 +217,39 @@ function get_title_info($title_meta_path, $title_filename, &$title_assoc) {
 }
 /*
 function generate_title($repo,$encoder,$title_assoc){
-	
-	$title_movieout = $repo . "/title.mov";
-	$title_image = $repo . "/title.jpg";
-	$encoder_values = explode('_', $encoder);
-	$resolution_values = explode('x', $encoder_values[2]);
-	$width = $resolution_values[0];
-	$height = $resolution_values[1];
-	$ratio = explode(":", $qtinfo["aspectRatio"]);
-	if ($ratio[0] > 0 && $ratio[1] > 0)
-		$height = $resolution_values[0] * $ratio[1] / $ratio[0];
 
-	processing_status("title $camslide");
-	$res = gd_image_create($title_assoc, $width, $height, $title_image);
-	if (!$res || !file_exists($title_image))
-		myerror("couldn't generate title $title_image");
-	//   $res = movie_title($title_movieout, $title_assoc, $encoder, 8); //duration is hardcoded to 8
-	$res = movie_title_from_image($title_movieout, $title_image, $encoder);
-	if ($res)
-		myerror("couldn't generate title $title_movieout");
+    $title_movieout = $repo . "/title.mov";
+    $title_image = $repo . "/title.jpg";
+    $encoder_values = explode('_', $encoder);
+    $resolution_values = explode('x', $encoder_values[2]);
+    $width = $resolution_values[0];
+    $height = $resolution_values[1];
+    $ratio = explode(":", $qtinfo["aspectRatio"]);
+    if ($ratio[0] > 0 && $ratio[1] > 0)
+        $height = $resolution_values[0] * $ratio[1] / $ratio[0];
 
-	return $title_movieout;
+    processing_status("title $camslide");
+    $res = gd_image_create($title_assoc, $width, $height, $title_image);
+    if (!$res || !file_exists($title_image))
+        myerror("couldn't generate title $title_image");
+    //   $res = movie_title($title_movieout, $title_assoc, $encoder, 8); //duration is hardcoded to 8
+    $res = movie_title_from_image($title_movieout, $title_image, $encoder);
+    if ($res)
+        myerror("couldn't generate title $title_movieout");
+
+    return $title_movieout;
 }*/
-function generate_new_title($repo,$encoder,$title_assoc){ //rendre compatible avec l'autre ( generate_title())
-	
-	$title_movieout = $repo . "/title.mov";
-	$title_image = $repo . "/title.jpg";
-	$encoder_values = explode('_', $encoder);
-	$resolution_values = explode('x', $encoder_values[2]);
-	$width = $resolution_values[0];
-	$height = $resolution_values[1];
-	$res = gd_image_create($title_assoc, $width, $height, $title_image);
-	$res = movie_title_from_image($title_movieout, $title_image, $encoder);
+function generate_new_title($repo, $encoder, $title_assoc)
+{ //rendre compatible avec l'autre ( generate_title())
+    
+    $title_movieout = $repo . "/title.mov";
+    $title_image = $repo . "/title.jpg";
+    $encoder_values = explode('_', $encoder);
+    $resolution_values = explode('x', $encoder_values[2]);
+    $width = $resolution_values[0];
+    $height = $resolution_values[1];
+    $res = gd_image_create($title_assoc, $width, $height, $title_image);
+    $res = movie_title_from_image($title_movieout, $title_image, $encoder);
 
-	return $title_movieout;
+    return $title_movieout;
 }
-
-?>

@@ -1,10 +1,12 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
-    if (!isset($input['user_ID']) || empty($input['user_ID']))
+    if (!isset($input['user_ID']) || empty($input['user_ID'])) {
         die;
+    }
 
     remove_admin_from_file($input['user_ID']);
 
@@ -13,4 +15,3 @@ function index($param = array()) {
     echo json_encode(array('success' => 1));
     die;
 }
-

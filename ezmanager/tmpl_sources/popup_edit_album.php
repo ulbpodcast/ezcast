@@ -1,6 +1,6 @@
 <?php
 /*
- * EZCAST EZmanager 
+ * EZCAST EZmanager
  *
  * Copyright (C) 2016 Université libre de Bruxelles
  *
@@ -44,13 +44,13 @@ You should not have to include this file yourself.
             <label class="col-sm-2 control-label">®Album®</label>
             <div class="col-sm-10">
                 <p class="form-control-static">
-                    <?php if(isset($album_meta['course_code_public']) && $album_meta['course_code_public']!="") {
-                        echo $album_meta['course_code_public']; 
-                    } else {
-                        echo $album; 
-                    } 
+                    <?php if (isset($album_meta['course_code_public']) && $album_meta['course_code_public']!="") {
+    echo $album_meta['course_code_public'];
+} else {
+    echo $album;
+}
                     echo '(';
-                    echo (($moderation) ? '®Private_album®' : '®Public_album®');
+                    echo(($moderation) ? '®Private_album®' : '®Public_album®');
                     ?>)
                 </p>
             </div>
@@ -99,7 +99,9 @@ You should not have to include this file yourself.
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" id="downloadable" name="downloadable"
-                            <?php if($downloadable !== 'false') { echo 'checked'; } ?>> 
+                            <?php if ($downloadable !== 'false') {
+                        echo 'checked';
+                    } ?>> 
                         <a class="info">
                             ®Downloadable®
                             <span style="font-weight: normal; font-size: 10px;">
@@ -113,14 +115,16 @@ You should not have to include this file yourself.
         
         <?php
         global $enable_anon_access_control;
-        if($enable_anon_access_control === true) {
-        ?>
+        if ($enable_anon_access_control === true) {
+            ?>
         
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <label>
                     <input type="checkbox" id="anon_access" name="anon_access" 
-                        <?php if($anon_access !== 'false') { echo 'checked'; } ?>>
+                        <?php if ($anon_access !== 'false') {
+                echo 'checked';
+            } ?>>
                     <a class="info">
                         ®Anonym_Access®
                         <span style="font-weight: normal; font-size: 10px;">

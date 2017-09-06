@@ -1,12 +1,13 @@
 <?php
 
-class View_per_time extends Module {
-
+class View_per_time extends Module
+{
     private $saved_data = array();
 
 
-    function analyse_line($date, $timestamp, $session, $ip, $netid, $level, $action, $other_info = NULL) {
-        if($action == "video_play_time") {
+    public function analyse_line($date, $timestamp, $session, $ip, $netid, $level, $action, $other_info = null)
+    {
+        if ($action == "video_play_time") {
             global $video_split_time;
             
             // other_info: current_album, current_asset, current_asset_name, type, last_play_start, play_time
@@ -17,43 +18,43 @@ class View_per_time extends Module {
             $start = trim($other_info[4]);
             $play_time = trim($other_info[5]);
 
-            if(!array_key_exists($album, $this->saved_data)) {
+            if (!array_key_exists($album, $this->saved_data)) {
                 $this->saved_data[$album] = array($asset => array());
             }
 
-            if(!array_key_exists($asset, $this->saved_data[$album])) {
+            if (!array_key_exists($asset, $this->saved_data[$album])) {
                 $this->saved_data[$album][$asset] = array();
             }
 
-            if(!array_key_exists($type, $this->saved_data[$album][$asset])) {
+            if (!array_key_exists($type, $this->saved_data[$album][$asset])) {
                 $this->saved_data[$album][$asset][$type] = array();
             }
 
             // For each second of the playtime
-            for($i = 0; $i < $play_time; ++$i) {
+            for ($i = 0; $i < $play_time; ++$i) {
                 // Calcul the real video time
                 $time_until_start = $start+$i;
                 // Find the "index" of the video (named video_time)
                 $video_time = $time_until_start / $video_split_time;
                 $str_video_time = strval(floor($video_time)); // bottom round and convert to string
 
-                if(!array_key_exists($str_video_time, $this->saved_data[$album][$asset][$type])) {
+                if (!array_key_exists($str_video_time, $this->saved_data[$album][$asset][$type])) {
                     $this->saved_data[$album][$asset][$type][$str_video_time] = (1 / $video_split_time);
                 } else {
                     $this->saved_data[$album][$asset][$type][$str_video_time] += (1 / $video_split_time);
                 }
             }
-
         }
     }
 
-    function end_file() {
+    public function end_file()
+    {
         foreach ($this->saved_data as $album => $album_data) {
             foreach ($album_data as $asset => $asset_data) {
                 foreach ($asset_data as $type => $type_data) {
-                    foreach($type_data as $video_time => $value) {
+                    foreach ($type_data as $video_time => $value) {
                         $nbr_view = round($value);
-                        if($nbr_view > 0) {
+                        if ($nbr_view > 0) {
                             $this->save_to_sql($album, $asset, $type, $nbr_view, $video_time);
                         }
                     }
@@ -64,8 +65,9 @@ class View_per_time extends Module {
         $this->saved_data = array();
     }
 
-    function save_to_sql($album, $asset, $type, $nbr_view, $video_time) {
-        $this->logger->debug('[view_per_time] save sql: album:' . $album . ' | asset: ' . $asset . 
+    public function save_to_sql($album, $asset, $type, $nbr_view, $video_time)
+    {
+        $this->logger->debug('[view_per_time] save sql: album:' . $album . ' | asset: ' . $asset .
             ' | type: ' . $type . ' | nbr_view: ' . $nbr_view . ' | video_time: ' . $video_time);
 
         $db = $this->database->get_database_object();
@@ -91,6 +93,4 @@ class View_per_time extends Module {
                 ':video_time' => $video_time
             ));
     }
-
 }
-

@@ -26,4 +26,3 @@
 
 chdir("!PATH/ezplayer");
 include "web_infos.php";
-?>

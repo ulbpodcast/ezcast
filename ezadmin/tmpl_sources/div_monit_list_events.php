@@ -1,4 +1,4 @@
-<?php if(isset($pagination)) {
+<?php if (isset($pagination)) {
     $pagination->insert();
 } ?>
 
@@ -19,11 +19,13 @@
         </tr>
 
         <?php 
-        foreach($events as &$event) { ?>
+        foreach ($events as &$event) {
+            ?>
             <tr class="<?php echo $event['loglevel_name']; ?>">
                 <td>
                     <a style="" href="<?php echo url_post_replace_multiple(
-                            array('asset' => $event['asset'], 'page' => 1)); ?>">
+                            array('asset' => $event['asset'], 'page' => 1)
+        ); ?>">
                         <?php echo $event['asset']; ?>
                     </a>
                 </td>
@@ -41,23 +43,25 @@
                     </span>
                 </td>
                 <td
-                <?php if(array_key_exists('min_message', $event)) { ?>
+                <?php if (array_key_exists('min_message', $event)) {
+                                ?>
                     tabindex="0" data-container="body" data-toggle="popover"
                     data-placement="left" data-content="<?php echo nl2br(htmlspecialchars($event['message'])); ?>">
                     <?php 
                     echo $event['min_message'];
-                } else { 
-                    echo '>'.$event['message'];
-                } ?>    
+                            } else {
+                                echo '>'.$event['message'];
+                            } ?>    
                 </td>
             </tr>
-        <?php } ?>
+        <?php
+        } ?>
     </table>
 </div>
 
-<?php if(isset($pagination)) {
-    $pagination->insert();
-} ?>
+<?php if (isset($pagination)) {
+            $pagination->insert();
+        } ?>
 
 
 

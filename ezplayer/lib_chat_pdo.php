@@ -35,8 +35,8 @@ require_once '../commons/lib_database.php';
 $stmts = chat_statements_get();
 db_prepare($stmts);
 
-function chat_statements_get() {
-
+function chat_statements_get()
+{
     return array(
         'message_insert' =>
         'INSERT INTO ' . db_gettable('messages') .
@@ -55,7 +55,7 @@ function chat_statements_get() {
         . 'ORDER BY creationDate ASC',
         'messages_select_by_date' =>
         'SELECT * FROM ' . db_gettable('messages')
-        . ' WHERE albumName like :albumName' 
+        . ' WHERE albumName like :albumName'
         . ' AND assetName like :assetName'
         . ' AND creationDate >= :lastDate '
         . ' AND id > :id '
@@ -69,12 +69,13 @@ function chat_statements_get() {
  * @param type $values
  * @return boolean errorflag
  */
-function message_insert($values) {
+function message_insert($values)
+{
     global $statements;
     global $db_object;
-//    foreach ($values as $row => $value) {
-//        $statements['thread_insert']->bindParam(':'.$row, $value);
-//    }
+    //    foreach ($values as $row => $value) {
+    //        $statements['thread_insert']->bindParam(':'.$row, $value);
+    //    }
     
     $statements['message_insert']->bindParam(':message', $values['message']);
     $statements['message_insert']->bindParam(':timecode', $values['timecode']);
@@ -97,7 +98,8 @@ function message_insert($values) {
  * @global null $db
  * @return Array
  */
-function messages_select_all() {
+function messages_select_all()
+{
     global $statements;
 
     $statements['messages_select_all']->execute();
@@ -111,11 +113,13 @@ function messages_select_all() {
  * @param string $asset
  * @return array
  */
-function messages_select_by_asset($album, $asset, $streaming_asset = '') {
+function messages_select_by_asset($album, $asset, $streaming_asset = '')
+{
     global $statements;
 
-    if ($streaming_asset == '')
+    if ($streaming_asset == '') {
         $streaming_asset = $asset;
+    }
     
     if (cache_asset_chat_isset($album, $streaming_asset)) {
         return cache_asset_chat_get($album, $streaming_asset);
@@ -139,7 +143,8 @@ function messages_select_by_asset($album, $asset, $streaming_asset = '') {
  * @param string $asset
  * @return array
  */
-function messages_select_by_date($album, $asset, $date, $id = 0) {
+function messages_select_by_date($album, $asset, $date, $id = 0)
+{
     global $statements;
 
     $statements['messages_select_by_date']->bindParam(':assetName', $asset);
@@ -159,16 +164,16 @@ function messages_select_by_date($album, $asset, $date, $id = 0) {
  * @param type $album
  * @return type
  */
-function messages_select_by_album($album, $limit = 0) {
+function messages_select_by_album($album, $limit = 0)
+{
     global $statements;
 
     $statements['messages_select_by_album']->bindParam(':albumName', $album);
     $statements['messages_select_by_album']->execute();
     $res = $statements['messages_select_by_album']->fetchAll(PDO::FETCH_ASSOC);
 
-    if ($limit == 0)
+    if ($limit == 0) {
         return $res;
+    }
     return array_slice($res, 0, $limit);
 }
-
-

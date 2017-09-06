@@ -1,6 +1,6 @@
 <?php 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -39,62 +39,66 @@ for every album the user can create.
     <h4 class="modal-title">®Move®</h4>
 </div>
 <div class="modal-body">
-    <?php if(empty($created_albums_list_with_descriptions)) { ?>
+    <?php if (empty($created_albums_list_with_descriptions)) {
+    ?>
         ®No_albums_to_move_asset_to®
-    <?php } else { ?>
+    <?php
+} else {
+        ?>
         <p>®Move_asset_message®</p>
 
         <div class="row">
             <br />
             <div class="col-md-12">
                 <table class="table table-hover text-left" >
-                    <?php foreach($created_albums_list_with_descriptions as $destination_name => $destination_description) {
-                        // sortir des template...
-                        global $repository_path;
-                        $course_code_public='';
-                        $album_path = $repository_path . "/" . $destination_name."-pub";
-                        $album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
-                        if(isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
-                                        $course_code_public = $album_metadata['course_code_public']; 
-                        } else {
-                            $course_code_public = $destination_name;
-                        }
+                    <?php foreach ($created_albums_list_with_descriptions as $destination_name => $destination_description) {
+            // sortir des template...
+            global $repository_path;
+            $course_code_public='';
+            $album_path = $repository_path . "/" . $destination_name."-pub";
+            $album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
+            if (isset($album_metadata['course_code_public']) && $album_metadata['course_code_public']!='') {
+                $course_code_public = $album_metadata['course_code_public'];
+            } else {
+                $course_code_public = $destination_name;
+            }
                         
-                        if($album != $destination_name.'-priv') {
-                            echo '<tr>';
-                                echo '<td class="album_name col-md-4" style="font-weight: bold;">';
-                                    echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
-                                            $destination_name.'-priv'.'&asset='.$asset_name.'" ' . 
+            if ($album != $destination_name.'-priv') {
+                echo '<tr>';
+                echo '<td class="album_name col-md-4" style="font-weight: bold;">';
+                echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
+                                            $destination_name.'-priv'.'&asset='.$asset_name.'" ' .
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#move_asset_'.$destination_name.'_priv"));$("#modal").modal("show"); }, 500);\' ' .
                                             'data-dismiss="modal" id="move_asset_'.$destination_name.'_priv" >';
-                                    echo $course_code_public . ' (®private®)';
-                                    echo '</a>';
-                                echo '</td>';
-                                echo '<td class="album_description">';
-                                    echo $destination_description . ' (®Private_album®)';
-                                echo '</td>';
-                            echo '</tr>';
-                        }
-                        if($album != $destination_name.'-pub') {
-                            echo '<tr>';
-                                echo '<td class="album_name col-md-2" style="font-weight: bold;">';
-                                    echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
+                echo $course_code_public . ' (®private®)';
+                echo '</a>';
+                echo '</td>';
+                echo '<td class="album_description">';
+                echo $destination_description . ' (®Private_album®)';
+                echo '</td>';
+                echo '</tr>';
+            }
+            if ($album != $destination_name.'-pub') {
+                echo '<tr>';
+                echo '<td class="album_name col-md-2" style="font-weight: bold;">';
+                echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
                                             $destination_name.'-pub'.'&asset='.$asset_name.'" ' .
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#move_asset_'.$destination_name.'_pub"));$("#modal").modal("show"); }, 500);\' ' .
                                             'data-dismiss="modal" id="move_asset_'.$destination_name.'_pub" >';
-                                    echo $course_code_public . ' (®public®)';
-                                    echo '</a>';
-                                echo '</td>';
-                                echo '<td class="album_description">';
-                                    echo $destination_description . ' (®Public_album®)';
-                                echo '</td>';
-                            echo '</tr>';
-                        }
-                    } ?>
+                echo $course_code_public . ' (®public®)';
+                echo '</a>';
+                echo '</td>';
+                echo '<td class="album_description">';
+                echo $destination_description . ' (®Public_album®)';
+                echo '</td>';
+                echo '</tr>';
+            }
+        } ?>
                 </table>
             </div>
         </div>
-    <?php } ?>
+    <?php
+    } ?>
 </div>

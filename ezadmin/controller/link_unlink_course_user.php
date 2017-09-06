@@ -1,10 +1,12 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
-    if (empty($input['user_ID']))
+    if (empty($input['user_ID'])) {
         die;
+    }
 
     switch ($input['query']) {
         case 'link':
@@ -36,4 +38,3 @@ function index($param = array()) {
 
     notify_changes();
 }
-

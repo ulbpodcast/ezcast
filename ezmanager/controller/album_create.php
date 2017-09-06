@@ -3,30 +3,31 @@
 /**
  * All the business logic related to the album creation: this function effectively creates the album and displays a confirmation message to the user
  */
- function index($param = array()) {
-    global $input;
-    global $max_course_code_size;
-    global $max_album_label_size;
+ function index($param = array())
+ {
+     global $input;
+     global $max_course_code_size;
+     global $max_album_label_size;
     
-    //all these values are defined in each switch case
-    $course_code_public = null;
-    $album_type = null;
-    $label = null;
+     //all these values are defined in each switch case
+     $course_code_public = null;
+     $album_type = null;
+     $label = null;
    
-    //if we create a new album
-    switch($input['action']) {
+     //if we create a new album
+     switch ($input['action']) {
         case 'create_courseAndAlbum': //user create an arbitrary course
             // Sanity checks
-            if(!isset($input['label']) || $input['label'] == "" || !isset($input['albumtype']) || $input['albumtype'] == ""  ) {
+            if (!isset($input['label']) || $input['label'] == "" || !isset($input['albumtype']) || $input['albumtype'] == "") {
                 error_print_message("no given value");
                 die();
-            }    
+            }
             $album_type = htmlspecialchars($input['albumtype']);
             $label = htmlspecialchars($input['label']);
-            if($album_type == "other") {
-                 $course_code_public = $label;
+            if ($album_type == "other") {
+                $course_code_public = $label;
             } else {
-                if(!isset($input['course_code']) || $input['course_code'] == "") {
+                if (!isset($input['course_code']) || $input['course_code'] == "") {
                     error_print_message("no given value");
                     die();
                 }
@@ -37,17 +38,19 @@
             $course_code_public = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
             //
             //enforce size limits
-            if(strlen($course_code_public) > $max_course_code_size)
+            if (strlen($course_code_public) > $max_course_code_size) {
                 $course_code_public = substr($course_code_public, 0, $max_course_code_size);
-            if(strlen($label) > $max_album_label_size)
-                $label = substr($label, 0, $max_album_label_size); 
+            }
+            if (strlen($label) > $max_album_label_size) {
+                $label = substr($label, 0, $max_album_label_size);
+            }
             
             $course_id = ezmam_course_get_new_id($course_code_public);
                 
             break;
         case 'create_album': //user pick from a course already existing in db
             // Sanity checks
-            if(!isset($input['course_code']) || $input['course_code'] == "") {
+            if (!isset($input['course_code']) || $input['course_code'] == "") {
                 error_print_message("no given value");
                 die();
             }
@@ -61,10 +64,11 @@
             }
             
             $courseinfo = db_course_read($course_code);
-            if(isset($courseinfo['course_code_public']) && $courseinfo['course_code_public'] != '' )
+            if (isset($courseinfo['course_code_public']) && $courseinfo['course_code_public'] != '') {
                 $course_code_public = $courseinfo['course_code_public'];
-            else 
+            } else {
                 $course_code_public = htmlspecialchars($input['course_code']);
+            }
             
             $label = $courseinfo['course_name'];
             $album_type = "course";
@@ -78,19 +82,20 @@
             die;
     }
     
-    $ok = ezmam_course_create_repository($course_id, $course_code_public, $label, $label, $album_type);
+     $ok = ezmam_course_create_repository($course_id, $course_code_public, $label, $label, $album_type);
     
-    $create_in_db = $input['action'] == 'create_courseAndAlbum';
-    if($create_in_db) {
-        //finally, create course in db and link user to it
-        $ok = ezmam_course_create_db($course_id, $course_code_public, $label, 1, $_SESSION['user_login']) && $ok;
-    }
+     $create_in_db = $input['action'] == 'create_courseAndAlbum';
+     if ($create_in_db) {
+         //finally, create course in db and link user to it
+         $ok = ezmam_course_create_db($course_id, $course_code_public, $label, 1, $_SESSION['user_login']) && $ok;
+     }
     
-    //update course list
-    acl_update_permissions_list();
+     //update course list
+     acl_update_permissions_list();
     
-    if($ok)
-        require_once template_getpath('popup_album_successfully_created.php');
-    else
-        echo "failure";
-}
+     if ($ok) {
+         require_once template_getpath('popup_album_successfully_created.php');
+     } else {
+         echo "failure";
+     }
+ }

@@ -12,7 +12,7 @@ $threshold_num_options = 100; // The number of options in the sidebar above whic
 $options = array();
 $options['Courses'] = array(
     array(
-        'name' => '®list_courses®', 
+        'name' => '®list_courses®',
         'action' => 'view_courses'
         //'args' => array('table' => 'podcastcours_users_courses')
     ),
@@ -30,14 +30,14 @@ $options['Users'] = array(
 );
 
 global $add_users_enabled;
-if($add_users_enabled) {
+if ($add_users_enabled) {
     $options['Users']['create_user'] = array(
         'name' => '®create_user®',
         'action' => 'create_user'
     );
 }
 
-if($classrooms_category_enabled) {
+if ($classrooms_category_enabled) {
     $options['Classrooms'] = array(
         array(
             'name' => '®list_classrooms®',
@@ -131,16 +131,20 @@ $category_names = array(
 
 <div class="col-md-2 hidden-print">
 <ul class="nav nav-list">
-    <?php foreach($options as $cat => $suboptions) { ?>
+    <?php foreach ($options as $cat => $suboptions) {
+    ?>
         <li class="nav-header">
             <?php echo $category_names[$cat]; ?>
         </li>
         <?php $nb_options = count($options, COUNT_RECURSIVE) - count($options); ?>
-        <?php foreach($suboptions as $option) { ?>
-            <li <?php if($nb_options > $threshold_num_options) { echo 'style="display: none;"'; } ?> 
+        <?php foreach ($suboptions as $option) {
+        ?>
+            <li <?php if ($nb_options > $threshold_num_options) {
+            echo 'style="display: none;"';
+        } ?> 
                 class="sidebar <?php // TODO not work when no operation with input in this page
-                if(isset($input) && isset($input['action']) && ($option['action'] == $input['action'])) {
-                    echo ' active '; 
+                if (isset($input) && isset($input['action']) && ($option['action'] == $input['action'])) {
+                    echo ' active ';
                 } ?> ">
                 
                 <a href="index.php?&action=<?php echo $option['action'] ?>">
@@ -149,8 +153,9 @@ $category_names = array(
                 
             </li>
             <?php
-        } // end foreach?>
-    <?php } // end foreach ?>
+    } // end foreach?>
+    <?php
+} // end foreach?>
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>
     <li class="sidebar" title="®push_changes_title®"><a style="<?php echo (isset($_SESSION['changes_to_push']) && $_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
     <li class="sidebar"><a href="index.php?action=sync_externals">®sync_externals®</a></li>

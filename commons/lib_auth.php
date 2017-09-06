@@ -1,7 +1,7 @@
 <?php
 
 /*
-* EZCAST Commons 
+* EZCAST Commons
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -33,12 +33,12 @@ foreach ($auth_methods as $method) {
 
 /*
  * This library uses various libraries to authenticate the user
- * or get information about the user 
+ * or get information about the user
  */
 
 /**
  * Determines whether the user to authenticate is a simple user
- * or a 'runas' (admin). 
+ * or a 'runas' (admin).
  * Tries to authenticate the user and returns user's information
  * in case of success.
  * @global type $auth_methods various methods used for authentication (may be file / ldap / ...)
@@ -46,7 +46,8 @@ foreach ($auth_methods as $method) {
  * @param type $passwd user's password
  * @return user's information if the user has been authenticated; false otherwise
  */
-function checkauth($login, $passwd) {
+function checkauth($login, $passwd)
+{
     global $auth_methods;
 
     $auth_methods_length = count($auth_methods);
@@ -71,43 +72,43 @@ function checkauth($login, $passwd) {
         }
         // returns user info or false if user has not been found
         return $auth_user;
-    // admin run as login
+        // admin run as login
     } else {
         //runas_login identification where user <login> wants to act as another one
         $real_login = $login_parts[0];
         $runas_login = $login_parts[1];
         
+        $index = 0;
+        $auth_admin = false;
+        // loops on every available methods to authenticate the admin
+        while ($index < $auth_methods_length && $auth_admin === false) {
+            $check_auth = $auth_methods[$index] . "_checkauth";
+            $auth_admin = $check_auth($real_login, $passwd);
+            $index++;
+        }
+        // admin has not been authenticated
+        if ($auth_admin === false) {
+            checkauth_last_error("Authentication failure");
+            return false;
+            // admin has been authenticated
+        } else {
             $index = 0;
-            $auth_admin = false;
-            // loops on every available methods to authenticate the admin
-            while ($index < $auth_methods_length && $auth_admin === false) {
-                $check_auth = $auth_methods[$index] . "_checkauth";
-                $auth_admin = $check_auth($real_login, $passwd);
+            $auth_user = false;
+            // loops on every available methods to get user info
+            while ($index < $auth_methods_length && $auth_user === false) {
+                $getinfo = $auth_methods[$index] . "_getinfo";
+                $auth_user = $getinfo($runas_login);
                 $index++;
             }
-            // admin has not been authenticated
-            if ($auth_admin === false) {
+            // user does not exit
+            if ($auth_user === false) {
                 checkauth_last_error("Authentication failure");
-                return false;
-            // admin has been authenticated
             } else {
-                $index = 0;
-                $auth_user = false;
-                // loops on every available methods to get user info
-                while ($index < $auth_methods_length && $auth_user === false) {
-                    $getinfo = $auth_methods[$index] . "_getinfo";
-                    $auth_user = $getinfo($runas_login);
-                    $index++;
-                }
-                // user does not exit
-                if ($auth_user === false) {
-                    checkauth_last_error("Authentication failure");
-                } else {
-                    $auth_user["real_login"] = $real_login;
-                }
-                // returns user info or false if user has not been found
-                return $auth_user;
+                $auth_user["real_login"] = $real_login;
             }
+            // returns user info or false if user has not been found
+            return $auth_user;
+        }
     }
 }
 
@@ -117,12 +118,13 @@ function checkauth($login, $passwd) {
  * @param string $msg
  * @return string
  */
-function checkauth_last_error($msg = "") {
+function checkauth_last_error($msg = "")
+{
     static $last_error = "";
 
-    if ($msg == "")
+    if ($msg == "") {
         return $last_error;
-    else {
+    } else {
         $last_error = $msg;
         return true;
     }

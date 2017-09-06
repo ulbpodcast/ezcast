@@ -7,7 +7,7 @@
 require_once("logger_event_type.php");
 
 /**
- * 
+ *
  * Describes log levels. Frm PSR-3 Logger Interface. (http://www.php-fig.org/psr/psr-3/)
  */
 class LogLevel
@@ -60,12 +60,13 @@ class LogLevel
     /**
     * Return log level given in the form of LogLevel::* into an integer
     */
-    static function get_log_level_integer($log_level) {
+    public static function get_log_level_integer($log_level)
+    {
         return LogLevel::$log_levels[$log_level];
     }
     
     // index by LogLevel
-    static $log_levels = array(
+    public static $log_levels = array(
         LogLevel::EMERGENCY => 0,
         LogLevel::ALERT     => 1,
         LogLevel::CRITICAL  => 2,
@@ -77,17 +78,19 @@ class LogLevel
     );
 }
 
-/* This structure is used to pass temporary results from the `log` parent function to its child. 
+/* This structure is used to pass temporary results from the `log` parent function to its child.
  * Feel free to change it if you find another more elegant solution.
  */
-class LogData {
+class LogData
+{
     public $log_level_integer = null;
     public $type_id = null;
     public $context = null;
 }
 
 //Log serverside structure for db insertion using the ezmanager services
-class ServersideLogEntry  {
+class ServersideLogEntry
+{
     public $id = 0;
     public $asset = "";
     public $origin = "";
@@ -102,7 +105,8 @@ class ServersideLogEntry  {
     public $message = "";
 }
 
-abstract class Logger {
+abstract class Logger
+{
     
     /* Reverted EventType array -> key: id, value: EventType
      * Filled at Logger construct.
@@ -112,31 +116,34 @@ abstract class Logger {
     //set this to true to echo all logs
     public static $print_logs = false;
     
-    /* 
+    /*
      * Reverted LogLevel array -> key: id, value: LogLevel name (string)
      * Filled at Logger construct
      */
     public static $log_level_name_by_id = false;
         
-    protected function __construct() {
+    protected function __construct()
+    {
         $this->fill_event_type_by_id();
         $this->fill_level_name_by_id();
     }
     
     public function get_type_name($index)
     {
-        if(isset(Logger::$event_type_by_id[$index]))
+        if (isset(Logger::$event_type_by_id[$index])) {
             return Logger::$event_type_by_id[$index];
-        else
+        } else {
             return false;
+        }
     }
     
     public function get_log_level_name($index)
     {
-        if(isset(Logger::$log_level_name_by_id[$index]))
+        if (isset(Logger::$log_level_name_by_id[$index])) {
             return Logger::$log_level_name_by_id[$index];
-        else
+        } else {
             return false;
+        }
     }
     
     /**
@@ -151,17 +158,27 @@ abstract class Logger {
      * @param AssetLogInfo $asset_info Additional information about asset if any, in the form of a AssetLogInfo structure
      * @return LogData temporary data, used by children functions
      */
-    protected function _log(&$type, &$level, &$message, array &$context = array(), &$asset = "dummy", 
-            &$author = null, &$cam_slide = null, &$course = null, &$classroom = null)
-    {
+    protected function _log(
+        &$type,
+        &$level,
+        &$message,
+        array &$context = array(),
+        &$asset = "dummy",
+            &$author = null,
+        &$cam_slide = null,
+        &$course = null,
+        &$classroom = null
+    ) {
         global $debug_mode;
         global $service;
         
-        if(!isset($message) || !$message)
+        if (!isset($message) || !$message) {
             $message = "";
+        }
         
-        if(!isset($asset) || !$asset)
+        if (!isset($asset) || !$asset) {
             $asset = "dummy";
+        }
         
         $tempLogData = new LogData();
         //limit string size
@@ -169,24 +186,28 @@ abstract class Logger {
                 
         // convert given loglevel to integer for db storage
         try {
-          $tempLogData->log_level_integer = LogLevel::get_log_level_integer($level);
+            $tempLogData->log_level_integer = LogLevel::get_log_level_integer($level);
         } catch (Exception $e) {
-          //invalid level given, default to "error" and prepend this problem to the message
-          $message = "(Invalid log level) " . $message;
-          $tempLogData->log_level_integer = LogLevel::$log_levels[LogLevel::ERROR];
+            //invalid level given, default to "error" and prepend this problem to the message
+            $message = "(Invalid log level) " . $message;
+            $tempLogData->log_level_integer = LogLevel::$log_levels[LogLevel::ERROR];
         }
 
         //convert given type_id to integer for db storage
-       $tempLogData->type_id = isset(EventType::$event_type_id[$type]) ? EventType::$event_type_id[$type] : 0;
+        $tempLogData->type_id = isset(EventType::$event_type_id[$type]) ? EventType::$event_type_id[$type] : 0;
        
-       if(!isset($author))
-           $author = "";
-       if(!isset($cam_slide))
-           $cam_slide = "";
-       if(!isset($course))
-           $course = "";
-       if(!isset($classroom))
-           $classroom = "";
+        if (!isset($author)) {
+            $author = "";
+        }
+        if (!isset($cam_slide)) {
+            $cam_slide = "";
+        }
+        if (!isset($course)) {
+            $course = "";
+        }
+        if (!isset($classroom)) {
+            $classroom = "";
+        }
        
         // pipes will be used as seperator between contexts
         // concat contexts for db insert
@@ -196,14 +217,16 @@ abstract class Logger {
         
 
         $print_str = "log| [$level] / context: $tempLogData->context / type: $type / " . htmlspecialchars($message);
-        if(Logger::$print_logs)
+        if (Logger::$print_logs) {
             echo $print_str . PHP_EOL;
+        }
         
-        if($debug_mode 
+        if ($debug_mode
                 && $type != EventType::PHP //PHP events are already printed in custom_error_handling.php
                 && (!isset($service) || $service == false) //some services will try to parse the response, and our <script> may interfere in this case
-                && php_sapi_name() != "cli") //don't print in CLI
+                && php_sapi_name() != "cli") { //don't print in CLI
             echo("<script>console.log('$print_str');</script>");
+        }
         
         //idea: if level is critical or below, add strack trace to message
         
@@ -216,9 +239,9 @@ abstract class Logger {
     //fill $event_type_by_id from $event_type_id
     protected function fill_event_type_by_id()
     {
-        if(Logger::$event_type_by_id == false) {
+        if (Logger::$event_type_by_id == false) {
             Logger::$event_type_by_id = array();
-            foreach(EventType::$event_type_id as $key => $value) {
+            foreach (EventType::$event_type_id as $key => $value) {
                 Logger::$event_type_by_id[$value] = $key;
             }
         }
@@ -229,9 +252,9 @@ abstract class Logger {
     //fill $log_level_name_by_id from $log_levels
     protected function fill_level_name_by_id()
     {
-        if(Logger::$log_level_name_by_id == false) {
+        if (Logger::$log_level_name_by_id == false) {
             Logger::$log_level_name_by_id = array();
-            foreach(LogLevel::$log_levels as $key => $value) {
+            foreach (LogLevel::$log_levels as $key => $value) {
                 Logger::$log_level_name_by_id[$value] = $key;
             }
         }

@@ -8,7 +8,8 @@
  * @param type $export_asset false if all album's bookmarks must be exported;
  * true if only specified asset's bookmarks must be exported
  */
-function index($param = array()) {
+function index($param = array())
+{
     $export_asset = (count($param) == 1 && $param[0]);
     
     global $input;
@@ -16,8 +17,9 @@ function index($param = array()) {
     global $repository_path;
 
     $album = $input['album'];
-    if ($export_asset)
+    if ($export_asset) {
         $asset = $input['asset'];
+    }
 
     // init paths
     ezmam_repository_path($repository_path);
@@ -47,9 +49,9 @@ function index($param = array()) {
     $xml_txt = assoc_array2xml_string($bookmarks, "bookmarks", "bookmark");
     // Formating XML for pretty display
     $dom = new DOMDocument();
-    $dom->preserveWhiteSpace = FALSE;
+    $dom->preserveWhiteSpace = false;
     $dom->loadXML($xml_txt);
-    $dom->formatOutput = TRUE;
+    $dom->formatOutput = true;
     ob_clean();
     flush();
     echo $dom->saveXml();

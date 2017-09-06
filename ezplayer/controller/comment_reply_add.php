@@ -5,7 +5,8 @@
  * @global type $input
  * @return boolean
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     $album = $input['album'];

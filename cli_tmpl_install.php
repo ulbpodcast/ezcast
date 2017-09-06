@@ -13,21 +13,16 @@ foreach ($components as $component) {
     $dest_folder = "./$component/$template_folder";
     
     if (!is_dir($dest_folder)) {
-        $res = mkdir ($dest_folder);
+        $res = mkdir($dest_folder);
         if (!$res) {
             echo $R."ERROR : Could not create $dest_folder ! $N". PHP_EOL ;
-            continue;            
+            continue;
         }
     }
     
     echo "Compiling files ..." . PHP_EOL;
     foreach ($languages as $language) {
-        exec(" $php_cli_cmd ./commons/cli_template_generate.php $source_folder $language $dest_folder ./$component/translations.xml");        
-    }    
+        exec(" $php_cli_cmd ./commons/cli_template_generate.php $source_folder $language $dest_folder ./$component/translations.xml");
+    }
     echo $G."Compilation of $component complete. $N " . PHP_EOL;
 }
-
-
-
-
-

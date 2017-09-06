@@ -3,7 +3,8 @@
 /**
  * Cancel the scheduling of an asset
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
 

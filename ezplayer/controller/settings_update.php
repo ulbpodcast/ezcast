@@ -5,11 +5,12 @@
  * @global type $input
  * @return boolean
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $ezplayer_url;
 
-    $display_new_video_notification = ((isset($input['display_new_video_notification']) && 
+    $display_new_video_notification = ((isset($input['display_new_video_notification']) &&
             $input['display_new_video_notification'] === 'on') ? '1' : '0');
     $display_threads = ((isset($input['display_threads']) && $input['display_threads'] === 'on') ? '1' : '0');
     $display_thread_notification = ((isset($input['display_thread_notification']) && $input['display_thread_notification'] === 'on') ? '1' : '0');

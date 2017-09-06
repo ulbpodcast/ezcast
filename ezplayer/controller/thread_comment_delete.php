@@ -4,7 +4,8 @@
  * Used to remove a comment
  * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     $id = $input['comment_id'];
 

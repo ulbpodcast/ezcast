@@ -55,7 +55,7 @@ file_put_contents($basedir . "/commons/config.inc", $config);
  * Finally, create the first user to access the web installer
  */
 
-$des_seed = chr(rand (33,126)) . chr(rand (33,126));
+$des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
 $password = crypt($password, $des_seed);
 
 file_put_contents("$basedir/first_user", $username);
@@ -64,16 +64,18 @@ file_put_contents("first_user", " , $firstname", FILE_APPEND);
 file_put_contents("first_user", " , $lastname", FILE_APPEND);
 
 //create config file or append string in it
-function updateConfig($filePath, $string){
-    if(!file_exists($filePath)) {
+function updateConfig($filePath, $string)
+{
+    if (!file_exists($filePath)) {
         $res = file_put_contents($filePath, '<?php ' . PHP_EOL . $string);
-        if ($res === false)
+        if ($res === false) {
             trigger_error("Could not create config file at $filePath", E_USER_WARNING);
-
+        }
     } else {
         $res = file_put_contents($filePath, PHP_EOL . $string, FILE_APPEND);
-        if ($res === false)
+        if ($res === false) {
             trigger_error("Could not update config file at $filePath", E_USER_WARNING);
+        }
     }
 }
 

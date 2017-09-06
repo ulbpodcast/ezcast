@@ -29,25 +29,22 @@ include_once 'lib_print.php';
 
 foreach ($chat_messages as $message) {
     $creationDate = (get_lang() == 'fr') ? new DateTimeFrench($message['creationDate'], $DTZ) : new DateTime($message['creationDate'], $DTZ);
-    $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\hi') : $creationDate->format("F j, Y, g:i a");
-    ?> 
+    $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\hi') : $creationDate->format("F j, Y, g:i a"); ?> 
     <?php
     // checks if the hashtag #question is present
     if (($hashtag_pos = stripos($message['message'], '#question')) !== false) {
         // the question is added to the #questions tab
-        $message['message'] = replace_hashtag($message['message'], '#question', 'javascript:chat_scroll_to(\'#chat_questions\');', $hashtag_pos);
-        ?>
+        $message['message'] = replace_hashtag($message['message'], '#question', 'javascript:chat_scroll_to(\'#chat_questions\');', $hashtag_pos); ?>
         <script>
             chat_question_append('<?php echo $message['authorFullName']; ?>', '<?php echo print_info(str_replace("'", "\'", htmlspecialchars_decode($message['message'], ENT_QUOTES)), '', false); ?>', '<?php echo $creationDateVerbose; ?>');
         </script>
         <?php
-    }
-    ?>
+    } ?>
 
     <div class="chat_msg_wrapper  <?php
-    if (acl_user_is_logged() && $message['authorId'] == $_SESSION['user_login'])
+    if (acl_user_is_logged() && $message['authorId'] == $_SESSION['user_login']) {
         echo 'author ';
-    ?>">
+    } ?>">
         <div class="chat_msg_info">
             <span>
                 <b><?php echo $message['authorFullName']; ?></b> 

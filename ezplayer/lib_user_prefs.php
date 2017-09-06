@@ -41,7 +41,8 @@ require_once 'lib_ezmam.php';
  * @desc tells the library where the user's files are. CALL THIS FUNCTION BEFORE ANYTHING ELSE!!!!
  * @desc if called without parameter, returns current user's files
  */
-function user_prefs_repository_path($path = "") {
+function user_prefs_repository_path($path = "")
+{
     static $user_files_path = false;
 
     if ($path == "") {
@@ -54,23 +55,26 @@ function user_prefs_repository_path($path = "") {
     }//if $path
     //if path exists then store it
     $res = is_dir($path);
-    if ($res)
+    if ($res) {
         $user_files_path = $path;
-    else
+    } else {
         user_prefs_last_error("2 Error: user's files path not found: $path");
+    }
     return $res;
 }
 
 /**
  * returns a list that contains all albums the user has already consulted
  * @param type $user the user_login
- * @return assoc_album_tokens || false : the list if user and album exist, 
+ * @return assoc_album_tokens || false : the list if user and album exist,
  * false otherwise
  */
-function user_prefs_tokens_get($user) {
+function user_prefs_tokens_get($user)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
     $assoc_album_tokens = array();
 
@@ -97,10 +101,12 @@ function user_prefs_tokens_get($user) {
  * @param type $user the owner of the file
  * @return boolean true if the file has been deleted; false otherwise
  */
-function user_prefs_tokens_delete($user) {
+function user_prefs_tokens_delete($user)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -120,14 +126,16 @@ function user_prefs_tokens_delete($user) {
  * @param type $album the searched album
  * @return album_token || false : album_token if it exists, false otherwise
  */
-function user_prefs_token_get($user, $album) {
+function user_prefs_token_get($user, $album)
+{
 
     // Get the list that contains all album tokens
     $token_list = acl_album_tokens_get();
 
     // if no result, the user and/or album are not correct
-    if (!isset($token_list) || $token_list == false)
+    if (!isset($token_list) || $token_list == false) {
         return false;
+    }
 
     foreach ($token_list as $album_token) {
         if ($album_token['album'] == $album) {
@@ -145,14 +153,16 @@ function user_prefs_token_get($user, $album) {
  * @param type $album the searched album
  * @return index the position of the token in the list, -1 if it doesn't exist
  */
-function user_prefs_token_index($user, $album) {
+function user_prefs_token_index($user, $album)
+{
 
     // Get the list that contains all album tokens
     $token_list = acl_album_tokens_get();
 
     // if no result, the user and/or album are not correct
-    if (!isset($token_list) || $token_list == false)
+    if (!isset($token_list) || $token_list == false) {
         return false;
+    }
 
     foreach ($token_list as $index => $album_token) {
         if ($album_token['album'] == $album) {
@@ -170,14 +180,17 @@ function user_prefs_token_index($user, $album) {
  * @param type $tokens_array the list of tokens to be added
  * @return true if all tokens of the array have been added to the file; false otherwise
  */
-function user_prefs_tokens_add($user, $tokens_array) {
+function user_prefs_tokens_add($user, $tokens_array)
+{
 
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
-    if (count($tokens_array) == 0)
+    if (count($tokens_array) == 0) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -201,22 +214,24 @@ function user_prefs_tokens_add($user, $tokens_array) {
         }
     }
 
-    if (count($token_list) == 0)
+    if (count($token_list) == 0) {
         return false;
+    }
     // converts the array in xml file
     return assoc_array2xml_file($token_list, $user_path . "/_album_tokens.xml", "album_tokens", "album_token");
 }
 
 // checks if the array contains the token
-function token_array_contains(&$array, $token) {
-    if (count($array) == 0)
+function token_array_contains(&$array, $token)
+{
+    if (count($array) == 0) {
         return false;
+    }
     
     foreach ($array as $index => $array_token) {
-        if($array_token['album'] == $token['album']) {
-            if($array_token['token'] != $token['token'] || 
+        if ($array_token['album'] == $token['album']) {
+            if ($array_token['token'] != $token['token'] ||
                 $array_token['title'] != $token['title']) {
-                
                 $array[$index]['token'] = $token['token'];
                 $array[$index]['title'] = $token['title'];
             }
@@ -228,14 +243,15 @@ function token_array_contains(&$array, $token) {
 
 /**
  * adds the album token to the token list
- * @param type $user the user_login 
+ * @param type $user the user_login
  * @param type $album the album to add
  * @param type $title the album title
  * @param type $token the album token
  * @index type $index the position where the album token should be added
  * @return boolean true if album has been added to the list, false otherwise
  */
-function user_prefs_token_add($user, $album, $title, $token, $index = 0) {
+function user_prefs_token_add($user, $album, $title, $token, $index = 0)
+{
     // Sanity check
     if (!isset($user) || $user == '' ||
             !ezmam_album_exists($album)) {
@@ -274,13 +290,16 @@ function user_prefs_token_add($user, $album, $title, $token, $index = 0) {
  * @param type $album the album to update
  * @return boolean
  */
-function user_prefs_token_update_count($user, $album) {
+function user_prefs_token_update_count($user, $album)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -307,12 +326,15 @@ function user_prefs_token_update_count($user, $album) {
  * @param type $user the user_login
  * @param type $album the album to remove
  */
-function user_prefs_token_remove($user, $album) {
+function user_prefs_token_remove($user, $album)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
-    if (!isset($album) || $album == '')
+    }
+    if (!isset($album) || $album == '') {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -326,9 +348,10 @@ function user_prefs_token_remove($user, $album) {
     foreach ($token_list as $index => $album_token) {
         if ($album_token['album'] == $album) {
             // if it is the only token contained in the file
-            if (count($token_list) == 1)
-            // the file is deleted
+            if (count($token_list) == 1) {
+                // the file is deleted
                 return user_prefs_tokens_delete($user);
+            }
             // else
             unset($token_list[$index]);
             $removed = true;
@@ -346,12 +369,15 @@ function user_prefs_token_remove($user, $album) {
  * @param type $user the user_login
  * @param type $index the index of the token to remove
  */
-function user_prefs_token_remove_at($user, $index) {
+function user_prefs_token_remove_at($user, $index)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
-    if (!isset($index) || $index < 0)
+    }
+    if (!isset($index) || $index < 0) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -361,31 +387,37 @@ function user_prefs_token_remove_at($user, $index) {
 
     // 2) loop on the albums list and removes the token if it exists
     $token_list = acl_album_tokens_get();
-    if ($index > count($token_list))
+    if ($index > count($token_list)) {
         return false;
+    }
 
-    if (count($token_list) == 1)
+    if (count($token_list) == 1) {
         return user_prefs_tokens_delete($user);
+    }
     unset($token_list[$index]);
     $user_path = $user_files_path . '/' . $user;
     return assoc_array2xml_file($token_list, $user_path . "/_album_tokens.xml", "album_tokens", "album_token");
 }
 
 /**
- * Moves an album token from a position to an other position in the list   
+ * Moves an album token from a position to an other position in the list
  * @param type $user the user
  * @param type $index the index of the token to move
  * @param type $new_index the new index for the token to move
  * @return the new list; false if an error occurs
  */
-function user_prefs_token_swap($user, $index, $new_index) {
+function user_prefs_token_swap($user, $index, $new_index)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
-    if (!isset($index) || $index < 0)
+    }
+    if (!isset($index) || $index < 0) {
         return false;
-    if (!isset($new_index) || $new_index < 0)
+    }
+    if (!isset($new_index) || $new_index < 0) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -395,8 +427,9 @@ function user_prefs_token_swap($user, $index, $new_index) {
 
     $token_list = acl_album_tokens_get();
     $max_index = count($token_list);
-    if ($index >= $max_index || $new_index >= $max_index)
+    if ($index >= $max_index || $new_index >= $max_index) {
         return false;
+    }
 
     $token = $token_list[$index];
     $token_list[$index] = $token_list[$new_index];
@@ -408,18 +441,21 @@ function user_prefs_token_swap($user, $index, $new_index) {
 
 /**
  * Adds an asset to the list of all watched assets.
- * @param type $user 
+ * @param type $user
  * @param type $album
  * @param type $asset
  * @return boolean
  */
-function user_prefs_watched_add($user, $album, $asset) {
+function user_prefs_watched_add($user, $album, $asset)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -462,10 +498,12 @@ function user_prefs_watched_add($user, $album, $asset) {
  * @param type $user
  * @return boolean false if an error occured; the list of watched assets otherwise.
  */
-function user_prefs_watchedlist_get($user, $from_acl = true) {
+function user_prefs_watchedlist_get($user, $from_acl = true)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
     $assoc_watched_assets = array();
 
@@ -475,7 +513,7 @@ function user_prefs_watchedlist_get($user, $from_acl = true) {
         return false;
     }
     
-    if ($from_acl && isset($_SESSION['acl_watched_assets']) && !empty($_SESSION['acl_watched_assets'])){
+    if ($from_acl && isset($_SESSION['acl_watched_assets']) && !empty($_SESSION['acl_watched_assets'])) {
         return $_SESSION['acl_watched_assets'];
     }
 
@@ -495,24 +533,27 @@ function user_prefs_watchedlist_get($user, $from_acl = true) {
 }
 
 /**
- * Searches a specific pattern in one or more albums / assets / fields 
+ * Searches a specific pattern in one or more albums / assets / fields
  * @param type $user the user who owns the personal bookmarks
  * @param type $search the pattern to search (array containing a selection of words to find)
- * @param type $fields the bookmark fields where to search : 
+ * @param type $fields the bookmark fields where to search :
  * it can be the title, the description and/or the keywords
  * @param type $level the level where to search
  * @param type $albums an array containing the albums where to search
  * @param type $asset a string containing a specific asset
- * @return the list of matching bookmarks; false if an error occurs; null 
+ * @return the list of matching bookmarks; false if an error occurs; null
  * no bookmark matches the pattern
  */
-function user_prefs_bookmarks_search($user, $search, $fields, $level, $albums, $asset = '') {
+function user_prefs_bookmarks_search($user, $search, $fields, $level, $albums, $asset = '')
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return null;
+    }
 
-    if (!isset($level) || $level < 0 || $level > 4)
+    if (!isset($level) || $level < 0 || $level > 4) {
         $level = 0;
+    }
 
     $bookmarks = array();
 
@@ -529,8 +570,9 @@ function user_prefs_bookmarks_search($user, $search, $fields, $level, $albums, $
     }
 
     // we have now the list of all eligible bookmarks to search in
-    if ((!isset($search) || count($search) == 0) && $level == 0)
+    if ((!isset($search) || count($search) == 0) && $level == 0) {
         return $bookmarks;
+    }
 
     return search_in_array($search, $bookmarks, $fields, $level);
 }
@@ -539,13 +581,15 @@ function user_prefs_bookmarks_search($user, $search, $fields, $level, $albums, $
 /**
  * Returns all bookmarks of the given album
  * @param type $user the user
- * @param type $album the album 
+ * @param type $album the album
  * @return the bookmarks list ; false if an error occurs
  */
-function user_prefs_album_bookmarks_list_get($user, $album) {
+function user_prefs_album_bookmarks_list_get($user, $album)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
     // 1) set repository path
     $user_files_path = user_prefs_repository_path();
@@ -559,8 +603,9 @@ function user_prefs_album_bookmarks_list_get($user, $album) {
     // 3) if the xml file exists, it is converted in associative array
     if (file_exists($user_path . "/bookmarks_$album.xml")) {
         $xml = simplexml_load_file($user_path . "/bookmarks_$album.xml");
-        if (!$xml)
+        if (!$xml) {
             return false;
+        }
         $assoc_album_bookmarks = xml_file2assoc_array($xml, 'bookmark');
     }
 
@@ -574,9 +619,10 @@ function user_prefs_album_bookmarks_list_get($user, $album) {
  * @param type $asset the asset
  * @return boolean|array the list of bookmarks ; false if an error occurs
  */
-function user_prefs_asset_bookmarks_list_get($user, $album, $asset) {
+function user_prefs_asset_bookmarks_list_get($user, $album, $asset)
+{
     $assoc_album_bookmarks = user_prefs_album_bookmarks_list_get($user, $album);
-    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false || 
+    if (!isset($assoc_album_bookmarks) || $assoc_album_bookmarks === false ||
             empty($assoc_album_bookmarks)) {
         return false;
     }
@@ -590,7 +636,7 @@ function user_prefs_asset_bookmarks_list_get($user, $album, $asset) {
             array_push($assoc_asset_bookmarks, $assoc_album_bookmarks[$index]);
         }
         ++$index;
-        if($index < $count) {
+        if ($index < $count) {
             $ref_asset = $assoc_album_bookmarks[$index]['asset'];
         }
     }
@@ -606,12 +652,14 @@ function user_prefs_asset_bookmarks_list_get($user, $album, $asset) {
  * @param type $selection the list of positions for the bookmarks we want to keep
  * @return boolean|array the selection of bookmarks
  */
-function user_prefs_asset_bookmarks_selection_get($user, $album, $asset, $selection) {
+function user_prefs_asset_bookmarks_selection_get($user, $album, $asset, $selection)
+{
     $bookmarks_list;
     $selected_bookmarks = array();
 
-    if (!isset($album) || $album == '')
+    if (!isset($album) || $album == '') {
         return false;
+    }
 
     if (!isset($asset) || $asset == '') {
         // selection is on the whole album
@@ -638,14 +686,15 @@ function user_prefs_asset_bookmarks_selection_get($user, $album, $asset, $select
 /**
  * Determines if a specific bookmark exists
  * @param type $user the user
- * @param type $album the album 
+ * @param type $album the album
  * @param type $asset the asset
  * @param type $timecode the timecode of the bookmark
  * @return boolean true if the bookmark exists ; false otherwise
  */
-function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode) {
+function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode)
+{
     $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get($user, $album, $asset);
-    if($assoc_asset_bookmarks == false || !is_array($assoc_asset_bookmarks)) {
+    if ($assoc_asset_bookmarks == false || !is_array($assoc_asset_bookmarks)) {
         return false;
     }
     
@@ -660,14 +709,15 @@ function user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode) {
 /**
  * Gets a specific bookmark from the list
  * @param type $user the user
- * @param type $album the album 
+ * @param type $album the album
  * @param type $asset the asset
  * @param type $timecode the timecode of the bookmark
  * @return the bookmark if it exists; false otherwise
  */
-function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode) {
+function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode)
+{
     $assoc_asset_bookmarks = user_prefs_asset_bookmarks_list_get(trim($user), trim($album), trim($asset));
-    if($assoc_asset_bookmarks == false || !is_array($assoc_asset_bookmarks)) {
+    if ($assoc_asset_bookmarks == false || !is_array($assoc_asset_bookmarks)) {
         return false;
     }
     foreach ($assoc_asset_bookmarks as $bookmark) {
@@ -690,8 +740,17 @@ function user_prefs_asset_bookmark_get($user, $album, $asset, $timecode) {
  * @param type $level the level of the bookmark
  * @return boolean
  */
-function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title = '', 
-        $description = '', $keywords = '', $level = '1', $type = '') {
+function user_prefs_asset_bookmark_add(
+    $user,
+    $album,
+    $asset,
+    $timecode,
+    $title = '',
+        $description = '',
+    $keywords = '',
+    $level = '1',
+    $type = ''
+) {
     global $logger;
     
     // Sanity check
@@ -712,10 +771,14 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
     $user_path = $user_files_path . '/' . $user;
     // remove the previous same bookmark if it existed yet
     $delete_ok = user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode);
-    if(!$delete_ok) {
-        $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::ERROR, "Could not delete last bookmark (user: "
-                . "$user, album: $album, asset: $asset, timecode: $timecode). New bookmark cannot be added.", 
-                array(__FUNCTION__));
+    if (!$delete_ok) {
+        $logger->log(
+            EventType::MANAGER_BOOKMARKS,
+            LogLevel::ERROR,
+            "Could not delete last bookmark (user: "
+                . "$user, album: $album, asset: $asset, timecode: $timecode). New bookmark cannot be added.",
+                array(__FUNCTION__)
+        );
         return false;
     }
     
@@ -739,7 +802,7 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
             $asset_ref = $bookmarks_list[$index]['asset'];
             $timecode_ref = $bookmarks_list[$index]['timecode'];
         }
-        // if the asset already contains bookmarks, loop while 
+        // if the asset already contains bookmarks, loop while
         // timecode is bigger than reference timecode
         while ($index < $count && $asset == $asset_ref && $timecode > $timecode_ref) {
             ++$index;
@@ -747,21 +810,24 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
             $asset_ref = $bookmarks_list[$index]['asset'];
         }
 
-        if ($index < 0) // no bookmark yet
+        if ($index < 0) { // no bookmark yet
             $index = 0;
-        if ($index > $count) // add in last index
+        }
+        if ($index > $count) { // add in last index
             --$index;
+        }
     }
     
-    $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::DEBUG, "BOOKMARK bookmarks_list: " . 
-            print_r($bookmarks_list,true) .", count: $count, index: $index", array(__FUNCTION__));
+    $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::DEBUG, "BOOKMARK bookmarks_list: " .
+            print_r($bookmarks_list, true) .", count: $count, index: $index", array(__FUNCTION__));
 
     // extract keywords from the description
     $keywords_array = get_keywords($description);
     // and save them as keywords
     foreach ($keywords_array as $keyword) {
-        if (strlen($keywords) > 0)
+        if (strlen($keywords) > 0) {
             $keywords .= ', ';
+        }
         $keywords .= $keyword;
     }
     // surround every url by '*' for url recognition in EZplayer
@@ -781,18 +847,22 @@ function user_prefs_asset_bookmark_add($user, $album, $asset, $timecode, $title 
  * @param type $bookmarks an array of bookmarks
  * @return boolean true if the bookmarks have been added; false otherwise
  */
-function user_prefs_album_bookmarks_add($user, $bookmarks) {
+function user_prefs_album_bookmarks_add($user, $bookmarks)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
-    if (!isset($bookmarks) || count($bookmarks) == 0)
+    if (!isset($bookmarks) || count($bookmarks) == 0) {
         return false;
+    }
 
     $album = $bookmarks[0]['album'];
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -811,12 +881,12 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
     // Get the bookmarks list
     $bookmarks_list = user_prefs_album_bookmarks_list_get($user, $album);
 
-    if (!isset($bookmarks_list) || $bookmarks_list == false)
+    if (!isset($bookmarks_list) || $bookmarks_list == false) {
         $bookmarks_list = array();
+    }
 
     foreach ($bookmarks as $bookmark) {
         if ($bookmark['album'] == $album && ezmam_asset_exists($album, $bookmark['asset']) && $bookmark['timecode'] >= 0) {
-
             $count = count($bookmarks_list);
             $index = 0;
 
@@ -830,7 +900,7 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
                     $asset_ref = $bookmarks_list[$index]['asset'];
                     $timecode_ref = $bookmarks_list[$index]['timecode'];
                 }
-                // if the asset already contains bookmarks, loop while 
+                // if the asset already contains bookmarks, loop while
                 // timecode is bigger than reference timecode
                 while ($index < $count && $bookmark['asset'] == $asset_ref && $bookmark['timecode'] >= $timecode_ref) {
                     ++$index;
@@ -838,11 +908,13 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
                     $asset_ref = $bookmarks_list[$index]['asset'];
                 }
 
-                if ($index < 0) // no bookmark yet
+                if ($index < 0) { // no bookmark yet
                     $index = 0;
-                if ($index > $count) // add in last index
+                }
+                if ($index > $count) { // add in last index
                     --$index;
-                if ($bookmark['asset'] == $bookmarks_list[$index - 1]['asset'] && 
+                }
+                if ($bookmark['asset'] == $bookmarks_list[$index - 1]['asset'] &&
                         $bookmark['timecode'] == $bookmarks_list[$index - 1]['timecode']) {
                     $bookmarks_list[$index - 1] = $bookmark;
                 } else {
@@ -868,18 +940,22 @@ function user_prefs_album_bookmarks_add($user, $bookmarks) {
  * @param type $timecode the timecode of the bookmark
  * @return boolean true if the bookmark has been deleted or does not exists; false if failure
  */
-function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode) {
+function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode)
+{
     global $logger;
     
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
-    if (!isset($timecode) || $timecode == '' || $timecode < 0)
+    if (!isset($timecode) || $timecode == '' || $timecode < 0) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -891,7 +967,6 @@ function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode) {
     $user_path = $user_files_path . '/' . $user;
 
     if (user_prefs_asset_bookmark_exists($user, $album, $asset, $timecode)) {
-        
         $logger->log(EventType::MANAGER_BOOKMARKS, LogLevel::DEBUG, "Bookmark already exists (user: $user, album: "
                 . "$album, asset: $asset, timecode: $timecode)", array(__FUNCTION__));
 
@@ -918,19 +993,23 @@ function user_prefs_asset_bookmark_delete($user, $album, $asset, $timecode) {
  * @param type $bookmarks the array of bookmarks to be deleted
  * @return boolean true if the bookmarks have been removed; false otherwise
  */
-function user_prefs_album_bookmarks_delete($user, $bookmarks) {
+function user_prefs_album_bookmarks_delete($user, $bookmarks)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
 
-    if (!isset($bookmarks) || count($bookmarks) == 0)
+    if (!isset($bookmarks) || count($bookmarks) == 0) {
         return false;
+    }
 
     $album = $bookmarks[0]['album'];
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -946,7 +1025,7 @@ function user_prefs_album_bookmarks_delete($user, $bookmarks) {
     foreach ($bookmarks as $bookmark) {
         if ($bookmark['album'] == $album && $bookmark['timecode'] >= 0) {
             foreach ($bookmarks_list as $index => $ref_bookmark) {
-                if ($bookmark['album'] == $ref_bookmark['album'] && $bookmark['asset'] == $ref_bookmark['asset'] && 
+                if ($bookmark['album'] == $ref_bookmark['album'] && $bookmark['asset'] == $ref_bookmark['asset'] &&
                         $bookmark['timecode'] == $ref_bookmark['timecode']) {
                     unset($bookmarks_list[$index]);
                     break;
@@ -969,13 +1048,16 @@ function user_prefs_album_bookmarks_delete($user, $bookmarks) {
  * @param type $asset the asset we want to remove bookmarks from
  * @return boolean true if the bookmarks have been deleted; false otherwise
  */
-function user_prefs_asset_bookmarks_delete($user, $album, $asset) {
+function user_prefs_asset_bookmarks_delete($user, $album, $asset)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -1002,16 +1084,19 @@ function user_prefs_asset_bookmarks_delete($user, $album, $asset) {
 /**
  * Deletes the file containing all bookmarks of the given album
  * @param type $user the user
- * @param type $album the album 
+ * @param type $album the album
  * @return boolean true if the file has been deleted; false otherwise
  */
-function user_prefs_album_bookmarks_delete_all($user, $album) {
+function user_prefs_album_bookmarks_delete_all($user, $album)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
-    if (!ezmam_album_exists($album))
+    if (!ezmam_album_exists($album)) {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -1032,10 +1117,12 @@ function user_prefs_album_bookmarks_delete_all($user, $album) {
  * @param type $value
  * @return boolean
  */
-function user_prefs_settings_edit($user, $key, $value) {
+function user_prefs_settings_edit($user, $key, $value)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
     // 1) set the repository path
     $user_files_path = user_prefs_repository_path();
@@ -1058,10 +1145,12 @@ function user_prefs_settings_edit($user, $key, $value) {
     return simple_assoc_array2xml_file($settings, $user_path . "/_settings.xml", "settings");
 }
 
-function user_prefs_settings_get($user) {
+function user_prefs_settings_get($user)
+{
     // Sanity check
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
     // 1) set repository path
     $user_files_path = user_prefs_repository_path();
@@ -1083,17 +1172,18 @@ function user_prefs_settings_get($user) {
 }
 
 /**
- * 
+ *
  * @param [string $msg error meesage (optional)]
  * @return string error message
  * @desc Store and return last error message in ezmam library
  */
-function user_prefs_last_error($msg = "") {
+function user_prefs_last_error($msg = "")
+{
     static $last_error = "";
 
-    if ($msg == "")
+    if ($msg == "") {
         return $last_error;
-    else {
+    } else {
         $last_error = $msg;
         return true;
     }
@@ -1107,10 +1197,12 @@ function user_prefs_last_error($msg = "") {
  * @param type $value
  * @return boolean
  */
-function user_prefs_settings_update($user, $key, $value) {
+function user_prefs_settings_update($user, $key, $value)
+{
     global $user_files_path;
-    if (!isset($user) || $user == '')
+    if (!isset($user) || $user == '') {
         return false;
+    }
 
     if ($user_files_path === false) {
         return false;

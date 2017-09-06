@@ -70,8 +70,7 @@ include_once 'lib_print.php';
                     include_once template_getpath('div_thread_details.php');
                 } else {
                     include_once template_getpath('div_threads_list.php');
-                }
-                ?>
+                } ?>
             </div><!-- END of #threads_info -->
             <?php
         }

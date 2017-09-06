@@ -5,15 +5,16 @@
  * @global type $input
  * @return boolean
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     $album = $input['album'];
     $asset = $input['asset'];
     $comment_message = surround_url($input['message']);
     $comment_thread = $input['thread_id'];
 
-    if (!acl_user_is_logged() && $album != '' && $asset != '' && 
-            $comment_thread != '')  { 
+    if (!acl_user_is_logged() && $album != '' && $asset != '' &&
+            $comment_thread != '') {
         return false;
     }
 

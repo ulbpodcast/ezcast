@@ -59,45 +59,58 @@ global $first_connexion;
             <?php
             foreach ($albums as $index => $album) {
                 $private = false;
-                if (suffix_get($album['album']) == '-priv')
+                if (suffix_get($album['album']) == '-priv') {
                     $private = true;
-                ?>
+                } ?>
                 <li>    
-                    <a class="item <?php if ($private) echo 'private' ?>" href="javascript:show_album_assets('<?php echo $album['album']; ?>', '<?php echo $album['token']; ?>');">
-                        <b style="text-transform:uppercase;"><?php if(isset($album['course_code_public']) && $album['course_code_public']!="") echo $album['course_code_public']; else echo suffix_remove($album['album']); ?></b> 
-                        <?php if ($private) echo '(®Private_album®)' ?>
+                    <a class="item <?php if ($private) {
+                    echo 'private';
+                } ?>" href="javascript:show_album_assets('<?php echo $album['album']; ?>', '<?php echo $album['token']; ?>');">
+                        <b style="text-transform:uppercase;"><?php if (isset($album['course_code_public']) && $album['course_code_public']!="") {
+                    echo $album['course_code_public'];
+                } else {
+                    echo suffix_remove($album['album']);
+                } ?></b> 
+                        <?php if ($private) {
+                    echo '(®Private_album®)';
+                } ?>
                         <br/><?php print_info($album['title']); ?>
 
                     </a>
                 </li>
-                <?php if (acl_user_is_logged()) { ?>
+                <?php if (acl_user_is_logged()) {
+                    ?>
                     <div class="album_options left">
-                        <a class="up-arrow" <?php if ($index == 0) { ?>style="visibility:hidden"<?php } ?> href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up');" title="®Move_up®"></a>
-                        <?php if ($index != count($albums) - 1) { ?><a class="down-arrow" href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php } ?>
+                        <a class="up-arrow" <?php if ($index == 0) {
+                        ?>style="visibility:hidden"<?php
+                    } ?> href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up');" title="®Move_up®"></a>
+                        <?php if ($index != count($albums) - 1) {
+                        ?><a class="down-arrow" href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php
+                    } ?>
                     </div>
                     <?php
                     if (acl_user_is_logged() && acl_show_notifications()) {
                         $count = acl_global_count($album['album']);
                         if (($count - acl_watched_count($album['album'])) > 0) {
                             ?>
-                            <div class="album_count green" title="<?php print_new_video($count - acl_watched_count($album['album'])); ?>"><?php echo ($count - acl_watched_count($album['album'])); ?></div>
+                            <div class="album_count green" title="<?php print_new_video($count - acl_watched_count($album['album'])); ?>"><?php echo($count - acl_watched_count($album['album'])); ?></div>
                             <?php
                         }
-                    }
-                    ?> 
+                    } ?> 
 
                     <div class="album_options pull-right inline-block">
                         <a  class="button-rect green pull-right inline-block share-rss" href="javascript:popup_album('<?php echo $album['album'] ?>', 'rss');">®subscribe_rss®</a>
-                        <?php if (suffix_get($album['album']) == '-priv' || !acl_has_album_moderation($album['album'])) { ?> 
+                        <?php if (suffix_get($album['album']) == '-priv' || !acl_has_album_moderation($album['album'])) {
+                        ?> 
                             <a class="delete-album" title="®Delete_album®" href="javascript:popup_album('<?php echo $album['album'] ?>', 'delete');"></a>
-                        <?php } ?>
+                        <?php
+                    } ?>
                     </div>
 
                                                 <!--span class="delete_album" onclick="delete_album_token('<?php echo $album['album']; ?>');">x</span-->
                     <?php
                 }
-            }
-            ?>
+            } ?>
         </ul>
         <?php
     }

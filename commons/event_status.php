@@ -1,6 +1,7 @@
 <?php
 
-class EventStatus {
+class EventStatus
+{
     
     // All is ok
     const AUTO_SUCCESS = "AUTO_SUCCESS";
@@ -23,21 +24,24 @@ class EventStatus {
     const MANUAL_IGNORE = "MANUAL_IGNORE";
     
     
-    static function getAllEventStatus() {
-        return array(EventStatus::AUTO_SUCCESS, EventStatus::AUTO_SUCCESS_ERRORS, 
+    public static function getAllEventStatus()
+    {
+        return array(EventStatus::AUTO_SUCCESS, EventStatus::AUTO_SUCCESS_ERRORS,
             EventStatus::AUTO_SUCCESS_WARNINGS, EventStatus::AUTO_FAILURE,
             EventStatus::MANUAL_OK, EventStatus::MANUAL_PARTIAL_OK,
             EventStatus::MANUAL_FAILURE, EventStatus::MANUAL_IGNORE);
     }
     
-    static function getManualEventStatus() {
+    public static function getManualEventStatus()
+    {
         return array(EventStatus::MANUAL_OK, EventStatus::MANUAL_PARTIAL_OK,
             EventStatus::MANUAL_FAILURE, EventStatus::MANUAL_IGNORE);
     }
     
     
-    static function getColorStatus($statut) {
-        switch(strtoupper($statut)) {
+    public static function getColorStatus($statut)
+    {
+        switch (strtoupper($statut)) {
             case EventStatus::AUTO_SUCCESS:
             case EventStatus::MANUAL_OK:
                 return "success";
@@ -65,9 +69,10 @@ class EventStatus {
         }
     }
            
-    static function isSuccessStatus($status) {
+    public static function isSuccessStatus($status)
+    {
         $status = strtoupper($status);
-        switch($status) {
+        switch ($status) {
             case EventStatus::AUTO_SUCCESS:
             case EventStatus::AUTO_SUCCESS_ERRORS:
             case EventStatus::AUTO_SUCCESS_WARNINGS:
@@ -78,5 +83,4 @@ class EventStatus {
                 return false;
         }
     }
-    
 };

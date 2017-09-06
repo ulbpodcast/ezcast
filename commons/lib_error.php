@@ -12,23 +12,25 @@ $ezcast_logs = "./ezcast.log";
  * @param string $msg The message to print
  * @param bool $log If set to false, the error won't be logged.
  */
-function error_print_message($msg, $log = true) {
+function error_print_message($msg, $log = true)
+{
     //echo '<b>Error: </b>'.$msg;
     echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
     echo '<script type="text/javascript">window.alert("'.$msg.'");</script>';
     //echo '<div style="display: none;" id="#error" onload="show_popup_from_inner_div(\'#error\');">'.$msg.'</div>';
     
-    if($log) {
+    if ($log) {
         log_append('error', $msg);
     }
 }
 
 /**
  * Prints an error corresponding to a HTTP code
- * @param int $http_code 
+ * @param int $http_code
  */
-function error_print_http($http_code) {
-    switch($http_code) {
+function error_print_http($http_code)
+{
+    switch ($http_code) {
         case 403:
             header('HTTP/1.0 403 Forbidden');
             break;
@@ -45,7 +47,8 @@ function error_print_http($http_code) {
  * @param string $operation The operation done
  * @param string $message Additionnal information (parameters)
  */
-function log_append($operation, $message = '') {
+function log_append($operation, $message = '')
+{
     global $ezcast_logs;
     
     // 1) Date/time at which the event occurred
@@ -63,10 +66,9 @@ function log_append($operation, $message = '') {
         $data .= 'nologin';
     }
     // General case, where there is a login and (possibly) a real login
-    else if (isset($_SESSION['real_login'])) {
+    elseif (isset($_SESSION['real_login'])) {
         $data .= $_SESSION['real_login'].'/'.$_SESSION['user_login'];
-    }
-    else {
+    } else {
         $data .= $_SESSION['user_login'];
     }
     $data .= ' ';
@@ -75,8 +77,9 @@ function log_append($operation, $message = '') {
     $data .= $operation;
     
     // 5) Optionnal parameters
-    if(!empty($message))
+    if (!empty($message)) {
         $data .= ': '.$message;
+    }
     
     // 6) And we add a carriage return for readability
     $data .= PHP_EOL;

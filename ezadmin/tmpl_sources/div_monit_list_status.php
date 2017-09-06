@@ -1,19 +1,23 @@
 <?php 
-if(isset($errorActionMsg)) { ?>
+if (isset($errorActionMsg)) {
+    ?>
     <div class="alert alert-danger col-md-10 col-md-offset-1" role="alert">
     ®monit_error_param® (<?php echo $errorActionMsg; ?>)
     </div>
-<?php }
+<?php
+}
 
-if(isset($cronWarningMsg) && $cronWarningMsg) { ?>
+if (isset($cronWarningMsg) && $cronWarningMsg) {
+    ?>
     <div class="alert alert-warning col-md-10 col-md-offset-1" role="alert">
     ®monit_warning_cron®
     </div>
-<?php }
+<?php
+}
 
-if(isset($pagination)) {
+if (isset($pagination)) {
     $pagination->insert();
-} 
+}
 ?>
 
 
@@ -29,7 +33,8 @@ if(isset($pagination)) {
         </tr>
 
         <?php 
-        foreach($resStatus as &$status) { ?>
+        foreach ($resStatus as &$status) {
+            ?>
             <tr class="<?php echo EventStatus::getColorStatus($status['status']); ?>">
                 <td style="text-align: center;">
                     <button type="button" class="btn btn-default btn-sm" id="check" 
@@ -37,11 +42,13 @@ if(isset($pagination)) {
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
                     </button>
                     <button type="button" class="btn btn-default btn-sm" id="link"
-                    <?php if(array_key_exists($status['asset'], $listChildren) || in_array($status['asset'], $listAssetWithParent)) {
-                            echo 'disabled="disabled"';
-                    } else { ?>
+                    <?php if (array_key_exists($status['asset'], $listChildren) || in_array($status['asset'], $listAssetWithParent)) {
+                echo 'disabled="disabled"';
+            } else {
+                ?>
                             data-toggle="modal" data-target="#modal_link" data-asset="<?php echo $status['asset']; ?>"
-                    <?php } ?>
+                    <?php
+            } ?>
                     >
                         <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
                     </button>
@@ -53,25 +60,25 @@ if(isset($pagination)) {
                     <a style="float: right;" href="./index.php?action=view_events&post=&startDate=1970-01-01+00%3A00&asset=<?php echo $status['asset']; ?>">
                         <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
                     </a>
-                    <?php if(array_key_exists($status['asset'], $listChildren)) {
-                        foreach($listChildren[$status['asset']] as $children) {
-                            echo '<br />';
-                            echo '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ';
-                            echo '<a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset='.
+                    <?php if (array_key_exists($status['asset'], $listChildren)) {
+                foreach ($listChildren[$status['asset']] as $children) {
+                    echo '<br />';
+                    echo '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ';
+                    echo '<a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset='.
                                     $children.'">';
-                            echo $children . '  ';
-                            echo '</a>';
+                    echo $children . '  ';
+                    echo '</a>';
                             
-                            // Remove parent
-                            echo '<form name="form" method="POST" style="display: inline;">';
-                            echo '<input type="hidden" name="current_asset" value="'.$children.'" />';
-                            echo '<input type="hidden" name="modal_action" value="remove_parent">';
-                            echo '<a href="#" onclick="this.parentElement.submit();">';
-                            echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
-                            echo '</a>';
-                            echo '</form>';
-                        }
-                    } ?>
+                    // Remove parent
+                    echo '<form name="form" method="POST" style="display: inline;">';
+                    echo '<input type="hidden" name="current_asset" value="'.$children.'" />';
+                    echo '<input type="hidden" name="modal_action" value="remove_parent">';
+                    echo '<a href="#" onclick="this.parentElement.submit();">';
+                    echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
+                    echo '</a>';
+                    echo '</form>';
+                }
+            } ?>
                 </td>
                 <td><?php echo $status['status_time']; ?></td>
                 <td><?php echo $status['author']; ?></td>
@@ -80,16 +87,18 @@ if(isset($pagination)) {
                     </span>
                 </td>
                 <td
-                <?php if(array_key_exists('min_description', $status)) { ?>
+                <?php if (array_key_exists('min_description', $status)) {
+                ?>
                     data-container="body" data-toggle="popover" data-trigger="hover" 
                         data-placement="right" data-content="<?php echo $status['description']; ?>"><?php 
                     echo $status['min_description'];
-                } else { 
-                    echo '>'.$status['description'];
-                } ?>    
+            } else {
+                echo '>'.$status['description'];
+            } ?>    
                 </td>
             </tr>
-        <?php } ?>
+        <?php
+        } ?>
     </table>
     
     <!-- Link an asset to an other -->
@@ -146,7 +155,7 @@ if(isset($pagination)) {
                                 <?php
                                 foreach (EventStatus::getManualEventStatus() as $status) {
                                     echo '<option value="'.$status.'"';
-                                    if(isset($input) && array_key_exists('status', $input) && 
+                                    if (isset($input) && array_key_exists('status', $input) &&
                                             $input['status'] != "" && $input['status'] == $status) {
                                         echo ' selected';
                                     }
@@ -174,9 +183,9 @@ if(isset($pagination)) {
         
 </div>
 
-<?php if(isset($pagination)) {
-    $pagination->insert();
-} ?>
+<?php if (isset($pagination)) {
+                                    $pagination->insert();
+                                } ?>
 
 
 

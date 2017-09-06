@@ -1,6 +1,6 @@
 <?php 
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -35,28 +35,28 @@
     global $current_album;
     global $current_album_is_public;
     
-    if(empty($created_albums)) {
+    if (empty($created_albums)) {
         echo '<li class="disabled"><a href="#" style="font-style: italic;">';
-        if(empty($allowed_albums)) {
+        if (empty($allowed_albums)) {
             echo '®No_album_available®';
         } else {
             echo '®No_album_created®';
         }
         echo '</a></li>';
     } else {
-        
-        foreach($created_albums as $album_) {
+        foreach ($created_albums as $album_) {
             $metadata = ezmam_album_metadata_get($album_."-pub"); //get album name and not id for display
             
             $full_name = $metadata['name'];
-            if(isset($metadata['course_code_public']) && $metadata['course_code_public']!='') {
+            if (isset($metadata['course_code_public']) && $metadata['course_code_public']!='') {
                 $displayed_name = $metadata['course_code_public'];
             } else {
                 $displayed_name = $album_;
             }
 
-            if( strlen($metadata['name']) > 15)  $metadata['name']=substr($metadata['name'],0,15)."...";
-            ?>
+            if (strlen($metadata['name']) > 15) {
+                $metadata['name']=substr($metadata['name'], 0, 15)."...";
+            } ?>
             <li id="album_<?php echo $album_.'-priv'; ?>" class="album-in-list" title="<?php echo $full_name ?>">
                 <a href="javascript:show_album_details('<?php echo $album_.'-priv'; ?>');">
                     <img style="width: 30px;" src="images/page4/iconAlbumPriv.png" />

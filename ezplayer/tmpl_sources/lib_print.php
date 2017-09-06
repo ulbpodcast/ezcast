@@ -24,27 +24,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-function bookmark_sort($bookmarks, $default_order = "chron"){
+function bookmark_sort($bookmarks, $default_order = "chron")
+{
     $order = acl_value_get("bookmarks_order");
-    if (isset($order) && $order != '' && $order != $default_order){
+    if (isset($order) && $order != '' && $order != $default_order) {
         array_reverse($bookmarks);
     }
     return $bookmarks;
 }
 /**
  * Helper function, used for pretty print.
- * @param type $info 
+ * @param type $info
  */
-function print_info($info, $suffix = '', $htmlspecialchars = true) {
-    if (isset($info) && !empty($info))
+function print_info($info, $suffix = '', $htmlspecialchars = true)
+{
+    if (isset($info) && !empty($info)) {
         echo replace_links(($htmlspecialchars ? htmlspecialchars($info) : $info) . $suffix);
-    else
+    } else {
         echo '®Not_available®';
+    }
 }
 
 
-function print_search($keywords){
-    
+function print_search($keywords)
+{
     if (!isset($keywords) || empty($keywords)) {
         echo '®Not_available®';
         return;
@@ -54,22 +57,24 @@ function print_search($keywords){
     $keywords_array = explode(",", $keywords);
     $keywords = '';
     // transforms each keyword in a search link
-    foreach($keywords_array as $keyword){
-    	$comma = ($keywords != '') ? ',' : '';
-    	$tmp = "$comma<a href=\"#\" onclick=\"keyword_search('$keyword');\">$keyword</a>";
-    	$keywords .= $tmp;
+    foreach ($keywords_array as $keyword) {
+        $comma = ($keywords != '') ? ',' : '';
+        $tmp = "$comma<a href=\"#\" onclick=\"keyword_search('$keyword');\">$keyword</a>";
+        $keywords .= $tmp;
     }
     echo $keywords;
 }
 
-function print_time($timecode) {
+function print_time($timecode)
+{
     $time = str_pad((int) ($timecode / 3600), 1, "0", STR_PAD_LEFT);
     $time .= ':' . str_pad((int) (($timecode % 3600) / 60), 2, "0", STR_PAD_LEFT);
     $time .= ':' . str_pad((int) (($timecode % 3600) % 60), 2, "0", STR_PAD_LEFT);
     echo $time;
 }
 
-function print_bookmark_title($bookmark_title) {
+function print_bookmark_title($bookmark_title)
+{
     if (isset($bookmark_title) && !empty($bookmark_title)) {
         echo htmlspecialchars($bookmark_title);
     } else {
@@ -77,10 +82,11 @@ function print_bookmark_title($bookmark_title) {
     }
 }
 
-function print_new_video($count) {
-
-    if ($count < 0)
+function print_new_video($count)
+{
+    if ($count < 0) {
         $count = 0;
+    }
     if ($count <= 1) {
         echo $count . ' ®New_video®';
     } else {
@@ -97,7 +103,8 @@ function print_new_video($count) {
  * @param type $string
  * @return type
  */
-function replace_links($string) {
+function replace_links($string)
+{
     // "\**" to remove old system with '*'
     return preg_replace("/\**(https?\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)\**/", '<a href="$1" ' .
             'target="_blank" ' .
@@ -113,14 +120,16 @@ function replace_links($string) {
  * @param type $index index of the first occurence of hashtag
  * @return type
  */
-function replace_hashtag($string, $hashtag, $href, $index = false){
-    if ($index === false){
+function replace_hashtag($string, $hashtag, $href, $index = false)
+{
+    if ($index === false) {
         $index = strpos($string, $hashtag);
     }
-    if ($index === false) return $string;
+    if ($index === false) {
+        return $string;
+    }
     $hash_length = strlen($hashtag);
     $hashtag = "<a href=\"$href\" onclick=\"server_trace(new Array('3', 'hashtag_click', current_album, current_asset, '$hashtag'));\">$hashtag</a>";
     $string = substr_replace($string, $hashtag, $index, $hash_length);
     return $string;
 }
-?>

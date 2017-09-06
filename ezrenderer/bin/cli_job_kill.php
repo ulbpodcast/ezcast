@@ -27,27 +27,24 @@
 require_once 'lib_statistics.php';
 require_once 'config.inc';
 
-if(!isset($argv[1]) || empty($argv[1])) {
+if (!isset($argv[1]) || empty($argv[1])) {
     echo 'Usage: cli_job_kill <pid>'.PHP_EOL;
     echo '  or: cli_job_kill <dirname>'.PHP_EOL;
     die;
 }
 
 $pids = array();
-if(is_numeric($argv[1])) {
-   $pids[] = $argv[1]; 
-}
-else {
+if (is_numeric($argv[1])) {
+    $pids[] = $argv[1];
+} else {
     $pids = get_job_pid($argv[1]);
 }
 
-foreach($pids as $pid) {
+foreach ($pids as $pid) {
     exec('kill -9 '.$pid, $output, $val);
-    if($val == 0) {
+    if ($val == 0) {
         echo 'could not kill '.$pid.PHP_EOL;
-    }
-    else {
+    } else {
         echo 'killed '.$pid.PHP_EOL;
     }
 }
-?>

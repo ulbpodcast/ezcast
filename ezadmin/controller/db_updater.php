@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     if (isset($input['update'])) {
@@ -9,4 +10,3 @@ function index($param = array()) {
         include template_getpath('div_db_updater_updating.php'); //NYI
     }
 }
-

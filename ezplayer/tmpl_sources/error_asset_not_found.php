@@ -46,7 +46,8 @@
                 ®Export_asset_bookmarks®
             </a>
         </div>
-<?php } ?>
+<?php
+    } ?>
     <div style="margin-top: 18px;">
         <a class="button" style="width:250px;" href="index.php">®Back_to_home®</a>
     </div>

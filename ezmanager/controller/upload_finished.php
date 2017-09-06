@@ -1,15 +1,17 @@
 <?php
 
 // used by web worker from js/uploadfile.js to launch the mam_insert
-function index($param = array()) {
+function index($param = array())
+{
     global $php_cli_cmd;
     global $recorder_mam_insert_pgm;
     global $input;
     global $accepted_media_types;
     global $logger;
 
-    if(!isset($input['index']))
-       die();
+    if (!isset($input['index'])) {
+        die();
+    }
     
     $array = array();
 
@@ -34,9 +36,9 @@ function index($param = array()) {
 
     if ($_SESSION[$id][$type]['concat'] > -1) {
         // file is bigger than 2Go
-        // Everything that exceeds 2Go has been saved 
+        // Everything that exceeds 2Go has been saved
         // as separated files in path/type/. and
-        // must be concatenated now 
+        // must be concatenated now
         $dest = $path . "/" . $type . ".mov";
         for ($i = $_SESSION[$id][$type]['concat']; $i <= $index; $i++) {
             $src = $path . "/" . $type . "/" . $type . "-" . $i;
@@ -57,10 +59,9 @@ function index($param = array()) {
 
     //all files finished
     if ($finished) {
-
         $recording_metadata = metadata2assoc_array($path."/metadata.xml");
         $album = "";
-        if($recording_metadata) {
+        if ($recording_metadata) {
             $album = $recording_metadata['course_name'];
         }
         $asset_name = basename($path);
@@ -70,11 +71,19 @@ function index($param = array()) {
 
         exec($cmd, $output, $ret);
 
-        $logger->log(EventType::ASSET_CREATED, LogLevel::NOTICE, 
-           "User ".$_SESSION['user_login']." submitted asset", array('upload_finished'), $asset_name, $_SESSION['user_full_name'], $_SESSION[$id]['type'], $album, "");
+        $logger->log(
+            EventType::ASSET_CREATED,
+            LogLevel::NOTICE,
+           "User ".$_SESSION['user_login']." submitted asset",
+            array('upload_finished'),
+            $asset_name,
+            $_SESSION['user_full_name'],
+            $_SESSION[$id]['type'],
+            $album,
+            ""
+        );
 
         if ($ret != 0) {
-
             log_append('warning', 'upload_finished: ' . ' Error while trying to use cli_mam_insert: error code ' . $ret);
             $array["error"] = ' Error while trying to use cli_mam_insert: error code ' . $ret;
             echo json_encode($array);

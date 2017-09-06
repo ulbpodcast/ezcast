@@ -33,6 +33,7 @@ require_once __DIR__ . '/config.inc';
 require_once __DIR__ . '/../commons/lib_error.php';
 require_once __DIR__ . '/lib_various.php';
 require_once __DIR__ . '/../commons/lib_various.php';
+require_once __DIR__ . '/../commons/lib_sql_management.php';
 
 /**
  *
@@ -166,6 +167,7 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
 function ezmam_course_create_db($course_id, $course_code_public, $label, $in_recorders, $owner = null) 
 {
     global $logger;
+    global $db_object;
     
     $valid = db_course_create($course_id, $course_code_public, $label, $in_recorders);
     if(!$valid) {
@@ -966,6 +968,27 @@ function ezmam_asset_new($album_name, $asset_name, $metadata) {
     return $token;
 }
 
+//recursive rmdir
+function rrmdir($dir) 
+{ 
+    if (!is_dir($dir))
+         return;
+         
+    $objects = scandir($dir); 
+    foreach ($objects as $object) { 
+        if ($object != "." && $object != "..") { 
+            if (is_dir($dir."/".$object))
+                $ok = rrmdir($dir."/".$object);
+            else
+                $ok = unlink($dir."/".$object); 
+            
+            if($ok == false)
+                return false;
+        }
+    }
+    return rmdir($dir); 
+ }
+    
 /**
  * Removes an asset from the repository
  * @param string $asset_name
@@ -1009,9 +1032,9 @@ function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true) {
                 unlink($path . '/' . $file);
         }
     }
-
-    // Then we delete it
-    $res = rmdir($path);
+    
+    // Then we delete it and all remaining files in it
+    $res = rrmdir($path);
     if (!$res) {
         ezmam_last_error("Unable to delete folder $path");
         return false;

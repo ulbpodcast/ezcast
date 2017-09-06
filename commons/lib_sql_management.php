@@ -26,12 +26,13 @@
  * @package ezcast.commons.lib.sql
  */
 require_once __DIR__ . '/lib_database.php';
-if(file_exists('config.inc')) {
+if(file_exists(__DIR__.'/config.inc')) {
     include_once 'config.inc';
     $stmt_array = statements_get();
     db_prepare($stmt_array);
+    global $db_object;
 }
- 
+
 function statements_get(){
     return array(
         'update_courses_hasalbums' =>
@@ -316,6 +317,7 @@ function db_courses_search($course_code, $user_ID, $include_external, $include_i
 
     return $res;
 }
+
 /**
  * Updates the "has_albums" field in the DB. Scans the content of the repo and updates the fields that have changed.
  * @param type $repo_content 
@@ -347,6 +349,7 @@ function db_courses_update_hasalbums($repo_content) {
 
     $db_object->commit();
 }
+
 /**
  * Retrieve all courses
  * @param String $course_code
@@ -368,6 +371,7 @@ function db_courses_list($course_code, $course_name, $in_recorders, $has_albums,
 	$statements['course_list']->execute();
 	return $statements['course_list']->fetchAll();  
 }
+
 /**
  * Create a new course
  * @param String $course_code
@@ -385,6 +389,7 @@ function db_course_create($course_id, $course_code_public, $course_name ,$in_rec
 	$statements['course_create']->bindParam(':in_recorders', $in_recorders); 	
 	return $statements['course_create']->execute();
 }
+
 /**
  * Returns the info related to a course
  * @param String $course_code
@@ -397,6 +402,7 @@ function db_course_read($course_id) {
 	$statements['course_read']->execute();
 	return $statements['course_read']->fetch();
 }
+
 /**
  * Returns the users associated to a course
  * @param String $course_code 
@@ -409,6 +415,7 @@ function db_course_get_users($course_id) {
 	
 	return $statements['course_get_users']->fetchAll();
 }
+
 /**
  * Update a course
  * @param String $course_code
@@ -431,6 +438,7 @@ function course_update_anon($course_id, $anon_access) {
 	
 	return $statements['course_update_anon']->execute();
 }
+
 /**
  * Delete course
  * @param $course_code
@@ -442,6 +450,7 @@ function db_course_delete($course_id) {
 	
 	return $statements['course_delete']->execute();
 }
+
 /**
  * Returns the list of (recorder/ezmanager) admins
  */
@@ -451,6 +460,7 @@ function db_admins_list() {
 	$statements['users_get_admins']->execute();
 	return $statements['users_get_admins']->fetchAll();
 }
+
 function db_users_list($user_ID, $surname, $forename, $origin, $is_admin, $order, $limit) {    
 	global $db_object;
 	   
@@ -474,12 +484,14 @@ function db_users_list($user_ID, $surname, $forename, $origin, $is_admin, $order
 		   
 	return $res;
 }
+
 /**
  * Return infos about a user (user_ID, forename, surname, permissions and origin)
  * @global array $statements
  * @param type $user_ID
  * @return type 
  */
+
 function db_user_read($user_ID) {
 	global $statements;
 	
@@ -488,6 +500,7 @@ function db_user_read($user_ID) {
 	
 	return $statements['user_read']->fetch();
 }
+
 function db_user_get_courses($user_ID) {
 	global $statements;
 	
@@ -496,6 +509,7 @@ function db_user_get_courses($user_ID) {
 	
 	return $statements['user_courses_get']->fetchAll();
 }
+
 function db_users_courses_get($course_id, $user_ID) {
 	global $statements;
 	
@@ -506,6 +520,7 @@ function db_users_courses_get($course_id, $user_ID) {
 	return $statements['users_courses_get']->fetch(); 
 	
 }
+
 function users_courses_get_users($course_id) {
 	global $statements;
 	
@@ -514,6 +529,7 @@ function users_courses_get_users($course_id) {
 	return $statements['users_courses_get_users']->fetchAll(); 
 	
 }
+
 /**
  * Search classroom
  * 
@@ -589,6 +605,7 @@ function db_classrooms_search($room_ID, $name, $ip, $enabled, $colOrder, $orderS
     
     return $reqSQL->fetchAll();
 }
+
 /**
  * Returns the name, ID and IP of all the recorders
  */
@@ -598,6 +615,7 @@ function db_classrooms_list() {
     $statements['classrooms_list']->execute();
     return $statements['classrooms_list']->fetchAll();
 }
+
 /**
  * Returns the name, ID and IP of all the enabled recorders
  */
@@ -607,6 +625,7 @@ function db_classrooms_list_enabled() {
     $statements['classrooms_list_enabled']->execute();
     return $statements['classrooms_list_enabled']->fetchAll();
 }
+
 /**
  * Return the IP of a specific room_ID
  * 

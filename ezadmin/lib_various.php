@@ -591,9 +591,9 @@ function push_users_to_ezmanager() {
 
     $pwfile = '<?php' . PHP_EOL;
     foreach ($users as $u) {
-        $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'password\']="' . addslashes($u['recorder_passwd']) . '";' . PHP_EOL;
-        $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
-        $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL . PHP_EOL;
+        $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'password\']=\'' . addslashes($u['recorder_passwd']) . '\';' . PHP_EOL;
+        $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']=\'' . $u['forename'] . ' ' . $u['surname'] . '\';' . PHP_EOL;
+        $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'email\']=\'\';' . PHP_EOL . PHP_EOL;
     }
 
     file_put_contents('var/pwfile.inc', $pwfile);

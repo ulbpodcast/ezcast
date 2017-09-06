@@ -33,7 +33,7 @@
             <?php }     
             
             global $ezmanager_custom_logo;
-            $ezmanager_logo = $ezmanager_custom_logo !== false ? 
+            $ezmanager_logo = ($ezmanager_custom_logo !== false) ? 
                     "images/custom/$ezmanager_custom_logo" : 
                     "images/Header/ezmanager.png"; //default value
             ?>

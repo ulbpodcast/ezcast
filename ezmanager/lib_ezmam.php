@@ -102,6 +102,65 @@ function ezmam_last_error($msg = "") {
     }
 }
 
+//init private and public albums for given course with default metadata
+//return created course id or false on failure
+function ezmam_albums_new_course($course_code, $name, $full_title, $album_type) {
+       
+    if(!in_array($album_type, array('course', 'other', 'channel'))) {
+        error_print_message("wrong type");
+        return false;
+    }
+        
+    global $dir_date_format;
+    global $default_intro;
+    global $default_add_title;
+    global $default_downloadable;
+    global $default_credits;
+    global $repository_path;
+    
+    $course_id = $course_code;
+    //find first free course_id if needed
+    if($album_type != 'course') {
+        $incremental_id = 0;
+        $course = db_course_read($course_id);
+        while($course) { //if we found an already existing course, loop until we found a free id
+            $course_id = $course_code . $incremental_id++;
+            $course = db_course_read($course_id);				
+        }
+    }
+    
+    $metadata = array(
+        'id' => $course_id,
+        'course_code_public' => $course_code,							 
+        'name' => $name,
+        'title' => $full_title,
+        'date' => date($dir_date_format),
+        'anac' => get_anac(date('Y'), date('m')),
+        'intro' => $default_intro,
+        'credits' => $default_credits,
+        'add_title' => $default_add_title,
+        'downloadable' => $default_downloadable,
+        'type' => $album_type,
+        'official' => 'false'
+    );
+    
+    // Create both the private and public album
+    ezmam_repository_path($repository_path);
+    $res = ezmam_album_new($course_id . '-priv', $metadata);
+    if (!$res) {
+        error_print_message(ezmam_last_error());
+        return false;
+    }
+    $res = ezmam_album_new($course_id . '-pub', $metadata);
+    if (!$res) {
+        error_print_message(ezmam_last_error());
+        return false;
+    }
+    
+    acl_update_permissions_list();
+    return $course_id;
+}
+
 /**
  *
  * @param string $album_name  name of the album
@@ -151,7 +210,7 @@ function ezmam_album_exists($album_name) {
 /**
  *
  * @return array_of_strings
- * @desc returns an array of all album names
+ * @desc returns an array of all album NAMES (not id's)
  */
 function ezmam_album_list() {
     $repository_path = ezmam_repository_path();
@@ -162,11 +221,30 @@ function ezmam_album_list() {
     $album_list = array();
     $dh = opendir($repository_path);
     while (($file = readdir($dh)) !== false) {
-        if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
-            if (is_dir($repository_path . "/" . $file))
-                array_push($album_list, $file); //if its a directory add it to the list
-        }
-    }//end while
+        if ($file[0] == '.' || $file[0] == "_") //filter out names starting with . (including '.' and '..' )or _
+            continue;
+        
+        $dir = $repository_path . "/" . $file;
+        if(!is_dir($dir))
+            continue;
+        
+        $metadata_file = $dir . "/" . "_metadata.xml";
+        if(!is_file($metadata_file))
+            continue;
+        
+        $assoc = metadata2assoc_array($metadata_file);
+        if($assoc === false)
+            continue;
+        
+        $code = '';
+        if(isset($assoc['course_code_public']))
+            $code = $assoc['course_code_public'];
+        else
+            $code = suffix_remove($file); //for retrocompat, older albums don't have the course_code_public
+        
+        array_push($album_list, $code); //if its a directory add it to the list
+    }
+    
     return $album_list;
 }
 

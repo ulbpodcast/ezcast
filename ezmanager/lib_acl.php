@@ -74,6 +74,10 @@ function acl_update_permissions_list() {
     // Checking which courses the user can manage, which have been created, which have not
     $courses_list_for_author = courses_list($_SESSION['user_login']);
     $existing_albums = ezmam_album_list();
+    /*print_r($courses_list_for_author);
+    echo '<br/>';
+    echo '<br/>';
+    print_r($existing_albums);*/
     
     // By comparing $courses_list_for_autor and $existing_albums, we're able
     // to infer which album has already been created and which hasn't
@@ -89,7 +93,7 @@ function acl_update_permissions_list() {
         $course_code = $course_infos[0];
         $course_description = $course_infos[1];
         
-        if(in_array($course_code.'-pub', $existing_albums)  || in_array($course_code.'-priv', $existing_albums)) {
+        if(in_array($course_code, $existing_albums)) {
             $albums_created_array[] = $course_code;
             $albums_created_array_descriptions[$course_code] = $course_description;
         }

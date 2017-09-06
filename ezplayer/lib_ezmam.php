@@ -149,55 +149,6 @@ function ezmam_album_exists($album_name) {
 
 /**
  *
- * @return array_of_strings
- * @desc returns an array of all album names
- */
-function ezmam_album_list() {
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        return false;
-    }
-
-    $album_list = array();
-    $dh = opendir($repository_path);
-    while (($file = readdir($dh)) !== false) {
-        if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
-            if (is_dir($repository_path . "/" . $file))
-                array_push($album_list, $file); //if its a directory add it to the list
-        }
-    }//end while
-    return $album_list;
-}
-
-/**
- *
- * @return array_of_assoc_array keys are: 'name' and 'metadata'
- * @desc returns an array of all albums with details in   assoc_arrays: ['name'] & ['metadata']
- */
-function ezmam_album_list_metadata() {
-    $repository_path = ezmam_repository_path();
-    if ($repository_path === false) {
-        return false;
-    }
-    $album_list = array();
-    $idx = 0;
-    $dh = opendir($repository_path);
-    while (($file = readdir($dh)) !== false) {
-        if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
-            if (is_dir($repository_path . "/" . $file)) {
-                //if its a directory add it to the list
-                $album = $file; //the album ref name is the directory name
-                $album_list[$idx]['name'] = $album;
-                $album_list[$idx]['metadata'] = ezmam_album_metadata_get($album);
-                $idx+=1;
-            }
-        }
-    }//end while
-    return $album_list;
-}
-
-/**
- *
  * @param string $album
  * @return false|assoc_array
  * @desc returns metadata from the album

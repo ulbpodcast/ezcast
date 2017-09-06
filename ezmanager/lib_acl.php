@@ -72,12 +72,16 @@ function acl_exit() {
  */
 function acl_update_permissions_list() {
     // Checking which courses the user can manage, which have been created, which have not
-    $courses_list_for_author = courses_list($_SESSION['user_login']);
+    $courses_id_list_for_author = courses_list($_SESSION['user_login']);
     $existing_albums = ezmam_album_list();
-    /*print_r($courses_list_for_author);
+    //albums are actually courses_id with a suffix, get ids by removing those (not very robust to changes...)
+    $existing_courses_id = array();
+    foreach($existing_albums as $album) 
+        array_push($existing_courses_id, suffix_remove($album));
+    
+    /*print_r($courses_id_list_for_author);
     echo '<br/>';
-    echo '<br/>';
-    print_r($existing_albums);*/
+    print_r($existing_courses_id);*/
     
     // By comparing $courses_list_for_autor and $existing_albums, we're able
     // to infer which album has already been created and which hasn't
@@ -88,28 +92,27 @@ function acl_update_permissions_list() {
     $albums_not_created_array_descriptions = array();
     
     // For each course an author can manage, we check whether or not albums exist
-    foreach($courses_list_for_author as $course) {
-        $course_infos = explode('|', $course, 2); // lib_podcastcours gives us the information as name|description, so we need to change that
-        $course_code = $course_infos[0];
+    foreach($courses_id_list_for_author as $course) {
+        $course_infos = explode('|', $course, 2); // courses_list gives us the information as name|description, so we need to change that
+        $course_id = $course_infos[0];
         $course_description = $course_infos[1];
         
-        if(in_array($course_code, $existing_albums)) {
-            $albums_created_array[] = $course_code;
-            $albums_created_array_descriptions[$course_code] = $course_description;
-        }
-        else {
-            $albums_not_created_array[] = $course_code;
-            $albums_not_created_array_descriptions[$course_code] = $course_description;
+        if(in_array($course_id, $existing_courses_id)) {
+            $albums_created_array[] = $course_id;
+            $albums_created_array_descriptions[$course_id] = $course_description;
+        } else {
+            $albums_not_created_array[] = $course_id;
+            $albums_not_created_array_descriptions[$course_id] = $course_description;
         }
     }
     
     // Finally, we save the information in session vars
-    $_SESSION['acl_created_albums']=$albums_created_array; // Array of all created albums, by album name
-    $_SESSION['acl_created_albums_descriptions']=$albums_created_array_descriptions; // Associative array listing all album names (key) and description (value)
-    $_SESSION['acl_not_created_albums']=$albums_not_created_array; // Array of all albums the user could create bus has not, by album name
-    $_SESSION['acl_not_created_albums_descriptions']=$albums_not_created_array_descriptions; // Associative array listing all album names (key) and description (value)
-    $_SESSION['acl_permitted_albums']=array_merge($albums_created_array, $albums_not_created_array);
-    $_SESSION['acl_permitted_albums_descriptions']=array_merge($albums_created_array_descriptions, $albums_not_created_array_descriptions);
+    $_SESSION['acl_created_albums'] = $albums_created_array; // Array of all created albums, by album name
+    $_SESSION['acl_created_albums_descriptions'] = $albums_created_array_descriptions; // Associative array listing all album names (key) and description (value)
+    $_SESSION['acl_not_created_albums'] = $albums_not_created_array; // Array of all albums the user could create bus has not, by album name
+    $_SESSION['acl_not_created_albums_descriptions'] = $albums_not_created_array_descriptions; // Associative array listing all album names (key) and description (value)
+    $_SESSION['acl_permitted_albums' ] = array_merge($albums_created_array, $albums_not_created_array);
+    $_SESSION['acl_permitted_albums_descriptions'] = array_merge($albums_created_array_descriptions, $albums_not_created_array_descriptions);
 }
 
 /**

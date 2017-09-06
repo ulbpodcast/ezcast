@@ -5,9 +5,11 @@ function index($param = array()) {
 
     if (empty($input['course_code']))
         die;
+    
+    $course_id = $input['course_code'];
 
     if (isset($input['post'])) {
-        $course_code = $input['course_code'];
+        $course_code = $course_id;
         $course_code_public = $input['course_code_public'];											 
         $course_name = $input['course_name'];
         $in_recorders = $input['in_recorders'] ? 1 : 0;
@@ -21,8 +23,8 @@ function index($param = array()) {
         }
     }
 
-    $courseinfo = db_course_read($input['course_code']);
-    $users = db_course_get_users($input['course_code']);
+    $courseinfo = db_course_read($course_id);
+    $users = db_course_get_users($course_id);
 
     // Manipulate info
     $course_code = $courseinfo['course_code'];

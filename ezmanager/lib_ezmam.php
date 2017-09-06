@@ -102,10 +102,24 @@ function ezmam_last_error($msg = "") {
     }
 }
 
+function ezmam_course_get_new_id($course_code)
+{
+    $course_id = $course_code;
+    //find first free course_id if needed
+    $incremental_id = 0;
+    $course = db_course_read($course_id);
+    while($course) { //if we found an already existing course, loop until we found a free id
+        $course_id = $course_code . $incremental_id++;
+        $course = db_course_read($course_id);				
+    }
+    return $course_id;
+}
+
 //init private and public albums for given course with default metadata
 //return created course id or false on failure
-function ezmam_albums_new_course($course_code, $name, $full_title, $album_type) {
-       
+function ezmam_course_create_repository($course_id, $course_code, $name, $full_title, $album_type) 
+{
+    global $logger;
     if(!in_array($album_type, array('course', 'other', 'channel'))) {
         error_print_message("wrong type");
         return false;
@@ -117,18 +131,7 @@ function ezmam_albums_new_course($course_code, $name, $full_title, $album_type) 
     global $default_downloadable;
     global $default_credits;
     global $repository_path;
-    
-    $course_id = $course_code;
-    //find first free course_id if needed
-    if($album_type != 'course') {
-        $incremental_id = 0;
-        $course = db_course_read($course_id);
-        while($course) { //if we found an already existing course, loop until we found a free id
-            $course_id = $course_code . $incremental_id++;
-            $course = db_course_read($course_id);				
-        }
-    }
-    
+        
     $metadata = array(
         'id' => $course_id,
         'course_code_public' => $course_code,							 
@@ -146,19 +149,38 @@ function ezmam_albums_new_course($course_code, $name, $full_title, $album_type) 
     
     // Create both the private and public album
     ezmam_repository_path($repository_path);
-    $res = ezmam_album_new($course_id . '-priv', $metadata);
-    if (!$res) {
-        error_print_message(ezmam_last_error());
-        return false;
+    $album_names = array($course_id . '-priv', $course_id . '-pub');
+    foreach($album_names as $album_name) {
+        $res = ezmam_album_new($album_name, $metadata);
+        if (!$res) {
+            error_print_message(ezmam_last_error()); 
+            $logger->log(EventType::MANAGER_EZMAM_CREATE_COURSE, LogLevel::ERROR, "Could not create album $album_name in repository, aborting", array(__FUNCTION__));
+            return false;
+        }
     }
-    $res = ezmam_album_new($course_id . '-pub', $metadata);
-    if (!$res) {
-        error_print_message(ezmam_last_error());
+   
+    acl_update_permissions_list();
+    return true;
+}
+
+function ezmam_course_create_db($course_id, $course_code_public, $label, $in_recorders, $owner = null) 
+{
+    global $logger;
+    
+    $valid = db_course_create($course_id, $course_code_public, $label, $in_recorders);
+    if(!$valid) {
+        $logger->log(EventType::MANAGER_EZMAM_CREATE_COURSE, LogLevel::ERROR, "Could not create course $course_id ($course_code_public) in db", array(__FUNCTION__));
         return false;
     }
     
-    acl_update_permissions_list();
-    return $course_id;
+    if($owner) {
+        $valid2 = db_users_courses_create($course_id, $owner);
+        if(!$valid2) {
+            $logger->log(EventType::MANAGER_EZMAM_CREATE_COURSE, LogLevel::ERROR, "Course $course_id ($course_code_public) was created but could not bind user $owner to it", array(__FUNCTION__));
+            return false;
+        }
+    }
+    return true;
 }
 
 /**
@@ -212,7 +234,8 @@ function ezmam_album_exists($album_name) {
  * @return array_of_strings
  * @desc returns an array of all album NAMES (not id's)
  */
-function ezmam_album_list() {
+function ezmam_album_list()
+{
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -228,21 +251,8 @@ function ezmam_album_list() {
         if(!is_dir($dir))
             continue;
         
-        $metadata_file = $dir . "/" . "_metadata.xml";
-        if(!is_file($metadata_file))
-            continue;
+        array_push($album_list, $file); //if its a directory add it to the list
         
-        $assoc = metadata2assoc_array($metadata_file);
-        if($assoc === false)
-            continue;
-        
-        $code = '';
-        if(isset($assoc['course_code_public']))
-            $code = $assoc['course_code_public'];
-        else
-            $code = suffix_remove($file); //for retrocompat, older albums don't have the course_code_public
-        
-        array_push($album_list, $code); //if its a directory add it to the list
     }
     
     return $album_list;

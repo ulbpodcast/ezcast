@@ -376,10 +376,10 @@ function db_courses_list($course_code, $course_name, $in_recorders, $has_albums,
  * @param integer $has_albums
  * @param Stirng $origin
  */
-function db_course_create($course_code, $course_code_public, $course_name ,$in_recorders) {
+function db_course_create($course_id, $course_code_public, $course_name ,$in_recorders) {
 	global $statements;
 	
-	$statements['course_create']->bindParam(':course_code', $course_code);
+	$statements['course_create']->bindParam(':course_code', $course_id);
 	$statements['course_create']->bindParam(':course_code_public', $course_code_public);																					 
 	$statements['course_create']->bindParam(':course_name', $course_name);
 	$statements['course_create']->bindParam(':in_recorders', $in_recorders); 	
@@ -389,10 +389,10 @@ function db_course_create($course_code, $course_code_public, $course_name ,$in_r
  * Returns the info related to a course
  * @param String $course_code
  */
-function db_course_read($course_code) {
+function db_course_read($course_id) {
 	global $statements;
 	
-	$statements['course_read']->bindParam(':course_code', $course_code);
+	$statements['course_read']->bindParam(':course_code', $course_id);
 	
 	$statements['course_read']->execute();
 	return $statements['course_read']->fetch();
@@ -401,10 +401,10 @@ function db_course_read($course_code) {
  * Returns the users associated to a course
  * @param String $course_code 
  */
-function db_course_get_users($course_code) {
+function db_course_get_users($course_id) {
 	global $statements;
 	
-	$statements['course_get_users']->bindParam(':course_code', $course_code);
+	$statements['course_get_users']->bindParam(':course_code', $course_id);
 	$statements['course_get_users']->execute();
 	
 	return $statements['course_get_users']->fetchAll();
@@ -413,21 +413,21 @@ function db_course_get_users($course_code) {
  * Update a course
  * @param String $course_code
  */
-function db_course_update($course_code, $course_name, $in_recorders) {
+function db_course_update($course_id, $course_name, $in_recorders) {
 	global $statements;
         
-	$statements['course_update']->bindParam(':course_code', $course_code);
+	$statements['course_update']->bindParam(':course_code', $course_id);
 	$statements['course_update']->bindParam(':course_name', $course_name);
 	$statements['course_update']->bindParam(':in_recorders', $in_recorders);
 	
 	return $statements['course_update']->execute();
 }
 
-function course_update_anon($course_code, $anon_access) {
+function course_update_anon($course_id, $anon_access) {
 	global $statements;
 
+	$statements['course_update_anon']->bindParam(':course_code', $course_id);	
 	$statements['course_update_anon']->bindParam(':anon_access', $anon_access);
-	$statements['course_update_anon']->bindParam(':course_code', $course_code);	
 	
 	return $statements['course_update_anon']->execute();
 }
@@ -435,10 +435,10 @@ function course_update_anon($course_code, $anon_access) {
  * Delete course
  * @param $course_code
  */
-function db_course_delete($course_code) {
+function db_course_delete($course_id) {
 	global $statements;
 	
-	$statements['course_delete']->bindParam(':course_code', $course_code);
+	$statements['course_delete']->bindParam(':course_code', $course_id);
 	
 	return $statements['course_delete']->execute();
 }
@@ -496,20 +496,20 @@ function db_user_get_courses($user_ID) {
 	
 	return $statements['user_courses_get']->fetchAll();
 }
-function db_users_courses_get($course_code, $user_ID) {
+function db_users_courses_get($course_id, $user_ID) {
 	global $statements;
 	
-	$statements['users_courses_get']->bindParam(':course_code', $course_code);
+	$statements['users_courses_get']->bindParam(':course_code', $course_id);
 	$statements['users_courses_get']->bindParam(':user_ID', $user_ID);
 	
 	$statements['users_courses_get']->execute();
 	return $statements['users_courses_get']->fetch(); 
 	
 }
-function users_courses_get_users($course_code) {
+function users_courses_get_users($course_id) {
 	global $statements;
 	
-	$statements['users_courses_get_users']->bindParam(':course_code', $course_code);	
+	$statements['users_courses_get_users']->bindParam(':course_code', $course_id);	
 	$statements['users_courses_get_users']->execute();
 	return $statements['users_courses_get_users']->fetchAll(); 
 	
@@ -656,15 +656,17 @@ function db_users_internal_get() {
     $statements['get_internal_users']->execute();
     return $statements['get_internal_users']->fetchAll();
 }
-function db_users_courses_create($course_code, $user_ID) {
+function db_users_courses_create($course_id, $user_ID) {
     global $statements;
 
-    if(db_users_courses_get($course_code, $user_ID)) return false;
+    if(db_users_courses_get($course_id, $user_ID)) 
+        return false;
 
-    $statements['users_courses_create']->bindParam(':course_code', $course_code);
+    $statements['users_courses_create']->bindParam(':course_code', $course_id);
     $statements['users_courses_create']->bindParam(':user_ID', $user_ID);
 
-    if(!$statements['users_courses_create']->execute()) return false;
+    if(!$statements['users_courses_create']->execute()) 
+        return false;
 
     // return informations
     global $db_object;
@@ -672,12 +674,13 @@ function db_users_courses_create($course_code, $user_ID) {
     if(!$user) 
         return false;
 
-    $course = db_course_read($course_code);
+    $course = db_course_read($course_id);
     if(!$course) 
         return false;
 
     return array('user' => $user, 'course' => $course, 'id' => $db_object->lastInsertId());
 }
+
 function db_users_courses_delete($user_course_ID) {
     global $statements;
 
@@ -685,7 +688,7 @@ function db_users_courses_delete($user_course_ID) {
 
     return $statements['users_courses_delete']->execute();
 }
-function db_users_courses_delete_row($album,$user_course_ID) {
+function db_users_courses_delete_row($album, $user_course_ID) {
 	global $statements;
 		
 	$statements['users_courses_delete_row']->bindParam(':user_ID', $user_course_ID);
@@ -694,25 +697,32 @@ function db_users_courses_delete_row($album,$user_course_ID) {
 	return $statements['users_courses_delete_row']->execute();
 }
 
-function db_unlink_user($user_ID) {
+function db_unlink_user($user_ID) 
+{
     global $statements;
 
     $statements['unlink_user']->bindParam(':user_ID', $user_ID);
 
     return $statements['unlink_user']->execute();
 }
-function db_unlink_course($course_code) {
+
+function db_unlink_course($course_id) 
+{
     global $statements;
-    $statements['unlink_course']->bindParam(':course_code', $course_code);
+    $statements['unlink_course']->bindParam(':course_code', $course_id);
     return $statements['unlink_course']->execute();
 }
-function db_found_rows() {
+
+function db_found_rows() 
+{
     global $statements;
     $statements['found_rows']->execute(); 
     $res = $statements['found_rows']->fetch();   
     return intval($res[0]);
 }
-function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions) {
+
+function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions) 
+{
     global $statements;
     $statements['user_create']->bindParam(':user_ID', strtolower($user_ID));
     $statements['user_create']->bindParam(':surname', $surname);
@@ -721,12 +731,15 @@ function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permis
     $statements['user_create']->bindParam(':permissions', $permissions);
     return $statements['user_create']->execute();
 }
-function db_user_delete($user_ID) {
+function db_user_delete($user_ID) 
+{
     global $statements;
     $statements['user_delete']->bindParam(':user_ID', $user_ID);
     return $statements['user_delete']->execute();
 }
-function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permissions) {
+
+function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permissions) 
+{
     global $statements;
     if(empty($recorder_passwd)) {
             $statements['user_update_short']->bindParam(':user_ID', $user_ID);
@@ -742,19 +755,23 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
     $statements['user_update']->bindParam(':permissions', $permissions);
     return $statements['user_update']->execute();
 }
+
 /**
  * Logs the action 'action' performed on table 'table'
  * @param type $table
  * @param type $action 
  */
-function db_log($table, $action, $author) {
+function db_log($table, $action, $author) 
+{
     global $statements;
     $statements['log_action']->bindParam(':table', $table);
     $statements['log_action']->bindParam(':message', $action);
     $statements['log_action']->bindParam(':author', $author);
     return $statements['log_action']->execute();
 }
-function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $limit = -1) {
+
+function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $limit = -1) 
+{
     global $db_object;
     $query = 'SELECT DISTINCT SQL_CALC_FOUND_ROWS `time`, `table`, message, author FROM '.  db_gettable('admin_logs');
     $where = '';
@@ -795,7 +812,9 @@ function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $
     
     return $db_object->query($fullQuery);
 }
-function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled) {
+
+function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled) 
+{
     global $statements;
     $statements['classroom_create']->bindParam(':room_ID', $room_ID);
     $statements['classroom_create']->bindParam(':name', $name);
@@ -804,7 +823,9 @@ function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled) {
     $statements['classroom_create']->bindParam(':enabled', $enabled);
     return $statements['classroom_create']->execute();
 }
-function db_classroom_update($ID, $room_ID, $name, $ip, $ip_remote) {
+
+function db_classroom_update($ID, $room_ID, $name, $ip, $ip_remote) 
+{
     global $statements;
     $statements['classroom_update']->bindParam(':ID', $ID);
     $statements['classroom_update']->bindParam(':room_ID', $room_ID);
@@ -814,14 +835,16 @@ function db_classroom_update($ID, $room_ID, $name, $ip, $ip_remote) {
     return $statements['classroom_update']->execute();
 }
 
-function db_classroom_delete($room_ID) {    
+function db_classroom_delete($room_ID) 
+{    
     global $statements;
     $statements['classroom_delete']->bindParam(':room_ID', $room_ID);
     return $statements['classroom_delete']->execute();
 }
 
 function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $stream_name, $token, $module_type, $ip, 
-        $status, $quality, $protocol, $server, $port) {
+        $status, $quality, $protocol, $server, $port) 
+{
     global $statements;
     $statements['stream_create']->bindParam(':cours_id', $cours_id);
     $statements['stream_create']->bindParam(':asset', $asset);
@@ -840,7 +863,8 @@ function db_stream_create($cours_id, $asset, $classroom, $record_type, $netid, $
     return $statements['stream_create']->execute();
 }
 
-function db_stream_update_status($course,$asset,$module_type,$status) {
+function db_stream_update_status($course,$asset,$module_type,$status) 
+{
     global $statements;
     $statements['stream_update_status']->bindParam(':course', $course);
     $statements['stream_update_status']->bindParam(':asset', $asset);
@@ -853,7 +877,8 @@ function db_stream_update_status($course,$asset,$module_type,$status) {
 /* return an array in the form if ... ?
  * Return null of no streams were found
  */
-function db_get_stream_info($cours_id,$asset) {
+function db_get_stream_info($cours_id,$asset) 
+{
     global $statements;
     $statements['get_stream_info']->bindParam(':cours_id', $cours_id);
     $statements['get_stream_info']->bindParam(':asset', $asset);

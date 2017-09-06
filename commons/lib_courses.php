@@ -36,7 +36,7 @@ require_once 'lib_database.php';
  * @param string $netid
  * @return array key: course code; value: course description
  */
-function courses_list($netid) {
+function courses_list($netid = "") {
     
     // prepared requests
     $statements = array(

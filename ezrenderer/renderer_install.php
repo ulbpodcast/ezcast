@@ -34,7 +34,7 @@
 if ($argc != 7) {
     echo "usage: " . $argv[0] . " <php_path> <encoding_pgm> <ffmpeg_path> <ffprobe_path> <threads_number> <jobs_number>" .
     "\n <php_path> the path to the php binary." .
-    "\n <encoding_pgm> string containing information about encoder such as : ". 
+    "\n <encoding_pgm> string containing information about encoder such as : ".
     "\n         array('name' => 'ffmpeg', 'description' => 'ffmpeg desc.', 'file' => 'lib_ffmpeg.php')" .
     "\n <ffmpeg_path> the path to FFMPEG binary." .
     "\n <ffprobe_path> the path to FFPROBE binary." .
@@ -66,7 +66,7 @@ $config = preg_replace('/\$ffprobepath = (.+);/', '\$ffprobepath = "'.$ffprobe_p
 $config = preg_replace('/\$encoding_pgm = (.+);/', '\$encoding_pgm = '.$encoding_pgm.';', $config);
 file_put_contents($config_file_path, $config);
 
-// Replaces path in 
+// Replaces path in
 $intro_title_movie = file_get_contents($current_dir . "/bin/intro_title_movie.bash");
 $intro_title_movie = str_replace("!PATH", $current_dir, $intro_title_movie);
 $intro_title_movie = str_replace("!PHP_PATH", $php_cmd, $intro_title_movie);

@@ -3,18 +3,19 @@
 /**
  * Called by client to save a use trace
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     
     $infos = $input['info'];
-    if(count($infos) <= 1) {
+    if (count($infos) <= 1) {
         echo 'Trace error (not level and action) !';
         return false;
     }
     
     $nbr_param = 2;
     $action = $infos[1];
-    switch($action) {
+    switch ($action) {
         case 'thread_detail_from_trending':
             $nbr_param = 6;
             break;
@@ -87,7 +88,7 @@ function index($param = array()) {
             $nbr_param = 9;
             break;
         
-        case 'browser_fullscreen_enter': 
+        case 'browser_fullscreen_enter':
         case 'browser_fullscreen_exit':
             $nbr_param = 8;
             break;
@@ -145,7 +146,7 @@ function index($param = array()) {
         
     }
     
-    if(count($infos) == $nbr_param) {
+    if (count($infos) == $nbr_param) {
         trace_append($infos);
     }
 }

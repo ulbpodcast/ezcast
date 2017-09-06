@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $error;
     $enable = (count($param) == 1 && $param[0]);

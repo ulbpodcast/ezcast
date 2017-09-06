@@ -31,11 +31,11 @@
 <div id="site_map">
     <a class="home-link" href="index.php" title="®Back_to_home®">®Home®</a>
     <div class="right-arrow"></div>
-        (<?php if(isset($course_code_public) && $course_code_public!="") {
-            echo $course_code_public; 
-        } else {
-            echo suffix_remove($album);
-        } ?>) 
+        (<?php if (isset($course_code_public) && $course_code_public!="") {
+    echo $course_code_public;
+} else {
+    echo suffix_remove($album);
+} ?>) 
         <?php echo get_album_title($album); ?>
 </div>
 
@@ -59,18 +59,34 @@
                         ?>
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 
-                               href="javascript:show_asset_details('<?php echo $album; ?>', '<?php echo 
+                               href="javascript:show_asset_details('<?php echo $album; ?>', '<?php echo
                                 $asset['name']; ?>', '<?php echo $asset['token']; ?>');">
-                                <b><?php print_info(substr(get_user_friendly_date($asset['metadata']['record_date'], '/', 
-                                        false, get_lang(), false), 0, 10)); ?></b> 
+                                <b><?php print_info(substr(get_user_friendly_date(
+ 
+                                    $asset['metadata']['record_date'],
+ 
+                                    '/',
+                                        false,
+ 
+                                    get_lang(),
+ 
+                                    false
+ 
+                                ), 0, 10)); ?></b> 
                                 <div style="display:inline-block; width: 16px; height:1px;"></div>
                                 <?php echo $asset['metadata']['title']; ?>
-                                <span class="<?php if (acl_show_notifications() && !acl_is_watched($album, 
-                                        $asset['metadata']['record_date'])) echo 'new'; ?>" title="®New_video®"></span>
+                                <span class="<?php if (acl_show_notifications() && !acl_is_watched(
+ 
+                                            $album,
+                                        $asset['metadata']['record_date']
+ 
+                                        )) {
+                                    echo 'new';
+                                } ?>" title="®New_video®"></span>
                             </a>       
                         </li>
                         <?php
-                    } else if($asset['metadata']['origin'] == 'streaming') {
+                    } elseif ($asset['metadata']['origin'] == 'streaming') {
                         ?>
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 
@@ -84,8 +100,7 @@
                         </li>
                         <?php
                     }
-                }
-                ?>
+                } ?>
             </ul>
             <?php
         }

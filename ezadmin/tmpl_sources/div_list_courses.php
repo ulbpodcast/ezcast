@@ -1,40 +1,52 @@
 
 
-<?php if($max > 0) { ?>
+<?php if ($max > 0) {
+    ?>
 
 <div class="text-center">
     <ul class="pagination">
-        <li <?php if($input['page'] == 1) { echo 'class="disabled"'; } ?>>
+        <li <?php if ($input['page'] == 1) {
+        echo 'class="disabled"';
+    } ?>>
             <a href="#" data-page="<?php echo $input['page']-1 ?>">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
         <li <?php echo $input['page'] == 1 ? 'class="active"' : ''?>><a href="#" data-page="1">1</a></li>
         
-        <?php if($input['page'] > 5) { ?>
+        <?php if ($input['page'] > 5) {
+        ?>
            <li><a href="#" data-page="0">...</a></li>
-        <?php } ?>
+        <?php
+    } ?>
            
          <?php $start = $input['page'] > 4 ? $input['page']-3 : 2 ?>
            
-        <?php for($i = $start; $i < $max && $i < $start+7; ++$i){ ?>
+        <?php for ($i = $start; $i < $max && $i < $start+7; ++$i) {
+        ?>
            <li <?php echo $input['page'] == $i ? 'class="active"' : ''?>><a href="#" data-page="<?php echo $i ?>"><?php echo $i ?></a></li>
-        <?php } ?>
+        <?php
+    } ?>
         
-        <?php if($input['page']+7 < $max) { ?>
+        <?php if ($input['page']+7 < $max) {
+        ?>
            <li><a href="#" data-page="0">...</a></li>
-        <?php } ?> 
+        <?php
+    } ?> 
            
-        <?php if($max != 1) { ?>
+        <?php if ($max != 1) {
+        ?>
         <li <?php echo $input['page'] == $max? 'class="active"' : ''?>><a href="#" data-page="<?php echo $max ?>"><?php echo $max ?></a></li>
-        <?php } ?>
+        <?php
+    } ?>
         <li>
             <a href="#" data-page="<?php echo $input['page']+1 ?>"><span aria-hidden="true">&raquo;</span></a>
         </li>
     </ul>
 </div>
 
-<?php } ?>
+<?php
+} ?>
 
 <table class="table table-striped table-hover table-condensed table-responsive courses">
     <tr>
@@ -47,31 +59,41 @@
         <th>®recorders®</th>
     </tr>
         
-    <?php foreach($courses as $course) { ?>
+    <?php foreach ($courses as $course) {
+        ?>
         <tr>               
             <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo  $course['course_code']; ?></a></span></td>
             <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo $course['course_name']; ?></a></span></td>
-            <td><span title="<?php echo $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php if(isset($course['course_code_public']) && $course['course_code_public']!="") echo $course['course_code_public']; else echo $course['course_code']; ?></a></span></td>
+            <td><span title="<?php echo $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php if (isset($course['course_code_public']) && $course['course_code_public']!="") {
+            echo $course['course_code_public'];
+        } else {
+            echo $course['course_code'];
+        } ?></a></span></td>
 
-            <?php global $use_user_name; if($use_user_name) { ?>
+            <?php global $use_user_name;
+        if ($use_user_name) {
+            ?>
                 <td><span title="<?php echo $course['user_ID']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo urlencode($course['user_ID']); ?>"><?php echo $course['forename'].' '.$course['surname']; ?></a></span></td>
-            <?php } else { ?>
+            <?php
+        } else {
+            ?>
                 <td><span title="<?php echo $course['forename'].' '.$course['surname']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo urlencode($course['user_ID']); ?>"><?php echo $course['user_ID']; ?></a></span></td>
-            <?php } ?>
+            <?php
+        } ?>
             <td>
                 <span class="label 
-                    <?php if($course['origin'] == 'internal') { 
-                        echo 'label-info'; 
-                    } else if($course['origin'] == 'external') { 
-                        echo 'label-primary'; 
-                    } else {
-                        echo 'label-danger';
-                    } ?>
+                    <?php if ($course['origin'] == 'internal') {
+            echo 'label-info';
+        } elseif ($course['origin'] == 'external') {
+            echo 'label-primary';
+        } else {
+            echo 'label-danger';
+        } ?>
                     ">
                     <?php 
-                    if($course['origin'] == 'internal') {
+                    if ($course['origin'] == 'internal') {
                         echo '®intern®';
-                    } else if($course['origin'] == 'external') {
+                    } elseif ($course['origin'] == 'external') {
                         echo '®extern®';
                     } else {
                         echo '®error®';

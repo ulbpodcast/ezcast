@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     //TODO: DO THIS FUNCTION
     // Save additional users into ezmanager
     push_users_to_ezmanager();
@@ -23,7 +24,7 @@ function index($param = array()) {
     db_log('', 'Pushed changes on recorders and ezmanager', $_SESSION['user_login']);
     include template_getpath('div_main_header.php');
     echo '<div class="alert alert-success"> ' . template_get_message('save_successful', get_lang()) . '</div>';
-    foreach($failed_cmd as $error) {
+    foreach ($failed_cmd as $error) {
         echo '<div class="alert alert-warning"> FAILURE: ' . htmlspecialchars($error). '</div>';
     }
     include template_getpath('div_main_footer.php');

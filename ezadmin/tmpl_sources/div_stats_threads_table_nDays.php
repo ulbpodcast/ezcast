@@ -21,8 +21,7 @@
         <?php 
         foreach ($allAlbumsNDays as $albumNDay) {
             $nbThreads = stat_threads_count_by_album_and_date_interval($albumNDay["albumName"], $_SESSION['nDaysStats']['nDaysEarlier'], $_SESSION['nDaysStats']['nDaysLater']);
-            $nbComments = stat_comments_count_by_album_and_date_interval($albumNDay["albumName"], $_SESSION['nDaysStats']['nDaysEarlier'], $_SESSION['nDaysStats']['nDaysLater']);
-        ?>
+            $nbComments = stat_comments_count_by_album_and_date_interval($albumNDay["albumName"], $_SESSION['nDaysStats']['nDaysEarlier'], $_SESSION['nDaysStats']['nDaysLater']); ?>
         <tr>
             <td class="left"><?php echo $albumNDay["albumName"]; ?></td>
             <td><?php echo $nbThreads; ?></td>
@@ -30,7 +29,7 @@
             <td><?php echo $nbComments/$nbThreads; ?></td>
             <!--<td>n/a</td>-->
         </tr>
-        <?php 
+        <?php
         }
         ?>
     </tbody>

@@ -49,15 +49,18 @@
             $custom_folder = "$apache_documentroot/ezadmin/css/custom/";
             $dir = new DirectoryIterator($custom_folder);
             foreach ($dir as $fileinfo) {
-                if ($fileinfo->isFile())
+                if ($fileinfo->isFile()) {
                     echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$fileinfo->getFilename().'"/>';
+                }
             }
         ?>
  
         
     </head>
     <body link="#000088" vlink="#000044" alink="#0000ff" 
-        <?php if (isset($GLOBALS['debugmode']) && ($GLOBALS['debugmode'] == "devl")) { echo 'background="#99ff99"'; } ?>>
+        <?php if (isset($GLOBALS['debugmode']) && ($GLOBALS['debugmode'] == "devl")) {
+            echo 'background="#99ff99"';
+        } ?>>
 
         <div class="container_ezplayer">
         <?php include template_getpath('div_header.php'); ?>
@@ -70,9 +73,9 @@
                     <?php 
                     global $sample_config_version;
                     global $config_version;
-                    if($sample_config_version > $config_version) {
+                    if ($sample_config_version > $config_version) {
                         echo '<div class="alert alert-danger" role="alert">®new_config_version®</div>';
-                    } else if($sample_config_version < $config_version) { 
+                    } elseif ($sample_config_version < $config_version) {
                         echo '<div class="alert alert-info" role="alert">®config_more_recent_version®</div>';
                     } ?>
 

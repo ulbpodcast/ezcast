@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $ezadmin_url;
 
     // 2) Unsetting session vars

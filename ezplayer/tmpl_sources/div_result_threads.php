@@ -17,7 +17,8 @@
 
             foreach ($album_threads as $asset => $asset_threads) {
                 ?>
-                <?php if ($asset_ref != $asset) { ?>
+                <?php if ($asset_ref != $asset) {
+                    ?>
                     <li class="asset_result"><div class="right-arrow"></div><?php print_info(substr(get_user_friendly_date($asset, '/', false, get_lang(), false), 0, 10)); ?> <?php echo get_asset_title($album, $asset); ?></li>
 
                     <?php
@@ -36,11 +37,13 @@
                             <div class="bookmark_info thread" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '')">
                                 <?php echo nl2br(html_entity_decode($thread['message'])); ?>  
                             </div>
-                            <?php foreach ($thread['comments'] as $comment_id => $comment) { ?>
+                            <?php foreach ($thread['comments'] as $comment_id => $comment) {
+                        ?>
                                 <div class="bookmark_info comment" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '<?php echo $comment_id; ?>')">
                                     <?php echo nl2br(html_entity_decode($comment)); ?>  
                                 </div>
-                            <?php } ?>
+                            <?php
+                    } ?>
                         </div>
                     </li>
                     <?php

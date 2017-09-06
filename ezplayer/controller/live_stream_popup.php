@@ -5,7 +5,8 @@
  * This window is displayed according to specific actions (video_switch | ...)
  * @global array $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     switch ($input['display']) {

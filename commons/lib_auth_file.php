@@ -1,7 +1,7 @@
 <?php
 
 /*
-* EZCAST Commons 
+* EZCAST Commons
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -28,37 +28,41 @@
  */
 
 /**
- * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login'] 
+ * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login']
  * (['real_login']) of the user. failure returns false. Error message can be received via checkauth_last_error()
  * @param string $login can be tdupont or jsmith/tdupont (auth as jsmith and become tdupont)
  * @param string $passwd
  * @return assoc_array|false
  */
-function file_checkauth($login, $passwd) {
+function file_checkauth($login, $passwd)
+{
     require "pwfile.inc"; //file containing passwords and info
 
     $login = trim($login);
 
-    if (!ctype_alnum($login))
-        return false; //sanity check
-        if (isset($users[$login])){
-            $fpasswd = $users[$login]['password']; // password from pwfile.inc
-            $salt = substr($fpasswd, 0, 2);
-            $cpasswd = crypt($passwd, $salt);
-            $fpasswd = rtrim($fpasswd);
+    if (!ctype_alnum($login)) {
+        return false;
+    } //sanity check
+    if (isset($users[$login])) {
+        $fpasswd = $users[$login]['password']; // password from pwfile.inc
+        $salt = substr($fpasswd, 0, 2);
+        $cpasswd = crypt($passwd, $salt);
+        $fpasswd = rtrim($fpasswd);
     
-            if ( $fpasswd == $cpasswd) {
-                //user exists and password matches
-                $userinfo = $users[$login];
-                unset($userinfo['password']); //removes password info
+        if ($fpasswd == $cpasswd) {
+            //user exists and password matches
+            $userinfo = $users[$login];
+            unset($userinfo['password']); //removes password info
                 $userinfo['login'] = $login; //return login as normal login
                 $userinfo['real_login'] = $login; //return login as normal login
                 return $userinfo;
-                // user does not exist or password is incorrect
-            } else {
-                return false;
-            }
-        } else return false;
+            // user does not exist or password is incorrect
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -67,7 +71,8 @@ function file_checkauth($login, $passwd) {
  * @param type $login the user we need information about
  * @return user's info if user has been found; false otherwise
  */
-function file_getinfo($login) {
+function file_getinfo($login)
+{
     include "pwfile.inc"; //file containing passwords and info
 
     if (isset($users[$login])) { // from pwfile.inc

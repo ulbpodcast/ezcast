@@ -31,7 +31,8 @@
 <h3>®Available_bookmarks®</h3><br/>
 <p>®Select_imported_bookmarks®</p>
 <br/>
-<?php if (isset($imported_bookmarks) && count($imported_bookmarks) > 0) { ?>
+<?php if (isset($imported_bookmarks) && count($imported_bookmarks) > 0) {
+    ?>
     <form action="index.php?action=bookmarks_import" method="post" id="select_import_bookmark_form" name="import_bookmark_form" onsubmit="return false">
         <input type="hidden" name="imported_bookmarks" value="<?php echo htmlspecialchars(json_encode($imported_bookmarks)); ?>"
                <input type="hidden" name="album" id="import_album" value="<?php echo $album; ?>"/>
@@ -42,18 +43,17 @@
 
             <?php
             $count = 0;
-            $source = (isset($asset) && ($asset != '')) ? 'details' : 'assets';
-            foreach ($imported_bookmarks as $index => $bookmark) {
-                // only display bookmarks that are related to the selected album and/or asset
-                if ($bookmark['album'] == $album
+    $source = (isset($asset) && ($asset != '')) ? 'details' : 'assets';
+    foreach ($imported_bookmarks as $index => $bookmark) {
+        // only display bookmarks that are related to the selected album and/or asset
+        if ($bookmark['album'] == $album
                         && (!isset($asset) || ($asset == '') || $bookmark['asset'] == $asset)) {
-                    ++$count;
-                    ?>
+            ++$count; ?>
                     <li>
                         <input style="float: left;" type="checkbox" name="import_selection[]" value="<?php echo $index ?>"/>
                         <?php if (($_SESSION['target'] == 'custom' && user_prefs_asset_bookmark_exists($_SESSION['user_login'], $bookmark['album'], $bookmark['asset'], $bookmark['timecode']))
                                 || ($_SESSION['target'] == 'official' && toc_asset_bookmark_exists($bookmark['album'], $bookmark['asset'], $bookmark['timecode']))) {
-                            ?>
+                ?>
 
                             <div style="display: inline-block; width: 457px; padding-left: 8px; color:#ff0000;">
                                 <a class="tooltip"><span style="padding-left: 0px;"><b><?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?></b></span>
@@ -67,8 +67,7 @@
                                             $personal_bookmark = toc_asset_bookmark_get($bookmark['album'], $bookmark['asset'], $bookmark['timecode']);
                                         } else {
                                             $personal_bookmark = user_prefs_asset_bookmark_get($_SESSION['user_login'], $bookmark['album'], $bookmark['asset'], $bookmark['timecode']);
-                                        }
-                                        ?>
+                                        } ?>
                                         <div style="padding: 5px 0px;"><?php print_bookmark_title($personal_bookmark['title']); ?> (<?php print_time($personal_bookmark['timecode']); ?>)</div>
                                         <div style="border-top:1px dotted #cccccc; width: 400px; padding-top: 8px">
                                             <b>®Description®: </b><?php print_info($personal_bookmark['description']); ?><br/>
@@ -76,14 +75,17 @@
                                         </div>
                                     </div></a>
                             </div>
-                            <?php } else { ?>
+                            <?php
+            } else {
+                ?>
                             <div style="display: inline-block; width: 457px; padding-left: 8px;">
                                 <span style="padding-left: 0px;"><b><?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?></b></span>
                             <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
                                 <div class="right-arrow"></div>
                         <?php print_bookmark_title($bookmark['title']); ?> 
                             </div>
-                    <?php } ?>
+                    <?php
+            } ?>
                     </li>
         <?php
         }
@@ -92,12 +94,16 @@
         ?>
                 <br/>
                 ®No_eligible_bookmarks®
-    <?php } ?>
+    <?php
+    } ?>
         </ul><br/>
         <a href="#" onclick="bookmarks_import_form_submit('<?php echo $source; ?>');" id="import_button" class="simple-button blue" title="®Import_selected_bookmarks®">®Import®</a>
         <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>
     </form>
-<?php } else { ?>
+<?php
+} else {
+        ?>
     ®No_bookmarks®
-<?php } ?>
+<?php
+    } ?>
 

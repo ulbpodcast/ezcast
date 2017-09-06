@@ -8,12 +8,13 @@
         if ($album_ref != $bookmark['album']) {
             ?>
             <li class="album_result">(<?php echo suffix_remove($bookmark['album']); ?>) <?php echo get_album_title($bookmark['album']); ?></li>
-        <?php }
-        ?>
-        <?php if ($asset_ref != $bookmark['asset']) { ?>
+        <?php
+        } ?>
+        <?php if ($asset_ref != $bookmark['asset']) {
+            ?>
             <li class="asset_result"><div class="right-arrow"></div><?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?> <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?></li>
-        <?php }
-        ?>
+        <?php
+        } ?>
         <li id="result_<?php echo $index; ?>" class="result">
 
             <span class="more"><a class="more-button blue" onclick="bookmark_more_toggle('<?php echo $index; ?>', 'result', $(this));"></a></span>

@@ -14,16 +14,14 @@ if (isset($_SESSION['monthStats'])) {
     foreach ($allAlbums as $albumArr) {
         $nbThreadsTmp = stat_threads_count_by_album_and_month($albumArr["albumName"], $_SESSION['currentMonth']);
         if ($nbThreadsTmp != "0") {
-            $allAlbumsMonth[] = $albumArr;
-            ?>
+            $allAlbumsMonth[] = $albumArr; ?>
             <script>
                 dataArrayPieChartMonth[ind2] = [<?php echo json_encode($albumArr["albumName"]); ?>, <?php echo $nbThreadsTmp; ?>];
                 ind2 += 1;
             </script>
             <?php
         }
-    }
-    ?>
+    } ?>
     <script>
         var pieChartMonth = jQuery.jqplot('pieChartMonth', [dataArrayPieChartMonth],
                 {
@@ -63,7 +61,7 @@ if (isset($_SESSION['monthStats'])) {
     </div>
 <?php
 } else {
-    echo '<label class="label label-info">NO DATA</label>';
-}
+        echo '<label class="label label-info">NO DATA</label>';
+    }
 ?>
 

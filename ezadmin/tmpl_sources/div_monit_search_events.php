@@ -41,7 +41,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
                 <?php
-                if(isset($input) && array_key_exists('startDate', $input) && $input['startDate'] != "") {
+                if (isset($input) && array_key_exists('startDate', $input) && $input['startDate'] != "") {
                     echo "defaultDate: new Date('".$input['startDate']."')";
                 } else {
                     echo 'defaultDate: moment().subtract(7, \'days\')';
@@ -55,7 +55,7 @@
                 sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
                 <?php
-                if(isset($input) && array_key_exists('endDate', $input)) {
+                if (isset($input) && array_key_exists('endDate', $input)) {
                     echo "defaultDate: new Date('".$input['endDate']."')";
                 } else {
                     echo 'defaultDate: moment().add(1, \'days\')';
@@ -80,17 +80,23 @@
             <div class="col-md-4">
                 <label class="sr-only" for="classroom">®monit_classroom®</label>
                 <input type="text" class="form-control classroomSuggest" name="classroom" id="classroom" placeholder="®monit_classroom®"
-                    value="<?php if(isset($input) && array_key_exists('classroom', $input)) { echo $input['classroom']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('classroom', $input)) {
+                    echo $input['classroom'];
+                } ?>">
             </div>
             <div class="col-md-4">
                 <label class="sr-only" for="teacher">®monit_author®</label>
                 <input type="text" class="form-control" name="teacher" id="teacher" placeholder="®monit_author®"
-                    value="<?php if(isset($input) && array_key_exists('teacher', $input)) { echo $input['teacher']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('teacher', $input)) {
+                    echo $input['teacher'];
+                } ?>">
             </div>
             <div class="col-md-4">
                 <label class="sr-only" for="courses">®monit_courses®</label>
                 <input type="text" class="form-control" name="courses" id="courses" placeholder="®monit_courses®"
-                    value="<?php if(isset($input) && array_key_exists('courses', $input)) { echo $input['courses']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('courses', $input)) {
+                    echo $input['courses'];
+                } ?>">
             </div>
         </div>
     </div>
@@ -101,12 +107,16 @@
             <div class="col-md-3">
                 <label class="sr-only" for="asset">®monit_asset®</label>
                 <input type="text" class="form-control" name="asset" id="asset" placeholder="®monit_asset®"
-                    value="<?php if(isset($input) && array_key_exists('asset', $input)) { echo $input['asset']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('asset', $input)) {
+                    echo $input['asset'];
+                } ?>">
             </div>
             <div class="col-md-3">
                 <label class="sr-only" for="origin"">®monit_origin®</label>
                 <input type="text" class="form-control" name="origin" id="origin" placeholder="®monit_origin®"
-                    value="<?php if(isset($input) && array_key_exists('origin', $input)) { echo $input['origin']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('origin', $input)) {
+                    echo $input['origin'];
+                } ?>">
             </div>
             <div class="col-md-3">
                 <label class="sr-only" for="type_id">®monit_type_id®</label>
@@ -115,7 +125,7 @@
                     <?php
                     foreach (EventType::$event_type_id as $nameEventType => $num) {
                         echo '<option value="'.$num.'"';
-                        if(isset($input) && array_key_exists('type_id', $input) && 
+                        if (isset($input) && array_key_exists('type_id', $input) &&
                                 $input['type_id'] != "" && $input['type_id'] == $num) {
                             echo ' selected';
                         }
@@ -129,20 +139,18 @@
             <div class="col-md-3">
                 <select name="log_level[]" class="form-control selectpicker" multiple data-actions-box="true"
                         title="®monit_select_loglevel®">
-                    <?php foreach(LogLevel::$log_levels as $nameLog => $lvlLog) {
+                    <?php foreach (LogLevel::$log_levels as $nameLog => $lvlLog) {
                         $nameLevel = $lvlLog . " - " . ucfirst($nameLog);
                         echo '<option value="'.$lvlLog.'" ';
                         echo 'data-content="<span class=\'label label-'.$nameLog.'\'>'.$nameLevel.'</span>"';
-                        if(isset($input) && 
-                            (isset($logLevel_default_max_selected) && $lvlLog <= $logLevel_default_max_selected) 
-                                || 
-                            (is_array($input['log_level']) && 
-                            in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != NULL)) {
-                            
+                        if (isset($input) &&
+                            (isset($logLevel_default_max_selected) && $lvlLog <= $logLevel_default_max_selected)
+                                ||
+                            (is_array($input['log_level']) &&
+                            in_array($lvlLog, $input['log_level']) && $input['log_level'][0] != null)) {
                             echo 'selected';
                         }
                         echo '> '.$nameLevel. '</option>';
-                    
                     } ?>
                 </select>
             </div>
@@ -156,12 +164,16 @@
             <div class="col-md-4">
                 <label class="sr-only" for="context">®monit_context®</label>
                 <input type="text" class="form-control" name="context" id="context" placeholder="®monit_context®"
-                    value="<?php if(isset($input) && array_key_exists('context', $input)) { echo $input['context']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('context', $input)) {
+                        echo $input['context'];
+                    } ?>">
             </div>
             <div class="col-md-4">
                 <label class="sr-only" for="message">®monit_message®</label>
                 <input type="text" class="form-control" name="message" id="message" placeholder="®monit_message®"
-                    value="<?php if(isset($input) && array_key_exists('message', $input)) { echo $input['message']; } ?>">
+                    value="<?php if (isset($input) && array_key_exists('message', $input)) {
+                        echo $input['message'];
+                    } ?>">
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-block btn-success">

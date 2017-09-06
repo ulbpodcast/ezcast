@@ -2,13 +2,15 @@
 
 <form method="POST" class="form-horizontal">
     
-    <?php if($error) { ?>
+    <?php if ($error) {
+    ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span></button> 
             <?php echo $error; ?>
         </div>
-    <?php } ?>
+    <?php
+} ?>
     
     <div class="form-group">
         <label for="room_ID" class="col-sm-2 control-label">®classroom_id®</label>

@@ -1,7 +1,8 @@
 <?php
 
 
-function index($param = array()) {
+function index($param = array())
+{
     //$jobs = scheduler_queue_get();
     $jobs = array_merge(scheduler_processing_get(), scheduler_queue_get(), scheduler_frozen_get());
     

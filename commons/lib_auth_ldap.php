@@ -1,7 +1,7 @@
 <?php
 
 /*
-* EZCAST Commons 
+* EZCAST Commons
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -28,30 +28,36 @@
  */
 
 require_once __DIR__.'/lib_various.php';
-require_once __DIR__.'/config.inc';										
+require_once __DIR__.'/config.inc';
 /**
  * check if user credentials are ok and return an assoc array containing ['full_name'] and ['email'] ['login'] (['real_login']) of the user. failure returns false. Error message can be received via checkauth_last_error()
  * @global string $ldap_servers_auth_json_file path to the json file containing list of ldap servers for authentication
- * @param string $login 
+ * @param string $login
  * @param string $passwd
  * @return assoc_array|false
  */
-function ldap_checkauth($login, $password) {
+function ldap_checkauth($login, $password)
+{
     global $ldap_servers_auth_json_file;
-    global $ldap_institution;							 
+    global $ldap_institution;
     
     $ldap_servers_auth = json_to_array($ldap_servers_auth_json_file);
 
-    if (count($ldap_servers_auth) == 0)
+    if (count($ldap_servers_auth) == 0) {
         return false;
+    }
     $login = trim($login);
 
-    if (!ctype_alnum($login))
-        return false; //sanity check
+    if (!ctype_alnum($login)) {
+        return false;
+    } //sanity check
 
-   	if($ldap_institution=="ucl") $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, "");
-	else $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, $password);
-	
+    if ($ldap_institution=="ucl") {
+        $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, "");
+    } else {
+        $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, $password);
+    }
+    
  
  
     // bind to ldap failed
@@ -71,33 +77,37 @@ function ldap_checkauth($login, $password) {
     }
     //retrieve the result of the search
     $info = ldap_get_entries($link_identifier, $search_res);
-	if($ldap_institution=="ucl"){
-		$employeeNumber=$info[0]['employeenumber'][0];
-		$ldap_servers_auth[$index]["rdn"]="employeenumber=".$employeeNumber.",ou=personne,o=universite catholique de louvain,c=be";
-		$link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, $password);
-		 $search_res = ldap_search($link_identifier, $treepath, $filter);
-		$info = ldap_get_entries($link_identifier, $search_res);
-	}															   
-	
+    if ($ldap_institution=="ucl") {
+        $employeeNumber=$info[0]['employeenumber'][0];
+        $ldap_servers_auth[$index]["rdn"]="employeenumber=".$employeeNumber.",ou=personne,o=universite catholique de louvain,c=be";
+        $link_identifier = private_ldap_connect($ldap_servers_auth, $index, $login, $password);
+        $search_res = ldap_search($link_identifier, $treepath, $filter);
+        $info = ldap_get_entries($link_identifier, $search_res);
+    }
+    
     if ($info['count'] != 1) {
         checkauth_last_error("wrong search result count:" . $info['count']);
         return false;
     }
     $userinfo = array();
-    if (isset($info[0]['cn'][0]))
+    if (isset($info[0]['cn'][0])) {
         $userinfo['full_name'] = $info[0]['cn'][0];
-	
-		
-	// AJOUT UCL
-	if(isset($info[0]['uclressource'])){
-		for($i=0;$i<count($info[0]['uclressource']);$i++){   
-			if (isset($info[0]['uclressource'][$i]) && $info[0]['uclressource'][$i] =='podcast.role.manager' ) $userinfo['ismanager'] = 'true';		
-		}
-	}
-	
-	
-    if (isset($info[0]['mail'][0]))
+    }
+    
+        
+    // AJOUT UCL
+    if (isset($info[0]['uclressource'])) {
+        for ($i=0;$i<count($info[0]['uclressource']);$i++) {
+            if (isset($info[0]['uclressource'][$i]) && $info[0]['uclressource'][$i] =='podcast.role.manager') {
+                $userinfo['ismanager'] = 'true';
+            }
+        }
+    }
+    
+    
+    if (isset($info[0]['mail'][0])) {
         $userinfo['email'] = $info[0]['mail'][0];
+    }
     if ($userinfo) {
         $userinfo['login'] = $login; //return login as normal login
         $userinfo['real_login'] = $login; //return login as real login
@@ -113,12 +123,14 @@ function ldap_checkauth($login, $password) {
  * @param string $login the user we search info about
  * @return assoc_array|false
  */
-function ldap_getinfo($login) {
+function ldap_getinfo($login)
+{
     global $ldap_servers_cred_json_file;
     
     $ldap_servers_cred = json_to_array($ldap_servers_cred_json_file);
-    if (count($ldap_servers_cred) == 0)
+    if (count($ldap_servers_cred) == 0) {
         return false;
+    }
 
     //try go get user's full name
     $index = 0;
@@ -152,8 +164,9 @@ function ldap_getinfo($login) {
                 $userinfo['full_name'] = $info[0]['cn'][0];
                 $result = true;
             }
-            if (isset($info[0]['mail'][0]))
+            if (isset($info[0]['mail'][0])) {
                 $userinfo['email'] = $info[0]['mail'][0];
+            }
         }
         $index++;
     } while (!$result);
@@ -162,7 +175,7 @@ function ldap_getinfo($login) {
 }
 
 /**
- * Tries to establish a connection to ldap server. Loops on all available servers while the 
+ * Tries to establish a connection to ldap server. Loops on all available servers while the
  * connection has not been established
  * @param type $ldap_servers array containing the available servers
  * @param int $index position in the array where the search starts
@@ -170,10 +183,12 @@ function ldap_getinfo($login) {
  * @param type $password
  * @return boolean
  */
-function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password = "") {
+function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password = "")
+{
     $ldap_servers_count = count($ldap_servers);
-    if (!isset($index)) 
+    if (!isset($index)) {
         $index = 0;
+    }
     
     $link_identifier = false;
     while ($index < $ldap_servers_count) {
@@ -200,8 +215,9 @@ function private_ldap_connect($ldap_servers, &$index = 0, $login = "", $password
     $errno = ldap_errno($link_identifier);
     $errstring = ldap_error($link_identifier);
     checkauth_last_error("$errno:$errstring:Bind to ldap failed");
-    if($link_identifier)
+    if ($link_identifier) {
         ldap_close($link_identifier);
+    }
         
     return false;
 }

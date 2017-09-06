@@ -6,9 +6,10 @@
  * @global type $bookmarks
  * @global type $repository_path
  * @global type $user_files_path
- * @global type $words 
+ * @global type $words
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $search_result_threads;
     global $bookmarks;
@@ -25,8 +26,9 @@ function index($param = array()) {
     $level = $input['level'];
     $tab = $input['tab'];
 
-    if (!isset($level) || is_nan($level) || $level < 0 || $level > 3)
+    if (!isset($level) || is_nan($level) || $level < 0 || $level > 3) {
         $level = 0;
+    }
 
     log_append('search_bookmarks : ' . PHP_EOL .
             'search - ' . $search . PHP_EOL .
@@ -35,16 +37,18 @@ function index($param = array()) {
             'fields thread - ' . implode(", ", $fields_thread) . PHP_EOL .
             'tab - ' . implode(", ", $tab));
 
-    // defines target 
-    if (!isset($target) || $target == '')
+    // defines target
+    if (!isset($target) || $target == '') {
         $target = 'global';
+    }
 
     $album = $_SESSION['album'];
     $asset = $_SESSION['asset'];
 
     if ($target == 'current' // we search in the current album / asset
-            && (!isset($album) || $album == ''))
+            && (!isset($album) || $album == '')) {
         $target = 'global';
+    }
 
     // split the string, saves the value to search in a array
     $words = str_getcsv($search, ' ', '"');
@@ -66,13 +70,13 @@ function index($param = array()) {
         case 'current': // searches in current location (either global or album or asset)
             $albums = array($album);
             break;
-        case 'album': // searches in albums selection 
+        case 'album': // searches in albums selection
             if (!acl_has_album_permissions($album)) {
                 $bookmarks_toc = toc_bookmarks_search($search, $fields, $level, array($album), $asset);
             }
             $asset = ""; // asset must be empty for searching in albums selection
             break;
-        default : // searches in all albums 
+        default: // searches in all albums
             if (!acl_has_album_permissions($album)) {
                 $bookmarks_toc = toc_bookmarks_search($search, $fields, $level, array($album), $asset);
             }
@@ -96,7 +100,7 @@ function index($param = array()) {
         $input['origin'] == 'keyword' ? 'keyword_search' : 'bookmarks_search',
         $_SESSION['album'] == '' ? '-' : $_SESSION['album'],
         $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'],
-        implode(', ', $search), 
+        implode(', ', $search),
         $target,
         implode(", ", $fields),
         implode(", ", $fields_thread),

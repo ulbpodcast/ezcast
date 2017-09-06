@@ -2,8 +2,7 @@
 
 require_once __DIR__."/lib_external_stream_daemon.php";
 
-if($argc != 3)
-{
+if ($argc != 3) {
     echo "Wrong argument count.".PHP_EOL;
     echo "Usage: php ".__FILE__." <video_root_dir> <asset_token>".PHP_EOL;
     return;

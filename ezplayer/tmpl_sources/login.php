@@ -12,26 +12,31 @@
         <?php
         $warning = true;
         switch (strtolower($_SESSION['browser_name'])) {
-            case 'safari' :
-                if ($_SESSION['browser_version'] >= 5)
+            case 'safari':
+                if ($_SESSION['browser_version'] >= 5) {
                     $warning = false;
+                }
                 break;
-            case 'chrome' :
-                if ($_SESSION['browser_version'] >= 4)
+            case 'chrome':
+                if ($_SESSION['browser_version'] >= 4) {
                     $warning = false;
+                }
                 break;
-            case 'internet explorer' :
-                if ($_SESSION['browser_version'] >= 9)
+            case 'internet explorer':
+                if ($_SESSION['browser_version'] >= 9) {
                     $warning = false;
+                }
                 break;
-            case 'opera' :
-                if ($_SESSION['browser_version'] >= 26)
+            case 'opera':
+                if ($_SESSION['browser_version'] >= 26) {
                     $warning = false;
+                }
                 break;
-            case 'firefox' :
+            case 'firefox':
                 if (($_SESSION['browser_version'] >= 22 && ($_SESSION['user_os'] == "Windows" || $_SESSION['user_os'] == "Android"))
-                        || $_SESSION['browser_version'] >= 35)
+                        || $_SESSION['browser_version'] >= 35) {
                     $warning = false;
+                }
                 break;
         }
         if ($warning) {
@@ -45,33 +50,40 @@
                         <li><b>Safari 5+</b> | </li>
                         <li><b>Google Chrome</b> | </li>
                         <li><b>Opera 26+</b> </li>
-                        <?php if ($_SESSION['user_os'] == "Windows") { ?>
+                        <?php if ($_SESSION['user_os'] == "Windows") {
+                ?>
                             <li><b>Internet Explorer 9+</b> | </li>
                             <li><b>Firefox 22+</b></li>
-                        <?php } ?>
+                        <?php
+            } ?>
                     </ul>
                 </div>       
             </div>
-        <?php } ?>
+        <?php
+        } ?>
         <div class="login_background container">
             <?php include 'div_help_header.php'; ?>
             <div id="global" class="row">
-                <?php if($sso_enabled) { ?>
+                <?php if ($sso_enabled) {
+            ?>
                 <div class="login-choices btn-center" >
-                      <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url; echo $ezplayer_safe_url;
-                      ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
+                      <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url;
+            echo $ezplayer_safe_url; ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
                       <a class="btn-login btn-default btn-login-default" href="#" id="default_auth_button" title="">®authLocal®</a>
                 </div>
-                <?php } ?>
+                <?php
+        } ?>
 
                 <form id="form_login" class="form_login form-horizontal col-md-4 col-md-offset-4" method="post" action="<?php
                           global $ezplayer_safe_url;
                           echo $ezplayer_safe_url;
                           ?>/index.php" onsubmit="detect_flash();">
                     
-                    <?php if(isset($error)) { ?>
+                    <?php if (isset($error)) {
+                              ?>
                     <div class="alert alert-danger" role="alert"><?php echo $error; ?></div>
-                    <?php } ?>
+                    <?php
+                          } ?>
                     
                     <input type="hidden" name="action" value="login" />
                     <input type="hidden" name="has_flash" value=""/>
@@ -94,12 +106,14 @@
                         <div class="col-sm-9 col-sm-offset-3">
                             <select class="lang form-control" name="lang" tabindex="3" 
                                     onchange="document.location.href = './index.php?lang='+this.value;">
-                                <option value="en" <?php if(array_key_exists('lang', $input) && $input['lang'] == 'en') { 
-                                    echo 'selected="selected"'; } ?>>
+                                <option value="en" <?php if (array_key_exists('lang', $input) && $input['lang'] == 'en') {
+                              echo 'selected="selected"';
+                          } ?>>
                                     English
                                 </option>
-                                <option value="fr" <?php if(!array_key_exists('lang', $input) || $input['lang'] == 'fr') { 
-                                    echo 'selected="selected"'; } ?>>
+                                <option value="fr" <?php if (!array_key_exists('lang', $input) || $input['lang'] == 'fr') {
+                              echo 'selected="selected"';
+                          } ?>>
                                     Français
                                 </option>
                             </select>
@@ -134,7 +148,8 @@
                     document.form_login.has_flash.value = 'Y';
                 }
             }
-            <?php if($sso_enabled) { ?>
+            <?php if ($sso_enabled) {
+                              ?>
                 $( document ).ready(function() {
                     $("#form_login").hide();
                     $("#default_auth_button").click(function () {
@@ -142,7 +157,8 @@
                         return false;
                     });
                 });
-            <?php } ?>
+            <?php
+                          } ?>
         </script>
         
     </body>

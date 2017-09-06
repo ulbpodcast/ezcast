@@ -4,7 +4,8 @@
  * Reloads the threads list
  * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     
     $display = (count($param) == 0 || $param[0]);

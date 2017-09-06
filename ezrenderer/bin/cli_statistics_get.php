@@ -39,13 +39,12 @@ echo '  <load>'.get_load() . '</load>' . PHP_EOL;
 echo '  <encoding_pgm>'.$encoding_pgm['name'] . '</encoding_pgm>' . PHP_EOL;
 echo '  <encoding_desc>'.$encoding_pgm['description'] . '</encoding_desc>' . PHP_EOL;
 echo '  <jobs>'.PHP_EOL;
-foreach($jobs as $job) {
-echo '      <job>'.PHP_EOL;
-echo '          <pid>'.$job['pid'].'</pid>' . PHP_EOL;
-echo '          <time>'.$job['time'].'</time>' . PHP_EOL;
-echo '          <state>'.$job['state'].'</state>' . PHP_EOL;
-echo '      </job>'.PHP_EOL;
+foreach ($jobs as $job) {
+    echo '      <job>'.PHP_EOL;
+    echo '          <pid>'.$job['pid'].'</pid>' . PHP_EOL;
+    echo '          <time>'.$job['time'].'</time>' . PHP_EOL;
+    echo '          <state>'.$job['state'].'</state>' . PHP_EOL;
+    echo '      </job>'.PHP_EOL;
 }
 echo '  </jobs>'.PHP_EOL;
 echo '</statistics>'.PHP_EOL;
-?>

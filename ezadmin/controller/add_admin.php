@@ -1,10 +1,12 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
-    if (!isset($input['user_ID']) || empty($input['user_ID']))
+    if (!isset($input['user_ID']) || empty($input['user_ID'])) {
         die;
+    }
 
     $res = add_admin_to_file($input['user_ID']);
     $u = db_user_read($input['user_ID']);
@@ -26,4 +28,3 @@ function index($param = array()) {
 
     die;
 }
-

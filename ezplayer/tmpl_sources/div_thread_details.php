@@ -27,7 +27,8 @@
 include_once 'lib_print.php';
 ?>
 <script>
-<?php if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') { ?>
+<?php if ($_SESSION['ezplayer_mode'] == 'view_asset_bookmark') {
+    ?>
         threads_array = new Array();
 
     <?php
@@ -117,30 +118,33 @@ $DTZ = new DateTimeZone('Europe/Paris');
     </div>
 </div>
 <div id="thread-options" class="right-options">
-    <?php if (acl_user_is_logged()) { ?>
+    <?php if (acl_user_is_logged()) {
+                        ?>
     <a class="button-empty green2 pull-right inline-block" href="javascript:thread_comment_form_toggle();" >
         ®Reply_discussion®
     </a>
-    <?php } ?>
-    <?php if (($_SESSION['user_login'] == $thread['authorId']) || acl_is_admin()) { ?>
+    <?php
+                    } ?>
+    <?php if (($_SESSION['user_login'] == $thread['authorId']) || acl_is_admin()) {
+                        ?>
         <a class="edit-button green2 pull-right inline-block" title="®Edit_discussion®" onclick="thread_edit_form_prepare(<?php echo $thread['id'] ?>)"></a>
         <?php if (acl_is_admin()) {
-            ?>     
+                            ?>     
             <a class="delete-button green2 pull-right inline-block" title="®Delete_discussion®" 
                href="javascript:popup_thread('<?php echo $thread['id']; ?>', 'delete');" ></a>
 <?php
-        }
-    }
+                        }
+                    }
 ?>
 </div>
 
 <br/><br/>
 
-<?php if (count($thread['comments']) != 0) { ?>
+<?php if (count($thread['comments']) != 0) {
+    ?>
     <?php
-    if ($thread['best_comment'] != NULL) {
-        $best_comment = $thread['best_comment'];
-        ?>
+    if ($thread['best_comment'] != null) {
+        $best_comment = $thread['best_comment']; ?>
         <div class="cat">
             <label class="thread-cat-title"><?php echo mb_strtoupper('®Best_answer®', 'UTF-8'); ?></label>
         </div>
@@ -152,7 +156,8 @@ $DTZ = new DateTimeZone('Europe/Paris');
             <div class="trophy-best-comment pull-left"></div>
         </div>
         <br />
-    <?php } ?>
+    <?php
+    } ?>
     <div class="cat">
         <label class="thread-cat-title"><?php echo mb_strtoupper('®Other_answers®', 'UTF-8'); ?></label>
     </div>
@@ -162,8 +167,9 @@ $DTZ = new DateTimeZone('Europe/Paris');
             $thread_main_comments = get_main_comments($thread['comments']);
             $i = 0;
             foreach ($thread_main_comments as $comment) {
-                if ($i != 0)
+                if ($i != 0) {
                     echo '<div class="eom"></div>';
+                }
                 require template_getpath('div_comment.php');
                 $i++;
                 $childs = get_comment_childs($thread['comments'], $comment);
@@ -172,14 +178,12 @@ $DTZ = new DateTimeZone('Europe/Paris');
                     <div  class="<?php echo $comment['level'] ?>">
                         <div class="eom"></div>
                         <?php
-                        require template_getpath('div_comment.php');
-                        ?>
+                        require template_getpath('div_comment.php'); ?>
                     </div>
                     <?php
                 }
             }
-        }
-        ?>
+        } ?>
 
     </div>
     <?php

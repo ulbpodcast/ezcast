@@ -9,15 +9,15 @@ require_once '../commons/lib_database.php';
 
 $dircontent = scandir($repository_path);
 
-foreach($dircontent as $album) {
-    if($album == '.' || $album == '..')
+foreach ($dircontent as $album) {
+    if ($album == '.' || $album == '..') {
         continue;
+    }
 
-    if($course_code_str = strstr($album, '-pub', true)) {
+    if ($course_code_str = strstr($album, '-pub', true)) {
         $course_code = $course_code_str;
         $updated_courses[] = $course_code;
-    }
-    else if(($course_code_str = strstr($album, '-priv', true)) && !in_array($course_code_str, $updated_courses)) {
+    } elseif (($course_code_str = strstr($album, '-priv', true)) && !in_array($course_code_str, $updated_courses)) {
         $course_code = $course_code_str;
         $updated_courses[] = $course_code;
     }
@@ -26,4 +26,3 @@ foreach($dircontent as $album) {
 db_prepare();
 db_courses_update_hasalbums($dircontent);
 db_close();
-?>

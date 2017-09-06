@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Automaticly create event to see the reaction of the system
  */
 
@@ -67,7 +67,7 @@ $listAuthor = array(
 
 $list_CamSlide = array('cam', 'slides', 'camslides');
 
-$listCourse = array("INFO-F102", 'INFO-F106', 'BIOL-F102', 'ENVI-F1001', 'GEOL-F1001', 
+$listCourse = array("INFO-F102", 'INFO-F106', 'BIOL-F102', 'ENVI-F1001', 'GEOL-F1001',
     'HIST-F1001', 'PHYS-F105', 'ELEC-H201', 'GEOL-F1001', 'ELEC-H310', 'GEST-S101');
 
 $listClassroom = array("S.AW1.105", 'S.AW1.115 31', 'S.AW1.117 31', 'S.AW1.120 74', 'S.AW1.121 82',
@@ -78,56 +78,73 @@ $listClassroom = array("S.AW1.105", 'S.AW1.115 31', 'S.AW1.117 31', 'S.AW1.120 7
 
 ///// FUNCTION ////
 $listType = array(EventType::ASSET_CREATED, EventType::ASSET_RECORD_END);
-function getRandomType() {
+function getRandomType()
+{
     global $listType;
     //return EventType::$event_type_id[array_rand(EventType::$event_type_id)];
     return $listType[array_rand($listType)];
 }
 
-function getRandomLogLevel() {
+function getRandomLogLevel()
+{
     $key = array_keys(LogLevel::$log_levels);
     return $key[array_rand($key)];
 }
 
-function getRandomMessage() {
+function getRandomMessage()
+{
     global $listMessage;
     return $listMessage[array_rand($listMessage)];
 }
 
-function getRandomContext() {
+function getRandomContext()
+{
     global $listContext;
     return $listContext[array_rand($listContext)];
 }
 
-function getRandomAsset($cours) {
-    return date("Y_m_d_H\hi", mt_rand(1262055681,1469629530)).'_'.$cours;
+function getRandomAsset($cours)
+{
+    return date("Y_m_d_H\hi", mt_rand(1262055681, 1469629530)).'_'.$cours;
 }
 
-function getRandomAuthor() {
+function getRandomAuthor()
+{
     global $listAuthor;
     return $listAuthor[array_rand($listAuthor)];
 }
 
-function getRandomCamSlide() {
+function getRandomCamSlide()
+{
     global $list_CamSlide;
     return $list_CamSlide[array_rand($list_CamSlide)];
 }
 
-function getRandomCourse() {
+function getRandomCourse()
+{
     global $listCourse;
     return $listCourse[array_rand($listCourse)];
 }
 
-function getRandomClassroom() {
+function getRandomClassroom()
+{
     global $listClassroom;
     return $listClassroom[array_rand($listClassroom)];
 }
 
 $i = 3;
-while($i > 0) {
+while ($i > 0) {
     $course = getRandomCourse();
-    $logger->log(getRandomType(), getRandomLogLevel(), getRandomMessage(), 
-            getRandomContext(), getRandomAsset($course), getRandomAuthor(), getRandomCamSlide(),
-            $course, getRandomClassroom());
+    $logger->log(
+        getRandomType(),
+        getRandomLogLevel(),
+        getRandomMessage(),
+            getRandomContext(),
+        getRandomAsset($course),
+        getRandomAuthor(),
+        getRandomCamSlide(),
+            $course,
+        getRandomClassroom()
+    );
     --$i;
 }

@@ -1,10 +1,12 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
-    if (empty($input['course_code']))
+    if (empty($input['course_code'])) {
         die;
+    }
 
     $netid = trim($input['id']);
     switch ($input['query']) {

@@ -30,19 +30,29 @@
             <div class="col-md-3 col-sm-12">
                 <label for="table">®table®</label>
                 <select name="table" class="form-control" title="®table®">
-                    <option value="users" <?php if($selectTable == 'users') { echo 'selected'; }?>>
+                    <option value="users" <?php if ($selectTable == 'users') {
+    echo 'selected';
+}?>>
                         ®table_users®
                     </option>
-                    <option value="courses" <?php if($selectTable == 'courses') { echo 'selected'; }?>>
+                    <option value="courses" <?php if ($selectTable == 'courses') {
+    echo 'selected';
+}?>>
                         ®table_courses®
                     </option>
-                    <option value="users_courses" <?php if($selectTable == 'users_courses') { echo 'selected'; }?>>
+                    <option value="users_courses" <?php if ($selectTable == 'users_courses') {
+    echo 'selected';
+}?>>
                         ®table_users_courses®
                     </option>
-                    <option value="classrooms" <?php if($selectTable == 'classrooms') { echo 'selected'; }?>>
+                    <option value="classrooms" <?php if ($selectTable == 'classrooms') {
+    echo 'selected';
+}?>>
                         ®table_classrooms®
                     </option>
-                    <option value="all" <?php if($selectTable == '' || $selectTable == 'all') { echo 'selected'; }?> >
+                    <option value="all" <?php if ($selectTable == '' || $selectTable == 'all') {
+    echo 'selected';
+}?> >
                         ®table_all®
                     </option>
                 </select>
@@ -51,7 +61,9 @@
                 <label for="author">®author®</label>
                 <input class="form-control input input-medium auto-clear placeholder" type="text" placeholder="®author®" 
                        title="®author®" name="author" 
-                       value="<?php if(isset($input) && array_key_exists('author', $input)) { echo $input['author']; } ?>" />
+                       value="<?php if (isset($input) && array_key_exists('author', $input)) {
+    echo $input['author'];
+} ?>" />
             </div>
             <div class="col-md-2">
                 <label></label>
@@ -67,7 +79,7 @@
 
 
 <?php if (!empty($logs)) {
-    if(isset($pagination)) {
+    if (isset($pagination)) {
         $pagination->insert('POST');
     }
 } ?>
@@ -84,7 +96,7 @@
             sideBySide: true,
             format: 'YYYY-MM-DD',
             <?php
-            if(isset($input) && array_key_exists('date_start', $input)) {
+            if (isset($input) && array_key_exists('date_start', $input)) {
                 echo "defaultDate: '".$input['date_start']."'";
             } else {
                 echo 'defaultDate: 0';
@@ -98,7 +110,7 @@
             sideBySide: true,
             format: 'YYYY-MM-DD',
             <?php
-            if(isset($input) && array_key_exists('date_end', $input)) {
+            if (isset($input) && array_key_exists('date_end', $input)) {
                 echo "defaultDate: '".$input['date_end']."'";
             } else {
                 echo 'defaultDate: moment().add(1, \'days\')';

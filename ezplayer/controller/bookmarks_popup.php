@@ -6,7 +6,8 @@
  * @global type $repository_path
  * @global type $user_files_path
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $user_files_path;
@@ -35,10 +36,10 @@ function index($param = array()) {
     }
 
     switch ($input['display']) {
-        case 'delete' :
+        case 'delete':
             include_once template_getpath('popup_bookmarks_delete.php');
             break;
-        case 'export' :
+        case 'export':
             include_once template_getpath('popup_bookmarks_export.php');
             break;
     }

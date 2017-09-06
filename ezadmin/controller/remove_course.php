@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     if (!db_course_delete($input['course_code'])) {

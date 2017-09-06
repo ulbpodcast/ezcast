@@ -1,12 +1,13 @@
 <?php
 
-require_once 'lib_sql_event.php'; 
+require_once 'lib_sql_event.php';
 /// Define Helper ///
 include_once '../commons/view_helpers/helper_pagination.php';
 include_once '../commons/view_helpers/helper_sort_col.php';
 
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $logger;
     
@@ -22,12 +23,12 @@ function index($param = array()) {
         notify_changes(); //we must write new allowed classrooms IP's
     }
     
-    if(array_key_exists('page', $input)) {
+    if (array_key_exists('page', $input)) {
         $pagination = new Pagination($input['page'], 20);
     } else {
         $pagination = new Pagination(1, 20);
     }
-    if(array_key_exists('col', $input) && array_key_exists('order', $input)) {
+    if (array_key_exists('col', $input) && array_key_exists('order', $input)) {
         $colOrder = new Sort_colonne($input['col'], $input['order']);
     } else {
         $colOrder = new Sort_colonne('room_ID');
@@ -35,26 +36,29 @@ function index($param = array()) {
     
 
     if (isset($input['post'])) {
-        $sqlListClassrooms = db_classrooms_search(empty_str_if_not_def('room_ID', $input),
-                empty_str_if_not_def('name', $input), 
+        $sqlListClassrooms = db_classrooms_search(
+            empty_str_if_not_def('room_ID', $input),
+                empty_str_if_not_def('name', $input),
                 empty_str_if_not_def('ip', $input),
-                empty_str_if_not_def('only_classroom_active', $input), 
-                $colOrder->getCurrentSortCol(), $colOrder->getOrderSort(),
-                $pagination->getStartElem(), $pagination->getElemPerPage());
+                empty_str_if_not_def('only_classroom_active', $input),
+                $colOrder->getCurrentSortCol(),
+            $colOrder->getOrderSort(),
+                $pagination->getStartElem(),
+            $pagination->getElemPerPage()
+        );
         
         // If only recording
-        if(array_key_exists('being_record', $input)) {
+        if (array_key_exists('being_record', $input)) {
             $onlyRecording = true;
             $onlyOnline = true;
             $input['only_online'] = true;
-            
-        } else if(array_key_exists('only_online', $input)) {
+        } elseif (array_key_exists('only_online', $input)) {
             $onlyOnline = true;
         }
         
         $listClassrooms = array();
-        foreach($sqlListClassrooms as &$classroom) {
-            if(!$onlyOnline || $classroom['enabled']) {
+        foreach ($sqlListClassrooms as &$classroom) {
+            if (!$onlyOnline || $classroom['enabled']) {
                 $listClassrooms[] = $classroom;
             }
         }
@@ -70,4 +74,3 @@ function index($param = array()) {
     }
     include template_getpath('div_main_footer.php');
 }
-

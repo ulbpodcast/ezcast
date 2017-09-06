@@ -5,17 +5,18 @@ require_once 'lib_sql_event.php';
 require_once 'lib_report.php';
 
  
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     
     // DEBUG TIME
-//    $time = explode(' ', microtime());
-//    $start = $time[1] + $time[0];
+    //    $time = explode(' ', microtime());
+    //    $start = $time[1] + $time[0];
     
-    if(array_key_exists('post', $input)) {
+    if (array_key_exists('post', $input)) {
         
         // Param for report
-        if(array_key_exists('start_date', $input) && array_key_exists('end_date', $input)) {
+        if (array_key_exists('start_date', $input) && array_key_exists('end_date', $input)) {
             $start_date = str_replace('-', '', $input['start_date']);
             $end_date = str_replace('-', '', $input['end_date']);
             $str_start_date = $input['start_date'].' 00:00:00';
@@ -25,7 +26,6 @@ function index($param = array()) {
             $end_date = PHP_INT_MAX;
             $str_start_date = $start_date;
             $str_end_date = $end_date;
-            
         }
         
         $general = array_key_exists('general', $input);
@@ -81,10 +81,10 @@ function index($param = array()) {
     }
         
     // DEBUG TIME
-//    echo "real: ".(memory_get_peak_usage(true)/1024/1024)." MiB\n\n";
-//    $time = explode(' ', microtime());
-//    $finish = $time[1] + $time[0];
-//    echo '<br />Page generated in '.round(($finish - $start), 4).' seconds.';
+    //    echo "real: ".(memory_get_peak_usage(true)/1024/1024)." MiB\n\n";
+    //    $time = explode(' ', microtime());
+    //    $finish = $time[1] + $time[0];
+    //    echo '<br />Page generated in '.round(($finish - $start), 4).' seconds.';
     
     // Display page
     include template_getpath('div_main_header.php');
@@ -92,19 +92,21 @@ function index($param = array()) {
     include template_getpath('div_main_footer.php');
 }
 
-function calcul_unused_classroom(&$allClassRoom) {
+function calcul_unused_classroom(&$allClassRoom)
+{
     $classroom_not_use = array();
     $sqlClassroom = db_classrooms_list();
-    foreach($sqlClassroom as $classroomInfo) {
+    foreach ($sqlClassroom as $classroomInfo) {
         $classroom = $classroomInfo['room_ID'];
-        if(!in_array($classroom, $allClassRoom)) {
+        if (!in_array($classroom, $allClassRoom)) {
             $classroom_not_use[] = $classroom;
         }
     }
     return $classroom_not_use;
 }
 
-function convert_seconds($duration){
+function convert_seconds($duration)
+{
     $hours = floor($duration / 3600);
     $minutes = floor(($duration / 60) % 60);
     $seconds = $duration % 60;
@@ -112,11 +114,13 @@ function convert_seconds($duration){
     return sprintf("%1$3d:%2$02d:%3$02d", $hours, $minutes, $seconds);
 }
 
-function calcul_percent($value, $total) {
+function calcul_percent($value, $total)
+{
     return round(($value / max(1, $total)) *100, 2);
 }
 
-function date_to_json_highcharts($data) {
+function date_to_json_highcharts($data)
+{
     $json_data = json_encode($data);
     $json_data = str_replace(',"', '], [', $json_data);
     $json_data = str_replace('":', ',', $json_data);

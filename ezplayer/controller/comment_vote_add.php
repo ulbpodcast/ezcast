@@ -4,7 +4,8 @@
  * Upvote or downvote a comment
  * @global type $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     $login = $input['login'];
     $comment = intval($input['comment']);

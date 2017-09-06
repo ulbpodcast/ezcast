@@ -2,7 +2,8 @@
 
 $ssh_timeout;
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $ssh_public_key;
     global $apache_username;
@@ -21,29 +22,29 @@ function index($param = array()) {
 
 
         // 1. Receive information about renderer (server address, username and name)
-        case "1" :
+        case "1":
             stepOne();
             break;
 
         // 2. Ask user to copy SSH key on remote renderer and test connection
-        case "2" :
+        case "2":
             stepTwo();
             break;
 
         // 3. Additional information for EZrenderer installation
-        case "3" :
+        case "3":
             stepThree();
             break;
 
         // 4. Copies installation files, install EZrenderer and update renderers.inc
-        case "4" :
+        case "4":
             stepFour();
             break;
 
 
 
-        // 5. Display the renderers list.  
-        case "5" :
+        // 5. Display the renderers list.
+        case "5":
             redirectToController('view_renderers');
             break;
 
@@ -71,7 +72,8 @@ function index($param = array()) {
     //   notify_changes();
 }
 
-function stepOne() {
+function stepOne()
+{
     global $_SESSION;
     global $input;
     global $ssh_pub_key_location;
@@ -86,11 +88,11 @@ function stepOne() {
 
     if (empty($renderer_name)) {
         $error = template_get_message('missing_renderer_name', get_lang());
-    } else if (renderer_exists($renderer_name) !== false) {
+    } elseif (renderer_exists($renderer_name) !== false) {
         $error = template_get_message('existing_renderer_name', get_lang());
-    } else if (empty($renderer_address)) {
+    } elseif (empty($renderer_address)) {
         $error = template_get_message('missing_renderer_address', get_lang());
-    } else if (empty($renderer_user)) {
+    } elseif (empty($renderer_user)) {
         $error = template_get_message('missing_renderer_user', get_lang());
     } else {
 
@@ -129,7 +131,8 @@ function stepOne() {
     die;
 }
 
-function stepTwo() {
+function stepTwo()
+{
     global $_SESSION;
     global $input;
     global $ssh_public_key;
@@ -147,7 +150,7 @@ function stepTwo() {
     } else {
         $ssh_public_key = $_SESSION['renderer_ssh_key'];
 
-        // test the SSH connection  
+        // test the SSH connection
         $res = ssh_connection_test($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout);
 
         if ($res === true) {
@@ -167,13 +170,13 @@ function stepTwo() {
             include template_getpath('div_create_renderer_step3.php');
             include template_getpath('div_main_footer.php');
             die;
-        } else if ($res === false) {
+        } elseif ($res === false) {
             // SSH connection has failed. Back to step 2
             $error = template_get_message('ssh_connection_failed', get_lang());
-        } else if ($res == "known_hosts_error") {
+        } elseif ($res == "known_hosts_error") {
             // could not add SSH public key from remote renderer to known_hosts file
             $error = template_get_message('ssh_known_hosts_error', get_lang());
-        } else if ($res == "keyscan_error") {
+        } elseif ($res == "keyscan_error") {
             // SSH public key from remote renderer is not in known_hosts yet
             $error = template_get_message('ssh_keyscan_error', get_lang());
         }
@@ -184,7 +187,8 @@ function stepTwo() {
     }
 }
 
-function stepThree() {
+function stepThree()
+{
     global $_SESSION;
     global $input;
     global $ssh_public_key;
@@ -213,13 +217,13 @@ function stepThree() {
 
         if (empty($renderer_root_path)) {
             $error = template_get_message('missing_renderer_root_path', get_lang());
-        } else if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"if [ -e " . dirname($renderer_root_path) . " ]; then echo 'exists'; fi;\"") != 'exists') {
+        } elseif (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"if [ -e " . dirname($renderer_root_path) . " ]; then echo 'exists'; fi;\"") != 'exists') {
             $error = template_get_message('bad_renderer_root_path', get_lang());
-        } else if (empty($renderer_php) || $renderer_php == "PHP binary not found !") {
+        } elseif (empty($renderer_php) || $renderer_php == "PHP binary not found !") {
             $error = template_get_message('missing_renderer_php', get_lang());
-        } else if (empty($renderer_ffmpeg)) {
+        } elseif (empty($renderer_ffmpeg)) {
             $error = template_get_message('missing_renderer_ffmpeg', get_lang());
-        } else if (empty($renderer_ffprobe) || $renderer_ffprobe == "FFPROBE binary not found !") {
+        } elseif (empty($renderer_ffprobe) || $renderer_ffprobe == "FFPROBE binary not found !") {
             $error = template_get_message('missing_renderer_ffprobe', get_lang());
         }
 
@@ -238,19 +242,19 @@ function stepThree() {
             // verification for PHP
             $res = test_php_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_php);
             switch ($res) {
-                case "php_not_found" :
+                case "php_not_found":
                     $error .= "- " . template_get_message('php_not_found', get_lang()) . "<br/>";
                     break;
-                case "php_deprecated" :
+                case "php_deprecated":
                     $error .= "- " . template_get_message('php_deprecated', get_lang()) . "<br/>";
                     break;
                 case "php_missing_xml":
                     $error .= "- " . template_get_message('missing_module_xml', get_lang()) . "<br/>";
                     break;
-                case "php_missing_gd" :
+                case "php_missing_gd":
                     $error .= "- " . template_get_message('missing_module_gd', get_lang()) . "<br/>";
                     break;
-                case "gd_missing_freetype" :
+                case "gd_missing_freetype":
                     $error .= "- " . template_get_message('missing_freetype', get_lang()) . "<br/>";
                     break;
                 default: $error .= "";
@@ -260,10 +264,10 @@ function stepThree() {
             if ($renderer_option == 'ffmpeg' || $renderer_option == 'ffmpeg_exp') {
                 $res = test_ffmpeg_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_ffmpeg, $renderer_option == 'ffmpeg_exp');
                 switch ($res) {
-                    case "ffmpeg_not_found" :
+                    case "ffmpeg_not_found":
                         $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
                         break;
-                    case "missing_codec_aac" :
+                    case "missing_codec_aac":
                         $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
                         $display_ffmpeg_exp = true; // used in div_create_renderer_step3.php
                         break;
@@ -311,7 +315,8 @@ function stepThree() {
     }
 }
 
-function stepFour() {
+function stepFour()
+{
     global $_SESSION;
     global $input;
     global $display_ffmpeg_exp;
@@ -342,7 +347,7 @@ function stepFour() {
             // 4.1. Copies EZrenderer installation files on the remote renderer
             // tests if ezrenderer is already installed
             if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"if [ -e " . $_SESSION['renderer_root_path'] . " ]; then echo 'exists'; fi;\"") == 'exists') {
-                // EZrenderer root path already exists on the remote renderer 
+                // EZrenderer root path already exists on the remote renderer
                 $response['error'] = true;
                 $response['msg'] = "<div class='red'>" . template_get_message('root_already_exists', get_lang()) . "</div>";
                 echo json_encode($response);
@@ -392,7 +397,7 @@ function stepFour() {
         if ($input['installation_step'] == 3) {
             // Adds the renderer to renderers.inc files of EZmanager and EZadmin
             if (!add_renderer_to_file($_SESSION['renderer_name'], $_SESSION['renderer_address'], $_SESSION['renderer_user'], $_SESSION['renderer_enabled'], $_SESSION['renderer_root_path'], $_SESSION['renderer_php'])) {
-                // an error occured while updating renderers.inc 
+                // an error occured while updating renderers.inc
                 $response['error'] = true;
                 $response['msg'] = "<div class='red'>" . template_get_message('renderer_update_failed', get_lang()) . "</div>";
                 echo json_encode($response);

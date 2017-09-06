@@ -1,6 +1,6 @@
 <?php
 /*
-* EZCAST EZadmin 
+* EZCAST EZadmin
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
@@ -32,28 +32,29 @@ require_once '../commons/lib_database.php';
 $stmts = stat_statements_get();
 db_prepare($stmts);
 
-function stat_statements_get(){
+function stat_statements_get()
+{
     return array(
         'thread_get' =>
             'SELECT * FROM ' . db_gettable('threads') . ' ' .
-            'WHERE id = :thread_id '. 
+            'WHERE id = :thread_id '.
             'LIMIT 1',
         
         'thread_oldest_get' =>
-            'SELECT min(creationDate) as minDate FROM ' . db_gettable('threads') . ' ' . 
+            'SELECT min(creationDate) as minDate FROM ' . db_gettable('threads') . ' ' .
             'LIMIT 1',
         
         'thread_newest_get' =>
             'SELECT max(creationDate) as maxDate FROM ' . db_gettable('threads') . ' ' .
             'LIMIT 1',
         
-        'threads_all_get' => 
+        'threads_all_get' =>
             'SELECT * FROM ' . db_gettable("threads"),
         
         'threads_by_asset_get' =>
             'SELECT * FROM ' . db_gettable("threads") . ' ' .
             'WHERE albumName like :album_name ' .
-            'AND assetName like :asset_name ' . 
+            'AND assetName like :asset_name ' .
             'ORDER BY timecode',
         
         'threads_count' =>
@@ -73,7 +74,7 @@ function stat_statements_get(){
         
         'threads_by_album_by_month_count' =>
             'SELECT count(*) as nbTrd FROM ' . db_gettable('threads') . ' ' .
-            'WHERE albumName like :album_name ' . 
+            'WHERE albumName like :album_name ' .
             'AND creationDate like :creation_date',
         
         'threads_by_album_by_interval_count' =>
@@ -93,13 +94,13 @@ function stat_statements_get(){
             'SELECT count(*) FROM ' . db_gettable('comments'),
         
         'comments_by_album_count' =>
-            'SELECT count(*) FROM ' . db_gettable('comments') . ' ' . 
-            'JOIN ' . db_gettable('threads') . ' as t ' . 
+            'SELECT count(*) FROM ' . db_gettable('comments') . ' ' .
+            'JOIN ' . db_gettable('threads') . ' as t ' .
                 'ON t.id = thread ' .
                 'AND albumName like :album_name',
         
         'comments_by_month_count' =>
-            'SELECT count(*) as nbCmt FROM ' . db_gettable('comments') . ' ' . 
+            'SELECT count(*) as nbCmt FROM ' . db_gettable('comments') . ' ' .
             'WHERE creationDate like :creation_date',
         
         'comments_by_interval_count' =>
@@ -108,7 +109,7 @@ function stat_statements_get(){
         
         'comments_by_album_by_month_count' =>
             'SELECT count(*) FROM ' . db_gettable('comments') . ' ' .
-            'JOIN ' . db_gettable('threads') . ' as t ' . 
+            'JOIN ' . db_gettable('threads') . ' as t ' .
                 'ON t.id = thread ' .
                 'AND albumName like :album_name ' .
             'WHERE t.creationDate like :creation_date',
@@ -116,7 +117,7 @@ function stat_statements_get(){
         'comments_by_album_by_interval_count' =>
             'SELECT count(*) FROM ' . db_gettable('comments') . ' c ' .
             'JOIN '. db_gettable('threads') . ' as t ' .
-                'ON t.id = thread ' . 
+                'ON t.id = thread ' .
                 'AND albumName like :album_name ' .
             'WHERE c.creationDate between :earlier and :later',
         
@@ -137,17 +138,17 @@ function stat_statements_get(){
  * @param int $_id
  * @return array or false if wrong parameter
  */
-function threads_select_by_id($thread_id) {
+function threads_select_by_id($thread_id)
+{
     global $statements;
     
-    if(!$thread_id){
+    if (!$thread_id) {
         return false;
     }
-    $statements['thread_get']->bindParam(':thread_id', $thread_id);    
+    $statements['thread_get']->bindParam(':thread_id', $thread_id);
     $statements['thread_get']->execute();
     
-    return $statements['thread_get']->fetchAll(PDO::FETCH_ASSOC);  
-    
+    return $statements['thread_get']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -155,12 +156,12 @@ function threads_select_by_id($thread_id) {
  * @global null $db
  * @return type
  */
-function threads_select_all() {
+function threads_select_all()
+{
     global $statements;
     
-    $statements['threads_all_get']->execute();    
-    return $statements['threads_all_get']->fetchAll(PDO::FETCH_ASSOC);  
-    
+    $statements['threads_all_get']->execute();
+    return $statements['threads_all_get']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -170,14 +171,15 @@ function threads_select_all() {
  * @param type $assetName
  * @return type
  */
-function threads_select_all_by_asset($albumName, $assetName) {
+function threads_select_all_by_asset($albumName, $assetName)
+{
     global $statements;
     
-    $statements['threads_by_asset_get']->bindParam(':album_name', $albumName);  
-    $statements['threads_by_asset_get']->bindParam(':asset_name', $assetName);  
+    $statements['threads_by_asset_get']->bindParam(':album_name', $albumName);
+    $statements['threads_by_asset_get']->bindParam(':asset_name', $assetName);
     $statements['threads_by_asset_get']->execute();
     
-    return $statements['threads_by_asset_get']->fetchAll(PDO::FETCH_ASSOC);  
+    return $statements['threads_by_asset_get']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 
@@ -187,19 +189,19 @@ function threads_select_all_by_asset($albumName, $assetName) {
  * @param type $_id
  * @return array
  */
-function comments_select_by_threadId($thread_id){
+function comments_select_by_threadId($thread_id)
+{
     global $statements;
 
-    if(!$thread_id){
+    if (!$thread_id) {
         return false;
     }
     
     
-    $statements['comments_by_thread_get']->bindParam(':thread_id', $thread_id);    
+    $statements['comments_by_thread_get']->bindParam(':thread_id', $thread_id);
     $statements['comments_by_thread_get']->execute();
     
-    return $statements['comments_by_thread_get']->fetchAll(PDO::FETCH_ASSOC);  
-    
+    return $statements['comments_by_thread_get']->fetchAll(PDO::FETCH_ASSOC);
 }
 
 
@@ -210,13 +212,14 @@ function comments_select_by_threadId($thread_id){
  * @global null $db
  * @return array
  */
-function album_get_all($colOrder = "", $orderSort = ""){
+function album_get_all($colOrder = "", $orderSort = "")
+{
     global $db_object;
     
     $strSQL = 'SELECT DISTINCT albumName FROM ' . db_gettable('threads');
-    if($colOrder != "") {
+    if ($colOrder != "") {
         $strSQL .= " ORDER BY ".$colOrder;
-        if($orderSort != "") {
+        if ($orderSort != "") {
             $strSQL .= ' '.$orderSort;
         }
     }
@@ -224,22 +227,23 @@ function album_get_all($colOrder = "", $orderSort = ""){
     $reqSQL = $db_object->prepare($strSQL);
     $reqSQL->execute();
     
-    return $reqSQL->fetchAll(PDO::FETCH_ASSOC);  
+    return $reqSQL->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
- * Returns the number of threads published by album 
+ * Returns the number of threads published by album
  * @global null $db
  * @param type $albumName
  * @return int
  */
-function threads_count_by_album($albumName){
+function threads_count_by_album($albumName)
+{
     global $statements;
         
-    $statements['threads_by_album_count']->bindParam(':album_name', $albumName);    
+    $statements['threads_by_album_count']->bindParam(':album_name', $albumName);
     $statements['threads_by_album_count']->execute();
     
-    $result = $statements['threads_by_album_count']->fetchAll(PDO::FETCH_COLUMN);  
+    $result = $statements['threads_by_album_count']->fetchAll(PDO::FETCH_COLUMN);
     return $result[0];
 }
 
@@ -250,16 +254,17 @@ function threads_count_by_album($albumName){
  * @param type $month
  * @return int
  */
-function threads_count_by_album_and_month($albumName, $month){
+function threads_count_by_album_and_month($albumName, $month)
+{
     global $statements;
     
-    $creation_date = substr($month,3,7)."-".substr($month,0,2)."-%";
-    $statements['threads_by_album_by_month_count']->bindParam(':album_name', $albumName);   
-    $statements['threads_by_album_by_month_count']->bindParam(':creation_date', $creation_date);    
+    $creation_date = substr($month, 3, 7)."-".substr($month, 0, 2)."-%";
+    $statements['threads_by_album_by_month_count']->bindParam(':album_name', $albumName);
+    $statements['threads_by_album_by_month_count']->bindParam(':creation_date', $creation_date);
     $statements['threads_by_album_by_month_count']->execute();
     
-    $result = $statements['threads_by_album_by_month_count']->fetchAll(PDO::FETCH_COLUMN); 
-    return $result[0]; 
+    $result = $statements['threads_by_album_by_month_count']->fetchAll(PDO::FETCH_COLUMN);
+    return $result[0];
 }
 
 /**
@@ -270,16 +275,17 @@ function threads_count_by_album_and_month($albumName, $month){
  * @param type $later
  * @return int
  */
-function threads_count_by_album_and_date_interval($albumName, $earlier, $later){
+function threads_count_by_album_and_date_interval($albumName, $earlier, $later)
+{
     global $statements;
     
-    $statements['threads_by_album_by_interval_count']->bindParam(':album_name', $albumName);   
-    $statements['threads_by_album_by_interval_count']->bindParam(':earlier', $earlier);     
-    $statements['threads_by_album_by_interval_count']->bindParam(':later', $later);    
+    $statements['threads_by_album_by_interval_count']->bindParam(':album_name', $albumName);
+    $statements['threads_by_album_by_interval_count']->bindParam(':earlier', $earlier);
+    $statements['threads_by_album_by_interval_count']->bindParam(':later', $later);
     $statements['threads_by_album_by_interval_count']->execute();
     
-    $result = $statements['threads_by_album_by_interval_count']->fetchAll(PDO::FETCH_COLUMN); 
-    return $result[0]; 
+    $result = $statements['threads_by_album_by_interval_count']->fetchAll(PDO::FETCH_COLUMN);
+    return $result[0];
 }
 
 /**
@@ -288,7 +294,8 @@ function threads_count_by_album_and_date_interval($albumName, $earlier, $later){
  * @param type $albumName
  * @return int
  */
-function comments_count_by_album($albumName){
+function comments_count_by_album($albumName)
+{
     global $statements;
     
     $statements['comments_by_album_count']->bindParam(':album_name', $albumName);
@@ -305,10 +312,11 @@ function comments_count_by_album($albumName){
  * @param type $currentMonth
  * @return int
  */
-function comments_count_by_album_and_month($albumName, $currentMonth){
+function comments_count_by_album_and_month($albumName, $currentMonth)
+{
     global $statements;
     
-    $creation_date = substr($currentMonth,3,7)."-".substr($currentMonth,0,2)."-%";
+    $creation_date = substr($currentMonth, 3, 7)."-".substr($currentMonth, 0, 2)."-%";
     $statements['comments_by_album_by_month_count']->bindParam(':album_name', $albumName);
     $statements['comments_by_album_by_month_count']->bindParam(':creation_date', $creation_date);
     $statements['comments_by_album_by_month_count']->execute();
@@ -322,7 +330,8 @@ function comments_count_by_album_and_month($albumName, $currentMonth){
  * @global null $db
  * @return int
  */
-function threads_count_all(){
+function threads_count_all()
+{
     global $statements;
     
     $statements['threads_count']->execute();
@@ -336,7 +345,8 @@ function threads_count_all(){
  * @global null $db
  * @return int
  */
-function comments_count_all(){
+function comments_count_all()
+{
     global $statements;
     
     $statements['comments_count']->execute();
@@ -351,7 +361,8 @@ function comments_count_all(){
  * @param type $year_month
  * @return int
  */
-function threads_count_by_month($year_month){
+function threads_count_by_month($year_month)
+{
     global $statements;
     
     $creation_date = $year_month."-%";
@@ -360,7 +371,7 @@ function threads_count_by_month($year_month){
     $statements['threads_by_month_count']->execute();
     
     $result = $statements['threads_by_month_count']->fetchAll(PDO::FETCH_ASSOC);
-   // return $result[0]["nbTrd"];
+    // return $result[0]["nbTrd"];
     return $result;
 }
 
@@ -370,7 +381,8 @@ function threads_count_by_month($year_month){
  * @param type $year_month
  * @return int
  */
-function comments_count_by_month($year_month){
+function comments_count_by_month($year_month)
+{
     global $statements;
     
     $creation_date = $year_month."-%";
@@ -379,7 +391,7 @@ function comments_count_by_month($year_month){
     $statements['comments_by_month_count']->execute();
     
     $result = $statements['comments_by_month_count']->fetchAll(PDO::FETCH_ASSOC);
-   // return $result[0]["nbCmt"];
+    // return $result[0]["nbCmt"];
     return $result;
 }
 
@@ -390,7 +402,8 @@ function comments_count_by_month($year_month){
  * @param type $later
  * @return int
  */
-function threads_count_by_date_interval($earlier, $later){
+function threads_count_by_date_interval($earlier, $later)
+{
     global $statements;
     
     $statements['threads_by_interval_count']->bindParam(':earlier', $earlier);
@@ -398,7 +411,7 @@ function threads_count_by_date_interval($earlier, $later){
     $statements['threads_by_interval_count']->execute();
     
     $result = $statements['threads_by_interval_count']->fetchAll(PDO::FETCH_ASSOC);
-   // return $result[0]["nbTrd"];
+    // return $result[0]["nbTrd"];
     return $result;
 }
 
@@ -409,7 +422,8 @@ function threads_count_by_date_interval($earlier, $later){
  * @param type $later
  * @return int
  */
-function comments_count_by_date_interval($earlier, $later){
+function comments_count_by_date_interval($earlier, $later)
+{
     global $statements;
     
     $statements['comments_by_interval_count']->bindParam(':earlier', $earlier);
@@ -417,7 +431,7 @@ function comments_count_by_date_interval($earlier, $later){
     $statements['comments_by_interval_count']->execute();
     
     $result = $statements['comments_by_interval_count']->fetchAll(PDO::FETCH_ASSOC);
-   // return $result[0]["nbCmt"];
+    // return $result[0]["nbCmt"];
     return $result;
 }
 
@@ -429,7 +443,8 @@ function comments_count_by_date_interval($earlier, $later){
  * @param type $later
  * @return int
  */
-function comments_count_by_album_and_date_interval($albumName, $earlier, $later){
+function comments_count_by_album_and_date_interval($albumName, $earlier, $later)
+{
     global $statements;
     
     $statements['comments_by_album_by_interval_count']->bindParam(':album_name', $albumName);
@@ -446,7 +461,8 @@ function comments_count_by_album_and_date_interval($albumName, $earlier, $later)
  * @global null $db
  * @return date
  */
-function date_select_oldest(){
+function date_select_oldest()
+{
     global $statements;
     
     $statements['thread_oldest_get']->execute();
@@ -460,7 +476,8 @@ function date_select_oldest(){
  * @global null $db
  * @return type
  */
-function date_select_newest(){
+function date_select_newest()
+{
     global $statements;
     
     $statements['thread_newest_get']->execute();
@@ -470,11 +487,12 @@ function date_select_newest(){
 }
 
 /**
- * Returns an array with all assets and the corresponding thread count  
+ * Returns an array with all assets and the corresponding thread count
  * @global null $db
  * @return array
  */
-function threads_count_all_by_asset(){    
+function threads_count_all_by_asset()
+{
     global $statements;
     
     $statements['threads_by_asset_count']->execute();

@@ -5,7 +5,8 @@
  * This window is displayed according to specific actions (delete | ...)
  * @global array $input
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     $comment_id = $input['comment_id'];

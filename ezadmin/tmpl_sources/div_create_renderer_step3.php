@@ -22,15 +22,19 @@
     
     <form method="POST" class="form-horizontal">
         
-    <?php if(isset($error)) { ?>
+    <?php if (isset($error)) {
+    ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span></button> 
             <?php echo $error; ?>
         </div>
-    <?php } else { ?>
+    <?php
+} else {
+        ?>
         <div class="alert alert-success">®ssh_connection_success®</div>
-    <?php } ?>
+    <?php
+    } ?>
         
         <input type="hidden" name="renderer_step" value="3"/>
             
@@ -53,12 +57,11 @@
             <div class="col-sm-5">
                 <select class="selectpicker form-control" id="options" name="renderer_options" onchange="select_option();">
                 <?php 
-                foreach ($renderers_options as $option_name => $option){
-                    if ($option_name != 'ffmpeg_exp' || 
+                foreach ($renderers_options as $option_name => $option) {
+                    if ($option_name != 'ffmpeg_exp' ||
                             (isset($display_ffmpeg_exp) && $display_ffmpeg_exp)) {
-                        
                         echo '<option value="' . $option_name . '"';
-                        if(isset($input) && array_key_exists('renderer_options', $input) &&
+                        if (isset($input) && array_key_exists('renderer_options', $input) &&
                                 $option_name == $input['renderer_options']) {
                             echo ' selected ';
                         }

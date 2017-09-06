@@ -13,8 +13,9 @@
             $custom_folder = "$apache_documentroot/ezadmin/css/custom/";
             $dir = new DirectoryIterator($custom_folder);
             foreach ($dir as $fileinfo) {
-                if ($fileinfo->isFile())
+                if ($fileinfo->isFile()) {
                     echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$fileinfo->getFilename().'"/>';
+                }
             }
         ?>
 
@@ -37,17 +38,22 @@
 
                     <br />
 
-                    <?php if (isset($_SESSION['install'])) { ?>
+                    <?php if (isset($_SESSION['install'])) {
+            ?>
                         <form id="login_form" name="login_form" action="install.php" method="post">
-                        <?php } else { ?>
+                        <?php
+        } else {
+            ?>
                             <form id="login_form" name="login_form" action="<?php
                             global $ezadmin_safe_url;
-                            echo $ezadmin_safe_url;
-                            ?>/index.php" method="post" onsubmit="detect_flash();">
-                                  <?php } ?>
-                                  <?php if (isset($_SESSION['install'])) { ?>
+            echo $ezadmin_safe_url; ?>/index.php" method="post" onsubmit="detect_flash();">
+                                  <?php
+        } ?>
+                                  <?php if (isset($_SESSION['install'])) {
+            ?>
                                 <h4>®install_description®</h4>
-                            <?php } ?>
+                            <?php
+        } ?>
                             <div style="color: red; font-weight: bold;"><?php echo $error; ?></div>
                             <input type="hidden" name="action" value="login" />
                             <input type="hidden" name="has_flash" value=""/>

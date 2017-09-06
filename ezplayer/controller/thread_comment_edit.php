@@ -5,7 +5,8 @@
  * @global type $input
  * @return boolean
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     $comment_id = $input['comment_id'];
     $comment_message = surround_url($input['comment_message'] . edited_on());

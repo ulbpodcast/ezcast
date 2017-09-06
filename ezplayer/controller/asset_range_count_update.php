@@ -3,7 +3,8 @@
 /**
  * Increments the view count for a specific range of the video
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
 
@@ -14,18 +15,23 @@ function index($param = array()) {
     $asset = (isset($input['asset']) && $input['asset'] != '') ? $input['asset'] : $_SESSION['asset'];
 
 
-    if (!isset($time) || is_nan($time) || $time == '')
+    if (!isset($time) || is_nan($time) || $time == '') {
         return;
-    if (!isset($type) || $type == '')
+    }
+    if (!isset($type) || $type == '') {
         return;
-    if (!isset($album) || $album == '')
+    }
+    if (!isset($album) || $album == '') {
         return;
-    if (!isset($asset) || $asset == '')
+    }
+    if (!isset($asset) || $asset == '') {
         return;
+    }
 
     ezmam_repository_path($repository_path);
-    if (!ezmam_asset_exists($album, $asset))
+    if (!ezmam_asset_exists($album, $asset)) {
         return;
+    }
 
     $range_count_path = $repository_path . '/' . $album . '/' . $asset . '/range_count';
     mkdir($range_count_path, 0755);

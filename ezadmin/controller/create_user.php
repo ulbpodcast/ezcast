@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     if (isset($input['create']) && $input['create']) {
@@ -15,16 +16,12 @@ function index($param = array()) {
         $valid = false;
         if (empty($user_ID)) {
             $error = template_get_message('missing_user_ID', get_lang());
-            
-        } else if (empty($input['recorder_passwd'])) {
+        } elseif (empty($input['recorder_passwd'])) {
             $error = template_get_message('missing_recorder_passwd', get_lang());
-            
-        } else if (empty($forename)) {
+        } elseif (empty($forename)) {
             $error = template_get_message('missing_forename', get_lang());
-            
-        } else if (empty($surname)) {
+        } elseif (empty($surname)) {
             $error = template_get_message('missing_surname', get_lang());
-            
         } else {
             $valid = db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions);
             if ($is_ezadmin) {
@@ -50,4 +47,3 @@ function index($param = array()) {
     include template_getpath('div_create_user.php');
     include template_getpath('div_main_footer.php');
 }
-

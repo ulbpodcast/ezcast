@@ -6,7 +6,8 @@
  * @global type $repository_path
  * @global type $user_files_path
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $repository_path;
     global $user_files_path;

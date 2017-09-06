@@ -29,9 +29,10 @@ require_once 'config.inc';
 /**
  * Returns the maximum number of threads used by a single rendering
  * @global type $num_threads
- * @return type 
+ * @return type
  */
-function get_max_num_threads() {
+function get_max_num_threads()
+{
     global $num_threads;
     
     return $num_threads;
@@ -40,9 +41,10 @@ function get_max_num_threads() {
 /**
  * Returns the maximum number of jobs that can run simultaneously
  * @global type $num_jobs
- * @return type 
+ * @return type
  */
-function get_max_num_jobs() {
+function get_max_num_jobs()
+{
     global $num_jobs;
     
     return $num_jobs;
@@ -51,7 +53,8 @@ function get_max_num_jobs() {
 /**
  * Returns the number of jobs currently running
  */
-function get_num_jobs() {
+function get_num_jobs()
+{
     $cmd = 'ps ax | grep ffmpeg';
     exec($cmd, $output, $val);
     
@@ -63,14 +66,15 @@ function get_num_jobs() {
 /**
  * Returns an array of PIDs corresponding to the current renders
  */
-function get_job_pids() {
+function get_job_pids()
+{
     $res = array();
     
     $cmd = 'ps ax | grep intro_title_movie.bash';
     exec($cmd, $output, $val);
 
-    foreach($output as $o) {
-        if(strpos($o, 'grep') === false) {
+    foreach ($output as $o) {
+        if (strpos($o, 'grep') === false) {
             $infos = explode(' ', $o);
             $res[] = $infos[0];
         }
@@ -79,13 +83,14 @@ function get_job_pids() {
     return $res;
 }
 
-function get_job_pid($asset_name) {
+function get_job_pid($asset_name)
+{
     //exec("ps ax | grep ffmpeg | grep ".$asset_name, $output, $val);
     exec("ps ax | grep ./intro_title_movie | grep ".$asset_name, $output, $val);
     var_dump($asset_name);
     var_dump($output);
     $pids = array();
-    foreach($output as $job) {
+    foreach ($output as $job) {
         $jobinfos = explode(' ', $job);
         $pids[] = $jobinfos[0];
     }
@@ -96,15 +101,16 @@ function get_job_pid($asset_name) {
 /**
  * Returns an assoc array with infos (PID, time, #threads) for each PID
  */
-function get_job_infos() {
+function get_job_infos()
+{
     $res = array();
     
     //$cmd = 'ps -ax | grep intro_title_movie.bash';
     $cmd = 'ps axO state | grep intro_title_movie.bash | tr -s \' \'';
     exec($cmd, $output, $val);
 
-    foreach($output as $o) {
-        if(strpos($o, 'grep') === false) {
+    foreach ($output as $o) {
+        if (strpos($o, 'grep') === false) {
             $infos = explode(' ', $o);
             $pid  = $infos[0];
             $time = $infos[4];
@@ -124,7 +130,8 @@ function get_job_infos() {
 /**
  * Returns some sort of metrics regarding the current workload
  */
-function get_load() {
+function get_load()
+{
     $cmd = 'uptime';
     exec($cmd, $output, $val);
     $infos = explode(' ', $output[0]);
@@ -133,4 +140,3 @@ function get_load() {
     
     return substr($infos[count($infos) - 3], 0, -1);
 }
-?>

@@ -1,6 +1,7 @@
 <?php
 
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
 
     $error = false;
@@ -20,26 +21,26 @@ function index($param = array()) {
         $ignore_ssh_check = (isset($input['ignore_ssh_check']) && $input['ignore_ssh_check']) ? 1 : 0;
         $success = false;
         
-        if(!$ignore_ssh_check)
-        {
+        if (!$ignore_ssh_check) {
             $master_ok = check_classroom_ssh_access($ip);
             $slave_ok = true;
-            if($ip_remote != '') {
+            if ($ip_remote != '') {
                 $slave_ok = check_classroom_ssh_access($ip_remote);
             }
        
-            if(!$master_ok)
+            if (!$master_ok) {
                 $error = template_get_message('cannot_ssh_recorder', get_lang()) . ' (' . $ip . ')';
-            else if (!$slave_ok)
+            } elseif (!$slave_ok) {
                 $error = template_get_message('cannot_ssh_recorder', get_lang()) . ' (' . $ip_remote . ')';
+            }
         }
 
-        if(!$error) {
+        if (!$error) {
             if (empty($room_ID)) {
                 $error = template_get_message('missing_room_id', get_lang());
-            } else if (empty($ip)) {
+            } elseif (empty($ip)) {
                 $error = template_get_message('missing_ip', get_lang());
-            } else if (checkipsyntax($ip)) {
+            } elseif (checkipsyntax($ip)) {
                 $error = template_get_message('format_ip', get_lang());
             } else {
                 $success = db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled);
@@ -52,7 +53,7 @@ function index($param = array()) {
             redirectToController('view_classrooms');
             return;
         } else {
-            if(!$error) {
+            if (!$error) {
                 $error = template_get_message('db_request_failed', get_lang());
             }
         }
@@ -63,7 +64,8 @@ function index($param = array()) {
     include template_getpath('div_main_footer.php');
 }
 
-function check_classroom_ssh_access($ip) {
+function check_classroom_ssh_access($ip)
+{
     global $recorder_user;
     
     $return_status = false;

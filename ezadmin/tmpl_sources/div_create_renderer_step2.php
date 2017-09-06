@@ -12,13 +12,15 @@ swap('main_step_2', 'load_step_2')
 <div id="main_step_2">
     <form method="POST" class="form-horizontal">
 
-        <?php if(isset($error)) { ?>
+        <?php if (isset($error)) {
+    ?>
             <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span></button> 
                 <?php echo $error; ?>
             </div>
-        <?php } ?>
+        <?php
+} ?>
             
         <input type="hidden" name="renderer_step" value="2"/>
         ®create_renderer_step_2_message® 

@@ -5,25 +5,27 @@
  * @global type $input
  * @return boolean
  */
-function index($param = array()) {
+function index($param = array())
+{
     global $input;
     global $ezplayer_url;
     global $mailto_alert;
     global $antispam_filter_words;
     
-    if (!isset($input['message']) || rtrim($input['message'] == ''))
+    if (!isset($input['message']) || rtrim($input['message'] == '')) {
         return false;
+    }
     
     //spam prevention
     $ignore_message = false;
-    foreach($antispam_filter_words as $spam_word) {
-        if(strpos($input['message'], $spam_word) !== false) {
+    foreach ($antispam_filter_words as $spam_word) {
+        if (strpos($input['message'], $spam_word) !== false) {
             $ignore_message = true;
             break;
         }
     }
 
-    if(!$ignore_message) {
+    if (!$ignore_message) {
         $message = $input['message'];
         $subject = $input['subject'];
         $mail = $input['email'];

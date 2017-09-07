@@ -1,8 +1,15 @@
 <?php
 
-require_once(__DIR__.'/commons/config.inc');
-
-$web_documentroot = $apache_documentroot;
+$in_install = true;
+$config_file = __DIR__.'/commons/config.inc';
+if(file_exists($config_file)) {
+    require_once(__DIR__.'/commons/config.inc');
+    $web_documentroot = $apache_documentroot;
+} else {
+    if($argc < 2)
+        die("Usage: cli_htdocs_install.php <web_root>");
+     $web_documentroot = $arv[1];
+}
 
 # places web files in the webspace
 system("cp -rp ".__DIR__."/ezadmin/htdocs/* $web_documentroot/ezadmin");

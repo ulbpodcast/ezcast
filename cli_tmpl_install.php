@@ -1,4 +1,7 @@
 <?php
+
+$in_install = true;
+
 require_once './commons/config.inc';
 
 $G="\033[32m\033[1m";

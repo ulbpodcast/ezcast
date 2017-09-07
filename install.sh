@@ -522,9 +522,6 @@ chown -R $apache_username $webspace_directory/ezplayer;
 chmod -R 755 $ezcast_basedir; 
 echo " ";
 cd commons/;
-./install_templates.sh 1 1 1;
-echo "";
-clear;
 
 echo "*************************************************";
 echo "SSH generation ...";

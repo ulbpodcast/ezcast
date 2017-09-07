@@ -14,7 +14,6 @@ require_once __DIR__ . '/../commons/lib_template.php';
 require_once __DIR__ . '/../commons/lib_sql_management.php';
 require_once __DIR__ . '/lib_various.php';
 require_once __DIR__ . '/../commons/lib_error.php';
-require_once __DIR__ . '/../commons/common.inc'; //for logger access
 
 $template_folder = __DIR__. '/tmpl/' . get_lang();
 date_default_timezone_set("Europe/Brussels"); //TODO: allow to change this

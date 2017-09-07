@@ -27,7 +27,8 @@
 /**
  * @package ezcast.commons.lib.database
  */
-include_once __DIR__.'/config.inc'; //include instead of require because this file is used in installation where config may not be create yet
+if(file_exists(__DIR__.'/config.inc'))
+    include_once __DIR__.'/config.inc'; //include instead of require because this file is used in installation where config may not be create yet
 
 // GLOBALS
 $db_object = null;
@@ -77,7 +78,7 @@ function db_prepare(&$stmt_array = array())
         try {
             $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
         } catch (PDOException $e) {
-            throw new Exception("Could not connect to database $db_host, $db_name with login $db_login");
+            throw new Exception("Could not connect to database $db_host, $db_name with login $db_login and password $db_passwd");
         }
     }
     

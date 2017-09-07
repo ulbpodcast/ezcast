@@ -35,7 +35,7 @@ $apache_username = $argv[10];
  * position of EZcast products
  */
 
-system("$php_cli_cmd ".__DIR__."/cli_install_htdocs.php $apache_documentroot");
+system("$php_cli_cmd ".__DIR__."/cli_htdocs_install.php $apache_documentroot");
 
 /*
  * Then, we add user's configuration in commons/config.inc

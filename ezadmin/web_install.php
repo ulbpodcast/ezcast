@@ -108,7 +108,7 @@ if (isset($input['install']) && !empty($input['install'])) {
             break;
     }
     create_config_files();
-    require_once 'config.inc';
+    require __DIR__.'/../commons/config.inc';
     add_first_user();
 } else {
     // display the installation form
@@ -828,30 +828,30 @@ function create_config_files()
 
     // Write config file
     edit_config_file(
-            $input['php_cli_cmd'],
+        $input['php_cli_cmd'],
         $input['rsync_pgm'],
         $input['application_url'],
         $input['repository_basedir'],
-            $input['organization_name'],
+        $input['organization_name'],
         $input['organization_url'],
         $input['copyright'],
         $input['mailto_alert'],
-            $input['ezcast_basedir'],
+        $input['ezcast_basedir'],
         $input['db_type'],
         $input['db_host'],
         $input['db_login'],
         $input['db_passwd'],
-            $input['db_name'],
+        $input['db_name'],
         $input['db_prefix'],
         $input['recorder_user'],
         $input['recorder_basedir'],
-            $input['ezmanager_host'],
+        $input['ezmanager_host'],
         $input['ezmanager_user'],
         !empty($input['classrooms_category_enabled']) ? true : false,
-            !empty($input['add_users_enabled']) ? true : false,
+        !empty($input['add_users_enabled']) ? true : false,
         !empty($input['recorder_password_storage_enabled']) ? true : false,
-            !empty($input['use_user_name']) ? true : false,
-            !empty($input['https_ready']) ? true : false
+        !empty($input['use_user_name']) ? true : false,
+        !empty($input['https_ready']) ? true : false
     );
 }
 

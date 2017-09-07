@@ -4,11 +4,11 @@
 date_default_timezone_set('Europe/Brussels');
 
 // Load config
-require_once '../config.inc';
+require_once __DIR__.'/../config.inc';
 
 // Default param
 $all_logs = false;
-$modules_folder = 'modules';
+$modules_folder = __DIR__.'/modules';
 $trace_folder = $ezplayer_trace_path;
 $repos_folder = $repository_basedir . "/repository/";
 
@@ -28,7 +28,7 @@ class Logs
     {
         echo '[ERROR] ' . $message . PHP_EOL;
     }
-
+       
     public function debug($message)
     {
         echo '[DEBUG] ' . $message . PHP_EOL;

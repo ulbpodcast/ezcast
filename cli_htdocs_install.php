@@ -8,8 +8,12 @@ if(file_exists($config_file)) {
 } else {
     if($argc < 2)
         die("Usage: cli_htdocs_install.php <web_root>");
-     $web_documentroot = $arv[1];
+     $web_documentroot = $argv[1];
 }
+
+system("mkdir -p $web_documentroot/ezadmin");
+system("mkdir -p $web_documentroot/ezmanager");
+system("mkdir -p $web_documentroot/ezplayer");
 
 # places web files in the webspace
 system("cp -rp ".__DIR__."/ezadmin/htdocs/* $web_documentroot/ezadmin");

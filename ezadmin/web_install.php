@@ -82,7 +82,7 @@ if (isset($input['install']) && !empty($input['install'])) {
     // installation form has been submitted and we verify the db to create the tables
     validate_form();
     create_config_files();
-    require_once 'config.inc';
+    require __DIR__.'/../commons/config.inc'; //to get db users
     add_first_user();
     // submitted form but database already exists
 } elseif (isset($input['db_choice_submit']) && !empty($input['db_choice_submit'])) {
@@ -108,7 +108,7 @@ if (isset($input['install']) && !empty($input['install'])) {
             break;
     }
     create_config_files();
-    require __DIR__.'/../commons/config.inc';
+    require __DIR__.'/../commons/config.inc'; //to get db users
     add_first_user();
 } else {
     // display the installation form

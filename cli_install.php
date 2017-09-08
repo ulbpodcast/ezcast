@@ -36,6 +36,7 @@ $apache_username = $argv[10];
  */
 
 system("$php_cli_cmd ".__DIR__."/cli_htdocs_install.php $apache_documentroot");
+system("$php_cli_cmd ".__DIR__."/cli_tmpl_install.php");
 
 /*
  * Then, we add user's configuration in commons/config.inc

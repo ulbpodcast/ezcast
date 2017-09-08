@@ -2,7 +2,7 @@
 
 $in_install = true;
 
-require_once './commons/config.inc';
+require_once __DIR__ .'/commons/common_static.inc';
 
 $G="\033[32m\033[1m";
 $R="\033[31m\033[1m";
@@ -25,7 +25,7 @@ foreach ($components as $component) {
     
     echo "Compiling files ..." . PHP_EOL;
     foreach ($languages as $language) {
-        exec(" $php_cli_cmd ./commons/cli_template_generate.php $source_folder $language $dest_folder ./$component/translations.xml");
+        exec(PHP_BINARY . " ./commons/cli_template_generate.php $source_folder $language $dest_folder ./$component/translations.xml");
     }
     echo $G."Compilation of $component complete. $N " . PHP_EOL;
 }

@@ -38,7 +38,7 @@
             global $ezmanager_custom_logo;
             $ezmanager_logo = !empty($ezmanager_custom_logo) ?
                     "images/custom/$ezmanager_custom_logo" :
-                    "images/Header/ezmanager.png"; //default value
+                    "images/Header/EZmanager.png"; //default value
             ?>
             <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezmanager_logo; ?>" /></a>            
         </div>

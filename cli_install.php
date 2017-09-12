@@ -31,14 +31,6 @@ $lastname = $argv[9];
 $apache_username = $argv[10];
 
 /*
- * First of all, we adapt the paths in webspace according to the actual
- * position of EZcast products
- */
-
-system("$php_cli_cmd ".__DIR__."/cli_htdocs_install.php $apache_documentroot");
-system("$php_cli_cmd ".__DIR__."/cli_tmpl_install.php");
-
-/*
  * Then, we add user's configuration in commons/config.inc
  */
 
@@ -94,3 +86,6 @@ updateConfig($filePath, $user_str);
 
 //install cron for cli_fill_assets_status, fill status every 2 hours
 system("(crontab -l 2>/dev/null; echo \"0 */2 * * * php /usr/local/ezcast/ezmanager/cli_fill_assets_status.php\") | crontab -");
+
+system("$php_cli_cmd ".__DIR__."/cli_htdocs_install.php $apache_documentroot");
+system("$php_cli_cmd ".__DIR__."/cli_tmpl_install.php");

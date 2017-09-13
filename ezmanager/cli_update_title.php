@@ -24,7 +24,7 @@ if (!isset($album_metadata['course_code_public'])) {
 }
 
 // Get ip/name of renderer
-$ezrenderer_list= require $basedir.'/ezmanager/renderers.inc';
+$ezrenderer_list= require $basedir.'/commons/renderers.inc';
 $keys=array_keys($ezrenderer_list);
 $ezrenderer=$ezrenderer_list[$keys[0]];
 

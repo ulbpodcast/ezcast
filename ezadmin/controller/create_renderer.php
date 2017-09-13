@@ -106,11 +106,11 @@ function stepOne()
         if ($ssh_pub_key_location == "") {
             $ssh_pub_key_location = "~$apache_username/.ssh/*.pub";
         }
-        $ssh_public_key = exec("cat $ssh_pub_key_location");
-
+        $ssh_public_key = file_get_contents($ssh_pub_key_location);
+        
         // ssh public key not found
         if ($ssh_public_key == "") {
-            $ssh_public_key = "Key not found ! &#10;&#10;You can specify the path to Apache user's "
+            $ssh_public_key = "Key not found! &#10;&#10;You can specify the path to Apache user's "
                 . "SSH public key by assigning a value to \$ssh_pub_key_location in commons/config.inc.";
         }
 
@@ -403,14 +403,7 @@ function stepFour()
                 echo json_encode($response);
                 die;
             } else {
-                // renderers.inc files have been updated
-                if (push_renderers_to_ezmanager()) {
-                    echo json_encode("<div class='green'>" . template_get_message('load_step_4_update_success', get_lang()) . "</div>");
-                    die;
-                } else {
-                    echo json_encode("<div class='red'>" . template_get_message('load_step_4_update_failed', get_lang()) . "</div>");
-                    die;
-                }
+                echo json_encode("<div class='green'>" . template_get_message('load_step_4_update_success', get_lang()) . "</div>");
             }
         }
     }

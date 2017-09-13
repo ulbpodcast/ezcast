@@ -42,7 +42,6 @@ function scheduler_schedule()
 
     // init the queue (get all the jobs from the scheduler queue folder)
     $queue = lib_scheduling_queue_init();
-
     $saturate = false;
 
     // loop on every job until there is no more job to schedule or all renderer are busy
@@ -56,9 +55,9 @@ function scheduler_schedule()
         $choice = false;
         // iterate over render and attribuate the job to the optimal one
         foreach ($renderers as $renderer) {
-
             // check the renderer availibility
             if (!lib_scheduling_renderer_is_available($renderer)) {
+                echo "Not available" . PHP_EOL;
                 continue;
             }
 

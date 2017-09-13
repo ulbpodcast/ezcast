@@ -70,7 +70,7 @@ require_once 'config.inc';
                     <td><?php echo $job['origin']; ?></td>
                 <?php
             } ?>
-                <td><?php echo $job['renderer']; ?></td>
+                <td><?php if(isset($job['renderer'])) echo $job['renderer']; ?></td>
                 <td>
                     <?php if (in_array($job, scheduler_frozen_get())) {
                 echo '<span class="glyphicon glyphicon-minus-sign" title="®frozen®"></span> ®frozen®';

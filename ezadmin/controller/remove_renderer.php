@@ -9,7 +9,6 @@ function index($param = array())
     } else {
         echo json_encode(array('success' => '1'));
         db_log("renderers", 'Deleted renderer ' . $input['name'], $_SESSION['user_login']);
-        push_renderers_to_ezmanager();
         //    notify_changes();
     }
 }

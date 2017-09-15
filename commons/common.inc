@@ -53,4 +53,6 @@ $m3u8_master_filename = "master.m3u8";
 $m3u8_external_master_filename = "external_master.m3u8";
 $m3u8_quality_filename = "live.m3u8";
 
+$course_id_validation_regex = "#[^A-Za-z0-9._-]#"; //all remaining characters must be form a valid unix dir name
+
 require_once("custom_error_handling.php");

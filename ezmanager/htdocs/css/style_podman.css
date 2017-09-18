@@ -424,7 +424,7 @@ body{
     font-weight:bold;
     padding-left:27px;
     padding-top:3px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .ListButon.active {

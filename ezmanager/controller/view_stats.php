@@ -67,7 +67,7 @@ function convertPHPArrayToJSArray($data)
     return json_encode(
                 array_map(
                   function ($key, $value) {
-                      return array($key, intval($value));
+                      return array(intval($key), intval($value));
                   },
                   array_keys($data),
                   array_values($data)

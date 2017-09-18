@@ -609,7 +609,7 @@ body{
 .ButtonInfoAlbum{
     margin-left:12px;
     margin-top:5px;
-    margin-bottom:5px;
+    margin-bottom:15px;
 }
 
 img.dropdown-icon {
@@ -1458,6 +1458,7 @@ a.greyLink.ezplayer:hover {
 #advanced_menu {
     float: right;
     margin-right: 4px;
+    margin-top: 15px;
 }
 
 #div_ezplayer_url, #div_stats_descriptives {

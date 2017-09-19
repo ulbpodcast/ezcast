@@ -167,6 +167,9 @@ $max_course_code_size=20; //!!! WARNING => Linked to the DB
 //define size of album_label
 $max_album_label_size=50;
 
+$enable_anon_access_control = false; //Enable the user to choose if the album is accessible from anonym or not
+$default_anon_access = 'false'; //default value when a video is uploaded
+
 // If not in config simple
 if(basename(__FILE__) != "config-sample.inc") {
     // load static variables

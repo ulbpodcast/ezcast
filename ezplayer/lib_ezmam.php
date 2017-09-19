@@ -1630,8 +1630,8 @@ function assoc_array2metadata_file($assoc_array, $file_path)
 
 function ezmam_album_allow_anonymous($album)
 {
-    global $enable_anon_acces_control;
-    if (!$enable_anon_acces_control) {
+    global $enable_anon_access_control;
+    if (!$enable_anon_access_control) {
         return false;
     }
     

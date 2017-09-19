@@ -29,6 +29,7 @@
  */
 
 require_once(__DIR__."/../commons/lib_database.php");
+require_once(__DIR__."/../commons/config.inc");
 
 /**
  * Parses the config file and returns the settings that can be changed in it.
@@ -190,8 +191,9 @@ function parse_admin_file()
 
 function renderer_exists($name)
 {
-    if (file_exists('renderers.inc')) {
-        $renderers = require_once 'renderers.inc';
+    $filename = __DIR__.'/../commons/renderers.inc';
+    if (file_exists($filename)) {
+        $renderers = require_once $filename;
         foreach ($renderers as $index => $renderer) {
             if (strtoupper($renderer['name']) == strtoupper($name)) {
                 return $index;
@@ -218,14 +220,20 @@ function renderer_get($name)
 
 function renderer_update_enabled($name, $enable, &$error)
 {
+    global $logger;
+    
     $renderer_index = renderer_exists($name);
 
     if ($renderer_index === false) {
         $error = "renderer_not_found";
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Renderer $name not found", array(__FUNCTION__));
         return false;
     }
 
-    $renderers = include 'renderers.inc';
+    $renderers_file = __DIR__.'/../commons/renderers.inc';
+    $renderers_file_tmp = $renderers_file.'.tmp';
+    $renderers_file_old = $renderers_file.'.old';
+    $renderers = require $renderers_file;
     $renderer = $renderers[$renderer_index];
 
     if ($enable) {
@@ -233,6 +241,7 @@ function renderer_update_enabled($name, $enable, &$error)
         if (test_over_ssh($renderer['client'], $renderer['host'], 30, $renderer['php'], $remote_test, $error)) {
             $renderers[$renderer_index]["status"] = "enabled";
         } else {
+            $logger->log(EventType::TEST, LogLevel::ERROR, "Renderer $name not accessible over ssh", array(__FUNCTION__));
             return false;
         }
     } else {
@@ -243,17 +252,18 @@ function renderer_update_enabled($name, $enable, &$error)
     $string .= var_export($renderers, true) . ';';
     $string .= PHP_EOL . "?>";
 
-    $res = file_put_contents('renderers_tmp.inc', $string);
+    $res = file_put_contents($renderers_file_tmp, $string);
     if ($res === false) {
         $error = "renderer_file_error";
+        $logger->log(EventType::TEST, LogLevel::ERROR, "Failed to update renderers.inc file ($renderers_file_tmp)", array(__FUNCTION__));
         return false;
     }
 
-    if (file_exists('./renderers.inc.old')) {
-        unlink('./renderers.inc.old');
+    if (file_exists($renderers_file_old)) {
+        unlink($renderers_file_old);
     }
-    rename('./renderers.inc', './renderers.inc.old');
-    rename('./renderers_tmp.inc', './renderers.inc');
+    rename($renderers_file, $renderers_file_old);
+    rename($renderers_file_tmp, $renderers_file);
     return true;
 }
 
@@ -266,7 +276,11 @@ function renderer_delete($name)
         return false;
     }
 
-    $renderers = include 'renderers.inc';
+    $renderers_file = __DIR__.'/../commons/renderers.inc';
+    $renderers_file_tmp = $renderers_file.'.tmp';
+    $renderers_file_old = $renderers_file.'.old';
+    
+    $renderers = require $renderers_file;
     unset($renderers[$renderer_index]);
 
 
@@ -274,26 +288,29 @@ function renderer_delete($name)
     $string .= var_export($renderers, true) . ';';
     $string .= PHP_EOL . "?>";
 
-    $res = file_put_contents('renderers_tmp.inc', $string);
+    $res = file_put_contents($renderers_file_tmp, $string);
     if ($res === false) {
         $error = "renderer_file_error";
         return false;
     }
 
-    if (file_exists('./renderers.inc.old')) {
-        unlink('./renderers.inc.old');
+    if (file_exists($renderers_file_old)) {
+        unlink($renderers_file_old);
     }
-    rename('./renderers.inc', './renderers.inc.old');
-    rename('./renderers_tmp.inc', './renderers.inc');
+    rename($renderers_file, $renderers_file_old);
+    rename($renderers_file_tmp, $renderers_file);
     return true;
 }
 
 function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_cli)
 {
-    if (!file_exists('renderers.inc')) {
+    $renderers_file = __DIR__.'/../commons/renderers.inc';
+    $renderers_file_tmp = $renderers_file.'.tmp';
+    $renderers_file_old = $renderers_file.'.old';
+    if (!file_exists($renderers_file)) {
         $renderers = array();
     } else {
-        $renderers = require_once 'renderers.inc';
+        $renderers = require_once $renderers_file;
     }
 
     array_push($renderers, array(
@@ -314,16 +331,16 @@ function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_
     $string .= var_export($renderers, true) . ';';
     $string .= PHP_EOL . "?>";
 
-    $res = file_put_contents('renderers_tmp.inc', $string);
+    $res = file_put_contents($renderers_file_tmp, $string);
     if ($res === false) {
         return false;
     }
 
-    if (file_exists('./renderers.inc.old')) {
-        unlink('./renderers.inc.old');
+    if (file_exists($renderers_file_old)) {
+        unlink($renderers_file_old);
     }
-    rename('./renderers.inc', './renderers.inc.old');
-    rename('./renderers_tmp.inc', './renderers.inc');
+    rename($renderers_file, $renderers_file_old);
+    rename($renderers_file_tmp, $renderers_file);
     return true;
 }
 
@@ -582,41 +599,6 @@ function push_classrooms_to_ezmanager()
 }
 
 /**
- * Overwrites renderers.inc in ezmanager
- */
-function push_renderers_to_ezmanager()
-{
-    global $ezmanager_host;
-    global $ezmanager_user;
-    global $ezmanager_basedir;
-    global $ezmanager_subdir;
-
-
-    // Copying on ezmanager
-    if (empty($ezmanager_host) || !isset($ezmanager_host)) {
-        // Local copy
-        $res = copy('renderers.inc', $ezmanager_basedir . $ezmanager_subdir . '/renderers.inc');
-        if ($res === false) {
-            return false;
-        }
-    } else {
-        // Remote copy
-        exec('ping -c 1 ' . $ezmanager_host, $output, $return_val);
-        if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes ./renderers.inc ' . $ezmanager_user . '@' .
-                    $ezmanager_host . ':' . $ezmanager_basedir . $ezmanager_subdir;
-            exec($cmd, $output, $return_var);
-        }
-
-        if ($return_var != 0) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
  * Push users to ezmager
  * @global type $ezmanager_host
  * @global type $ezmanager_user
@@ -717,16 +699,15 @@ function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node)
 
 function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts = true)
 {
+    global $ssh_pub_key_location;
+    global $apache_username;
     include 'config.inc';
+    
+    $cmd = "ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"";
     // test the SSH connection
-    exec(
-  
-        "ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"",
-            $output,
-  
-        $returncode
-  
-    );
+    $returncode = 0;
+    $output = array();
+    exec($cmd, $output, $returncode);
 
     if ($update_known_hosts && $returncode) {
         // SSH connection failed so we verify that the remote renderer is in
@@ -863,10 +844,15 @@ function test_ffprobe_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffpro
 
 function test_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php, $remote_test_script, &$error)
 {
+    global $logger;
+    
     if (ssh_connection_test($ssh_user, $ssh_host, $ssh_timeout)) {
-        exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
-                " \"$remote_php $remote_test_script\"", $output, $returncode);
+        $cmd = "ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
+                " \"$remote_php $remote_test_script\"";
+        $output = array();
+        exec($cmd, $output, $returncode);
         if ($returncode || in_array("test ok", $output) === false) {
+            $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::ERROR, "Renderer ssh connection test failed. Output: ".var_export($output, true), array(__FUNCTION__));
             $error = $output[0];
             return false;
         }

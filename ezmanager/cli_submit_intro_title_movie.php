@@ -14,7 +14,7 @@
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';
-include_once 'lib_scheduling.php';
+include_once __DIR__.'/../commons/lib_scheduling.php';
 
 Logger::$print_logs = true;
 
@@ -188,9 +188,10 @@ function submit_itm_set_title($album_meta, $asset_meta, $render_dir)
       'keywords'=>$movie_keywords
     );
     //write the title xml file to the "shared directory"
-    $res=assoc_array2metadata_file($title_info, $render_dir."/title.xml");
+    $res = assoc_array2metadata_file($title_info, $render_dir."/title.xml");
     if (!$res) {
-        $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "Could not write title metadata to $render_dir/title.xml", array("cli_submit_intro_title_movie"));
+        $current_user = get_current_user();
+        $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "Could not write title metadata to $render_dir/title.xml . Current user: $current_user", array("cli_submit_intro_title_movie"));
         exit(4);
     }
     return $res;

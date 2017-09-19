@@ -33,7 +33,7 @@ require_once 'config.inc';
             $r = lib_scheduling_renderer_metadata($r);
         }
         //var_dump($r2); ?>
-        <tr class="<?php echo $class; ?>">
+        <tr class="">
             <td><?php if ($r['no_ping'] === true) {
             echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
         }
@@ -85,7 +85,7 @@ require_once 'config.inc';
 
                         if (data.error) {
                             if (data.error == '1')
-                                alert("®room_enable_error®");
+                                alert("®renderer_enable_error®");
                             return;
                         }
 

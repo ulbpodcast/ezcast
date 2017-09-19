@@ -341,15 +341,6 @@ function ezmam_asset_meta_set($asset, $metadata_assoc_array)
         return false;
     }
 
-    // Logging the operation
-    $metadata_str = '';
-    if ($logging) {
-        foreach ($metadata_assoc_array as $key => $val) {
-            $metadata_str .= '[' . $key . ']' . $val . ' ';
-        }
-        log_append('asset_meta_set', 'Asset: ' . $asset . ', New metadata: ' . $metadata_str);
-    }
-
     return $res;
 }
 /**
@@ -2224,6 +2215,8 @@ function assoc_array2metadata($assoc_array)
  */
 function assoc_array2metadata_file($assoc_array, $file_path)
 {
+    global $logger;
+    
     //fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($assoc_array, true));
     $xmlstr = "<?xml version='1.0' standalone='yes'?>\n<metadata>\n</metadata>\n";
     $xml = new SimpleXMLElement($xmlstr);
@@ -2233,7 +2226,9 @@ function assoc_array2metadata_file($assoc_array, $file_path)
     $xml_txt = $xml->asXML();
     $res = file_put_contents($file_path, $xml_txt, LOCK_EX);
     //did we write all the characters
-    if ($res != strlen($xml_txt)) {
+    $base_lenght = strlen($xml_txt);
+    if ($res != $base_lenght) {
+        $logger->log(EventType::TEST, LogLevel::DEBUG, "Could not write all characters: $res VS $base_lenght", array(__FUNCTION__));
         return false;
     } //no
 

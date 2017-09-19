@@ -90,7 +90,6 @@ if ($logged_in && user_anonymous() && !$allow_url_anon
     $logged_in = false;
 }
 
-
 // If we're not logged in, we try to log in or display the login form
 if (!$logged_in) {
     // global $repository_path;

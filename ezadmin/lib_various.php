@@ -386,7 +386,7 @@ function remove_admin_from_file($netid)
  * Overwrites the admin.inc files on the recorders and ezmanager
  * with the "new" admins as set in the DB
  */
-function push_admins_to_recorders_ezmanager()
+function push_admins_to_recorders_ezmanager(&$failed_cmd = array())
 {
     global $recorder_user;
     global $recorder_basedir;
@@ -398,6 +398,8 @@ function push_admins_to_recorders_ezmanager()
     global $ezplayer_basedir;
     global $ezplayer_subdir;
 
+    $success = true;
+    
     if (!db_ready()) {
         require_once __DIR__ . '/../commons/lib_sql_management.php';
         $stmts = statements_get();
@@ -428,9 +430,11 @@ function push_admins_to_recorders_ezmanager()
     // Copying on ezmanager
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
         // Local copy
-        $res = file_put_contents($ezmanager_basedir . $ezmanager_subdir . '/admin.inc', $admins_str);
+        $filepath = $ezmanager_basedir . $ezmanager_subdir . '/admin.inc';
+        $res = file_put_contents($filepath, $admins_str);
         if ($res === false) {
-            return false;
+            array_push($failed_cmd , "Failed to write to $filepath");
+            $success = false;
         }
     } else {
         // Remote copy
@@ -440,24 +444,27 @@ function push_admins_to_recorders_ezmanager()
                     $ezmanager_basedir . $ezmanager_subdir;
             exec($cmd, $output, $return_var);
             if ($return_val == 0) {
-                return false;
+                array_push($failed_cmd , "Failed to copy to remote manager. Cmd: $cmd ");
+                $success = false;
             }
         }
     }
 
     // Copying on ezplayer
+    $player_filepath = $ezplayer_basedir . $ezplayer_subdir . '/admin.inc';
     $res = file_put_contents($ezplayer_basedir . $ezplayer_subdir . '/admin.inc', $admins_str);
     if ($res === false) {
-        return false;
+        array_push($failed_cmd , "Failed to copy to player. Cmd: $player_filepath ");
+        $success = false;
     }
 
-    return true;
+    return $success;
 }
 
 /**
  * Pushes users (htpasswd) and associations between users and courses (courselist.php)
  */
-function push_users_courses_to_recorder(&$failed_cmd)
+function push_users_courses_to_recorder(&$failed_cmd = array())
 {
     global $recorder_user;
     global $recorder_basedir;
@@ -529,7 +536,7 @@ function push_users_courses_to_recorder(&$failed_cmd)
 /**
  * Overwrites classroom_recorder_ip.inc in ezmanager
  */
-function push_classrooms_to_ezmanager()
+function push_classrooms_to_ezmanager(&$errors = array())
 {
     global $ezmanager_host;
     global $ezmanager_user;
@@ -562,6 +569,7 @@ function push_classrooms_to_ezmanager()
         // Local copy
         $res = file_put_contents($ezmanager_basedir . $ezmanager_subdir . '/classroom_recorder_ip.inc', $incfile);
         if ($res === false) {
+            array_push($errors, "Failed to write classroom_recorder_ip");
             return false;
         }
     } else {
@@ -574,6 +582,7 @@ function push_classrooms_to_ezmanager()
         }
 
         if ($return_var != 0) {
+            array_push($errors, "Failed to push classroom_recorder_ip. Cmd: $cmd");
             return false;
         }
     }
@@ -625,7 +634,7 @@ function push_renderers_to_ezmanager()
  * @global type $basedir
  * @return boolean
  */
-function push_users_to_ezmanager()
+function push_users_to_ezmanager(&$errors = array())
 {
     global $ezmanager_host;
     global $ezmanager_user;
@@ -642,13 +651,20 @@ function push_users_to_ezmanager()
         $pwfile .= '$users[\'' . $u['user_ID'] . '\'][\'email\']=\'\';' . PHP_EOL . PHP_EOL;
     }
 
-    file_put_contents('var/pwfile.inc', $pwfile);
+    $ok = file_put_contents('var/pwfile.inc', $pwfile);
+    if(!$ok) {
+        array_push($errors, "Failed to write var/pwfile.inc ");
+        return false;
+    }
+        
 
     // Copying on ezmanager
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
         // Local copy
-        $res = file_put_contents($basedir . '/commons/pwfile.inc', $pwfile);
+        $filepath = $basedir . '/commons/pwfile.inc';
+        $res = file_put_contents($filepath, $pwfile);
         if ($res === false) {
+            array_push($errors, "Failed to write $filepath ");
             return false;
         }
     } else {
@@ -658,9 +674,11 @@ function push_users_to_ezmanager()
         exec($cmd, $output, $return_var);
 
         if ($return_var != 0) {
+            array_push($errors, "Faled to scp to Manager. Command $cmd");
             return false;
         }
     }
+    return true;
 }
 
 /**

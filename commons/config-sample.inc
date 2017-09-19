@@ -61,7 +61,7 @@ $recorder_user = "ezrecorder";
 $recorder_basedir = '/Library/ezrecorder/'; // Path from the root to the recorder
 $recorder_subdir = '/etc/users/'; // Path from basedir to the admin.inc file
 
-$php_cli_cmd = "/opt/csw/bin/php";//locate php cli to use
+$php_cli_cmd = "/opt/csw/bin/php"; //locate php cli to use
 $rsync_pgm = "/opt/sfw/bin/rsync";
 $ssh_pgm = "/usr/bin/ssh";
 $apache_username = "www-data"; // used by ezadmin to retrieve public SSH key for renderer creation

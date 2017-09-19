@@ -40,7 +40,11 @@ function asset_streaming_player_update($display = true)
     }
     
     //should contain cam or slide
-    $type = $asset_meta['record_type'] == 'camslide' ? $input['type'] : $asset_meta['record_type'];
+    if ($asset_meta['record_type'] == 'camslide') {
+        $type = isset($input['type']) ? $input['type'] : 'cam';
+    } else {
+        $type = $asset_meta['record_type'];
+    }
     if (!in_array($type, array('cam', 'slide'))) {
         $logger->log(EventType::MANAGER_STREAMING, LogLevel::WARNING, "Trying to use wrong record type '.$type."
                 . "'. Resetting to 'cam'", array(__FUNCTION__));

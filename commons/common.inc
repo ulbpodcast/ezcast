@@ -3,8 +3,10 @@
  *  */
 
 if(!isset($common_config_defined))
-    include_once('config.inc');
-require_once('logger_server.php');
+    include_once(__DIR__.'.config.inc');
+
+require_once(__DIR__.'/logger_server.php');
+require_once(__DIR__.'/common_static.inc');
 
 if(isset($timezone))
     date_default_timezone_set($timezone);
@@ -12,7 +14,6 @@ if(isset($timezone))
 $ezmanager_basedir = $basedir . '/ezmanager/'; // Path from the root to the source code
 $ezplayer_basedir = $basedir . '/ezplayer/'; // Path from the root to the source code
 $ezadmin_basedir = $basedir . '/ezadmin/'; 
-$template_folder = 'tmpl/';
 
 if($debug_mode) {
     error_reporting(E_ALL); 

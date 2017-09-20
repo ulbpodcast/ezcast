@@ -95,7 +95,8 @@
         yAxis: {
             title: {
                 text: '®Graph_nbr_view_video®'
-            }
+            },
+            tickInterval: 1,
         },
         tooltip: {
             shared: true,

@@ -22,7 +22,7 @@ Before calling this template, please define the following variables:
                         
                         <a href="index.php?action=view_submit_media" class="btn btn-default" role="button"
                             data-remote="false" data-toggle="modal" data-target="#modal" > 
-                            <img src="images/page4/iconUp.png" style="height: 18px;" >
+                            <img src="images/page4/iconUp.png" style="height: 18px;" />
                             <span class="TitrePodcast"> 
                                 ®Submit_record®
                             </span> 

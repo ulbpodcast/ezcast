@@ -107,15 +107,25 @@ Highcharts.setOptions({
                 }]
         },
         xAxis: {
-            tickInterval: 30 * 24 * 3600 * 1000,
+            tickInterval: 30 * 24 * 3600 * 1000, // 30 days in milliseconds
             dateTimeLabelFormats: { // don't display the dummy year
                 month: '%b \'%y',
                 year: '%Y'
-            }
+            },
+            title: {
+                text: '®Graph_nbr_view_x®'
+            },
+            units: [
+               //how to show months? Don't show units for now until we find out
+               [
+                    'month',
+                    [1,2,3,4,5,6,7,8,9,10,11,12]
+               ]
+            ],
         },
         yAxis: {
             title: {
-                text: '®Graph_nbr_view®'
+                text: '®Graph_nbr_view_y®'
             },
             labels: {
                 align: "right"
@@ -176,7 +186,8 @@ Highcharts.setOptions({
             labels: {
                 align: "right"
             },
-            opposite: false
+            opposite: false,
+            tickInterval: 1,
         },
         tooltip: {
             shared: true

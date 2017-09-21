@@ -181,7 +181,7 @@ Highcharts.setOptions({
         },
         yAxis: { // Primary yAxis
             title: {
-                text: '®Graph_nbr_view®'
+                text: '®Graph_nbr_view_y®'
             },
             labels: {
                 align: "right"

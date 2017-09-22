@@ -79,11 +79,7 @@ function index($param = array())
     }
     toc_album_bookmarks_add($bookmarks);
 
-    // view_main();
     require_once template_getpath('popup_asset_successfully_copied.php');
-    // echo"<script>
-    // show_popup_from_inner_div('#popup_asset_successfully_copied');
-    // </script>";
 
     if ($regenerate_title_mode == 'auto') {
         update_title($input['to'], $input['asset']);

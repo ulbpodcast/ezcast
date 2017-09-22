@@ -227,8 +227,8 @@
         <label id="Album_name" lang="en"> Course label:  </label>
         <label id="Album_other_name" lang="fr"> Libelle d'album :  </label>
         <label id="Album_other_name" lang="en"> Album label:  </label>
-        <label id="asset_copy_success" lang="fr"> Enregistrement copié avec succès </label>
-        <label id="asset_copy_success" lang="en"> Record successfully copied </label>
+        <label id="asset_copy_success" lang="fr"> Copie démarrée avec succès </label>
+        <label id="asset_copy_success" lang="en"> Asset copy was successfully started </label>
 
 
         

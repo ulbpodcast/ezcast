@@ -26,7 +26,7 @@
  * @package ezcast.commons.lib.sql
  */
 require_once __DIR__ . '/lib_database.php';
-if (file_exists(__DIR__.'/config.inc')) {
+if (file_exists(__DIR__.'/config.inc') && !$in_install) {
     include_once 'config.inc';
     $stmt_array = statements_get();
     db_prepare($stmt_array);
@@ -788,7 +788,8 @@ function db_found_rows()
 function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions)
 {
     global $statements;
-    $statements['user_create']->bindParam(':user_ID', strtolower($user_ID));
+    $lowered_user_id = strtolower($user_ID);
+    $statements['user_create']->bindParam(':user_ID', $lowered_user_id);
     $statements['user_create']->bindParam(':surname', $surname);
     $statements['user_create']->bindParam(':forename', $forename);
     $statements['user_create']->bindParam(':recorder_passwd', $recorder_passwd);

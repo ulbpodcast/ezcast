@@ -3,8 +3,10 @@
  *  */
 
 if(!isset($common_config_defined))
-    include_once('config.inc');
-require_once('logger_server.php');
+    include_once(__DIR__.'.config.inc');
+
+require_once(__DIR__.'/logger_server.php');
+require_once(__DIR__.'/common_static.inc');
 
 if(isset($timezone))
     date_default_timezone_set($timezone);
@@ -12,7 +14,6 @@ if(isset($timezone))
 $ezmanager_basedir = $basedir . '/ezmanager/'; // Path from the root to the source code
 $ezplayer_basedir = $basedir . '/ezplayer/'; // Path from the root to the source code
 $ezadmin_basedir = $basedir . '/ezadmin/'; 
-$template_folder = 'tmpl/';
 
 if($debug_mode) {
     error_reporting(E_ALL); 
@@ -52,5 +53,7 @@ if($streaming_video_alternate_server_enable_redirect && !$streaming_video_altern
 $m3u8_master_filename = "master.m3u8";
 $m3u8_external_master_filename = "external_master.m3u8";
 $m3u8_quality_filename = "live.m3u8";
+
+$course_id_validation_regex = "#[^A-Za-z0-9._-]#"; //all remaining characters must be form a valid unix dir name
 
 require_once("custom_error_handling.php");

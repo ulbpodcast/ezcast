@@ -11,8 +11,8 @@ $ezmanager_subdir = '/'; // Path from the basedir to admin.inc
 $ezplayer_subdir = '/'; // Path from the basedir to admin.inc
 
 // User preferences
-$recorders_category_enabled = false; // Set to false to hide the "recorders" category
-$classrooms_category_enabled = false; // Set to false to hide the "classrooms" category
+$recorders_category_enabled = true; // Set to false to hide the "recorders" category
+$classrooms_category_enabled = true; // Set to false to hide the "classrooms" category
 $add_users_enabled = true; // set to true to have a userlist in ezmanager
 $recorder_password_storage_enabled = true; // Set to true to save passwords on the recorders
 $use_user_name = false; // Set to true to use user's full name instead of user ID

@@ -11,7 +11,7 @@
                
                
             global $ezadmin_custom_logo;
-            $ezadmin_logo = $ezadmin_custom_logo !== false ?
+            $ezadmin_logo = !empty($ezadmin_custom_logo) ?
                     "img/custom/$ezadmin_custom_logo" :
                     "img/ezadmin.png"; //default value
             ?>

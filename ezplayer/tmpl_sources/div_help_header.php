@@ -36,7 +36,7 @@
 } ?>
             <?php
             global $ezplayer_custom_logo;
-            $ezplayer_logo = $ezplayer_custom_logo !== false ? "images/custom/$ezplayer_custom_logo" : "images/Header/LogoEZplayer.png"; //default value
+            $ezplayer_logo = !empty($ezplayer_custom_logo) ? "images/custom/$ezplayer_custom_logo" : "images/Header/LogoEZplayer.png"; //default value
             ?>
             <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezplayer_logo; ?>" /></a>
         </div>      

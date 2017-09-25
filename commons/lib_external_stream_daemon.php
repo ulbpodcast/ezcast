@@ -8,9 +8,6 @@ require_once __DIR__."/config.inc";
 // Start ExternalStreamDaemon if not already running
 function ensure_external_stream_daemon_is_running($video_root_dir, $asset_token)
 {
-    //global $php_cli_cmd;
-    $php_cli_cmd = "/opt/pkg-2015Q4/bin/php"; //temp hack
-    
     if (ExternalStreamDaemon::is_running($asset_token)) {
         return;
     }
@@ -20,7 +17,7 @@ function ensure_external_stream_daemon_is_running($video_root_dir, $asset_token)
     
     // Start daemon in background
     $log_folder = ExternalStreamDaemon::get_temp_folder($asset_token);
-    $command = $php_cli_cmd . ' ' .__DIR__."/cli_external_stream_daemon.php $video_root_dir $asset_token &> $log_folder/sync.log &";
+    $command = PHP_BINARY . ' ' .__DIR__."/cli_external_stream_daemon.php $video_root_dir $asset_token &> $log_folder/sync.log &";
     file_put_contents("$log_folder/sync_command", $command . PHP_EOL);
     system($command);
 }

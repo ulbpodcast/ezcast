@@ -913,14 +913,14 @@ function db_stream_create(
     $record_type,
     $netid,
     $stream_name,
-    $token,
+    $token="",
     $module_type,
     $ip,
-        $status,
+    $status,
     $quality,
     $protocol,
-    $server,
-    $port
+    $server="",
+    $port=""
 ) {
     global $statements;
     $statements['stream_create']->bindParam(':cours_id', $cours_id);
@@ -937,6 +937,7 @@ function db_stream_create(
     $statements['stream_create']->bindParam(':protocol', $protocol);
     $statements['stream_create']->bindParam(':server', $server);
     $statements['stream_create']->bindParam(':port', $port);
+        
     return $statements['stream_create']->execute();
 }
 

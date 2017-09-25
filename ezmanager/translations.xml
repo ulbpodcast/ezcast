@@ -460,8 +460,8 @@
         <label id="Stats_view_unique_total" lang="fr">Nombre d'utilisateurs ayant consultés au moins une fois l'album</label>
         <label id="Stats_bookmarks_view_ratio" lang="en">Rate of use of bookmarks</label>
         <label id="Stats_bookmarks_view_ratio" lang="fr">Taux d'utilisation des signets</label>
-        <label id="Stats_table_info" lang="en">Further information</label>
-        <label id="Stats_table_info" lang="fr">Informations complémentaires</label>
+        <label id="Stats_table_info" lang="en">Album data</label>
+        <label id="Stats_table_info" lang="fr">Données de l'album</label>
         <label id="Graph_nbr_thread" lang="en">Number of threads</label>
         <label id="Graph_nbr_thread" lang="fr">Nombre de discussions</label>
         <label id="Graph_nbr_view_y" lang="en">Number of views</label>
@@ -479,7 +479,7 @@
         <label id="Graph_nbr_unique_view" lang="en">Per user</label>
         <label id="Graph_nbr_unique_view" lang="fr">Uniques</label>
         <label id="Graph_month_view" lang="en">Consultations per month</label>
-        <label id="Graph_month_view" lang="fr">Consultations par mois</label>
+        <label id="Graph_month_view" lang="fr">Consultations mensuelles</label>
         <label id="Graph_video_view" lang="en">Consultations per video</label>
         <label id="Graph_video_view" lang="fr">Consultations par vidéo</label>
         <label id="Graph_min_per_min_view" lang="en">Measuring audience of video</label>

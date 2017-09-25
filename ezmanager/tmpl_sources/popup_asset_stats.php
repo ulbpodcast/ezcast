@@ -118,7 +118,7 @@
                     <?php } ?>
                     
                     <?php if ($has_cam && $has_slides) { ?>
-                        result += '<b>Total:</b> ' + (this.points[0].y + this.points[1].y) + ' ®Graph_views®' + 
+                        result += '<b>Total:</b> ' + total + ' ®Graph_views®';
                     <?php } ?>
                     return result;
                 }

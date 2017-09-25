@@ -40,7 +40,7 @@ function file_checkauth($login, $passwd)
 
     $login = trim($login);
 
-if(!preg_match('/^[a-zA-Z0-9_]+$/',$login)){
+    if(!preg_match('/^[a-zA-Z0-9_]+$/',$login)){
         return false;
     } //sanity check
     if (isset($users[$login])) {

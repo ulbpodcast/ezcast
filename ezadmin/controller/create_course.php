@@ -7,6 +7,7 @@ function index($param = array())
     global $input;
     global $max_course_code_size;
     global $max_album_label_size;
+    global $course_id_validation_regex;
 
     if (isset($input['create']) && $input['create']) {
         $course_code_public = null;
@@ -14,7 +15,7 @@ function index($param = array())
 
         if (isset($input['course_code'])) {
             $course_code_public = htmlspecialchars($input['course_code']);
-            $id_course_input = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
+            $id_course_input = preg_replace($course_id_validation_regex, "", $course_code_public); //start from the public code, keeping only alphabetic characters
             if (strlen($course_code_public) > $max_course_code_size) {
                 $course_code_public = substr($course_code_public, 0, $max_course_code_size);
             }

@@ -10,6 +10,7 @@ require_once(__DIR__ . '/../../commons/lib_ezmam.php');
      global $input;
      global $max_course_code_size;
      global $max_album_label_size;
+     global $course_id_validation_regex;
     
      //all these values are defined in each switch case
      $course_code_public = null;
@@ -37,7 +38,7 @@ require_once(__DIR__ . '/../../commons/lib_ezmam.php');
             }
   
             //sanitize course code
-            $course_code_public = preg_replace("#[^a-zA-Z]#", "", $course_code_public); //start from the public code, keeping only alphabetic characters
+            $course_code_public = preg_replace($course_id_validation_regex, "", $course_code_public); //start from the public code, keeping only alphabetic characters
             //
             //enforce size limits
             if (strlen($course_code_public) > $max_course_code_size) {

@@ -102,21 +102,25 @@
             shared: true,
             valueSuffix: ' ®Graph_views®',
             formatter: function() {
-                    return '' +
-                      '<b>' + this.points[0].series.name + ':</b> ' +
-                    	this.points[0].y + ' ®Graph_views®<br />' +
-                    <?php if ($has_slides && $has_cam) {
-            ?>
-                      '<b>' + this.points[1].series.name + ':</b> ' +
-                      this.points[1].y + ' ®Graph_views®<br />'+
-                    <?php
-        } ?>
-                    <?php if ($has_cam && $has_slides) {
-            ?>
-                      '<b>Total:</b> ' + (this.points[0].y + this.points[1].y) + ' ®Graph_views®' + 
-                    <?php
-        } ?>
-                    '';
+                    var total = 0;
+                    var result = '';
+                    if(this.points[0] !== undefined) {
+                        result += '<b>' + this.points[0].series.name + ':</b> ' +
+                            this.points[0].y + ' ®Graph_views®<br />';
+                        total += this.points[0].y;
+                    }
+                    <?php if ($has_slides && $has_cam) { ?>
+                        if(this.points[1] !== undefined) {
+                            result += '<b>' + this.points[1].series.name + ':</b> ' +
+                                    this.points[1].y + ' ®Graph_views®<br />';
+                            total += this.points[1].y;
+                        }
+                    <?php } ?>
+                    
+                    <?php if ($has_cam && $has_slides) { ?>
+                        result += '<b>Total:</b> ' + total + ' ®Graph_views®';
+                    <?php } ?>
+                    return result;
                 }
         },
         series: [

@@ -65,3 +65,6 @@ $upload_slice_size = 1024 * 1024;
 
 //path to a custom ezcadmin logo, or false to use default logo. Custom logo must be in webspace in /ezmanager/img/custom directory
 $ezmanager_custom_logo = false;
+
+//allow using at address: /ezmanager/inscription.php
+$ezmanager_subscription_form = false;

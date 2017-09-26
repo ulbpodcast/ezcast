@@ -89,6 +89,21 @@ function statements_get()
                     'UPDATE ' . db_gettable('courses') . ' ' .
                     'SET course_name = :course_name, in_recorders = :in_recorders ' .
                     'WHERE course_code = :course_code',
+        
+            'enable_recorders_for_all_courses' =>
+                    'UPDATE ' . db_gettable('courses') . ' c ' .
+                    'JOIN '.db_gettable('users_courses').' link ON '.
+                        'link.user_ID = :userID AND '.
+                        'link.course_code = c.course_code '.
+                    'SET c.in_recorders = true',
+        
+            'user_get_courses_with_recorder' =>
+                    'SELECT c.course_code, c.course_name ' . 
+                    'FROM ' . db_gettable('courses') . ' c ' .
+                    'JOIN '.db_gettable('users_courses').' link ON '.
+                        'link.user_ID = :userID AND '.
+                        'link.course_code = c.course_code AND '.
+                        'c.in_recorders = 1 ',
 
             'course_update_anon' =>
                 'UPDATE ' . db_gettable('courses') . ' ' .
@@ -104,7 +119,7 @@ function statements_get()
                             db_gettable('users') . '.user_ID, ' .
                             db_gettable('users') . '.surname, ' .
                             db_gettable('users') . '.forename, ' .
-                      '(' . db_gettable('users') . '.recorder_passwd = "") as passNotSet, ' .
+                      '(' . db_gettable('users') . '.recorder_passwd = "" OR '.db_gettable('users').'.recorder_passwd IS NULL) as passNotSet, ' .
                             db_gettable('users') . '.permissions, ' .
                             db_gettable('users') . '.origin ' .
                             //db_gettable('users') . '.date_created ' .
@@ -217,6 +232,11 @@ function statements_get()
             'user_update_short' =>
                     'UPDATE ' . db_gettable('users') . ' ' .
                     'SET surname = :surname, forename = :forename,  permissions = :permissions' . ' ' .
+                    'WHERE user_ID = :user_ID',
+        
+            'user_update_recorder_passwd' =>
+                    'UPDATE ' . db_gettable('users') . ' ' .
+                    'SET recorder_passwd = :passwd' . ' ' .
                     'WHERE user_ID = :user_ID',
 
             'log_action' =>
@@ -819,6 +839,46 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
     $statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
     $statements['user_update']->bindParam(':permissions', $permissions);
     return $statements['user_update']->execute();
+}
+
+//return number of line affected, or false on error
+function db_user_set_recorder_passwd($user_ID, $recorder_passwd)
+{
+    $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
+    $encrypted_passwd = crypt($recorder_passwd, $des_seed);
+        
+    global $statements;
+    $statements['user_update_recorder_passwd']->bindParam(':user_ID', $user_ID);
+    $statements['user_update_recorder_passwd']->bindParam(':passwd', $encrypted_passwd);
+    $ok = $statements['user_update_recorder_passwd']->execute();
+    if(!$ok)
+        return false;
+    
+    return $statements['user_update_recorder_passwd']->rowCount();
+}
+
+//return number of line affected, or false on error
+function db_user_enable_recorder_for_all_courses($user_ID) 
+{
+    global $statements;
+    $statements['enable_recorders_for_all_courses']->bindParam(':userID', $user_ID);
+    $ok = $statements['enable_recorders_for_all_courses']->execute();
+    if(!$ok)
+        return false;
+    
+    return $statements['enable_recorders_for_all_courses']->rowCount();
+}
+
+//return number of courses with recorders for this users, or false on failure
+function db_user_get_courses_with_recorder($user_ID) 
+{
+    global $statements;
+    $statements['user_get_courses_with_recorder']->bindParam(':userID', $user_ID);
+    $ok = $statements['user_get_courses_with_recorder']->execute();
+    if(!$ok)
+        return false;
+    
+    return $statements['user_get_courses_with_recorder']->fetchAll();
 }
 
 /**

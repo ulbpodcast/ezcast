@@ -185,18 +185,18 @@ function statements_get()
                     'DELETE FROM ' . db_gettable('users_courses') . ' ' .
                     'WHERE ID = :user_course_ID AND origin=\'internal\'',
 
-        'users_courses_delete_row' =>
-            'DELETE FROM ' . db_gettable('users_courses') . ' ' .
-            'WHERE course_code=:course_code AND user_ID=:user_ID',
-            'users_courses_get' =>
-                    'SELECT * ' .
-                    'FROM ' . db_gettable('users_courses') . ' ' .
-                    'WHERE course_code=:course_code AND user_ID=:user_ID',
+            'users_courses_delete_row' =>
+                'DELETE FROM ' . db_gettable('users_courses') . ' ' .
+                'WHERE course_code=:course_code AND user_ID=:user_ID',
+                'users_courses_get' =>
+                        'SELECT * ' .
+                        'FROM ' . db_gettable('users_courses') . ' ' .
+                        'WHERE course_code=:course_code AND user_ID=:user_ID',
 
-        'users_courses_get_users' =>
-            'SELECT user_ID ' .
-            'FROM ' . db_gettable('users_courses') . ' ' .
-            'WHERE course_code=:course_code',
+            'users_courses_get_users' =>
+                'SELECT user_ID ' .
+                'FROM ' . db_gettable('users_courses') . ' ' .
+                'WHERE course_code=:course_code',
         
             'found_rows' =>
                     'SELECT  FOUND_ROWS();',
@@ -315,7 +315,7 @@ function db_courses_search(
                     $join . ' JOIN ' . db_gettable('users') . ' table_users ' .
                             'ON table_users.user_ID = users_courses.user_ID ' .
                     'WHERE ' .
-                            ' table_courses.course_code LIKE "' . addslashes($course_code) . '"' .
+                            ' table_courses.course_code_public LIKE "' . addslashes($course_code) . '"' .
                             ($origin != "%" ? ' AND users_courses.origin LIKE "' . addslashes($origin) . '"' : '') .
                             ($user_ID != "%" ? ' AND table_users.user_ID LIKE "' . $user_ID . '"': '') .
                             ($has_albums != -1 ? ' AND ' . ' table_courses.has_albums = "' . $has_albums . '"': '') .

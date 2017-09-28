@@ -14,6 +14,8 @@ function index($param = array())
     global $onlyRecording;
     global $onlyOnline;
     
+    $MAX_CLASSROOMS_PER_PAGE = 50;
+    
     $onlyRecording = false;
     $onlyOnline = false;
 
@@ -24,9 +26,9 @@ function index($param = array())
     }
     
     if (array_key_exists('page', $input)) {
-        $pagination = new Pagination($input['page'], 20);
+        $pagination = new Pagination($input['page'], $MAX_CLASSROOMS_PER_PAGE);
     } else {
-        $pagination = new Pagination(1, 20);
+        $pagination = new Pagination(1, $MAX_CLASSROOMS_PER_PAGE);
     }
     if (array_key_exists('col', $input) && array_key_exists('order', $input)) {
         $colOrder = new Sort_colonne($input['col'], $input['order']);

@@ -37,6 +37,7 @@ $do_users_courses=true;
 $do_sync=true;
 $do_users=false;
 $do_courses=false;
+$anac='201718';
 //$do_users_courses=FALSE;
 //$do_sync=false;
 
@@ -49,7 +50,7 @@ if ($do_users) {
         $query="SELECT DISTINCT(netID) as netID,NOM,PRENOM 
 FROM `ban_digger_VW_LISTE_ENSEIGNANTS`, `dcor_digger_matricules_actifs_ulb` 
 WHERE ban_digger_VW_LISTE_ENSEIGNANTS.MATRICULE != '' 
-  AND TERM='201415' 
+  AND TERM='$anac' 
   AND netID!='NO'
   AND netID!='VO'
   AND ban_digger_VW_LISTE_ENSEIGNANTS.MATRICULE=dcor_digger_matricules_actifs_ulb.matricule 
@@ -91,7 +92,7 @@ ORDER BY netID";
 //========================================================================
 //COURSES
 if ($do_courses) {
-    $query="SELECT  DISTINCT(MNEMONIQUE) AS MNEMONIQUE, TERM,INTITULE FROM `ban_digger_VW_LISTE_COURS` WHERE TERM='201415' AND MNEMONIQUE!='' AND MNEMONIQUE NOT LIKE '%-Z-%' ORDER BY MNEMONIQUE";
+    $query="SELECT  DISTINCT(MNEMONIQUE) AS MNEMONIQUE, TERM,INTITULE FROM `ban_digger_VW_LISTE_COURS` WHERE TERM='$anac' AND MNEMONIQUE!='' AND MNEMONIQUE NOT LIKE '%-Z-%' ORDER BY MNEMONIQUE";
     $sth = $db_object->prepare($query);
     $sth->execute();
     $ban_courses = $sth->fetchall(PDO::FETCH_ASSOC);
@@ -125,7 +126,7 @@ if ($do_users_courses) {
     $query="SELECT netID,MNEMONIQUE 
 FROM `ban_digger_VW_LISTE_ENSEIGNANTS`, `dcor_digger_matricules_actifs_ulb` 
 WHERE ban_digger_VW_LISTE_ENSEIGNANTS.MATRICULE != '' 
-  AND TERM='201415' 
+  AND TERM='$anac' 
   AND netID!='NO'
   AND netID!='VO'
   AND MNEMONIQUE!=''
@@ -232,7 +233,7 @@ if ($do_sync) {
 /*
 //TEST MNEMONIQUE between ban_digger_VW_LISTE_ENSEIGNANTS AND
 if( false ){
-$query="SELECT  DISTINCT(MNEMONIQUE) AS MNEMONIQUE FROM `ban_digger_VW_LISTE_COURS` WHERE TERM='201415' AND MNEMONIQUE!='' ORDER BY MNEMONIQUE";
+$query="SELECT  DISTINCT(MNEMONIQUE) AS MNEMONIQUE FROM `ban_digger_VW_LISTE_COURS` WHERE TERM='$anac' AND MNEMONIQUE!='' ORDER BY MNEMONIQUE";
  $sth=$db_object->prepare($query);
  $sth->execute();
 
@@ -244,7 +245,7 @@ $sth->closeCursor();
 $query="SELECT DISTINCT(MNEMONIQUE) AS MNEMONIQUE
 FROM `ban_digger_VW_LISTE_ENSEIGNANTS`
 WHERE ban_digger_VW_LISTE_ENSEIGNANTS.MATRICULE != ''
-  AND TERM='201415'
+  AND TERM='$anac'
   AND MNEMONIQUE!=''
 ORDER BY MNEMONIQUE";
 $sth2 = $db_object->prepare($query);

@@ -42,6 +42,10 @@ $web_file = file_get_contents($web_documentroot . "/ezmanager/distribute.php");
 $web_file = str_replace("!PATH", __DIR__, $web_file);
 file_put_contents($web_documentroot . "/ezmanager/distribute.php", $web_file);
 
+$web_file = file_get_contents($web_documentroot . "/ezmanager/inscription.php");
+$web_file = str_replace("!PATH", __DIR__, $web_file);
+file_put_contents($web_documentroot . "/ezmanager/inscription.php", $web_file);
+
 $web_file = file_get_contents($web_documentroot . "/ezmanager/recorder/index.php");
 $web_file = str_replace("!PATH", __DIR__, $web_file);
 file_put_contents($web_documentroot . "/ezmanager/recorder/index.php", $web_file);

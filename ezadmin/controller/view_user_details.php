@@ -30,6 +30,7 @@ function index($param = array())
             }
             db_log(db_gettable('users'), 'Edited user ' . $input['user_ID'], $_SESSION['user_login']);
         }
+        notify_changes();
     }
 
     include 'admin.inc';

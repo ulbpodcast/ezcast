@@ -40,10 +40,6 @@ $titlings = array( array('value' => 'FlyingTitle', 'label' => 'Flying Title (def
                 //   array('value' => 'RevealTitle', 'label' => 'Reveal'));
 $default_downloadable = false;
 
-$enable_anon_access_control = false; //Enable the user to choose if the album is accessible from anonym or not
-
-$default_anon_access = 'false'; //default value when a video is uploaded
-
 $enable_copy_asset = false; //allow copying asset into other albums
 
 $enable_course_creation = false; //enable the possibility for a ezmanager user to create his own course
@@ -69,3 +65,6 @@ $upload_slice_size = 1024 * 1024;
 
 //path to a custom ezcadmin logo, or false to use default logo. Custom logo must be in webspace in /ezmanager/img/custom directory
 $ezmanager_custom_logo = false;
+
+//allow using at address: /ezmanager/inscription.php
+$ezmanager_subscription_form = false;

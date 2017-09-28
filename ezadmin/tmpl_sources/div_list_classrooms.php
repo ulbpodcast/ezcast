@@ -259,7 +259,7 @@ $(function() {
     function classroom_online(classroom, data) {
         $('#' + classroom + ' .status').html('<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>');
         
-        if(data.recording && data.recording == '1') {
+        if(data.status_general == 'recording' || data.status_general == 'paused' || data.status_general == 'stopped' || data.status_general == 'open') {
             $('#' + classroom + '_recording').show();
             $('#' + classroom + '_recording .status_general').text(data.status_general);
             $('#' + classroom + '_recording .status_cam').text(data.status_cam);

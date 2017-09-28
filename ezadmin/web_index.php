@@ -131,7 +131,7 @@ else {
             break;
 
         case 'link_unlink_course_user':
-            requireController('view_user_details.php');
+            requireController('link_unlink_course_user.php');
             break;
 
         case 'create_course':

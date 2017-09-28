@@ -309,11 +309,15 @@
 
                     var $course_code = $('<td></td>').text(data.course_code);
                     var $course_name = $('<td></td>').text(data.course_name);
+                    var $origin = $('<td></td>').text(data.origin);
+                    var $in_classrooms = ''; //$('<td></td>').text(data.in_classrooms);
                     var $delete = $('<td class="unlink" style="cursor:pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_link®</td>');
 
                     var $tr = $('<tr data-id="' + data.id + '"></tr>');
                     $tr.append($course_code);
                     $tr.append($course_name);
+                    $tr.append($origin);
+                    $tr.append($in_classrooms);
                     $tr.append($delete);
 
                     $tr.hide();

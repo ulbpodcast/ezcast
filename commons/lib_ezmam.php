@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . '/config.inc');
+
 function ezmam_course_get_new_id($course_code)
 {
     $course_id = $course_code;

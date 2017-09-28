@@ -75,11 +75,22 @@ It is part of div_asset_details and has been split apart for readability.
 <div class="Publication" id="Publication_<?php echo $asset; ?>_2" style="display:none;">
     <span class="ButtonDownload"> <a href="javascript:visibilite('Download_<?php echo $asset; ?>_2');">®Download®</a> </span>
     <div class="Download" id="Download_<?php echo $asset; ?>_2" style="display:none;">
-        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a></p>
-        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a></p>
+        <p>
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide"
+            data-remote="false" data-toggle="modal" data-target="#modal" >
+                ®high_res®
+            </a>
+        </p>
+        <p>
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide" data-remote="false" 
+                data-toggle="modal" data-target="#modal" >
+                ®low_res®
+            </a>
+        </p>
     </div>
+    
     <!-- Links to embed player -->
     <span class="ButtonEmbed"> <a href="javascript:visibilite('Embed_<?php echo $asset; ?>_2');">®Embed®</a> </span>
 

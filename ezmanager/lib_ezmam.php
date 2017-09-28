@@ -1225,12 +1225,13 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst)
     $asset_name = get_asset_name($course, $asset_time);
           
     //Copy Asset in background, and pass the metadata status to processing during the copy.
-    $cmd1 = "mkdir $dst_path/$asset_time";
-    $cmd2 = "cp $src_path/$asset_time/_metadata.xml $dst_path/$asset_time/_metadata.xml";
-    $cmd3 = 'sed -i "s/<status>processed<\/status>/<status>processing<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
-    $cmd4 = 'rsync -av --exclude=/_metadata.xml '.$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/';
-    $cmd5 = 'sed -i "s/<status>processing<\/status>/<status>processed<\/status>/g" '.$dst_path . '/' . $asset_time.'/_metadata.xml';
-    $final_cmd = "($cmd1 && $cmd2 && $cmd3 && $cmd4 && $cmd5) 2>&1 > /dev/null &";
+    $final_cmd = 'nohup sh -c "'.
+            "mkdir -p $dst_path/$asset_time && ".
+            "cp $src_path/$asset_time/_metadata.xml $dst_path/$asset_time/_metadata.xml && ".
+            "sed -i 's/<status>processed<\/status>/<status>processing<\/status>/g' ".$dst_path . '/' . $asset_time.'/_metadata.xml && '.
+            "rsync -av --exclude=/_metadata.xml ".$src_path . '/' . $asset_time.'/ '.$dst_path . '/' . $asset_time.'/ && '.
+            "sed -i 's/<status>processing<\/status>/<status>processed<\/status>/g' ".$dst_path . '/' . $asset_time.'/_metadata.xml'.
+            '" > /dev/null 2>&1 &';
     exec($final_cmd, $output, $res);
     if ($res != 0) {
         ezmam_last_error("Could not copy asset");
@@ -1238,7 +1239,7 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst)
         return false;
     }
     // Logging
-    $logger->log(EventType::MANAGER_ASSET_COPY, LogLevel::NOTICE, "Started copying asset: $asset_time, from: $album_src, to $album_dst", array(basename(__FUNCTION__)), $asset_name);
+    $logger->log(EventType::MANAGER_ASSET_COPY, LogLevel::NOTICE, "Started copying asset: $asset_time, from: $album_src, to $album_dst. FULL CMD: $final_cmd", array(basename(__FUNCTION__)), $asset_name);
     // rebuilding the RSS feeds
     ezmam_rss_generate($album_dst, "high");
     ezmam_rss_generate($album_dst, "low");

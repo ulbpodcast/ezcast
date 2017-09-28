@@ -67,7 +67,7 @@ function convertPHPArrayToJSArray($data)
     return json_encode(
                 array_map(
                   function ($key, $value) {
-                      return array(intval($key), intval($value));
+                      return array(intval($key) * 1000, intval($value));
                   },
                   array_keys($data),
                   array_values($data)
@@ -118,21 +118,7 @@ function calcul_graph_album($all_album_data, &$calculate_stats)
         $result['display'] = true;
         
         foreach ($all_album_data as $album_data) {
-            // TODO remove: it's only for debug
-            //            $strTime = strtotime("02-" . $album_data['month']);
-            //            $data['total_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_total']-10;
-            //            $data['unique_view'][strtotime("-4 month", $strTime) . "000"] = $album_data['total_view_unique']-10;
-            //
-            //            $data['total_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_total']-1;
-            //            $data['unique_view'][strtotime("-3 month", $strTime) . "000"] = $album_data['total_view_unique']-5;
-            //
-            //            $data['total_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_total']-30;
-            //            $data['unique_view'][strtotime("-2 month", $strTime) . "000"] = $album_data['total_view_unique']-12;
-            //
-            //            $data['total_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_total']-6;
-            //            $data['unique_view'][strtotime("-1 month", $strTime) . "000"] = $album_data['total_view_unique']-4;
-
-            $time = strtotime("02-" . $album_data['month']) . "000";
+            $time = strtotime("02-" . $album_data['month']);
             $data['total_view'][$time] = $album_data['total_view_total'];
             $calculate_stats['view_total'] += $album_data['total_view_total'];
             $data['unique_view'][$time] = $album_data['total_view_unique'];

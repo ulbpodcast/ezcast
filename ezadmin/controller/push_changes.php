@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../../commons/lib_push_changes.php');
+require_once(__DIR__.'/../lib_push_changes.php');
 
 function index($param = array())
 {

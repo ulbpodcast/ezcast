@@ -335,7 +335,8 @@ function db_courses_search(
                     $join . ' JOIN ' . db_gettable('users') . ' table_users ' .
                             'ON table_users.user_ID = users_courses.user_ID ' .
                     'WHERE ' .
-                            ' table_courses.course_code_public LIKE "' . addslashes($course_code) . '"' .
+                            '( table_courses.course_code_public LIKE "' . addslashes($course_code) . '"' .
+                            '  OR table_courses.course_code LIKE "' . addslashes($course_code) . '" )' .
                             ($origin != "%" ? ' AND users_courses.origin LIKE "' . addslashes($origin) . '"' : '') .
                             ($user_ID != "%" ? ' AND table_users.user_ID LIKE "' . $user_ID . '"': '') .
                             ($has_albums != -1 ? ' AND ' . ' table_courses.has_albums = "' . $has_albums . '"': '') .

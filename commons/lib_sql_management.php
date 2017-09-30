@@ -329,8 +329,8 @@ function db_courses_search(
                     ' table_courses.course_name, ' .
                     ' table_users.forename, ' .
                     ' table_users.surname ' .
-                    'FROM ' . db_gettable('users_courses') . ' users_courses ' .
-                    'RIGHT JOIN ' . db_gettable('courses') . ' table_courses ' .
+                    'FROM ' . db_gettable('courses') . ' table_courses ' .
+                    'LEFT OUTER JOIN ' . db_gettable('users_courses') . ' users_courses ' .
                             'ON ' . ' table_courses.course_code = users_courses.course_code ' .
                     $join . ' JOIN ' . db_gettable('users') . ' table_users ' .
                             'ON table_users.user_ID = users_courses.user_ID ' .

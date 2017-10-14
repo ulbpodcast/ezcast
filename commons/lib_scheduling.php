@@ -54,7 +54,7 @@ function scheduler_schedule()
         $renderers = lib_scheduling_renderer_list();
 
         $choice = false;
-        // iterate over render and attribuate the job to the optimal one
+        // iterate over render and assign the job to the optimal one
         foreach ($renderers as $renderer) {
 
             // check the renderer availibility
@@ -62,7 +62,7 @@ function scheduler_schedule()
                 continue;
             }
 
-            // if no choice, pick the first fit. Otherwhise find the optimal
+            // if no choice, pick the first fit. Otherwise find the optimal
             if (!$choice) {
                 $choice = $renderer;
                 continue;
@@ -904,6 +904,13 @@ function lib_scheduling_sema_release()
 
 function lib_scheduling_file_move($from, $to)
 {
+    global $dir_date_format;
+    //if $to is a directory rename old directory first (to <directory>.2017_10_14_12h18_12)
+    if(is_dir($to)){
+      $date_ext=date($dir_date_format,time()); 
+      $res=rename($to,$to.".".$date_ext);
+      if(!$res)return false;
+    }
     return rename($from, $to);
 }
 

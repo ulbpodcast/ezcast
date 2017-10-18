@@ -16,7 +16,7 @@
  */
 define('DEBUG', 5);
 
-require_once __DIR__ . '/config.inc';
+require_once __DIR__ . '../ezadmin/config.inc';
 
 
 /*******************************/

@@ -39,7 +39,7 @@ function index($param = array())
     $message = str_replace(PHP_EOL, '<br/>', $message); // TODO why not nl2br ?
     
     $record_date = $asset_meta['record_date'];
-    if ($album == '' || $message == '' || $record_date = '') {
+    if ($album == '' || $message == '' || $record_date == '') {
         return false;
     }
     

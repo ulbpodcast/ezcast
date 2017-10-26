@@ -34,11 +34,7 @@ include_once 'lib_print.php';
 <br/><p>®Copy_bookmark_message®</p>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
-<a href='javascript:bookmark_copy("<?php echo $bookmark['album'] ?>", "<?php echo $bookmark['asset'] ?>", "
-    <?php echo $bookmark['timecode'] ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['title']), ENT_QUOTES); ?>", "
-    <?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['description']), ENT_QUOTES) ?>", "
-    <?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['keywords']), ENT_QUOTES) ?>", "
-    <?php echo $bookmark['level'] ?>", "<?php echo $source ?>", "custom");' class="simple-button blue">
+<a href='javascript:bookmark_copy("<?php echo $bookmark['album'] ?>", "<?php echo $bookmark['asset'] ?>", "<?php echo $bookmark['timecode'] ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['title']), ENT_QUOTES); ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['description']), ENT_QUOTES) ?>", "<?php echo htmlspecialchars(str_replace('"', '\"', $bookmark['keywords']), ENT_QUOTES) ?>", "<?php echo $bookmark['level'] ?>", "<?php echo $source ?>", "custom");' class="simple-button blue">
     ®Copy®
 </a>
 <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>

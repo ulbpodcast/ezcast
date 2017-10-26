@@ -38,8 +38,7 @@ include_once 'lib_print.php';
         axis: 'x'
     });
 
-    history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + 
-                '<?php echo $_SESSION['token']; ?>'}, '', '');
+    history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + '<?php echo $_SESSION['token']; ?>'}, '', '');
 
 <?php if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (isset($official_bookmarks)
         && sizeof($official_bookmarks) != 0))) {
@@ -84,8 +83,7 @@ include_once 'lib_print.php';
            href="javascript:toggle('#bookmarks_actions');">
         </a>
         <a class="sort-button <?php echo acl_value_get("personal_bm_order"); ?>" 
-           title="®Reverse_bookmarks_order®" href="javascript:bookmarks_sort('personal', '
-               <?php echo (acl_value_get("personal_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets');">
+           title="®Reverse_bookmarks_order®" href="javascript:bookmarks_sort('personal', '<?php echo (acl_value_get("personal_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets');">
         </a>
         <ul id="bookmarks_actions">
             <li>
@@ -111,8 +109,7 @@ include_once 'lib_print.php';
         <a class="menu-button" title="®Toc_actions®" onclick="$(this).toggleClass('active')" href="javascript:toggle('#tocs_actions');">
         </a>
         <a class="sort-button <?php echo acl_value_get("official_bm_order"); ?>" title="®Reverse_bookmarks_order®" 
-           href="javascript:bookmarks_sort('official', '
-               <?php echo (acl_value_get("official_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets');">
+           href="javascript:bookmarks_sort('official', '<?php echo (acl_value_get("official_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets');">
         </a>
         <ul id="tocs_actions">
             <li>
@@ -161,21 +158,12 @@ the pane displays the list of all assets contained in the selected album
                             ?>
                             <li id="bookmark_<?php echo $index; ?>" class="blue level_<?php echo $bookmark['level']; ?>">
 
-                                <a class="item blue" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '
-                                    <?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '
-                                        <?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">                                    
-                                    <?php print_info(substr(get_user_friendly_date(
-                                $bookmark['asset'],
-                                '/',
-                                false,
-                                            get_lang(),
-                                false
-                            ), 0, 10)); ?> <?php echo
-                                            get_asset_title($bookmark['album'], $bookmark['asset']); ?>
+                                <a class="item blue" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">                                    
+                                    <?php print_info(substr(get_user_friendly_date( $bookmark['asset'],'/', false, get_lang(), false), 0, 10)); ?> 
+                                    <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
                                     <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
                                 </a>
-                                <span class="more"><a class="more-button" onclick="bookmark_more_toggle('<?php echo $index; ?>
-                                    ', 'bookmark', $(this));"></a></span>
+                                <span class="more"><a class="more-button" onclick="bookmark_more_toggle('<?php echo $index; ?>', 'bookmark', $(this));"></a></span>
                                 <div class="bookmark_detail" id="bookmark_detail_<?php echo $index; ?>">
                                     <div class="bookmark_info">
                                         <div class="blue-title">®Description® :</div>
@@ -184,9 +172,7 @@ the pane displays the list of all assets contained in the selected album
                                         <?php print_search($bookmark['keywords']); ?>
                                     </div>
                                     <div class="bookmark_options">
-                                        <a class="delete-button" title="®Delete_bookmark®" href="javascript:popup_bookmark('
-                                            <?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '
-                                                <?php echo $bookmark['timecode']; ?>', 'custom', 'assets', 'remove')"></a>
+                                        <a class="delete-button" title="®Delete_bookmark®" href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'custom', 'assets', 'remove')"></a>
                                     </div>
                                 </div>
                             </li>
@@ -213,9 +199,7 @@ the pane displays the list of all assets contained in the selected album
                         ?>
                         <li id="toc_<?php echo $index; ?>" class="orange level_<?php echo $bookmark['level']; ?>">
 
-                            <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '
-                                <?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '
-                                    <?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">
+                            <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">
                                 <?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?> 
                                     <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
                                 <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
@@ -235,9 +219,7 @@ the pane displays the list of all assets contained in the selected album
                             ?>
                                     <div class="bookmark_options">
                                         <a class="delete-button" title="®Delete_bookmark®" 
-                                           href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '
-                                               <?php echo $bookmark['asset']; ?>', '
-                                                <?php echo $bookmark['timecode']; ?>', 'official', 'assets', 'remove')">
+                                           href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'official', 'assets', 'remove')">
                                         </a>
                                     </div>
                                 <?php

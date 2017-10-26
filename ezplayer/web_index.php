@@ -90,6 +90,14 @@ if ($logged_in && user_anonymous() && !$allow_url_anon
     $logged_in = false;
 }
 
+if(isset($input['loging'])){
+    requireController('user_logout.php');
+    logout();
+    $logged_in = false;
+    view_login_form();   
+}
+
+
 // If we're not logged in, we try to log in or display the login form
 if (!$logged_in) {
     // global $repository_path;

@@ -106,7 +106,7 @@ if (!file_exists($originals['slide'])) {
 print "\n------------------------ get title info ------------------------\n";
 $res = get_title_info($processing, "title.xml", $title_assoc);
 
-fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($title_assoc, true));
+//fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($title_assoc, true));
 
 // handle slide movie combine intro title and movie and encode them in 'high' and 'low' flavors
 

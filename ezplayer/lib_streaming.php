@@ -130,8 +130,9 @@ function asset_streaming_chat_get_last($display = true)
 
     ezmam_repository_path($repository_path);
 
-    $album = $input['album'];
-    $asset = $input['asset'];
+    $album = (isset($input['album'])) ? $input['album'] : $_SESSION['album'];
+    $asset = (isset($input['asset'])) ? $input['asset'] : $_SESSION['asset'];
+    $asset_token = (isset($input['asset_token'])) ? $input['asset_token'] : $_SESSION['asset_token'];
 
     if (!isset($album) || $album == '' || $album == 'undefined') {
         $album = $_SESSION['album'];

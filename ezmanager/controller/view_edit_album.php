@@ -16,6 +16,7 @@ function index($param = array())
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);
     $visibility = ($moderation) ? '-priv' : '-pub';
+    $dbCourse=db_course_read($album);
 
     ezmam_repository_path($repository_path);
 
@@ -35,7 +36,8 @@ function index($param = array())
     // for the checkbox in the form
     $downloadable = (isset($album_meta['downloadable']) ? $album_meta['downloadable'] : $default_downloadable);
     $anon_access = (isset($album_meta['anon_access']) ? $album_meta['anon_access'] : $default_anon_access);
-
+    $recorder_access = (isset($dbCourse['in_recorders']) ? $dbCourse['in_recorders'] : 0);
+    
     require_once template_getpath('popup_edit_album.php');
 
     die;

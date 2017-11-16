@@ -297,7 +297,7 @@ function view_media()
 
         ob_clean();
         passthru('/bin/cat ' . escapeshellarg($media_handle));
-        fclose($fh);
+       // fclose($fh);
     }
 }
 

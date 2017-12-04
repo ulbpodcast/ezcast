@@ -25,7 +25,7 @@
  */
 ?>
 <div id="streaming_config">
-    <link rel="stylesheet" href="flowplayer-6/skin/functional.css">
+    <link rel="stylesheet" href="flowplayer/skin/skin.css">
     <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
 		
     <div id="video_player" class="streaming remove_full">
@@ -90,6 +90,7 @@
         live: true,
         autoplay: true,
         fullscreen: false,
+        share: false,
         embed: false
 
     });

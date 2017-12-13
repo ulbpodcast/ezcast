@@ -175,7 +175,8 @@
     var is_msie = navigator.userAgent.toLowerCase().indexOf('msie') > -1;
     var is_safari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
     var is_idevice = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
-    var poster = "images/Generale/poster-streaming.png";
+    var poster = "images/Generale/¤poster-streaming¤.png";
+
     var is_camslide = <?php echo json_encode($asset_meta['record_type'] == 'camslide'); ?>;
     var main_stream_url = "<?php echo $m3u8_live_stream; ?>";
     var current_type = "<?php echo $_SESSION['current_type']; ?>";

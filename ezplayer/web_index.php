@@ -510,7 +510,7 @@ function user_anonymous_session()
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
-        if ($input['has_flash'] == 'N') {
+        if (isset($input['has_flash']) && $input['has_flash'] == 'N') {
             $_SESSION['has_flash'] = false;
         } else {
             $_SESSION['has_flash'] = true;
@@ -601,7 +601,7 @@ function user_login($login, $passwd)
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
-        if ($input['has_flash'] == 'N') {
+        if (isset($input['has_flash']) && $input['has_flash'] == 'N') {
             $_SESSION['has_flash'] = false;
         } else {
             $_SESSION['has_flash'] = true;

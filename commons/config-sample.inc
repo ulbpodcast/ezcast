@@ -135,6 +135,9 @@ $ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
 $video_split_time = 30; // Time in second to send information that user watch a video
 $display_trace_stats = false; // Display or not stat on ezmanager
 
+//Transcoding streaming video live.!!!!WARNING ssh connexion needed && $repository_basedir has to be shared between the two servers && remote server must have right to write in "$repository_basedir/streamEncode"
+$transcodeStreaming=false;
+$externalClient="";     //  "username@ip";                                   
 
 // -- Alternate server as streaming distribution source -- //
 

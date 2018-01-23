@@ -335,6 +335,9 @@ function streaming_content_add()
     global $m3u8_external_master_filename;
     global $m3u8_quality_filename;
     global $logger;
+    global $transcodeStreaming;
+    global $externalClient;
+    global $repository_basedir;
     
 
     ezmam_repository_path($repository_path);
@@ -429,10 +432,37 @@ function streaming_content_add()
             
             $uploadfile = $upload_quality_dir . $input['filename'];
             // places the file (.ts segment from HTTP request) in the webspace
-            if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
+            
+                        
+            //transcode streaming directly to be able to record h265 and difuse h254
+            if($transcodeStreaming){
+                $transcodeDir=$repository_basedir.'/streamEncode/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
+                if (!is_dir($transcodeDir)) {
+                    mkdir($transcodeDir, 0775, true);
+                }
+                $transfile=$transcodeDir.$input['filename'];
+                
+                //move the original ts file in the temp directory to transcode it
+                move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $transfile);               
+
+                 //transcode on a remote server
+                if(isset($externalClient) && $externalClient!=""){
+                    $outputrepo= $repository_basedir.'/streamEncode/output/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
+                    $outputFile=$outputrepo.$input['filename'];
+                    
+                    //create the temp repository if soesnt exist, transcode video in temp repo then copy it on the original place to be played , remove temp files
+                    exec("ssh ".$externalClient." mkdir -p ".$outputrepo." &&  ssh ".$externalClient." ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1  -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28  ".$outputFile." && cp ".$outputFile." ".$uploadfile." && rm ".$transfile." && ssh ".$externalClient." rm ".$outputFile." ");
+                }
+                else {         
+                //transcode on the same server
+                    $outputFile=$uploadfile;
+                    //transcode and put the output at the original place to be played
+                    exec("ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1  -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28  ".$outputFile." && rm ".$transfile." ");
+                }                
+            } 
+            else if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
                 echo "File is valid, and was successfully uploaded.\n";
             }
-
             // appends the m3u8 file
             $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
             if (!is_file($m3u8_quality_path)) {

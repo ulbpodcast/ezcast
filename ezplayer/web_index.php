@@ -49,6 +49,10 @@ require_once 'lib_threads_pdo.php';
 require_once 'lib_chat_pdo.php';
 require_once 'lib_cache.php';
 require_once 'lib_acl.php';
+require_once '../commons/lib_mobile_detect.php';
+
+$detect = new Mobile_Detect();
+$_SESSION['isPhone'] = $detect->isMobile();
 
 $input = array_merge($_GET, $_POST);
 

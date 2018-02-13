@@ -171,9 +171,10 @@ You should not have to include this file yourself.
                 var intro = encodeURIComponent(document.getElementById('intro').value);
                 var add_title = encodeURIComponent(document.getElementById('add_title').value);
                 var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
-                var anon_access = encodeURIComponent(document.getElementById('anon_access').checked);
-                var recorder_access = encodeURIComponent(document.getElementById('recorder_access').checked);
-
+                var anon_access = <?php if ($enable_anon_access_control === true) { ?> encodeURIComponent(document.getElementById('anon_access').checked)<?php }else{ ?> false<?php } ?>;																																														 
+				<?php if($recorder_access == 1){ ?>																																										 
+					var recorder_access = encodeURIComponent(document.getElementById('recorder_access').checked);
+				<?php } ?>
                 $('#modal').modal('hide');
                 setTimeout(function(){ 
                     display_bootstrap_modal_url($('#modal'), 'index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php 

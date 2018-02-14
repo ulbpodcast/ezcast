@@ -72,7 +72,7 @@
 
                 <b class="title">Login et mot de passe</b>
                 <p>
-                    - Le "<b>NetID</b>" est votre NetID de l’Université libre de Bruxelles
+                    - Le "<b>NetID</b>" est votre identifiant global
                     <br/>- Le "<b>Password</b>" est le mot de passe associé à votre NetId 
                 </p>
 

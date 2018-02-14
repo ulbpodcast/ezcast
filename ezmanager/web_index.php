@@ -31,6 +31,12 @@ template_load_dictionnary('translations.xml');
 //
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
+    
+//    if( ((isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1) ||  !isset($_SESSION['termsOfUses']))  && $enable_termsOfUse){
+//        view_termsOfUses_form();
+//        $_SESSION['redirect']=json_encode($input);
+//        die();
+//    }
     if (isset($input['action']) && $input['action'] == 'view_help') {
         requireController('view_help.php');
         index();
@@ -74,6 +80,11 @@ if (!user_logged_in()) {
         }
     }
 }
+else if(isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1 && ($input['action']!='acceptTermsOfUses') && $enable_termsOfUse){
+    view_termsOfUses_form();
+    $_SESSION['redirect']=json_encode($input);
+    die();
+}
 
 // At this point of the code, the user is supposed to be logged in.
 // We check whether they specified an action to perform. If not, it means they landed
@@ -116,6 +127,10 @@ else {
     $paramController = array();
     switch ($action) {
         // The user clicked on an album, we display its content to them
+
+        case 'acceptTermsOfUses':
+            requireController('acceptTermsOfUses.php');
+            break;
 
         case 'view_album':
             requireController('view_album.php');
@@ -345,14 +360,17 @@ function view_login_form()
     global $ezmanager_url;
     global $error, $input;
     global $auth_methods;
+    global $sso_only;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash'])) {
         $_SESSION['has_flash'] = false;
     }
     $url = $ezmanager_url;
-    // template include goes here
+    // template include goes here    
     $sso_enabled = in_array("sso", $auth_methods);
+    $file_enabled = ((in_array("file", $auth_methods) && !$sso_only)  || ($sso_only && isset($_GET["local"])) || (!$sso_enabled && in_array("file", $auth_methods)) );
+    
     include_once template_getpath('login.php');
 }
 
@@ -472,6 +490,11 @@ function refresh_page()
 }
 
 
+function view_termsOfUses_form(){
+    include_once template_getpath('div_termsOfUses.php');
+
+}
+
 //
 // "Business logic" functions
 //
@@ -525,6 +548,7 @@ function user_login($login, $passwd)
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
+    $_SESSION['termsOfUses'] = $res['termsOfUses'];
 
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
@@ -545,7 +569,10 @@ function user_login($login, $passwd)
         error_print_message(template_get_message('not_registered', get_lang()), false);
         log_append('warning', $res['login'] . ' tried to access ezmanager but doesn\'t have permission to manage any album.');
         session_destroy();
-        view_login_form();
+        
+        //MOFIF !!!!!!!!!!!
+        header("Location: https://ezcast.uclouvain.be?noPerm"); 
+//        view_login_form();
         die;
     }
 

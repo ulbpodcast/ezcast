@@ -42,8 +42,12 @@
             ?>
             <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezmanager_logo; ?>" /></a>            
         </div>
-        <a href="index.php?action=logout" title="®Logout®"><span class="logout">®Logout®</span></a>
+         <?php if (acl_user_is_logged()) {
+                ?>
+             <a href="index.php?action=logout" title="®Logout®"><span class="logout">®Logout®</span></a>
         <span style="float: right; margin: 1px 3px; margin-top: -11px; font-size: 15px;">|</span>
         <a href="index.php?action=view_help" target="_blank"><span class="logout">®Help®</span></a> 
+         <?php } ?>
+
     </div>
 </div>

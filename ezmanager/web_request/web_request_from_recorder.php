@@ -193,6 +193,8 @@ function streaming_init()
     global $input;
     global $caller_ip;
     global $repository_path;
+    global $transcodeStreaming;
+    global $externalClients;
     
     global $logger;
     
@@ -272,6 +274,34 @@ function streaming_init()
         return false;
     }
     
+    if($transcodeStreaming){
+        $transcode_dir=dirname(__DIR__)."/var/transcoded_streams/";
+        $working_dir=$transcode_dir.date('j_m_Y');
+        $stream_id=$course . '_' . $stream_name . '_'.$module_type;
+        
+        if ( !file_exists($transcode_dir) && !is_dir($transcode_dir)) {
+            mkdir($transcode_dir);         
+        } 
+        
+        if(!file_exists($working_dir)){
+            $today_streams[$stream_id]=0;
+            file_put_contents($working_dir, json_encode( $today_streams )) ;
+        }
+        else{           
+            $str= (file_get_contents($working_dir));
+            $today_streams = json_decode($str, true);
+            end($today_streams);         // move the internal pointer to the end of the array            
+            if (end($today_streams) == (count($externalClients)-1))
+                $streamer=0;
+            else 
+                $streamer = (end($today_streams))+1;   
+            
+            $today_streams[$stream_id]=$streamer;
+            file_put_contents($working_dir, json_encode($today_streams)) ;
+
+        }
+    }
+    
     $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::DEBUG, "Successfully processed stream init request for course $course, asset $asset, classroom $classroom, author $netid", array(__FUNCTION__));
     return true;
 }
@@ -335,6 +365,12 @@ function streaming_content_add()
     global $m3u8_external_master_filename;
     global $m3u8_quality_filename;
     global $logger;
+    global $transcodeStreaming;
+    global $streamPerClient;
+    global $repository_basedir;
+    global $externalClients;
+
+
     
 
     ezmam_repository_path($repository_path);
@@ -369,7 +405,7 @@ function streaming_content_add()
                 return false;
             }
 
-        $asset_token = $streams_array[$course][$asset]['token'];
+            $asset_token = $streams_array[$course][$asset]['token'];
             if ($streams_array[$course][$asset][$module_type]['status'] != $status) {
                 $streams_array[$course][$asset][$module_type]['status'] = $status;
                 $res = db_stream_update_status($course, $asset, $module_type, $status);
@@ -428,10 +464,54 @@ function streaming_content_add()
             }
             
             $uploadfile = $upload_quality_dir . $input['filename'];
-            // places the file (.ts segment from HTTP request) in the webspace
-            if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
-                echo "File is valid, and was successfully uploaded.\n";
-            }
+            // places the file (.ts segment from HTTP request) in the webspace         
+          
+            //transcode streaming directly to be able to record h265 and difuse h254
+            if($transcodeStreaming){
+                $transcodeDir=$repository_basedir.'/streamEncode/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
+                if (!is_dir($transcodeDir)) {
+                    mkdir($transcodeDir, 0775, true);
+                }
+                $transfile=$transcodeDir.$input['filename'];
+                
+                //move the original ts file in the temp directory to transcode it
+                move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $transfile);               
+
+                 //transcode on a remote server
+                if(isset($externalClients) && count($externalClients) != 0 ){
+                    
+                    //get the streamer server avaiable for this stream (defined in streaming_init() )
+                    $transcode_dir=dirname(__DIR__)."/var/transcoded_streams/";
+                    $working_dir=$transcode_dir.date('j_m_Y');
+                    $stream_id=$course . '_' . $stream_name . '_'.$module_type;
+
+                    if(file_exists($working_dir)){
+                        $str= (file_get_contents($working_dir));
+                        $today_streams = json_decode($str, true);
+                        $streamer = $today_streams[$stream_id];                             
+                    }
+                    else 
+                        $streamer = 1;
+                    
+                    // give the right username@ip for the ssh link
+                    $externalClient=$externalClients[$streamer];    
+                    
+                    $outputrepo= $repository_basedir.'/streamEncode/output/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
+                    $outputFile=$outputrepo.$input['filename'];                    
+                    //create the temp repository if soesnt exist, transcode video in temp repo then copy it on the original place to be played , remove temp files
+                    exec("ssh ".$externalClient." mkdir -p ".$outputrepo." &&  ssh ".$externalClient." ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1  -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28  ".$outputFile." && cp ".$outputFile." ".$uploadfile." && rm ".$transfile." && ssh ".$externalClient." rm ".$outputFile." ");
+    
+                }
+                else {         
+                //transcode on the same server
+                    $outputFile=$uploadfile;
+                    //transcode and put the output at the original place to be played
+                    exec("ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1  -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28  ".$outputFile." && rm ".$transfile." ");
+                }                
+            }      
+            
+            
+
 
             // appends the m3u8 file
             $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
@@ -506,11 +586,12 @@ function streaming_close()
     }
 
     $status = 'closed';
-    $res = db_stream_update_status($course, $asset, $module_type, $status);
+        $res = db_stream_update_status($course, $asset, $module_type, $status);
     if (!$res) {
         $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::ERROR, "Failed to update stream in database.", array(__FUNCTION__));
         return false;
     }
+   
     return true;
 }
 

@@ -111,16 +111,19 @@ function sso_checkauth($login, $password)
     /*------------UCL METHOD TO CHECK RIGHTS-------------*/
 
     //Check if the User have the right to enter ezmanager, Even if he don't have any courses
-    if (in_array("staff", $userinfo['group'])) {
-        global $db_object;
+    if (in_array("staff", $userinfo['group'])) {        
         $userinfo['ismanager'] = 'true';        
-
-        //if is manager add user in table Users
-        $user = db_user_read($attributes[$sso_ssp_att_login][0]);
-        if (!$user) {
-            db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_firstname][0], $attributes[$sso_ssp_att_name][0], "", "0");        
-        }
     }
+    global $db_object;
+    // add user in table Users
+    $user = db_user_read($attributes[$sso_ssp_att_login][0]);
+    if (!$user) {
+        db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_firstname][0], $attributes[$sso_ssp_att_name][0], "", "0");
+        $userinfo['termsOfUses'] = 0;
+    }
+    else
+        $userinfo['termsOfUses'] = $user['termsOfUse'];     
+    
 
 
       
@@ -195,7 +198,7 @@ function sso_getinfo($login)
         db_prepare();
 
         $reqSQL = $db_object->prepare('SELECT * FROM ezcast_sso_users WHERE user_ID=?');
-        $reqSQL->bindParam(1, $attributes[$sso_ssp_att_login][0], PDO::PARAM_STR);
+        $reqSQL->bindParam(1, $login, PDO::PARAM_STR);
         $reqSQL->execute();
 
         if ($reqSQL->rowCount() != 1) {

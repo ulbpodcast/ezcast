@@ -605,6 +605,8 @@
         <message id="missing_chunks" lang="en">Access denied: missing file chunks</message>
         <message id="write_error" lang="fr">Une erreur est survenue à l'écriture du fichier sur le serveur</message>
         <message id="write_error" lang="en">An error occured while writting the file on the server</message>
+        <message id="mimetype_error" lang="fr">Une erreur est survenue, le type de fichier soumit n'est pas valide</message>
+        <message id="mimetype_error" lang="en">An error occured because of an incorect filetype</message>
     </messages>
     
         <!-- update 2016/07/15 -->

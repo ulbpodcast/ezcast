@@ -649,6 +649,7 @@ body {
     float: left;
     width: 699px;
     min-height: 450px;
+    z-index: 800;
 }
 
 #site_map{

@@ -9,6 +9,7 @@ function index($param = array())
     global $accepted_media_types;
     global $upload_slice_size;
 
+
     $array = array();
     // 1) Sanity checks
     $title = trim($input['title']);

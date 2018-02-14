@@ -290,8 +290,11 @@ function streaming_init()
         else{           
             $str= (file_get_contents($working_dir));
             $today_streams = json_decode($str, true);
-            end($today_streams);         // move the internal pointer to the end of the array            
-            if (end($today_streams) == (count($externalClients)-1))
+            end($today_streams);         // move the internal pointer to the end of the array    
+            
+            file_put_contents($transcode_dir.'test.txt', " end today_streams : " .end($today_streams) . "&&&&&&   count external = ".((count($externalClients))-1));
+            
+            if (end($today_streams) == ((count($externalClients))-1))
                 $streamer=0;
             else 
                 $streamer = (end($today_streams))+1;   

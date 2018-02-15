@@ -77,6 +77,8 @@ $mailto_alert = "mail@your.organization"; //who to call in case of problem in th
  * - sso : SimpleSAMLphp
  */
 $auth_methods = array("file", "ldap");
+$sso_only=false; 
+$forbidden_users=array();                             
 
 $ldap_institution="";	//empty by default   "ucl" for ucl.					
 # JSON FILES FOR LDAP
@@ -135,6 +137,9 @@ $ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
 $video_split_time = 30; // Time in second to send information that user watch a video
 $display_trace_stats = false; // Display or not stat on ezmanager
 
+//Transcoding streaming video live  !!!!WARNING $repository_basedir has to be shared between the two servers && remote server must have right to write in "$repository_basedir/streamEncode"
+$transcodeStreaming=false;                                            
+$externalClients=array();        // use : $externalClients=array("user1@ip", "user2@ip")        !!!! ssh link must be establish between ezcast && those clients                                                                                            
 
 // -- Alternate server as streaming distribution source -- //
 
@@ -169,6 +174,8 @@ $max_album_label_size=50;
 
 $enable_anon_access_control = false; //Enable the user to choose if the album is accessible from anonym or not
 $default_anon_access = 'false'; //default value when a video is uploaded
+//dysplay the terms of use at the first connection or anonym
+$enable_termsOfUse=false;                      
 
 // If not in config simple
 if(basename(__FILE__) != "config-sample.inc") {

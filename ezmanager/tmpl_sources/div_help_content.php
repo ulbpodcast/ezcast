@@ -34,9 +34,9 @@
       <p>&nbsp;</p>
 
       <p>Ce tutoriel a pour objectif de vous permettre d’utiliser les fonctionnalités essentielles de l’interface de gestion des podcasts, de pouvoir publier vos productions ainsi que de répondre à vos questions. Si vous ne trouvez pas la réponse, contactez : <a href="mailto:<?php global $mailto_alert; echo $mailto_alert; ?>"><?php echo $mailto_alert; ?></a></p>
-      <p><br />
+     <!-- <p><br />
         Ce tutoriel existe au format .pdf ; vous pouvez le télécharger dans ¤tuto¤.</p>
-<p>&nbsp;</p>
+<p>&nbsp;</p>-->
 
       <h1><a href="javascript:visibilite('Help0');" >Présentation & concepts</a></h1>
 
@@ -56,12 +56,12 @@
 
  <div id="Help1" style="display:none;">
        <h2>Introduction</h2>
- <p>Cette section décrit la marche à suivre pour créer un album dans l’interface “EZmanager”.</p>
+ <p>Cette section décrit la marche à suivre pour créer un album dans l’interface “EZmanager�?.</p>
 <h2>Définitions</h2>
 <p> <strong>Album :</strong> un album est un regroupement de plusieurs enregistrements. Cet album correspond à un mnémonique de cours (exemple : BIME-I-101)</p>
 <p><strong>Album public / Album privé : </strong>lorsque vous créez un album lié à un cours, deux albums sont générés : l’un public, l’autre privé. Le premier sera l’album de diffusion auprès de vos étudiants et du public extérieur ; le second vous permettra de tester certains enregistrements, de recueillir vos enregistrements modérés avant de les publier dans l’album public, etc. </p>
 <h2>Marche à suivre</h2>
-<p><strong>1.</strong> Cliquez sur le bouton “<strong>Créer un album</strong>” en haut à gauche de l’interface.</p>
+<p><strong>1.</strong> Cliquez sur le bouton “<strong>Créer un album</strong>�? en haut à gauche de l’interface.</p>
 
 <div class="pic">
 <img src="./images/help/create_album_1.png"/>
@@ -86,7 +86,7 @@
 
  <div id="Help2" style="display:none;">
        <h2>Introduction</h2>
- <p>Cette section décrit la marche à suivre pour éditer les propriétés d’un album dans l’interface “EZmanager”.</p>
+ <p>Cette section décrit la marche à suivre pour éditer les propriétés d’un album dans l’interface “EZmanager�?.</p>
 <h2>Définitions</h2>
 <p><strong>Propriétés éditables d’un album : </strong>Les propriétés éditables d’un album ne sont autres que le générique et 
     le titrage. Le générique est une courte séquence animée ajoutée en début de vidéo. Le titrage est un condensé d’information 
@@ -111,11 +111,11 @@
 <div class="pic">
 <img src="./images/help/properties_2.png" /></div>
 
-<p><strong>3.</strong> Un menu déroulant apparaît. Sélectionnez l’entrée “<strong>Propriétés de l’album</strong>”.</p>
+<p><strong>3.</strong> Un menu déroulant apparaît. Sélectionnez l’entrée “<strong>Propriétés de l’album</strong>�?.</p>
 <div class="pic"><img src="./images/help/properties_3.png"/></div>
 <p><strong>4.</strong>Une boite de dialogue s’ouvre. Sélectionnez les propriétés que vous souhaitez appliquer à l’album au moyen 
     des <strong>listes déroulantes</strong> [1] et validez les modifications en cliquant sur 
-    le bouton “<strong>Envoyer changements</strong>” [2].</p> 
+    le bouton “<strong>Envoyer changements</strong>�? [2].</p> 
 <div ><img src="./images/help/properties_4.png"/></div>
 <p><strong>5.</strong> Après votre choix, une boîte de dialogue vous confirme la mise à jour effective des propriétés de l’album.</p>
 <div ><img src="./images/help/properties_5.png"/></div>
@@ -130,7 +130,7 @@
 <div id="Help3" style="display:none;">
 
        <h2>Introduction</h2>
- <p>Cette section décrit la marche à suivre pour supprimer un album dans l’interface “EZmanager”.</p>
+ <p>Cette section décrit la marche à suivre pour supprimer un album dans l’interface “EZmanager�?.</p>
 <h2>Définitions</h2>
 <p><strong>Supprimer un album : </strong>lorsque vous supprimez un album, cette action supprimera l’album public 
     <strong>et</strong> l’album privé ainsi que tous les podcasts associés à ces deux albums. <br/>
@@ -147,11 +147,11 @@
 <p><strong>2.</strong> Cliquez sur le <strong>petit engrenage</strong> qui s’affiche à l’extrême droite du nom de l’album.</p>
 <div class="pic"><img src="./images/help/delete_album_2.png"/></div>
 <p>&nbsp;</p>
-<p><strong>3.</strong> Un menu déroulant apparaît. Sélectionnez l’entrée “<strong>Supprimer l’album</strong>”.</p>
+<p><strong>3.</strong> Un menu déroulant apparaît. Sélectionnez l’entrée “<strong>Supprimer l’album</strong>�?.</p>
 <div class="pic"><img src="./images/help/delete_album_3.png"/></div>
 <p><strong>4. </strong>Une boîte de dialogue s’ouvre. Celle-ci vous informe que l’opération est destructive et non-réversible. 
-    Vous pouvez confirmer la suppression en cliquant sur “<strong>Ok</strong>” ou l’annuler en cliquant sur 
-    “<strong>Annuler</strong>”.</p>
+    Vous pouvez confirmer la suppression en cliquant sur “<strong>Ok</strong>�? ou l’annuler en cliquant sur 
+    “<strong>Annuler</strong>�?.</p>
 <div><img src="./images/help/delete_album_4.png"/></div>
 <p><strong>4.</strong> Après votre choix, une boîte de dialogue vous confirme la suppression effective de votre album.</p>
 <div ><img src="./images/help/delete_album_5.png"/></div>
@@ -181,23 +181,23 @@
 <p><strong>1. </strong>Sélectionnez l’album dans lequel vous souhaitez soumettre l’enregistrement.</p>
 <div class="pic"><img src="./images/help/submit_1.png"/></div>
 <p>&nbsp;</p>
-<p><strong>2.</strong> Cliquez sur l’onglet “<strong>Soumettre un enregistrement</strong>”.</p>
+<p><strong>2.</strong> Cliquez sur l’onglet “<strong>Soumettre un enregistrement</strong>�?.</p>
 <div class="pic">
 <img src="./images/help/submit_2.png" />
 </div>
 
-<p><strong>3.</strong> Une boîte de dialogue s’ouvre. Complétez les champs “<strong>Titre</strong>” (celui-ci apparaitra au 
-    début de la vidéo si vous n’avez pas modifié les options de titrage) et “<strong>Description</strong>” (pour décrire 
+<p><strong>3.</strong> Une boîte de dialogue s’ouvre. Complétez les champs “<strong>Titre</strong>�? (celui-ci apparaitra au 
+    début de la vidéo si vous n’avez pas modifié les options de titrage) et “<strong>Description</strong>�? (pour décrire 
     votre enregistrement).<br/>
-    Cliquez sur “<strong>Choisir</strong>” pour sélectionner, sur votre ordinateur, le fichier à soumettre.
+    Cliquez sur “<strong>Choisir</strong>�? pour sélectionner, sur votre ordinateur, le fichier à soumettre.
     <br />
-    Cliquez ensuite sur “<strong>Soumettre l’enregistrement</strong>”.</p>
+    Cliquez ensuite sur “<strong>Soumettre l’enregistrement</strong>�?.</p>
 <div><img src="./images/help/submit_3.png"/></div>
 <p><strong>4. </strong>Vous avez aussi accès à certaines options avancées. 
     <span class="red">Ces options ne devraient être utilisées que si l’utilisation de la vidéo soumise le justifie.</span><br/>
-    Cliquez sur “<strong>Options avancées</strong>” pour faire apparaître ces options.<br/>
+    Cliquez sur “<strong>Options avancées</strong>�? pour faire apparaître ces options.<br/>
     Sélectionnez le type de <strong>générique</strong> souhaité, ainsi que le <strong>titrage</strong> dans les listes déroulantes.
-    Cochez la case “<strong>Garder la qualité originale</strong>” si vous souhaitez soumettre la vidéo en qualité optimale 
+    Cochez la case “<strong>Garder la qualité originale</strong>�? si vous souhaitez soumettre la vidéo en qualité optimale 
     (le processus de traitement de la vidéo sera plus long).</p>
     <div class="pic"><img src="./images/help/submit_4.png"/></div>
 <p><strong>5. </strong>Lors de la soumission, vous pouvez vérifier l’état de chargement grâce à une barre de progression. </p>
@@ -211,9 +211,9 @@
 <p>Le <strong>triangle vert</strong> indique que l’enregistrement est en cours de traitement.</p>
 <div class="pic"><img src="./images/help/submit_7.png"/></div>
 <p>&nbsp;</p>
-<p>Si vous cliquez sur votre enregistrement (ici “10-12-12 I Capsule de Marjorie Castermans”), vous accédez à des informations 
+<p>Si vous cliquez sur votre enregistrement (ici “10-12-12 I Capsule de Marjorie Castermans�?), vous accédez à des informations 
     concernant votre enregistrement.<br />
-  La ligne “<strong>Statut</strong>” vous confirme que celui-ci est en cours de traitement.</p>
+  La ligne “<strong>Statut</strong>�? vous confirme que celui-ci est en cours de traitement.</p>
 <div class="pic"><img src="./images/help/submit_8.png" /></div>
 <p>Lorsque le traitement est terminé, le triangle devient grisé et la ligne statut disparaît.</p>
 <div class="pic"><img src="./images/help/submit_9.png"/></div>
@@ -243,19 +243,19 @@
   <br />
   <strong>B.</strong> Les informations disponibles à propos de l’enregistrement. <br />
   <strong>C.</strong> La vidéo (et le diaporama lorsque celui-ci est présent) vous permettant de revoir l’enregistrement et de le publier.  </p>
-<p>Nous allons ici traiter de la partie “A”. Pour la partie “C”, veuillez vous reporter à la section &quot;Publier un enregistrement&quot;.</p>
+<p>Nous allons ici traiter de la partie “A�?. Pour la partie “C�?, veuillez vous reporter à la section &quot;Publier un enregistrement&quot;.</p>
 <p>&nbsp;</p>
 <p><strong>3.</strong> Vous pouvez effectuer trois types de modification sur un enregistrement&nbsp;: la suppression, l’édition de certaines informations (titre et description) et le déplacement.</p>
 <div class="pic"><img src="./images/help/edit_3.png"/></div>
 <h2>Supprimer un enregistrement</h2>
 <p>1. Cliquez sur &quot;<strong>Supprimer</strong>&quot;.</p>
 <div class="pic"><img src="./images/help/edit_4.png" /></div>
-<p><strong>2. </strong>Cliquez sur “<strong>Ok</strong>” pour confirmer votre choix ou “<strong>Annuler</strong>” pour annuler la suppression de l’enregistrement.</p>
+<p><strong>2. </strong>Cliquez sur “<strong>Ok</strong>�? pour confirmer votre choix ou “<strong>Annuler</strong>�? pour annuler la suppression de l’enregistrement.</p>
 <div ><img src="./images/help/edit_5.png" /></div>
 <h2>Editer un enregistrement (titre &amp; description)</h2>
 <p><strong>1. </strong>Cliquez sur &quot;<strong>Editer</strong>&quot;.</p>
 <div class="pic"><img src="./images/help/edit_6.png" /></div>
-<p><strong>2. </strong>Le titre et la description deviennent modifiables. Pour les éditer, effectuez vos changements dans les boîtes de dialogue prévues à cet effet. Ensuite, cliquez sur “<strong>Envoyer changements</strong>” pour enregistrer vos modifications ou “<strong>Annuler</strong>” pour les annuler.</p>
+<p><strong>2. </strong>Le titre et la description deviennent modifiables. Pour les éditer, effectuez vos changements dans les boîtes de dialogue prévues à cet effet. Ensuite, cliquez sur “<strong>Envoyer changements</strong>�? pour enregistrer vos modifications ou “<strong>Annuler</strong>�? pour les annuler.</p>
 <p>&nbsp;</p>
 <div class="pic"><img src="./images/help/edit_7.png"/></div>
 <h2>Déplacer un enregistrement</h2>
@@ -265,7 +265,7 @@
 <p><strong>2. </strong>Une boîte de dialogue s’ouvre. Vous pouvez alors choisir l’album dans lequel vous souhaitez déplacer l’enregistrement.</p>
 <div class="pic"><img src="./images/help/edit_9.png" /></div>
 <p>&nbsp;</p>
-<p><strong>3.</strong> Vous avez également la possibilité d’utiliser le bouton de déplacement direct “<strong>Déplacer dans l’album public</strong>” – si votre enregistrement se trouve dans l’album privé – ou “<strong>Déplacer dans l’album privé</strong>” – si votre enregistrement se trouve dans l’album public.</p>
+<p><strong>3.</strong> Vous avez également la possibilité d’utiliser le bouton de déplacement direct “<strong>Déplacer dans l’album public</strong>�? – si votre enregistrement se trouve dans l’album privé – ou “<strong>Déplacer dans l’album privé</strong>�? – si votre enregistrement se trouve dans l’album public.</p>
 <div class="pic"><img src="./images/help/edit_10.png" /></div>
 <div class="pic"><img src="./images/help/edit_11.png" /></div>
 
@@ -293,7 +293,7 @@
 <div class="pic"><img src="./images/help/publish_2.png" /></div>
 <p>&nbsp;</p>
 <p><strong>3.</strong> Une boîte de dialogue s’ouvre et vous propose un lien. Ce lien est celui du flux RSS de l’album dans la qualité souhaitée. Vous pouvez le partager avec vos étudiants par l’intermédiaire de l’Université Virtuelle.</p>
-<p><strong>Note : </strong>Cliquez sur “<strong>Copier dans le presse-papier</strong>” pour copier le lien et pouvoir le coller ailleurs (dans l’université virtuelle par exemple). Vous êtes alors sûr de ne pas faire d’erreur lors de la copie du lien. </p>
+<p><strong>Note : </strong>Cliquez sur “<strong>Copier dans le presse-papier</strong>�? pour copier le lien et pouvoir le coller ailleurs (dans l’université virtuelle par exemple). Vous êtes alors sûr de ne pas faire d’erreur lors de la copie du lien. </p>
 <div><img src="./images/help/publish_3.png" /></div>
  </div>
 
@@ -314,10 +314,10 @@
 <p><strong>2.</strong> Cliquez sur le <strong>petit engrenage</strong> qui s’affiche à l’extrême droite du nom de l’album.</p>
 <div class="pic"><img src="./images/help/regenerate_2.png" /></div>
 <p>&nbsp;</p>
-<p><strong>3.</strong> Un menu déroulant apparaît. Sélectionnez l’entrée “<strong>Régénérer RSS</strong>”.</p>
+<p><strong>3.</strong> Un menu déroulant apparaît. Sélectionnez l’entrée “<strong>Régénérer RSS</strong>�?.</p>
 <div class="pic"><img src="./images/help/regenerate_3.png" /></div>
 <p>&nbsp;</p>
-<p><strong>4.</strong> Une boite de dialogue s’ouvre. Cliquez sur “<strong>Ok</strong>” pour confirmer votre choix ou “<strong>Annuler</strong>” pour annuler la suppression de l’enregistrement.</strong>”.</p>
+<p><strong>4.</strong> Une boite de dialogue s’ouvre. Cliquez sur “<strong>Ok</strong>�? pour confirmer votre choix ou “<strong>Annuler</strong>�? pour annuler la suppression de l’enregistrement.</strong>�?.</p>
 <div><img src="./images/help/regenerate_4.png" /></div>
 <p>&nbsp;</p>
 <p><strong>5.</strong> Une boite de dialogue confirme que le flux RSS a été effectivement régénéré.</p>
@@ -332,7 +332,7 @@
    <div id="Help8" style="display:none;">
 
        <h2>Introduction</h2>
- <p>Cette section décrit  la marche à suivre pour publier un enregistrement en téléchargement direct ou “embed code”.</p>
+ <p>Cette section décrit  la marche à suivre pour publier un enregistrement en téléchargement direct ou “embed code�?.</p>
 <h2>Définitions</h2>
 <p> <strong>Embed code : </strong>un embed code est un code HTML permettant de placer une vidéo qui s’exécutera automatiquement dans la fenêtre d’un navigateur Internet (à l’instar de Youtube). </p>
 <p><strong>Album :</strong> un album est un regroupement de plusieurs enregistrements. Cet album correspond à un mnémonique de cours (exemple : BIME-I-101) </p>
@@ -345,16 +345,16 @@
 <p><strong>2.</strong> Cliquez sur l’enregistrement à publier.</p>
 <div class="pic"><img src="./images/help/publish_record_2.png" /></div>
 
-<p><strong>3. </strong>Cliquez sur le volet “Publication” dans la partie de droite.</p>
+<p><strong>3. </strong>Cliquez sur le volet “Publication�? dans la partie de droite.</p>
 <div class="pic"><img src="./images/help/publish_record_3.png" /></div>
 <p><strong>4.</strong> Dans le menu déroulant qui s'affiche, deux types de publication sont possibles :</p>
-<p> <strong>A.</strong> La publication du fichier à télécharger par l’intermédiaire de l’onglet “<strong>Téléchargement</strong>”.
+<p> <strong>A.</strong> La publication du fichier à télécharger par l’intermédiaire de l’onglet “<strong>Téléchargement</strong>�?.
 Dans ce cas, le lien que vous allez publier permettra aux utilisateurs de télécharger directement le podcast selon le format (vidéo ou diaporama) et la qualité (basse ou haute) que vous aurez préalablement définis.</p>
 <div class="pic"><img src="./images/help/publish_record_4.png" /></div>
-<p> <strong>B. </strong>La publication “<strong>Embed</strong>” vous fournit un code HTML à placer sur une page web afin que la vidéo qui s’exécute automatiquement dans la fenêtre du navigateur Internet de l’utilisateur (à l’instar de Youtube). </p>
+<p> <strong>B. </strong>La publication “<strong>Embed</strong>�? vous fournit un code HTML à placer sur une page web afin que la vidéo qui s’exécute automatiquement dans la fenêtre du navigateur Internet de l’utilisateur (à l’instar de Youtube). </p>
 <div class="pic"><img src="./images/help/publish_record_5.png" /></div>
 
-<p><strong>4. </strong>Si vous souhaitez publier un fichier à télécharger, cliquez sur “<strong>Téléchargement</strong>”&nbsp;; si vous souhaitez publier un “Embed code”, cliquez sur “<strong>Embed</strong>”.</p>
+<p><strong>4. </strong>Si vous souhaitez publier un fichier à télécharger, cliquez sur “<strong>Téléchargement</strong>�?&nbsp;; si vous souhaitez publier un “Embed code�?, cliquez sur “<strong>Embed</strong>�?.</p>
 <div class="pic"><img src="./images/help/publish_record_6.png"/></div>
 <p><strong>5. </strong>Pour un type de publication comme pour l’autre, cliquez sur la qualité à que vous souhaitez fournir aux utilisateurs (haute ou basse résolution). Une boîte de dialogue s’ouvre, copiez dans votre presse-papier le lien fourni et partager-le (cfr. Section suivante).
 

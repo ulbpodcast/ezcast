@@ -49,12 +49,13 @@ $encoders_path = "$basedir/bin/encoders/";
 $encoding_pgm = array("name" => 'ffmpeg', "description" => 'ffmpeg command line', "file" => 'lib_ffmpeg.php');
 
 $accepted_video_sizes = array(
-    "16:9" => array(640, 960, 1024, 1280, 1366, 1600, 1920),
+    "16:9" => array( 640,854, 960, 1024, 1280, 1366, 1600, 1920),
     "4:3" => array(320, 640, 720, 800, 960, 1024, 1280, 1600, 1920)); //sizes of videos supported by the renderer (for user submited videos, they will be downsized to one of these sizes)
 $video_high_transcoders = array(
     "16:9" => array(
         'low' => 'libx264_low_640x360',
-        '640' => 'libx264_low_640x360',
+        '640' => 'libx264_medium_640x360',
+        '854' => 'libx264_medium_854x480',
         '960' => 'libx264_medium_960x540',
         '1024' => 'libx264_medium_1024x576',
         '1280' => 'libx264_medium_1280x720',

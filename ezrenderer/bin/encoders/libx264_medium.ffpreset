@@ -26,7 +26,9 @@ bufsize=2000k
 threads=0
 # ---------------------------------------
 # tells FFmpeg to encode audio to AAC using libfdk-aac library
-acodec=libfdk_aac
+# acodec=libfdk_aac
+# tells newer FFmpeg (2017 or later) to encode audio to AAC using builtin library
+acodec=aac
 # ---------------------------------------
 # sets audio bitrate in bits/s
 #b:a=127k

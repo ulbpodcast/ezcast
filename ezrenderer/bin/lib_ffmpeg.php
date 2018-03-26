@@ -248,7 +248,7 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
         // ih : image height
         // pad : letterboxing filter
         //  $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
-        $video_filter = "scale=iw*min($width/iw\,$height/(ih/$pixw*$pixh)):(ih/$pixw*$pixh)*min($width/iw\,$height/(ih/$pixw*$pixh)), pad=$width:$height:($width-iw)/2:($height-ih)/2";
+        $video_filter = "scale=min($width,iw):min($height,ih)force_original_aspect_ratio=decrease,pad=$width:$height:(ow-iw)/2:(oh-ih)/2";
     } else {
         $video_filter = "scale=$width:$height";
     }
@@ -271,8 +271,9 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
      * -y : overwrites movie if existing yet
      */
     $cmd = "$ffmpegpath -i $moviein -r 25 -fpre $encoder -vf \"$video_filter\" -ar 44100 -ac 2 -y -pix_fmt yuv420p $aac_codec $movieout";
-    exec($cmd, $cmdoutput, $returncode);
     print $cmd;
+    exec($cmd, $cmdoutput, $returncode);
+   
     //check returncode
     return $returncode;
     // if($returncode)return join ("\n", $cmdoutput);

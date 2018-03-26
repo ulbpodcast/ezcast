@@ -497,11 +497,11 @@ function ezmam_rss_generate($album, $type)
 
     // 2) We scan all the assets for the album
     $assets = ezmam_asset_list_metadata($album);
-
     foreach ($assets as $asset) {
         $metadata = $asset['metadata'];
 
-
+        if($metadata!==false){
+          //fileter out $asset['name'] has no metadata
         if ($type == 'ezplayer') {
             $ezplayer_link = $ezplayer_safe_url . '/index.php?action=view_asset_bookmark'
                     . '&album=' . $album
@@ -580,7 +580,7 @@ function ezmam_rss_generate($album, $type)
             }
         }
     }
-
+   }//endif metadata!==false
     // 3) We dump the result in a file
     $regfile = ezmam_repository_path() . '/' . $album . '/_rss_' . $type . '.xml';
     $res = file_put_contents($regfile, $xmlh->asXML());

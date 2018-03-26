@@ -159,9 +159,16 @@ function get_user_friendly_date($date, $space_char = '_', $long_months_names = t
 function get_RFC822_date($date)
 {
     //$date_array = date_parse_from_format('Y_m_d_H:i', $date);
-    list($year, $month, $day, $hourandminutes) = explode('_', $date);
-    list($hours, $minutes) = explode('h', $hourandminutes);
-    
+    $date_elements=explode('_', $date); 
+    if(count($date_elements)<4){
+      //we didn't get the right input (should be something like 2018_03_26_12h14_40s)
+      list($year, $month, $day, $hourandminutes) = array("0","1","1","00h00"); 
+      list($hours, $minutes) = array('0', '0');
+    }
+    else{
+      list($year, $month, $day, $hourandminutes) = $date_elements;
+      list($hours, $minutes) = explode('h', $hourandminutes);
+     } 
     //$date_array = date_parse('Y_m_d_H:i', $date);
     return date(DATE_RFC822, mktime(intval($hours), intval($minutes), '0', intval($month), intval($day), intval($year)));
 }

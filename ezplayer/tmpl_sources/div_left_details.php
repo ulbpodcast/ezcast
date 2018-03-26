@@ -69,7 +69,7 @@ switch (strtolower($_SESSION['browser_name'])) {
                 echo $course_code_public;
             } else {
                 echo suffix_remove($album);
-            } ?>) 
+            } ?> ) 
                 <?php  echo get_album_title($album); ?>
             </a>
         <?php
@@ -98,9 +98,8 @@ switch (strtolower($_SESSION['browser_name'])) {
             </div>
             <div class="shortcuts_tab"><a href="javascript:player_shortcuts_toggle();"></a></div>
         </div>
-
-        <?php if (acl_display_thread_notification()) {
-            ?>
+ 
+        <?php if (acl_display_thread_notification()) {  ?>           
             <script>
                 display_threads_notif = true;
             </script>
@@ -108,23 +107,15 @@ switch (strtolower($_SESSION['browser_name'])) {
                 <div class='notifications_title'><b>®Current_discussions®</b></div>
                 <div id='notifications'></div>
             </div>
-        <?php
-        } ?>
+        <?php  } ?>
+       
 
         <video id="main_video" poster="./images/Generale/¤poster¤-<?php echo get_lang(); ?>.jpg" controls 
                controlsList="nodownload" src="<?php echo $asset_meta['src']; ?>" preload="auto" type="video/mp4">
-            <source id="main_video_source"
-                    <?php if (array_key_exists('low_slide_src', $asset_meta)) {
-            ?>
-                    high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>"
-                    low_slide_src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>"
-                    <?php
-        } ?>
-                    <?php if (array_key_exists('low_cam_src', $asset_meta)) {
-            ?>
-                    high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>"
-                    low_cam_src="<?php echo $asset_meta['low_cam_src'] . '&origin=' . $appname; ?>"
-                    <?php
+            <source id="main_video_source" 
+                    <?php if (array_key_exists('low_slide_src', $asset_meta)) { ?> high_slide_src="<?php echo $asset_meta['high_slide_src'] . '&origin=' . $appname; ?>" low_slide_src="<?php echo $asset_meta['low_slide_src'] . '&origin=' . $appname; ?>"<?php } ?>
+        
+                    <?php if (array_key_exists('low_cam_src', $asset_meta)) { ?> high_cam_src="<?php echo $asset_meta['high_cam_src'] . '&origin=' . $appname; ?>" low_cam_src="<?php echo $asset_meta['low_cam_src'] . '&origin=' . $appname; ?>" <?php
         } ?>>  
         </video>
 

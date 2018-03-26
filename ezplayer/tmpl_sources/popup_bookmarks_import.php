@@ -46,8 +46,7 @@
     $source = (isset($asset) && ($asset != '')) ? 'details' : 'assets';
     foreach ($imported_bookmarks as $index => $bookmark) {
         // only display bookmarks that are related to the selected album and/or asset
-        if ($bookmark['album'] == $album
-                        && (!isset($asset) || ($asset == '') || $bookmark['asset'] == $asset)) {
+        if ($bookmark['album'] == $album && (!isset($asset) || ($asset == '') || $bookmark['asset'] == $asset)) {
             ++$count; ?>
                     <li>
                         <input style="float: left;" type="checkbox" name="import_selection[]" value="<?php echo $index ?>"/>

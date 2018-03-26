@@ -30,12 +30,11 @@ $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\
 ?>
 <span id="comment_<?php echo $comment['id']; ?>">
     <form action="index.php" method="POST">
-        <?php if ($comment['approval'] == '1') {
-    ?>
+        <?php if ($comment['approval'] == '1') { ?>
             <div class="ribbon-img inline-block pull-right"></div>
             <div class="orange-title sm"><?php echo mb_strtoupper("®Professor_approved®", "UTF-8") ?><i class="slash-sm orange"> // </i></div>
-        <?php
-} ?>
+        <?php } ?>
+
         <span class="comment_author" class="darkgray-label">
             <span style="font-style: italic; font-size: 11px;"><?php echo $comment['authorFullName']; ?></span> 
             <i class="slash item-thread-slash">//</i>
@@ -94,29 +93,25 @@ $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\
                 <div class="upvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '1');" ></div>
                 <label class="pull-left badge-score"><?php echo sprintf("%02s", $comment['score']); ?></label>
                 <div class="downvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '-1');"></div>
-                <?php if (acl_has_album_moderation($thread['albumName']) || acl_is_admin()) {
-        ?>
+                <?php if (acl_has_album_moderation($thread['albumName']) || acl_is_admin()) {  ?>                
                     <div style="padding-top: 5px;" class="copy-button <?php echo ($comment['approval'] == '0') ? '' : 'active' ?> inline-block" title="<?php echo ($comment['approval'] == '0') ? '®Answer_approval®' : '®Withdraw_approval®' ?>" onclick="javascript:thread_comment_approve(<?php echo $comment['id']; ?>)"></div>
-                <?php
-    } ?>
+                <?php } ?>
+                
             </div>
             <!-- --- END - VOTE -------------------------------- -->
 
             <div class="right-options">
                 <a class="button-empty green2 pull-right inline-block" onclick="javascript:comment_answer_form_show('<?php echo $comment['id']; ?>');">®Reply®</a>
-                <?php if ($_SESSION['user_login'] == $comment['authorId'] || acl_is_admin()) {
-        ?>
+                <?php if ($_SESSION['user_login'] == $comment['authorId'] || acl_is_admin()) { ?>        
                     <div class="inline-block">
                         <a class="edit-button green2 pull-right inline-block" title="®Edit_comment®" onclick="javascript:thread_comment_edit_form_prepare('<?php echo $comment['id']; ?>');"></a>
-                        <?php if (acl_is_admin()) {
-            ?>
+                        <?php if (acl_is_admin()) { ?>            
                             <a class="delete-button green2 pull-right inline-block" title="®Delete_comment®" href="javascript:popup_thread_comment('<?php echo $comment['id']; ?>', 'delete');"></a> 
-                        <?php
-        } ?>
+                        <?php } ?>
+       
                     </div>
-                    <?php
-    }
-                ?>      
+                <?php } ?>
+                    
             </div>
         </span>
         <br/>

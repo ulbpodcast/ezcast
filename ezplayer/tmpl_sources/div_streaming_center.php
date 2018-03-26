@@ -27,6 +27,9 @@
 <script>
     lvl = 3;
     ezplayer_mode = '<?php echo $_SESSION['ezplayer_mode']; ?>';
+    current_album='<?php echo $_SESSION['album']; ?>';
+   current_asset='<?php echo $_SESSION['asset']; ?>';
+    asset_token='<?php echo $_SESSION['asset_token']; ?>';
 
     history.pushState({"url": 'index.php?action=view_streaming&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');
 

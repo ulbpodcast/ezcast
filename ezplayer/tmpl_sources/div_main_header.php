@@ -80,8 +80,9 @@
         <?php
         } else {
         ?>
-            <a onclick="javascript:$('#popup_login').reveal($(this).data());" title="®Login_title®">
+            <a href="index.php?loging" title="®Login_title®">
                 <span class="anonym_login">®Login®</span>
+                
             </a>
         <?php
             } ?>       

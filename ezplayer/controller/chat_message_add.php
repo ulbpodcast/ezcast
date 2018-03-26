@@ -5,6 +5,10 @@
  * @global type $input
  * @return boolean
  */
+
+
+require_once(__DIR__."/../lib_streaming.php");
+
 function index($param = array())
 {
     global $input;
@@ -39,7 +43,7 @@ function index($param = array())
     $message = str_replace(PHP_EOL, '<br/>', $message); // TODO why not nl2br ?
     
     $record_date = $asset_meta['record_date'];
-    if ($album == '' || $message == '' || $record_date = '') {
+    if ($album == '' || $message == '' || $record_date == '') {
         return false;
     }
     
@@ -57,7 +61,7 @@ function index($param = array())
 
     cache_asset_chat_unset($album, $asset);
 
-    trace_append(array('3', 'chat_message_add', $album, $record_date, $timecode, $message));
-    requireController('asset_streaming_chat_get_last.php');
-    return asset_streaming_player_update();
+    trace_append(array('3', 'chat_message_add', $album, $record_date, $timecode, $message));  
+    asset_streaming_chat_get_last(true);
+    return asset_streaming_player_update(false);
 }

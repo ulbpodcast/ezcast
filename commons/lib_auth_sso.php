@@ -1,6 +1,8 @@
 <?php
 
 include_once dirname(__FILE__).'/config.inc';
+require_once __DIR__.'/../commons/lib_database.php';
+require_once __DIR__.'/../commons/lib_sql_management.php';
 
 
 /**
@@ -110,14 +112,19 @@ function sso_checkauth($login, $password)
 
     //Check if the User have the right to enter ezmanager, Even if he don't have any courses
     if (in_array("staff", $userinfo['group'])) {
-        $userinfo['ismanager'] = 'true';
+        global $db_object;
+        $userinfo['ismanager'] = 'true';        
+
+        //if is manager add user in table Users
+        $user = db_user_read($attributes[$sso_ssp_att_login][0]);
+        if (!$user) {
+            db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_firstname][0], $attributes[$sso_ssp_att_name][0], "", "0");        
+        }
     }
 
 
       
-    /*----------------END UCL METHOD------------------*/
-      
-      
+    /*----------------END UCL METHOD------------------*/   
       
       
       
@@ -126,7 +133,7 @@ function sso_checkauth($login, $password)
     //
     try {
         require_once __DIR__.'/../commons/lib_database.php';
-        global $db_object;
+        global $db_object;        
 
         db_prepare();
 
@@ -140,6 +147,7 @@ function sso_checkauth($login, $password)
             $reqSQL->bindParam(2, $attributes[$sso_ssp_att_firstname][0], PDO::PARAM_STR);
             $reqSQL->bindParam(3, $attributes[$sso_ssp_att_name][0], PDO::PARAM_STR);
             $reqSQL->bindParam(4, $attributes[$sso_ssp_att_email][0], PDO::PARAM_STR);
+            
         } else {
             $reqSQL = $db_object->prepare('UPDATE  ezcast_sso_users SET last_time=NOW() WHERE  user_ID=?');
             $reqSQL->bindParam(1, $attributes[$sso_ssp_att_login][0], PDO::PARAM_STR);

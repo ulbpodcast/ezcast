@@ -28,15 +28,14 @@
 <div class="header">
     <div class="header_content">
         <div class="logo"> 
-            <?php if (file_exists('./htdocs/images/Header/organization-logo.png')) {
-    ?>
+            <?php if (file_exists('./htdocs/images/Header/organization-logo.png')) { ?>    
                 <a href="<?php global $organization_url;
-    echo $organization_url; ?>"><img id="organisation_logo" src="./images/Header/organization-logo.png"/></a>
-<?php
-} ?>
+                echo $organization_url; ?>"><img id="organisation_logo" src="./images/Header/organization-logo.png"/></a>
+            <?php } ?>
+
             <?php
-            global $ezplayer_custom_logo;
-            $ezplayer_logo = !empty($ezplayer_custom_logo) ? "images/custom/$ezplayer_custom_logo" : "images/Header/LogoEZplayer.png"; //default value
+                global $ezplayer_custom_logo;
+                $ezplayer_logo = !empty($ezplayer_custom_logo) ? "images/custom/$ezplayer_custom_logo" : "images/Header/LogoEZplayer.png"; //default value
             ?>
             <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezplayer_logo; ?>" /></a>
         </div>      

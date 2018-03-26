@@ -107,9 +107,7 @@ $DTZ = new DateTimeZone('Europe/Paris');
                 <a class="button" tabindex='16' href="javascript: thread_edit_form_cancel(<?php echo $thread['id']; ?>);">®Cancel®</a>
             </div>
             <div class="submitButton">
-                <a class="button green2" tabindex='17' href="javascript: if(thread_edit_form_check(<?php 
-                    echo $thread['id']; ?>)) thread_edit_form_submit(<?php echo $thread['id']; ?>,'<?php 
-                    echo $thread['albumName']; ?>','<?php echo $thread['assetName']; ?>');">
+                <a class="button green2" tabindex='17' href="javascript: if(thread_edit_form_check(<?php echo $thread['id']; ?>)) thread_edit_form_submit(<?php echo $thread['id']; ?>,'<?php echo $thread['albumName']; ?>','<?php echo $thread['assetName']; ?>');">
                     ®Update®
                 </a>
             </div>

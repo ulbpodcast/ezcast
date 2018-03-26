@@ -865,8 +865,8 @@
     <infos>
 		<info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
 		<info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://podcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
 		<info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
 		<info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
 		<info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
@@ -886,15 +886,15 @@
 		
 		<info id="serveur_player" organization="© Université libre de Bruxelles" lang="fr">https://podcast.ulb.ac.be/ezplayer/</info>
 		<info id="serveur_player" organization="© Université libre de Bruxelles" lang="en">https://podcast.ulb.ac.be/ezplayer/</info>
-		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="fr">https://podcast.uclouvain.be/ezplayer/</info>
-		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="en">https://podcast.uclouvain.be/ezplayer/</info>
+		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="fr">https://ezcast.uclouvain.be/ezplayer/</info>
+		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="en">https://ezcast.uclouvain.be/ezplayer/</info>
 		<info id="serveur_player" organization="© Your organization name" lang="fr">https://podcast.ulb.ac.be/ezplayer/</info>
 		<info id="serveur_player" organization="© Your organization name" lang="en">https://podcast.ulb.ac.be/ezplayer/</info>		
 
 		<info id="tuto" organization="© Université libre de Bruxelles" lang="fr">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
 		<info id="tuto" organization="© Université libre de Bruxelles" lang="en">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Université Catholique de Louvain" lang="fr">http://podcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Université Catholique de Louvain" lang="en">http://podcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="fr">http://ezcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="© Université Catholique de Louvain" lang="en">http://ezcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
 		<info id="tuto" organization="© Your organization name" lang="fr">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
 		<info id="tuto" organization="© Your organization name" lang="en">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
 		

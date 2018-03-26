@@ -34,13 +34,11 @@ include_once 'lib_print.php';
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
 <a href="<?php echo $asset_meta['low_src']; ?>" 
-   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', 
-               current_album, current_asset, duration, 'low'));" class="simple-button">
+   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>',current_album, current_asset, duration, 'low'));" class="simple-button">
     ®low_res®
 </a>
 <a href="<?php echo $asset_meta['high_src']; ?>" 
-   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', 
-       current_album, current_asset, duration, 'high'));" class="simple-button">
+   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', current_album, current_asset, duration, 'high'));" class="simple-button">
     ®high_res®
 </a>
 

@@ -279,6 +279,12 @@ function statements_get()
                     'SELECT  * ' .
                     'FROM ' . db_gettable('streams') . ' ' .
                     'WHERE cours_id=:cours_id AND asset=:asset ',
+
+            'in_recorder_update' =>
+                'UPDATE ' . db_gettable('courses') . ' ' .
+                'SET in_recorders = :in_recorders ' .
+                'WHERE course_code = :course_code',
+        
     );
 }
 
@@ -1053,4 +1059,12 @@ function db_get_stream_info($cours_id, $asset)
     }
     
     return $infos;
+}
+function db_in_recorder_update($course,$value)
+{
+    global $statements;
+    $statements['in_recorder_update']->bindParam(':course_code', $course);
+    $statements['in_recorder_update']->bindParam(':in_recorders', $value);
+    
+    return $statements['in_recorder_update']->execute();
 }

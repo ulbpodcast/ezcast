@@ -248,7 +248,7 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
         // ih : image height
         // pad : letterboxing filter
         //  $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
-        $video_filter = "scale=min($width,iw):min($height,ih)force_original_aspect_ratio=decrease,pad=$width:$height:(ow-iw)/2:(oh-ih)/2";
+        $video_filter = "scale='min($width,iw):min($height,ih):force_original_aspect_ratio=decrease',pad='$width:$height:(ow-iw)/2:(oh-ih)/2'";
     } else {
         $video_filter = "scale=$width:$height";
     }

@@ -55,7 +55,7 @@
             <ul>
                 <?php
                 foreach ($assets_list as $index => $asset) {
-                    if ($asset['metadata']['status'] == 'processed') {
+                    if (isset($asset['metadata']['status']) && $asset['metadata']['status'] == 'processed') {
                         ?>
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 
@@ -68,7 +68,7 @@
                             </a>       
                         </li>
                         <?php
-                    } elseif ($asset['metadata']['origin'] == 'streaming') {
+                    } elseif (isset($asset['metadata']['origin']) && $asset['metadata']['origin'] == 'streaming') {
                         ?>
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 

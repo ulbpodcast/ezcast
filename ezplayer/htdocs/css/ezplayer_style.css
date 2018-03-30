@@ -785,7 +785,7 @@ body {
     position: relative;
     width: 699px;
     height: 566px;
-    z-index: 750;
+    z-index: 851;
     top: 0px;
     left: 0px;
     background: #000000;
@@ -2362,7 +2362,7 @@ body {
 
 #search{
     position: absolute;
-    z-index: 95;
+    z-index: 855;
     right: 0px;
     width: 228px;
     padding: 5px 3px;
@@ -2593,7 +2593,7 @@ body {
     min-height: 80px;
     top: 0px;
     right: 0px;
-    z-index: 800;
+    /*z-index: 800;*/
 }
 
 #side_menu{    

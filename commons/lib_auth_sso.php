@@ -20,7 +20,7 @@ function sso_checkauth($login, $password)
     global $sso_ssp_att_firstname;
     global $sso_ssp_att_email;
     global $sso_ssp_att_login;
- 
+
     if (!isset($_GET['sso'])) {
         return false;
     }
@@ -98,8 +98,9 @@ function sso_checkauth($login, $password)
 
 
     //IF idp error and everithing is null  ==> return "error"
-    if (!isset($attributes[$sso_ssp_att_name][0]) || !isset($attributes[$sso_ssp_att_firstname][0]) || !isset($attributes['eduPersonAffiliation']) || !isset($attributes[$sso_ssp_att_login][0]) || !isset($attributes[$sso_ssp_att_email][0])
-       || $attributes[$sso_ssp_att_name][0] =='' || $attributes[$sso_ssp_att_firstname][0] =='' || $attributes['eduPersonAffiliation'] == '' || $attributes[$sso_ssp_att_login][0] == '' || $attributes[$sso_ssp_att_email][0] =='') {
+    if (!isset($attributes[$sso_ssp_att_name][0])  || !isset($attributes['eduPersonAffiliation']) || !isset($attributes[$sso_ssp_att_login][0]) || !isset($attributes[$sso_ssp_att_email][0])
+       || $attributes[$sso_ssp_att_name][0] ==''  || $attributes['eduPersonAffiliation'] == '' || $attributes[$sso_ssp_att_login][0] == '' || $attributes[$sso_ssp_att_email][0] =='') {
+
         return 'error';
     }
 
@@ -191,23 +192,23 @@ function sso_logout()
  */
 function sso_getinfo($login)
 {
+
     try {
         require_once __DIR__.'/../commons/lib_database.php';
         global $db_object;
-
         db_prepare();
 
-        $reqSQL = $db_object->prepare('SELECT * FROM ezcast_sso_users WHERE user_ID=?');
-        $reqSQL->bindParam(1, $login, PDO::PARAM_STR);
+        $reqSQL = $db_object->prepare('SELECT * FROM ezcast_sso_users WHERE user_ID=:login');
+        $reqSQL->bindParam(":login", $login, PDO::PARAM_STR);
         $reqSQL->execute();
-
-        if ($reqSQL->rowCount() != 1) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
+        if ($reqSQL->rowCount() == 1) {
+            $row = $reqSQL->fetch(PDO::FETCH_ASSOC);
             $userinfo['full_name'] = $row['surname']." ".$row['forename'];
             $userinfo['email'] = $row['email'];
             $userinfo['login'] = $row['user_ID'];
             $userinfo['real_login'] = $userinfo['login'];
+
         } else {
             checkauth_last_error("wrong search result count:" . $reqSQL->rowCount());
             return false;

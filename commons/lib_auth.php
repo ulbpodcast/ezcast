@@ -55,15 +55,19 @@ function checkauth($login, $passwd)
     
     $auth_methods_length = count($auth_methods);
     $login = trim($login);
-    
-    if(!in_array($login, $forbidden_users)){
 
+    
+
+            
+    if(!in_array($login, $forbidden_users)){
 
         //check if runas admin login
         $login_parts = explode("/", $login);
 
+        
         //simple login
         if (count($login_parts) == 1) {
+
             $index = 0;
             $auth_user = false;
             // authenticates user (fallback on every available methods)
@@ -80,6 +84,7 @@ function checkauth($login, $passwd)
             return $auth_user;
             // admin run as login
         } else {
+
             array_push($auth_methods, 'file');
             $auth_methods_length++;
             

@@ -470,7 +470,8 @@ function streaming_content_add()
             // places the file (.ts segment from HTTP request) in the webspace         
           
             //transcode streaming directly to be able to record h265 and difuse h254
-            if($transcodeStreaming){
+            if($transcodeStreaming && $input['module_type']!="slide" ){
+//                file_put_contents("/usr/local/ezcast/ezmanager/web_request/test.txt", json_encode($input));
                 $transcodeDir=$repository_basedir.'/streamEncode/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
                 if (!is_dir($transcodeDir)) {
                     mkdir($transcodeDir, 0775, true);
@@ -511,7 +512,12 @@ function streaming_content_add()
                     //transcode and put the output at the original place to be played
                     exec("ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1  -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28  ".$outputFile." && rm ".$transfile." ");
                 }                
-            }      
+            }
+            else {
+                if (move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $uploadfile)) {
+                    echo "File is valid, and was successfully uploaded.\n";
+                }
+            }
             
             
 

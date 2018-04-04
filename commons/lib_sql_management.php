@@ -223,7 +223,7 @@ function statements_get()
 
             'user_create' =>
                     'INSERT INTO ' . db_gettable('users') . '(user_ID, surname, forename, recorder_passwd, permissions, origin) ' .
-                    'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, \'internal\')',
+                    'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, :origin)',
 
             'user_delete' =>
                     'DELETE FROM ' . db_gettable('users') . ' ' .
@@ -831,7 +831,7 @@ function db_found_rows()
     return intval($res[0]);
 }
 
-function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions)
+function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions,$origin='internal')
 {
     global $statements;
     $lowered_user_id = strtolower($user_ID);
@@ -839,6 +839,7 @@ function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permis
     $statements['user_create']->bindParam(':surname', $surname);
     $statements['user_create']->bindParam(':forename', $forename);
     $statements['user_create']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_create']->bindParam(':origin', $origin);
     $statements['user_create']->bindParam(':permissions', $permissions);
     return $statements['user_create']->execute();
 }

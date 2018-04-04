@@ -119,7 +119,7 @@ function sso_checkauth($login, $password)
     // add user in table Users
     $user = db_user_read($attributes[$sso_ssp_att_login][0]);
     if (!$user) {
-        db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_firstname][0], $attributes[$sso_ssp_att_name][0], "", "0");
+        db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_name][0] ,$attributes[$sso_ssp_att_firstname][0] , "", "0","SSO");
         $userinfo['termsOfUses'] = 0;
     }
     else
@@ -148,8 +148,8 @@ function sso_checkauth($login, $password)
         if ($reqSQL->rowCount() == 0) {
             $reqSQL = $db_object->prepare('INSERT INTO ezcast_sso_users (user_ID,surname,forename,email,first_time,last_time) VALUES (?,?,?,?,NOW(),NOW())');
             $reqSQL->bindParam(1, $attributes[$sso_ssp_att_login][0], PDO::PARAM_STR);
-            $reqSQL->bindParam(2, $attributes[$sso_ssp_att_firstname][0], PDO::PARAM_STR);
-            $reqSQL->bindParam(3, $attributes[$sso_ssp_att_name][0], PDO::PARAM_STR);
+            $reqSQL->bindParam(2, $attributes[$sso_ssp_att_name][0], PDO::PARAM_STR);
+            $reqSQL->bindParam(3, $attributes[$sso_ssp_att_firstname][0], PDO::PARAM_STR);
             $reqSQL->bindParam(4, $attributes[$sso_ssp_att_email][0], PDO::PARAM_STR);
             
         } else {

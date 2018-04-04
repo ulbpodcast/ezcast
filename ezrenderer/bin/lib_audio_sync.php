@@ -3,6 +3,7 @@
 function get_wav_from_video($input, $output/*,$asset_name*/)
 {
 	global $ffmpegpath;	    
+    //We need to cut the movie to have the correct audio file, otherwhise we have a key-frame issue who leeds to an error in the synchronisation operation.
     exec( $ffmpegpath.' -ss 00:00:00 -i '.$input.' -vcodec copy -acodec copy '.$input.'_temp1.mov', $err, $return);    
     exec($ffmpegpath." -ss 00:00:00 -i ".$input."_temp1.mov -map 0:1 -acodec pcm_s16le -ac 2 -ar 44100 ".$output, $err, $return);
 	return $return;

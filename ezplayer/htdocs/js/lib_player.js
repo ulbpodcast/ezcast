@@ -1095,6 +1095,7 @@ function player_bookmarks_panel_show() {
         $('#video_notifications').addClass('panel-active');
     } else {
         $('#div_right').css('height', '652px');
+        $('#div_right').css('display','block');
         $('video, .video_controls, #bookmark_form, #thread_form, #video_player,#main_player').animate({
             width: '699px'
         });
@@ -1121,6 +1122,7 @@ function player_bookmarks_panel_hide() {
         });
     } else {
         $('#div_right').css('overflow', 'hidden');
+        $('#div_right').css('display','none');
         $('video, .video_controls, #bookmark_form, #thread_form, #video_player, #main_player').animate({
             width: '930px'
         });

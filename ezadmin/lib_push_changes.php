@@ -193,6 +193,7 @@ function push_admins_to_recorders_ezmanager(&$failed_cmd = array())
     global $ezmanager_subdir;
     global $ezplayer_basedir;
     global $ezplayer_subdir;
+    global $recorder_array;
 
     $success = true;
     
@@ -217,8 +218,8 @@ function push_admins_to_recorders_ezmanager(&$failed_cmd = array())
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 '.__DIR__.'/var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' .
-                    $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 '.__DIR__.'/var/admin.inc ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] . ':' .
+                    $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
             exec($cmd, $output, $return_var);
         }
     }
@@ -266,6 +267,7 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     global $recorder_basedir;
     global $recorder_subdir;
     global $recorder_password_storage_enabled;
+    global $recorder_array;
         
     if (!db_ready()) {
         $statements = statements_get();
@@ -306,15 +308,15 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' .
-                    $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/htpasswd ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] . ':' .
+                    $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
                 $error = true;
             }
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/courselist.php ' . $recorder_user . '@' . $c['IP'] .
-                    ':' . $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/courselist.php ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] .
+                    ':' . $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);

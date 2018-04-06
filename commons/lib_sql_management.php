@@ -184,7 +184,8 @@ function statements_get()
                     'WHERE enabled = 1',
 
             'classrooms_list' =>
-                    'SELECT room_ID, name, IP, IP_remote ' .
+                    'SELECT room_ID, name, IP, IP_remote, ' .
+                    'user_name, base_dir, sub_dir '.
                     'FROM ' . db_gettable('classrooms'),
         
             'classrooms_from_name_get_ip' =>
@@ -254,8 +255,8 @@ function statements_get()
                     'VALUES (NOW(), :table, :message, :author)',
 
             'classroom_create' =>
-                    'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, ip_remote, enabled) ' .
-                    'VALUES (:room_ID, :name, :ip, :ip_remote, :enabled)',
+                    'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, ip_remote, user_name, base_dir, sub_dir, enabled) ' .
+                    'VALUES (:room_ID, :name, :ip, :ip_remote, :user_name, :base_dir, :sub_dir, :enabled)',
 
             'unlink_course' =>
                     'DELETE FROM ' . db_gettable('users_courses') . ' ' .
@@ -973,13 +974,16 @@ function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $
     return $db_object->query($fullQuery);
 }
 
-function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled)
+function db_classroom_create($room_ID, $name, $ip, $ip_remote, $user_name, $base_dir, $sub_dir, $enabled)
 {
     global $statements;
     $statements['classroom_create']->bindParam(':room_ID', $room_ID);
     $statements['classroom_create']->bindParam(':name', $name);
     $statements['classroom_create']->bindParam(':ip', $ip);
     $statements['classroom_create']->bindParam(':ip_remote', $ip_remote);
+    $statements['classroom_create']->bindParam(':user_name', $user_name);
+    $statements['classroom_create']->bindParam(':base_dir', $base_dir);
+    $statements['classroom_create']->bindParam(':sub_dir', $sub_dir);
     $statements['classroom_create']->bindParam(':enabled', $enabled);
     return $statements['classroom_create']->execute();
 }

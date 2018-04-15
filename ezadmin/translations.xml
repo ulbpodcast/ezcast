@@ -398,6 +398,8 @@
         <label id="renderer_load" lang="en">Load</label>
         <label id="renderer_threads" lang="fr">Threads/job</label>
         <label id="renderer_threads" lang="en">Threads/job</label>
+        <label id="renderer_enable_error" lang="fr">Impossible d'activer le renderer</label>
+        <label id="renderer_enable_error" lang="en">Could not activate the renderer</label>
         <label id="finished_on" lang="fr">Job terminé: </label>
         <label id="finished_on" lang="en">Finished on</label>
         <label id="sent_on" lang="fr">Job envoyé: </label>

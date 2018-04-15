@@ -85,7 +85,7 @@ require_once 'config.inc';
 
                         if (data.error) {
                             if (data.error == '1')
-                                alert("®room_enable_error®");
+                                alert("®renderer_enable_error®");
                             return;
                         }
 

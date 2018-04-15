@@ -6,8 +6,8 @@
  */
 include_once 'config.inc';
 
-if ($encoding_pgm['name'] == 'ffmpeg_exp') {
-    $aac_experimental = true;
+if ($encoding_pgm['name'] == 'ffmpeg_built_in_aac') {
+    $built_in_aac = true;
 }
 
 /**
@@ -217,7 +217,7 @@ function movie_qtinfo($moviein, &$qtinfo)
  */
 function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = true)
 {
-    global $ffmpegpath, $encoders_path, $aac_experimental;
+    global $ffmpegpath, $encoders_path, $built_in_aac;
     // sanity check
     if (!is_file($moviein)) {
         return "input movie not found $moviein";
@@ -259,8 +259,8 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
     }
 
     $aac_codec = "";
-    if ($aac_experimental) {
-        $aac_codec = ' -acodec aac -strict experimental ';
+    if ($built_in_aac) {
+        $aac_codec = ' -acodec aac ';
         // overwrites audio codec from encoders file
     }
     /**
@@ -339,7 +339,7 @@ function movie_annotate($moviein, $movieout, $title, $comment, $description, $au
  */
 function movie_title($movieout, $title_elements, $encoder, $duration = 8)
 {
-    global $ffmpegpath, $fontfile, $encoders_path, $aac_experimental;
+    global $ffmpegpath, $fontfile, $encoders_path, $built_in_aac;
 
     $movieout = escape_path($movieout);
 
@@ -408,8 +408,8 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8)
     }
 
     $aac_codec = "";
-    if ($aac_experimental) {
-        $aac_codec = ' -acodec aac -strict experimental ';
+    if ($built_in_aac) {
+        $aac_codec = ' -acodec aac ';
         // overwrites audio codec from encoders file
     }
 
@@ -453,7 +453,7 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8)
  */
 function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8)
 {
-    global $ffmpegpath, $encoders_path, $aac_experimental;
+    global $ffmpegpath, $encoders_path, $built_in_aac;
 
     $movieout = escape_path($movieout);
 
@@ -475,8 +475,8 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8)
     $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
 
     $aac_codec = "";
-    if ($aac_experimental) {
-        $aac_codec = ' -acodec aac -strict experimental ';
+    if ($built_in_aac) {
+        $aac_codec = ' -acodec aac ';
         // overwrites audio codec from encoders file
     }
 

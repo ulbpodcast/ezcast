@@ -68,7 +68,7 @@ function test_php()
     }
 }
 
-function test_ffmpeg($aac_experimental = false)
+function test_ffmpeg($built_in_aac = true)
 {
     global $ffmpegpath;
     
@@ -84,7 +84,7 @@ function test_ffmpeg($aac_experimental = false)
             die;
         } else {
             // Test FFMPEG codecs
-            $aac_codec = ($aac_experimental) ? 'aac' : 'libfdk_aac';
+            $aac_codec = ($built_in_aac) ? 'aac' : 'libfdk_aac';
             $output = exec("$ffmpegpath -codecs | grep '$aac_codec'");
             if (strpos(strtoupper($output), 'AAC') === false) {
                 echo "missing_codec_aac";
@@ -118,8 +118,8 @@ function test_ffprobe()
 }
 
 test_php();
-if ($encoding_pgm['name'] == 'ffmpeg' || $encoding_pgm['name'] == 'ffmpeg_exp') {
+if ($encoding_pgm['name'] == 'ffmpeg' || $encoding_pgm['name'] == 'ffmpeg_built_in_aac') {
     test_ffprobe();
-    test_ffmpeg($encoding_pgm['name'] == 'ffmpeg_exp');
+    test_ffmpeg($encoding_pgm['name'] == 'ffmpeg_built_in_aac');
 }
 echo "test ok";

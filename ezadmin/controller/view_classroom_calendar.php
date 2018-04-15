@@ -14,7 +14,7 @@ function index($param = array())
     $error_asset = array('Error_date' => array(),
                         'Error_time' => array());
     $max_count = 0;
-    $MIN_TIME_RECORD = 180; // minum time of a record (in second)
+    $MIN_TIME_RECORD = 180; // min time of a record (in second)
 
     
     $START_HOUR = 11; // must be divided by 2

@@ -2,8 +2,7 @@
 
 $ssh_timeout;
 
-function index($param = array())
-{
+function index($param = array()){
     global $input;
     global $ssh_public_key;
     global $apache_username;
@@ -72,8 +71,7 @@ function index($param = array())
     //   notify_changes();
 }
 
-function stepOne()
-{
+function stepOne(){
     global $_SESSION;
     global $input;
     global $ssh_pub_key_location;
@@ -104,12 +102,11 @@ function stepOne()
 
         // retrieves the ssh key to display
         if ($ssh_pub_key_location == "") {
-            $ssh_pub_key_location = "~$apache_username/.ssh/*.pub";
+             $ssh_pub_key_location = '~/.ssh/id_rsa.pub';
         }
-        $ssh_public_key = exec("cat $ssh_pub_key_location");
-
+        $ssh_public_key = shell_exec("bash -c 'cat $ssh_pub_key_location'");
         // ssh public key not found
-        if ($ssh_public_key == "") {
+        if ($ssh_public_key===false || $ssh_public_key == "") {
             $ssh_public_key = "Key not found ! &#10;&#10;You can specify the path to Apache user's "
                 . "SSH public key by assigning a value to \$ssh_pub_key_location in commons/config.inc.";
         }
@@ -131,8 +128,7 @@ function stepOne()
     die;
 }
 
-function stepTwo()
-{
+function stepTwo(){
     global $_SESSION;
     global $input;
     global $ssh_public_key;
@@ -159,10 +155,12 @@ function stepTwo()
             $input['renderer_php'] = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"which php\"");
             $input['renderer_php'] = ($input['renderer_php'] == "") ? "PHP binary not found !" : $input['renderer_php'];
             $input['renderer_root_path'] = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"echo ~" . $_SESSION['renderer_user'] . "\"/ezrenderer");
-            $input['renderer_ffmpeg'] = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"echo `which ffmpeg`\"");
+            $input['renderer_ffmpeg'] = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"which ffmpeg\"");
             $input['renderer_ffmpeg'] = ($input['renderer_ffmpeg'] == "") ? "FFMPEG binary not found !" : $input['renderer_ffmpeg'];
-            $input['renderer_ffprobe'] = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"echo `which ffprobe`\"");
+            $input['renderer_ffprobe'] = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"which ffprobe\"");
             $input['renderer_ffprobe'] = ($input['renderer_ffprobe'] == "") ? "FFPROBE binary not found !" : $input['renderer_ffprobe'];
+            $input['renderer_rsync'] = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $_SESSION['renderer_user'] . "@" . $_SESSION['renderer_address'] . " \"which rsync\"");
+            $input['renderer_rsync'] = ($input['renderer_rsync'] == "") ? "RSYNC binary not found !" : $input['renderer_rsync'];
             $input['renderer_num_threads'] = 4;
             $input['renderer_num_jobs'] = 4;
 
@@ -179,6 +177,9 @@ function stepTwo()
         } elseif ($res == "keyscan_error") {
             // SSH public key from remote renderer is not in known_hosts yet
             $error = template_get_message('ssh_keyscan_error', get_lang());
+        } elseif ($res == "hostname_error") {
+            // SSH public key from remote renderer is not in known_hosts yet
+            $error = template_get_message('ssh_hostname_error', get_lang());
         }
         include template_getpath('div_main_header.php');
         include template_getpath('div_create_renderer_step2.php');
@@ -187,14 +188,12 @@ function stepTwo()
     }
 }
 
-function stepThree()
-{
+function stepThree(){
     global $_SESSION;
     global $input;
     global $ssh_public_key;
     global $ssh_timeout;
     global $renderers_options;
-    global $display_ffmpeg_exp;
     
     if (isset($input['submit_step_3_prev']) && $input['submit_step_3_prev']) {
         // back to step 2
@@ -208,6 +207,7 @@ function stepThree()
         $renderer_root_path = $input['renderer_root_path'];
         $renderer_option = $input['renderer_options'];
         $renderer_php = $input['renderer_php'];
+        $renderer_rsync = $input['renderer_rsync'];
         $renderer_ffmpeg = $input['renderer_ffmpeg'];
         $renderer_ffprobe = $input['renderer_ffprobe'];
         $renderer_num_jobs = $input['renderer_num_jobs'];
@@ -225,6 +225,8 @@ function stepThree()
             $error = template_get_message('missing_renderer_ffmpeg', get_lang());
         } elseif (empty($renderer_ffprobe) || $renderer_ffprobe == "FFPROBE binary not found !") {
             $error = template_get_message('missing_renderer_ffprobe', get_lang());
+        } elseif (empty($renderer_rsync) || $renderer_rsync == "RSYNC binary not found !") {
+            $error = template_get_message('missing_renderer_rsync', get_lang());
         }
 
         if ($error != "") {
@@ -261,15 +263,14 @@ function stepThree()
             }
 
             // verification for FFMPEG
-            if ($renderer_option == 'ffmpeg' || $renderer_option == 'ffmpeg_exp') {
-                $res = test_ffmpeg_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_ffmpeg, $renderer_option == 'ffmpeg_exp');
+            if ($renderer_option == 'ffmpeg_fdk_aac' || $renderer_option == 'ffmpeg_built_in_aac') {
+                $res = test_ffmpeg_over_ssh($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout, $renderer_ffmpeg, $renderer_option == 'ffmpeg_built_in_aac');
                 switch ($res) {
                     case "ffmpeg_not_found":
                         $error .= "- " . template_get_message('ffmpeg_not_found', get_lang()) . "<br/>";
                         break;
                     case "missing_codec_aac":
                         $error .= "- " . template_get_message('missing_codec_aac', get_lang()) . "<br/>";
-                        $display_ffmpeg_exp = true; // used in div_create_renderer_step3.php
                         break;
                     case "missing_codec_h264":
                         $error .= "- " . template_get_message('missing_codec_h264', get_lang()) . "<br/>";
@@ -300,6 +301,7 @@ function stepThree()
         }
         $_SESSION['renderer_root_path'] = $renderer_root_path;
         $_SESSION['renderer_php'] = $renderer_php;
+        $_SESSION['renderer_rsync'] = $renderer_rsync;
         $_SESSION['renderer_option'] = $renderers_options[$renderer_option];
         $_SESSION['renderer_ffmpeg'] = $renderer_ffmpeg;
         $_SESSION['renderer_ffprobe'] = $renderer_ffprobe;
@@ -315,25 +317,21 @@ function stepThree()
     }
 }
 
-function stepFour()
-{
+function stepFour(){
     global $_SESSION;
     global $input;
-    global $display_ffmpeg_exp;
     global $ssh_timeout;
     global $basedir;
     global $output;
     
     $input['renderer_root_path'] = $_SESSION['renderer_root_path'];
     $input['renderer_php'] = $_SESSION['renderer_php'];
+    $input['renderer_rsync'] = $_SESSION['renderer_rsync'];
     $input['renderer_ffmpeg'] = $_SESSION['renderer_ffmpeg'];
     $input['renderer_ffprobe'] = $_SESSION['renderer_ffprobe'];
     $input['renderer_num_jobs'] = $_SESSION['renderer_num_jobs'];
     $input['renderer_num_threads'] = $_SESSION['renderer_num_threads'];
     $input['renderer_options'] = $_SESSION['renderer_option']['name'];
-    if ($input['renderer_options'] == 'ffmpeg_exp') {
-        $display_ffmpeg_exp = true;
-    }
 
     if (isset($input['submit_step_4_prev']) && $input['submit_step_4_prev']) {
         // back to step 3
@@ -396,7 +394,7 @@ function stepFour()
 
         if ($input['installation_step'] == 3) {
             // Adds the renderer to renderers.inc files of EZmanager and EZadmin
-            if (!add_renderer_to_file($_SESSION['renderer_name'], $_SESSION['renderer_address'], $_SESSION['renderer_user'], $_SESSION['renderer_enabled'], $_SESSION['renderer_root_path'], $_SESSION['renderer_php'])) {
+            if (!renderer_add($_SESSION['renderer_name'], $_SESSION['renderer_address'], $_SESSION['renderer_user'], $_SESSION['renderer_enabled'], $_SESSION['renderer_root_path'], $_SESSION['renderer_php'])) {
                 // an error occured while updating renderers.inc
                 $response['error'] = true;
                 $response['msg'] = "<div class='red'>" . template_get_message('renderer_update_failed', get_lang()) . "</div>";
@@ -404,13 +402,10 @@ function stepFour()
                 die;
             } else {
                 // renderers.inc files have been updated
-                if (push_renderers_to_ezmanager()) {
+                
                     echo json_encode("<div class='green'>" . template_get_message('load_step_4_update_success', get_lang()) . "</div>");
                     die;
-                } else {
-                    echo json_encode("<div class='red'>" . template_get_message('load_step_4_update_failed', get_lang()) . "</div>");
-                    die;
-                }
+                 
             }
         }
     }

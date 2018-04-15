@@ -74,6 +74,8 @@
         <label id="new_recorder_admin" lang="en">Add admin</label>
         <label id="renderers_queue" lang="fr">Liste de jobs</label>
         <label id="renderers_queue" lang="en">Job queue</label>
+         <label id="renderers_log" lang="fr">Derniers messages</label>
+        <label id="renderers_log" lang="en">Latest logs</label>
         <label id="renderers_list" lang="fr">Liste renderers</label>
         <label id="renderers_list" lang="en">Renderers list</label>
         <label id="processing_stats" lang="fr">Traitements</label>
@@ -817,7 +819,7 @@
             &lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
         <label id="create_renderer_step_2_message" lang="fr">Ajoutez la &lt;b&gt;clé publique&lt;/b&gt; affichée ci-dessous sur le serveur 
             distant (renderer) dans &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt; 
-            et cliquez sur "Continuer" pour tester la connexion SSH.</label>
+            et cliquez sur "Suivant" pour tester la connexion SSH.</label>
         <label id="create_renderer_step_2_message" lang="en">Add the following &lt;b&gt;public key&lt;/b&gt; in 
             &lt;b&gt;~&lt;?php echo $_SESSION['renderer_user'];?&gt;/.ssh/authorized_keys&lt;/b&gt;on the remote server (renderer) 
             and click "Continue" to test the SSH connection.</label>
@@ -1057,6 +1059,8 @@
         <message id="missing_renderer_ffmpeg" lang="en">The FFMPEG binary cannot be blank</message>
         <message id="missing_renderer_ffprobe" lang="fr">Le binaire FFPROBE doit être renseigné.</message>
         <message id="missing_renderer_ffprobe" lang="en">The FFPROBE binary cannot be blank</message>
+        <message id="missing_renderer_rsync" lang="fr">Le binaire rsync doit être renseigné.</message>
+        <message id="missing_renderer_rsync" lang="en">The rsync binary cannot be blank</message>
         <message id="php_not_found" lang="fr">Le binaire PHP n'a pas été trouvé sur le serveur distant (renderer).</message>
         <message id="php_not_found" lang="en">PHP binary could not be found on the remote server (renderer).</message>
         <message id="php_deprecated" lang="fr">La version PHP installée sur le serveur distant (renderer) n'est pas supportée. (Minimum 
@@ -1070,9 +1074,9 @@
         <message id="missing_freetype" lang="en">FreeType is not enabled for GD module (PHP) on the remote server (renderer).</message>
         <message id="ffmpeg_not_found" lang="fr">Le binaire FFMPEG n'a pas été trouvé sur le serveur distant (renderer).</message>
         <message id="ffmpeg_not_found" lang="en">FFMPEG binary could not be found on the remote server (renderer).</message>
-        <message id="missing_codec_aac" lang="fr">Le codec AAC (libfdk_aac) n'est pas installé pour FFMPEG (sélectionnez 'FFMPEG experimental 
+        <message id="missing_codec_aac" lang="fr">Le codec AAC (libfdk_aac) n'est pas installé pour FFMPEG (sélectionnez 'FFMPEG built-in 
             mode (AAC)' pour continuer sans le codec libfdk_aac)</message>
-        <message id="missing_codec_aac" lang="en">AAC codec (libfdk_aac) is not installed for FFMPEG. Select 'FFMPEG experimental mode 
+        <message id="missing_codec_aac" lang="en">AAC codec (libfdk_aac) is not installed for FFMPEG. Select 'FFMPEG built-in mode 
             (AAC)' to continue without libfdk_aac codec.</message>
         <message id="missing_codec_h264" lang="fr">Le codec H.264 (libx264) n'est pas installé pour FFMPEG</message>
         <message id="missing_codec_h264" lang="en">H.264 codec (libx264) is not installed for FFMPEG</message>
@@ -1089,6 +1093,8 @@
             'known_hosts'.</message>
         <message id="ssh_known_hosts_error" lang="en">Could not add SSH public key from remote server (renderer) to the 
             'known_hosts' file.</message>
+            <message id="ssh_hostname_error" lang="fr">l'adresse du renderer est incorrete</message>
+        <message id="ssh_hostname_error" lang="en">Incorrect renderer address</message>
         <message id="ssh_connection_failed" lang="fr">Impossible d'établir une connection SSH avec le serveur distant (renderer) 
             &lt;?php echo $_SESSION['renderer_address'];?&gt;. Vérifiez que l'adresse du renderer et le nom d'utilisateur sont corrects et 
             que vous avez bien copié la clé SSH dans le fichier 'authorized_keys' du renderer.</message>

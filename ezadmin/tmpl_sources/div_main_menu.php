@@ -71,6 +71,10 @@ $options['Renderers'] = array(
         'action' => 'view_queue'
     ),
     array(
+        'name' => '®renderers_log®',
+        'action' => 'view_renderer_logs'
+    ),
+    array(
         'name' => '®renderers_list®',
         'action' => 'view_renderers'
     ),

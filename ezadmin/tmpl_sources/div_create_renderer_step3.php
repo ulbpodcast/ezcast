@@ -51,15 +51,19 @@
                 <input type="text" class="form-control" name="renderer_php" value="<?php echo $input['renderer_php']?>"/>
             </div>
         </div>
-            
+        <div class="form-group">
+            <label for="renderer_rsync" class="col-md-2 control-label">rsync</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" name="renderer_rsync" value="<?php echo $input['renderer_rsync']?>"/>
+            </div>
+        </div>  
         <div class="form-group">
             <label for="renderer_options" class="col-md-2 control-label">®renderer_pgm®</label>
             <div class="col-sm-5">
                 <select class="selectpicker form-control" id="options" name="renderer_options" onchange="select_option();">
                 <?php 
                 foreach ($renderers_options as $option_name => $option) {
-                    if ($option_name != 'ffmpeg_exp' ||
-                            (isset($display_ffmpeg_exp) && $display_ffmpeg_exp)) {
+                    
                         echo '<option value="' . $option_name . '"';
                         if (isset($input) && array_key_exists('renderer_options', $input) &&
                                 $option_name == $input['renderer_options']) {
@@ -67,13 +71,13 @@
                         }
                         echo '>'.$option['description'] . '</option>';
                     }
-                }
+                
                 ?>
                 </select>
             </div>
         </div>
             
-        <div class="renderer_option ffmpeg ffmpeg_exp">
+        <div class="renderer_option ffmpeg ffmpeg_built_in_aac">
             <div class="form-group">
                 <label for="renderer_ffmpeg" class="col-md-2 control-label">®renderer_ffmpeg®</label>
                 <div class="col-sm-5">

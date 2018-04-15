@@ -144,7 +144,7 @@ function push_classrooms_to_ezmanager(&$errors = array())
 }
 
 /**
- * Overwrites renderers.inc in ezmanager
+ * Overwrites renderers.inc in ezmanager MB 8/4/2018 OBSOLETE
  */
 function push_renderers_to_ezmanager()
 {

@@ -252,9 +252,20 @@ function renderer_update_enabled($name, $enable, &$error)
     if (file_exists('./renderers.inc.old')) {
         unlink('./renderers.inc.old');
     }
-    rename('./renderers.inc', './renderers.inc.old');
+    copy('./renderers.inc', './renderers.inc.old');
     rename('./renderers_tmp.inc', './renderers.inc');
-    return true;
+    $res=renderers_push();
+    return $res;
+}
+
+/**
+ * copies renderers.inc file from ezadmin to common (to be used by ezmanager scheduler)
+ * @return bool true on success
+ */
+function renderers_push()
+{   
+    $res=copy('./renderers.inc', '../commons/renderers.inc');
+    return $res;
 }
 
 function renderer_delete($name)
@@ -283,12 +294,13 @@ function renderer_delete($name)
     if (file_exists('./renderers.inc.old')) {
         unlink('./renderers.inc.old');
     }
-    rename('./renderers.inc', './renderers.inc.old');
+    copy('./renderers.inc', './renderers.inc.old');
     rename('./renderers_tmp.inc', './renderers.inc');
+    renderers_push();
     return true;
 }
 
-function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_cli)
+function renderer_add($name, $address, $user, $status, $root_path, $php_cli)
 {
     if (!file_exists('renderers.inc')) {
         $renderers = array();
@@ -322,9 +334,10 @@ function add_renderer_to_file($name, $address, $user, $status, $root_path, $php_
     if (file_exists('./renderers.inc.old')) {
         unlink('./renderers.inc.old');
     }
-    rename('./renderers.inc', './renderers.inc.old');
+    copy('./renderers.inc', './renderers.inc.old');
     rename('./renderers_tmp.inc', './renderers.inc');
-    return true;
+    $res=renderers_push();
+    return $res;
 }
 
 /**
@@ -437,6 +450,16 @@ function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node)
 function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts = true)
 {
     include 'config.inc';
+    //check if hostname is real
+    $ip_int=  ip2long($hostname); //is it an IP address?
+    if($ip_int===false){
+      //its not an IP, check if hostname exists  
+      $ip =  gethostbyname($hostname);
+      if($ip==$hostname){
+        //hostname doesn't resolve
+        return "hostname_error";
+      }
+    }
     // test the SSH connection
     exec(
   
@@ -533,7 +556,7 @@ function test_php_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_php)
     }
 }
 
-function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg, $aac_experimental = false)
+function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg, $built_in_aac = true)
 {
     if (exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host . " \"if [ -e " .
             $remote_ffmpeg . " ]; then echo 'exists'; fi;\"") != 'exists') {
@@ -547,7 +570,7 @@ function test_ffmpeg_over_ssh($ssh_user, $ssh_host, $ssh_timeout, $remote_ffmpeg
             return "ffmpeg_not_found";
         } else {
             // Test FFMPEG codecs
-            $aac_codec = ($aac_experimental) ? 'aac' : 'libfdk_aac';
+            $aac_codec = ($built_in_aac) ? 'aac' : 'libfdk_aac';
             $output = exec("ssh -o ConnectTimeout=$ssh_timeout -o BatchMode=yes " . $ssh_user . "@" . $ssh_host .
                     " \"$remote_ffmpeg -codecs | grep '$aac_codec'\"");
             if (strpos(strtoupper($output), 'AAC') === false) {

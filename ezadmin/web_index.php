@@ -205,7 +205,9 @@ else {
         case 'view_queue':
             requireController('view_queue.php');
             break;
-
+        case 'view_renderer_logs':
+            requireController('view_renderer_logs.php');
+            break;
         case 'free_unfreeze_job':
             requireController('freeze_unfreeze_job.php');
             break;

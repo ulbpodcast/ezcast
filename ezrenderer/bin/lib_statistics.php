@@ -55,12 +55,18 @@ function get_max_num_jobs()
  */
 function get_num_jobs()
 {
+    //count the number of ffmpeg processes
     $cmd = 'ps ax | grep ffmpeg';
     exec($cmd, $output, $val);
-    
+    $ffmpeg_processes=count($output) - 2;
+    //now cound the rsync processes (that will generate ffmpeg processes soon)
+    unset($output);
+    $cmd = 'ps ax | grep rsync';
+    exec($cmd, $output, $val);
+    $rsync_processes=count($output) - 2;
     /*if($val != 0)
         return 0;*/
-    return count($output) - 2;
+    return $ffmpeg_processes+$rsync_processes;
 }
 
 /**

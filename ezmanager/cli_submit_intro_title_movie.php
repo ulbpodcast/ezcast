@@ -38,7 +38,7 @@ if (!ezmam_asset_exists($album, $asset)) {
     exit(2);
 }
 
-//create directory used to transmit the (video) rendering/processing work to one of the Macs
+//create directory used to transmit the (video) rendering/processing work to one of the renderers
 $processing_dir_name=$asset."_".$album."_intro_title_movie";
 $render_dir=$render_root_path."/processing/".$processing_dir_name;
 if (!file_exists($render_dir)) {
@@ -99,10 +99,10 @@ if (!isset($asset_meta['add_title'])) {
 }
 
 //now write the processing info
-//intro movies are in the rw nfs share
-//credits movies are in the rw nfs share
+//intro movies are in the renderer
+//credits movies are in the renderer
 //input movie file is in the repository
-//output movie will be in rw share in $render_dir
+//output movie will be in the renderer in $render_dir
 
 $processing_assoc=array('submit_date'=>date($dir_date_format),
      'status'=>'submit',

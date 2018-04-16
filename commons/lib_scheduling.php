@@ -42,20 +42,21 @@ function scheduler_schedule()
 
     // init the queue (get all the jobs from the scheduler queue folder)
     $queue = lib_scheduling_queue_init();
-
+    // init renderers
+    $renderers = lib_scheduling_renderer_list();
+    //randomize the order a bit
+    shuffle($renderers);
     $saturate = false;
-
+    
     // loop on every job until there is no more job to schedule or all renderer are busy
     while (count($queue) && !$saturate) {
         // next job
         $job = lib_scheduling_queue_top($queue);
 
-        // init renderers
-        $renderers = lib_scheduling_renderer_list();
-
+        
         $choice = false;
         // iterate over render and assign the job to the optimal one
-        foreach ($renderers as $renderer) {
+        foreach ($renderers as $idx=>$renderer) {
 
             // check the renderer availibility
             if (!lib_scheduling_renderer_is_available($renderer)) {
@@ -65,9 +66,11 @@ function scheduler_schedule()
             // if no choice, pick the first fit. Otherwise find the optimal
             if (!$choice) {
                 $choice = $renderer;
+                $choice_idx=$idx;
                 continue;
             } elseif (lib_scheduling_renderer_is_better_than($renderer, $choice, $job)) {
                 $choice = $renderer;
+                $choice_idx=$idx;
             }
         }
 
@@ -80,9 +83,17 @@ function scheduler_schedule()
 
         // assign the job to the renderer
         if (lib_scheduling_renderer_assign($choice, $job)) {
-            $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::DEBUG, "Job " . $job['uid'] . " (time: " . $job["asset"] ." / album: ". $job["album"] .") was successfully assigned to renderer ".$renderer['host'], array(__FUNCTION__));
+            $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::DEBUG, "Job " . $job['uid'] . " (time: " . $job["asset"] ." / album: ". $job["album"] .") was successfully assigned to renderer ".$choice['host'], array(__FUNCTION__));
             lib_scheduling_job_remove_from_list($queue, $job);
             lib_scheduling_notice('Scheduler::schedule[scheduled]{' . $job['uid'] . ' to ' . $choice['host'] . '}');
+        }
+        
+        if(count($queue)){
+          //there are other jobs to schedule
+          //lets put the current renderer at the end of the array
+          $choice_renderer = $renderers[$choice_idx];
+          array_push($renderers, $choice_renderer);
+          sleep(10); //wait for renderer to receive its new job
         }
     }
 

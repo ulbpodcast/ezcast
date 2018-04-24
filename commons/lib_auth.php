@@ -77,7 +77,6 @@ function checkauth($login, $passwd)
         //runas_login identification where user <login> wants to act as another one
         $real_login = $login_parts[0];
         $runas_login = $login_parts[1];
-        
         $index = 0;
         $auth_admin = false;
         // loops on every available methods to authenticate the admin
@@ -85,13 +84,14 @@ function checkauth($login, $passwd)
             $check_auth = $auth_methods[$index] . "_checkauth";
             $auth_admin = $check_auth($real_login, $passwd);
             $index++;
-        }
+        }   
         // admin has not been authenticated
         if ($auth_admin === false) {
             checkauth_last_error("Authentication failure");
             return false;
-            // admin has been authenticated
+           
         } else {
+            // admin has been authenticated
             $index = 0;
             $auth_user = false;
             // loops on every available methods to get user info
@@ -100,7 +100,7 @@ function checkauth($login, $passwd)
                 $auth_user = $getinfo($runas_login);
                 $index++;
             }
-            // user does not exit
+            // user does not exist
             if ($auth_user === false) {
                 checkauth_last_error("Authentication failure");
             } else {

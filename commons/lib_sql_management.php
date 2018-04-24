@@ -439,11 +439,12 @@ function db_course_create($course_id, $course_code_public, $course_name, $in_rec
 function db_course_read($course_id)
 {
     global $statements;
-    
+    //var_dump($statements['course_read']);die;
     $statements['course_read']->bindParam(':course_code', $course_id);
     
     $statements['course_read']->execute();
-    return $statements['course_read']->fetch();
+    $res= $statements['course_read']->fetch();
+    return $res;
 }
 
 /**
@@ -812,9 +813,21 @@ function db_found_rows()
     return intval($res[0]);
 }
 
+/**
+ * creates a local user and/or add a ezrecorder password to an external (sso,ldap,...) user
+ * @global array $statements
+ * @param string $user_ID
+ * @param string $surname
+ * @param string $forename
+ * @param string $recorder_passwd (cleartext pw)
+ * @param boolean $permissions true if admin(allow to use 'runas')
+ * @return boolean true on success
+ */
 function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions)
 {
     global $statements;
+    $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
+    $recorder_passwd = crypt($recorder_passwd, $des_seed);
     $lowered_user_id = strtolower($user_ID);
     $statements['user_create']->bindParam(':user_ID', $lowered_user_id);
     $statements['user_create']->bindParam(':surname', $surname);

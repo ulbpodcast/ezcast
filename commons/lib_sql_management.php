@@ -236,7 +236,7 @@ function statements_get()
         
             'user_update_recorder_passwd' =>
                     'UPDATE ' . db_gettable('users') . ' ' .
-                    'SET recorder_passwd = :passwd' . ' ' .
+                    'SET recorder_passwd = :recorder_passwd' . ' ' .
                     'WHERE user_ID = :user_ID',
 
             'log_action' =>
@@ -826,8 +826,7 @@ function db_found_rows()
 function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions)
 {
     global $statements;
-    $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
-    $recorder_passwd = crypt($recorder_passwd, $des_seed);
+    $recorder_passwd = password_hash($recorder_passwd, PASSWORD_DEFAULT);
     $lowered_user_id = strtolower($user_ID);
     $statements['user_create']->bindParam(':user_ID', $lowered_user_id);
     $statements['user_create']->bindParam(':surname', $surname);
@@ -853,23 +852,22 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
         $statements['user_update_short']->bindParam(':permissions', $permissions);
         return $statements['user_update_short']->execute();
     }
+    $encrypted_passwd = password_hash($recorder_passwd, PASSWORD_DEFAULT);
     $statements['user_update']->bindParam(':user_ID', $user_ID);
     $statements['user_update']->bindParam(':surname', $surname);
     $statements['user_update']->bindParam(':forename', $forename);
-    $statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_update']->bindParam(':recorder_passwd', $encrypted_passwd);
     $statements['user_update']->bindParam(':permissions', $permissions);
     return $statements['user_update']->execute();
 }
 
 //return number of line affected, or false on error
 function db_user_set_recorder_passwd($user_ID, $recorder_passwd)
-{
-    $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
-    $encrypted_passwd = crypt($recorder_passwd, $des_seed);
-        
+{ 
     global $statements;
+    $encrypted_passwd = password_hash($recorder_passwd, PASSWORD_DEFAULT);
     $statements['user_update_recorder_passwd']->bindParam(':user_ID', $user_ID);
-    $statements['user_update_recorder_passwd']->bindParam(':passwd', $encrypted_passwd);
+    $statements['user_update_recorder_passwd']->bindParam(':recorder_passwd', $encrypted_passwd);
     $ok = $statements['user_update_recorder_passwd']->execute();
     if(!$ok)
         return false;

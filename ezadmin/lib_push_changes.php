@@ -278,10 +278,11 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     //htpasswd
     $htpasswd = '';
     $previous_user = "";
+    $user_added=array();
     foreach ($users as $u) {
-        if ($previous_user != $u['user_ID']) {
+        if (!isset($user_added[$u['user_ID']])) {
             $htpasswd .= $u['user_ID'] . ':' . $u['recorder_passwd'] . PHP_EOL;
-            $previous_user = $u['user_ID'];
+            $user_added[$u['user_ID']]=true;//prevent duplicate entries
         }
     }
     file_put_contents(__DIR__.'/var/htpasswd', $htpasswd);
@@ -325,6 +326,6 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
             $error = true;
         }
     }
-
+    
     return $error === false;
 }

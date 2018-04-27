@@ -141,5 +141,5 @@ function sync_video($movies_path){
             print "DELETE ".$slidepath.".wav failed. ". PHP_EOL ;   
     }
     else 
-        print "NO AAUDIO FOUND";
+        print "NO AUDIO FOUND";
 }

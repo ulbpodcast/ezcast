@@ -50,8 +50,8 @@ function sync_video($movies_path){
 		
         // find decallage
         // depending the version of praat: add --run
-        // $cmd = $praatpath." --run $basedir/bin/crosscorrelate.praat ".$slidepath.".wav ".$campath.".wav";
-        $cmd = $praatpath." $basedir/bin/crosscorrelate.praat ".$slidepath.".wav ".$campath.".wav";
+        $cmd = $praatpath." --run $basedir/bin/crosscorrelate.praat ".$slidepath.".wav ".$campath.".wav";
+        //$cmd = $praatpath." $basedir/bin/crosscorrelate.praat ".$slidepath.".wav ".$campath.".wav";
         $diff_time_string = shell_exec($cmd);
         file_put_contents("/tmp/test1.txt","difftimeSting: ". $diff_time_string . PHP_EOL,FILE_APPEND);
         if (!is_null($diff_time_string)){
@@ -140,4 +140,6 @@ function sync_video($movies_path){
         if ($return != 0) 
             print "DELETE ".$slidepath.".wav failed. ". PHP_EOL ;   
     }
+    else 
+        print "NO AAUDIO FOUND";
 }

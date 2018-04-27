@@ -205,7 +205,7 @@ function movie_qtinfo($moviein, &$qtinfo) {
  */
 function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = true)
 {
-    global $ffmpegpath, $encoders_path, $built_in_aac;
+    global $ffmpegpath, $encoders_path, $built_in_aac,$gpu_enabled;
 
     // sanity check
     if (!is_file($moviein))
@@ -231,16 +231,15 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
 
     $encoder = $encoders_path . '/' . $codec . '_' . $quality . '.ffpreset';
 
-    if ($letterboxing) {
+    if (!$letterboxing || $gpu_enabled ) {
+        $video_filter = "scale=$width:$height";
+    } else {
         // iw : image width
         // ih : image height
         // pad : letterboxing filter
         //  $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
         $video_filter = "scale='min($width,iw):min($height,ih):force_original_aspect_ratio=decrease',pad='$width:$height:(ow-iw)/2:(oh-ih)/2'";
-    } else {
-        $video_filter = "scale=$width:$height";
     }
-
     // checks if the encoder file exists
     if (!is_file($encoder))
         return "encoder not found $encoder";
@@ -267,12 +266,16 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
     $return2=explode(",", $return);
     $return3=explode(":", $return2[1]);
     $startTime=abs(floatval(trim($return3[1])));
-    
+    $start="";
     if($startTime>0)
-        $cmd = "$ffmpegpath -i $moviein -r 25 -ss $startTime -fpre $encoder -vf \"$video_filter\" -ar 44100 -ac 2 -y -pix_fmt yuv420p  $aac_codec $movieout";
-    else    
-        $cmd = "$ffmpegpath -i $moviein -r 25 -fpre $encoder -vf \"$video_filter\" -ar 44100 -ac 2 -y -pix_fmt yuv420p  $aac_codec $movieout";       
-        exec($cmd, $cmdoutput, $returncode);
+        $start="-ss $startTime";
+    
+    if($gpu_enabled)
+        $cmd = "$ffmpegpath -y -hwaccel cuvid -i $moviein -r 25 $start -fpre $encoder -vf $video_filter -ar 44100 -ac 2  -vcodec h264_nvenc -rc vbr_hq -b:v 8M -maxrate:v 10M -y $aac_codec $movieout";
+    else
+        $cmd = "$ffmpegpath -i $moviein -r 25 $start -fpre $encoder -vf \"$video_filter\" -ar 44100 -ac 2 -y -pix_fmt yuv420p  $aac_codec $movieout";
+
+    exec($cmd, $cmdoutput, $returncode);
                 
     print $cmd;
     exec($cmd, $cmdoutput, $returncode);

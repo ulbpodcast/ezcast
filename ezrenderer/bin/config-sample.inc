@@ -112,4 +112,6 @@ $fontratio = 1;
 // value used to determine the max line length to display for title and album name
 $linelength = 35;
 /////////////////////////////////////////////////////////////
+$copyright_enabled=false;
+$gpu_enabled=true;                           
 ?>

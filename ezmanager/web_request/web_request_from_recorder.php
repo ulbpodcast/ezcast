@@ -291,9 +291,7 @@ function streaming_init()
             $str= (file_get_contents($working_dir));
             $today_streams = json_decode($str, true);
             end($today_streams);         // move the internal pointer to the end of the array    
-            
-            file_put_contents($transcode_dir.'test.txt', " end today_streams : " .end($today_streams) . "&&&&&&   count external = ".((count($externalClients))-1));
-            
+                        
             if (end($today_streams) == ((count($externalClients))-1))
                 $streamer=0;
             else 
@@ -483,28 +481,26 @@ function streaming_content_add()
 
                  //transcode on a remote server
                 if(isset($externalClients) && count($externalClients) != 0 ){
-                    
+                   
                     //get the streamer server avaiable for this stream (defined in streaming_init() )
                     $transcode_dir=dirname(__DIR__)."/var/transcoded_streams/";
                     $working_dir=$transcode_dir.date('j_m_Y');
                     $stream_id=$course . '_' . $stream_name . '_'.$module_type;
 
-                    if(file_exists($working_dir)){
+                    if(file_exists($working_dir) && count($externalClients) > 1 ){
                         $str= (file_get_contents($working_dir));
                         $today_streams = json_decode($str, true);
                         $streamer = $today_streams[$stream_id];                             
                     }
                     else 
-                        $streamer = 1;
-                    
+                        $streamer = 0;
                     // give the right username@ip for the ssh link
                     $externalClient=$externalClients[$streamer];    
                     
                     $outputrepo= $repository_basedir.'/streamEncode/output/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
                     $outputFile=$outputrepo.$input['filename'];                    
-                    //create the temp repository if soesnt exist, transcode video in temp repo then copy it on the original place to be played , remove temp files
+                    //create the temp repository if doesnt exist, transcode video in temp repo then copy it on the original place to be played , remove temp files
                     exec("ssh ".$externalClient." mkdir -p ".$outputrepo." &&  ssh ".$externalClient." ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1  -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28  ".$outputFile." && cp ".$outputFile." ".$uploadfile." && rm ".$transfile." && ssh ".$externalClient." rm ".$outputFile." ");
-    
                 }
                 else {         
                 //transcode on the same server
@@ -518,10 +514,6 @@ function streaming_content_add()
                     echo "File is valid, and was successfully uploaded.\n";
                 }
             }
-            
-            
-
-
             // appends the m3u8 file
             $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
             if (!is_file($m3u8_quality_path)) {

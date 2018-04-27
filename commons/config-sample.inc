@@ -127,7 +127,7 @@ $sso_ssp_lib = "/var/simplesamlphp/lib";
 $sso_ssp_sp = "default-sp";
 $sso_ssp_att_name = "sn";
 $sso_ssp_att_firstname = "givenName";
-//$sso_ssp_att_email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+$sso_ssp_att_email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
 $sso_ssp_att_email = "mail";
 $sso_ssp_att_login = "uid";
 

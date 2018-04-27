@@ -4,6 +4,7 @@
     If no param => just ping each IP to check if it respond
 */
 require_once("./commons/lib_sql_management.php");
+require_once("./commons/config");
 
 //get list of recorder from DB
 $classList=db_classrooms_list();
@@ -23,7 +24,7 @@ for($v=0;$v<count($classList);$v++){
         echo "\033[0m";
         //execute each command one by one
         for($i=1;$i<count($argv);$i++){
-            $cmd="sudo -su www-data ssh ezrecorder@".$classList[$v]['IP']." '".$argv[$i]."'";       
+            $cmd="sudo -su www-data ssh $recorder_user@".$classList[$v]['IP']." '".$argv[$i]."'";       
             exec($cmd, $output, $result);
             if ($result != 0){
                 echo "\033[31m ".$cmd."   \n";

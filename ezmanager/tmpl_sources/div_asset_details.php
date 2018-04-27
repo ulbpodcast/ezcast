@@ -195,7 +195,7 @@ function print_info($info, $suffix = '')
                 <?php 
                 // add flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
                 global $regenerate_title_mode;
-    if ($regenerate_title_mode == 'manual' && isset($asset_metadata['add_title'])) {
+    if ($regenerate_title_mode == 'manual' && isset($asset_metadata['add_title']) && ($asset_metadata['add_title']!="false") ) {
         ?>
                     <li>
                         <span class="ButtonRegenTitle">

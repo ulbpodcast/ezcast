@@ -116,6 +116,7 @@
         <?php
         } ?>
     </div>
+   
 </div>
 <?php if (!acl_user_is_logged()) {
             ?>

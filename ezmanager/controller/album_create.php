@@ -90,7 +90,7 @@ require_once(__DIR__ . '/../../commons/lib_ezmam.php');
      $create_in_db = $input['action'] == 'create_courseAndAlbum';
      if ($create_in_db) {
          //finally, create course in db and link user to it
-         $ok = ezmam_course_create_db($course_id, $course_code_public, $label, 1, $_SESSION['user_login']) && $ok;
+         $ok = ezmam_course_create_db($course_id, $course_code_public, $label, 0, $_SESSION['user_login']) && $ok;
      }
     
      //update course list

@@ -20,7 +20,7 @@ function sso_checkauth($login, $password)
     global $sso_ssp_att_firstname;
     global $sso_ssp_att_email;
     global $sso_ssp_att_login;
- 
+
     if (!isset($_GET['sso'])) {
         return false;
     }
@@ -98,8 +98,9 @@ function sso_checkauth($login, $password)
 
 
     //IF idp error and everithing is null  ==> return "error"
-    if (!isset($attributes[$sso_ssp_att_name][0]) || !isset($attributes[$sso_ssp_att_firstname][0]) || !isset($attributes['eduPersonAffiliation']) || !isset($attributes[$sso_ssp_att_login][0]) || !isset($attributes[$sso_ssp_att_email][0])
-       || $attributes[$sso_ssp_att_name][0] =='' || $attributes[$sso_ssp_att_firstname][0] =='' || $attributes['eduPersonAffiliation'] == '' || $attributes[$sso_ssp_att_login][0] == '' || $attributes[$sso_ssp_att_email][0] =='') {
+    if (!isset($attributes[$sso_ssp_att_name][0])  || !isset($attributes['eduPersonAffiliation']) || !isset($attributes[$sso_ssp_att_login][0]) || !isset($attributes[$sso_ssp_att_email][0])
+       || $attributes[$sso_ssp_att_name][0] ==''  || $attributes['eduPersonAffiliation'] == '' || $attributes[$sso_ssp_att_login][0] == '' || $attributes[$sso_ssp_att_email][0] =='') {
+
         return 'error';
     }
 
@@ -111,16 +112,19 @@ function sso_checkauth($login, $password)
     /*------------UCL METHOD TO CHECK RIGHTS-------------*/
 
     //Check if the User have the right to enter ezmanager, Even if he don't have any courses
-    if (in_array("staff", $userinfo['group'])) {
-        global $db_object;
+    if (in_array("staff", $userinfo['group'])) {        
         $userinfo['ismanager'] = 'true';        
-
-        //if is manager add user in table Users
-        $user = db_user_read($attributes[$sso_ssp_att_login][0]);
-        if (!$user) {
-            db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_firstname][0], $attributes[$sso_ssp_att_name][0], "", "0");        
-        }
     }
+    global $db_object;
+    // add user in table Users
+    $user = db_user_read($attributes[$sso_ssp_att_login][0]);
+    if (!$user) {
+        db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_name][0] ,$attributes[$sso_ssp_att_firstname][0] , "", "0","SSO");
+        $userinfo['termsOfUses'] = 0;
+    }
+    else
+        $userinfo['termsOfUses'] = $user['termsOfUse'];     
+    
 
 
       
@@ -144,8 +148,8 @@ function sso_checkauth($login, $password)
         if ($reqSQL->rowCount() == 0) {
             $reqSQL = $db_object->prepare('INSERT INTO ezcast_sso_users (user_ID,surname,forename,email,first_time,last_time) VALUES (?,?,?,?,NOW(),NOW())');
             $reqSQL->bindParam(1, $attributes[$sso_ssp_att_login][0], PDO::PARAM_STR);
-            $reqSQL->bindParam(2, $attributes[$sso_ssp_att_firstname][0], PDO::PARAM_STR);
-            $reqSQL->bindParam(3, $attributes[$sso_ssp_att_name][0], PDO::PARAM_STR);
+            $reqSQL->bindParam(2, $attributes[$sso_ssp_att_name][0], PDO::PARAM_STR);
+            $reqSQL->bindParam(3, $attributes[$sso_ssp_att_firstname][0], PDO::PARAM_STR);
             $reqSQL->bindParam(4, $attributes[$sso_ssp_att_email][0], PDO::PARAM_STR);
             
         } else {
@@ -188,23 +192,23 @@ function sso_logout()
  */
 function sso_getinfo($login)
 {
+
     try {
         require_once __DIR__.'/../commons/lib_database.php';
         global $db_object;
-
         db_prepare();
 
-        $reqSQL = $db_object->prepare('SELECT * FROM ezcast_sso_users WHERE user_ID=?');
-        $reqSQL->bindParam(1, $attributes[$sso_ssp_att_login][0], PDO::PARAM_STR);
+        $reqSQL = $db_object->prepare('SELECT * FROM ezcast_sso_users WHERE user_ID=:login');
+        $reqSQL->bindParam(":login", $login, PDO::PARAM_STR);
         $reqSQL->execute();
-
-        if ($reqSQL->rowCount() != 1) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
+        if ($reqSQL->rowCount() == 1) {
+            $row = $reqSQL->fetch(PDO::FETCH_ASSOC);
             $userinfo['full_name'] = $row['surname']." ".$row['forename'];
             $userinfo['email'] = $row['email'];
             $userinfo['login'] = $row['user_ID'];
             $userinfo['real_login'] = $userinfo['login'];
+
         } else {
             checkauth_last_error("wrong search result count:" . $reqSQL->rowCount());
             return false;

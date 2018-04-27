@@ -23,11 +23,14 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 ?>
 <div id="streaming_config">
-    <link rel="stylesheet" href="flowplayer/skin/skin.css">
-    <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
-		
+
+    <link rel="stylesheet" href="flowplayer-6/skin/skin.css">
+    <?php if($_SESSION['isPhone']){  ?>
+        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
+	<?php } ?>	
     <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
         <div class="video_controls streaming">
@@ -89,9 +92,15 @@
         swfHls: 'flowplayer-6/flowplayerhls.swf',
         live: true,
         autoplay: true,
+<<<<<<< HEAD
         fullscreen: false,
         share: false,
         embed: false
+=======
+        fullscreen: true,
+        embed: false,
+        share:false
+>>>>>>> prod_UCL
 
     });
 

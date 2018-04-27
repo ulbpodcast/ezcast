@@ -40,4 +40,5 @@
             <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezplayer_logo; ?>" /></a>
         </div>      
     </div>
+   
 </div>

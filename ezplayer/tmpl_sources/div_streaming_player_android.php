@@ -71,7 +71,8 @@
 
 </script>
 <div id="streaming_config">
-    <link rel="stylesheet" href="flowplayer/skin/skin.css">
+    <link rel="stylesheet" href="flowplayer-6/skin/skin.css">
+
 
 
     <div id="video_player" class="streaming remove_full">

@@ -442,7 +442,7 @@ function view_embed()
         // It's a Flash browser IIF
         // UA includes 'MSIE' BUT UA does not include 'MSIE 9.'
         // TODO: prepare for future revisions of MSIE
-        if (((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false)) ||
+        if (isset($_SERVER['HTTP_USER_AGENT']) && ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false)) ||
                 ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7.') !== false)) ||
                 ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 8.') !== false))) {
             require_once template_getpath('embed_flash.php');

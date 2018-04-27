@@ -45,9 +45,10 @@ if ($trace_on) {
                 break;
             case 'flowplayer':
                 ?>
-                <link rel="stylesheet" href="flowplayer/skin/skin.css">
-                <script src="flowplayer/flowplayer.min.js"></script>
-                <script src="flowplayer/hls.js"></script>
+
+                <link rel="stylesheet" href="flowplayer-6/skin/skin.css">
+                <script src="flowplayer-6/flowplayer.min.js"></script>
+                <script src="flowplayer-6/hls.js"></script>
                 <?php
                 break;
         }

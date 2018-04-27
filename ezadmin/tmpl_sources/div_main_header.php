@@ -31,9 +31,11 @@
         <script src="bootstrap/js/angular-bootstrap-calendar.min.js"></script>
         
         <!-- HighCharts -->
-        <script src="https://code.highcharts.com/stock/highstock.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        
+        <!-- <script src="https://code.highcharts.com/stock/highstock.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
+        <script src="js/highstock.js"></script>
+        <script src="js/exporting.js"></script>
+
         <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <link href="css/typeahead.min.css" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap-datetimepicker.min.css" />
@@ -54,7 +56,7 @@
                 }
             }
         ?>
- 
+
         
     </head>
     <body link="#000088" vlink="#000044" alink="#0000ff" 

@@ -1007,9 +1007,9 @@
         <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
         <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
         <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une 
-            erreur, contactez podcast@ulb.ac.be</message>
+            erreur, contactez podcast@uclouvain.be</message>
         <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, 
-            please contact podcast@ulb.ac.be</message>
+            please contact podcast@uclouvain.be</message>
         <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
         <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
         <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
@@ -1018,8 +1018,8 @@
         <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
         <message id="File_not_found" lang="fr">Fichier introuvable</message>
         <message id="File_not_found" lang="en">Could not find your file, sorry</message>
-        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast@ulb.ac.be</message>
-        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast@ulb.ac.be</message>
+        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast@uclouvain.be</message>
+        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast@uclouvain.be</message>
         <message id="Invalid_token" lang="fr">Accès refusé</message>
         <message id="Invalid_token" lang="en">Access denied</message>
         <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>

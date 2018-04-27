@@ -95,10 +95,19 @@ It is part of div_asset_details and has been split apart for readability.
     <span class="ButtonEmbed"> <a href="javascript:visibilite('Embed_<?php echo $asset; ?>_2');">®Embed®</a> </span>
 
     <div class="Embed" id="Embed_<?php echo $asset; ?>_2" style="display:none;">
-        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a></p>
-        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a></p>
+        <p>
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide"
+                data-remote="false" data-toggle="modal" data-target="#modal" >
+                ®high_res®
+            </a>
+        </p>
+        <p><a class="greyLink" href="index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide" 
+            data-remote="false" data-toggle="modal" data-target="#modal" >
+                ®low_res®
+            </a>
+        </p>
     </div>
 
     <span class="ButtonEZplayer"> 
@@ -110,11 +119,16 @@ It is part of div_asset_details and has been split apart for readability.
 
     <span class="ButtonULBCode"> <a href="javascript:visibilite('ULBcode_<?php echo $asset; ?>_2');">®ULBcode®</a> </span>
     <div class="ULBcode" id="ULBcode_<?php echo $asset; ?>_2" style="display:none;">
-        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide');">®high_res®</a>
+        <p><a class="greyLink" href="index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_slide"data-remote="false" data-toggle="modal" data-target="#modal" >
+                ®high_res®
+            </a>
         </p>
-        <p><a class="greyLink" href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide');">®low_res®</a>
+        <p><a class="greyLink" href="index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_slide"
+                data-remote="false" data-toggle="modal" data-target="#modal" >
+                ®low_res®
+            </a>
         </p>
     </div>
 </div>

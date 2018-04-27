@@ -23,4 +23,5 @@
 ./first_user
 ./log
 **/.php_cs.cache
-/commons/traces_analyzing/checked_file.txt
+**/checked_file.txt
+

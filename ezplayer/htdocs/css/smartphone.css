@@ -3,6 +3,9 @@
     /* --- SMARTPHONE Interface  ----------------------------------------------------------*/
 
 @media only screen and (max-device-width: 736px){ 
+    #main_player{
+        width: 100% !important;
+    }
 	/*Header*/
 	.header_content span{
 		font-size:30px !important;
@@ -78,6 +81,10 @@
 	#side_menu {
 		/*display: none;*/
 	}
+    
+    a.item b {
+        width: 80px !important;
+    }
 
 	#side_wrapper {
 		position: relative;

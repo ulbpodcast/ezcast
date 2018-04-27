@@ -113,17 +113,22 @@ function statements_get()
             'course_delete' =>
                     'DELETE FROM ' . db_gettable('courses') . ' ' .
                     'WHERE course_code = :course_code AND origin = \'internal\'',
+//
+//            'user_read' =>
+//                    'SELECT ' .
+//                            db_gettable('users') . '.user_ID, ' .
+//                            db_gettable('users') . '.surname, ' .
+//                            db_gettable('users') . '.forename, ' .
+//                      '(' . db_gettable('users') . '.recorder_passwd = "" OR '.db_gettable('users').'.recorder_passwd IS NULL) as passNotSet, ' .
+//                            db_gettable('users') . '.permissions, ' .
+//                            db_gettable('users') . '.origin ' .
+//                            db_gettable('users') . '.termsOfUses ' .
+//                            //db_gettable('users') . '.date_created ' .
+//                    'FROM ' . db_gettable('users') . ' ' .
+//                    'WHERE user_ID = :user_ID',
 
             'user_read' =>
-                    'SELECT ' .
-                            db_gettable('users') . '.user_ID, ' .
-                            db_gettable('users') . '.surname, ' .
-                            db_gettable('users') . '.forename, ' .
-                      '(' . db_gettable('users') . '.recorder_passwd = "" OR '.db_gettable('users').'.recorder_passwd IS NULL) as passNotSet, ' .
-                            db_gettable('users') . '.permissions, ' .
-                            db_gettable('users') . '.origin ' .
-                            //db_gettable('users') . '.date_created ' .
-                    'FROM ' . db_gettable('users') . ' ' .
+                    'SELECT  * FROM ' . db_gettable('users') . ' ' .
                     'WHERE user_ID = :user_ID',
 
             'user_courses_get' =>
@@ -218,7 +223,7 @@ function statements_get()
 
             'user_create' =>
                     'INSERT INTO ' . db_gettable('users') . '(user_ID, surname, forename, recorder_passwd, permissions, origin) ' .
-                    'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, \'internal\')',
+                    'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, :origin)',
 
             'user_delete' =>
                     'DELETE FROM ' . db_gettable('users') . ' ' .
@@ -226,12 +231,17 @@ function statements_get()
 
             'user_update' =>
                     'UPDATE ' . db_gettable('users') . ' ' .
-                    'SET surname = :surname, forename = :forename, recorder_passwd = :recorder_passwd, permissions = :permissions' . ' ' .
+                    'SET surname = :surname, forename = :forename, recorder_passwd = :recorder_passwd, permissions = :permissions ' . ' ' .
                     'WHERE user_ID = :user_ID',
 
             'user_update_short' =>
                     'UPDATE ' . db_gettable('users') . ' ' .
                     'SET surname = :surname, forename = :forename,  permissions = :permissions' . ' ' .
+                    'WHERE user_ID = :user_ID',
+        
+            'termsOfUseUpdate' =>
+                    'UPDATE ' . db_gettable('users') . ' ' .
+                    'SET termsOfUse = :termsOfUse' . ' ' .
                     'WHERE user_ID = :user_ID',
         
             'user_update_recorder_passwd' =>
@@ -279,6 +289,15 @@ function statements_get()
                     'SELECT  * ' .
                     'FROM ' . db_gettable('streams') . ' ' .
                     'WHERE cours_id=:cours_id AND asset=:asset ',
+
+            'get_stream_nb' =>
+                    "SELECT * FROM ". db_gettable('streams') . " " .
+                    "WHERE ( status = 'recording' OR status = 'open' OR status = 'paused' ) ". 
+                    "AND (date_update > DATE_ADD(NOW(), INTERVAL -6 HOUR)) ".
+                    "GROUP BY classroom ".
+                    "ORDER BY status DESC",                      
+        
+        
 
             'in_recorder_update' =>
                 'UPDATE ' . db_gettable('courses') . ' ' .
@@ -812,7 +831,7 @@ function db_found_rows()
     return intval($res[0]);
 }
 
-function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions)
+function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions,$origin='internal')
 {
     global $statements;
     $lowered_user_id = strtolower($user_ID);
@@ -820,6 +839,7 @@ function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permis
     $statements['user_create']->bindParam(':surname', $surname);
     $statements['user_create']->bindParam(':forename', $forename);
     $statements['user_create']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_create']->bindParam(':origin', $origin);
     $statements['user_create']->bindParam(':permissions', $permissions);
     return $statements['user_create']->execute();
 }
@@ -846,6 +866,15 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
     $statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
     $statements['user_update']->bindParam(':permissions', $permissions);
     return $statements['user_update']->execute();
+}
+
+function db_termsOfUseUpdate($user_ID,$termsOfUse){
+    global $statements;
+    
+    $statements['termsOfUseUpdate']->bindParam(':user_ID', $user_ID);
+    $statements['termsOfUseUpdate']->bindParam(':termsOfUse', $termsOfUse);
+    return $statements['termsOfUseUpdate']->execute();
+    
 }
 
 //return number of line affected, or false on error
@@ -1060,6 +1089,16 @@ function db_get_stream_info($cours_id, $asset)
     
     return $infos;
 }
+
+function db_get_stream_nb()
+{
+    global $statements;
+    $statements['get_stream_nb']->execute();
+    $res = $statements['get_stream_nb']->fetchAll();   
+    return count($res);   
+}
+
+
 function db_in_recorder_update($course,$value)
 {
     global $statements;

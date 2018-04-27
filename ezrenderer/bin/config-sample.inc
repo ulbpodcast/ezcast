@@ -113,5 +113,5 @@ $fontratio = 1;
 $linelength = 35;
 /////////////////////////////////////////////////////////////
 $copyright_enabled=false;
-$gpu_enabled=true;                           
+$gpu_enabled=false;                           
 ?>

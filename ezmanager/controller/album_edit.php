@@ -51,7 +51,8 @@ function index($param = array())
         else 
             $recorder_access=0;
         $res=db_in_recorder_update($input['album'],$recorder_access);
-        exec('php '.$basedir.'/ezadmin/cli_push_changes.php > /dev/null 2>/dev/null &');
+        //TO DO : synchro in cron every x hours
+//        exec('php '.$basedir.'/ezadmin/cli_push_changes.php > /dev/null 2>/dev/null &');
     }
 
     $res = ezmam_album_metadata_set($album, $album_meta);

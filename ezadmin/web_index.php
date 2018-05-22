@@ -422,18 +422,3 @@ function user_login($login, $passwd)
     header("Location: " . $ezadmin_url);
     albums_view();
 }
-
-
-///// NOTIFICATION ALERT /////
-
-/**
- * Changes have been made but not saved yet: we display an alert
- */
-function notify_changes($enable = true)
-{
-    if ($enable) {
-        $_SESSION['changes_to_push'] = true;
-    } else {
-        unset($_SESSION['changes_to_push']);
-    }
-}

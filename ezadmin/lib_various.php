@@ -652,3 +652,4 @@ function array_increment_or_init(&$array, &$key)
         $array[$key] = 1;
     }
 }
+

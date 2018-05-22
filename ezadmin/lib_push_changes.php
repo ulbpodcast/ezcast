@@ -329,3 +329,36 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     
     return $error === false;
 }
+
+///// NOTIFICATION ALERT /////
+
+/**
+ * indicate/clear Changes have been made but not saved yet and should be pushed to ezrecorders
+ * @global string $ezrecorder_need_files_pushed_path
+ * @param boolean $enable
+ */
+function notify_changes($enable = true)
+{
+    global $ezrecorder_need_files_pushed_path;
+    if ($enable) {
+        if(isset($_SESSION)) $_SESSION['changes_to_push'] = true;
+        //create file whose presence will trigger push (by a cron)
+        touch($ezrecorder_need_files_pushed_path);
+    } else {
+        if(isset($_SESSION)) unset($_SESSION['changes_to_push']);
+        //remove file whose presence will trigger push (by a cron)
+        if(file_exists($ezrecorder_need_files_pushed_path))unlink($ezrecorder_need_files_pushed_path);
+    }
+}
+/**
+ * indicate/clear Changes have been made but not saved yet and should be pushed to ezrecorders
+ * @global string $ezrecorder_need_files_pushed_path
+ * @param boolean $enable
+ */
+function notify_changes_isset()
+{
+    global $ezrecorder_need_files_pushed_path;
+     
+    return file_exists($ezrecorder_need_files_pushed_path);//if file exists return true
+     
+}

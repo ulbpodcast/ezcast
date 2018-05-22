@@ -826,7 +826,8 @@ function db_found_rows()
 function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions)
 {
     global $statements;
-    $recorder_passwd = password_hash($recorder_passwd, PASSWORD_DEFAULT);
+    require_once __DIR__ .'/lib_pw.php'; //for pw encryption
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
     $lowered_user_id = strtolower($user_ID);
     $statements['user_create']->bindParam(':user_ID', $lowered_user_id);
     $statements['user_create']->bindParam(':surname', $surname);
@@ -845,6 +846,7 @@ function db_user_delete($user_ID)
 function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permissions)
 {
     global $statements;
+    require_once __DIR__ .'/lib_pw.php'; //for pw encryption
     if (empty($recorder_passwd)) {
         $statements['user_update_short']->bindParam(':user_ID', $user_ID);
         $statements['user_update_short']->bindParam(':surname', $surname);
@@ -852,7 +854,7 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
         $statements['user_update_short']->bindParam(':permissions', $permissions);
         return $statements['user_update_short']->execute();
     }
-    $encrypted_passwd = password_hash($recorder_passwd, PASSWORD_DEFAULT);
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
     $statements['user_update']->bindParam(':user_ID', $user_ID);
     $statements['user_update']->bindParam(':surname', $surname);
     $statements['user_update']->bindParam(':forename', $forename);
@@ -864,8 +866,9 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
 //return number of line affected, or false on error
 function db_user_set_recorder_passwd($user_ID, $recorder_passwd)
 { 
-    global $statements;
-    $encrypted_passwd = password_hash($recorder_passwd, PASSWORD_DEFAULT);
+  global $statements;
+  require_once __DIR__ .'/lib_pw.php'; //for pw encryption
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
     $statements['user_update_recorder_passwd']->bindParam(':user_ID', $user_ID);
     $statements['user_update_recorder_passwd']->bindParam(':recorder_passwd', $encrypted_passwd);
     $ok = $statements['user_update_recorder_passwd']->execute();

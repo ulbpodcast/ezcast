@@ -255,6 +255,16 @@
         <label id="Program" lang="en">Schedule</label>
         <label id="Create_album" lang="fr">Créer un album</label>
         <label id="Create_album" lang="en">New album</label>
+        <label id="recordingsetting" lang="fr">Paramètres d'enregistrement</label>
+        <label id="recordingsetting" lang="en">Recorder settings</label> 
+        <label id="SelEzrecorderCourses" lang="fr">Sélectionner les albums disponibles dans EZrecorder</label>
+        <label id="SelEzrecorderCourses" lang="en">Select albums available to EZrecorder </label>  
+        <label id="SelEzrecorderCoursesDesc" lang="fr">Sélectionnez les albums pour lesquels vous souhaitez pouvoir enregistrer depuis un auditoire équipé ou modifiez votre mot de passe</label>
+        <label id="SelEzrecorderCoursesDesc" lang="en">Select albums you want to record to in lecture rooms or change your ezrecorder password</label>
+        <label id="SelEzrecorderPw" lang="fr">Mot de passe d’EZrecorder</label>
+        <label id="SelEzrecorderPw" lang="en">EZrecorder's password</label>
+         <label id="Pw" lang="fr">Mot de passe</label>
+        <label id="Pw" lang="en">Password</label>
         <label id="addexistingCourse" lang="fr">Ajouter un album existant</label>
         <label id="addexistingCourse" lang="en">Add a existing album</label>
         <label id="createnewCourse" lang="fr">Créer un nouvel album</label>

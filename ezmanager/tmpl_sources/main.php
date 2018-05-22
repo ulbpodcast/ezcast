@@ -205,14 +205,25 @@
             } ?>
           
             <div id="global" class="row">
+                <div id="toolbar" style="display: flex">
                 <!-- "New album" button -->
-                <div class="col-md-12 btn-new-album">
+                <div class="btn-new-album">
                     <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=new_album"
                        data-remote="false" data-toggle="modal" data-target="#modal" >
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         ®Create_album®
                     </a>
                 </div>
+              <?php  if ( isset($GLOBALS['enable_recorder_control']) && $GLOBALS['enable_recorder_control'] === true) { ?>
+                <div class="btn-new-album" >
+                    <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=ezrecorder"
+                       data-remote="false" data-toggle="modal" data-target="#modal" >
+                        <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+                        ®recordingsetting®
+                    </a>
+                </div>
+              </div>
+        <?php } //endif ?>
                 <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" 
                     onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php 
                     // echo get_lang();?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang();?>.png" name="Image5" 

@@ -103,8 +103,6 @@
         <label id="Download_info" lang="en">If this box is checked, the videos contained in this album will be downloadable via EZplayer. This change only applies to upcoming videos. </label>
         <label id="warningAnon" lang="fr">Si cette case est cochée, les vidéos soumises dans l'album pourront être accessible sans authentification via EZplayer. </label>
         <label id="warningAnon" lang="en">If this box is checked, the videos contained in this album will be accessible via EZplayer without authentication.</label>
-        <label id="warningrecorder_control" lang="fr">Si cette case est cochée, vous pourrez enregistrer des vidéo dans les auditoires dans cet album. </label>
-        <label id="warningrecorder_control" lang="en">If this box is checked, you'll be able to record video in auditorium in this album.</label>
         <label id="Downloadable_submit" lang="fr">Vidéo téléchargeable</label>
         <label id="Downloadable_submit" lang="en">Allow download</label>
         <label id="Download_info_submit" lang="fr">Si cette case est cochée, la vidéo soumise pourra être téléchargée via EZplayer.</label>
@@ -401,7 +399,11 @@
         <label id="Delete_album_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete the albums for &lt;?php echo $album_name; ?&gt;. By doing so, you will delete both the &lt;strong&gt;public&lt;/strong&gt; &lt;i&gt;and&lt;/i&gt; &lt;strong&gt;private&lt;/strong&gt; albums, as well as all of their content. The other owners of the album will also lose access to this album.</label>
         <label id="Delete_modo_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un modérateur. En faisant ainsi, vous supprimerez définitivement l'accès à l'album pour cette personne.</label>
         <label id="Delete_modo_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete a moderator. He will loose the access to the album</label>
-       
+        <label id="Ezrecorder_info_modified" lang="fr">Vos modifications seront actives en auditoire dans l\'heure</label>
+        <label id="Ezrecorder_info_modified" lang="en">The new info will be available in classrooms in the hour</label>
+        <label id="unchanged" lang="fr">Informations inchangées</label>
+        <label id="unchanged" lang="en">Informations unchanged</label>
+      
         <label id="Album_deletion_succeeded_message" lang="fr">Albums public et privé supprimés.</label>
         <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
         <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>

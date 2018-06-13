@@ -75,4 +75,4 @@ $ezmanager_subscription_form = false;
 
  
 //the embed link is like an iframe if true, like an link else 
-$embedIframed=true;
+$embedIframed=false;

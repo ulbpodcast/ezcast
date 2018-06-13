@@ -55,6 +55,8 @@
         echo 'label-info';
     } elseif ($origin == 'external') {
         echo 'label-primary';
+    } elseif ($origin == 'SSO') {
+        echo 'label-success';
     } else {
         echo 'label-danger';
     } ?>
@@ -64,6 +66,8 @@
                             echo '®intern®';
                         } elseif ($origin == 'external') {
                             echo '®extern®';
+                        } elseif ($origin == 'SSO') {
+                            echo '®sso®';
                         } else {
                             echo '®error®';
                         } ?>

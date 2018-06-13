@@ -182,6 +182,8 @@
         <label id="intern" lang="en">Internal</label>
         <label id="extern" lang="fr">Externe</label>
         <label id="extern" lang="en">External</label>
+        <label id="sso" lang="fr">SSO</label>
+        <label id="sso" lang="en">SSO</label>
         <label id="albums" lang="fr">Albums</label>
         <label id="albums" lang="en">Albums</label>
         <label id="has_albums_title" lang="fr">A des albums</label>

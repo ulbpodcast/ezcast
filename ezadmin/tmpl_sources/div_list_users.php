@@ -65,10 +65,16 @@
             <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
             <td><span class="label <?php if ($user['origin'] == 'internal') {
             echo 'label-info';
+        } elseif ($user['origin'] == 'external'){
+            echo 'label-primary';
+        } elseif ($user['origin'] == 'SSO') {
+            echo 'label-success';
         } ?>"><?php if ($user['origin'] == 'internal') {
             echo '®intern®';
-        } else {
+        } elseif ($user['origin'] == 'external') {
             echo '®extern®';
+        } elseif ($user['origin'] == 'SSO') {
+            echo '®sso®';
         } ?></span></td>
             <td><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
         </tr>

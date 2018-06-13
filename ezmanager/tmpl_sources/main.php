@@ -115,8 +115,8 @@
                         '&description=' + description, 'asset_' + asset + '_details');
 
                 // And finally we refresh the view
-                document.getElementById('asset_' + asset + '_title').innerHTML = ' | ' + decodeURIComponent(title);
-                document.getElementById('asset_' + asset + '_title_clic').innerHTML = ' | ' + decodeURIComponent(title);
+                document.getElementById('asset_' + asset + '_title').innerText = ' | ' + decodeURIComponent(title);
+                document.getElementById('asset_' + asset + '_title_clic').innerText = ' | ' + decodeURIComponent(title);
             }
 
             function asset_downloadable_set(album, asset) {

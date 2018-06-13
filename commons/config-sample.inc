@@ -42,7 +42,7 @@ $ezmanager_url = "$application_url/ezmanager";
 $ezmanager_safe_url = "$application_safe_url/ezmanager";
 $ezplayer_url = "$application_url/ezplayer";
 $ezplayer_safe_url = "$application_safe_url/ezplayer";
-$distribute_url = "$ezmanager_url/distribute.php";
+$distribute_url = "$ezmanager_safe_url/distribute.php";
 
 // Absolute paths 
 $repository_basedir = "/var/lib/ezcast";

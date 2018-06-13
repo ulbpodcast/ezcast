@@ -188,7 +188,7 @@
         <tbody>
             <?php foreach ($courses as $c) {
                             ?>
-                <tr data-id="<?php echo $c['ID'] ?>" data-origin="<?php echo $u['origin'] ?>">
+                <tr data-id="<?php echo $c['ID'] ?>" data-origin="<?php echo $userinfo['origin'] ?>">
                     <td><?php if (isset($c['course_code_public']) && $c['course_code_public']!="") {
                                 echo $c['course_code_public'];
                             } else {

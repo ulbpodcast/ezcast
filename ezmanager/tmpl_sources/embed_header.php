@@ -29,4 +29,4 @@
         <title>¤organization¤</title>
         <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
     </head>
-    <body>
+    <body style="margin:0px !important">

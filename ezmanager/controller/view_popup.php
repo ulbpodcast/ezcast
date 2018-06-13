@@ -127,6 +127,7 @@ function popup_embed_code()
     global $repository_path;
     global $ezmanager_url;
     global $distribute_url;
+    global $embedIframed;
 
     ezmam_repository_path($repository_path);
     template_load_dictionnary('translations.xml');
@@ -155,8 +156,11 @@ function popup_embed_code()
     $type = $media_infos[1];
     $quality = $media_infos[0];
     //compute iframe size according to media size
-    $iframe_height = $metadata['height'] + 40;
-    $iframe_width = $metadata['width'] + 30;
+//    $iframe_height = $metadata['height'] + 40;
+//    $iframe_width = $metadata['width'] + 30;
+    //force width & heigth in youtube standart
+    $iframe_width = 560;
+    $iframe_height = 315;
     // Embed code
     $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] .
             '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;

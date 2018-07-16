@@ -580,10 +580,7 @@ function user_login($login, $passwd)
         error_print_message(template_get_message('not_registered', get_lang()), false);
         log_append('warning', $res['login'] . ' tried to access ezmanager but doesn\'t have permission to manage any album.');
         session_destroy();
-        
-        //MOFIF !!!!!!!!!!!
-//        header("Location: https://ezcast.uclouvain.be?noPerm"); 
-//        view_login_form();
+        view_login_form();
         die;
     }
 

@@ -37,7 +37,7 @@
 function file_checkauth($login, $passwd)
 {
     require "pwfile.inc"; //file containing passwords and info
-
+    require_once 'lib_pw.php';
     $login = trim($login);
 
     if(!preg_match('/^[a-zA-Z0-9_\-]+$/',$login)){
@@ -46,11 +46,7 @@ function file_checkauth($login, $passwd)
     } //sanity check
     if (isset($users[$login])) {
         $fpasswd = $users[$login]['password']; // password from pwfile.inc
-        $salt = substr($fpasswd, 0, 2);
-        $cpasswd = crypt($passwd, $salt);
-        $fpasswd = rtrim($fpasswd);
-    
-        if ($fpasswd == $cpasswd) {
+        if (pw_check($login,$passwd,$fpasswd)) {
             //user exists and password matches
             $userinfo = $users[$login];
             unset($userinfo['password']); //removes password info
@@ -75,7 +71,7 @@ function file_checkauth($login, $passwd)
 function file_getinfo($login)
 {
     include "pwfile.inc"; //file containing passwords and info
-
+    require_once 'lib_pw.php';
     if (isset($users[$login])) { // from pwfile.inc
         $userinfo = $users[$login];
         unset($userinfo['password']); //removes password info

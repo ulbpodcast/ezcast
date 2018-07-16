@@ -278,10 +278,11 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     //htpasswd
     $htpasswd = '';
     $previous_user = "";
+    $user_added=array();
     foreach ($users as $u) {
-        if ($previous_user != $u['user_ID']) {
+        if (!isset($user_added[$u['user_ID']])) {
             $htpasswd .= $u['user_ID'] . ':' . $u['recorder_passwd'] . PHP_EOL;
-            $previous_user = $u['user_ID'];
+            $user_added[$u['user_ID']]=true;//prevent duplicate entries
         }
     }
     file_put_contents(__DIR__.'/var/htpasswd', $htpasswd);
@@ -325,6 +326,39 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
             $error = true;
         }
     }
-
+    
     return $error === false;
+}
+
+///// NOTIFICATION ALERT /////
+
+/**
+ * indicate/clear Changes have been made but not saved yet and should be pushed to ezrecorders
+ * @global string $ezrecorder_need_files_pushed_path
+ * @param boolean $enable
+ */
+function notify_changes($enable = true)
+{
+    global $ezrecorder_need_files_pushed_path;
+    if ($enable) {
+        if(isset($_SESSION)) $_SESSION['changes_to_push'] = true;
+        //create file whose presence will trigger push (by a cron)
+        touch($ezrecorder_need_files_pushed_path);
+    } else {
+        if(isset($_SESSION)) unset($_SESSION['changes_to_push']);
+        //remove file whose presence will trigger push (by a cron)
+        if(file_exists($ezrecorder_need_files_pushed_path))unlink($ezrecorder_need_files_pushed_path);
+    }
+}
+/**
+ * indicate/clear Changes have been made but not saved yet and should be pushed to ezrecorders
+ * @global string $ezrecorder_need_files_pushed_path
+ * @param boolean $enable
+ */
+function notify_changes_isset()
+{
+    global $ezrecorder_need_files_pushed_path;
+     
+    return file_exists($ezrecorder_need_files_pushed_path);//if file exists return true
+     
 }

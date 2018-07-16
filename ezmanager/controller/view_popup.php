@@ -34,6 +34,10 @@ function index($param = array())
             popup_new_album();
             break;
 
+        case 'ezrecorder':
+            popup_ezrecorder();
+            break;
+        
         case 'delete_album':
             popup_delete_album();
             break;
@@ -259,6 +263,28 @@ function popup_new_album()
 {
     $not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
     require_once template_getpath('popup_new_album.php');
+}
+
+function popup_ezrecorder()
+{
+    //$not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
+    $album= acl_authorized_albums_list_created($assoc = false);
+    $album_view=array();
+    foreach ($album as $album_name) { 
+      $course_info=db_course_read($album_name);
+      if (isset($course_info['course_code_public']) && $course_info['course_code_public']!='') {
+            $course_code_public = $course_info['course_code_public'];
+        } else {
+            $course_code_public = $album_name;
+        }
+      $in_recorders=isset($course_info['in_recorders']) && $course_info['in_recorders']!=false;
+      array_push($album_view, array('course_code'=>$album_name,'course_code_public'=>$course_code_public,'in_recorders'=>$in_recorders));
+    }
+    
+    //check if the user already has an ezrecorder pw
+    $user_info=db_user_read($_SESSION['user_login']);
+    $user_has_ezrecorder_pw = $user_info!=false && isset($user_info) && $user_info['passNotSet']!=true;
+    require_once template_getpath('popup_ezrecorder.php');
 }
 
 function popup_delete_album()

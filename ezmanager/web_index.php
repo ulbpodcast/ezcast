@@ -146,6 +146,11 @@ else {
             requireController('view_help.php');
             break;
 
+        case 'update_ezrecorder':
+            $service = true;
+            requireController('update_ezrecorder.php');
+            break;
+        
         // Display the update page
         case 'view_update':
             requireController('view_update.php');
@@ -331,6 +336,7 @@ else {
     }
     
     // Call the function to view the page
+ //   print "action:".$action;die;
     index($paramController);
 }
 
@@ -517,11 +523,13 @@ function user_login($login, $passwd)
         view_login_form();
         die;
     }
-
-    $login_parts = explode("/", $login);
-
-    // checks if runas
-    if (count($login_parts) == 2) {
+    $res = checkauth(strtolower($login), $passwd);
+    if($res){
+      //auth succeeded but if it is a runas, we still need to check if user is in admin.inc  
+      $login_parts = explode("/", $login);
+    
+      // checks if runas
+      if (count($login_parts) == 2) {
         if (!file_exists('admin.inc')) {
             $error = "Not admin. runas login failed";
             view_login_form();
@@ -529,14 +537,17 @@ function user_login($login, $passwd)
         }
         include 'admin.inc'; //file containing an assoc array of admin users
         if (!isset($admin[$login_parts[0]])) {
+            var_dump($admin);
+            print "login_parts";
+                        var_dump($login_parts);die;
             $error = "Not admin. runas login failed";
             view_login_form();
             die;
         }
     }
 
-    $res = checkauth(strtolower($login), $passwd);
-    if (!$res) {
+    }
+    else{
         $error = checkauth_last_error();
         view_login_form();
         die;
@@ -571,7 +582,7 @@ function user_login($login, $passwd)
         session_destroy();
         
         //MOFIF !!!!!!!!!!!
-        header("Location: https://ezcast.uclouvain.be?noPerm"); 
+//        header("Location: https://ezcast.uclouvain.be?noPerm"); 
 //        view_login_form();
         die;
     }

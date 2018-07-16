@@ -246,7 +246,7 @@ function statements_get()
         
             'user_update_recorder_passwd' =>
                     'UPDATE ' . db_gettable('users') . ' ' .
-                    'SET recorder_passwd = :passwd' . ' ' .
+                    'SET recorder_passwd = :recorder_passwd' . ' ' .
                     'WHERE user_ID = :user_ID',
 
             'log_action' =>
@@ -458,11 +458,12 @@ function db_course_create($course_id, $course_code_public, $course_name, $in_rec
 function db_course_read($course_id)
 {
     global $statements;
-    
+    //var_dump($statements['course_read']);die;
     $statements['course_read']->bindParam(':course_code', $course_id);
     
     $statements['course_read']->execute();
-    return $statements['course_read']->fetch();
+    $res= $statements['course_read']->fetch();
+    return $res;
 }
 
 /**
@@ -831,9 +832,22 @@ function db_found_rows()
     return intval($res[0]);
 }
 
+
+/**
+ * creates a local user and/or add a ezrecorder password to an external (sso,ldap,...) user
+ * @global array $statements
+ * @param string $user_ID
+ * @param string $surname
+ * @param string $forename
+ * @param string $recorder_passwd (cleartext pw)
+ * @param boolean $permissions true if admin(allow to use 'runas')
+ * @return boolean true on success
+ */
 function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions,$origin='internal')
 {
     global $statements;
+    require_once __DIR__ .'/lib_pw.php'; //for pw encryption
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
     $lowered_user_id = strtolower($user_ID);
     $statements['user_create']->bindParam(':user_ID', $lowered_user_id);
     $statements['user_create']->bindParam(':surname', $surname);
@@ -853,6 +867,7 @@ function db_user_delete($user_ID)
 function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permissions)
 {
     global $statements;
+    require_once __DIR__ .'/lib_pw.php'; //for pw encryption
     if (empty($recorder_passwd)) {
         $statements['user_update_short']->bindParam(':user_ID', $user_ID);
         $statements['user_update_short']->bindParam(':surname', $surname);
@@ -860,10 +875,11 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
         $statements['user_update_short']->bindParam(':permissions', $permissions);
         return $statements['user_update_short']->execute();
     }
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
     $statements['user_update']->bindParam(':user_ID', $user_ID);
     $statements['user_update']->bindParam(':surname', $surname);
     $statements['user_update']->bindParam(':forename', $forename);
-    $statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_update']->bindParam(':recorder_passwd', $encrypted_passwd);
     $statements['user_update']->bindParam(':permissions', $permissions);
     return $statements['user_update']->execute();
 }
@@ -879,13 +895,12 @@ function db_termsOfUseUpdate($user_ID,$termsOfUse){
 
 //return number of line affected, or false on error
 function db_user_set_recorder_passwd($user_ID, $recorder_passwd)
-{
-    $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
-    $encrypted_passwd = crypt($recorder_passwd, $des_seed);
-        
-    global $statements;
+{ 
+  global $statements;
+  require_once __DIR__ .'/lib_pw.php'; //for pw encryption
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
     $statements['user_update_recorder_passwd']->bindParam(':user_ID', $user_ID);
-    $statements['user_update_recorder_passwd']->bindParam(':passwd', $encrypted_passwd);
+    $statements['user_update_recorder_passwd']->bindParam(':recorder_passwd', $encrypted_passwd);
     $ok = $statements['user_update_recorder_passwd']->execute();
     if(!$ok)
         return false;

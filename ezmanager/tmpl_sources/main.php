@@ -222,8 +222,8 @@
                         ®recordingsetting®
                     </a>
                 </div>
-              </div>
         <?php } //endif ?>
+              </div>
                 <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" 
                     onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php 
                     // echo get_lang();?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang();?>.png" name="Image5" 

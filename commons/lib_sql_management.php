@@ -113,23 +113,21 @@ function statements_get()
             'course_delete' =>
                     'DELETE FROM ' . db_gettable('courses') . ' ' .
                     'WHERE course_code = :course_code AND origin = \'internal\'',
-//
-//            'user_read' =>
-//                    'SELECT ' .
-//                            db_gettable('users') . '.user_ID, ' .
-//                            db_gettable('users') . '.surname, ' .
-//                            db_gettable('users') . '.forename, ' .
-//                      '(' . db_gettable('users') . '.recorder_passwd = "" OR '.db_gettable('users').'.recorder_passwd IS NULL) as passNotSet, ' .
-//                            db_gettable('users') . '.permissions, ' .
-//                            db_gettable('users') . '.origin ' .
-//                            db_gettable('users') . '.termsOfUses ' .
-//                            //db_gettable('users') . '.date_created ' .
-//                    'FROM ' . db_gettable('users') . ' ' .
-//                    'WHERE user_ID = :user_ID',
 
             'user_read' =>
-                    'SELECT  * FROM ' . db_gettable('users') . ' ' .
+                    'SELECT ' .
+                            db_gettable('users') . '.user_ID, ' .
+                            db_gettable('users') . '.surname, ' .
+                            db_gettable('users') . '.forename, ' .
+                      '(' . db_gettable('users') . '.recorder_passwd = "" OR '.db_gettable('users').'.recorder_passwd IS NULL) as passNotSet, ' .
+                            db_gettable('users') . '.permissions, ' .
+                            db_gettable('users') . '.origin ' .
+//                            db_gettable('users') . '.termsOfUses ' .
+                            //db_gettable('users') . '.date_created ' .
+                    'FROM ' . db_gettable('users') . ' ' .
                     'WHERE user_ID = :user_ID',
+
+
 
             'user_courses_get' =>
                     'SELECT DISTINCT ' .

@@ -28,6 +28,5 @@
         <script src="./js/highstock.js" async></script>        
         <script type="text/javascript" src="js/AppearDissapear.js"></script>
         <script type="text/javascript" src="js/hover.js"></script>
-        <script type="text/javascript" src="js/combo_boxes.js"></script>        
         <script type="text/javascript" src="jQuery-DateTimePicker/jquery.simple-dtpicker.js"></script>
         

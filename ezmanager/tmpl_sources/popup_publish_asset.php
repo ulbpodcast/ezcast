@@ -32,8 +32,6 @@
     <strong>®Title®&nbsp;:</strong> <?php echo htmlspecialchars($title); ?>
 
     <center>
-        <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#publish_asset'));$('#modal').modal('show'); }, 500);"
             href="index.php?action=publish_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>" 
             data-dismiss="modal" id="publish_asset">

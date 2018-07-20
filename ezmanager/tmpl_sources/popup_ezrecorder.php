@@ -92,7 +92,7 @@ It allows to select all albums needed to be shown in ezrecorder in classrooms an
             </div>
             <div class="form-group">
                 <div class="modal-footer">
-                   <button type="submit" id="postUrl" class="btn btn-default">®Cancel®</button>  <button type="submit" id="postUrl" class="btn btn-primary">®Update®</button>
+                   <button type="submit" id="postUrl" class="btn btn-primary">®Update®</button>
                 </div>
             </div>
         </form>

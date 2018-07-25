@@ -64,7 +64,7 @@ function courses_list($netid = "")
     $db = db_prepare($statements);
     
     if (!$db) {
-        debuglog("could not connect to sgbd:" . mysql_error());
+        debuglog("could not connect to sgbd:" . mysqli_error());
         die;
     }
     $result = array();

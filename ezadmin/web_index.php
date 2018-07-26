@@ -24,6 +24,7 @@ require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
 require_once 'lib_various.php';
+require_once 'lib_push_changes.php';
 require_once __DIR__.'/../commons/lib_scheduling.php';
 
 $input = array_merge($_GET, $_POST);

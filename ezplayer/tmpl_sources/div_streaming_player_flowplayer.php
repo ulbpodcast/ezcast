@@ -26,8 +26,9 @@
 ?>
 <div id="streaming_config">
     <link rel="stylesheet" href="flowplayer/skin/skin.css">
-    <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
-		
+    <?php if($_SESSION['isPhone']){  ?>
+        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
+	<?php } ?>	
     <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
         <div class="video_controls streaming">

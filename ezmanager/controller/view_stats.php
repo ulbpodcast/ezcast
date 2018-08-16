@@ -77,7 +77,7 @@ function convertPHPArrayToJSArray($data)
 
 function load_stats($album)
 {
-    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    require_once __DIR__ . '/../lib_sql_stats.php';
     
     $stats = array();
     $all_album_data = db_stats_album_get_month_data($album);

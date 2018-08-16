@@ -31,8 +31,8 @@
 /**
  * This file contains all methods related to learning analytics.
  */
-include_once dirname(__FILE__) . '/config.inc';
-include_once dirname(__FILE__) . '/lib_ezmam.php';
+include_once __DIR__ . '/config.inc';
+include_once __DIR__ . '/lib_ezmam.php';
 
 /**
  * Returns the number of assets contained in the given album

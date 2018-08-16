@@ -25,10 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-require_once dirname(__FILE__) . '/config.inc';
-require_once dirname(__FILE__) . '/lib_ffmpeg.php';
-require_once dirname(__FILE__) . '/lib_gd.php';
-require_once dirname(__FILE__) . '/lib_metadata.php';
+require_once __DIR__ . '/config.inc';
+require_once __DIR__ . '/lib_ffmpeg.php';
+require_once __DIR__ . '/lib_gd.php';
+require_once __DIR__ . '/lib_metadata.php';
 
 if ($argc != 2) {
     echo "usage: " . $argv[0] . ' <path_to_new_asset_dir>'

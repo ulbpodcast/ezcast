@@ -28,7 +28,7 @@
  */
 include "config.inc";
 foreach ($auth_methods as $method) {
-    include dirname(__FILE__)."/lib_auth_$method.php";
+    include __DIR__."/lib_auth_$method.php";
 }
 
 /*

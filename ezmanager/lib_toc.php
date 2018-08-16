@@ -28,10 +28,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
      
-include_once dirname(__FILE__) . '/config.inc';
+include_once __DIR__ . '/config.inc';
 include_once __DIR__.'/../commons/lib_error.php';
-include_once dirname(__FILE__) . '/lib_various.php';
-include_once dirname(__FILE__) . '/lib_ezmam.php';
+include_once __DIR__ . '/lib_various.php';
+include_once __DIR__ . '/lib_ezmam.php';
 
 /**
  * Returns the list of (official) bookmarks for a given album

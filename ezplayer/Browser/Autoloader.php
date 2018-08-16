@@ -26,7 +26,7 @@ class Autoloader
      */
     public static function autoload($class)
     {
-        if (file_exists($file = dirname(__FILE__) . '/' . preg_replace('!^Browser\\\!', '', $class) . '.php')) {
+        if (file_exists($file = __DIR__ . '/' . preg_replace('!^Browser\\\!', '', $class) . '.php')) {
             require $file;
         }
     }

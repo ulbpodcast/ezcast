@@ -1,6 +1,6 @@
 <?php
 
-include_once dirname(__FILE__) . '/lib_analytics.php';
+include_once __DIR__ . '/lib_analytics.php';
 
 $album = "PODC-I-020-pub";
 

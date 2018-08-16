@@ -399,7 +399,7 @@ function asset_stats()
         echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
-    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    require_once __DIR__ . '/../lib_sql_stats.php';
     
     $asset = $input['asset'];
     $album = $input['album'];

@@ -58,7 +58,7 @@ function index($param = array())
     }
     toc_album_bookmarks_add($bookmarks);
     
-    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    require_once __DIR__ . '/../lib_sql_stats.php';
     db_stats_update_album($input['from'], $input['to']);
 
     // include_once $basedir.'/ezmanager/'.template_getpath('popup_asset_successfully_moved.php');

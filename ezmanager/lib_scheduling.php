@@ -656,7 +656,7 @@ function lib_scheduling_renderer_generate($renderers)
 
     $res .= ");\n\n?>";
 
-    return file_put_contents(dirname(__FILE__) . '/renderers.inc', $res);
+    return file_put_contents(__DIR__ . '/renderers.inc', $res);
 }
 
 /**
@@ -831,7 +831,7 @@ function lib_scheduling_renderer_assign($renderer, $job)
         return false;
     }
 
-    system('echo "' . lib_scheduling_config('php-path') . ' ' . dirname(__FILE__) . '/cli_scheduler_job_perform.php ' . $job['uid'] . '" | at now');
+    system('echo "' . lib_scheduling_config('php-path') . ' ' . __DIR__ . '/cli_scheduler_job_perform.php ' . $job['uid'] . '" | at now');
 
     return true;
 }

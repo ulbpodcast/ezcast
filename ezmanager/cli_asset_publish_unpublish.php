@@ -31,11 +31,11 @@
  *
  * TODO same file that controller "asset_publish_unpublish".  Must be merge !
  */
-require_once dirname(__FILE__) . '/config.inc';
-require_once dirname(__FILE__) . '/lib_ezmam.php';
-require_once dirname(__FILE__) . '/lib_various.php';
+require_once __DIR__ . '/config.inc';
+require_once __DIR__ . '/lib_ezmam.php';
+require_once __DIR__ . '/lib_various.php';
 require_once __DIR__.'/../commons/lib_error.php';
-require_once dirname(__FILE__) . '/lib_toc.php';
+require_once __DIR__ . '/lib_toc.php';
 
 if ($argc != 4) {
     echo "usage: " . $argv[0] . ' <album> <asset> <action>
@@ -111,6 +111,6 @@ function move_data($album, $asset)
     toc_album_bookmarks_swap($album, $asset);
     $albumTo = suffix_replace($album);
     
-    require_once dirname(__FILE__) . '/lib_sql_stats.php';
+    require_once __DIR__ . '/lib_sql_stats.php';
     db_stats_update_album($album, $albumTo);
 }

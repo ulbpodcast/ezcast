@@ -1,9 +1,9 @@
 <?php
 
-require_once dirname(__FILE__) . '/config.inc';
-require_once dirname(__FILE__) . '/lib_ezmam.php';
-require_once dirname(__FILE__) . '/../commons/common.inc';
-require_once dirname(__FILE__) . '/../commons/config.inc';
+require_once __DIR__ . '/config.inc';
+require_once __DIR__ . '/lib_ezmam.php';
+require_once __DIR__ . '/../commons/common.inc';
+require_once __DIR__ . '/../commons/config.inc';
 
 global $basedir;
 global $php_cli_cmd;

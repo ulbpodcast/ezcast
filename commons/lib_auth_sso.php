@@ -1,6 +1,6 @@
 <?php
 
-include_once dirname(__FILE__).'/config.inc';
+include_once __DIR__.'/config.inc';
 require_once __DIR__.'/../commons/lib_database.php';
 require_once __DIR__.'/../commons/lib_sql_management.php';
 

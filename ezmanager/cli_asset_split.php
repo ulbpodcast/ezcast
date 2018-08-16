@@ -28,9 +28,9 @@
 /**
  * @package ezcast.ezmanager.cli
  */
-require_once dirname(__FILE__) . '/config.inc';
-require_once dirname(__FILE__) . '/lib_ezmam.php';
-require_once dirname(__FILE__) . '/lib_various.php';
+require_once __DIR__ . '/config.inc';
+require_once __DIR__ . '/lib_ezmam.php';
+require_once __DIR__ . '/lib_various.php';
 
 //always initialize repository path before using ezmam library
 ezmam_repository_path($repository_path);

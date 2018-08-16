@@ -76,6 +76,6 @@ function move_data($album, $asset)
     toc_album_bookmarks_swap($album, $asset);
     $albumTo = suffix_replace($album);
     
-    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    require_once __DIR__ . '/../lib_sql_stats.php';
     db_stats_update_album($album, $albumTo);
 }

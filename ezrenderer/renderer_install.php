@@ -43,8 +43,8 @@ if ($argc != 7) {
     die;
 }
 
-$current_dir = dirname(__FILE__);
-$config_dir = $current_dir."/bin";
+$current_dir = dirname(__FILE__); // Useless (normaly)
+$config_dir = __DIR__."/bin";
 $config_file = "config.inc";
 $config_file_path = $config_dir."/".$config_file;
 
@@ -55,9 +55,9 @@ $ffprobe_path = $argv[4];
 $num_threads = $argv[5];
 $num_jobs = $argv[6];
 
-$config = file_get_contents($current_dir."/bin/config-sample.inc");
+$config = file_get_contents(__DIR__."/bin/config-sample.inc");
 
-$config = preg_replace('/\$basedir = (.+);/', '\$basedir = "'.$current_dir.'/";', $config);
+$config = preg_replace('/\$basedir = (.+);/', '\$basedir = "'.__DIR__.'/";', $config);
 $config = preg_replace('/\$num_threads = (.+);/', '\$num_threads = '.$num_threads.';', $config);
 $config = preg_replace('/\$num_jobs = (.+);/', '\$num_jobs = '.$num_jobs.';', $config);
 $config = preg_replace('/\$php_cli_cmd = (.+);/', '\$php_cli_cmd = "'.$php_cmd.'";', $config);
@@ -67,11 +67,11 @@ $config = preg_replace('/\$encoding_pgm = (.+);/', '\$encoding_pgm = '.$encoding
 file_put_contents($config_file_path, $config);
 
 // Replaces path in
-$intro_title_movie = file_get_contents($current_dir . "/bin/intro_title_movie.bash");
-$intro_title_movie = str_replace("!PATH", $current_dir, $intro_title_movie);
+$intro_title_movie = file_get_contents(__DIR__ . "/bin/intro_title_movie.bash");
+$intro_title_movie = str_replace("!PATH", __DIR__, $intro_title_movie);
 $intro_title_movie = str_replace("!PHP_PATH", $php_cmd, $intro_title_movie);
-file_put_contents($current_dir . "/bin/intro_title_movie.bash", $intro_title_movie);
+file_put_contents(__DIR__ . "/bin/intro_title_movie.bash", $intro_title_movie);
 
-chmod($current_dir . "/bin/intro_title_movie.bash", 0755);
+chmod(__DIR__ . "/bin/intro_title_movie.bash", 0755);
 
 echo "0";

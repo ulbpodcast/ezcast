@@ -17,7 +17,7 @@ function index($param = array())
         echo "Usage: index.php?action=album_stats_reset&album=ALBUM";
         die;
     }
-    require_once dirname(__FILE__) . '/../lib_sql_stats.php';
+    require_once __DIR__ . '/../lib_sql_stats.php';
     db_stats_album_hide($input['album']);
     
     require_once template_getpath('popup_album_stats_successfully_reset.php');

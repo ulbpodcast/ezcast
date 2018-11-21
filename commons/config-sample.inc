@@ -51,6 +51,8 @@ $basedir = "/usr/local/ezcast";
 // Database info
 $db_type = 'mysql';
 $db_host = 'localhost';
+$db_port = "";
+                                            
 $db_login = "ezcast";
 $db_passwd = "";
 $db_name = "ezcast";
@@ -183,3 +185,10 @@ if(basename(__FILE__) != "config-sample.inc") {
     require_once(__DIR__ . '/common.inc');
     require_once('logger_server.php');
 }
+// Various parameters
+$accepted_languages = array('fr', 'en'); // Accepted parameters for the language to use
+$accepted_file_extensions = array('.html', '.xhtml', '.xml', '.htm', '.php'); // File with these extensions will be considered as template files
+
+//Parameters for inclusion of audio files
+$enable_audio_submit=false;                 //Accept audio files in EZmanager submit form
+$enable_ezplayer_audio_download=false;      // enable the viewer to download mp3 files if exist

@@ -47,7 +47,7 @@ $distribute_url = "$ezmanager_safe_url/distribute.php";
 // Absolute paths 
 $repository_basedir = "/var/lib/ezcast";
 $basedir = "/usr/local/ezcast";
-
+$php_exec_path="/usr/bin/php";
 // Database info
 $db_type = 'mysql';
 $db_host = 'localhost';

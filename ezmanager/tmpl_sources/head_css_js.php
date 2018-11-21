@@ -1,4 +1,4 @@
-<link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
+<link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
 <link rel="apple-touch-icon" href="images/ipadIcon.png" /> 
 <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="bootstrap/css/dashboard.css" />
@@ -10,6 +10,8 @@
 
 <?php
     global $apache_documentroot;
+    global $matomoScript;
+
     $custom_folder = "$apache_documentroot/ezmanager/css/custom/";
     $dir = new DirectoryIterator($custom_folder);
     foreach ($dir as $fileinfo) {
@@ -30,3 +32,4 @@
         <script type="text/javascript" src="js/hover.js"></script>
         <script type="text/javascript" src="jQuery-DateTimePicker/jquery.simple-dtpicker.js"></script>
         
+   <?php echo $matomoScript; ?>

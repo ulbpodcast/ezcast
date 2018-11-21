@@ -9,7 +9,6 @@
         <div class="asset_author">{ <?php print_info($asset_meta['author']); ?> }</div>
     </div>
     <div class="download-button">
-
             <?php
             if (!isset($asset_meta['downloadable']) || $asset_meta['downloadable'] !== 'false') {
                 if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'cam') {
@@ -27,6 +26,17 @@
                        href="javascript:popup_asset(current_album, current_asset, time, 'slide', 'share_link')" 
                        onclick="server_trace(new Array('3', 'slide_download_open', current_album, current_asset, duration, time, type, quality));">
                            <?php echo $asset_meta['record_type'] == 'camslide' ? '®The_slides®' : '®Download_slide®'?>
+                    </a>
+                <?php
+                }
+                global $enable_ezplayer_audio_download;
+                if ($asset_meta['has_audio'] && $enable_ezplayer_audio_download) {
+                    $type = 'audio'.$asset_meta['record_type'];
+                    ?>
+                    <a class="button" 
+                       href="javascript:popup_asset(current_album, current_asset, time, <?php echo "'".$type."'"; ?>, 'share_link')" 
+                       onclick="server_trace(new Array('3', 'audio_download_open', current_album, current_asset, duration, time, type, quality));">
+                           ®Download_audio®
                     </a>
                 <?php
                 }

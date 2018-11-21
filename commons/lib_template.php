@@ -39,9 +39,7 @@ $dictionnary_xml;
 $error_visible = false;
 $warning_visible = false;
 
-// Various parameters
-$accepted_languages = array('fr', 'en'); // Accepted parameters for the language to use
-$accepted_file_extensions = array('.html', '.xhtml', '.xml', '.htm', '.php'); // File with these extensions will be considered as template files
+require_once 'config.inc';
 
 //////////////////////
 //                  //
@@ -178,15 +176,15 @@ function template_parse($file, $lang, $output_folder, $translation_xml_file)
     //
     $data = file_get_contents($file);
     template_load_dictionnary($translation_xml_file);
-    
 
     // *** Update 2016/07/15
     // add information replacement based on institution and language
     //look for ¤string¤ where string in any (smallest, ungreedy) suite of nonspace chars.
     //Begin and end of ¤string¤ must be on the same line.
     //calls template_get_label for each match and replace keywork with translated value in the text
-    $data = preg_replace_callback('!¤(\S+)¤!iU', create_function('$matches', 'return template_get_info($matches[1], \''.$organization_name.'\', \''.$lang.'\');'), $data);
-
+    $data = preg_replace_callback('!¤(\S+)¤!iU', function($matches) use($organization_name, $lang) {
+                return template_get_info($matches[1], $organization_name, $lang);
+                }, $data);
 
     // Version 1 (not optimized at all)
     /*$labels = template_get_labels('fr');
@@ -201,7 +199,9 @@ function template_parse($file, $lang, $output_folder, $translation_xml_file)
     //look for ®string® where string in any (smallest, ungreedy) suite of nonspace chars.
     //Begin and end of @string@ must be on the same line.
     //calls template_get_label for each match and replace keywork with translated value in the text
-    $data = preg_replace_callback('!®(\S+)®!iU', create_function('$matches', 'return template_get_label($matches[1], \''.$lang.'\');'), $data);
+    $data = preg_replace_callback('!®(\S+)®!iU', function($matches)  use($lang) {
+                return template_get_label($matches[1], $lang);
+                }, $data);
     
     //
     // 3) Saving the result
@@ -390,8 +390,9 @@ function set_lang($lang)
  */
 function get_lang()
 {
-    //if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
-    if (isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
+    global $accepted_languages;
+    
+    if(isset($_SESSION['lang']) && in_array($_SESSION['lang'], $accepted_languages)) {
         return $_SESSION['lang'];
     } else {
         return 'fr';

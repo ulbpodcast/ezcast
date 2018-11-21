@@ -44,7 +44,7 @@ global $first_connexion;
 <div class="albums">
     <div id="tuto">
         <a href="#" onclick="$('#tuto_video').toggle();" id="tuto_label">®tuto®</a>
-        <video id='tuto_video' width="720" controls  type="video/mp4" src="./videos/tuto_<?php echo get_lang(); ?>.mp4" 
+        <video id='tuto_video' width="720" controls="controls"  type="video/mp4" src="./videos/tuto_<?php echo get_lang(); ?>.mp4" 
                style="display: <?php echo (!isset($albums) || sizeof($albums) == 0 || $first_connexion) ? 'block' : 'none'; ?>;">
             ®tuto®</video></div>
     <?php

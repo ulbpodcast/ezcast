@@ -291,7 +291,7 @@ function streaming_init()
             $str= (file_get_contents($working_dir));
             $today_streams = json_decode($str, true);
             end($today_streams);         // move the internal pointer to the end of the array    
-                        
+            
             if (end($today_streams) == ((count($externalClients))-1))
                 $streamer=0;
             else 
@@ -372,7 +372,7 @@ function streaming_content_add()
     global $externalClients;
 
 
-    
+        
 
     ezmam_repository_path($repository_path);
 
@@ -416,7 +416,7 @@ function streaming_content_add()
                 }
             }
             $upload_root_dir = $apache_documentroot . '/ezplayer/videos/' . $course . '/' . $stream_name . '_' . $asset_token . '/';
-            if (!is_dir($upload_root_dir)) {
+	    if (!is_dir($upload_root_dir)) {
                 mkdir($upload_root_dir, 0755, true);
             } // creates the directories if needed
        
@@ -465,42 +465,50 @@ function streaming_content_add()
             }
             
             $uploadfile = $upload_quality_dir . $input['filename'];
-            // places the file (.ts segment from HTTP request) in the webspace         
-          
-            //transcode streaming directly to be able to record h265 and difuse h254
+            // places the file (.ts segment from HTTP request) in the webspace  
+       
+	    //transcode streaming directly to be able to record h265 and difuse h254
             if($transcodeStreaming && $input['module_type']!="slide" ){
 //                file_put_contents("/usr/local/ezcast/ezmanager/web_request/test.txt", json_encode($input));
                 $transcodeDir=$repository_basedir.'/streamEncode/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
+                
                 if (!is_dir($transcodeDir)) {
                     mkdir($transcodeDir, 0775, true);
                 }
                 $transfile=$transcodeDir.$input['filename'];
-                
+
                 //move the original ts file in the temp directory to transcode it
                 move_uploaded_file($_FILES['m3u8_segment']['tmp_name'], $transfile);               
-
+		
                  //transcode on a remote server
                 if(isset($externalClients) && count($externalClients) != 0 ){
-                   
-                    //get the streamer server avaiable for this stream (defined in streaming_init() )
-                    $transcode_dir=dirname(__DIR__)."/var/transcoded_streams/";
-                    $working_dir=$transcode_dir.date('j_m_Y');
-                    $stream_id=$course . '_' . $stream_name . '_'.$module_type;
+                    
+                    if(count($externalClients) > 1){
+                        //get the streamer server avaiable for this stream (defined in streaming_init() )
+                        $transcode_dir=dirname(__DIR__)."/var/transcoded_streams/";
+                        $working_dir=$transcode_dir.date('j_m_Y');
+                        $stream_id=$course . '_' . $stream_name . '_'.$module_type;
 
-                    if(file_exists($working_dir) && count($externalClients) > 1 ){
-                        $str= (file_get_contents($working_dir));
-                        $today_streams = json_decode($str, true);
-                        $streamer = $today_streams[$stream_id];                             
+                        if(file_exists($working_dir)){
+                            $str= (file_get_contents($working_dir));
+                            $today_streams = json_decode($str, true);
+                            $streamer = $today_streams[$stream_id];                             
+                        }
+                        else 
+                            $streamer = 1;
                     }
-                    else 
+                    else
                         $streamer = 0;
-                    // give the right username@ip for the ssh link
+                    
+		    // give the right username@ip for the ssh link
                     $externalClient=$externalClients[$streamer];    
                     
                     $outputrepo= $repository_basedir.'/streamEncode/output/' . $course . '/' . $stream_name . '_' . $asset_token . '/'.$input['module_type'] . '/'. $input['quality'] . '/';
                     $outputFile=$outputrepo.$input['filename'];                    
-                    //create the temp repository if doesnt exist, transcode video in temp repo then copy it on the original place to be played , remove temp files
-                    exec("ssh ".$externalClient." mkdir -p ".$outputrepo." &&  ssh ".$externalClient." ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1  -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28  ".$outputFile." && cp ".$outputFile." ".$uploadfile." && rm ".$transfile." && ssh ".$externalClient." rm ".$outputFile." ");
+
+                    //CPU MODE
+                    exec("ssh ".$externalClient." mkdir -p ".$outputrepo." &&  ssh ".$externalClient." ffmpeg  -thread_queue_size 512 -i  ".$transfile." -vcodec libx264 -acodec aac -strict experimental -ac 1 -bsf:a aac_adtstoasc -copyts -movflags faststart -preset ultrafast -crf 28 -max_muxing_queue_size 1000 ".$outputFile." 2>> /usr/local/ezcast/ezmanager/var/transcodeStream.txt && cp ".$outputFile." ".$uploadfile." && rm ".$transfile." && ssh ".$externalClient." rm ".$outputFile." ");
+
                 }
                 else {         
                 //transcode on the same server
@@ -514,6 +522,10 @@ function streaming_content_add()
                     echo "File is valid, and was successfully uploaded.\n";
                 }
             }
+            
+            
+
+
             // appends the m3u8 file
             $m3u8_quality_path = "$upload_quality_dir/$m3u8_quality_filename";
             if (!is_file($m3u8_quality_path)) {

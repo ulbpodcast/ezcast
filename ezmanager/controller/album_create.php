@@ -48,7 +48,8 @@ require_once(__DIR__ . '/../../commons/lib_ezmam.php');
                 $label = substr($label, 0, $max_album_label_size);
             }
             
-            $course_id = ezmam_course_get_new_id($course_code_public);
+            $course_id=str_replace(".", "", $course_code_public);    
+            $course_id = ezmam_course_get_new_id($course_id);
                 
             break;
         case 'create_album': //user pick from a course already existing in db
@@ -58,6 +59,7 @@ require_once(__DIR__ . '/../../commons/lib_ezmam.php');
                 die();
             }
             $course_code = htmlspecialchars($input['course_code']);
+            $course_code=str_replace(".", "", $course_code);
             // -
             
             if (!acl_has_album_permissions($course_code)) {

@@ -58,7 +58,7 @@ It allows to select all albums needed to be shown in ezrecorder in classrooms an
         <td class="album_name col-md-2" style="font-weight: bold;">
         <div class="col-sm-offset-2 col-sm-10">
                 <label>
-                    <input type="checkbox" id="recorder_access" name="recorder_access[<?php echo $album_item['course_code'] ?>]"  
+                    <input type="checkbox" id="recorder_access[<?php echo $album_item['course_code'] ?>]" name="recorder_access[<?php echo $album_item['course_code'] ?>]"  
                         <?php  if ($album_item['in_recorders']) echo 'checked'; ?> >
                     <!--<a class="info">
                         øezrecorderø
@@ -86,33 +86,51 @@ It allows to select all albums needed to be shown in ezrecorder in classrooms an
             <?php } ?>
             <div class="form-group" id="course_code_line">
                 <label for="course_code" id="labelcodeCours" class="col-sm-3 control-label">®Pw®</label>
-                <div class="col-sm-9">
-                    <input  maxlength="25" type="password" class="form-control" id="ezrecorder_pw" name="ezrecorder_pw" value="<?php if($user_has_ezrecorder_pw) echo "PASSWORD" ?>">
+                <div class="col-sm-7">
+                    <input type="password" class="form-control" id="ezrecorder_pw" maxlength="25" name="ezrecorder_pw" placeholder="********">
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-outline-secondary" id="show_password" type="button"><span class="glyphicon glyphicon-eye-open"></span></button>
                 </div>
             </div>
             <div class="form-group">
                 <div class="modal-footer">
-                   <button type="submit" id="postUrl" class="btn btn-primary">®Update®</button>
+                   <button type="submit" id="postUrl2" class="btn btn-primary">®Update®</button>
                 </div>
             </div>
         </form>
     
 </div>
 </div>
-<script>		
-  function submitForm() {
-var form = document.getElementById('form_ezrecorder');
+<script>
+    $("#show_password").click(function()
+    {
+        if($("#ezrecorder_pw").attr("type") == "password")
+        {
+            $("#ezrecorder_pw").attr("type", "text");
+            $(this).children().attr("class", "glyphicon glyphicon-eye-close");
+        }
+        else
+        {
+            $("#ezrecorder_pw").attr("type", "password");
+            $(this).children().attr("class", "glyphicon glyphicon-eye-open");
+        }
+    });
 
-var dataString = $(form).serialize();
-$.ajax({
-type:'POST',
-url:'index.php?action=update_ezrecorder',
-data: dataString,
-success: function(data){
-    $('#popup_ezrecorder').replaceWith(data);
-}
-});
-return false;
-}   
+    function submitForm()
+    {
+        var form = document.getElementById('form_ezrecorder');
+        var dataString = $(form).serialize();
+
+        $.ajax({
+            type:'POST',
+            url:'index.php?action=update_ezrecorder',
+            data: dataString,
+            success: function(data){
+                $('#popup_ezrecorder').replaceWith(data);
+            }
+        });
+        return false;
+    }   
     
 </script>

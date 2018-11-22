@@ -42,18 +42,7 @@ function index($param = array())
     $album_meta['add_title'] = $input['add_title'];
     $album_meta['downloadable'] = $input['downloadable'];
     $album_meta['anon_access'] = $input['anon_access'];
-    $album_meta['recorder_access'] = $input['recorder_access'];
-    
-    if(isset($input['recorder_access'])){
-        //change value of 'in_recorders' in DB 
-        if($input['recorder_access']=='true')
-            $recorder_access=1;
-        else 
-            $recorder_access=0;
-        $res=db_in_recorder_update($input['album'],$recorder_access);
-        //TO DO : synchro in cron every x hours
-//        exec('php '.$basedir.'/ezadmin/cli_push_changes.php > /dev/null 2>/dev/null &');
-    }
+
 
     $res = ezmam_album_metadata_set($album, $album_meta);
 

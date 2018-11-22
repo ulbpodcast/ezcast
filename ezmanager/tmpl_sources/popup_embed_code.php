@@ -38,7 +38,7 @@ You should not have to use this file on your own; if you do, make sure the varia
 <div class="modal-body">
     <p>®embed_code_message®</p>
 
-    <textarea readonly="" class="form-control" onclick="this.select()" id="share_time_link"><?php if(isset($embedIframed) && $embedIframed) echo $embed_code; else echo $link_target ; ?></textarea>
+    <textarea readonly="" class="form-control" onclick="this.select()" id="share_time_link"><?php echo $embed_code; ?></textarea>
     <br />
     <div class="wrapper_clip" style="position:relative; text-align: center;">
         <span id="share_time" onclick="copy_video_url();" class="btn btn-default">

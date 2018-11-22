@@ -3,6 +3,7 @@
 function index($param = array())
 {
     global $input;
+    global $input_validation_regex;
 
     $error = false;
     $room_ID = "";
@@ -13,6 +14,7 @@ function index($param = array())
     $ignore_ssh_check = false;
     
     if (isset($input) && isset($input['create']) && $input['create']) {
+
         $room_ID = $input['room_ID'];
         $name = $input['name'];
         $ip = $input['ip'];
@@ -20,8 +22,25 @@ function index($param = array())
         $enabled = (isset($input['enabled']) && $input['enabled']) ? 1 : 0;
         $ignore_ssh_check = (isset($input['ignore_ssh_check']) && $input['ignore_ssh_check']) ? 1 : 0;
         $success = false;
-        
-        if (!$ignore_ssh_check) {
+
+        if(mb_strlen($input['room_ID']) > 20) 
+        {
+            $error = template_get_message('error_validation_max_size_name', get_lang());
+        }
+        elseif(!check_validation_text($room_ID) || empty($room_ID))
+            {
+                $error = template_get_message('error_validation_roomID', get_lang());
+            }
+        if (!check_validation_text($name) || empty($name))
+        {
+            if($error)
+                $error .= "<br>".template_get_message('error_validation_name', get_lang());
+            else
+                $error = template_get_message('error_validation_name', get_lang());
+        }
+
+        if (!$ignore_ssh_check)
+        {
             $master_ok = check_classroom_ssh_access($ip);
             $slave_ok = true;
             if ($ip_remote != '') {

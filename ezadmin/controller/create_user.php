@@ -8,20 +8,43 @@ function index($param = array())
         $user_ID = $input['user_ID'];
         $surname = $input['surname'];
         $forename = $input['forename'];
-        $recorder_passwd = $input['recorder_passwd'];
+        $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
+        $recorder_passwd = crypt($input['recorder_passwd'], $des_seed);
         $permissions = $input['permissions'] ? 1 : 0;
         $is_ezadmin = $input['is_ezadmin'] ? 1 : 0;
 
         $valid = false;
-        if (empty($user_ID)) {
+
+        if (empty($user_ID))
+        {
             $error = template_get_message('missing_user_ID', get_lang());
-        } elseif (empty($input['recorder_passwd'])) {
+        }
+        elseif (!check_validation_text($user_ID))
+        {
+            $error = template_get_message('error_validation_userID', get_lang());
+        }
+        elseif(empty($input['recorder_passwd']))
+        {
             $error = template_get_message('missing_recorder_passwd', get_lang());
-        } elseif (empty($forename)) {
-            $error = template_get_message('missing_forename', get_lang());
-        } elseif (empty($surname)) {
+        }
+        elseif (empty($surname))
+        {
             $error = template_get_message('missing_surname', get_lang());
-        } else {
+        }
+        elseif (!check_validation_text($surname))
+        {
+            $error = template_get_message('error_validation_surname', get_lang());
+        }
+        elseif (empty($forename))
+        {
+            $error = template_get_message('missing_forename', get_lang());
+        }
+        elseif (!check_validation_text($forename))
+        {
+            $error = template_get_message('error_validation_forename', get_lang());
+        }
+        else
+        {
             $valid = db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions);
             if ($is_ezadmin) {
                 add_admin_to_file($input['user_ID']);

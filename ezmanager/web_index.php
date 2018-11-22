@@ -13,6 +13,7 @@ require_once 'lib_ezmam.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_various.php';
 require_once '../commons/lib_template.php';
+require_once '../commons/config.inc';
 require_once 'lib_various.php';
 require_once 'lib_upload.php';
 require_once 'lib_toc.php';
@@ -25,6 +26,27 @@ if (isset($input['lang'])) {
 
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
+
+if (isset($input['album']) && !acl_has_album_permissions($input['album']) && $input['action']!='album_create' && $input['action']!='add_moderator') {
+    error_print_message("NON! ".template_get_message('Unauthorized', get_lang()));
+    log_append('warning', $input['action'].': tried to access album ' . $input['album'] . ' without permission');
+    die;
+}
+
+
+//service post from webservice
+if (isset($input['action']) && $input['action'] == 'postVideo'  ) {
+        
+        if(checkInitSubmitServiceVar($input)){
+//            requireController('postVideo_service.php');
+            requireController('submit_media.php');
+            index($paramController);
+        }
+        else{      
+            view_login_form();
+            die;
+        }
+}
 
 //
 // Login/logout
@@ -149,8 +171,7 @@ else {
         case 'update_ezrecorder':
             $service = true;
             requireController('update_ezrecorder.php');
-            break;
-        
+            break;    
         // Display the update page
         case 'view_update':
             requireController('view_update.php');
@@ -328,6 +349,13 @@ else {
             requireController('album_stats_reset.php');
             break;
 
+	case 'send_link_moderator':
+            global $enable_moderator;
+            if($enable_moderator)
+            {
+                requireController('send_link_moderator.php');
+            }
+            break;
         //debugging should be removed in prod
         // No action selected: we choose to display the homepage again
         default:
@@ -336,7 +364,6 @@ else {
     }
     
     // Call the function to view the page
- //   print "action:".$action;die;
     index($paramController);
 }
 
@@ -523,7 +550,8 @@ function user_login($login, $passwd)
         view_login_form();
         die;
     }
-    $res = checkauth(strtolower($login), $passwd);
+
+     $res = checkauth(strtolower($login), $passwd);
     if($res){
       //auth succeeded but if it is a runas, we still need to check if user is in admin.inc  
       $login_parts = explode("/", $login);
@@ -580,7 +608,10 @@ function user_login($login, $passwd)
         error_print_message(template_get_message('not_registered', get_lang()), false);
         log_append('warning', $res['login'] . ' tried to access ezmanager but doesn\'t have permission to manage any album.');
         session_destroy();
-        view_login_form();
+        
+        //MOFIF !!!!!!!!!!!
+        header("Location: https://ezcast.uclouvain.be?noPerm"); 
+//        view_login_form();
         die;
     }
 

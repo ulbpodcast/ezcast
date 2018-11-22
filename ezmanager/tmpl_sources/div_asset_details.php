@@ -64,9 +64,16 @@ function print_info($info, $suffix = '')
             <ul>
                 <li>
                     <span class="ButtonEdit">
-                        <a href="javascript:show_edit_form('<?php echo $asset; ?>');">
-                            ®Edit®
-                        </a>
+                        <?php if($status != 'processing') { ?>
+                                <a href="javascript:show_edit_form('<?php echo $asset; ?>');">
+                    <?php } else
+                            {
+                                echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                                        ' data-toggle="modal" data-target="#modal">';
+                            }
+                    ?>
+                                    ®Edit®
+                                </a>
                     </span>
                 </li>
 
@@ -314,7 +321,22 @@ function print_info($info, $suffix = '')
                 </span>
             </li>
         <?php
-        } ?>
+        }
+        if (strtolower($origin) === 'streaming' && $displayButton)
+        { 
+            ?>
+            <li>
+                <?php echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).
+                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                'data-target="#modal">'; ?>
+                    <button type='button' class="btn btn-danger">
+                        Supprimer
+                    </button>
+                <?php echo '</a>'; ?>
+            </li>
+        <?php
+        }
+        ?>
     </ul>
     <br />
 </div>

@@ -100,7 +100,7 @@ function checkInitSubmitServiceVar(&$input,$ratio="auto",$downloadable="true",$a
         isset($input['album']) && $input['album']!='' && ezmam_album_exists($input['album']."-pub" ) && 
         isset($input['title']) && $input['title']!='' &&
         isset($input['description']) && $input['description']!='' &&
-        isset($input['token']) && $input['token'] == md5($TokenUploadServcice.$input['user_login'])){
+        isset($input['token'])  && $TokenUploadServcice!="" && $input['token'] == md5($TokenUploadServcice.$input['user_login'])){
 
         //Check if user has the right to post video in this album
         $users=db_course_get_users($input['album']);

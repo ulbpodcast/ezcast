@@ -8,7 +8,7 @@ require_once 'config.inc';
     ?>
     <div class="alert alert-warning" role="alert">®job_not_current®</div>
 <?php
-} ?>
+} else { ?>
 <table class="table table-striped table-hover table-condensed classrooms">
     <tr>
         <th>®job_priority®</th>
@@ -130,3 +130,4 @@ require_once 'config.inc';
     ?>
 </table>
 
+<?php } ?>

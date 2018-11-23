@@ -114,4 +114,10 @@ $linelength = 35;
 /////////////////////////////////////////////////////////////
 $copyright_enabled=true;
 $gpu_enabled=false;                           
+
+$enable_render_audio_from_video=false;      //Each video rendered create an audio file
+$imageAudioFilePath="$basedir/bin/var/image.png";
+
+$video_mimeTypes=array('audio/mp4','text/x-fortran','image/jp2','application/x-dosexec','application/octet-stream','video/quicktime','video/ogg','video/h264','video/x-f4v','video/x-m4v','video/x-flv','video/mp4','application/x-mpegURL','video/MP2T','video/3gpp','video/3gpp2','video/quicktime','	video/x-msvideo','video/x-ms-wmv','video/x-msvideo','video/mpeg','video/ogg','video/webm');
+$audio_mimeTypes=array('audio/x-wav','audio/x-flac','audio/mpeg');
 ?>

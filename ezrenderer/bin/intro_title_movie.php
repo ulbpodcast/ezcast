@@ -34,6 +34,7 @@ $t0 = time();
 include_once __DIR__ . "/config.inc";
 include_once __DIR__ .'/'.$encoding_pgm['file'];
 include_once __DIR__ . "/lib_metadata.php";
+include_once __DIR__ . "/lib_ffmpeg.php";
 include_once __DIR__ . "/lib_gd.php";
 include_once __DIR__ . "/lib_audio_sync.php";
 
@@ -77,6 +78,7 @@ if (!$res)
 $originals = array(
     'cam' => $processing . '/cam.mov',
     'slide' => $processing . '/slide.mov',
+    'audio' => $processing . '/audio.mp3',
 );
 
 if (isset($toprocess_assoc['original_slide'])) {
@@ -84,6 +86,9 @@ if (isset($toprocess_assoc['original_slide'])) {
 }
 if (isset($toprocess_assoc['original_cam'])) {
     $originals['cam'] = $processing . substr($toprocess_assoc['original_cam'], strrpos($toprocess_assoc['original_cam'], '/'));
+}
+if (isset($toprocess_assoc['original_audio'])) {
+    $originals['audio'] = $processing . substr($toprocess_assoc['original_audio'], strrpos($toprocess_assoc['original_audio'], '/'));
 }
 
 
@@ -96,6 +101,8 @@ if (!file_exists($originals['cam']))
     unset($originals['cam']);
 if (!file_exists($originals['slide']))
     unset($originals['slide']);
+if (!file_exists($originals['audio']))
+    unset($originals['audio']);
 
 // read the title meta file and validate its content
 print "\n------------------------ get title info ------------------------\n";
@@ -104,8 +111,7 @@ $res = get_title_info($processing, "title.xml", $title_assoc);
 //fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($title_assoc, true));
 
 // handle slide movie combine intro title and movie and encode them in 'high' and 'low' flavors
-
-$types = array('slide', 'cam');
+$types = array('slide', 'cam','audio');
 $original_qtinfo = array();
 foreach ($types as $type) {
     if (isset($originals[$type])) {
@@ -129,6 +135,7 @@ processing_status('processed');
 print "\n//////////////////////////////// PROCESSING DONE /////////////////////////////////////////////\n";
 $t0 = time() - $t0;
 print "\nRendering took $t0 seconds \n";
+
 
 print "\n//////////////////////////////// MOVE TO PROCESSED /////////////////////////////////////////////\n";
 if (!rename($processing, $processed)) {
@@ -208,10 +215,49 @@ function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $wid
  * @abstract process movie with addition of intro, outro and title if present.
  */
 function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_title, $credits) {
-    global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies;
+    global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies, $imageAudioFilePath,$enable_render_audio_from_video,$video_mimeTypes,$audio_mimeTypes;
 
-
+    if (($toprocess_assoc["record_type"]!='audio') && !in_array(mime_content_type($moviein),$video_mimeTypes)) {
+        myerror("mimetypeExcepted not found", false);
+        exit(1);
+    }
+    if ($toprocess_assoc["record_type"]=='audio' && !in_array(mime_content_type($moviein),$audio_mimeTypes)) {
+        myerror("mimetypeExcepted not found", false);
+        exit(1);
+    }
     $qtinfo = $original_qtinfo[$camslide];
+//    generate video from sound submited and image
+    if ($toprocess_assoc["record_type"] == "audio" ) {
+        $movieout = $processing .'/cam.mp4';
+        $audioin = $moviein;
+        if (generateVideoFromSound($audioin, $movieout, $imageAudioFilePath)) {
+//          add some metadata top toprocess.xml
+            $moviein = $movieout;
+            $camslide = 'cam';
+            $intro = '';
+            $credits = '';
+            $add_title = 'false';
+            $toprocess_assoc["record_type"] = "cam";
+            $toprocess_assoc["has_audio"] = "true";
+            assoc_array2metadata_file($toprocess_assoc,$processing . "/toprocess.xml");
+            $path_parts = pathinfo($moviein);
+            $audioout = $path_parts['dirname'].'/audio_'.$camslide.'.mp3';
+            if (getAudioFromVideo($moviein, $audioout)) {
+//              Indicate that there is a audio file for ezplayer
+                $toprocess_assoc["has_audio"] = "true";
+                assoc_array2metadata_file($toprocess_assoc,$processing . "/toprocess.xml");
+            }
+        }
+    }
+    else if ($enable_render_audio_from_video) {
+        $path_parts = pathinfo($moviein);
+        $audioout = $path_parts['dirname'].'/audio_'.$camslide.'.mp3';
+        if (getAudioFromVideo($moviein, $audioout)) {
+//            indicate that there is a audio file for ezplayer
+            $toprocess_assoc["has_audio"] = "true";
+            assoc_array2metadata_file($toprocess_assoc,$processing . "/toprocess.xml");
+        }
+    }
 
     if (isset($toprocess_assoc['ratio']) && $toprocess_assoc['ratio'] != 'auto')
         $qtinfo["aspectRatio"] = $toprocess_assoc['ratio'];
@@ -232,8 +278,6 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         $transcoded_movie = itm_handle_movie($moviein, $camslide, $quality, $toprocess_assoc['ratio'], $encoder);
         $dt = time() - $t1;
         print "\n------------------------ encoding $transcoded_movie ($quality) took $dt seconds ------------------------\n";
-
-
         
         $movies_to_join = array(); //list of movie parts to merge (for intro-title-movie))
         //check if we have an intro movie to prepend
@@ -260,6 +304,7 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
             //generate title movie using the same encoder as for the video
             print "\n------------------------ generating title ------------------------\n";
             $title_movieout = $processing . "/title.mov";
+            $title_movieout_temp = $processing . "/title_temp.mov";
             $title_image = $processing . "/title.jpg";
 
             $encoder_values = explode('_', $encoder);
@@ -278,7 +323,8 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
             }
             if($title_image) {
             //   $res = movie_title($title_movieout, $title_assoc, $encoder, 8); //duration is hardcoded to 8
-                $res = movie_title_from_image($title_movieout, $title_image, $encoder);
+                $res = movie_title_from_image($title_movieout_temp, $title_image, $encoder);
+                $res2 = safe_movie_encode($title_movieout_temp, $title_movieout, $encoder, false);
                 if ($res)
                     myerror("couldn't generate title $title_movieout", false);
                 else
@@ -443,8 +489,8 @@ function itm_handle_movie($movie, $camslide, $quality, $ratio, &$encoder) {
         $letterboxing = false;
     }
 
-    if ($quality == 'high') {
-        //find the  encoder to the nearest dimensions
+    //WARNING THIS CONDITION IS STRANGE BECAUSE OF THE LOW DEFINITION PARAMETERS IN CONFIG.... IF THE VIDEO IS NOT 16:9 OR 4/3 (phone for instance !!!!!
+    if ($quality == 'high' || ($quality == 'low' && ($width / $height)!= (16/9) && ($width / $height)!= (4/3) ) ) {
         $vididx = 0;
         $count = count($accepted_video_sizes[$ratio]);
         while ($vididx < $count && $width > $accepted_video_sizes[$ratio][$vididx]) {

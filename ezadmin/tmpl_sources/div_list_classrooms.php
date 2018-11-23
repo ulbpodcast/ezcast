@@ -4,6 +4,15 @@ if (isset($pagination)) {
 }
 ?>
 
+<?php if (isset($error)) 
+    {?>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span></button> 
+            <?php echo $error; ?>
+        </div>
+    <?php
+    } ?>
 <form class="classroom_update" style="display:hidden" method="POST">
     <input type="hidden" name="update" />
     <input type="hidden" name="a_room_ID" value=""/>
@@ -37,16 +46,16 @@ if (isset($pagination)) {
                 </a>
                 <div class="edit" style="display:none;">
                     <input class="form-control input-xsm" type="text" name="new_room_ID" 
-                           value="<?php echo htmlspecialchars($currClass['room_ID']) ?>"/>
+                           value="<?php echo $currClass['room_ID'] ?>"/>
                 </div>
             </td>
             <td class="name">
                 <div class="view">
-                    <?php echo $currClass['name'] ?>
+                    <?php echo $currClass['name']; ?>
                 </div>
                 <div class="edit" style="display:none;">
                     <input class="form-control input-xsm" type="text" name="name" 
-                           value="<?php echo htmlspecialchars($currClass['name']) ?>"/>
+                           value="<?php echo $currClass['name'] ?>"/>
                 </div>
             </td>
             <td class="ip">
@@ -60,7 +69,7 @@ if (isset($pagination)) {
                 </div>
                 <div class="edit" style="display:none;">
                     <input class="form-control input-xsm" type="text" name="ip" 
-                           value="<?php echo htmlspecialchars($currClass['IP']) ?>"/>
+                           value="<?php echo $currClass['IP'] ?>"/>
                 </div>
             </td>
             <td class="ip_remote">
@@ -80,7 +89,7 @@ if (isset($pagination)) {
                     </div>
                     <div class="edit" style="display:none;">
                         <input class="form-control input-xsm" type="text" name="ip_remote" 
-                               value="<?php echo htmlspecialchars($currClass['IP_remote']) ?>" />
+                               value="<?php echo $currClass['IP_remote'] ?>" />
                     </div>
                 <?php
             } ?>

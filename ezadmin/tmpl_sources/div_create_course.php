@@ -15,7 +15,7 @@
         <label for="course_code" class="col-md-2 control-label">®course_code®</label>
         <div class="col-sm-5">
             <input type="text" class="form-control" name="course_code" value="<?php if (isset($input['course_code'])) {
-        echo $input['course_code'];
+        echo htmlentities($input['course_code']);
     }?>"/>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <label for="course_name" class="col-md-2 control-label">®course_name®</label>
         <div class="col-sm-5">
             <input type="text" class="form-control" name="course_name" value="<?php if (isset($input['course_name'])) {
-        echo $input['course_name'];
+        echo htmlentities($input['course_name']);
     }?>"/>
         </div>
     </div>

@@ -15,14 +15,18 @@
     <div class="form-group">
         <label for="room_ID" class="col-sm-2 control-label">®classroom_id®</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="room_ID" value="<?php echo $room_ID; ?>"/>
+            <input type="text" class="form-control" name="room_ID" value="<?php if (isset($input) && array_key_exists('room_ID', $input)) {
+        echo htmlentities($input['room_ID']);
+    } ?>" maxlength="20"/>
         </div>
     </div>
     
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">®classroom_name®</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="name" value="<?php echo $name; ?>"/>
+            <input type="text" class="form-control" name="name" value="<?php if (isset($input) && array_key_exists('name', $input)) {
+        echo htmlentities($input['name']);
+    } ?>"/>
         </div>
     </div>
     

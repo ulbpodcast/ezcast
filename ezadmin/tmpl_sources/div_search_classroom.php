@@ -14,16 +14,16 @@
                 
                 <label class="sr-only" for="room_ID">®room_ID®</label>
                 <input class="form-control" type="text" placeholder="®room_ID®" 
-                    title="®room_ID®" name="room_ID" 
+                    title="®room_ID®" name="room_ID" maxlength="20"
                     value="<?php if (isset($input) && isset($input['room_ID'])) {
-    echo  $input['room_ID'];
+    echo htmlentities($input['room_ID']);
 } ?>" />
             </div>
             <div class="col-md-4">
                 <label class="sr-only" for="name">®room_name®</label>
                 <input type="text" class="form-control" name="name" id="name" placeholder="®room_name®"
                     value="<?php if (isset($input) && array_key_exists('name', $input)) {
-    echo $input['name'];
+    echo htmlentities($input['name']);
 } ?>">
             </div>
             <div class="col-md-4">

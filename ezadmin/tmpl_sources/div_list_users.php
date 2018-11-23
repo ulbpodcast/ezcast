@@ -55,7 +55,7 @@
         <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®fullname®</th>
         <th>®origin®</th>
-        <th>®is_admin_title®</th>
+        <th style="text-align: center;">®is_admin_title®</th>
     </tr>
     
     <?php foreach ($users as $user) {
@@ -76,7 +76,7 @@
         } elseif ($user['origin'] == 'SSO') {
             echo '®sso®';
         } ?></span></td>
-            <td><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
+            <td style="text-align: center;"><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
         </tr>
         <?php
     }

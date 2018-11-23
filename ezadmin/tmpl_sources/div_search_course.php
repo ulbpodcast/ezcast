@@ -15,7 +15,7 @@
                 <input class="form-control" type="text" placeholder="®course_code®" 
                    title="®course_code®" name="course_code" id="course_code"
                    value="<?php if (isset($input) && isset($input['course_code'])) {
-    echo $input['course_code'];
+    echo htmlentities($input['course_code']);
 } ?>" />
             </div>
             <div class="col-md-4">
@@ -23,7 +23,7 @@
                 <input class="form-control" type="text" placeholder="®teacher®" 
                    title="®teacher®" name="teacher"  id="teacher"
                    value="<?php if (isset($input) && isset($input['teacher'])) {
-    echo $input['teacher'];
+    echo htmlentities($input['teacher']);
 } ?>" />
             </div>
             <div class="col-md-2">

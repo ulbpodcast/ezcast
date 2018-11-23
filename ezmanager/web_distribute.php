@@ -191,6 +191,7 @@ function view_media()
     global $accepted_media_qualities;
     global $accepted_media_types;
     global $input;
+    global $enable_ezplayer_audio_download;
 
     // 0) Sanity checks
     if (!ezmam_album_exists($input['album'])) {
@@ -211,6 +212,12 @@ function view_media()
         error_print_http(404);
         log_append('warning', 'view_media: tried to access asset ' . $input['asset'] . ' from album ' .
                 $input['album'] . ' with invalid token ' . $input['token']);
+        die;
+    }
+
+    if(($input['type'] == 'audiocam' || $input['type'] == 'audioslide') && !$enable_ezplayer_audio_download){
+        error_print_http(404);
+        log_append('warning', 'view_media: tried to download audio but not permited by conf ');
         die;
     }
 

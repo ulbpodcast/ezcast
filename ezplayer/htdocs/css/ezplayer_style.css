@@ -1733,7 +1733,7 @@ body {
 }
 
 .download-button{
-    display: inline-block;
+    display: inline-table;
     width: 225px;
     text-align: center;
 }

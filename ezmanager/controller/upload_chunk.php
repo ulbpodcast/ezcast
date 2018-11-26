@@ -8,6 +8,8 @@ function index($param = array())
 {
     global $accepted_media_types;
     global $valid_mimeType;
+    global $valid_mimeType_video;
+    global $valid_mimeType_audio;
     global $upload_slice_size;
     global $input;
 
@@ -16,6 +18,7 @@ function index($param = array())
     $index = $_SERVER['HTTP_X_INDEX'];
     $id = $_SERVER['HTTP_X_ID'];
     $type = $_SERVER['HTTP_X_TYPE'];
+    $type_media = $_SERVER['HTTP_X_TYPE_MEDIA'];
 
     if (!isset($id) || empty($id) || !isset($_SESSION[$id])) {
         log_append('warning', 'upload_chunk: ' . ' current upload id is not set or not valid');
@@ -128,12 +131,24 @@ function index($param = array())
         file_put_contents($target, $input);
         
     }
-    
-    if(!in_array(mime_content_type($target),$valid_mimeType)){
-        log_append('error', "Mimetype is not valid");
-        $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
-        echo json_encode($array);
-        die;
+
+    if($type_media == 'video')
+    {
+        if(!in_array(mime_content_type($target),$valid_mimeType_video)){
+            log_append('error', "Mimetype is not valid");
+            $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
+            echo json_encode($array);
+            die;
+        }
+    }
+    elseif($type_media == 'audio')
+    {
+        if(!in_array(mime_content_type($target),$valid_mimeType_audio)){
+            log_append('error', "Mimetype is not valid");
+            $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
+            echo json_encode($array);
+            die;
+        }
     }
 
     if ($res === false) {

@@ -24,7 +24,9 @@ Before calling this template, please define the following variables:
                             data-remote="false" data-toggle="modal" data-target="#modal" > 
                             <img src="images/page4/iconUp.png" style="height: 18px;" />
                             <span class="TitrePodcast"> 
-                                ®Submit_record®
+                                <?php 
+                                    global $enable_audio_submit;
+                                    echo ($enable_audio_submit) ? '®Submit_record_media®' : '®Submit_record®'; ?>
                             </span> 
                         </a>
                         

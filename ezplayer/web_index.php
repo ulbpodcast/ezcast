@@ -41,6 +41,7 @@ require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
 require_once '../commons/common.inc';
+require_once '../commons/config.inc';
 require_once 'lib_various.php';
 require_once 'lib_user_prefs.php';
 include_once 'lib_toc.php';
@@ -55,6 +56,11 @@ $detect = new Mobile_Detect();
 $_SESSION['isPhone'] = $detect->isMobile();
 
 $input = array_merge($_GET, $_POST);
+
+
+if(isset($input['lang']) && ($input['lang']=="fr" || $input['lang']=="en")){
+    set_lang($input['lang']);
+}
 
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
@@ -743,8 +749,6 @@ function albums_view($refresh_page = true)
         }
     }
     $_SESSION['ezplayer_mode'] = 'view_main'; // used in 'main.php' and 'div_search.php'
-    $_SESSION['album'] = ''; // no album selected
-    $_SESSION['asset'] = ''; // no asset selected
     // init paths
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);

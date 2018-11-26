@@ -45,7 +45,6 @@ if ($trace_on) {
                 break;
             case 'flowplayer':
                 ?>
-
                 <link rel="stylesheet" href="flowplayer-6/skin/skin.css">
                 <script src="flowplayer-6/flowplayer.min.js"></script>
                 <script src="flowplayer-6/hls.js"></script>
@@ -178,7 +177,6 @@ if ($trace_on) {
                 current_album = album;
                 current_asset = asset;
                 display_thread_details = false;
-
                 makeRequest('index.php', '?action=view_asset_streaming&album=' + album + '&asset=' + asset + '&asset_token=' + 
                         asset_token + '&click=true', 'div_center');
                 //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + 
@@ -196,7 +194,8 @@ if ($trace_on) {
                     current_album = album;
                     current_asset = asset;
                 }
-                if (typeof fullscreen != 'undefined' && fullscreen) {
+                if (typeof fullscreen != 'undefined' && fullscreen)
+                {
                     video_fullscreen(false);
                 }
                 if (ezplayer_mode == 'view_asset_streaming')
@@ -398,7 +397,11 @@ if ($trace_on) {
                     window.alert("®already_use_timecode®");
                     return false;
                 }
-                    
+                
+                if(level.value !== parseInt(level.value, 10))
+                {
+                    level.value = parseInt(level.value, 10);
+                }
 
                 if (isNaN(level.value)
                         || level.value < 1
@@ -421,6 +424,11 @@ if ($trace_on) {
                         || timecode.value < 0) {
                     window.alert('®Bad_timecode®');
                     return false;
+                }
+		
+                if(level.value !== parseInt(level.value, 10))
+                {
+                    level.value = parseInt(level.value, 10);
                 }
 
                 if (isNaN(level.value)

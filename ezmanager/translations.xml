@@ -29,6 +29,8 @@
         <label id="Next" lang="en">Next</label>
         <label id="Type" lang="fr">Type</label> 
         <label id="Type" lang="en">Type</label>
+        <label id="file_audio" lang="fr">Fichier audio</label>
+        <label id="file_audio" lang="en">Audio file</label>
         <label id="cam" lang="fr">Vidéo caméra</label>
         <label id="cam" lang="en">Camera movie file</label>
         <label id="slide" lang="fr">Vidéo diaporama</label>
@@ -59,6 +61,8 @@
         <label id="Public_album" lang="en">Public album</label>
         <label id="Video" lang="fr">Vidéo</label>
         <label id="Video" lang="en">Video</label>
+        <label id="Audio" lang="fr">Audio</label>
+        <label id="Audio" lang="en">Audio</label>
         <label id="Slides" lang="fr">Diaporama</label>
         <label id="Slides" lang="en">Slides</label>
         <label id="Information" lang="fr">Informations</label>
@@ -103,6 +107,8 @@
         <label id="Download_info" lang="en">If this box is checked, the videos contained in this album will be downloadable via EZplayer. This change only applies to upcoming videos. </label>
         <label id="warningAnon" lang="fr">Si cette case est cochée, les vidéos soumises dans l'album pourront être accessible sans authentification via EZplayer. </label>
         <label id="warningAnon" lang="en">If this box is checked, the videos contained in this album will be accessible via EZplayer without authentication.</label>
+        <label id="warningrecorder_control" lang="fr">Si cette case est cochée, vous pourrez enregistrer des vidéo dans les auditoires dans cet album. </label>
+        <label id="warningrecorder_control" lang="en">If this box is checked, you'll be able to record video in auditorium in this album.</label>
         <label id="Downloadable_submit" lang="fr">Vidéo téléchargeable</label>
         <label id="Downloadable_submit" lang="en">Allow download</label>
         <label id="Download_info_submit" lang="fr">Si cette case est cochée, la vidéo soumise pourra être téléchargée via EZplayer.</label>
@@ -212,7 +218,7 @@
         <label id="schedule_prive_at" lang="en">Select the date and hour you want the recording to be move in private folder</label>
         
         <label id="Album_type" lang="fr">  Type d'album : </label>
-        <label id="Album_type" lang="en"> Album Type: </label>	
+        <label id="Album_type" lang="en"> Album Type: </label>  
         <label id="Cours_officiel" lang="fr">  Cours officiel </label>
         <label id="Cours_officiel" lang="en">  Official Course </label>
         <label id="Course" lang="en">Course </label>
@@ -262,7 +268,7 @@
         <label id="SelEzrecorderPw" lang="fr">Mot de passe d’EZrecorder</label>
         <label id="SelEzrecorderPw" lang="en">EZrecorder's password</label>
          <label id="Pw" lang="fr">Mot de passe</label>
-        <label id="Pw" lang="en">Password</label>
+        <label id="Pw" lang="en">Password</label>                              
         <label id="addexistingCourse" lang="fr">Ajouter un album existant</label>
         <label id="addexistingCourse" lang="en">Add a existing album</label>
         <label id="createnewCourse" lang="fr">Créer un nouvel album</label>
@@ -281,6 +287,8 @@
         <label id="Submit" lang="en">Submit</label>
         <label id="Submit_record" lang="fr">Ajouter une vidéo</label>
         <label id="Submit_record" lang="en">Add a new record</label>
+        <label id="Submit_record_media" lang="fr">Ajouter un média</label>
+        <label id="Submit_record_media" lang="en">Add a new media</label>
         <label id="Delete_asset" lang="fr">Supprimer l'enregistrement</label>
         <label id="Delete_asset" lang="en">Delete</label>
         <label id="Watch_video" lang="fr">Regarder la vidéo</label>
@@ -367,6 +375,8 @@
         <label id="Logout_confirmation_message" lang="en">You are now logged out.&lt;br /&gt;Thanks for using our services, see you soon.&lt;br /&gt;&lt;br /&gt;&lt;a href="index.php"&gt;Back to the login form.&lt;/a&gt;</label>
         <label id="Manager_URL_message" lang="fr">Pour partager cet album sur "EZmanager", veuillez fournir le lien suivant : </label>
         <label id="Manager_URL_message" lang="en">You can share this album to other users by giving them the following link:</label>
+        <label id="Manager_URL_message_mail" lang="fr">Pour partager cet album sur "EZmanager", veuillez ajouter des adresses mail dans le champs ci-dessous. Un lien de partage leur sera envoyé par mail.</label>
+        <label id="Manager_URL_message_mail" lang="en">To share this album on "EZmanager", please add email addresses in the field below. A sharing link will be sent to them by email.</label>
         <label id="HD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer cet album en haute définition, veuillez utiliser le lien suivant :</label>
         <label id="HD_RSS_feed_URL_message" lang="en">You can watch or broadcast this album in high definition by using the following link:</label>
         <label id="SD_RSS_feed_URL_message" lang="fr">Pour consulter ou distribuer cet album en basse définition, veuillez utiliser le lien suivant :</label>
@@ -399,11 +409,10 @@
         <label id="Delete_album_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete the albums for &lt;?php echo $album_name; ?&gt;. By doing so, you will delete both the &lt;strong&gt;public&lt;/strong&gt; &lt;i&gt;and&lt;/i&gt; &lt;strong&gt;private&lt;/strong&gt; albums, as well as all of their content. The other owners of the album will also lose access to this album.</label>
         <label id="Delete_modo_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un modérateur. En faisant ainsi, vous supprimerez définitivement l'accès à l'album pour cette personne.</label>
         <label id="Delete_modo_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete a moderator. He will loose the access to the album</label>
-        <label id="Ezrecorder_info_modified" lang="fr">Vos modifications seront actives en auditoire dans l\'heure</label>
-        <label id="Ezrecorder_info_modified" lang="en">The new info will be available in classrooms in the hour</label>
+        <label id="Ezrecorder_info_modified" lang="fr">Vos modifications seront actives en auditoire dans les 5 minutes</label>
+        <label id="Ezrecorder_info_modified" lang="en">The new info will be available in classrooms in the five next minutes</label>
         <label id="unchanged" lang="fr">Informations inchangées</label>
         <label id="unchanged" lang="en">Informations unchanged</label>
-      
         <label id="Album_deletion_succeeded_message" lang="fr">Albums public et privé supprimés.</label>
         <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
         <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>
@@ -624,31 +633,31 @@
         <!-- update 2016/07/15 -->
     <!-- information customized by organisation -->   
     <infos>
-        <info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="Université Catholique de Louvain" lang="fr">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+        <info id="developed_by" organization="Université Catholique de Louvain" lang="en">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
         <info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
         <info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
         <info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
         <info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
-        <info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
-        <info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
+        <info id="organization" organization="Université Catholique de Louvain" lang="fr">UCL Podcast</info>
+        <info id="organization" organization="Université Catholique de Louvain" lang="en">UCL Podcast</info>
         <info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
-        <info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>		
+        <info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>      
 
         <info id="tuto" organization="© Université libre de Bruxelles" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
         <info id="tuto" organization="© Université libre de Bruxelles" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
-        <info id="tuto" organization="© Université Catholique de Louvain" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://ezcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
-        <info id="tuto" organization="© Université Catholique de Louvain" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://ezcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
+        <info id="tuto" organization="Université Catholique de Louvain" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://ezcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
+        <info id="tuto" organization="Université Catholique de Louvain" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://ezcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
         <info id="tuto" organization="© Your organization name" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
-        <info id="tuto" organization="© Your organization name" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>		
+        <info id="tuto" organization="© Your organization name" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>       
 
         <info id="email" organization="© Université libre de Bruxelles" lang="fr">podcast@ulb.ac.be</info>
         <info id="email" organization="© Université libre de Bruxelles" lang="en">podcast@ulb.ac.be</info>
-        <info id="email" organization="© Université Catholique de Louvain" lang="fr">podcast@uclouvain.be</info>
-        <info id="email" organization="© Université Catholique de Louvain" lang="en">podcast@uclouvain.be</info>
+        <info id="email" organization="Université Catholique de Louvain" lang="fr">podcast@uclouvain.be</info>
+        <info id="email" organization="Université Catholique de Louvain" lang="en">podcast@uclouvain.be</info>
         <info id="email" organization="© Your organization name" lang="fr">podcast@ulb.ac.be</info>
-        <info id="email" organization="© Your organization name" lang="en">podcast@ulb.ac.be</info>	
+        <info id="email" organization="© Your organization name" lang="en">podcast@ulb.ac.be</info> 
     </infos>
 </data>

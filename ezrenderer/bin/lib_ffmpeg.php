@@ -10,7 +10,6 @@ if ($encoding_pgm['name'] == 'ffmpeg_built_in_aac') {
     $built_in_aac = true;
 }
 
-
 /**
  * concatenates multiple video files without re-encoding (as a reference movie)
  * @global string $ffmpegpath 
@@ -203,10 +202,8 @@ function movie_qtinfo($moviein, &$qtinfo) {
  * @return false|error_string
  * @desc encodes a (ref) movie to a self-contained movie using a specified codec
  */
-function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = true)
-{
-    global $ffmpegpath, $encoders_path, $built_in_aac,$gpu_enabled;
-
+function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = true) {
+    global $ffmpegpath, $encoders_path, $built_in_aac, $gpu_enabled;
     // sanity check
     if (!is_file($moviein))
         return "input movie not found $moviein";
@@ -231,15 +228,16 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
 
     $encoder = $encoders_path . '/' . $codec . '_' . $quality . '.ffpreset';
 
-    if (!$letterboxing || $gpu_enabled ) {
-        $video_filter = "scale=$width:$height";
-    } else {
+    if ($letterboxing) {
         // iw : image width
         // ih : image height
         // pad : letterboxing filter
         //  $video_filter = "scale=iw*min($width/iw\,$height/ih):ih*min($width/iw\,$height/ih), pad=$width:$height:($width-iw*min($width/iw\,$height/ih))/2:($height-ih*min($width/iw\,$height/ih))/2";
-        $video_filter = "scale='min($width,iw):min($height,ih):force_original_aspect_ratio=decrease',pad='$width:$height:(ow-iw)/2:(oh-ih)/2'";
+        $video_filter = "scale=iw*min($width/iw\,$height/(ih/$pixw*$pixh)):(ih/$pixw*$pixh)*min($width/iw\,$height/(ih/$pixw*$pixh)), pad=$width:$height:($width-iw)/2:($height-ih)/2";
+    } else {
+        $video_filter = "scale=$width:$height";
     }
+
     // checks if the encoder file exists
     if (!is_file($encoder))
         return "encoder not found $encoder";
@@ -256,7 +254,6 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
      * -vf : video filters
      * -y : overwrites movie if existing yet
      */
-
     
     //if timecode negative, put 0 on the right time
     //If start tim negative, it rectifies the begintime to not create a corrupted begining
@@ -270,20 +267,18 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
     if($startTime>0)
         $start="-ss $startTime";
     
-    if($gpu_enabled)
+  if($gpu_enabled &&  (($width/$height)==(16/9) || ($width/$height)==(4/3) ) ){
+        //ENCODE
         $cmd = "$ffmpegpath -y -hwaccel cuvid -i $moviein -r 25 $start -fpre $encoder -vf $video_filter -ar 44100 -ac 2  -vcodec h264_nvenc -rc vbr_hq -b:v 8M -maxrate:v 10M -y $aac_codec $movieout";
-    else
+        //JUST COPY TO BE ENCODED IN CONCAT
+        //$cmd = "$ffmpegpath -i $moviein -vcodec copy -acodec copy -y $movieout";
+    }else
         $cmd = "$ffmpegpath -i $moviein -r 25 $start -fpre $encoder -vf \"$video_filter\" -ar 44100 -ac 2 -y -pix_fmt yuv420p  $aac_codec $movieout";
 
     exec($cmd, $cmdoutput, $returncode);
-                
     print $cmd;
-    exec($cmd, $cmdoutput, $returncode);
-   
     //check returncode
     return $returncode;
-// if($returncode)return join ("\n", $cmdoutput);
-// return false;
 }
 
 /**
@@ -340,10 +335,8 @@ function movie_annotate($moviein, $movieout, $title, $comment, $description, $au
  * @param absolute_path $overlay_movie
  * @return false|error_string
  */
-function movie_title($movieout, $title_elements, $encoder, $duration = 8)
-{
+function movie_title($movieout, $title_elements, $encoder, $duration = 8) {
     global $ffmpegpath, $fontfile, $encoders_path, $built_in_aac;
-
 
     $movieout = escape_path($movieout);
 
@@ -413,7 +406,6 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8)
     $aac_codec = "";
     if ($built_in_aac) {
         $aac_codec = ' -acodec aac ';
-
         // overwrites audio codec from encoders file
     }
 
@@ -432,6 +424,7 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8)
      *      -vf : video filters to apply
      *      -vpre : video preset file (settings used to encode the video)
      */
+
     $cmd = $ffmpegpath . ' -ar 44100 -ac 2 -f s16le -t ' . $duration . ' -i /dev/zero ' .
             '-f lavfi -t ' . $duration . ' -i color=c=0x2578B6:s=' . $width . 'x' . $height . ':r=25 ' .
             '-vf "' . $drawtext_filter . '" -fpre ' . $encoder . ' ' . $aac_codec . ' -y ' . $movieout;
@@ -454,10 +447,8 @@ function movie_title($movieout, $title_elements, $encoder, $duration = 8)
  * @param type $duration
  * @return boolean
  */
-function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8)
-{
+function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
     global $ffmpegpath, $encoders_path, $built_in_aac;
-
 
     $movieout = escape_path($movieout);
 
@@ -480,7 +471,6 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8)
     $aac_codec = "";
     if ($built_in_aac) {
         $aac_codec = ' -acodec aac ';
-
         // overwrites audio codec from encoders file
     }
 
@@ -498,8 +488,9 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8)
      *      -t  : duration in secondes
      *      -fpre : video preset file (settings used to encode the video)
      */
+    
     $cmd = $ffmpegpath . ' -ar 44100 -ac 2 -f s16le -t ' . $duration . ' -i /dev/zero ' .
-            '-loop 1 -r 25 -i ' . $imagein . ' -t ' . $duration . ' -vf "' . $video_filter . '" -fpre ' . $encoder . ' ' . $aac_codec . ' -y ' . $movieout;
+            '-loop 1 -r 25 -i ' . $imagein . ' -t ' . $duration . ' -vf "' . $video_filter . '" -fpre ' . $encoder . ' ' . $aac_codec . ' -pix_fmt yuv420p -y ' . $movieout;
 
     exec($cmd, $cmdoutput, $returncode);
     print "\n$cmd\n";
@@ -656,4 +647,58 @@ function file_extension_get($filename) {
     $result_assoc['ext'] = $ext_part;
     return $result_assoc;
 }
+
+/**
+ * generate a video based on audio file and image
+ * @param <type> $audioin
+ * @param <type> $movieout
+ * @return boolean
+ */
+function generateVideoFromSound ($audioin, $movieout, $imagePath) {
+
+    global $ffmpegpath;
+    global $gpu_enabled;
+    if(!file_exists($imagePath))
+        exit(1);
+
+    $path_parts = pathinfo($audioin);
+    $audioout = $path_parts['dirname'].'/audio_transcoded.mp3';
+    //generate a mp3 file from sound to have a constant audio format
+    exec ($ffmpegpath.' -i '.$audioin.' -vn -ar 44100 -ac 2 -ab 192k -f mp3 -y '.$audioout, $cmdoutput, $returncode);
+    if ($returncode) {
+        return join("\n", $cmdoutput);
+    }
+    // create movie from sound and image
+    if($gpu_enabled)
+        exec ($ffmpegpath.' -loop 1 -hwaccel cuvid -i '.$imagePath.' -i '.$audioout.' -vcodec h264_nvenc -tune stillimage -acodec copy -strict -2 -b:a 192k -pix_fmt yuv420p -shortest '.$movieout, $cmdoutput, $returncode);
+    else
+        exec ($ffmpegpath.' -loop 1 -i '.$imagePath.' -i '.$audioout.' -tune stillimage -shortest '.$movieout, $cmdoutput, $returncode);
+
+    if ($returncode) {
+        return join("\n", $cmdoutput);
+    }
+    //keep mp3 transcoded file
+    exec ('mv '.$audioout.' '.$path_parts['dirname'].'/audio.mp3', $cmdoutput, $returncode);
+    if ($returncode) {
+        return join("\n", $cmdoutput);
+    }
+    return true;
+}
+
+/**
+ * generate a audio based on video file
+ * @param <type> $videoInPath
+ * @param <type> $audioInPath
+ * @return boolean
+ */
+function getAudioFromVideo ($videoInPath, $audioOutPath) {
+    global $ffmpegpath;
+    exec ($ffmpegpath." -i ".$videoInPath."  -vn -ar 44100 -ac 2 -ab 192k -f mp3 -y ".$audioOutPath, $cmdoutput, $returncode);
+    if ($returncode) {
+        return join("\n", $cmdoutput);
+    }
+    else
+        return true;
+}
+
 ?>

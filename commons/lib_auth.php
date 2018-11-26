@@ -77,7 +77,6 @@ function checkauth($login, $passwd)
                 $index++;
             }
             // user has not been authenticated using all available methods
-
             if ($auth_user === false) {
                 checkauth_last_error("Authentication failure");
             }
@@ -95,15 +94,17 @@ function checkauth($login, $passwd)
 
             $index = 0;
             $auth_admin = false;
+            
+            if($sso_only)
+                $auth_admin = file_checkauth($real_login, $passwd);
+            else{               
             // loops on every available methods to authenticate the admin
-            while ($index < $auth_methods_length && $auth_admin === false) {
+                while ($index < $auth_methods_length && $auth_admin === false) {
                     $check_auth = $auth_methods[$index] . "_checkauth";
                     $auth_admin = $check_auth($real_login, $passwd);
-                $index++;
-            }
-            
-            //UCL
-            // $auth_admin = file_checkauth($real_login, $passwd);
+                    $index++;
+                }
+             }
 
             
             // admin has not been authenticated

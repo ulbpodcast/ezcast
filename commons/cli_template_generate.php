@@ -30,6 +30,8 @@ if (!is_dir($source_folder)) {
     die;
 }
 
+global $accepted_languages;
+
 if (!in_array($lang, $accepted_languages)) {
     echo 'Error: language ' . $lang . ' not supported' . PHP_EOL;
     die;

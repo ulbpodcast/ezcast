@@ -28,17 +28,44 @@
 include_once 'lib_print.php';
 ?> 
 
-<h2><b><?php echo print_info($asset_meta['title']); ?></b> (<?php echo ($type == 'cam') ? '®Video®' : '®Slides®'; ?>)</h2>
+<h2><b><?php echo print_info($asset_meta['title']); ?></b> (<?php echo ($type == 'cam') ? '®Video®' : (($type == 'slide') ? '®Slides®' : 'Audio'); ?>)</h2>
 <h3><?php print_info(substr(get_user_friendly_date($asset_meta['record_date'], '/', false, get_lang(), false), 0, 10)); ?></h3>
-<br/><p><?php echo ($type == 'cam') ? '®Download_movie_message®' : '®Download_slide_message®'; ?></p>
+<br/><p><?php echo ($type == 'cam') ? '®Download_movie_message®' : (($type == 'slide') ? '®Download_slide_message®' : "Pour télécharger l'audio, cliquez sur le bouton ci-dessous."); ?></p>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
-<a href="<?php echo $asset_meta['low_src']; ?>" 
+<?php if(!empty($asset_meta['cam_audio_src']) && empty($asset_meta['slide_audio_src']))
+{
+?>
+	<a href="<?php echo $asset_meta['cam_audio_src']; ?>" 
+   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>',current_album, current_asset, duration, 'low'));" class="simple-button">
+    ®Download_audio®
+	</a>
+<?php
+}
+else if(!empty($asset_meta['cam_audio_src']) && !empty($asset_meta['slide_audio_src']))
+{
+?>
+	<a href="<?php echo $asset_meta['slide_audio_src']; ?>" 
+	   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', current_album, current_asset, duration, 'high'));" class="simple-button">
+	    ®Download_audio_slide®
+	</a>
+	<a href="<?php echo $asset_meta['cam_audio_src']; ?>" 
+   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>',current_album, current_asset, duration, 'low'));" class="simple-button">
+    ®Download_audio_cam®
+	</a>
+<?php	
+}
+else {
+?>
+	<a href="<?php echo $asset_meta['low_src']; ?>" 
    onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>',current_album, current_asset, duration, 'low'));" class="simple-button">
     ®low_res®
-</a>
-<a href="<?php echo $asset_meta['high_src']; ?>" 
-   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', current_album, current_asset, duration, 'high'));" class="simple-button">
-    ®high_res®
-</a>
+	</a>
+	<a href="<?php echo $asset_meta['high_src']; ?>" 
+	   onclick="server_trace(new Array('3', '<?php echo ($type == 'cam') ? 'cam_download' : 'slide_download'; ?>', current_album, current_asset, duration, 'high'));" class="simple-button">
+	    ®high_res®
+	</a>
+<?php
+} ?>
+
 

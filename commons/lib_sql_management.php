@@ -127,8 +127,6 @@ function statements_get()
                     'FROM ' . db_gettable('users') . ' ' .
                     'WHERE user_ID = :user_ID',
 
-
-
             'user_courses_get' =>
                     'SELECT DISTINCT ' .
                             db_gettable('users_courses').'.ID, '.
@@ -456,12 +454,11 @@ function db_course_create($course_id, $course_code_public, $course_name, $in_rec
 function db_course_read($course_id)
 {
     global $statements;
-    //var_dump($statements['course_read']);die;
-    $statements['course_read']->bindParam(':course_code', $course_id);
     
+    $statements['course_read']->bindParam(':course_code', $course_id);    
     $statements['course_read']->execute();
-    $res= $statements['course_read']->fetch();
-    return $res;
+    
+    return $statements['course_read']->fetch();
 }
 
 /**
@@ -830,7 +827,6 @@ function db_found_rows()
     return intval($res[0]);
 }
 
-
 /**
  * creates a local user and/or add a ezrecorder password to an external (sso,ldap,...) user
  * @global array $statements
@@ -845,7 +841,7 @@ function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permis
 {
     global $statements;
     require_once __DIR__ .'/lib_pw.php'; //for pw encryption
-    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);                                                                                  
     $lowered_user_id = strtolower($user_ID);
     $statements['user_create']->bindParam(':user_ID', $lowered_user_id);
     $statements['user_create']->bindParam(':surname', $surname);
@@ -891,12 +887,15 @@ function db_termsOfUseUpdate($user_ID,$termsOfUse){
     
 }
 
+
 //return number of line affected, or false on error
 function db_user_set_recorder_passwd($user_ID, $recorder_passwd)
 { 
   global $statements;
   require_once __DIR__ .'/lib_pw.php'; //for pw encryption
     $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
+        
+                       
     $statements['user_update_recorder_passwd']->bindParam(':user_ID', $user_ID);
     $statements['user_update_recorder_passwd']->bindParam(':recorder_passwd', $encrypted_passwd);
     $ok = $statements['user_update_recorder_passwd']->execute();

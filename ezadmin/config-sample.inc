@@ -67,4 +67,4 @@ $path_url_proxy = "";  //ex : https://{domainName}/ezadmin/cli_get_camera.php
 $enable_control_panel = false; // Enables the control panel by displaying all the cameras that are activated.
 $enable_control_panel_options = false; // Enables the page that will display a previously selected camera with these options.
 $ip_prefix = ""; // Contains username and password for connect remotely to camera  ex: "http://{username}:{password}@"
-$ip_suffixe = ""; // Contains the port and different parameters of the camera ex:":8080/cgi-bin/camera?resolution=320x180&quality=1"aa
+$ip_suffixe = ""; // Contains the port and different parameters of the camera ex:":8080/cgi-bin/camera?resolution=320x180&quality=1"

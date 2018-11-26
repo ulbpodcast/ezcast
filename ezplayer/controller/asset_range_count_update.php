@@ -34,7 +34,9 @@ function index($param = array())
     }
 
     $range_count_path = $repository_path . '/' . $album . '/' . $asset . '/range_count';
-    mkdir($range_count_path, 0755);
+    if(!file_exists($range_count_path))
+        mkdir($range_count_path, 0755);
+    
     $date = date('Ymd');
     $array = array();
     if (file_exists($range_count_path . '/' . $date . '_' . $type . '.php')) {

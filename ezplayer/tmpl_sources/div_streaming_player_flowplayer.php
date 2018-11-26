@@ -26,7 +26,6 @@
 
 ?>
 <div id="streaming_config">
-
     <link rel="stylesheet" href="flowplayer-6/skin/skin.css">
     <?php if($_SESSION['isPhone']){  ?>
         <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
@@ -92,15 +91,9 @@
         swfHls: 'flowplayer-6/flowplayerhls.swf',
         live: true,
         autoplay: true,
-<<<<<<< HEAD
-        fullscreen: false,
-        share: false,
-        embed: false
-=======
         fullscreen: true,
         embed: false,
         share:false
->>>>>>> prod_UCL
 
     });
 

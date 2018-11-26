@@ -69,7 +69,8 @@ function uploadFile(file, index, start, end) {
     var chunk;
     var blob = file.blob;
     var type = file.type;
-    
+    var type_media = file.type_media;
+
     xhr = new XMLHttpRequest();
 
     if (blob.slice) {
@@ -122,6 +123,11 @@ function uploadFile(file, index, start, end) {
     xhr.setRequestHeader("X-Index", index);                     // part identifier
     xhr.setRequestHeader("X-id", globalObj.id);
     xhr.setRequestHeader("X-type", type);
+    if (typeof type_media === "undefined")
+    {
+        type_media = 'video';
+    }
+    xhr.setRequestHeader("X-type-media", type_media);
 
     // android default browser in version 4.0.4 has webkitSlice instead of slice()
     if (blob.webkitSlice && typeof(blob.slice) !== 'function') {                                     

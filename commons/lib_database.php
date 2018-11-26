@@ -67,6 +67,7 @@ function db_prepare(&$stmt_array = array())
     global $db_object;
     global $db_type;
     global $db_host;
+    global $db_port;
     global $db_login;
     global $db_passwd;
     global $db_name;
@@ -76,9 +77,11 @@ function db_prepare(&$stmt_array = array())
     
     if ($db_object == null) {
         try {
-            $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
+//            $db_object = new PDO("$db_type:host=$db_host;dbname=$db_name;charset=utf8", $db_login, $db_passwd);
+           $db_object = new PDO("$db_type:host=$db_host;port=$db_port;dbname=$db_name;charset=utf8", "$db_login", "$db_passwd");
         } catch (PDOException $e) {
-            throw new Exception("Could not connect to database $db_host, $db_name with login $db_login");
+//             throw new Exception("Could not connect to database $db_host, $db_name with login $db_login");
+            throw new Exception("Could not connect to database $db_host, $db_port, $db_name with login $db_login");
         }
     }
     

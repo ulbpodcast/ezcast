@@ -191,6 +191,7 @@ function view_media()
     global $accepted_media_qualities;
     global $accepted_media_types;
     global $input;
+    global $enable_ezplayer_audio_download;
 
     // 0) Sanity checks
     if (!ezmam_album_exists($input['album'])) {
@@ -214,18 +215,43 @@ function view_media()
         die;
     }
 
-    if (!isset($input['quality'])) {
-        $input['quality'] = 'high';
-    }
-    if (!accepted_quality($input['quality'])) {
-        error_print_http(403);
-        log_append('warning', 'view_media: tried to access forbidden quality "' . $input['quality'] . '"');
+    if(($input['type'] == 'audiocam' || $input['type'] == 'audioslide') && !$enable_ezplayer_audio_download){
+        error_print_http(404);
+        log_append('warning', 'view_media: tried to download audio but not permited by conf ');
         die;
     }
-    if (!accepted_type($input['type'])) {
-        error_print_http(403);
-        log_append('warning', 'view_media: tried to access forbidden media type "' . $input['type'] . '"');
-        die;
+
+    if (!isset($input['quality']) || empty($input['quality']))
+    {
+        if($input['type'] == 'audiocam')
+        {
+            $input['quality'] = 'audio';
+            $input['type'] = 'cam';
+        }
+        else if($input['type'] == 'audioslide')
+        {
+            $input['quality'] = 'audio';
+            $input['type'] = 'slide';
+        }
+        else
+        {
+            $input['quality'] = 'high';
+        }
+    }
+   
+
+    if($input['quality'] != 'audio')
+    {
+        if (!accepted_quality($input['quality'])) {
+            error_print_http(403);
+            log_append('warning', 'view_media: tried to access forbidden quality "' . $input['quality'] . '"');
+            die;
+        }
+        if (!accepted_type($input['type'])) {
+            error_print_http(403);
+            log_append('warning', 'view_media: tried to access forbidden media type "' . $input['type'] . '"');
+            die;
+        }
     }
 
     // 1) First we retrieve the media path
@@ -245,7 +271,6 @@ function view_media()
         $media_name = $quality . '_' . $type;
 
         $media_handle = ezmam_media_getpath($input['album'], $input['asset'], $media_name, false);
-        
 
         // If we still can't find a file, we just tell the users so
         if (!$media_handle) {
@@ -264,26 +289,40 @@ function view_media()
     $filename .= '_-_';
     $filename .= get_user_friendly_date($input['asset'], '_', true, 'fr-ASCII');
     //add a quality part in filename
-    if ($quality == 'low') {
-        $quality_fn_part = 'SQ';
-    } else {
-        $quality_fn_part = 'HQ';
+    if($quality != 'audio')
+    {
+        if ($quality == 'low') {
+            $quality_fn_part = 'SQ';
+        } else {
+            $quality_fn_part = 'HQ';
+        }
+        $filename .= '_' . $quality_fn_part;
     }
-    $filename .= '_' . $quality_fn_part;
     //add a type video/slide part in filename
-    if ($type == 'cam') {
+    $extention = '.m4v';
+    $content_type = 'video/mp4';
+    if ($type == 'cam' && $quality != 'audio')
+    {
         $type_fn_part = 'video';
-    } else {
+    }
+    elseif($type == 'slide' && $quality != 'audio')
+    {
         $type_fn_part = 'slide';
+    }
+    else
+    {
+        $type_fn_part = $type;
+        $extention = '.mp3';
+        $content_type = 'audio/mpeg';
     }
     $filename .= '_' . $type_fn_part;
 
     //  header('Content-Type: video/x-m4v');
-    header('Content-Type: video/mp4');
+    header('Content-Type: '.$content_type);
     if (isset($_SERVER['HTTP_RANGE'])) {
         rangeDownload($media_handle);
     } else {
-        header('Content-Disposition: attachment; filename=' . $filename . '.m4v');
+        header('Content-Disposition: attachment; filename=' . $filename . $extention);
         //header('Content-Transfer-Encoding: binary');
         //header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

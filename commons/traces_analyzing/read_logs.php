@@ -37,9 +37,9 @@ class Logs
 
 class Database
 {
-    public function __construct($host, $dbname, $login, $passwd, $prefix = "")
+    public function __construct($host, $dbname,$port, $login, $passwd, $prefix = "")
     {
-        $this->db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $login, $passwd);
+        $this->db = new PDO("mysql:host=$host;dbname=$dbname;port=$port;charset=utf8", $login, $passwd);
         $this->prefix = $prefix;
     }
 
@@ -246,7 +246,7 @@ for ($i=1; $i < count($argv); ++$i) {
 
 
 try {
-    $database = new Database($db_host, $db_name, $db_login, $db_passwd, $db_prefix);
+    $database = new Database($db_host, $db_name,$db_port, $db_login, $db_passwd, $db_prefix);
 } catch (PDOException $e) {
     echo PHP_EOL . PHP_EOL . "ERROR DATABASE" . PHP_EOL;
     print_r($e->getMessage());

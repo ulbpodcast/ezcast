@@ -391,6 +391,10 @@ function video_event_volume(video) {
     if(video.muted && video.volume != 0) {
         video.volume = 0;
     }
+    if(!video.muted && video.volume == 0)
+    {
+        video.volume = 1;
+    }
 }
 
 // handles buffer errors that occur in Chrome after the following process:

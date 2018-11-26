@@ -56,7 +56,7 @@ function parse_config_file()
  * @param type $recorder_password_storage_option
  * @param type $use_user_name_option
  */
-function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_user_name_option)
+function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_user_name_option, $control_panel, $control_panel_options)
 {
     $config = file_get_contents('config.inc');
 

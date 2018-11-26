@@ -707,24 +707,12 @@ function getSpaceUsed($ip)
         else if( $values[9] != "")
             $val = $values[9];
         
-        
-        if((str_replace('%', '', $val)) > 80){   //
-            $to      = 'arnaud.willame@uclouvain.be';
-            $subject = 'Recorder Almost full';
-            $message = 'Warning the recorder with the ip :'.$ip.' is full at : '.$val;
-            $headers = 'From: podcast@uclouvain.be' . "\r\n" .
-            'Reply-To: noreply@noreply.com' . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
-
-            //      mail($to, $subject, $message, $headers); 
-            fclose($fp);
-        }
+        fclose($fp);
     }
     else
         $val = 0;
     
     return $val;
-     
 }
 
 function getRecordingStatus($ip)

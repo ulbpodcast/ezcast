@@ -35,7 +35,8 @@
         <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
         <script src="js/highstock.js"></script>
         <script src="js/exporting.js"></script>
-
+	
+	<link rel="shortcut icon" type="image/ico" href="img/favicon.ico" />
         <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <link href="css/typeahead.min.css" rel="stylesheet">
         <link rel="stylesheet" href="bootstrap/css/bootstrap-datetimepicker.min.css" />

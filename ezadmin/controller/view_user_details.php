@@ -3,6 +3,7 @@
 function index($param = array())
 {
     global $input;
+    global $input_validation_regex;
 
     if (empty($input['user_ID'])) {
         die;
@@ -14,13 +15,27 @@ function index($param = array())
         $surname = $input['surname'];
         $is_ezadmin = $input['is_ezadmin'] ? 1 : 0;
         $is_admin = $input['permissions'] ? 1 : 0;
-        $recorder_passwd = trim($input['recorder_passwd']);
+        $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
+        $recorder_passwd = (trim($input['recorder_passwd']) == '') ? '' : crypt($input['recorder_passwd'], $des_seed);
 
-        if (empty($forename)) {
+        if (empty($forename))
+        {
             $error = template_get_message('missing_forename', get_lang());
-        } elseif (empty($surname)) {
+        } 
+        elseif (empty($surname))
+        {
             $error = template_get_message('missing_surname', get_lang());
-        } else {
+        } 
+        elseif (!check_validation_text($forename))
+        {
+            $error = template_get_message('error_validation_forename', get_lang());
+        }
+        elseif (!check_validation_text($surname))
+        {
+            $error = template_get_message('error_validation_surname', get_lang());
+        }
+        else
+        {
             db_user_update($user_ID, $surname, $forename, $recorder_passwd, $is_admin);
             if ($is_ezadmin) {
                 add_admin_to_file($input['user_ID']);
@@ -40,10 +55,10 @@ function index($param = array())
         $courses = db_user_get_courses($input['user_ID']);
 
         // Manipulate info
-        $user_ID = $userinfo['user_ID'];
-        $surname = $userinfo['surname'];
-        $forename = $userinfo['forename'];
-        $passNotSet = (isset($userinfo['passNotSet'])) ? $userinfo['passNotSet'] : '';
+        $user_ID = htmlspecialchars($userinfo['user_ID']);
+        $surname = htmlspecialchars($userinfo['surname']);
+        $forename = htmlspecialchars($userinfo['forename']);
+        $passNotSet = $userinfo['passNotSet'];
         $origin = $userinfo['origin'];
         $is_admin = ($userinfo['permissions'] != 0);
         $in_classroom = false;

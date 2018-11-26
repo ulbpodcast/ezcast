@@ -37,7 +37,7 @@
                 <p class="view form-control-static"><?php echo $course_name; ?></p>
                 <div class="edit">
                     <input type="text" class="form-control" name="course_name" 
-                           value="<?php echo htmlspecialchars($course_name) ?>" />
+                           value="<?php echo $course_name ?>" />
                 </div>
             <?php
     } ?>
@@ -46,28 +46,32 @@
 
         <!-- Origin -->
         <div class="form-group">
-            <label class="col-md-3 control-label">®origin®</label>
-            <div class="col-sm-5">
-                <span class="label 
-                    <?php if ($origin == 'internal') {
-        echo 'label-info';
-    } elseif ($origin == 'external') {
-        echo 'label-primary';
-    } else {
-        echo 'label-danger';
-    } ?>
-                    ">
-                    <?php 
-                    if ($origin == 'internal') {
-                        echo '®intern®';
-                    } elseif ($origin == 'external') {
-                        echo '®extern®';
-                    } else {
-                        echo '®error®';
-                    } ?>
-                </span>
+                <label class="col-md-3 control-label">®origin®</label>
+                <div class="col-sm-5">
+                    <span class="label 
+                        <?php if ($origin == 'internal') {
+                            echo 'label-info';
+                        } elseif ($origin == 'external') {
+                            echo 'label-primary';
+                        } elseif ($origin == 'SSO') {
+                            echo 'label-success';
+                        } else {
+                            echo 'label-danger';
+                        } ?>
+                        ">
+                        <?php 
+                        if ($origin == 'internal') {
+                            echo '®intern®';
+                        } elseif ($origin == 'external') {
+                            echo '®extern®';
+                        } elseif ($origin == 'SSO') {
+                            echo '®sso®';
+                        } else {
+                            echo '®error®';
+                        } ?>
+                    </span>
+                </div>
             </div>
-        </div>
 
         <!-- Has albums -->
         <div class="form-group">
@@ -145,10 +149,34 @@
             <td><?php echo $u['forename'] . ' ' . $u['surname']; ?></td>
             <td><span class="label <?php if ($u['origin'] == 'internal') {
                             echo 'label-info';
-                        } ?>"><?php if ($u['origin'] == 'internal') {
+                        }
+                        elseif($u['origin'] == 'external') 
+                        {
+                            echo 'label-primary';
+                        }
+                        elseif($u['origin'] == 'SSO') 
+                        {
+                            echo 'label-success';
+                        }
+                        else
+                        {
+                            echo 'label-danger';
+                        }
+                        ?>">
+                        <?php if ($u['origin'] == 'internal') {
                             echo '®intern®';
-                        } else {
+                        } 
+                        elseif($u['origin'] == 'external')
+                        {
                             echo '®extern®';
+                        }
+                        elseif($u['origin'] == 'SSO')
+                        {
+                            echo '®sso®';
+                        }
+                        else
+                        {
+                            echo '®error®';
                         } ?></span></td>
             <td class="unlink" style="cursor: pointer;"><?php if ($u['origin'] == 'internal') {
                             echo '<span class="glyphicon glyphicon-remove"></span> ®remove_link®';

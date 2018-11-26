@@ -84,9 +84,14 @@
                 <span class="label 
                     <?php if ($course['origin'] == 'internal') {
             echo 'label-info';
-        } elseif ($course['origin'] == 'external') {
+        } 
+        elseif ($course['origin'] == 'external') {
             echo 'label-primary';
-        } else {
+        } 
+        elseif($course['origin'] == 'SSO'){
+            echo 'label-success';
+        }
+        else {
             echo 'label-danger';
         } ?>
                     ">
@@ -95,7 +100,12 @@
                         echo '®intern®';
                     } elseif ($course['origin'] == 'external') {
                         echo '®extern®';
-                    } else {
+                    } 
+                    elseif ($course['origin'] == 'SSO') 
+                    {
+                        echo '®sso®';
+                    }
+                    else {
                         echo '®error®';
                     } ?>
                 </span>

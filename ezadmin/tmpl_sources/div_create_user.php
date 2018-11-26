@@ -18,7 +18,7 @@
         <div class="col-sm-5">
             <input type="text" class="form-control" name="user_ID" 
                 value="<?php if (isset($input) && array_key_exists('user_ID', $input)) {
-        echo $input['user_ID'];
+        echo htmlentities($input['user_ID']);
     } ?>"/>
         </div>
     </div>
@@ -28,7 +28,7 @@
         <div class="col-sm-5">
             <input type="text" class="form-control" name="surname" 
                 value="<?php if (isset($input) && array_key_exists('surname', $input)) {
-        echo $input['surname'];
+        echo htmlentities($input['surname']);
     } ?>"/>
         </div>
     </div>
@@ -38,7 +38,7 @@
         <div class="col-sm-5">
             <input type="text" class="form-control" name="forename" 
                    value="<?php if (isset($input) && array_key_exists('forename', $input)) {
-        echo $input['forename'];
+        echo htmlentities($input['forename']);
     }?>"/>
         </div>
     </div>

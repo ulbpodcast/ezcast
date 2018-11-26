@@ -15,13 +15,13 @@
 } ?>" />
     
     <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®user_ID®" title="®user_ID®" name="user_ID" value="<?php if (isset($input) && isset($input['user_ID'])) {
-    echo $input['user_ID'];
+    echo htmlentities($input['user_ID']);
 } ?>" />
     <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®forename®" title="®forename®" name="forename" value="<?php if (isset($input) && isset($input['forename'])) {
-    echo $input['forename'];
+    echo htmlentities($input['forename']);
 } ?>" />
     <input class="form-control input-large auto-clear placeholder" type="text" placeholder="®surname®" title="®surname®" name="surname" value="<?php if (isset($input) && isset($input['surname'])) {
-    echo $input['surname'];
+    echo htmlentities($input['surname']);
 } ?>" />
     
     <input type="submit" name="search" value="®search®" class="btn btn-primary">

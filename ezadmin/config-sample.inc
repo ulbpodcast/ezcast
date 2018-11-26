@@ -17,6 +17,12 @@ $add_users_enabled = true; // set to true to have a userlist in ezmanager
 $recorder_password_storage_enabled = true; // Set to true to save passwords on the recorders
 $use_user_name = false; // Set to true to use user's full name instead of user ID
 
+//Send mail informations about recorder
+$adress_mail_information_recorder = "";
+
+// Regular expression
+$input_validation_regex = "/^[a-zA-Z0-9éè_\s-]+$/i"; //Check a string, it must contain letters, numbers and blank spaces
+
 // Renderers settings
 $renderers_options = array(
     // <name> the name of the library to use (used in tmpl_sources/div_create_renderer_step3.php as class name to display input fields)

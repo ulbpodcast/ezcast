@@ -23,5 +23,6 @@ function index($param = array())
     } else {
         db_log("renderers", 'Disabled renderer ' . $input['name'], $_SESSION['user_login']);
     }
+    push_renderers_to_ezmanager();
     //   notify_changes();
 }

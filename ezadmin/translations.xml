@@ -126,6 +126,8 @@
         <label id="list_jobs_title" lang="en">Jobs list</label>
         <label id="list_event_title" lang="fr">Liste des events</label>
         <label id="list_event_title" lang="en">Events list</label>
+        <label id="list_cam" lang="fr">Liste des caméras</label>
+        <label id="list_cam" lang="en">Cameras list</label>
         <label id="track_asset_title" lang="fr">Suivi des enregistrements</label>
         <label id="track_asset_title" lang="en">Track Recording</label>
         <label id="course_details_title" lang="fr">Détail du cours</label>
@@ -653,6 +655,10 @@
         <label id="settings_recorder_password_storage_enabled" lang="en">Store password in classroom</label>
         <label id="settings_use_user_name" lang="fr">Afficher le nom des utilisateurs</label>
         <label id="settings_use_user_name" lang="en">Show users name</label>
+        <label id="settings_control_panel" lang="fr">Afficher la liste des caméras</label>
+        <label id="settings_control_panel" lang="en">Show the list of cameras</label>
+        <label id="settings_control_panel_options" lang="fr">Activer les options pour les caméras</label>
+        <label id="settings_control_panel_options" lang="en">Enable options for cameras</label>
         <label id="install" lang="fr">Installer</label>
         <label id="install" lang="en">Install</label>
         <label id="stats_album_name" lang="fr">Nom de l'album</label>
@@ -1002,16 +1008,16 @@
         <message id="month_12" lang="en">December</message>
         
         <!-- Errors -->
+        <message id="missing_camera" lang="fr">Aucune caméra n'est disponible pour le moment.</message>
+        <message id="missing_camera" lang="en">No cameras are available at the moment.</message>
+        <message id="missing_audience" lang="fr">L'auditoire ou l'unité mobile que vous avez demandé est introuvable ou n'existe pas.</message>
+        <message id="missing_audience" lang="en">The audience or mobile unit you requested was not found or does not exist.</message>
         <message id="db_request_failed" lang="fr">Requête db échouée</message>
         <message id="db_request_failed" lang="en">DB request failed</message>
         <message id="error_mimetype" lang="fr">Le fichier soumis ne semble pas être de type video</message>
         <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a movie</message>
         <message id="empty_username_password" lang="fr">Veuillez entrer votre netID et mot de passe.</message>
         <message id="empty_username_password" lang="en">Please enter your netID and password.</message>
-        <message id="not_registered" lang="fr">Vous n\'avez aucun cours à votre nom. Si vous pensez qu\'il s\'agit d\'une 
-            erreur, contactez podcast@uclouvain.be</message>
-        <message id="not_registered" lang="en">You do no have the rights to manage any course. If you think this is a mistake, 
-            please contact podcast@uclouvain.be</message>
         <message id="Unauthorized" lang="fr">Accès refusé: permissions insuffisantes.</message>
         <message id="Unauthorized" lang="en">Access denied: you don\'t have permission to access this element.</message>
         <message id="Non-existant_album" lang="fr">Accès refusé: album inexistant</message>
@@ -1020,8 +1026,6 @@
         <message id="Non-existant_asset" lang="en">Access denied: the record does not exist</message>
         <message id="File_not_found" lang="fr">Fichier introuvable</message>
         <message id="File_not_found" lang="en">Could not find your file, sorry</message>
-        <message id="Upload_error" lang="fr">Erreur lors de l\'envoi. Veuillez réessayer ou contacter podcast@uclouvain.be</message>
-        <message id="Upload_error" lang="en">Upload error. Please try again or contact podcast@uclouvain.be</message>
         <message id="Invalid_token" lang="fr">Accès refusé</message>
         <message id="Invalid_token" lang="en">Access denied</message>
         <message id="Invalid_quality" lang="fr">Accès refusé: qualité non-valide</message>
@@ -1043,6 +1047,22 @@
         <message id="missing_course_name" lang="en">The course name cannot be blank.</message>
         <message id="missing_user_ID" lang="fr">L'identifiant ne peut pas être vide.</message>
         <message id="missing_user_ID" lang="en">The user ID cannot be blank</message>
+        <message id="error_validation_userID" lang="fr">L'identifiant ne peut contenir que des lettres, nombre et espaces blancs.</message>
+        <message id="error_validation_userID" lang="en">The user ID can only contain letters, numbers and white spaces.</message>
+        <message id="error_validation_surname" lang="fr">Le nom de famille ne peut contenir que des lettres, nombre et/ou espaces blancs.</message>
+        <message id="error_validation_surname" lang="en">The last name can only contain letters, numbers and white spaces.</message>
+        <message id="error_validation_forename" lang="fr">Le prénom ne peut contenir que des lettres, nombres et espaces blancs.</message>
+        <message id="error_validation_forename" lang="en">The first name can only contain letters, numbers and white spaces.</message>
+        <message id="error_validation_roomID" lang="fr">L'identifiant de l'auditoire ne peut contenir que des lettres, nombres et espaces blancs.</message>
+        <message id="error_validation_roomID" lang="en">The room ID can only contain letters, numbers and white spaces.</message>
+        <message id="error_validation_max_size_name" lang="fr">L'identifiant de l'auditoire ne doit contenir que 20 caractères.</message>
+        <message id="error_validation_max_size_name" lang="en">The room ID must contain only 20 characters.</message>
+        <message id="error_validation_name" lang="fr">Le nom ne peut contenir que des lettres, nombres et espaces blancs.</message>
+        <message id="error_validation_name" lang="en">The name can only contain letters, numbers and white spaces.</message>
+        <message id="error_validation_course_code" lang="fr">Le mnémonique ne peut contenir que des lettres, nombre et/ou espaces blancs.</message>
+        <message id="error_validation_course_code" lang="en">The mnemonic can only contain letters, numbers and white spaces.</message>
+        <message id="error_validation_course_name" lang="fr">L'intitulé de cours ne peut contenir que des lettres, nombres et espaces blancs.</message>
+        <message id="error_validation_course_name" lang="en">The course title can only contain letters, numbers and white spaces.</message>
         <message id="missing_recorder_passwd" lang="fr">Le mot de passe du recordeur ne peut pas être vide.</message>
         <message id="missing_recorder_passwd" lang="en">The recorder password cannot be blank.</message>
         <message id="existing_renderer_name" lang="fr">Ce nom de renderer existe déjà.</message>
@@ -1152,10 +1172,10 @@
         <info id="developed_by" organization="© Université libre de Bruxelles" lang="en">
             &lt;a target="_blank" href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by 
             &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">
+        <info id="developed_by" organization="Université Catholique de Louvain" lang="fr">
             &lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par 
             &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-        <info id="developed_by" organization="© Université Catholique de Louvain" lang="en">
+        <info id="developed_by" organization="Université Catholique de Louvain" lang="en">
             &lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by 
             &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
         <info id="developed_by" organization="© Your organization name" lang="fr">
@@ -1166,8 +1186,8 @@
             &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
         <info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
         <info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
-        <info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
-        <info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
+        <info id="organization" organization="Université Catholique de Louvain" lang="fr">UCL Podcast</info>
+        <info id="organization" organization="Université Catholique de Louvain" lang="en">UCL Podcast</info>
         <info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
         <info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>
     </infos>

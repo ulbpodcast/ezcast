@@ -103,6 +103,11 @@ $options['Monitoring'] = array(
     )
 );
 
+if($enable_control_panel)
+{
+    array_push($options['Monitoring'], array('name' => '®list_cam®', 'action' => 'controller_camera'));
+}
+
 $options['Stats'] = array(
     array(
        'name' => '®stats_ezplayer_threads®',

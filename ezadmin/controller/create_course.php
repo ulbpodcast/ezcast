@@ -16,11 +16,7 @@ function index($param = array())
 
 
         if (isset($input['course_code'])){
-            $course_code_check_value = trim($input['course_code']);
-            if ($course_code_check_value == ""){
-                $error = template_get_message('error_validation_course_code', get_lang());
-
-            } elseif (!check_validation_text($input['course_code'])){
+            if (!check_validation_text($input['course_code'])){
                 $error = template_get_message('error_validation_course_code', get_lang());
 
             } else {
@@ -33,14 +29,7 @@ function index($param = array())
         }
 
         if (isset($input['course_name'])){
-            $course_name_check_value = trim($input['course_name']);
-            if ($course_name_check_value == ""){
-                if ($error)
-                    $error .= "<br>".template_get_message('error_validation_course_name', get_lang());
-                else
-                    $error = template_get_message('error_validation_course_name', get_lang());
-                
-            } elseif (!check_validation_text($input['course_name'])){
+            if (!check_validation_text($input['course_name'])){
                 if ($error)
                     $error .= "<br>".template_get_message('error_validation_course_name', get_lang());
                 else

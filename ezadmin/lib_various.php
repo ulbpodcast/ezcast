@@ -737,10 +737,15 @@ function check_validation_text($text)
 {
     include 'config.inc';
 
-    if(preg_match($input_validation_regex, $text))
-        $return_value = true;
-    else
+    $text = trim($text);
+
+    if ($text == "") {
         $return_value = false;
+    } elseif (preg_match($input_validation_regex, $text)) {
+        $return_value = true;
+    } else {
+        $return_value = false;
+    }
 
     return $return_value;
 }

@@ -23,16 +23,14 @@ function index($param = array())
         $ignore_ssh_check = (isset($input['ignore_ssh_check']) && $input['ignore_ssh_check']) ? 1 : 0;
         $success = false;
 
-        if(mb_strlen($input['room_ID']) > 20) 
-        {
+        if (mb_strlen($input['room_ID']) > 20) {
             $error = template_get_message('error_validation_max_size_name', get_lang());
-        }
-        elseif(!check_validation_text($room_ID) || empty($room_ID))
-            {
+
+        } elseif (!check_validation_text($room_ID)) {
                 $error = template_get_message('error_validation_roomID', get_lang());
-            }
-        if (!check_validation_text($name) || empty($name))
-        {
+        }
+
+        if (!check_validation_text($name)) {
             if($error)
                 $error .= "<br>".template_get_message('error_validation_name', get_lang());
             else

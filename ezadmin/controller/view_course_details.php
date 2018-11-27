@@ -17,7 +17,6 @@ function index($param = array())
         $course_name = $input['course_name'];
         $in_recorders = $input['in_recorders'] ? 1 : 0;
 
-        $course_name_check_value = trim($course_name);
         if (!check_validation_text($course_name)) {
             $error = template_get_message('error_validation_course_name', get_lang());
         } elseif (empty($course_name)) {

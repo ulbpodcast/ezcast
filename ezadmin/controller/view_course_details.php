@@ -17,11 +17,13 @@ function index($param = array())
         $course_name = $input['course_name'];
         $in_recorders = $input['in_recorders'] ? 1 : 0;
 
-        if(!check_validation_text($course_name) && !empty($course_name))
-        {
+        $course_code_check_value = trim($course_name);
+        if ($course_code_check_value == ""){
             $error = template_get_message('error_validation_course_name', get_lang());
-        }
-        elseif (empty($course_name)) {
+
+        } elseif (!check_validation_text($course_name) && !empty($course_name)) {
+            $error = template_get_message('error_validation_course_name', get_lang());
+        } elseif (empty($course_name)) {
             $error = template_get_message('missing_course_name', get_lang());
         } else {
             db_course_update($course_code, $course_name, $in_recorders);

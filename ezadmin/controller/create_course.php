@@ -15,34 +15,38 @@ function index($param = array())
         $course_name = null;
 
 
-        if (isset($input['course_code']))
-        {
-            if(!check_validation_text($input['course_code']) && !empty($input['course_code']))
-            {
+        if (isset($input['course_code'])){
+            $course_code_check_value = trim($input['course_code']);
+            if ($course_code_check_value == ""){
                 $error = template_get_message('error_validation_course_code', get_lang());
-            }
-            else
-            {
+
+            } elseif (!check_validation_text($input['course_code'])){
+                $error = template_get_message('error_validation_course_code', get_lang());
+
+            } else {
                 $course_code_public = htmlentities($input['course_code']);
                 $id_course_input = preg_replace($course_id_validation_regex, "", $course_code_public); //start from the public code, keeping only alphabetic characters
-                if (strlen($course_code_public) > $max_course_code_size)
-                {
+                if (strlen($course_code_public) > $max_course_code_size){
                     $course_code_public = substr($course_code_public, 0, $max_course_code_size);
                 }
             }
         }
 
-        if (isset($input['course_name']))
-        {
-            if(!check_validation_text($input['course_name']) && !empty($input['course_name']))
-            {
-                if($error)
+        if (isset($input['course_name'])){
+            $course_name_check_value = trim($input['course_name']);
+            if ($course_name_check_value == ""){
+                if ($error)
                     $error .= "<br>".template_get_message('error_validation_course_name', get_lang());
                 else
                     $error = template_get_message('error_validation_course_name', get_lang());
-            }
-            else
-            {
+                
+            } elseif (!check_validation_text($input['course_name'])){
+                if ($error)
+                    $error .= "<br>".template_get_message('error_validation_course_name', get_lang());
+                else
+                    $error = template_get_message('error_validation_course_name', get_lang());
+            
+            } else {
                 $course_name = htmlentities($input['course_name']);
                 if (strlen($course_name) > $max_album_label_size)
                 {

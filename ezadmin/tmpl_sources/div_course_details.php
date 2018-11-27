@@ -285,11 +285,13 @@ $(function() {
 
                var $netid = $('<td></td>').text(data.netid);
                var $username = $('<td></td>').text(data.name);
+               var $origin = $('<td></td>').text(data.origin);
                var $delete = $('<td class="unlink" style="cursor:pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_link®</td>');
 
                var $tr = $('<tr data-id="' + data.id + '"></tr>');
                $tr.append($netid);
                $tr.append($username);
+               $tr.append($origin);
                $tr.append($delete);
 
                $tr.hide();

@@ -23,16 +23,11 @@ function index($param = array())
     
     if (isset($input['update']))
     {
-        if(!check_validation_text($input['a_room_ID']) || !check_validation_text($input['u_room_ID']))
-        {
+        if (!check_validation_text($input['a_room_ID']) || !check_validation_text($input['u_room_ID'])) {
             $error = template_get_message('error_validation_roomID', get_lang());
-        }
-        elseif(!check_validation_text($input['u_name']))
-        {
+        } elseif (!check_validation_text($input['u_name'])) {
             $error = template_get_message('error_validation_name', get_lang());
-        }
-        elseif(empty($error))
-        {
+        } elseif (empty($error)) {
             db_classroom_update(trim($input['a_room_ID']), $input['u_room_ID'], $input['u_name'], $input['u_ip'], $input['u_ip_remote']);
             notify_changes(); //we must write new allowed classrooms IP's
         }

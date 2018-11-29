@@ -15,27 +15,17 @@ function index($param = array())
         $surname = $input['surname'];
         $is_ezadmin = $input['is_ezadmin'] ? 1 : 0;
         $is_admin = $input['permissions'] ? 1 : 0;
-        $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
-        $recorder_passwd = (trim($input['recorder_passwd']) == '') ? '' : crypt($input['recorder_passwd'], $des_seed);
+        $recorder_passwd = $input['recorder_passwd'];
 
-        if (empty($forename))
-        {
+        if (empty($forename)) {
             $error = template_get_message('missing_forename', get_lang());
-        } 
-        elseif (empty($surname))
-        {
+        } elseif (empty($surname)) {
             $error = template_get_message('missing_surname', get_lang());
-        } 
-        elseif (!check_validation_text($forename))
-        {
+        } elseif (!check_validation_text($forename)) {
             $error = template_get_message('error_validation_forename', get_lang());
-        }
-        elseif (!check_validation_text($surname))
-        {
+        } elseif (!check_validation_text($surname)) {
             $error = template_get_message('error_validation_surname', get_lang());
-        }
-        else
-        {
+        } else {
             db_user_update($user_ID, $surname, $forename, $recorder_passwd, $is_admin);
             if ($is_ezadmin) {
                 add_admin_to_file($input['user_ID']);

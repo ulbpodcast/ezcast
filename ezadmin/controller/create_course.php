@@ -30,10 +30,12 @@ function index($param = array())
 
         if (isset($input['course_name'])){
             if (!check_validation_text($input['course_name'])){
-                if ($error)
-                    $error .= "<br>".template_get_message('error_validation_course_name', get_lang());
-                else
-                    $error = template_get_message('error_validation_course_name', get_lang());
+                $newError = template_get_message('error_validation_course_name', get_lang());
+                if ($error) {
+                    $error .= "<br>".$newError;
+                } else {
+                    $error = $newError;
+                }
             
             } else {
                 $course_name = htmlentities($input['course_name']);

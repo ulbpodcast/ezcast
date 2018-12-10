@@ -468,7 +468,7 @@ function view_embed()
     // If the user wanted to have the player in an iframe, we must change the code a little bit
     if (isset($input['iframe']) && $input['iframe'] == 'true') {
         $origin = (isset($input['origin']) && $input['origin'] == 'ezmanager') ? 'ezmanager' : 'embed';
-        echo '<iframe style="padding: 0; z-index: 100;" frameborder="0" scrolling="no" src="distribute.php?' .
+        echo '<iframe style="padding: 0; z-index: 100;" frameborder="0" scrolling="no" allowfullscreen src="distribute.php?' .
                 'action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' .
                 $input['type'] . '&amp;quality=' . $input['quality'] . '&amp;token=' . $input['token'] . '&amp;width=' .
                 $width . '&amp;height=' . $height . '&amp;origin=' . $origin . '" width="' . $width . '" height="' .

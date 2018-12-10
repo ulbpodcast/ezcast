@@ -31,10 +31,12 @@ function index($param = array())
         }
 
         if (!check_validation_text($name)) {
-            if($error)
-                $error .= "<br>".template_get_message('error_validation_name', get_lang());
-            else
-                $error = template_get_message('error_validation_name', get_lang());
+            $newError = template_get_message('error_validation_name', get_lang());
+            if($error) {
+                $error .= "<br>".$newError;
+            } else {
+                $error = $newError;
+            }
         }
 
         if (!$ignore_ssh_check)

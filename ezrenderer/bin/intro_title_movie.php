@@ -215,13 +215,13 @@ function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $wid
  * @abstract process movie with addition of intro, outro and title if present.
  */
 function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_title, $credits) {
-    global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies, $imageAudioFilePath,$enable_render_audio_from_video,$video_mimeTypes,$audio_mimeTypes;
+    global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies, $imageAudioFilePath,$enable_render_audio_from_video,$enableMimeTypeCheck,$video_mimeTypes,$audio_mimeTypes;
 
-    if (($toprocess_assoc["record_type"]!='audio') && !in_array(mime_content_type($moviein),$video_mimeTypes)) {
+    if ( $enableMimeTypeCheck && ($toprocess_assoc["record_type"]!='audio') && !in_array(mime_content_type($moviein),$video_mimeTypes)) {
         myerror("mimetypeExcepted not found", false);
         exit(1);
     }
-    if ($toprocess_assoc["record_type"]=='audio' && !in_array(mime_content_type($moviein),$audio_mimeTypes)) {
+    if ( $enableMimeTypeCheck && $toprocess_assoc["record_type"]=='audio' && !in_array(mime_content_type($moviein),$audio_mimeTypes)) {
         myerror("mimetypeExcepted not found", false);
         exit(1);
     }

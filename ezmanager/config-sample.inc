@@ -71,6 +71,11 @@ $valid_mimeType_audio = array('audio/x-wav','audio/x-flac','audio/mpeg');
 
 $valid_extensions = array_merge($valid_extensions_video, $valid_extensions_audio);
 $valid_mimeType = array_merge($valid_mimeType_video, $valid_mimeType_audio);
+
+// activated option for check the mime Type to file uploaded
+$enable_verify_mimeType_extension = false;
+
+
 // used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
 $upload_slice_size = 1024 * 1024;
 

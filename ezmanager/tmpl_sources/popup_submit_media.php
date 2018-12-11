@@ -392,6 +392,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
     {
         var extensions_video = <?php echo json_encode($valid_extensions_video); ?> ;
         var extensions_audio = <?php echo json_encode($valid_extensions_audio); ?> ;
+        var enable_verify_mimeType_extension = <?php echo $enable_verify_mimeType_extension; ?>;
 
         var type_media = $("input:radio[name=type_media]:checked").val();
 
@@ -416,28 +417,28 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
             var ext = file.split('.').pop();
 
             // check if extension is accepted
-            var found = false;
-            if(type_media == 'video')
-            {
-                //check if extension is accepted
-                for (var i = 0; i < extensions_video.length; i++) {
-                    if (found = (extensions_video[i] == ext.toLowerCase()))
-                        break;
+            if (enable_verify_mimeType_extension == true) {
+                var found = false;
+                if(type_media == 'video'){
+                    //check if extension is accepted
+                    for (var i = 0; i < extensions_video.length; i++) {
+                        if (found = (extensions_video[i] == ext.toLowerCase()))
+                            break;
+                    }
+                } else if(type_media == 'audio') {
+                    //check if extension is accepted
+                    for (var i = 0; i < extensions_audio.length; i++) {
+                        if (found = (extensions_audio[i] == ext.toLowerCase()))
+                            break;
+                    }
                 }
-            }
-            else if(type_media == 'audio')
-            {
-                //check if extension is accepted
-                for (var i = 0; i < extensions_audio.length; i++) {
-                    if (found = (extensions_audio[i] == ext.toLowerCase()))
-                        break;
+
+                if (!found) {
+                    window.alert('®bad_extension®');
+                    return false;
                 }
             }
 
-            if (!found) {
-                window.alert('®bad_extension®');
-                return false;
-            }
 
             if (document.getElementById('type').value === 'camslide') {
                 var file2 = document.getElementById('loadingfile2').value;
@@ -447,19 +448,20 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
                 }
                 var ext2 = file2.split('.').pop();
 
-                var found = false;
-                if(type_media == 'video')
-                {
-                    //check if extension is accepted
-                    for (var i = 0; i < extensions_video.length; i++) {
-                        if (found = (extensions_video[i] == ext2.toLowerCase()))
-                            break;
+                if (enable_verify_mimeType_extension == true) {
+                    var found = false;
+                    if(type_media == 'video'){
+                        //check if extension is accepted
+                        for (var i = 0; i < extensions_video.length; i++) {
+                            if (found = (extensions_video[i] == ext2.toLowerCase()))
+                                break;
+                        }
                     }
-                }
 
-                if (!found) {
-                    window.alert('®bad_extension® (®slide®)');
-                    return false;
+                    if (!found) {
+                        window.alert('®bad_extension® (®slide®)');
+                        return false;
+                    }
                 }
             }
         }

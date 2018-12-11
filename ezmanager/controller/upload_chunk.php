@@ -10,6 +10,7 @@ function index($param = array())
     global $valid_mimeType;
     global $valid_mimeType_video;
     global $valid_mimeType_audio;
+    global $enable_verify_mimeType_extension;
     global $upload_slice_size;
     global $input;
 
@@ -132,22 +133,21 @@ function index($param = array())
         
     }
 
-    if($type_media == 'video')
-    {
-        if(!in_array(mime_content_type($target),$valid_mimeType_video)){
-            log_append('error', "Mimetype is not valid");
-            $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
-            echo json_encode($array);
-            die;
-        }
-    }
-    elseif($type_media == 'audio')
-    {
-        if(!in_array(mime_content_type($target),$valid_mimeType_audio)){
-            log_append('error', "Mimetype is not valid");
-            $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
-            echo json_encode($array);
-            die;
+    if ($enable_verify_mimeType_extension) {
+        if ($type_media == 'video') {
+            if (!in_array(mime_content_type($target),$valid_mimeType_video)){
+                log_append('error', "Mimetype is not valid");
+                $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
+                echo json_encode($array);
+                die;
+            }
+        } elseif ($type_media == 'audio') {
+            if (!in_array(mime_content_type($target),$valid_mimeType_audio)){
+                log_append('error', "Mimetype is not valid");
+                $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
+                echo json_encode($array);
+                die;
+            }
         }
     }
 

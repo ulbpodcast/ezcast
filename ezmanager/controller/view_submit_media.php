@@ -15,6 +15,7 @@ function index($param = array())
     global $valid_mimeType_video;
     global $valid_extensions_audio;
     global $valid_mimeType_audio;
+    global $enable_verify_mimeType_extension;
     
 
     $album = suffix_remove($_SESSION['podman_album']);

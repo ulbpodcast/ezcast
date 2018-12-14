@@ -125,12 +125,14 @@
 
     function switch_do() {
         // Request to the server
+        var asset = '<?php echo $asset_meta['stream_name']; ?>';
+
         close_popup();
         player_kill();
         $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
         $.ajax({
             type: 'POST',
-            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam'),
+            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam') + '&asset=' + asset,
             success: function (response) {
                 $('#streaming_config_wrapper').html(response);
                 player_streaming_fullscreen(fullscreen);

@@ -12,9 +12,10 @@
                 <form action="index.php" method="post">
                     <input type="hidden" name="action" value="acceptTermsOfUses" />
                     <p><input type="submit"class="btn btn-primary btn-lg" value="J'accepte"></p>
+                    <input type="hidden" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
                    </form>
             </div>
-            
+
         </div>
     <?php include 'div_main_footer.php'; ?>
     </body>

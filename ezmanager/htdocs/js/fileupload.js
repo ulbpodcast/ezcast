@@ -14,10 +14,10 @@ function process(file) {
     var end;
     var index = 0;
 
-    // calculate the number of slices 
+    // calculate the number of slices
     slices[type] = Math.ceil(blob.size / globalObj.chunkSize);
     slicesTotal[type] = slices[type];
-    
+
     msg('console', 'start');
     msg("exec", 'updateProgress(' + 0 + ', "' + type + '");');
 
@@ -119,7 +119,7 @@ function uploadFile(file, index, start, end) {
      }, false);  */
 
 
-    xhr.open("post", globalObj.url + "/index.php?action=upload_chunk", false);
+    xhr.open("post", globalObj.url + "/index.php?action=upload_chunk&sesskey="+file.sesskey, false);
     xhr.setRequestHeader("X-Index", index);                     // part identifier
     xhr.setRequestHeader("X-id", globalObj.id);
     xhr.setRequestHeader("X-type", type);
@@ -130,7 +130,7 @@ function uploadFile(file, index, start, end) {
     xhr.setRequestHeader("X-type-media", type_media);
 
     // android default browser in version 4.0.4 has webkitSlice instead of slice()
-    if (blob.webkitSlice && typeof(blob.slice) !== 'function') {                                     
+    if (blob.webkitSlice && typeof(blob.slice) !== 'function') {
         var buffer = str2ab_blobreader(chunk, function(buf) {   // we cannot send a blob, because body payload will be empty
             xhr.send(buf);                                      // thats why we send an ArrayBuffer
         });
@@ -166,7 +166,7 @@ function mergeFile(file) {
         msg('console', 'full upload finished');
 
     }, false);
-    xhr.open("POST", globalObj.url + "/index.php?action=upload_finished", true);
+    xhr.open("POST", globalObj.url + "/index.php?action=upload_finished&amp;sesskey="+file.sesskey, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     xhr.send(params);
@@ -179,7 +179,7 @@ self.onmessage = function(e) {
             globalObj[e.data.args.key] = e.data.args.value;
             msg("console", "globalObj[" + e.data.args.key + "] : " + e.data.args.value);
             break;
-            
+
         case 'process':
             msg("console", e.data.fct);
             var file = e.data.args;

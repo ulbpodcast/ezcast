@@ -17,6 +17,11 @@ function index($param = array())
         die;
     }
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if ($input['moderation'] == true) {
         $album = $input['album'] . '-priv';
     } else {

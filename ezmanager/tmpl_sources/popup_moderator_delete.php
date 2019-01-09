@@ -11,7 +11,7 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#delete_modo_course'));
                 $('#modal').modal('show'); }, 500);"
-            href="index.php?action=delete_user_course&album=<?php echo $album; ?>&iduser=<?php echo $id_user; ?>" 
+            href="index.php?action=delete_user_course&album=<?php echo $album; ?>&iduser=<?php echo $id_user; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" 
             data-dismiss="modal" id="delete_modo_course">
             ®OK®
         </a>

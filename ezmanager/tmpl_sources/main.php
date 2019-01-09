@@ -18,7 +18,7 @@
     echo $_SESSION['podman_album'];
 } ?>';
             var tab = 'list';
-            
+
             // Render a styled file input in the submit form
             function initFileUploads() {
                 var W3CDOM = (document.createElement && document.getElementsByTagName
@@ -50,7 +50,7 @@
             }
 
             function is_touch_device() {
-                return !!('ontouchstart' in window) // works on most browsers 
+                return !!('ontouchstart' in window) // works on most browsers
                         || !!('onmsgesturechange' in window); // works on ie10
             }
             ;
@@ -60,15 +60,15 @@
                     case 'stats':
                         show_stats_descriptives(current_album);
                         break;
-                    
+
                     case 'url':
                         show_ezplayer_link(current_album);
                         break;
-                        
+
                     case 'ezmanager':
                         show_ezmanager(current_album);
                         break;
-                    
+
                     case 'list':
                     default:
                         show_album_details(current_album);
@@ -83,7 +83,7 @@
                 tab = 'list';
 
                 // Getting the content from the server, and filling the div_album_header with it
-                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
                 makeRequest('index.php', '?action=view_album&album=' + album, 'div_content');
             }
@@ -96,7 +96,7 @@
             /**
              * This function is called whenever the user saves their change on an asset (Edit mode)
              */
-            function edit_asset_data(album, asset) {
+            function edit_asset_data(album, asset, sesskey) {
                 // First we retrieve the data
                 var unencoded_title = document.getElementById('title_' + asset + '_input').value;
                 var title = encodeURIComponent(unencoded_title);
@@ -111,19 +111,19 @@
                 }
 
                 // Then we update them
-                makeRequest('index.php', '?action=edit_asset&album=' + album + '&asset=' + asset + '&title=' + title + 
-                        '&description=' + description, 'asset_' + asset + '_details');
+                makeRequest('index.php', '?action=edit_asset&album=' + album + '&asset=' + asset + '&title=' + title +
+                        '&description=' + description+'&sesskey='+sesskey, 'asset_' + asset + '_details');
 
                 // And finally we refresh the view
                 document.getElementById('asset_' + asset + '_title').innerText = ' | ' + decodeURIComponent(title);
                 document.getElementById('asset_' + asset + '_title_clic').innerText = ' | ' + decodeURIComponent(title);
             }
 
-            function asset_downloadable_set(album, asset) {
+            function asset_downloadable_set(album, asset, sesskey) {
                 var valeur = $('.download_small_button#is_downloadable_' + asset+'.btn-success').length > 0;
                 $.ajax({
                     type: 'POST',
-                    url: 'index.php?action=asset_downloadable_set',
+                    url: 'index.php?action=asset_downloadable_set&sesskey='+sesskey,
                     data: {
                         'downloadable': valeur,
                         'album': album,
@@ -131,28 +131,28 @@
                     }
                 });
             }
-            
-            function show_stats_descriptives(album) {
+
+            function show_stats_descriptives(album, sesskey) {
                 tab = 'stats';
-                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
-                makeRequest('index.php', '?action=view_stats&album=' + album, 'div_content');
+                makeRequest('index.php', '?action=view_stats&album=' + album+'&sesskey='+sesskey, 'div_content');
             }
-            
-            function show_ezplayer_link(album) {
+
+            function show_ezplayer_link(album, sesskey) {
                 tab = 'url';
-                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
-                makeRequest('index.php', '?action=view_ezplayer_link&album=' + album, 'div_content');
+                makeRequest('index.php', '?action=view_ezplayer_link&album=' + album+'&sesskey='+sesskey, 'div_content');
             }
-            
-            function show_ezmanager(album) {
+
+            function show_ezmanager(album, sesskey) {
                 tab = 'ezmanager';
-                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' + 
+                document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
-                makeRequest('index.php', '?action=view_ezmanager_link&album=' + album, 'div_content');
+                makeRequest('index.php', '?action=view_ezmanager_link&album=' + album+'&sesskey='+sesskey, 'div_content');
             }
-            
+
         </script>
         <script type="text/javascript" src="js/popup_general.js"></script>
         <script type="text/javascript" src="js/popup_callback.js"></script>
@@ -172,12 +172,12 @@
     <body>
         <div class="container">
             <?php include_once template_getpath('div_main_header.php'); ?>
-            
-            
-            <?php 
+
+
+            <?php
             //Add popup to inform user that the course is correctly added
             if (isset($_SESSION['modoAdded'])) {
-                ?>          
+                ?>
                         <!-- Modal -->
                 <div class="modal fade" id="modoAdded" tabindex="-1" role="dialog" aria-labelledby="modoAddedLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -203,12 +203,13 @@
                 </script>
             <?php unset($_SESSION['modoAdded']);
             } ?>
-          
+
             <div id="global" class="row">
                 <div id="toolbar" style="display: flex">
                 <!-- "New album" button -->
                 <div class="btn-new-album">
-                    <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=new_album"
+                    <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=new_album&sesskey=<?php echo $_SESSION['sesskey']; ?>
+"
                        data-remote="false" data-toggle="modal" data-target="#modal" >
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         ®Create_album®
@@ -216,7 +217,8 @@
                 </div>
               <?php  if ( isset($GLOBALS['enable_recorder_control']) && $GLOBALS['enable_recorder_control'] === true) { ?>
                 <div class="btn-new-album" >
-                    <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=ezrecorder"
+                    <a class="btn btn-default" type="button" href="index.php?action=show_popup&amp;popup=ezrecorder&sesskey=<?php echo $_SESSION['sesskey']; ?>
+"
                        data-remote="false" data-toggle="modal" data-target="#modal" >
                         <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
                         ®recordingsetting®
@@ -224,11 +226,11 @@
                 </div>
         <?php } //endif ?>
               </div>
-                <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" 
-                    onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php 
-                    // echo get_lang();?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang();?>.png" name="Image5" 
+                <!-- <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')"
+                    onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php
+                    // echo get_lang();?>.png',1)"><img src="images/page4/ACreerAlbum_<?php // echo get_lang();?>.png" name="Image5"
                     width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div> -->
-                <!-- "New album" button, END -->          
+                <!-- "New album" button, END -->
 
                 <div id="div_center" class="col-md-12">
 
@@ -271,7 +273,7 @@
                 <!-- This popup gets automatically filled with errors -->
                 <div class="popup" id="popup_errors"></div>
             </div>
-            
+
             <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">

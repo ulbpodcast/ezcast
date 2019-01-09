@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -66,18 +66,18 @@ HTML-only version of the submit form
                 // Getting the content from the server, and filling the div_album_header with it
                 makeRequest('index.php', '?action=view_album&album=' + album, 'div_content');
             }
-            
+
             /**
              * This function is called whenever the user saves their change on an asset (Edit mode)
              */
-            function edit_asset_data(album, asset) {
+            function edit_asset_data(album, asset, sesskey) {
                 // First we retrieve the data
                 var title = encodeURIComponent(document.getElementById('title_'+asset+'_input').value);
                 var description = encodeURIComponent(document.getElementById('description_'+asset+'_input').value);
-                
+
                 // Then we update them
-                makeRequest('index.php', '?action=edit_asset&album='+album+'&asset='+asset+'&title='+title+'&description='+description, 'asset_'+asset+'_details');
-                
+                makeRequest('index.php', '?action=edit_asset&album='+album+'&asset='+asset+'&title='+title+'&description='+description+'_details&sesskey='+sesskey, 'asset_'+asset);
+
                 // And finally we refresh the view
                 document.getElementById('asset_'+asset+'_title').innerHTML = ' | '+decodeURIComponent(title);
                 document.getElementById('asset_'+asset+'_title_clic').innerHTML = ' | '+decodeURIComponent(title);
@@ -91,14 +91,14 @@ HTML-only version of the submit form
         <div class="container">
             <div id="global">
                 <?php include_once template_getpath('div_main_header.php'); ?>
-    
+
                 <!-- "New album" button -->
                 <div class="button_new_album"> <a href="javascript:show_popup_from_inner_div('#popup_new_album')" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/page4/BCreerAlbum_<?php echo get_lang(); ?>.png',1)"><img src="images/page4/ACreerAlbum_<?php echo get_lang(); ?>.png" name="Image5" width="101" height="14" border="0" id="Image5" title="®Create_album®" /></a></div>
                  <!-- "New album" button, END -->
 
-    
+
             <div id="div_center">
-    
+
             <!-- Left column: album list -->
             <div id="div_album_list">
                 <!-- Album list goes here -->
@@ -115,14 +115,14 @@ HTML-only version of the submit form
  <!-- FOOTER - INFOS COPYRIGHT -->
 <?php include_once template_getpath('div_main_footer.php'); ?>
   <!-- FOOTER - INFOS COPYRIGHT [FIN] -->
-  
+
   <!-- Popups -->
   <div style="display: none;">
       <?php include_once 'popup_new_album.php'; ?>
-      
+
       <!-- This popup gets automatically filled with messages, depending on the situation -->
       <div class="popup" id="popup_messages"></div>
-      
+
       <!-- This popup gets automatically filled with errors -->
       <div class="popup" id="popup_errors"></div>
   </div>

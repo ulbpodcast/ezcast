@@ -39,7 +39,8 @@ You should not have to include this file yourself.
         <input type="hidden" name="session_id" value="<?php echo session_id(); ?>" />
         <input type="hidden" id="album" name="album" value="<?php echo $album; ?>"/>
         <input type="hidden" id="moderation" name="moderation" value="<?php echo $moderation; ?>"/>
-        
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">®Album®</label>
             <div class="col-sm-10">
@@ -148,6 +149,7 @@ You should not have to include this file yourself.
                 var intro = encodeURIComponent(document.getElementById('intro').value);
                 var add_title = encodeURIComponent(document.getElementById('add_title').value);
                 var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
+                var sesskey = encodeURIComponent(document.getElementById('sesskey').value);
 //                var anon_access = encodeURIComponent(document.getElementById('anon_access').checked);
                 var anon_access = <?php if ($enable_anon_access_control === true) { ?> encodeURIComponent(document.getElementById('anon_access').checked)<?php }else{ ?> false<?php } ?>;
  
@@ -155,7 +157,7 @@ You should not have to include this file yourself.
                 setTimeout(function(){ 
                     display_bootstrap_modal_url($('#modal'), 'index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php 
                     echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + 
-                    add_title + '&downloadable=' + downloadable + '&anon_access=' + anon_access);
+                    add_title + '&downloadable=' + downloadable + '&anon_access=' + anon_access + '&sesskey=' + sesskey);
                     $('#modal').modal('show'); 
                 }, 500);
             }

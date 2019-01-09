@@ -1,22 +1,22 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">®Moderator_manage®</h4> 
+    <h4 class="modal-title">®Moderator_manage®</h4>
 </div>
 <div class="modal-body">
     <div id="div_ezplayer_url">
         <h4 class="text-center">®sharemyalbum® </h4><br>
-        <div id="display_error" class="alert alert-danger alert-dismissible fade in" role="alert" style="display: none;"> 
+        <div id="display_error" class="alert alert-danger alert-dismissible fade in" role="alert" style="display: none;">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span></button> 
+                <span aria-hidden="true">×</span></button>
                     <p>Erreur</p>
         </div>
-        <div id="display_success" class="alert alert-success alert-dismissible fade in" role="alert" style="display: none;"> 
+        <div id="display_success" class="alert alert-success alert-dismissible fade in" role="alert" style="display: none;">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span></button> 
+                <span aria-hidden="true">×</span></button>
                 <p>L'envoie du mail a été réalisé avec succés</p>
         </div>
         <div class="BlocPodcastMenu">
-            
+
             <!--Pour partager cet album sur "EZmanager", ajouter des adresses mail afin d'y envoyer le lien :  <br/><br/>-->
             ®Manager_URL_message_mail® <br/><br/>
             <div class="row">
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="row">
-        
+
         <br />
         <div class="col-md-12">
             <h4 class="text-center">®Moderator_List®</h4><br>
@@ -57,9 +57,9 @@
                                 <a class="btn-xs btn btn-danger delete_user_course pointer" id="delete_user_course_<?php echo $userId; ?>"
                                     onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#delete_user_course_<?php echo $userId; ?>'));
                                         $('#modal').modal('show'); }, 500);"
-                                    href="index.php?action=show_popup&amp;popup=moderator_delete&amp;album=<?php echo $album; ?>&amp;id_user=<?php echo $tbusercourse[$i]['user_ID']; ?>" 
+                                    href="index.php?action=show_popup&amp;popup=moderator_delete&amp;album=<?php echo $album; ?>&amp;id_user=<?php echo $tbusercourse[$i]['user_ID']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" 
                                     data-remote="false" data-toggle="modal" data-target="#modal" >
-                                <?php 
+                                <?php
                                     echo '<span>®Delete®</span>';
         echo '</a>';
         echo '</td>';
@@ -71,7 +71,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    
+
     $("#addEmail").click(function()
     {
         var new_email = ""+$("#email").val()+"";
@@ -179,7 +179,7 @@
                             $("#display_success").css('display', 'block');
                             $('#display_success > p').text(myArray.message);
                             break;
-                        case 'email_error': 
+                        case 'email_error':
                             $("#display_error").css('display', 'block');
                             $('#display_error > p').text(myArray.message);
                             break;

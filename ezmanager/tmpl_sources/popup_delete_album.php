@@ -41,7 +41,7 @@ You should not have to include this file yourself (included in div_album_header.
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#delete_album_link'));
                 $('#modal').modal('show'); }, 500);"
-            href="index.php?action=delete_album&album=<?php echo $album_id; ?>" 
+            href="index.php?action=delete_album&album=<?php echo $album_id; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" 
             data-dismiss="modal" id="delete_album_link">
             ®OK®
         </a>

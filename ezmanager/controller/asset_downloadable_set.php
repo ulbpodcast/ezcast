@@ -5,6 +5,11 @@ function index($param = array())
     global $input;
     global $repository_path;
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!isset($input['album']) || !isset($input['asset']) || !isset($input['downloadable'])) {
         die;
     }

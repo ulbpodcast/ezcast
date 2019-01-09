@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -38,10 +38,11 @@ You should not have to include this file yourself (included in div_album_header.
     <strong>®Title®&nbsp;:</strong> <?php echo htmlspecialchars($title); ?>
 
     <center>
-        <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
+        <a class="btn btn-info" target="_blank" href="?action=view_help&sesskey=<?php echo $_SESSION['sesskey']; ?>" role="button">®Help®</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#unpublish_asset'));$('#modal').modal('show'); }, 500);"
-            href="index.php?action=unpublish_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>" 
+            href="index.php?action=unpublish_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>
+" 
             data-dismiss="modal" id="unpublish_asset">
             ®OK®
         </a>

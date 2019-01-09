@@ -68,7 +68,7 @@ function print_info($info, $suffix = '')
                                 <a href="javascript:show_edit_form('<?php echo $asset; ?>');">
                     <?php } else
                             {
-                                echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                                echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                         ' data-toggle="modal" data-target="#modal">';
                             }
                     ?>
@@ -84,10 +84,10 @@ function print_info($info, $suffix = '')
                         <span class="ButtonMoveAlbumPrive">
                             <?php if ($status != 'processing' && $status != 'error') {
             echo '<a href="index.php?action=show_popup&amp;popup=unpublish_asset&amp;title='.urlencode($title).
-                                    '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                    '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                     'data-target="#modal">';
         } else {
-            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                 ' data-toggle="modal" data-target="#modal">';
         } ?>
                             ®Unpublish®</a>
@@ -100,10 +100,10 @@ function print_info($info, $suffix = '')
                         <span class="ButtonMoveAlbumPublic">
                             <?php if ($status != 'processing' && $status != 'error') {
             echo '<a href="index.php?action=show_popup&amp;popup=publish_asset&amp;title='.urlencode($title).
-                                    '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                    '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                     'data-target="#modal">';
         } else {
-            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                     ' data-toggle="modal" data-target="#modal">';
         } ?>
                             ®Publish®</a>
@@ -118,10 +118,10 @@ function print_info($info, $suffix = '')
                         <span class="BoutonStatsTitle">
                             <?php if ($status != 'processing' && $status != 'error') {
             echo '<a href="index.php?action=show_popup&amp;popup=asset_stats&amp;album='.$album.
-                                '&amp;asset='.$asset_name.'" data-remove="false" data-toggle="modal" '.
+                                '&amp;asset='.$asset_name.'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
         } else {
-            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                 ' data-toggle="modal" data-target="#modal">';
         } ?>
                             ®Stats_Descriptives®</a>
@@ -133,7 +133,7 @@ function print_info($info, $suffix = '')
         </div>
 
         <div class="LigneButtonRight LigneButton btn-group" role="group">
-            <button type="button" class="btn btn-default btn-xs dropdown-toggle dropdown-background-icon-button ButtonMoreOptions" 
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle dropdown-background-icon-button ButtonMoreOptions"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="icon-btn">
                     ®More_options®
@@ -144,10 +144,10 @@ function print_info($info, $suffix = '')
               <li><span class="ButtonSuppAlbum">
                         <?php if ($status != 'processing' && $status != 'error') {
         echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).
-                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
     } else {
-        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                 ' data-toggle="modal" data-target="#modal">';
     } ?>
                         ®Delete®</a>
@@ -158,16 +158,16 @@ function print_info($info, $suffix = '')
                     <span class="ButtonMove">
                         <?php if ($status != 'processing' && $status != 'error') {
         echo '<a href="index.php?action=show_popup&amp;popup=move_asset&amp;album='.urlencode($album).
-                                '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                '&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
     } else {
-        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                 ' data-toggle="modal" data-target="#modal">';
     } ?>
                         ®Move®</a>
                     </span>
                 </li>
-                <?php 
+                <?php
                 global $enable_copy_asset;
     if ($enable_copy_asset) {
         ?>
@@ -175,10 +175,10 @@ function print_info($info, $suffix = '')
                         <span class="ButtonCopy">
                             <?php if ($status != 'processing' && $status != 'error') {
             echo '<a href="index.php?action=show_popup&amp;popup=copy_asset&amp;album='.urlencode($album).
-                                    '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                    '&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                     'data-target="#modal">';
         } else {
-            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                     ' data-toggle="modal" data-target="#modal">';
         } ?>
                             ®Copy®</a>
@@ -190,16 +190,16 @@ function print_info($info, $suffix = '')
                     <span class="ButtonProgrammer">
                         <?php if ($status != 'processing' && $status != 'error') {
         echo '<a href="index.php?action=show_popup&amp;popup=schedule_asset&amp;album='.urlencode($album).
-                                '&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                '&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
     } else {
-        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+        echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                             ' data-toggle="modal" data-target="#modal">';
     } ?>
                         ®Program®</a>
                     </span>
                 </li>
-                <?php 
+                <?php
                 // add flag title_up_to_date in metadata. get this info. If not show the button => do that in controller, not tmpl
                 global $regenerate_title_mode;
     if ($regenerate_title_mode == 'manual' && isset($asset_metadata['add_title']) && ($asset_metadata['add_title']!="false") ) {
@@ -208,10 +208,10 @@ function print_info($info, $suffix = '')
                         <span class="ButtonRegenTitle">
                             <?php if ($status != 'processing' && $status != 'error') {
             echo '<a href="index.php?action=show_popup&amp;popup=regen_title&amp;album='.urlencode($album).
-                                '&amp;asset='.urlencode($asset_name).'&amp;title='.urlencode($title).'" data-remove="false" data-toggle="modal" '.
+                                '&amp;asset='.urlencode($asset_name).'&amp;title='.urlencode($title).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">';
         } else {
-            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+            echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
                                 ' data-toggle="modal" data-target="#modal">';
         } ?>
                             ®Regen_Intro®</a>
@@ -252,10 +252,10 @@ function print_info($info, $suffix = '')
         <li class="text-right">
             <!-- Edit form (submit/cancel buttons) -->
             <div class="btn-group" role="group" id="<?php echo $asset; ?>_submit" style="display: none;margin-top: 5px;">
-                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button" 
+                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset; ?>_cancel_button"
                     onclick="show_edit_form('<?php echo $asset; ?>');" value="®Cancel®" />
-                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button" 
-                    onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>');" value="®Valid®" />
+                <input type="button" class="btn btn-default btn-xs" id="<?php echo $asset ?>_submit_button"
+                    onclick="edit_asset_data('<?php echo $album; ?>', '<?php echo $asset; ?>','<?php echo $_SESSION['sesskey']; ?>');" value="®Valid®" />
             </div>
         </li>
         <li>
@@ -296,7 +296,7 @@ function print_info($info, $suffix = '')
                 <?php print_info($duration); ?>
             </li>
             <li>
-                <span class="infospodast">®Type®</span><br /> 
+                <span class="infospodast">®Type®</span><br />
                 <?php print_info($record_type); ?>
             </li>
         <?php
@@ -312,9 +312,9 @@ function print_info($info, $suffix = '')
         } elseif (strtolower($origin) === 'streaming') {
             ?>
             <li>
-                <span class="ButtonEZplayer"> 
-                    <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php 
-                        echo $asset; ?>" 
+                <span class="ButtonEZplayer">
+                    <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php
+                        echo $asset; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"
                     data-remote="false" data-toggle="modal" data-target="#modal">
                     EZplayer
                     </a>
@@ -323,11 +323,11 @@ function print_info($info, $suffix = '')
         <?php
         }
         if (strtolower($origin) === 'streaming' && $displayButton)
-        { 
+        {
             ?>
             <li>
                 <?php echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).
-                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'" data-remove="false" data-toggle="modal" '.
+                                '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                 'data-target="#modal">'; ?>
                     <button type='button' class="btn btn-danger">
                         Supprimer
@@ -341,7 +341,7 @@ function print_info($info, $suffix = '')
     <br />
 </div>
 
-<?php 
+<?php
 // If there is only one media, we display it in the right column.
 // 3 possibles scenarios: there was only a slides video, or there were 2 videos
 //    That happens if $has_slides is true (inside the "if")
@@ -356,7 +356,7 @@ if ($status != 'processing' && $status != 'failed' && strtolower($origin) !== 's
     } else {
         echo ' col-sm-offset-4';
     }
-    
+
     if ($has_slides) {
         echo '">';
         require 'div_media_details_slides.php';

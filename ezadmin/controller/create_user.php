@@ -4,6 +4,11 @@ function index($param = array())
 {
     global $input;
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (isset($input['create']) && $input['create']) {
         $user_ID = $input['user_ID'];
         $surname = $input['surname'];

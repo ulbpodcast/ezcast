@@ -8,6 +8,11 @@ function index($param = array())
         die;
     }
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $netid = trim($input['id']);
     switch ($input['query']) {
         case 'link':

@@ -5,6 +5,7 @@ require_once 'lib_sql_event.php';
 
 function index($param = array())
 {
+    global $input;
 //	$url_picture = "/var/www/html/ezadmin/img/controller_camera";
 
     /*$hostsLLN=array("130.104.10.60","130.104.10.243","130.104.250.157", "130.104.10.125","130.104.11.125","130.104.10.60","130.104.11.253");
@@ -25,6 +26,12 @@ function index($param = array())
                  'AA' => array("130.104.69.251","WOLU: Auditoire A") 
     
                 );*/
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+    
     $listClassrooms = db_classrooms_list_enabled();
 
     if(empty($listClassrooms))

@@ -62,9 +62,9 @@
     <?php foreach ($courses as $course) {
         ?>
         <tr>               
-            <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo  $course['course_code']; ?></a></span></td>
-            <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php echo $course['course_name']; ?></a></span></td>
-            <td><span title="<?php echo $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>"><?php if (isset($course['course_code_public']) && $course['course_code_public']!="") {
+            <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo  $course['course_code']; ?></a></span></td>
+            <td><span title="<?php echo $course['course_code']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $course['course_name']; ?></a></span></td>
+            <td><span title="<?php echo $course['course_name']; ?>"><a href="index.php?action=view_course_details&amp;course_code=<?php echo urlencode($course['course_code']); ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php if (isset($course['course_code_public']) && $course['course_code_public']!="") {
             echo $course['course_code_public'];
         } else {
             echo $course['course_code'];
@@ -73,11 +73,11 @@
             <?php global $use_user_name;
         if ($use_user_name) {
             ?>
-                <td><span title="<?php echo $course['user_ID']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo urlencode($course['user_ID']); ?>"><?php echo $course['forename'].' '.$course['surname']; ?></a></span></td>
+                <td><span title="<?php echo $course['user_ID']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo urlencode($course['user_ID']); ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $course['forename'].' '.$course['surname']; ?></a></span></td>
             <?php
         } else {
             ?>
-                <td><span title="<?php echo $course['forename'].' '.$course['surname']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo urlencode($course['user_ID']); ?>"><?php echo $course['user_ID']; ?></a></span></td>
+                <td><span title="<?php echo $course['forename'].' '.$course['surname']; ?>"><a href="index.php?action=view_user_details&amp;user_ID=<?php echo urlencode($course['user_ID']); ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $course['user_ID']; ?></a></span></td>
             <?php
         } ?>
             <td>

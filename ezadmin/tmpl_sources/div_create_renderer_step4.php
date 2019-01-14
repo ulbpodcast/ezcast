@@ -6,6 +6,8 @@
     }
     swap('main_step_4', 'load_step_4');
 
+    var sesskey = '<?php echo $_SESSION['sesskey']?>';
+
     var save_step = 1;
     var numSteps = 3;
     function loadStepAjax(step) {
@@ -13,7 +15,7 @@
         $.ajax('index.php?action=create_renderer', {
             type: 'POST',
             dataType: 'json',
-            data: "renderer_step=4&installation_step=" + step,
+            data: "renderer_step=4&installation_step=" + step + "&sesskey=" + sesskey,
             success: function(response) {
                 if (response.error === true){
                     $('#loading_img').hide();
@@ -49,6 +51,8 @@
             <div class="alert alert-success">®configuration_success®</div>
         <?php
     } ?>
+
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
         <input type="hidden" name="renderer_step" value="4"/>
 
         ®create_renderer_step_4_message®<br/><br/>
@@ -77,6 +81,7 @@
     <br/><br/>    
     <form method="POST" class="form-horizontal">
         <input type="hidden" name="renderer_step" value="5"/>
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
         <div class="form-group">
             <input type="submit" class="btn btn-primary" name="finish_install" value="®finish®"/>
         </div>
@@ -87,6 +92,7 @@
     <br/><br/>    
     <form method="POST" class="form-horizontal">
         <input type="hidden" name="renderer_step" value="5"/>
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
         <div class="form-group">
             <input type="button" class="btn btn-primary" onclick="swap('loading_img', 'main_step_4');loadStepAjax(save_step)" value="®retry®"/>
         </div>

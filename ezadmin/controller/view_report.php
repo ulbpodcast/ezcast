@@ -9,6 +9,10 @@ function index($param = array())
 {
     global $input;
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
     // DEBUG TIME
     //    $time = explode(' ', microtime());
     //    $start = $time[1] + $time[0];

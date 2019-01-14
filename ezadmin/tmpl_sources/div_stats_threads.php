@@ -95,6 +95,7 @@ echo '</script>';
 
     <div>
         <form action="index.php?action=get_csv_assets" method="post" id="csv_assets_form" name="csv_assets_form" onsubmit="return false">
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             <a id="submit-csvAssets-search" class="btn btn-info btn-search" 
                onclick="document.csv_assets_form.submit();
                        return false;"> <span class="icon-file icon-white"></span>®stats_discussions_by_asset®</a>

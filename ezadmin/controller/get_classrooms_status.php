@@ -16,6 +16,11 @@ function index($param = array())
         return;
     }
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     // Get IP from name (database request)
     $room_id = htmlspecialchars($input['classroomId']);
     $result = db_classroom_from_name_get_ip($room_id);

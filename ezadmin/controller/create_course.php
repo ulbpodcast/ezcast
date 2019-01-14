@@ -10,6 +10,11 @@ function index($param = array())
     global $course_id_validation_regex;
     global $input_validation_regex;
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (isset($input['create']) && $input['create']) {
         $course_code_public = null;
         $course_name = null;

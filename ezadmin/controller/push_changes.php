@@ -5,6 +5,12 @@ require_once(__DIR__.'/../lib_push_changes.php');
 function index($param = array())
 {
     global $logger;
+    global $input;
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
     
     $failed_cmd = push_changes();
     

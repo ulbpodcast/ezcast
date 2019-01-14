@@ -423,6 +423,7 @@ function user_login($login, $passwd)
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     // 3) Setting correct language
     set_lang($input['lang']);

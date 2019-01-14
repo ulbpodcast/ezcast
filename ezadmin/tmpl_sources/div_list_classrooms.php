@@ -20,6 +20,7 @@ if (isset($pagination)) {
     <input type="hidden" name="u_name" value=""/>
     <input type="hidden" name="u_ip" value=""/>
     <input type="hidden" name="u_ip_remote" value=""/>
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 </form>
 
 <table class="table table-striped table-bordered table-hover table-responsive table-condensed classrooms table-left">
@@ -41,7 +42,7 @@ if (isset($pagination)) {
             id="<?php echo preg_replace('/[\s.]+/', '', $currClass['room_ID']); ?>">
             <td style="text-align: center;" class="status"> <?php echo $currClass['enabled'] ? "<img style='height: 16px;' src='img/loading_transparent.gif'/>" : ''; ?></td>
             <td class="room_id">
-                <a class="view" href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4">
+                <a class="view" href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4&sesskey=<?php echo $_SESSION['sesskey']; ?>">
                     <?php echo $currClass['room_ID']; ?>
                 </a>
                 <div class="edit" style="display:none;">
@@ -98,7 +99,7 @@ if (isset($pagination)) {
                 <span class="glyphicon glyphicon-<?php echo $currClass['enabled'] ? 'ok' : 'remove'; ?>"></span>
             </td>
             <td style="text-align: center">
-                <a href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4"
+                <a href="index.php?action=view_classroom_calendar&post=&classroom=<?php echo $currClass['room_ID']; ?>&nweek=4&sesskey=<?php echo $_SESSION['sesskey']; ?>"
                    class="btn btn-default btn-xs" role="button">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                 </a>
@@ -155,12 +156,14 @@ $(function() {
        $this = $(this);
 
         var room = $this.parent().parent().find("td.room_id .view").text();
+        var sesskey = $("#sesskey").val();
        
         if($this.hasClass('btn-success')) {
             $.ajax("index.php?action=enable_classroom", {
                 type: "post",
                 data: {
-                    id: room
+                    id: room,
+                    sesskey: sesskey
                 },
                 success: function(jqXHR, textStatus) {
 
@@ -182,7 +185,8 @@ $(function() {
             $.ajax("index.php?action=disable_classroom", {
                 type: "post",
                 data: {
-                    id: room
+                    id: room,
+                    sesskey: sesskey
                 },
                 success: function(jqXHR, textStatus) {
                     
@@ -242,11 +246,13 @@ $(function() {
         var $this = $(this);
         
         var room = $this.parent().parent().find("td.room_id .view").text();
+        var sesskey = $("#sesskey").val();
         
         $.ajax("index.php?action=remove_classroom", {
              type: "post",
              data: {
-                id: room
+                id: room,
+                sesskey: sesskey
              },
              success: function(jqXHR, textStatus) {
                 var data = JSON.parse(jqXHR);
@@ -265,6 +271,9 @@ $(function() {
 
 <script async>
 $(function() {
+
+    var sesskey = $("#sesskey").val();
+
     function classroom_online(classroom, data) {
         $('#' + classroom + ' .status').html('<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>');
         
@@ -274,15 +283,15 @@ $(function() {
             $('#' + classroom + '_recording .status_cam').text(data.status_cam);
             $('#' + classroom + '_recording .status_slides').text(data.status_slides);
             $('#' + classroom + '_recording .author').text(data.author);
-            $('#' + classroom + '_recording .author').attr("href", "./index.php?action=view_user_details&user_ID=" + data.author);
+            $('#' + classroom + '_recording .author').attr("href", "./index.php?action=view_user_details&user_ID=" + data.author + "&sesskey=" + sesskey);
             $('#' + classroom + '_recording.recording').addClass(data.loglevel);
             
             $('#' + classroom + '_recording .loglevel').addClass('label-' + data.loglevel);
             $('#' + classroom + '_recording .loglevel').text((data.loglevel).charAt(0).toUpperCase() + (data.loglevel).slice(1));
             $('#' + classroom + '_recording .course').text(data.course);
-            $('#' + classroom + '_recording .course').attr("href", './index.php?action=view_course_details&course_code=' + data.course);
+            $('#' + classroom + '_recording .course').attr("href", './index.php?action=view_course_details&course_code=' + data.course + "&sesskey=" + sesskey);
             $('#' + classroom + '_recording .asset').html(data.asset + ' <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>');
-            $('#' + classroom + '_recording .asset').attr("href", './index.php?action=view_events&post=&startDate=0&asset=' + data.asset);
+            $('#' + classroom + '_recording .asset').attr("href", './index.php?action=view_events&post=&startDate=0&asset=' + data.asset + "&sesskey=" + sesskey);
         } else {
             <?php if ($onlyRecording) {
         ?>
@@ -309,7 +318,8 @@ $(function() {
         $.ajax("index.php?action=get_classrooms_status", {
             type: "post",
             data: {
-                classroomId: classroom
+                classroomId: classroom,
+                sesskey: sesskey
             },
             success: function(jqXHR, textStatus) {
 

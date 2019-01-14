@@ -9,6 +9,11 @@ function index($param = array())
         die;
     }
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (isset($input['post'])) {
         $user_ID = $input['user_ID'];
         $forename = $input['forename'];

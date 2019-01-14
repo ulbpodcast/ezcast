@@ -61,8 +61,8 @@
     <?php foreach ($users as $user) {
         ?>
         <tr>
-            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['user_ID']; ?></a></td>
-            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
+            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $user['user_ID']; ?></a></td>
+            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
             <td><span class="label <?php if ($user['origin'] == 'internal') {
             echo 'label-info';
         } elseif ($user['origin'] == 'external'){

@@ -20,6 +20,11 @@ function index($param = array())
     
     $onlyRecording = false;
     $onlyOnline = false;
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
     
     if (isset($input['update']))
     {

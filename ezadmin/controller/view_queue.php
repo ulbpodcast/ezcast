@@ -3,9 +3,15 @@
 
 function index($param = array())
 {
+    global $input;
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     //$jobs = scheduler_queue_get();
     $jobs = array_merge(scheduler_processing_get(), scheduler_queue_get(), scheduler_frozen_get());
-    
+
     /*
      *  <uid></uid>
      *  <id></id>

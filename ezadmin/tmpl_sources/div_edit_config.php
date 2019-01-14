@@ -3,6 +3,8 @@
 
 <form class="form-horizontal" method="post" action="index.php?action=edit_config">
     
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
+
     <!-- Displays alert, if any -->
     <?php if (isset($alert)) {
     echo $alert;

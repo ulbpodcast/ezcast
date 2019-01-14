@@ -25,7 +25,7 @@
                 <td>
                     <a style="" href="<?php echo url_post_replace_multiple(
                             array('asset' => $event['asset'], 'page' => 1)
-        ); ?>">
+        ); ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>">
                         <?php echo $event['asset']; ?>
                     </a>
                 </td>

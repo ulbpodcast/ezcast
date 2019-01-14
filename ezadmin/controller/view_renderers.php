@@ -2,6 +2,12 @@
 //Gets renderers info and return it (should be a function)
 function index($param = array())
 {
+    global $input;
+	if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!file_exists('../commons/renderers.inc')) {
         $renderers = array();
     } else {

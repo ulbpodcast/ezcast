@@ -36,6 +36,7 @@
     <?php
     } ?>
         
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
         <input type="hidden" name="renderer_step" value="3"/>
             
         <div class="form-group">

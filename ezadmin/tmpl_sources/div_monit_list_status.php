@@ -54,23 +54,23 @@ if (isset($pagination)) {
                     </button>
                 </td>
                 <td style="text-align: left;">
-                    <a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset=<?php echo $status['asset']; ?>">
+                    <a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset=<?php echo $status['asset']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>">
                         <?php echo $status['asset']; ?>
                     </a>
-                    <a style="float: right;" href="./index.php?action=view_events&post=&startDate=1970-01-01+00%3A00&asset=<?php echo $status['asset']; ?>">
+                    <a style="float: right;" href="./index.php?action=view_events&post=&startDate=1970-01-01+00%3A00&asset=<?php echo $status['asset']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>">
                         <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
                     </a>
                     <?php if (array_key_exists($status['asset'], $listChildren)) {
                 foreach ($listChildren[$status['asset']] as $children) {
                     echo '<br />';
                     echo '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ';
-                    echo '<a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset='.
-                                    $children.'">';
+                    echo '<a href="./index.php?action=view_track_asset&post=&startDate=1970-01-01+00%3A00&view_all=on&asset='.$children.'&sesskey='.$_SESSION['sesskey'].'">';
                     echo $children . '  ';
                     echo '</a>';
                             
                     // Remove parent
                     echo '<form name="form" method="POST" style="display: inline;">';
+                    echo '<input type="hidden" id="sesskey" name="sesskey" value="'.$_SESSION['sesskey'].'" />'
                     echo '<input type="hidden" name="current_asset" value="'.$children.'" />';
                     echo '<input type="hidden" name="modal_action" value="remove_parent">';
                     echo '<a href="#" onclick="this.parentElement.submit();">';
@@ -114,6 +114,7 @@ if (isset($pagination)) {
                 <form method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="modal_action" value="new_parent">
+                        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
                         <input id="asset_name" type="hidden" name="current_asset" value="">
 
                         <div class="form-group">
@@ -147,6 +148,7 @@ if (isset($pagination)) {
                 <form method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="modal_action" value="new_status">
+                        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
                         <input id="asset_name" type="hidden" name="current_asset" value="">
                         
                         <div class="form-group">

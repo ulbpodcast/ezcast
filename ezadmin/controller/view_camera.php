@@ -10,6 +10,11 @@ function index($param = array())
         die;
     }
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $room = $input['room'];
     $room_name = htmlentities($input['room_name']);
 

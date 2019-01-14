@@ -17,6 +17,11 @@ function index($param = array())
     global $ezmanager_basedir;
     global $logger;
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     /// Make action from the modal ///
     if (isset($input) && array_key_exists('modal_action', $input) &&
             array_key_exists('current_asset', $input)) {

@@ -8,6 +8,11 @@ function index($param = array())
         die;
     }
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     remove_admin_from_file($input['user_ID']);
 
     db_log(db_gettable('users'), 'Denied admin rights to ' . $input['user_ID'], $_SESSION['user_login']);

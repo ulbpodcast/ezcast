@@ -75,11 +75,13 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 } else {
                     ?>
                     <div>
+                        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>">
+                        <input type="hidden" id="is_sesskey_ok" name="is_sesskey_ok" value="">
                         <button role="button" id="is_downloadable_<?php echo $asset_name; ?>"
                             title="®Allow_download®" class="btn btn-xs download_small_button <?php
                                 echo (!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') ? "btn-success" : "btn-danger"; ?>"
                             onclick="update_download('<?php echo $album_name . (($public_album) ? '-pub' : '-priv') . "', '" .
-                                $asset_name; ?>', '<?php echo $_SESSION['sesskey']."lol"; ?>')">
+                                $asset_name; ?>')">
                             <?php if (!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') {
                                     echo "®Download_allowed®";
                                 } else {
@@ -133,19 +135,24 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
 </div>
 
 <script>
-    function update_download(album, asset, sesskey) {
-        var button = $('.download_small_button#is_downloadable_' + asset);
-        if(button.hasClass('btn-success')) {
-            button.removeClass('btn-success');
-            button.addClass('btn-danger');
-            button.text("®Download_forbidden®");
-        } else {
-            button.addClass('btn-success');
-            button.removeClass('btn-danger');
-            button.text("®Download_allowed®");
-        }
-
-        console.log('asset_downloadable_set ' + album + ', ' + asset);
+    function update_download(album, asset) {
+        var sesskey = $("#sesskey").val();
+        
         asset_downloadable_set(album, asset, sesskey);
+
+        var check = $("#is_sesskey_ok").val();
+
+        if (check == "true") {
+            var button = $('.download_small_button#is_downloadable_' + asset);
+            if(button.hasClass('btn-success')) {
+                button.removeClass('btn-success');
+                button.addClass('btn-danger');
+                button.text("®Download_forbidden®");
+            } else {
+                button.addClass('btn-success');
+                button.removeClass('btn-danger');
+                button.text("®Download_allowed®");
+            }
+        }
     }
 </script>

@@ -469,7 +469,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
     }
 
     // function that updates the progress bar (called by the web worker)
-    function updateProgress(progressRate, type) {
+    function updateProgress(progressRate, type, sesskey) {
         // upload is finished
         if (document.getElementById('type').value === 'camslide') {
             type = (type == 'cam') ? '[®cam®] ' : '[®slide®] ';
@@ -485,7 +485,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
             $('.modal-body').text("®Upload_finished®");
             $('.modal-footer').html('<button type="button" id="close_btn" class="btn btn-primary" ' +
                     'data-dismiss="modal">®Close_and_return_to_index®</button>');
-            $('#close_btn').attr('onclick', 'show_album_details("'+ablum_refresh+'")');
+            $('#close_btn').attr('onclick', 'show_album_details("'+ablum_refresh+', '+sesskey+' ")');
             force_close = true;
         } else {
             document.getElementById('submit_cam').style.display = 'none';
@@ -508,15 +508,17 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
     // is not empty and we can change the display
     document.getElementById('uploadFrame').addEventListener('load', uploadFinished());
 
-    function uploadFinished() {
+    function uploadFinished(sesskey) {
         var frame = document.getElementById('uploadFrame');
+        var sesskey =  document.getElementById('sesskey').value;
+
         if (frame) {
             ret = frame.contentWindow.document.body.innerHTML;
             console.log(ret);
             // on first call, the iframe has no content
             // When the file has been loaded, the iframe has a content
             if (ret.length) {
-                updateProgress(100, '');
+                updateProgress(100, '',sesskey);
             }
         }
     }
@@ -529,6 +531,8 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
         var id; // id is set after the form has been submitted to the server
         var chunkSize;
         xhr = new XMLHttpRequest();
+        var sesskey =  document.getElementById('sesskey').value;
+        alert('seeskey : '+sesskey);
 
         if (is_xhr2) {
             // browser supports XHR2 so we can send big chunked files
@@ -612,7 +616,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
                                 $('.modal-body').text("®Upload_failed®");
                                 $('.modal-footer').html('<button type="button" id="close_btn_error" class="btn btn-primary" ' +
                                         'data-dismiss="modal">®Close_and_return_to_index®</button>');
-                                $('#close_btn_error').attr('onclick', 'show_album_details("'+ablum_refresh+'")');
+                                $('#close_btn_error').attr('onclick', 'show_album_details("'+ablum_refresh+', '+sesskey+' ")');
 
                                 force_close = true;
                                 break;
@@ -631,23 +635,23 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
                     {
                         if (type === 'camslide')
                         {
-                            worker.postMessage({'fct': 'process', 'args': {'blob': file.files[0], 'type': 'cam', 'sesskey': '<?php echo $_SESSION['sesskey']; ?>'}});
-                            worker.postMessage({'fct': 'process', 'args': {'blob': file2.files[0], 'type': 'slide', 'sesskey': '<?php echo $_SESSION['sesskey']; ?>'}});
+                            worker.postMessage({'fct': 'process', 'args': {'blob': file.files[0], 'type': 'cam', 'sesskey': sesskey}});
+                            worker.postMessage({'fct': 'process', 'args': {'blob': file2.files[0], 'type': 'slide', 'sesskey': sesskey}});
                         }
                         else
                         {
-                            worker.postMessage({'fct': 'process', 'args': {'blob': file.files[0], 'type': type, 'sesskey': '<?php echo $_SESSION['sesskey']; ?>'}});
+                            worker.postMessage({'fct': 'process', 'args': {'blob': file.files[0], 'type': type, 'sesskey': sesskey}});
                         }
                     }
                     else if(type_media === 'audio')
                     {
-                        worker.postMessage({'fct': 'process', 'args': {'blob': file.files[0], 'type': type, 'type_media': type_media, 'sesskey': '<?php echo $_SESSION['sesskey']; ?>'}});
+                        worker.postMessage({'fct': 'process', 'args': {'blob': file.files[0], 'type': type, 'type_media': type_media, 'sesskey': sesskey}});
                     }
 
                 }
             }, false);
             // init the upload by sending the metadata over the file/s
-            xhr.open("POST", "index.php?action=upload_init&sesskey="+"<?php echo $_SESSION['sesskey']; ?>", true);
+            xhr.open("POST", "index.php?action=upload_init&sesskey="+sesskey, true);
             xhr.send(fd);
         } else {
             // Browser doesn't support XHR2 so we use a hidden iframe to upload the file

@@ -49,7 +49,7 @@
              */
             var current_album = '<?php echo $_SESSION['podman_album']; ?>';
 
-            function show_album_details(album) {
+            function show_album_details(album, <?php echo $input['sesskey']; ?>) {
                 // highlighting the current album, and removing the old one
                 if (document.getElementById('album_' + current_album + '_clic')) {
                     document.getElementById('album_' + current_album + '_clic').style.display = 'none';

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -39,6 +39,6 @@
 <script>
 $('#modal').on('hide.bs.modal', function () {
     if($('#modal .modal-body.moving-success').length)
-        show_album_details('<?php echo $album; ?>');
+        show_album_details('<?php echo $album; ?>','<?php echo $_SESSION['sesskey']; ?>');
 })
 </script>

@@ -21,14 +21,14 @@ function index($param = array())
     if (isset($input['tokenmanager'])) {
         // add course to user in DB
     }
-    
+
     if (isset($input['album'])) {
         $album = $input['album'];
     } else {
         $album = $_SESSION['podman_album'];
     }
     $current_album = $album;
-    
+
     ezmam_repository_path($repository_path);
     //
     // 0) Permissions checks
@@ -38,6 +38,11 @@ function index($param = array())
         log_append('warning', "view_album: tried to access album " . $album . ' without permission');
         die;
     }
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
 
     //
     // 1) We retrieve the metadata relating to the album
@@ -57,11 +62,11 @@ function index($param = array())
         $course_code_public = $metadata['course_code_public'];
     }
     $album_name = $metadata['name'];
-    
+
     // TO DO : create variable to show displayed_course_code
     // $album_displayed_code = get_album_displayed_code($album);
 
-    
+
     $title = choose_title_from_metadata($metadata);
     $public_album = album_is_public($album); // Whether the album is public; used to display the correct options
     $hd_rss_url = $distribute_url . '?action=rss&amp;album=' . $album . '&amp;quality=high&amp;token=' . ezmam_album_token_get($album);

@@ -55,28 +55,31 @@
             }
             ;
 
+
+            // TO DO : ADD sesskey definition
             function refresh_album_view() {
+                var sesskey = '<?php echo $input['sesskey']; ?>';
                 switch(tab) {
                     case 'stats':
-                        show_stats_descriptives(current_album);
+                        show_stats_descriptives(current_album, sesskey);
                         break;
 
                     case 'url':
-                        show_ezplayer_link(current_album);
+                        show_ezplayer_link(current_album, sesskey);
                         break;
 
                     case 'ezmanager':
-                        show_ezmanager(current_album);
+                        show_ezmanager(current_album, sesskey);
                         break;
 
                     case 'list':
                     default:
-                        show_album_details(current_album);
+                        show_album_details(current_album, sesskey);
                         break;
                 }
             }
 
-            function show_album_details(album) {
+            function show_album_details(album,sesskey) {
                 $('#album_' + current_album).removeClass('active');
                 $('#album_' + album).addClass('active');
                 current_album = album;
@@ -85,7 +88,7 @@
                 // Getting the content from the server, and filling the div_album_header with it
                 document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
-                makeRequest('index.php', '?action=view_album&album=' + album, 'div_content');
+                makeRequest('index.php', '?action=view_album&album=' + album + '&sesskey='+sesskey , 'div_content');
             }
 
             function show_div(id) {
@@ -120,14 +123,33 @@
             }
 
             function asset_downloadable_set(album, asset, sesskey) {
-                var valeur = $('.download_small_button#is_downloadable_' + asset+'.btn-success').length > 0;
+                var valeur;
+
+                if ($('.download_small_button#is_downloadable_' + asset+'.btn-success').length > 0) {
+                    valeur = false;
+                } else {
+                    valeur = true;
+                }
+
+                var flag;
                 $.ajax({
                     type: 'POST',
-                    url: 'index.php?action=asset_downloadable_set&sesskey='+sesskey,
+                    async: false,
+                    url: 'index.php?action=asset_downloadable_set',
                     data: {
                         'downloadable': valeur,
                         'album': album,
-                        'asset': asset
+                        'asset': asset,
+                        'sesskey': sesskey
+                    },
+                    success: function(data) {
+                        if (data.toLowerCase().indexOf("error") == -1) {
+                            flag = true;
+                        } else {
+                            flag = false;
+                        }
+
+                        $("#is_sesskey_ok").val(flag);
                     }
                 });
             }

@@ -8,6 +8,11 @@ function index($param = array())
 {
     global $input;
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $thread_id = $input['thread_id'];
 
     $thread = thread_select_by_id($thread_id);

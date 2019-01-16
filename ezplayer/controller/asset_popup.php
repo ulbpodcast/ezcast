@@ -18,6 +18,11 @@ function index($param = array())
     $type = $input['type'];
     $display = $input['display'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     ezmam_repository_path($repository_path);
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);

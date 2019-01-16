@@ -84,7 +84,7 @@ function thread_edit_form_prepare(threadId) {
  * @param {type} asset
  * @returns {undefined}
  */
-function thread_edit_form_submit(threadId, album, asset) {
+function thread_edit_form_submit(threadId, album, asset, sesskey) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_edit&click=true',
@@ -94,7 +94,8 @@ function thread_edit_form_submit(threadId, album, asset) {
             'thread_message': document.getElementById('edit_thread_message_' + threadId + '_tinyeditor').value,
             'thread_timecode': document.getElementById('edit_thread_timecode_' + threadId).value,
             'thread_album': album,
-            'thread_asset': asset
+            'thread_asset': asset,
+            'sesskey' : sesskey
         },
         success: function (response) {
             $('#edit_thread_form_' + threadId).hide();
@@ -251,10 +252,11 @@ function thread_comment_edit_form_submit(comment_id) {
     var album = document.getElementById('edit_comment_album').value;
     var asset = document.getElementById('edit_comment_asset').value;
     var thread = document.getElementById('edit_comment_thread').value;
+    var session_key = document.getElementById('sesskey').value;
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_comment_edit&click=true',
-        data: {'comment_id': comment_id, 'comment_message': message, 'thread_id': thread, 'album': album, 'asset': asset},
+        data: {'comment_id': comment_id, 'comment_message': message, 'thread_id': thread, 'album': album, 'asset': asset, 'sesskey': session_key},
         success: function (response) {
             thread_comment_edit_form_hide(comment_id);
             $('#threads').html(response);
@@ -344,7 +346,7 @@ function comment_answer_form_submit(id) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=comment_reply_add&click=true',
-        data: {'answer_message': document.getElementById('answer_comment_message_' + id + '_tinyeditor').value, 'answer_parent': document.getElementById('answer_parent_' + id).value, 'thread_id': document.getElementById('answer_thread_' + id).value, 'answer_nbChilds': document.getElementById('answer_nbChilds_' + id).value, 'album': document.getElementById('answer_album').value, 'asset': document.getElementById('answer_asset').value},
+        data: {'answer_message': document.getElementById('answer_comment_message_' + id + '_tinyeditor').value, 'answer_parent': document.getElementById('answer_parent_' + id).value, 'thread_id': document.getElementById('answer_thread_' + id).value, 'answer_nbChilds': document.getElementById('answer_nbChilds_' + id).value, 'album': document.getElementById('answer_album').value, 'asset': document.getElementById('answer_asset').value, 'sesskey': document.getElementById('sesskey').value},
         success: function (response) {
             comment_answer_form_hide(id);
             $('#threads').html(response);
@@ -358,7 +360,7 @@ function comment_answer_form_submit(id) {
  * @param {type} refresh
  * @returns {undefined}
  */
-function threads_list_update(refresh) {
+function threads_list_update(refresh, sesskey) {
     var trace_action;
     if (refresh) {
         trace_action = 'thread_list_refresh';
@@ -369,7 +371,7 @@ function threads_list_update(refresh) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=view_threads_list&click=true',
-        data: {'album': current_album, 'asset': current_asset},
+        data: {'album': current_album, 'asset': current_asset, 'sesskey': sesskey},
         success: function (response) {
             $('#threads').html(response);
             tinymce.remove('textarea');
@@ -383,7 +385,7 @@ function threads_list_update(refresh) {
  * @param {type} from_notif
  * @returns {undefined}
  */
-function thread_details_update(thread_id, from_notif) {
+function thread_details_update(thread_id, from_notif, sesskey) {
     var trace_action;
     if (from_notif) {
         trace_action = 'thread_detail_from_notif';
@@ -394,7 +396,7 @@ function thread_details_update(thread_id, from_notif) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=view_thread_details&click=true',
-        data: {'thread_id': thread_id},
+        data: {'thread_id': thread_id, 'sesskey': sesskey},
         success: function (response) {
             $('#threads').html(response);
             tinymce.remove('textarea');
@@ -410,11 +412,11 @@ function thread_details_update(thread_id, from_notif) {
  * @param {type} asset
  * @returns {undefined}
  */
-function thread_delete(thread_id, album, asset) {
+function thread_delete(thread_id, album, asset, sesskey) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_delete&click=true',
-        data: {'thread_id': thread_id, 'thread_album': album, 'thread_asset': asset},
+        data: {'thread_id': thread_id, 'thread_album': album, 'thread_asset': asset, 'sesskey': sesskey},
         success: function (response) {
             $('#threads').html(response);
             tinymce.remove('textarea');
@@ -429,11 +431,11 @@ function thread_delete(thread_id, album, asset) {
  * @param {type} comment_id
  * @returns {undefined}
  */
-function thread_comment_delete(thread_id, comment_id) {
+function thread_comment_delete(thread_id, comment_id, sesskey) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_comment_delete&click=true',
-        data: {'thread_id': thread_id, 'comment_id': comment_id},
+        data: {'thread_id': thread_id, 'comment_id': comment_id, 'sesskey': sesskey},
         success: function (response) {
             $('#threads').html(response);
             tinymce.remove('textarea');
@@ -464,11 +466,11 @@ function thread_more_toggle(_id) {
  * @param {type} type
  * @returns {undefined}
  */
-function thread_comment_vote(user, comment, type) {
+function thread_comment_vote(user, comment, type, sesskey) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_comment_vote&click=true',
-        data: {'login': user, 'comment': comment, 'vote_type': type},
+        data: {'login': user, 'comment': comment, 'vote_type': type, 'sesskey': sesskey},
         success: function (response) {
             $('#threads').html(response);
             tinymce.remove('textarea');
@@ -481,11 +483,11 @@ function thread_comment_vote(user, comment, type) {
  * @param {type} comment
  * @returns {undefined}
  */
-function thread_comment_approve(comment) {
+function thread_comment_approve(comment, sesskey) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_comment_approve&click=true',
-        data: {'approved_comment': comment},
+        data: {'approved_comment': comment, 'sesskey': sesskey},
         success: function (response) {
             $('#threads').html(response);
             tinymce.remove('textarea');
@@ -498,11 +500,12 @@ function thread_comment_approve(comment) {
  * Renders a modal window for thread visibility choice
  * @returns {undefined}
  */
-function popup_thread_visibility() {
+function popup_thread_visibility(sesskey) {
     $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_visibility',
+        data: 'sesskey=' + sesskey,
         success: function (response) {
             $('#div_popup').html(response);
         }
@@ -517,12 +520,12 @@ function popup_thread_visibility() {
  * @param {type} display the action to be shown in the modal window (delete | ...)
  * @returns {undefined}
  */
-function popup_thread(thread_id, display) {
+function popup_thread(thread_id, display, sesskey) {
     $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_popup&click=true',
-        data: 'thread_id=' + thread_id + '&display=' + display,
+        data: 'thread_id=' + thread_id + '&display=' + display + '&sesskey=' + sesskey,
         success: function (response) {
             $('#div_popup').html(response);
         }
@@ -537,12 +540,12 @@ function popup_thread(thread_id, display) {
  * @param {type} display the action to be shown in the modal window (delete | ...)
  * @returns {undefined}
  */
-function popup_thread_comment(comment_id, display) {
+function popup_thread_comment(comment_id, display, sesskey) {
     $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
     $.ajax({
         type: 'POST',
         url: 'index.php?action=thread_comment_popup&click=true',
-        data: 'comment_id=' + comment_id + '&display=' + display,
+        data: 'comment_id=' + comment_id + '&display=' + display + '&sesskey=' + sesskey,
         success: function (response) {
             $('#div_popup').html(response);
         }

@@ -167,6 +167,7 @@ travaux restent la propri&eacute;t&eacute; des &eacute;tudiants et/ou de l'unive
                 <form action="index.php" method="post">
                     
                         <input type="hidden" name="action" value="acceptTermsOfUses" />
+                        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
                         <input type="submit"class="btn btn-primary btn-lg center-block" value="J'accepte">
                     
                 </form>

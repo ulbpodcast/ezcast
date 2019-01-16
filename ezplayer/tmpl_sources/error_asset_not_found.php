@@ -37,9 +37,10 @@
             <form action="index.php?action=bookmarks_asset_export" method="post" name="export_asset_bookmarks_form" onsubmit="return false">
                 <input type="hidden" name="album" value="<?php echo $album; ?>"/>
                 <input type="hidden" name="asset" value="<?php echo $asset; ?>"/>
+                <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             </form>
             <br/><br/>
-            <a class="button" style="width:300px;" href="javascript: bookmarks_delete_all('<?php echo $album; ?>', '<?php echo $asset; ?>');">
+            <a class="button" style="width:300px;" href="javascript: bookmarks_delete_all('<?php echo $album; ?>', '<?php echo $asset; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
                 ®Delete_asset_bookmarks®
             </a>
             <a class="button" style="width:300px;" href="#" onclick="document.export_asset_bookmarks_form.submit(); return false;">

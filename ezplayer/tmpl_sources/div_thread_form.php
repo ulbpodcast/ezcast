@@ -34,6 +34,7 @@
     <div id='thread_form_wrapper'>
 
         <form action="index.php" method="post" id="submit_thread_form" onsubmit="return false">
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             <input type="hidden" name="album" id="thread_album" value="<?php echo $album; ?>"/>
             <input type="hidden" name="asset" id="thread_asset" value="<?php echo $asset; ?>"/>
             <input type="hidden" name="assetTitle" id="thread_asset_title" value="<?php echo get_asset_title($album, $asset); ?>" />
@@ -72,7 +73,7 @@
                 <a class="button green2" tabindex='22' 
                    <?php
                    if (!acl_has_moderated_album() || acl_is_admin()) {
-                       echo "href='javascript:popup_thread_visibility()' ";
+                       echo "href='javascript:popup_thread_visibility('".$_SESSION['sesskey']."')' ";
                    } else {
                        echo "href='javascript:if(thread_form_check()) thread_form_submit()' ";
                    }

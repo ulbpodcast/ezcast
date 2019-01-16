@@ -38,7 +38,7 @@ include_once 'lib_print.php';
         axis: 'x'
     });
 
-    history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + '<?php echo $_SESSION['token']; ?>'}, '', '');
+    history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + '<?php echo $_SESSION['token']; ?>' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>'}, '', '');
 
 <?php if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (isset($official_bookmarks)
         && sizeof($official_bookmarks) != 0))) {
@@ -83,22 +83,23 @@ include_once 'lib_print.php';
            href="javascript:toggle('#bookmarks_actions');">
         </a>
         <a class="sort-button <?php echo acl_value_get("personal_bm_order"); ?>" 
-           title="®Reverse_bookmarks_order®" href="javascript:bookmarks_sort('personal', '<?php echo (acl_value_get("personal_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets');">
+           title="®Reverse_bookmarks_order®" href="javascript:bookmarks_sort('personal', '<?php echo (acl_value_get("personal_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'assets', '<?php echo $_SESSION['sesskey']; ?>');">
         </a>
         <ul id="bookmarks_actions">
             <li>
-                <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'custom', 'assets', 'export')" 
+                <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'custom', 'assets', 'export', '<?php echo $_SESSION['sesskey']; ?>')" 
                    title="®Export_album_bookmarks®">
                     ®Export_bookmarks®
                 </a>
             </li>  
             <li>
-                <a href="javascript:popup_bookmarks_import();" title="®Import_album_bookmarks®">
+                
+                <a href="javascript:popup_bookmarks_import('<?php echo $_SESSION['sesskey']; ?>');" title="®Import_album_bookmarks®">
                     ®Import_bookmarks®
                 </a>
             </li>
             <li>
-                <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'custom', 'assets', 'delete')" 
+                <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'custom', 'assets', 'delete', '<?php echo $_SESSION['sesskey']; ?>')" 
                    title="®Delete_album_bookmarks®">
                     ®Delete_bookmarks®
                 </a>
@@ -113,7 +114,7 @@ include_once 'lib_print.php';
         </a>
         <ul id="tocs_actions">
             <li>
-                <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'official', 'assets', 'export')" 
+                <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'official', 'assets', 'export', '<?php echo $_SESSION['sesskey']; ?>')" 
                    title="®Export_album_bookmarks®">
                     ®Export_bookmarks®
                 </a>
@@ -121,12 +122,12 @@ include_once 'lib_print.php';
             <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) {
             ?>
                 <li>
-                    <a href="javascript:popup_bookmarks_import();" title="®Import_album_bookmarks®">
+                    <a href="javascript:popup_bookmarks_import('<?php echo $_SESSION['sesskey']; ?>');" title="®Import_album_bookmarks®">
                         ®Import_bookmarks®
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'official', 'assets', 'delete')" 
+                    <a href="javascript:popup_bookmarks('<?php echo $album; ?>', '', 'official', 'assets', 'delete', '<?php echo $_SESSION['sesskey']; ?>')" 
                        title="®Delete_album_bookmarks®">
                         ®Delete_bookmarks®
                     </a>
@@ -158,7 +159,7 @@ the pane displays the list of all assets contained in the selected album
                             ?>
                             <li id="bookmark_<?php echo $index; ?>" class="blue level_<?php echo $bookmark['level']; ?>">
 
-                                <a class="item blue" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">                                    
+                                <a class="item blue" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>', '<?php echo $_SESSION['sesskey']; ?>')">                                    
                                     <?php print_info(substr(get_user_friendly_date( $bookmark['asset'],'/', false, get_lang(), false), 0, 10)); ?> 
                                     <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
                                     <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
@@ -172,7 +173,7 @@ the pane displays the list of all assets contained in the selected album
                                         <?php print_search($bookmark['keywords']); ?>
                                     </div>
                                     <div class="bookmark_options">
-                                        <a class="delete-button" title="®Delete_bookmark®" href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'custom', 'assets', 'remove')"></a>
+                                        <a class="delete-button" title="®Delete_bookmark®" href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'custom', 'assets', 'remove', '<?php echo $_SESSION['sesskey']; ?>')"></a>
                                     </div>
                                 </div>
                             </li>
@@ -199,7 +200,7 @@ the pane displays the list of all assets contained in the selected album
                         ?>
                         <li id="toc_<?php echo $index; ?>" class="orange level_<?php echo $bookmark['level']; ?>">
 
-                            <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">
+                            <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>', '<?php echo $_SESSION['sesskey']; ?>')">
                                 <?php print_info(substr(get_user_friendly_date($bookmark['asset'], '/', false, get_lang(), false), 0, 10)); ?> 
                                     <?php echo get_asset_title($bookmark['album'], $bookmark['asset']); ?>
                                 <br/><b><?php print_bookmark_title($bookmark['title']); ?></b>
@@ -219,7 +220,7 @@ the pane displays the list of all assets contained in the selected album
                             ?>
                                     <div class="bookmark_options">
                                         <a class="delete-button" title="®Delete_bookmark®" 
-                                           href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'official', 'assets', 'remove')">
+                                           href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'official', 'assets', 'remove', '<?php echo $_SESSION['sesskey']; ?>')">
                                         </a>
                                     </div>
                                 <?php

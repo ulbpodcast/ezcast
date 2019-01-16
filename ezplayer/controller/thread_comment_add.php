@@ -17,7 +17,7 @@ function index($param = array())
             $comment_thread != '') {
         return false;
     }
-
+    
     // remove php and javascript tags
     $comment_message = safe_text($comment_message);
 

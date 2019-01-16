@@ -60,7 +60,7 @@
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 
                                href="javascript:show_asset_details('<?php echo $album; ?>', '<?php echo
-                                $asset['name']; ?>', '<?php echo $asset['token']; ?>');">
+                                $asset['name']; ?>', '<?php echo $asset['token']; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
                                 <b><?php print_info(substr(get_user_friendly_date($asset['metadata']['record_date'],'/',false,get_lang(),false), 0, 10)); ?></b> 
                                 <div style="display:inline-block; width: 16px; height:1px;"></div>
                                 <?php echo htmlentities($asset['metadata']['title']); ?>
@@ -72,7 +72,7 @@
                         ?>
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 
-                               href="javascript:show_asset_streaming('<?php echo $album; ?>', '<?php echo $asset['name']; ?>', '<?php echo $asset['token']; ?>');">
+                               href="javascript:show_asset_streaming('<?php echo $album; ?>', '<?php echo $asset['name']; ?>', '<?php echo $asset['token']; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
                                 <b style="display: inline-block; width: 56px;">LIVE</b> 
                                 <div style="display:inline-block; width: 16px; height:1px;"></div>
                                 <?php echo htmlentities($asset['metadata']['title']); ?>

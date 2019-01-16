@@ -29,6 +29,11 @@ function index_asset_view($param)
 
     $refresh_center = count($param == 0) || $param[0];
     
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     // if reloaded is set, the whole page has to be refreshed
     if (isset($_SESSION['reloaded'])) {
         unset($input['click']);

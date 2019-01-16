@@ -29,6 +29,6 @@
 <br/><span>®Delete_comment_message®</span><br/><br/>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
-<a href="javascript:thread_comment_delete(<?php echo $comment['thread'] ?>, <?php echo $comment['id'] ?>);" class="delete-button-confirm">®Delete®</a>
+<a href="javascript:thread_comment_delete(<?php echo $comment['thread'] ?>, <?php echo $comment['id'] ?>, '<?php echo $_SESSION['sesskey']; ?>');" class="delete-button-confirm">®Delete®</a>
 <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>
 

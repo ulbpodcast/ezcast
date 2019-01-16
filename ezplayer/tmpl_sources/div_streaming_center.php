@@ -31,7 +31,7 @@
    current_asset='<?php echo $_SESSION['asset']; ?>';
     asset_token='<?php echo $_SESSION['asset_token']; ?>';
 
-    history.pushState({"url": 'index.php?action=view_streaming&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');
+    history.pushState({"url": 'index.php?action=view_streaming&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>'}, '', '');
 
     var chat_timer = window.setInterval(function () {
         if (ezplayer_mode == 'view_asset_streaming') {
@@ -64,7 +64,7 @@ include_once 'lib_print.php';
             $token = acl_token_get($album);
             $token = $token['token']; ?>
             <div class="right-arrow"></div>
-            <a  href="javascript:player_kill();show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" title="®Back_to_album®">(<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?></a>   
+            <a  href="javascript:player_kill();show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>', '<?php echo $_SESSION['sesskey']; ?>');" title="®Back_to_album®">(<?php echo suffix_remove($album); ?>) <?php echo get_album_title($album); ?></a>   
         <?php
         } ?>
         <div class="right-arrow"></div><?php print_info($asset_meta['title']); ?>

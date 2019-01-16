@@ -30,16 +30,16 @@
 
                         <span class="more"><a class="more-button green2" onclick="bookmark_more_toggle('<?php echo $thread_id; ?>', 'result_thread', $(this));"></a></span>
 
-                        <a class="result_item" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '')">
+                        <a class="result_item" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '', '<?php echo $_SESSION['sesskey']; ?>')">
                             <span class="timecode green2">(<?php print_time($thread['timecode']); ?>) </span><?php echo $thread['title']; ?>
                         </a>
                         <div class="result_detail" id="result_thread_detail_<?php echo $thread_id; ?>">
-                            <div class="bookmark_info thread" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '')">
+                            <div class="bookmark_info thread" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '', '<?php echo $_SESSION['sesskey']; ?>')">
                                 <?php echo nl2br(html_entity_decode($thread['message'])); ?>  
                             </div>
                             <?php foreach ($thread['comments'] as $comment_id => $comment) {
                         ?>
-                                <div class="bookmark_info comment" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '<?php echo $comment_id; ?>')">
+                                <div class="bookmark_info comment" onclick="show_thread('<?php echo $album; ?>', '<?php echo $asset; ?>', <?php echo $thread['timecode']; ?>, '<?php echo $thread_id; ?>', '<?php echo $comment_id; ?>', '<?php echo $_SESSION['sesskey']; ?>')">
                                     <?php echo nl2br(html_entity_decode($comment)); ?>  
                                 </div>
                             <?php

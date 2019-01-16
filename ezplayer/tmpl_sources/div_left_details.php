@@ -63,7 +63,7 @@ switch (strtolower($_SESSION['browser_name'])) {
             $token = acl_token_get($album);
             $token = $token['token']; ?>
             <div class="right-arrow"></div>
-            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" 
+            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>', '<?php echo $_SESSION['sesskey']; ?>');" 
                 title="®Back_to_album®">
                 (<?php if (isset($course_code_public) && $course_code_public!="") {
                 echo $course_code_public;
@@ -196,7 +196,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 <?php
                 } ?>                
                 <li>
-                    <a class="share-button" href="javascript:popup_asset(current_album, current_asset, time, type, 'share_time')" title="®Share_time®" 
+                    <a class="share-button" href="javascript:popup_asset(current_album, current_asset, time, type, 'share_time', '<?php echo $_SESSION['sesskey']; ?>')" title="®Share_time®" 
                        onclick="player_video_link()"></a>
                 </li>      
                 <li>

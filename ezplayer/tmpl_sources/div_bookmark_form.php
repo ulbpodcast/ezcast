@@ -36,6 +36,7 @@
     </div>
     <div id='bookmark_form_wrapper'>
         <form action="index.php" method="post" id="submit_bookmark_form" onsubmit="return false">
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             <input type="hidden" name="album" id="bookmark_album" value="<?php echo $album; ?>"/>
             <input type="hidden" name="asset" id="bookmark_asset" value="<?php echo $asset; ?>"/>
             <!-- bookmark_type and bookmark_source are filled in in player.js (show_bookmark_form(...)) -->

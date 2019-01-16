@@ -48,7 +48,8 @@ include_once 'lib_print.php';
         <input type="hidden" name="asset" id="export_asset" value="<?php if (isset($asset_meta['record_date'])) {
             echo $asset_meta['record_date'];
         }; ?>"/>
-        <input type="hidden" name="target" id="export_toc_target" value="<?php echo $tab; ?>"/><br/>
+        <input type="hidden" name="target" id="export_toc_target" value="<?php echo $tab; ?>"/>
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" /><br/>
         <ul>
             <li style="border-bottom: solid 1px #cccccc;"><input type="checkbox" onclick="toggle_checkboxes(this, 'export_selection[]')" name="check_all"/><span class="<?php echo(($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Date®</b></span><span class="<?php echo(($tab == 'custom') ? 'blue-title' : 'orange-title'); ?>"><b>®Bookmark®</b></span></li>
             <?php foreach ($bookmarks as $index => $bookmark) {

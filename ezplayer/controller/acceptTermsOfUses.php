@@ -7,9 +7,12 @@ require_once(__DIR__ . '/../../commons/lib_sql_management.php');
  */
  function index($param = array())
  {
-//     
-//     print_r($_SESSION);
-//     die();
+ 	global $input;
+
+ 	if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
      
     if(db_termsOfUseUpdate($_SESSION['user_real_login'],1))
         $_SESSION['termsOfUses']=1 ;

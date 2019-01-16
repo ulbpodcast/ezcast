@@ -29,7 +29,7 @@ include_once 'lib_print.php';
 <div class="threads_header">
     <span class="thread-logo"></span>
     <span id="threads_header-label">®Discussions®</span>
-    <a class="refresh-button pull-right" style="margin-top: 0px; margin-right: 48px;" title="®Refresh_discussions®" href="javascript:threads_list_update(true)"></a>
+    <a class="refresh-button pull-right" style="margin-top: 0px; margin-right: 48px;" title="®Refresh_discussions®" href="javascript:threads_list_update(true, '<?php echo $_SESSION['sesskey']; ?>')"></a>
 </div>
 <div class="threads_list">
     <script>
@@ -48,7 +48,7 @@ include_once 'lib_print.php';
                         
                     threads_array[<?php echo $thread['timecode']; ?>][<?php echo $thread['id']; ?>] = "<?php echo $thread['title']; ?>";
                 </script>
-                <div class="item-thread" onclick="show_thread_details(event,<?php echo $thread['id'] ?>)">
+                <div class="item-thread" onclick="show_thread_details(event, <?php echo $thread['id'] ?>, '<?php echo $_SESSION['sesskey']; ?>')">
                     <div class="item-thread-content">
                         <?php if ($thread['studentOnly'] == '1') {
                     ?>

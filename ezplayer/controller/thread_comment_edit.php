@@ -14,6 +14,11 @@ function index($param = array())
     $asset = $input['asset'];
     $thread = $input['thread_id'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+    
     // remove php and javascript tags
     $comment_message = safe_text($comment_message);
 

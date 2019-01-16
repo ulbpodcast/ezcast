@@ -2,6 +2,8 @@
 
 function index($param = array())
 {
+    global $input;
+
     $filename = "./csv_assets.csv";
     $header = array('First post datetime', 'Album name', 'Asset', 'Discussions');
 

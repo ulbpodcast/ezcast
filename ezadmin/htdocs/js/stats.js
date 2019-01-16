@@ -1,4 +1,4 @@
-function getStatsByMonth() {
+function getStatsByMonth(sesskey) {
     var nowTemp = new Date();
     
     var datePicked = $('#datetimepickerMonths').data('date');
@@ -11,7 +11,7 @@ function getStatsByMonth() {
         $.ajax({
             type: "POST",
             url: "index.php?action=get_month_stats",
-            data: {'datePicked': datePicked},
+            data: {'datePicked': datePicked, 'sesskey': sesskey},
             success: function(data, textStatus, jqXHR) {
                 $('#month-stats').html(data);
             }
@@ -23,7 +23,7 @@ function getStatsByMonth() {
     }
 }
 
-function getStatsByNDays() {
+function getStatsByNDays(sesskey) {
     var nDays = parseInt($('#nDays').val());
     if(!$.isNumeric(nDays) || $('#nDays').val() === ''){
         $('#nDays-stats').slideUp();
@@ -36,7 +36,7 @@ function getStatsByNDays() {
         $.ajax({
             type: "POST",
             url: "index.php?action=get_nDays_stats",
-            data: {'nDays': nDays},
+            data: {'nDays': nDays, 'sesskey': sesskey},
             success: function(data, textStatus, jqXHR) {
                 $('#nDays-stats').html(data);
             }

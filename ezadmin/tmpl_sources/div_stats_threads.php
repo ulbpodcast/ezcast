@@ -62,7 +62,7 @@ echo '</script>';
                    data-date-viewmode="years" data-date-minviewmode="months" />-->
         </div>
         <a id="submit-month-search" class="btn btn-success btn-search" 
-           onclick="javascript:getStatsByMonth()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
+           onclick="javascript:getStatsByMonth('<?php echo $_SESSION['sesskey']; ?>')"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
     </div>
     <br/>
     <div id="month-stats">                
@@ -81,7 +81,7 @@ echo '</script>';
         <input type="number" min="1" id="nDays" class="form-control"></input> 
     </div>
     <a id="submit-nDays-search" class="btn btn-success btn-search"
-       onclick="javascript:getStatsByNDays()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
+       onclick="javascript:getStatsByNDays('<?php echo $_SESSION['sesskey']; ?>')"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
 </div>
 <br/>
 <div id="nDays-stats" class="stats">                

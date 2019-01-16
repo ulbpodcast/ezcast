@@ -86,6 +86,8 @@ require_once 'config.inc';
 
                         var data = JSON.parse(jqXHR);
 
+                        console.log(data);
+
                         if (data.error) {
                             if (data.error == '1')
                                 alert("®renderer_enable_error®");

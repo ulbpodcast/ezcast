@@ -41,7 +41,7 @@ You should not have to include this file yourself, but if you do, make sure that
         <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onClick="$('#delete_album_load').load('index.php?action=delete_asset&album=<?php
-            echo $album; ?>&asset=<?php echo $asset_name; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>',function(responseData){show_album_details('<?php echo $album; ?>','<?php echo $_SESSION['sesskey']; ?>');})"
+            echo $album; ?>&asset=<?php echo $asset_name; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>',function(responseData){show_album_details('<?php echo $album; ?>');})"
             data-dismiss="modal">
             ®OK®
         </a>

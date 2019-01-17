@@ -87,7 +87,7 @@ Before calling this template, please define the following variables:
                     <?php if (!isset($current_tab) || $current_tab == 'list') {
                                             echo 'class="active"';
                                         } ?> >
-                    <a href="javascript:show_album_details('<?php echo $current_album; ?>','<?php echo $_SESSION['sesskey']; ?>');">
+                    <a href="javascript:show_album_details('<?php echo $current_album; ?>');">
                         <img src="images/page4/list.png" style="display:inline;height: 12px;"/>
                         ®Assets_list®
                     </a>

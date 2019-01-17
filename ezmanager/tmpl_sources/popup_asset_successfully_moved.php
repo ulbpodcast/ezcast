@@ -39,6 +39,6 @@
 <script>
 $('#modal').on('hide.bs.modal', function () {
     if($('#modal .modal-body.moving-success').length)
-        show_album_details('<?php echo $album; ?>','<?php echo $_SESSION['sesskey']; ?>');
+        show_album_details('<?php echo $album; ?>');
 })
 </script>

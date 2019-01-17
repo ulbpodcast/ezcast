@@ -6,12 +6,12 @@
     }
     swap('main_step_4', 'load_step_4');
 
-    var sesskey = '<?php echo $_SESSION['sesskey']?>';
-
     var save_step = 1;
     var numSteps = 3;
     function loadStepAjax(step) {
+        var sesskey = '<?php echo $_SESSION['sesskey']; ?>';
         save_step = step;
+
         $.ajax('index.php?action=create_renderer', {
             type: 'POST',
             dataType: 'json',

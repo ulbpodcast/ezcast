@@ -136,11 +136,10 @@ for every album the user can create.
 
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
+                    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
                     <button type="submit" id="postUrl" class="btn btn-default">®Submit_create_album®</button>
                 </div>
             </div>
-            <input type="hidden" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
-
         </form>
     <?php
     } ?>
@@ -173,6 +172,7 @@ for every album the user can create.
 
         var course_code = encodeURIComponent($('#course_code').val());
         var selectType = encodeURIComponent($('#selectType').val());
+        var sesskey = encodeURIComponent($('#sesskey').val());
 
         var error=0;
         if (label == ''){
@@ -194,7 +194,7 @@ for every album the user can create.
             $("#modal").modal("hide");
             setTimeout(function() {
                 display_bootstrap_modal_url($("#modal"), "index.php?action=create_courseAndAlbum&label="+label+"&albumtype="+
-                    selectType+"&course_code="+course_code);
+                    selectType+"&course_code="+course_code+"&sesskey="+sesskey);
                 $("#modal").modal("show");
             }, 500);
         }

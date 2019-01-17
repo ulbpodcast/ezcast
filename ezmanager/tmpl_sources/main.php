@@ -74,12 +74,12 @@
 
                     case 'list':
                     default:
-                        show_album_details(current_album, sesskey);
+                        show_album_details(current_album);
                         break;
                 }
             }
 
-            function show_album_details(album,sesskey) {
+            function show_album_details(album) {
                 $('#album_' + current_album).removeClass('active');
                 $('#album_' + album).addClass('active');
                 current_album = album;
@@ -88,7 +88,7 @@
                 // Getting the content from the server, and filling the div_album_header with it
                 document.getElementById('div_content').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
-                makeRequest('index.php', '?action=view_album&album=' + album + '&sesskey='+sesskey , 'div_content');
+                makeRequest('index.php', '?action=view_album&album=' + album , 'div_content');
             }
 
             function show_div(id) {

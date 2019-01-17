@@ -485,7 +485,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
             $('.modal-body').text("®Upload_finished®");
             $('.modal-footer').html('<button type="button" id="close_btn" class="btn btn-primary" ' +
                     'data-dismiss="modal">®Close_and_return_to_index®</button>');
-            $('#close_btn').attr('onclick', 'show_album_details("'+ablum_refresh+', '+sesskey+' ")');
+            $('#close_btn').attr('onclick', 'show_album_details("'+ablum_refresh+'")');
             force_close = true;
         } else {
             document.getElementById('submit_cam').style.display = 'none';
@@ -518,7 +518,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
             // on first call, the iframe has no content
             // When the file has been loaded, the iframe has a content
             if (ret.length) {
-                updateProgress(100, '',sesskey);
+                updateProgress(100, '', sesskey);
             }
         }
     }
@@ -532,7 +532,6 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
         var chunkSize;
         xhr = new XMLHttpRequest();
         var sesskey =  document.getElementById('sesskey').value;
-        alert('seeskey : '+sesskey);
 
         if (is_xhr2) {
             // browser supports XHR2 so we can send big chunked files
@@ -605,6 +604,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
                                 // prepares formData that will be sent to the server
                                 fd2 = new FormData();
                                 fd2.append("id", id);
+                                fd2.append("sesskey", sesskey);
                                 xhr2.open("POST", "index.php?action=upload_error", true);
                                 xhr2.send(fd2);
 
@@ -616,7 +616,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
                                 $('.modal-body').text("®Upload_failed®");
                                 $('.modal-footer').html('<button type="button" id="close_btn_error" class="btn btn-primary" ' +
                                         'data-dismiss="modal">®Close_and_return_to_index®</button>');
-                                $('#close_btn_error').attr('onclick', 'show_album_details("'+ablum_refresh+', '+sesskey+' ")');
+                                $('#close_btn_error').attr('onclick', 'show_album_details("'+ablum_refresh+' ")');
 
                                 force_close = true;
                                 break;

@@ -6,6 +6,7 @@
 function index($param = array())
 {
     global $ezmanager_url;
+    global $input;
     // 1) Deleting the ACLs from the session var
     acl_exit();
 

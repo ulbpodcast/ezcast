@@ -38,11 +38,6 @@ function index($param = array())
         log_append('warning', "view_album: tried to access album " . $album . ' without permission');
         die;
     }
-    if (!acl_session_key_check($input['sesskey'])) {
-        echo "Usage: Session key is not valid";
-        die;
-    }
-
 
     //
     // 1) We retrieve the metadata relating to the album

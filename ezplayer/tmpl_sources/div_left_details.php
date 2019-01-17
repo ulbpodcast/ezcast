@@ -63,7 +63,7 @@ switch (strtolower($_SESSION['browser_name'])) {
             $token = acl_token_get($album);
             $token = $token['token']; ?>
             <div class="right-arrow"></div>
-            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>', '<?php echo $_SESSION['sesskey']; ?>');" 
+            <a  href="javascript:show_album_assets('<?php echo $album; ?>', '<?php echo $token; ?>');" 
                 title="®Back_to_album®">
                 (<?php if (isset($course_code_public) && $course_code_public!="") {
                 echo $course_code_public;

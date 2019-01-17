@@ -38,7 +38,7 @@ include_once 'lib_print.php';
         axis: 'x'
     });
 
-    history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + '<?php echo $_SESSION['token']; ?>' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>'}, '', '');
+    history.pushState({"url": 'index.php?action=view_album_assets&album=' + '<?php echo $_SESSION['album']; ?>' + '&token=' + '<?php echo $_SESSION['token']; ?>'}, '', '');
 
 <?php if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (isset($official_bookmarks)
         && sizeof($official_bookmarks) != 0))) {

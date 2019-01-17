@@ -19,7 +19,7 @@ function process(file) {
     slicesTotal[type] = slices[type];
 
     msg('console', 'start');
-    msg("exec", 'updateProgress(' + 0 + ', "' + type + '", '+file.sesskey+');');
+    msg("exec", 'updateProgress(' + 0 + ', "' + type + '", "'+file.sesskey+'");');
 
     while (start < blob.size) {
         end = start + globalObj.chunkSize;
@@ -95,7 +95,7 @@ function uploadFile(file, index, start, end) {
 
         // updates the progress bar
         if (progressRate != 100)
-            msg("exec", "updateProgress(" + progressRate + ", '" + type +"', "+file.sesskey+");");
+            msg("exec", "updateProgress(" + progressRate + ", '" + type +"', '"+file.sesskey+"');");
 
         slices[type]--;
 
@@ -162,7 +162,7 @@ function mergeFile(file) {
             return false;
         }
 
-        msg("exec", 'updateProgress(' + 100 + ', "", '+file.sesskey+');');
+        msg("exec", 'updateProgress(' + 100 + ', "", "'+file.sesskey+'");');
         msg('console', 'full upload finished');
 
     }, false);

@@ -157,7 +157,7 @@ if ($trace_on) {
              * @param {type} type
              * @returns {undefined}
              */
-            function show_album_assets(album, token, sesskey) {
+            function show_album_assets(album, token) {
                 // the side pane changes to display the list of all assets contained in the selected album
                 current_album = album;
                 current_token = token;
@@ -166,7 +166,7 @@ if ($trace_on) {
                 document.getElementById('div_center').innerHTML = '<div style="text-align: center;">' +
                         '<img src="images/loading_white.gif" alt="loading..." /></div>';
                 tinymce.remove();
-                makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true' + '&sesskey=' + sesskey, 'div_center');
+                makeRequest('index.php', '?action=view_album_assets&album=' + album + '&token=' + token + '&click=true', 'div_center');
                 // history.pushState({"key": "show-album-assets", "function": "show_album_assets(" + album + "," + token + ")", 
                 //      "url": "index.php?action=view_album_assets&album=" + album + "&token=" + token}, 'album-details', 
                 //      'index.php?action=view_album_assets');

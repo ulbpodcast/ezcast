@@ -65,7 +65,7 @@ global $first_connexion;
                 <li>    
                     <a class="item <?php if ($private) {
                     echo 'private';
-                } ?>" href="javascript:show_album_assets('<?php echo $album['album']; ?>', '<?php echo $album['token']; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
+                } ?>" href="javascript:show_album_assets('<?php echo $album['album']; ?>', '<?php echo $album['token']; ?>');">
                         <b style="text-transform:uppercase;"><?php if (isset($album['course_code_public']) && $album['course_code_public']!="") {
                     echo $album['course_code_public'];
                 } else {

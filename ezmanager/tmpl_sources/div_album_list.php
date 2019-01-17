@@ -58,14 +58,14 @@
                 $metadata['name']=substr($metadata['name'], 0, 15)."...";
             } ?>
             <li id="album_<?php echo $album_.'-priv'; ?>" class="album-in-list" title="<?php echo $full_name ?>">
-                <a href="javascript:show_album_details('<?php echo $album_.'-priv'; ?>','<?php echo $_SESSION['sesskey']; ?>');">
+                <a href="javascript:show_album_details('<?php echo $album_.'-priv'; ?>');">
                     <img style="width: 30px;" src="images/page4/iconAlbumPriv.png" />
                     <?php echo $displayed_name; ?> (®Private_album®)
                     <span style="float: right;top: 9px;" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 </a>
             </li>
             <li id="album_<?php echo $album_.'-pub'; ?>" class="album-in-list album-separation" title="<?php echo $full_name ?>">
-                <a href="javascript:show_album_details('<?php echo $album_.'-pub'; ?>','<?php echo $_SESSION['sesskey']; ?>');">
+                <a href="javascript:show_album_details('<?php echo $album_.'-pub'; ?>');">
                     <img style="width: 30px;" src="images/page4/iconAlbumPublic.png" />
                     <?php echo $displayed_name; ?> (®Public_album®)
                     <span style="float: right;top: 9px;" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>

@@ -20,7 +20,6 @@ require_once(__DIR__ . '/../../commons/lib_ezmam.php');
 
     if (!acl_session_key_check($input['sesskey'])) {
         echo "Usage: Session key is not valid";
-        echo $input['sesskey'];
         die;
     }
 

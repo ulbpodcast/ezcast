@@ -7,7 +7,7 @@ function index($param = array())
     if(!empty($_POST['email']) && !empty($_POST['url']) && !empty($_POST['album']))
 	{
 		$tab_email = explode (',', $_POST['email']);
-		$url = $repository_basedir. '/repository/' . $_POST['album'].'/_test1';
+		$url = $repository_basedir. '/repository/' . $_POST['album'].'/_tokenmanager';
 		$str_chain = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		$email_error = '';
 		$tab_json = array();

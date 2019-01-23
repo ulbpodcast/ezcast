@@ -13,7 +13,7 @@ function index($param = array())
 
     if ($input['action'] == 'add_moderator' && isset($input['album']) && isset($input['tokenmanager']))
     {
-        $file_token = json_decode(file_get_contents($repository_basedir. '/repository/' . $input['album'].'/_test1'), true);
+        $file_token = json_decode(file_get_contents($repository_basedir. '/repository/' . $input['album'].'/_tokenmanager'), true);
         $is_exist = false;
 
         foreach ($file_token as $album => $tokens)
@@ -46,7 +46,7 @@ function index($param = array())
 
             $index_token = array_search($input['tokenmanager'], $file_token[$input['album']]);
             unset($file_token[$input['album']][$index_token]);
-            file_put_contents($repository_basedir. '/repository/' . $input['album'].'/_test1', json_encode($file_token));
+            file_put_contents($repository_basedir. '/repository/' . $input['album'].'/_tokenmanager', json_encode($file_token));
         }
     }
     acl_update_permissions_list();

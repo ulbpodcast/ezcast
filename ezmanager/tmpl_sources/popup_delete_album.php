@@ -27,11 +27,11 @@
 
 <!--
 Asks confirmation before deleting an album.
-You should not have to include this file yourself (included in div_album_header.php), but if you do, make sure that $album_name is correctly defined
+You should not have to include this file yourself (included in div_album_header.php), but if you do, make sure that $album is correctly defined
 -->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">®Delete_album® <?php echo $album_name; ?> ?</h4>
+    <h4 class="modal-title">®Delete_album® <?php echo $album; ?> ?</h4>
 </div>
 <div class="modal-body">
     <div class="alert alert-warning text-center" role="alert">®Destructive_operation®</div>
@@ -41,7 +41,7 @@ You should not have to include this file yourself (included in div_album_header.
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#delete_album_link'));
                 $('#modal').modal('show'); }, 500);"
-            href="index.php?action=delete_album&album=<?php echo $album_id; ?>" 
+            href="index.php?action=delete_album&album=<?php echo $album; ?>" 
             data-dismiss="modal" id="delete_album_link">
             ®OK®
         </a>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -33,7 +33,7 @@
 
     <center>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#publish_asset'));$('#modal').modal('show'); }, 500);"
-            href="index.php?action=publish_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>" 
+            href="index.php?action=publish_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" 
             data-dismiss="modal" id="publish_asset">
             ®OK®
         </a>

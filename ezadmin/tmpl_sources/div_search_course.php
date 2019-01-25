@@ -27,6 +27,7 @@
 } ?>" />
             </div>
             <div class="col-md-2">
+                <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
                 <input type="submit" name="search" value="®search®" class="btn btn-block btn-primary">
             </div>
         </div>

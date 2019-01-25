@@ -5,6 +5,7 @@
 <form method="POST" action="index.php" class="form-inline search_user">
     <input type="hidden" name="action" value="view_users" />
     
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <input type="hidden" name="post"/>
     <input type="hidden" name="page" value="1" />
     <input type="hidden" name="col" value="<?php if (isset($input) && isset($input['col'])) {

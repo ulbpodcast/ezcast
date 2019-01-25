@@ -18,7 +18,7 @@ function index($param = array())
     if (!$trace_on || !$display_trace_stats) {
         die;
     }
-    
+
     if (isset($input['album'])) {
         $album = $input['album'];
     } else {
@@ -36,6 +36,11 @@ function index($param = array())
         die;
     }
     
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     //
     // 1) We retrieve the metadata relating to the album
     //

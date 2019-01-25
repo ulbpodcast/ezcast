@@ -9,6 +9,11 @@ function index($param = array())
         die;
     }
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $course_id = $input['course_code'];
 
     if (isset($input['post'])) {

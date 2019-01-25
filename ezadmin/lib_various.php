@@ -749,3 +749,11 @@ function check_validation_text($text)
 
     return $return_value;
 }
+
+function session_key_check($sessionkey)
+{
+    if (isset($_SESSION['sesskey']) && !empty($_SESSION['sesskey']) && isset($sessionkey) && !empty($sessionkey) && ($_SESSION['sesskey'] == $sessionkey))
+        return true;
+
+    return false;
+}

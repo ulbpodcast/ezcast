@@ -34,6 +34,7 @@ global $ezplayer_safe_url;
 echo $ezplayer_safe_url;
 ?>/index.php" method="post">
     <input type="hidden" name="action" value="contact_send" />
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 
     <!-- Title field -->  
     <div style='clear: both'>

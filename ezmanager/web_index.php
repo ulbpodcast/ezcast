@@ -588,6 +588,7 @@ function user_login($login, $passwd)
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
     $_SESSION['termsOfUses'] = $res['termsOfUses'];
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login

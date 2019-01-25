@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -27,28 +27,28 @@
 
 <div class="header">
     <div class="header_content">
-        <div class="logo"> 
+        <div class="logo">
             <?php if (file_exists("./htdocs/images/Header/organization-logo.png")) {
     ?>
             <a href="<?php global $organization_url;
     echo $organization_url; ?>"><img id="organisation_logo" src="./images/Header/organization-logo.png" height="42px;"/></a>
             <?php
 }
-            
+
             global $ezmanager_custom_logo;
             $ezmanager_logo = !empty($ezmanager_custom_logo) ?
                     "images/custom/$ezmanager_custom_logo" :
                     "images/Header/EZmanager.png"; //default value
             ?>
-            <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezmanager_logo; ?>" /></a>            
+            <a href="index.php" title="®Back_to_home®"><img src="<?php echo $ezmanager_logo; ?>" /></a>
         </div>
          <?php if (acl_user_is_logged()) {
                 ?>
-             <a href="index.php?action=logout" title="®Logout®"><span class="logout">®Logout®</span></a>
+             <a href="index.php?action=logout&sesskey=<?php echo $_SESSION['sesskey']; ?>" title="®Logout®"><span class="logout">®Logout®</span></a>
         <span style="float: right; margin: 1px 3px; margin-top: -11px; font-size: 15px;">|</span>
-        <a href="index.php?action=view_help" target="_blank"><span class="logout">®Help®</span></a> 
+        <a href="index.php?action=view_help&sesskey=<?php echo $_SESSION['sesskey']; ?>" target="_blank"><span class="logout">®Help®</span></a>
          <?php } ?>
 
     </div>
-  
+
 </div>

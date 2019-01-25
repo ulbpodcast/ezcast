@@ -17,6 +17,11 @@ function index($param = array())
         return false;
     }
     
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $album = $input['album'];
     $index = (int) $input['index'];
     $upDown = $input['up_down'];

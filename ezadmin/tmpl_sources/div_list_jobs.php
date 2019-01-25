@@ -103,23 +103,23 @@ require_once 'config.inc';
                 ?>
                         <?php if (!in_array($job, scheduler_frozen_get())) {
                     ?>
-                            <a href="index.php?action=job_priority_up&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-chevron-up" title="®increase_priority®"></span></a>&nbsp;
-                            <a href="index.php?action=job_priority_down&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-chevron-down" title="®decrease_priority®"></span></a>&nbsp;
+                            <a href="index.php?action=job_priority_up&amp;job=<?php echo $job['uid']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><span class="glyphicon glyphicon-chevron-up" title="®increase_priority®"></span></a>&nbsp;
+                            <a href="index.php?action=job_priority_down&amp;job=<?php echo $job['uid']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><span class="glyphicon glyphicon-chevron-down" title="®decrease_priority®"></span></a>&nbsp;
                         <?php
                 } ?>
                         <?php if (in_array($job, scheduler_frozen_get())) {
                     ?>
-                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-repeat" title="®unfreeze_job®"></span></a>
+                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><span class="glyphicon glyphicon-repeat" title="®unfreeze_job®"></span></a>
                         <?php
                 } else {
                     ?>
-                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-ban-circle" title="®freeze_job®"></span></a>
+                            <a href="index.php?action=free_unfreeze_job&amp;job=<?php echo $job['uid']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><span class="glyphicon glyphicon-ban-circle" title="®freeze_job®"></span></a>
                         <?php
                 } ?>
                     <?php
             } elseif (empty($job['done']) && !empty($job['sent'])) {
                 ?>
-                        <a href="index.php?action=job_kill&amp;job=<?php echo $job['uid']; ?>"><span class="glyphicon glyphicon-remove" title="®kill_job®"></span></a>
+                        <a href="index.php?action=job_kill&amp;job=<?php echo $job['uid']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><span class="glyphicon glyphicon-remove" title="®kill_job®"></span></a>
                         <?php
             } ?>
                 </td>

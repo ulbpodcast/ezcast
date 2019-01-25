@@ -95,6 +95,7 @@ It allows to select all albums needed to be shown in ezrecorder in classrooms an
             </div>
             <div class="form-group">
                 <div class="modal-footer">
+                    <input type="hidden" name="sesskey" id="sesskey" value="<?php echo $_SESSION['sesskey']; ?>">
                    <button type="submit" id="postUrl2" class="btn btn-primary">®Update®</button>
                 </div>
             </div>

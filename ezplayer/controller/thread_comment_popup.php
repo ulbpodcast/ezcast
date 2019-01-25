@@ -9,6 +9,11 @@ function index($param = array())
 {
     global $input;
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $comment_id = $input['comment_id'];
 
     $comment = comment_select_by_id($comment_id);

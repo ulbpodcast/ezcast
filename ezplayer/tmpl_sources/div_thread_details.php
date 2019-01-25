@@ -55,8 +55,8 @@ $DTZ = new DateTimeZone('Europe/Paris');
         <span class="timecode white inline-block">(<?php print_time($thread['timecode']); ?>) </span>
     </a>
     <span class="thread-title inline-block"><?php echo $thread['title']; ?></span> 
-    <a class="refresh-button pull-right" title="®Refresh_discussion_details®" href="javascript:thread_details_update(<?php echo $thread['id']; ?>, false)"></a>
-    <a class="back-button pull-right" title="®Display_discussions®" href="javascript:threads_list_update(false);"></a>
+    <a class="refresh-button pull-right" title="®Refresh_discussion_details®" href="javascript:thread_details_update(<?php echo $thread['id']; ?>, false, '<?php echo $_SESSION['sesskey']; ?>')"></a>
+    <a class="back-button pull-right" title="®Display_discussions®" href="javascript:threads_list_update(false, '<?php echo $_SESSION['sesskey']; ?>');"></a>
     <br/>
     <?php
     $creationDate = (get_lang() == 'fr') ? new DateTimeFrench($thread['creationDate'], $DTZ) : new DateTime($thread['creationDate'], $DTZ);
@@ -75,6 +75,7 @@ $DTZ = new DateTimeZone('Europe/Paris');
 <div class="form" id="edit_thread_form_<?php echo $thread['id']; ?>" hidden>
     <div id='thread_form_wrapper'>
         <form action="index.php" method="post" id="submit_thread_form" onsubmit="return false">
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             <input type="hidden" name="album" id="thread_album" value="<?php echo $thread['albumName']; ?>"/>
             <input type="hidden" name="asset" id="thread_asset" value="<?php echo $thread['assetName']; ?>"/>
 
@@ -107,7 +108,7 @@ $DTZ = new DateTimeZone('Europe/Paris');
                 <a class="button" tabindex='16' href="javascript: thread_edit_form_cancel(<?php echo $thread['id']; ?>);">®Cancel®</a>
             </div>
             <div class="submitButton">
-                <a class="button green2" tabindex='17' href="javascript: if(thread_edit_form_check(<?php echo $thread['id']; ?>)) thread_edit_form_submit(<?php echo $thread['id']; ?>,'<?php echo $thread['albumName']; ?>','<?php echo $thread['assetName']; ?>');">
+                <a class="button green2" tabindex='17' href="javascript: if(thread_edit_form_check(<?php echo $thread['id']; ?>)) thread_edit_form_submit(<?php echo $thread['id']; ?>,'<?php echo $thread['albumName']; ?>','<?php echo $thread['assetName']; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
                     ®Update®
                 </a>
             </div>
@@ -129,7 +130,7 @@ $DTZ = new DateTimeZone('Europe/Paris');
         <?php if (acl_is_admin()) {
                             ?>     
             <a class="delete-button green2 pull-right inline-block" title="®Delete_discussion®" 
-               href="javascript:popup_thread('<?php echo $thread['id']; ?>', 'delete');" ></a>
+               href="javascript:popup_thread('<?php echo $thread['id']; ?>', 'delete', '<?php echo $_SESSION['sesskey']; ?>');" ></a>
 <?php
                         }
                     }
@@ -190,6 +191,7 @@ $DTZ = new DateTimeZone('Europe/Paris');
 <div class="form" id="comment_form">
     <div id='comment_form_wrapper'>
         <form action="index.php" method="post" id="submit_comment_form" onsubmit="return false">
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             <input type="hidden" name="thread_id" id="thread_id" value="<?php echo $thread['id']; ?>"/>
             <input type="hidden" name="album" id="thread_album" value="<?php echo $thread['albumName']; ?>"/>
             <input type="hidden" name="asset" id="thread_asset" value="<?php echo $thread['assetName']; ?>"/>

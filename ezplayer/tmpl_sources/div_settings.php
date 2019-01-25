@@ -30,6 +30,7 @@ acl_update_settings();
 <form name="submit_settings_form" action="<?php global $ezplayer_safe_url;
 echo $ezplayer_safe_url; ?>/index.php" method="post">
     <input type="hidden" name="action" value="settings_update" />
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <table>
         <th><span class="title left">Notifications</span></th><br/>
         <tr>

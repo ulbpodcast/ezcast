@@ -7,6 +7,12 @@ function index($param = array())
     global $repository_path;
     global $basedir;
     require_once $basedir.'/commons/lib_sql_management.php';
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
 //get the album list
 $album= acl_authorized_albums_list_created($assoc = false);
 $modif=false;

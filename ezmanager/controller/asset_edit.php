@@ -21,6 +21,13 @@ function index($param = array())
         die;
     }
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo $input['sesskey'];
+        echo $_SESSION['sesskey'];
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     ezmam_repository_path($repository_path);
 
     if (!ezmam_album_exists($input['album']) || !ezmam_asset_exists($input['album'], $input['asset'])) {
@@ -32,9 +39,9 @@ function index($param = array())
 //        error_print_message(template_get_message('Title_too_long', get_lang()));
         if(get_lang()=="fr")
             error_print_message("Titre trop long (max.  $title_max_length  caracteres)");
-        else 
-            error_print_message("Title too long (max.  $title_max_length  characters)");           
-           
+        else
+            error_print_message("Title too long (max.  $title_max_length  characters)");
+
         asset_view();
 
         die;

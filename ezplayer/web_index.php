@@ -543,6 +543,8 @@ function user_anonymous_session()
     $_SESSION['ezplayer_anonymous'] = "user_logged_anonymous"; // "boolean" stating that we're logged
     $_SESSION['user_login'] = "anon";
     $_SESSION['user_full_name'] = "Anonyme";
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
+
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
@@ -635,6 +637,7 @@ function user_login($login, $passwd)
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
     $_SESSION['termsOfUses'] = $res['termsOfUses'];
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     $_SESSION['admin_enabled'] = false;
     //check flash plugin or GET parameter no_flash
@@ -998,6 +1001,11 @@ function thread_details_update($display = true)
 {
     global $input;
     
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (array_key_exists('thread_id', $input) && $input['thread_id'] != null) {
         $id = $input['thread_id'];
         $_SESSION['current_thread'] = $id;

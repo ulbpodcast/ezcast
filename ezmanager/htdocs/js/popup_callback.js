@@ -1,5 +1,5 @@
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -23,8 +23,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-function popup_album_new_callback(album) {
-    show_popup_from_outer_div('index.php?action=create_album&amp;album='+album);
+function popup_album_new_callback(album, sesskey) {
+    show_popup_from_outer_div('index.php?action=create_album&amp;album='+album+'&amp;sesskey='+sesskey);
     show_album_details(album);
     $.colorbox.close();
 }
@@ -32,44 +32,44 @@ function popup_album_new_callback(album) {
 /**
  * Called when the user chooses to delete an asset: this method calls the controller, then reloads the view
  */
-function popup_asset_delete_callback(album, asset) {
-    show_popup_from_outer_div('index.php?action=delete_asset&album='+album+'&asset='+asset);
+function popup_asset_delete_callback(album, asset, sesskey) {
+    show_popup_from_outer_div('index.php?action=delete_asset&album='+album+'&asset='+asset+'&amp;sesskey='+sesskey);
     show_album_details(album);
     $.colorbox.close();
 }
 
-function popup_asset_move_callback(from, to, asset) {
-    show_popup_from_outer_div('index.php?action=move_asset&from='+from+'&to='+to+'&&asset='+asset);
+function popup_asset_move_callback(from, to, asset, sesskey) {
+    show_popup_from_outer_div('index.php?action=move_asset&from='+from+'&to='+to+'&&asset='+asset+'&amp;sesskey='+sesskey);
     show_album_details(from);
     $.colorbox.close();
 }
 
-function popup_asset_copy_callback(from, to, asset) {
-    show_popup_from_outer_div('index.php?action=copy_asset&from='+from+'&to='+to+'&&asset='+asset);
+function popup_asset_copy_callback(from, to, asset, sesskey) {
+    show_popup_from_outer_div('index.php?action=copy_asset&from='+from+'&to='+to+'&&asset='+asset+'&amp;sesskey='+sesskey);
     show_album_details(from);
     $.colorbox.close();
 }
 
-function popup_asset_publish_callback(album, asset) {
-    show_popup_from_outer_div('index.php?action=publish_asset&album='+album+'&asset='+asset);
+function popup_asset_publish_callback(album, asset, sesskey) {
+    show_popup_from_outer_div('index.php?action=publish_asset&album='+album+'&asset='+asset+'&amp;sesskey='+sesskey);
     show_album_details(album);
     $.colorbox.close();
 }
 
-function popup_asset_unpublish_callback(album, asset) {
-    show_popup_from_outer_div('index.php?action=unpublish_asset&album='+album+'&asset='+asset);
+function popup_asset_unpublish_callback(album, asset, sesskey) {
+    show_popup_from_outer_div('index.php?action=unpublish_asset&album='+album+'&asset='+asset+'&amp;sesskey='+sesskey);
     show_album_details(album);
     $.colorbox.close();
 }
 
-function popup_regenerate_rss_callback(album) {
-    show_popup_from_outer_div('index.php?action=reset_rss&album='+album);
+function popup_regenerate_rss_callback(album, sesskey) {
+    show_popup_from_outer_div('index.php?action=reset_rss&album='+album+'&amp;sesskey='+sesskey+'&amp;sesskey='+sesskey);
     show_album_details(album);
     //$.colorbox.close();
 }
 
-function popup_asset_regentitle_callback(album, asset) {
-    show_popup_from_outer_div('index.php?action=regen_title&album='+album+'&asset='+asset);
+function popup_asset_regentitle_callback(album, assetn, sesskey) {
+    show_popup_from_outer_div('index.php?action=regen_title&album='+album+'&asset='+asset+'&amp;sesskey='+sesskey);
     show_album_details(album);
     $.colorbox.close();
 }

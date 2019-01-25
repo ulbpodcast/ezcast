@@ -8,6 +8,11 @@ function index($param = array())
         die;
     }
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $res = add_admin_to_file($input['user_ID']);
     $u = db_user_read($input['user_ID']);
 

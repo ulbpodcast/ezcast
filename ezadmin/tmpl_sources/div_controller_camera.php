@@ -42,6 +42,7 @@ require_once 'config.inc';
                         if($enable_control_panel_options)
                         {
                             echo '<form action="index.php?action=view_camera" method="POST" id="form_camera_'.$id_form.'">
+                            <input type="hidden" id="sesskey" name="sesskey" value="'.$_SESSION['sesskey'].'" />
                             <input type="hidden" name="room" value="'.$currClass['room_ID'].'">
                             <input type="hidden" name="room_name" value="'.$currClass['name'].'">';
                             ?>

@@ -38,6 +38,11 @@ function index($param = array())
         die;
     }
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     // 2) Creating the folder in the queue, and the metadata for the media
     $tmp_name = date($dir_date_format) . '_' . $input['album'];
     if ($input['moderation'] == 'false') {

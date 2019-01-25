@@ -31,7 +31,7 @@ This popup appears when the user clicks on "move this record".
 It presents the user with a list of albums he can move the asset to.
 
 You should not have to use this template on its own. however, if you do, please
-make sure $created_albums_with_descriptions is initialized and is an array containing the album names (without any suffix) 
+make sure $created_albums_with_descriptions is initialized and is an array containing the album names (without any suffix)
 as keys, and albums descriptions as values
 for every album the user can create.
 -->
@@ -74,6 +74,7 @@ for every album the user can create.
             <center>
                 <input id="datepicker_<?php echo $asset_name; ?>" class="datepicker" type="text" name="date" value="">
             </center>
+            <input type="hidden" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
             <script>
                 $(function () {
                     d = new Date();
@@ -86,10 +87,9 @@ for every album the user can create.
                 function submit_schedule_form() {
                     var date = encodeURIComponent(document.getElementById('datepicker_<?php echo $asset_name; ?>').value);
                     $('#modal').modal('hide');
-                    setTimeout(function(){ 
-                        display_bootstrap_modal_url($('#modal'), 'index.php?action=schedule_asset&album=<?php 
-                            echo $album; ?>&asset=<?php echo $asset_name; ?>&date=' + date);
-                        $('#modal').modal('show'); 
+                    setTimeout(function(){
+                        display_bootstrap_modal_url($('#modal'), 'index.php?action=schedule_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>&date=' + date+'&sesskey=<?php echo $_SESSION['sesskey']; ?>');
+                        $('#modal').modal('show');
                     }, 500);
                 }
             </script>

@@ -9,6 +9,11 @@ function index($param = array())
     global $input;
     $id = $input['comment_id'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     comment_delete_by_id($id);
     cache_asset_threads_unset($_SESSION['album'], $_SESSION['asset']);
 

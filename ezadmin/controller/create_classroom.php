@@ -13,6 +13,11 @@ function index($param = array())
     $enabled = 0;
     $ignore_ssh_check = false;
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (isset($input) && isset($input['create']) && $input['create']) {
 
         $room_ID = $input['room_ID'];

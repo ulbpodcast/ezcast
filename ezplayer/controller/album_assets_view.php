@@ -28,7 +28,7 @@ function index_asset_view($param)
     global $cache_limit;
 
     $refresh_center = count($param == 0) || $param[0];
-    
+
     // if reloaded is set, the whole page has to be refreshed
     if (isset($_SESSION['reloaded'])) {
         unset($input['click']);

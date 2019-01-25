@@ -83,9 +83,9 @@ global $first_connexion;
                     <div class="album_options left">
                         <a class="up-arrow" <?php if ($index == 0) {
                         ?>style="visibility:hidden"<?php
-                    } ?> href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up');" title="®Move_up®"></a>
+                    } ?> href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'up', '<?php echo $_SESSION['sesskey']; ?>');" title="®Move_up®"></a>
                         <?php if ($index != count($albums) - 1) {
-                        ?><a class="down-arrow" href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down');" title="®Move_down®"></a><?php
+                        ?><a class="down-arrow" href="javascript:album_token_move('<?php echo $album['album']; ?>', <?php echo $index; ?>, 'down', '<?php echo $_SESSION['sesskey']; ?>');" title="®Move_down®"></a><?php
                     } ?>
                     </div>
                     <?php
@@ -99,10 +99,10 @@ global $first_connexion;
                     } ?> 
 
                     <div class="album_options pull-right inline-block">
-                        <a  class="button-rect green pull-right inline-block share-rss" href="javascript:popup_album('<?php echo $album['album'] ?>', 'rss');">®subscribe_rss®</a>
+                        <a  class="button-rect green pull-right inline-block share-rss" href="javascript:popup_album('<?php echo $album['album'] ?>', 'rss', '<?php echo $_SESSION['sesskey']; ?>');">®subscribe_rss®</a>
                         <?php if (suffix_get($album['album']) == '-priv' || !acl_has_album_moderation($album['album'])) {
                         ?> 
-                            <a class="delete-album" title="®Delete_album®" href="javascript:popup_album('<?php echo $album['album'] ?>', 'delete');"></a>
+                            <a class="delete-album" title="®Delete_album®" href="javascript:popup_album('<?php echo $album['album'] ?>', 'delete', '<?php echo $_SESSION['sesskey']; ?>');"></a>
                         <?php
                     } ?>
                     </div>

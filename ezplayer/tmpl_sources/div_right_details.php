@@ -40,8 +40,9 @@ include_once 'lib_print.php';
     var current_album = '<?php echo $_SESSION['album']; ?>';
     var current_asset = '<?php echo $_SESSION['asset']; ?>';
     var current_asset_name = '<?php echo print_info($asset_meta['title']); ?>';
+    var session_key = '<?php echo $_SESSION['sesskey']; ?>';
 
-    history.pushState({"url": 'index.php?action=view_asset_details&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');
+    history.pushState({"url": 'index.php?action=view_asset_details&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>'}, '', '');
 
 <?php global $show_panel;
     if ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0)
@@ -121,21 +122,21 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                href="javascript:toggle('#bookmarks_actions');">
             </a>
             <a class="sort-button <?php echo acl_value_get("personal_bm_order"); ?>" title="®Reverse_bookmarks_order®" 
-               href="javascript:bookmarks_sort('personal', '<?php echo (acl_value_get("personal_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'details');">
+               href="javascript:bookmarks_sort('personal', '<?php echo (acl_value_get("personal_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'details', '<?php echo $_SESSION['sesskey']; ?>');">
             </a>
             <ul id="bookmarks_actions">
                 <li>
-                    <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'custom', 'details', 'export')" title="®Export_asset_bookmarks®">
+                    <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'custom', 'details', 'export', '<?php echo $_SESSION['sesskey']; ?>')" title="®Export_asset_bookmarks®">
                         ®Export_bookmarks®
                     </a>
                 </li> 
                 <li>
-                    <a href="javascript:popup_bookmarks_import();" title="®Import_album_bookmarks®">
+                    <a href="javascript:popup_bookmarks_import('<?php echo $_SESSION['sesskey']; ?>');" title="®Import_album_bookmarks®">
                         ®Import_bookmarks®
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'custom', 'details', 'delete')" title="®Delete_asset_bookmarks®">
+                    <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'custom', 'details', 'delete', '<?php echo $_SESSION['sesskey']; ?>')" title="®Delete_asset_bookmarks®">
                         ®Delete_bookmarks®
                     </a>
                 </li>                    
@@ -145,23 +146,23 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
             <a class="menu-button" title="®Toc_actions®" onclick="$(this).toggleClass('active')" href="javascript:toggle('#tocs_actions');">
             </a>
             <a class="sort-button <?php echo acl_value_get("official_bm_order"); ?>" title="®Reverse_bookmarks_order®" 
-               href="javascript:bookmarks_sort('official', '<?php echo (acl_value_get("official_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'details');">
+               href="javascript:bookmarks_sort('official', '<?php echo (acl_value_get("official_bm_order") == "chron") ? "reverse_chron" : "chron"; ?>', 'details', '<?php echo $_SESSION['sesskey']; ?>');">
             </a>
             <ul id="tocs_actions">            
                 <li>
-                    <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'official', 'details', 'export')" title="®Export_asset_bookmarks®">
+                    <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'official', 'details', 'export', '<?php echo $_SESSION['sesskey']; ?>')" title="®Export_asset_bookmarks®">
                         ®Export_bookmarks®
                     </a>
                 </li>
                 <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) {
                 ?>
                     <li>
-                        <a href="javascript:popup_bookmarks_import();" title="®Import_album_bookmarks®">
+                        <a href="javascript:popup_bookmarks_import('<?php echo $_SESSION['sesskey']; ?>');" title="®Import_album_bookmarks®">
                             ®Import_bookmarks®
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'official', 'details', 'delete')" title="®Delete_asset_bookmarks®">
+                        <a href="javascript:popup_bookmarks('<?php echo $_SESSION['album']; ?>', '<?php echo $_SESSION['asset']; ?>', 'official', 'details', 'delete', '<?php echo $_SESSION['sesskey']; ?>')" title="®Delete_asset_bookmarks®">
                             ®Delete_bookmarks®
                         </a>
                     </li>                          
@@ -202,6 +203,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                 <li id="bookmark_<?php echo $index; ?>" class="blue level_<?php echo $bookmark['level']; ?>">
                                     <form action="index.php" method="post" id="submit_bookmark_form_<?php echo $index; ?>" 
                                           onsubmit="return false">
+                                          <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 
                                         <a class="item blue" href="javascript:player_video_seek(<?php echo $bookmark['timecode'] ?>,'<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>');">  
                                             <span class="timecode">(<?php print_time($bookmark['timecode']); ?>) </span>
@@ -251,13 +253,13 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                                 <br />
                                             </div>
                                             <div class="bookmark_options">
-                                                <a class="delete-button" title="®Delete_bookmark®" href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'custom', 'details', 'remove')">
+                                                <a class="delete-button" title="®Delete_bookmark®" href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'custom', 'details', 'remove', '<?php echo $_SESSION['sesskey']; ?>')">
                                                 </a>
                                                 <a class="edit-button" title="®Edit_bookmark®" href="javascript:bookmark_edit('<?php echo $index; ?>', 'bookmark', '<?php echo htmlspecialchars(str_replace("'", "\'", $bookmark['title'])) ?>', '<?php echo htmlspecialchars(str_replace(array('"', "'"),array("", "\'"),$bookmark['description'])) ?>', '<?php echo htmlspecialchars(str_replace("'", "\'", $bookmark['keywords'])) ?>', '<?php echo $bookmark['level'] ?>', '<?php echo $bookmark['timecode'] ?>');">
                                                 </a>
                                                 <?php if (acl_user_is_logged() && acl_has_album_moderation($album)) {
                                     ?>
-                                                    <a class="copy-button" title="®Copy_bookmark®"  href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'custom', 'details', 'copy')">
+                                                    <a class="copy-button" title="®Copy_bookmark®"  href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'custom', 'details', 'copy', '<?php echo $_SESSION['sesskey']; ?>')">
                                                     </a>
                                                     <?php
                                 } ?>
@@ -298,6 +300,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                             <script>official_bookmarks_time_code.push(<?php echo $bookmark['timecode']; ?>);</script>
                             <li id="toc_<?php echo $index; ?>" class="orange level_<?php echo $bookmark['level']; ?>">
                                 <form action="index.php" method="post" id="submit_toc_form_<?php echo $index; ?>" onsubmit="return false">
+                                    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 
                                         <?php if ($bookmark['asset'] == $asset) {
                                 ?>
@@ -305,7 +308,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                             <?php
                             } else {
                                 ?>
-                                            <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>')">
+                                            <a class="item orange" href="javascript:show_asset_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', '<?php echo (isset($bookmark['type'])) ? $bookmark['type'] : ''; ?>', '<?php echo $_SESSION['sesskey']; ?>')">
                                             <?php
                             } ?>
                                             <span class="timecode orange">(<?php print_time($bookmark['timecode']); ?>) </span>
@@ -358,7 +361,7 @@ if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_b
                                 ?>
                                                 <div class="bookmark_options">
                                                     <a class="delete-button" title="®Delete_bookmark®" 
-                                                       href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'official', 'details', 'remove')">
+                                                       href="javascript:popup_bookmark('<?php echo $bookmark['album']; ?>', '<?php echo $bookmark['asset']; ?>', '<?php echo $bookmark['timecode']; ?>', 'official', 'details', 'remove', '<?php echo $_SESSION['sesskey']; ?>')">
                                                     </a>
                                                     <a class="edit-button orange" title="®Edit_bookmark®" href="javascript:bookmark_edit('<?php echo $index; ?>', 'toc', '<?php echo htmlspecialchars(str_replace("'", "\'", $bookmark['title'])) ?>', '<?php echo htmlspecialchars(str_replace(array('"', "'"),array("", "\'"),$bookmark['description'])) ?>', '<?php echo htmlspecialchars(str_replace("'", "\'", $bookmark['keywords'])) ?>', '<?php echo $bookmark['level'] ?>', '<?php echo $bookmark['timecode'] ?>');">
                                                     </a>

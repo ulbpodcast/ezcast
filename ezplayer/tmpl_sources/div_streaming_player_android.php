@@ -49,7 +49,7 @@
         $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
         $.ajax({
             type: 'POST',
-            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam'),
+            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam') + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>',
             success: function (response) {
                 $('#streaming_config_wrapper').html(response);
                 player_streaming_fullscreen(fullscreen);
@@ -61,7 +61,7 @@
         $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
         $.ajax({
             type: 'POST',
-            url: 'index.php?action=live_stream_popup&display=video_switch',
+            url: 'index.php?action=live_stream_popup&display=video_switch&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>',
             success: function (response) {
                 $('#div_popup').html(response);
             }

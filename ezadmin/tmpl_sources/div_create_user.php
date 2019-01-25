@@ -3,6 +3,8 @@
 
 <form method="POST" class="form-horizontal">
     
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
+
     <?php if (isset($error)) {
     ?>
     <div class="alert alert-danger alert-dismissible fade in" role="alert"> 

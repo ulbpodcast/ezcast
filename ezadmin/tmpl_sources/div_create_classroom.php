@@ -1,6 +1,8 @@
 <div class="page_title">®create_classroom®</div>
 
 <form method="POST" class="form-horizontal">
+
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     
     <?php if ($error) {
     ?>

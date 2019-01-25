@@ -15,6 +15,11 @@ function index($param = array())
     $comment_thread = $input['thread_id'];
     $comment_parent = intval($input['answer_parent']);
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!acl_user_is_logged() && $album != '' && $asset != '' && $comment_thread != '' && $comment_parent != '') {
         return false;
     }

@@ -4,6 +4,11 @@ function index($param = array())
 {
     global $input;
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (isset($input['confirm']) && !empty($input['confirm'])) {
         $allow_recorder = (array_key_exists('recording_enabled', $input) && $input['recording_enabled'] == 'on');
         $add_users = (array_key_exists('add_users_enabled', $input) && $input['add_users_enabled'] == 'on');

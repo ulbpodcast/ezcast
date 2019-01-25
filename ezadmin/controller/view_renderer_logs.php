@@ -3,6 +3,13 @@
 function index($param = array())
 {
     global $config;
+    global $input;
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $tail = shell_exec("bash -c 'tail -100 ".$config['paths']['logs']."'");
     $tail_array=explode("\n",$tail);
 

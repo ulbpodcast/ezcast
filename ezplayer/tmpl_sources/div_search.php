@@ -26,6 +26,7 @@
 ?>
 
 <form id="search_form" method="post" action="index.php?action=threads_bookmarks_search" onsubmit="return false">
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <input type="text" name="search" tabindex='0' id="main_search"/>
     <a id="main_search_button" class="search_button" onclick="search_form_check();"></a>
     <a id="more_search_button" onclick="$('#advanced_search').slideToggle(200);"></a>

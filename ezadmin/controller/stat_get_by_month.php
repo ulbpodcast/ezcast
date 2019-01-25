@@ -3,7 +3,13 @@
 function index($param = array())
 {
     global $_POST;
+    global $input;
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $datePicked = $_POST['datePicked'];
     $year_month = substr($datePicked, 3, 7) . "-" . substr($datePicked, 0, 2);
 

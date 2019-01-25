@@ -8,6 +8,11 @@ function index($param = array())
         die;
     }
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+    
     switch ($input['query']) {
         case 'link':
             $info = db_users_courses_create($input['id'], $input['user_ID']);

@@ -20,7 +20,7 @@ Before calling this template, please define the following variables:
                 <div id="advanced_menu">
                     <div class="btn-group" role="group">
 
-                        <a href="index.php?action=view_submit_media" class="btn btn-default" role="button"
+                        <a href="index.php?action=view_submit_media&sesskey=<?php echo $_SESSION['sesskey']; ?>" class="btn btn-default" role="button"
                             data-remote="false" data-toggle="modal" data-target="#modal" >
                             <img src="images/page4/iconUp.png" style="height: 18px;" />
                             <span class="TitrePodcast">
@@ -37,13 +37,22 @@ Before calling this template, please define the following variables:
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li class="dropdown-background-icon-button ButtonSuppAlbum">
+<<<<<<< HEAD
                                     <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php echo rawurlencode(trim($album_id)); ?>"
+=======
+                                    <a href="index.php?action=show_popup&amp;popup=delete_album&amp;album=<?php
+                                            echo rawurlencode(trim($album_name)); ?>&amp;album_id=<?php echo rawurlencode(trim($album_id)); ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"
+>>>>>>> FixCsrfIssue
                                         data-remote="false" data-toggle="modal" data-target="#modal">
                                         ®Delete_album®
                                     </a>
                                 </li>
                                 <li class="dropdown-background-icon-button ButtonEdit">
+<<<<<<< HEAD
                                     <a href="index.php?action=view_edit_album" data-remote="false" data-toggle="modal"
+=======
+                                    <a href="index.php?action=view_edit_album&sesskey=<?php echo $_SESSION['sesskey']; ?>" data-remote="false" data-toggle="modal"
+>>>>>>> FixCsrfIssue
                                         data-target="#modal">
                                         ®Edit_album®
                                     </a>
@@ -51,7 +60,7 @@ Before calling this template, please define the following variables:
                                 <?php if ($enable_moderator) {
                                                 ?>
                                     <li class="dropdown-background-icon-button ButtonModerator">
-                                        <a href="index.php?action=view_list_moderator" data-toggle="modal"
+                                        <a href="index.php?action=view_list_moderator&sesskey=<?php echo $_SESSION['sesskey']; ?>" data-toggle="modal"
                                             data-target="#modal">
                                             ®Moderator_manage®
                                         </a>
@@ -60,7 +69,11 @@ Before calling this template, please define the following variables:
                                             } ?>
                                 <li class="dropdown-background-icon-button ButtonResetBroadcast">
                                     <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php
+<<<<<<< HEAD
                                         echo $album_name_full; ?>" data-remote="false" data-toggle="modal"
+=======
+                                        echo $album_name_full; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" data-remote="false" data-toggle="modal"
+>>>>>>> FixCsrfIssue
                                         data-target="#modal">
                                         ®Reset_broadcast_link®
                                     </a>
@@ -69,7 +82,11 @@ Before calling this template, please define the following variables:
                                             ?>
                                     <li class="dropdown-background-icon-button ButtonResetStats">
                                         <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php
+<<<<<<< HEAD
                                             echo $album_name_full; ?>" data-remote="false" data-toggle="modal"
+=======
+                                            echo $album_name_full; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" data-remote="false" data-toggle="modal"
+>>>>>>> FixCsrfIssue
                                             data-target="#modal">
                                             ®Stats_Reset®
                                         </a>
@@ -98,7 +115,11 @@ Before calling this template, please define the following variables:
                     <a <?php if (!$public_album) {
                                             echo 'style="color: red !important;"';
                                         } ?>
+<<<<<<< HEAD
                         href="javascript:show_ezplayer_link('<?php echo $current_album; ?>');">
+=======
+                        href="javascript:show_ezplayer_link('<?php echo $current_album; ?>','<?php echo $_SESSION['sesskey']; ?>');">
+>>>>>>> FixCsrfIssue
                         <img src="images/page4/PictoEZPlayer.png" style="display:inline"/>
                         ®Player_url®
                     </a>
@@ -110,7 +131,7 @@ Before calling this template, please define the following variables:
                         <?php if (isset($current_tab) && $current_tab == 'stats') {
                                                 echo 'class="active"';
                                             } ?>>
-                        <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>'); ">
+                        <a href="javascript:show_stats_descriptives('<?php echo $current_album; ?>','<?php echo $_SESSION['sesskey']; ?>'); ">
                             <span class="glyphicon glyphicon-stats" aria-hidden="true" style="color: black;"></span>
                             ®Stats_Descriptives®
                         </a>

@@ -2,6 +2,7 @@
 <div class="page_title">®admins_list_title®</div>
 
 <table class="table table-striped table-bordered table-hover table-responsive users_table">
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <thead>
         <tr>
             <th>®user_ID®</th>
@@ -13,7 +14,7 @@
     <?php foreach ($admins as $a) {
     ?>
         <tr data-id="<?php echo $a['user_ID'] ?>">
-            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $a['user_ID']; ?>"><?php echo $a['user_ID']; ?></a></td>
+            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $a['user_ID']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $a['user_ID']; ?></a></td>
             <td><?php echo $a['forename'] . ' ' . $a['surname']; ?></td>
             <td class="unlink" style="cursor: pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_admin®</td>
         </tr>
@@ -36,11 +37,13 @@ $(".users_table .unlink").click(function() {
     if(!confirm("®remove_admin_confirm®")) return false;
    
     var user_ID = $this.parent().data("id");
-    
+    var sesskey = $("#sesskey").val();
+
     $.ajax("index.php?action=remove_admin", {
         type: "post",
         data: {
-            user_ID: user_ID
+            user_ID: user_ID,
+            sesskey: sesskey
         },
         success: function(jqXHR, textStatus) {
             console.log(jqXHR);
@@ -61,11 +64,13 @@ $(".create_link button[name='link']").click(function() {
     
     var user = $this.prev().val();
     $this.prev().val('');
-    
+    var sesskey = $("#sesskey").val();
+
     $.ajax("index.php?action=add_admin", {
        type: "post",
        data: {
-           user_ID: user
+           user_ID: user,
+           sesskey: sesskey
        },
        success: function(jqXHR, textStatus) {
            console.log(jqXHR);

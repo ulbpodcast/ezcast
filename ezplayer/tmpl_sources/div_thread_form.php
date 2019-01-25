@@ -73,7 +73,7 @@
                 <a class="button green2" tabindex='22' 
                    <?php
                    if (!acl_has_moderated_album() || acl_is_admin()) {
-                       echo "href='javascript:popup_thread_visibility('".$_SESSION['sesskey']."')' ";
+                       echo 'href="javascript:popup_thread_visibility(\''.trim($_SESSION['sesskey']).'\')"';
                    } else {
                        echo "href='javascript:if(thread_form_check()) thread_form_submit()' ";
                    }

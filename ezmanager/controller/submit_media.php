@@ -38,7 +38,7 @@ function index($param = array())
         die;
     }
 
-    if (!acl_session_key_check($input['sesskey'])) {
+    if (!acl_session_key_check($input['sesskey']) && !checkInitSubmitServiceVar($input)) {
         echo "Usage: Session key is not valid";
         die;
     }

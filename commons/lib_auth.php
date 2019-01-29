@@ -80,6 +80,7 @@ function checkauth($login, $passwd)
             if ($auth_user === false) {
                 checkauth_last_error("Authentication failure");
             }
+            $auth_user['user_is_admin']=isAdmin($login);
             // returns user info or false if user has not been found
             return $auth_user;
             // admin run as login
@@ -128,6 +129,7 @@ function checkauth($login, $passwd)
                     $auth_user["real_login"] = $real_login;
                 }
                 // returns user info or false if user has not been found
+                $auth_user['user_is_admin']=isAdmin($real_login);
                 return $auth_user;
             }
         }
@@ -150,4 +152,13 @@ function checkauth_last_error($msg = "")
         $last_error = $msg;
         return true;
     }
+}
+
+function isAdmin($username){
+    include 'admin.inc'; //file containing an assoc array of admin users
+    if (isset($admin[$username]))
+        return true;
+
+    else 
+        return false;
 }

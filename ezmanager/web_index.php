@@ -20,6 +20,11 @@ require_once 'lib_toc.php';
 $input = array_merge($_GET, $_POST);
 require_once '../commons/lib_sql_management.php';
 
+if ($maintenance_mode && !isset($_SESSION['user_is_admin'])){
+    include_once '../commons/maintenance_page.php';
+    die;
+}
+
 if (isset($input['lang'])) {
     set_lang($input['lang']);
 }
@@ -119,6 +124,7 @@ elseif (((isset($_SESSION['podman_logged']) && (!isset($input['action']) || empt
     redraw_page();
 }
 
+
 // At this point of the code, the user is logged in and explicitly specified an action.
 // We perform the action specified.
 else {
@@ -129,7 +135,8 @@ else {
         $_SESSION['add_moderator'] = 'false';
     }
         
-        
+
+
     $action = $input['action'];
     $redraw = false;
     /**
@@ -588,6 +595,9 @@ function user_login($login, $passwd)
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
     $_SESSION['termsOfUses'] = $res['termsOfUses'];
+    if(isset( $res['user_is_admin']) && $res['user_is_admin'] != '')
+        $_SESSION['user_is_admin'] = $res['user_is_admin'];
+    
     $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     //check flash plugin or GET parameter no_flash

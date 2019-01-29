@@ -193,4 +193,7 @@ $accepted_file_extensions = array('.html', '.xhtml', '.xml', '.htm', '.php'); //
 $enable_audio_submit=false;                 //Accept audio files in EZmanager submit form
 $enable_ezplayer_audio_download=false;      // enable the viewer to download mp3 files if exist
 
+$maintenance_mode = false;
+
+
 $matomoScript="";

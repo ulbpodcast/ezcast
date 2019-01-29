@@ -52,6 +52,11 @@ require_once 'lib_cache.php';
 require_once 'lib_acl.php';
 require_once '../commons/lib_mobile_detect.php';
 
+if ($maintenance_mode && !isset($_SESSION['user_is_admin'])){
+    include_once '../commons/maintenance_page.php';
+    die;
+}
+
 $detect = new Mobile_Detect();
 $_SESSION['isPhone'] = $detect->isMobile();
 

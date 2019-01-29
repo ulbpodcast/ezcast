@@ -1,11 +1,11 @@
-<?php
+<?php 
 /*
 * EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
 * Written by Michel Jansens <mjansens@ulb.ac.be>
-* 		    Arnaud Wijns <awijns@ulb.ac.be>
+*           Arnaud Wijns <awijns@ulb.ac.be>
 *                   Antoine Dewilde
 * UI Design by Julien Di Pietrantonio
 *
@@ -57,14 +57,14 @@
             if (strlen($metadata['name']) > 15) {
                 $metadata['name']=substr($metadata['name'], 0, 15)."...";
             } ?>
-            <li id="album_<?php echo $album_.'-priv'; ?>" class="album-in-list" title="<?php echo $full_name ?>">
+            <li id="album_<?php echo $album_.'-priv'; ?>" class="album-in-list<?php echo ($album_.'-priv' == $current_album) ? ' active' : ""; ?>" title="<?php echo $full_name ?>">
                 <a href="javascript:show_album_details('<?php echo $album_.'-priv'; ?>');">
                     <img style="width: 30px;" src="images/page4/iconAlbumPriv.png" />
                     <?php echo $displayed_name; ?> (®Private_album®)
                     <span style="float: right;top: 9px;" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 </a>
             </li>
-            <li id="album_<?php echo $album_.'-pub'; ?>" class="album-in-list album-separation" title="<?php echo $full_name ?>">
+            <li id="album_<?php echo $album_.'-pub'; ?>" class="album-in-list album-separation<?php echo ($album_.'-pub' == $current_album) ? ' active' : ""; ?>" title="<?php echo $full_name ?>">
                 <a href="javascript:show_album_details('<?php echo $album_.'-pub'; ?>');">
                     <img style="width: 30px;" src="images/page4/iconAlbumPublic.png" />
                     <?php echo $displayed_name; ?> (®Public_album®)

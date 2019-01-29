@@ -90,18 +90,19 @@ function index($param = array())
 
     // 4) Calling cli_mam_insert.php so that it adds the file into ezmam
     $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . dirname($path) . ' >>' . dirname($path) . '/mam_insert.log 2>&1"|at now';
-
-    $logger->log(
-        EventType::ASSET_CREATED,
-        LogLevel::NOTICE,
-       "User ".$_SESSION['user_login']." submitted asset",
-        array('submit_media'),
-        $tmp_name,
-        $_SESSION['user_full_name'],
-        "todo",
-        $input['album'],
-        ""
-    );
+    if(isset($logger)){
+        $logger->log(
+            EventType::ASSET_CREATED,
+            LogLevel::NOTICE,
+           "User ".$_SESSION['user_login']." submitted asset",
+            array('submit_media'),
+            $tmp_name,
+            $_SESSION['user_full_name'],
+            "todo",
+            $input['album'],
+            ""
+        );    
+    }
          
     exec($cmd, $output, $ret);
 

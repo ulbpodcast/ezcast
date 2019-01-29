@@ -58,7 +58,7 @@
 
             // TO DO : ADD sesskey definition
             function refresh_album_view() {
-                var sesskey = '<?php echo $input['sesskey']; ?>';
+                var sesskey = '<?php if(isset($input['sesskey'])) echo $input['sesskey']; ?>';
                 switch(tab) {
                     case 'stats':
                         show_stats_descriptives(current_album, sesskey);

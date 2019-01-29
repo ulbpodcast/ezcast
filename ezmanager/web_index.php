@@ -32,7 +32,7 @@ if (isset($input['lang'])) {
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
-if (isset($input['album']) && !acl_has_album_permissions($input['album']) && $input['action']!='album_create' && $input['action']!='add_moderator') {
+if (isset($input['album']) && !acl_has_album_permissions($input['album']) && $input['action']!='album_create' && $input['action']!='add_moderator' && $input['action']!='postVideo') {
     error_print_message("NON! ".template_get_message('Unauthorized', get_lang()));
     log_append('warning', $input['action'].': tried to access album ' . $input['album'] . ' without permission');
     die;
@@ -46,15 +46,16 @@ if (isset($input['action']) && $input['action'] == 'postVideo'  ) {
 //            requireController('postVideo_service.php');
             requireController('submit_media.php');
             index($paramController);
+            die;
         }
         else{      
             view_login_form();
             die;
         }
 }
-
 //
 // Login/logout
+
 //
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
@@ -442,7 +443,9 @@ function albums_view()
 
     $_SESSION['podman_mode'] = 'view_main';
 
-    global $album;
+    global $album;   
+    global $input;
+
     include_once template_getpath('main.php');
     //include_once "tmpl/fr/main.php";
 }

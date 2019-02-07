@@ -31,7 +31,7 @@
        <input type="hidden" name="action" value="submit_media_infos"/>
        <input type="hidden" name="album" value="<?php echo $album; ?>"/>
        <input type="hidden" name="moderation" value="<?php echo $moderation; ?>"/>
-       <input type="hidden" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
+       <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
 
          <p>
              ®Album®: <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
@@ -51,7 +51,7 @@
              </label>
          <br/>
          <br/>
-         <input type="hidden" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
+         <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
          <input type="submit" name="®Next®" /></p>
    </form>
 </div>

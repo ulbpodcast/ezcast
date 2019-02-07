@@ -74,7 +74,7 @@ for every album the user can create.
             <center>
                 <input id="datepicker_<?php echo $asset_name; ?>" class="datepicker" type="text" name="date" value="">
             </center>
-            <input type="hidden" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
             <script>
                 $(function () {
                     d = new Date();

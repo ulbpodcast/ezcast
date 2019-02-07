@@ -1993,9 +1993,11 @@ function ezmam_album_token_manager_get($album)
 }
 function ezmam_album_token_manager_set($album)
 {
-    if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager') || file_get_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager') =='') {
-        $token = ezmam_token_generate_random();
-        file_put_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager', $token);
+    if (file_exists($album)) {
+        if (!file_exists(ezmam_repository_path() . '/' . $album . '/_tokenmanager') || file_get_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager') =='') {
+            $token = ezmam_token_generate_random();
+            file_put_contents(ezmam_repository_path() . '/' . $album . '/_tokenmanager', $token);
+        }
     }
 }
 

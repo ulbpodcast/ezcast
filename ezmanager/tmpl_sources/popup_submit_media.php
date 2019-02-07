@@ -289,7 +289,7 @@ if (isset($album_metadata['course_code_public']) && $album_metadata['course_code
         <iframe id="uploadFrame" src='' name="uploadFrame" style="display:none;"></iframe>
 
     </div>
-    <input type="hidden" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
+    <input type="hidden" name="sesskey" id="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
     <div class="modal-footer">
         <button class="btn btn-primary" id="submitButton" onclick="if (check_form()) sendRequest()">®Submit®</button>
     </div>

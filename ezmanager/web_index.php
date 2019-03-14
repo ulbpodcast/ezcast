@@ -13,11 +13,17 @@ require_once 'lib_ezmam.php';
 require_once '../commons/lib_auth.php';
 require_once '../commons/lib_various.php';
 require_once '../commons/lib_template.php';
+require_once '../commons/config.inc';
 require_once 'lib_various.php';
 require_once 'lib_upload.php';
 require_once 'lib_toc.php';
 $input = array_merge($_GET, $_POST);
 require_once '../commons/lib_sql_management.php';
+
+if ($maintenance_mode && !isset($_SESSION['user_is_admin'])){
+    include_once '../commons/maintenance_page.php';
+    die;
+}
 
 if (isset($input['lang'])) {
     set_lang($input['lang']);
@@ -26,11 +32,39 @@ if (isset($input['lang'])) {
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
+if (isset($input['album']) && !acl_has_album_permissions($input['album']) && $input['action']!='album_create' && $input['action']!='add_moderator' && $input['action']!='postVideo') {
+    error_print_message("NON! ".template_get_message('Unauthorized', get_lang()));
+    log_append('warning', $input['action'].': tried to access album ' . $input['album'] . ' without permission');
+    die;
+}
+
+
+//service post from webservice
+if (isset($input['action']) && $input['action'] == 'postVideo'  ) {
+        
+        if(checkInitSubmitServiceVar($input)){
+//            requireController('postVideo_service.php');
+            requireController('submit_media.php');
+            index($paramController);
+            die;
+        }
+        else{      
+            view_login_form();
+            die;
+        }
+}
 //
 // Login/logout
+
 //
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
+    
+//    if( ((isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1) ||  !isset($_SESSION['termsOfUses']))  && $enable_termsOfUse){
+//        view_termsOfUses_form();
+//        $_SESSION['redirect']=json_encode($input);
+//        die();
+//    }
     if (isset($input['action']) && $input['action'] == 'view_help') {
         requireController('view_help.php');
         index();
@@ -74,6 +108,11 @@ if (!user_logged_in()) {
         }
     }
 }
+else if(isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1 && ($input['action']!='acceptTermsOfUses') && $enable_termsOfUse){
+    view_termsOfUses_form();
+    $_SESSION['redirect']=json_encode($input);
+    die();
+}
 
 // At this point of the code, the user is supposed to be logged in.
 // We check whether they specified an action to perform. If not, it means they landed
@@ -86,6 +125,7 @@ elseif (((isset($_SESSION['podman_logged']) && (!isset($input['action']) || empt
     redraw_page();
 }
 
+
 // At this point of the code, the user is logged in and explicitly specified an action.
 // We perform the action specified.
 else {
@@ -95,6 +135,7 @@ else {
         $input['tokenmanager'] = $_SESSION['add_moderator_token'];
         $_SESSION['add_moderator'] = 'false';
     }
+        
 
 
     $action = $input['action'];
@@ -106,16 +147,20 @@ else {
      */
     global $service; //true if we're currently running a service.
     $service = false;
-
+    
     //
     // Actions
     //
     // Controller goes here
-
-
+    
+    
     $paramController = array();
     switch ($action) {
         // The user clicked on an album, we display its content to them
+
+        case 'acceptTermsOfUses':
+            requireController('acceptTermsOfUses.php');
+            break;
 
         case 'view_album':
             requireController('view_album.php');
@@ -131,6 +176,10 @@ else {
             requireController('view_help.php');
             break;
 
+        case 'update_ezrecorder':
+            $service = true;
+            requireController('update_ezrecorder.php');
+            break;    
         // Display the update page
         case 'view_update':
             requireController('view_update.php');
@@ -154,19 +203,19 @@ else {
             $service = true;
             requireController('reset_rss.php');
             break;
-
+        
         case 'view_stats':
             requireController('view_stats.php');
             break;
-
+        
         case 'view_ezplayer_link':
             requireController('view_ezplayer_link.php');
             break;
-
+        
         case 'view_ezmanager_link':
             requireController('view_ezmanager_link.php');
             break;
-
+        
         //The users wants to upload an asset into the current album, show lets show him the upload form
         case 'submit_media_progress_bar':
             $service = true;
@@ -180,7 +229,7 @@ else {
         case 'view_edit_album':
             requireController('view_edit_album.php');
             break;
-
+            
         case 'view_list_moderator':
             requireController('moderator_management.php');
             break;
@@ -230,7 +279,7 @@ else {
             $service = true;
             requireController('asset_downloadable_set.php');
             break;
-        case 'postedit_asset':
+	case 'postedit_asset':
             $service = true;
             requireController('asset_postedit.php');
             break;
@@ -297,27 +346,34 @@ else {
             requireController('album_add_moderator.php');
             // redraw_page();
             break;
-
+            
         case 'regen_title':
             $service = true;
             requireController('asset_title_regen.php');
             break;
-
+            
         case 'delete_user_course':
             requireController('moderator_delete.php');
             break;
-
+        
         case 'album_stats_reset':
             requireController('album_stats_reset.php');
             break;
 
+	case 'send_link_moderator':
+            global $enable_moderator;
+            if($enable_moderator)
+            {
+                requireController('send_link_moderator.php');
+            }
+            break;
         //debugging should be removed in prod
         // No action selected: we choose to display the homepage again
         default:
             // TODO: check session var here
             albums_view();
     }
-
+    
     // Call the function to view the page
     index($paramController);
 }
@@ -348,14 +404,17 @@ function view_login_form()
     global $ezmanager_url;
     global $error, $input;
     global $auth_methods;
+    global $sso_only;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash'])) {
         $_SESSION['has_flash'] = false;
     }
     $url = $ezmanager_url;
-    // template include goes here
+    // template include goes here    
     $sso_enabled = in_array("sso", $auth_methods);
+    $file_enabled = ((in_array("file", $auth_methods) && !$sso_only)  || ($sso_only && isset($_GET["local"])) || (!$sso_enabled && in_array("file", $auth_methods)) );
+    
     include_once template_getpath('login.php');
 }
 
@@ -387,7 +446,9 @@ function albums_view()
 
     $_SESSION['podman_mode'] = 'view_main';
 
-    global $album;
+    global $album;   
+    global $input;
+
     include_once template_getpath('main.php');
     //include_once "tmpl/fr/main.php";
 }
@@ -432,13 +493,13 @@ function redraw_page()
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
         $title = choose_title_from_metadata($metadata);
-
+        
         if (isset($metadata['id'])) {
             $album_id = $metadata['id'];
         } else {
             $album_id = $metadata['name'];
         }
-
+        
         if (isset($metadata['course_code_public']) && $metadata['course_code_public']!="") {
             $course_code_public = $metadata['course_code_public'];
         }
@@ -475,6 +536,11 @@ function refresh_page()
 }
 
 
+function view_termsOfUses_form(){
+    include_once template_getpath('div_termsOfUses.php');
+
+}
+
 //
 // "Business logic" functions
 //
@@ -498,10 +564,13 @@ function user_login($login, $passwd)
         die;
     }
 
-    $login_parts = explode("/", $login);
-
-    // checks if runas
-    if (count($login_parts) == 2) {
+     $res = checkauth(strtolower($login), $passwd);
+    if($res){
+      //auth succeeded but if it is a runas, we still need to check if user is in admin.inc  
+      $login_parts = explode("/", $login);
+    
+      // checks if runas
+      if (count($login_parts) == 2) {
         if (!file_exists('admin.inc')) {
             $error = "Not admin. runas login failed";
             view_login_form();
@@ -509,14 +578,17 @@ function user_login($login, $passwd)
         }
         include 'admin.inc'; //file containing an assoc array of admin users
         if (!isset($admin[$login_parts[0]])) {
+            var_dump($admin);
+            print "login_parts";
+                        var_dump($login_parts);die;
             $error = "Not admin. runas login failed";
             view_login_form();
             die;
         }
     }
 
-    $res = checkauth(strtolower($login), $passwd);
-    if (!$res) {
+    }
+    else{
         $error = checkauth_last_error();
         view_login_form();
         die;
@@ -528,6 +600,11 @@ function user_login($login, $passwd)
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
+    $_SESSION['termsOfUses'] = $res['termsOfUses'];
+    if(isset( $res['user_is_admin']) && $res['user_is_admin'] != '')
+        $_SESSION['user_is_admin'] = $res['user_is_admin'];
+    
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
@@ -548,7 +625,10 @@ function user_login($login, $passwd)
         error_print_message(template_get_message('not_registered', get_lang()), false);
         log_append('warning', $res['login'] . ' tried to access ezmanager but doesn\'t have permission to manage any album.');
         session_destroy();
-        view_login_form();
+        
+        //MOFIF !!!!!!!!!!!
+        header("Location: https://ezcast.uclouvain.be?noPerm"); 
+//        view_login_form();
         die;
     }
 

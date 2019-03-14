@@ -42,17 +42,15 @@ $ezmanager_url = "$application_url/ezmanager";
 $ezmanager_safe_url = "$application_safe_url/ezmanager";
 $ezplayer_url = "$application_url/ezplayer";
 $ezplayer_safe_url = "$application_safe_url/ezplayer";
-$distribute_url = "$ezmanager_safe_url/distribute.php";
+$distribute_url = "$ezmanager_url/distribute.php";
 
 // Absolute paths 
 $repository_basedir = "/var/lib/ezcast";
 $basedir = "/usr/local/ezcast";
-$php_exec_path="/usr/bin/php";
+
 // Database info
 $db_type = 'mysql';
 $db_host = 'localhost';
-$db_port = "";
-                                            
 $db_login = "ezcast";
 $db_passwd = "";
 $db_name = "ezcast";
@@ -129,7 +127,7 @@ $sso_ssp_lib = "/var/simplesamlphp/lib";
 $sso_ssp_sp = "default-sp";
 $sso_ssp_att_name = "sn";
 $sso_ssp_att_firstname = "givenName";
-$sso_ssp_att_email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+//$sso_ssp_att_email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
 $sso_ssp_att_email = "mail";
 $sso_ssp_att_login = "uid";
 
@@ -185,15 +183,3 @@ if(basename(__FILE__) != "config-sample.inc") {
     require_once(__DIR__ . '/common.inc');
     require_once('logger_server.php');
 }
-// Various parameters
-$accepted_languages = array('fr', 'en'); // Accepted parameters for the language to use
-$accepted_file_extensions = array('.html', '.xhtml', '.xml', '.htm', '.php'); // File with these extensions will be considered as template files
-
-//Parameters for inclusion of audio files
-$enable_audio_submit=false;                 //Accept audio files in EZmanager submit form
-$enable_ezplayer_audio_download=false;      // enable the viewer to download mp3 files if exist
-
-$maintenance_mode = false;
-
-
-$matomoScript="";

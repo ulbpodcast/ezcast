@@ -94,7 +94,26 @@ You should not have to include this file yourself.
                 <p class="help-block"><a class="info small">®More_info®<span>®Titling_info®</span></a></p>
             </div>
         </div>
-        
+
+        <div class="form-group">
+            <label for="Credits" class="col-sm-2 control-label">®Credits®</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="credits" id="credits">
+                    <option value="">®None_credits®</option>
+                    <?php
+                    foreach ($credits as $credit) {
+                        echo '<option ';
+                        if ($credit['value'] == $album_credits) {
+                            echo 'selected="selected" ';
+                        }
+                        echo 'value="'. $credit['value'] . '">' . $credit['label']. '</option>';
+                    }
+                    ?>
+                </select>
+                <p class="help-block"><a class="info small">®More_info®<span>®Credits_info®</span></a></p>
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
@@ -148,6 +167,7 @@ You should not have to include this file yourself.
             function submit_edit_form() {
                 var intro = encodeURIComponent(document.getElementById('intro').value);
                 var add_title = encodeURIComponent(document.getElementById('add_title').value);
+                var credits = encodeURIComponent(document.getElementById('credits').value);
                 var downloadable = encodeURIComponent(document.getElementById('downloadable').checked);
                 var sesskey = encodeURIComponent(document.getElementById('sesskey').value);
 //                var anon_access = encodeURIComponent(document.getElementById('anon_access').checked);
@@ -157,7 +177,7 @@ You should not have to include this file yourself.
                 setTimeout(function(){ 
                     display_bootstrap_modal_url($('#modal'), 'index.php?action=edit_album&session_id=<?php echo session_id(); ?>&album=<?php 
                     echo $album; ?>&moderation=<?php echo $moderation; ?>&intro=' + intro + '&add_title=' + 
-                    add_title + '&downloadable=' + downloadable + '&anon_access=' + anon_access + '&sesskey=' + sesskey);
+                    add_title + '&credits=' + credits + '&downloadable=' + downloadable + '&anon_access=' + anon_access + '&sesskey=' + sesskey);
                     $('#modal').modal('show'); 
                 }, 500);
             }

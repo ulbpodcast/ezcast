@@ -95,8 +95,8 @@ else {
         $input['tokenmanager'] = $_SESSION['add_moderator_token'];
         $_SESSION['add_moderator'] = 'false';
     }
-        
-        
+
+
     $action = $input['action'];
     $redraw = false;
     /**
@@ -106,13 +106,13 @@ else {
      */
     global $service; //true if we're currently running a service.
     $service = false;
-    
+
     //
     // Actions
     //
     // Controller goes here
-    
-    
+
+
     $paramController = array();
     switch ($action) {
         // The user clicked on an album, we display its content to them
@@ -154,19 +154,19 @@ else {
             $service = true;
             requireController('reset_rss.php');
             break;
-        
+
         case 'view_stats':
             requireController('view_stats.php');
             break;
-        
+
         case 'view_ezplayer_link':
             requireController('view_ezplayer_link.php');
             break;
-        
+
         case 'view_ezmanager_link':
             requireController('view_ezmanager_link.php');
             break;
-        
+
         //The users wants to upload an asset into the current album, show lets show him the upload form
         case 'submit_media_progress_bar':
             $service = true;
@@ -180,7 +180,7 @@ else {
         case 'view_edit_album':
             requireController('view_edit_album.php');
             break;
-            
+
         case 'view_list_moderator':
             requireController('moderator_management.php');
             break;
@@ -230,7 +230,10 @@ else {
             $service = true;
             requireController('asset_downloadable_set.php');
             break;
-
+        case 'postedit_asset':
+            $service = true;
+            requireController('asset_postedit.php');
+            break;
         case 'delete_asset':
             $service = true;
             requireController('asset_delete.php');
@@ -294,16 +297,16 @@ else {
             requireController('album_add_moderator.php');
             // redraw_page();
             break;
-            
+
         case 'regen_title':
             $service = true;
             requireController('asset_title_regen.php');
             break;
-            
+
         case 'delete_user_course':
             requireController('moderator_delete.php');
             break;
-        
+
         case 'album_stats_reset':
             requireController('album_stats_reset.php');
             break;
@@ -314,7 +317,7 @@ else {
             // TODO: check session var here
             albums_view();
     }
-    
+
     // Call the function to view the page
     index($paramController);
 }
@@ -429,13 +432,13 @@ function redraw_page()
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
         $title = choose_title_from_metadata($metadata);
-        
+
         if (isset($metadata['id'])) {
             $album_id = $metadata['id'];
         } else {
             $album_id = $metadata['name'];
         }
-        
+
         if (isset($metadata['course_code_public']) && $metadata['course_code_public']!="") {
             $course_code_public = $metadata['course_code_public'];
         }

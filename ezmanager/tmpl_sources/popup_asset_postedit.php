@@ -1,9 +1,3 @@
-<?php
-$assoc_metadata=ezmam_album_orig_metadata_get($album,$asset);
-
-$start_time= 0.0;
-$end_time=$assoc_metadata['duration'];
-?>
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <h4 class="modal-title">®Postedit_video_title®</h4>
@@ -30,7 +24,7 @@ $end_time=$assoc_metadata['duration'];
         <button type="button" id="playToggleBtn">play</button>
         <button type="button" id="setMarkerBtn">set mark</button>
         <button type="button" id="delMarkerBtn">del mark</button>
-        <button type="button" onclick="addSubBtnToggle()">test this shit</button>
+        <button type="button" onclick="thisLog()">test this shit</button>
         <div style="padding:5px;"></div>
       </div>
       <div class="row" id="workingCutDiv" style="display:none">
@@ -158,8 +152,8 @@ $(document).ready(function(){
   }),
   $("#workingCutValidBtn").on("click",function(){
     recordWorkingCut("interval");
-
   })
+
 });
 //set min max for input
 function updateWorkingCutInputMinMax() {
@@ -181,8 +175,6 @@ function updateWorkingCutInputMinMax() {
       "max":max
     });
   }
-
-
 }
 //workingCutArray & display updater function
 function updateWorkingCutInput(){
@@ -345,7 +337,6 @@ function findMinValue(){
     for (var i = 0; i < cutArray.length; i++) {
       if(workingCutArray[0]>cutArray[i][1]&&(workingCutArray[0]-cutArray[i][1])<(workingCutArray[0]-min)){
         min=cutArray[i][1];
-
       }
     }
   }
@@ -398,20 +389,15 @@ function recordWorkingCut(mode) {
     else{
       if (true) {
         console.log(cutArray.length);
-
-
           for (var i = 0; i < cutArray.length; i++) {
             console.log("for for cutarray"+cutArray[i][1]+"=="+min);
             if(min==cutArray[i][1]){
               cutArray[i][1]=workingCutArray[0];
             }
           }
-
-
       }else{
         return;
       }
-
     }
   }
   else if (mode==="max") {
@@ -474,48 +460,40 @@ function cutTableGen(){
   }
 }
 function sortArray() {
-    var tArray=cutArray;
-    if((tArray.length)>1){
-      for (var i = tArray.length-1; i > 0; i--) {
-        array[i]
-      }
+  var tArray=cutArray;
+  if((tArray.length)>1){
+    for (var i = tArray.length-1; i > 0; i--) {
+      array[i]
     }
-    return tArray;
   }
-
-
-
-
-
-
-  function allVideoPlay(){
-    if($('.popup_video_player video')[0].paused){
-      curPlayValue=parseFloat(document.getElementById("cursorValue").value);
-      var allVideoPlayer = $('.popup_video_player video');
-      for(var i = 0; i < allVideoPlayer.length; i++) {
-        var video = $('.popup_video_player video')[i];
-        video.play();
-      }
-      document.getElementById('play').value="Stop";
-    }else {
-      var allVideoPlayer = $('.popup_video_player video');
-      for(var i = 0; i < allVideoPlayer.length; i++) {
-        var video = $('.popup_video_player video')[i];
-        video.pause();
-      }
-      document.getElementById('play').value="Preview";
-      adaptVideoTime(parseFloat(document.getElementById("cursorValue").value));
-    }
-
-  }
-  function adaptVideoTime(xValue) {
-    var newVideoTime = xValue;
+  return tArray;
+}
+function allVideoPlay(){
+  if($('.popup_video_player video')[0].paused){
+    curPlayValue=parseFloat(document.getElementById("cursorValue").value);
     var allVideoPlayer = $('.popup_video_player video');
     for(var i = 0; i < allVideoPlayer.length; i++) {
       var video = $('.popup_video_player video')[i];
-      video.currentTime = newVideoTime;
+      video.play();
     }
-    //addPlotLine(xValue);
+    document.getElementById('play').value="Stop";
+  }else {
+    var allVideoPlayer = $('.popup_video_player video');
+    for(var i = 0; i < allVideoPlayer.length; i++) {
+      var video = $('.popup_video_player video')[i];
+      video.pause();
+    }
+    document.getElementById('play').value="Preview";
+    adaptVideoTime(parseFloat(document.getElementById("cursorValue").value));
   }
-  </script>
-  <?php } ?>
+}
+function adaptVideoTime(xValue) {
+  var newVideoTime = xValue;
+  var allVideoPlayer = $('.popup_video_player video');
+  for(var i = 0; i < allVideoPlayer.length; i++) {
+    var video = $('.popup_video_player video')[i];
+    video.currentTime = newVideoTime;
+  }
+}
+</script>
+<?php } ?>

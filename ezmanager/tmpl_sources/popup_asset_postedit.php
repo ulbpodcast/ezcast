@@ -1,5 +1,6 @@
 <?php
 $assoc_metadata=ezmam_album_orig_metadata_get($album,$asset);
+
 $start_time= 0.0;
 $end_time=$assoc_metadata['duration'];
 ?>
@@ -86,7 +87,7 @@ $end_time=$assoc_metadata['duration'];
 <script>
 (function() {
   <?php if ($has_cam) {
-    echo "`show_embed_player`('".$album."', '".$asset."', 'low', 'cam', '" .
+    echo "show_embed_player('".$album."', '".$asset."', 'low', 'cam', '" .
     $asset_token. "', 'Popup_Player_" . $asset . "_cam', '100%', '100%');";
   }
 

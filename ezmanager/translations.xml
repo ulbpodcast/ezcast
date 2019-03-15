@@ -5,7 +5,7 @@
 -->
 
 <data>
-    <!-- Labels are keywords that appear in templates 
+    <!-- Labels are keywords that appear in templates
          Note: use the same label name as the keyword between ®'s that appears in the template -->
     <labels>
         <!-- Product-wise stuff -->
@@ -15,7 +15,7 @@
         <label id="service_description" lang="en">Recordings management interface</label>
         <label id="podman_page_title" lang="fr">EZmanager</label>
         <label id="podman_page_title" lang="en">EZmanager</label>
-        
+
         <!-- Useful keywords -->
         <label id="Yes" lang="fr">Oui</label>
         <label id="Yes" lang="en">Yes</label>
@@ -27,7 +27,7 @@
         <label id="OK" lang="en">OK</label>
         <label id="Next" lang="fr">Suivant</label>
         <label id="Next" lang="en">Next</label>
-        <label id="Type" lang="fr">Type</label> 
+        <label id="Type" lang="fr">Type</label>
         <label id="Type" lang="en">Type</label>
         <label id="cam" lang="fr">Vidéo caméra</label>
         <label id="cam" lang="en">Camera movie file</label>
@@ -77,7 +77,7 @@
         <label id="Jingle_info" lang="en">Animation added before the actual video.</label>
         <label id='None_intro' lang="fr">Aucun</label>
         <label id='None_intro' lang="en">None</label>
-        
+
         <label id="Credit" lang="fr">Crédits</label>
         <label id="Credit" lang="en">Credits</label>
         <label id="Credits" lang="fr">Générique fin</label>
@@ -86,11 +86,11 @@
         <label id="Credits_info" lang="en">Animation added after the actual video.</label>
         <label id='None_credits' lang="fr">Aucun</label>
         <label id='None_credits' lang="en">None</label>
-        
+
         <label id="Title" lang="fr">Titre</label>
         <label id="Title" lang="en">Title</label>
         <label id="Title_info" lang="fr">Max. 70 caractères</label>
-        <label id="Title_info" lang="en">Max. 70 characters</label>        
+        <label id="Title_info" lang="en">Max. 70 characters</label>
         <label id="Titling" lang="fr">Titrage</label>
         <label id="Titling" lang="en">Titling</label>
         <label id="Titling_info" lang="fr">Information affichée après le générique, en début de vidéo. Le titrage par défaut reprend l'album dans lequel est soumise la vidéo, le titre, l'auteur et la date de publication de la vidéo.</label>
@@ -156,9 +156,9 @@
         <label id="Publication" lang="fr">Publication</label>
         <label id="Publication" lang="en">Publication</label>
         <label id="Download" lang="fr">Téléchargement</label>
-        <label id="Download" lang="en">Download</label>  
-        <label id="ULBcode" lang="fr">Site Manager</label>    
-        <label id="ULBcode" lang="en">Site Manager</label>      
+        <label id="Download" lang="en">Download</label>
+        <label id="ULBcode" lang="fr">Site Manager</label>
+        <label id="ULBcode" lang="en">Site Manager</label>
         <label id="Embed" lang="fr">Embed</label>
         <label id="Embed" lang="en">Embed</label>
         <label id="high_res" lang="fr">Haute résolution</label>
@@ -212,9 +212,9 @@
         <label id="schedule_public_at" lang="en">Select the date and hour you want the recording to be move in public folder</label>
         <label id="schedule_prive_at" lang="fr">Sélectionnez la date et heure à laquelle vous souhaitez que  l\'enregistrement soit déplacé dans votre album privé</label>
         <label id="schedule_prive_at" lang="en">Select the date and hour you want the recording to be move in private folder</label>
-        
+
         <label id="Album_type" lang="fr">  Type d'album : </label>
-        <label id="Album_type" lang="en"> Album Type: </label>	
+        <label id="Album_type" lang="en"> Album Type: </label>
         <label id="Cours_officiel" lang="fr">  Cours officiel </label>
         <label id="Cours_officiel" lang="en">  Official Course </label>
         <label id="Course" lang="en">Course </label>
@@ -233,7 +233,7 @@
         <label id="asset_copy_success" lang="en"> Asset copy was successfully started </label>
 
 
-        
+
         <!-- Actions and buttons -->
         <label id="Browse" lang="fr">Parcourir</label>
         <label id="Browse" lang="en">Browse</label>
@@ -241,6 +241,8 @@
         <label id="Copy" lang="en">Copy</label>
         <label id="Delete" lang="fr">Supprimer</label>
         <label id="Delete" lang="en">Delete</label>
+        <label id="EditVideo" lang="fr">Editer la vidéo</label>
+        <label id="EditVideo" lang="en">Edit the video</label>
         <label id="Edit" lang="fr">Editer</label>
         <label id="Edit" lang="en">Edit</label>
         <label id="Move" lang="fr">Déplacer</label>
@@ -296,12 +298,16 @@
         <label id="Moderator_manage" lang="en">Moderator management</label>
         <label id="Moderator_manage" lang="fr">Gestion des modérateurs</label>
         <label id="Regen_Intro" lang="fr">Regénérer l'intro</label>
-        <label id="Regen_Intro" lang="en">Regen Intro</label>        
+        <label id="Regen_Intro" lang="en">Regen Intro</label>
         <label id="authSSO" lang="fr">Authentification SSO</label>
         <label id="authSSO" lang="en">SSO Authentication</label>
         <label id="authLocal" lang="fr">Authentification Locale</label>
         <label id="authLocal" lang="en">Local Authentication</label>
-        
+        <label id="videoStart" lang="fr">Début de la vidéo</label>
+        <label id="videoStart" lang="en">Start of the video</label>
+        <label id="videoEnd" lang="fr">Fin de la vidéo</label>
+        <label id="videoEnd" lang="en">End of the video</label>
+
         <!-- Titles -->
         <label id="Asset_sched_succeeded_title" lang="fr">Programmation d'asset terminée</label>
         <label id="Asset_sched_succeeded_title" lang="en">Asset successfully scheduled</label>
@@ -341,7 +347,10 @@
         <label id="Password" lang="en">Password</label>
         <label id="Connect" lang="fr">Connexion</label>
         <label id="Connect" lang="en">Log in</label>
-        
+
+        <label id="Postedit_video_title" lang="fr">Editeur d'enregistrement</label>
+        <label id="Postedit_video_title" lang="en">Recording editor</label>
+
         <!-- Long texts -->
         <label id="Destructive_operation" lang="fr">Opération destructive non-réversible.</label>
         <label id="Destructive_operation" lang="en">Destructive, non-reversible operation.</label>
@@ -391,7 +400,7 @@
         <label id="Delete_album_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete the albums for &lt;?php echo $album_name; ?&gt;. By doing so, you will delete both the &lt;strong&gt;public&lt;/strong&gt; &lt;i&gt;and&lt;/i&gt; &lt;strong&gt;private&lt;/strong&gt; albums, as well as all of their content. The other owners of the album will also lose access to this album.</label>
         <label id="Delete_modo_message" lang="fr">&lt;strong&gt;Attention : &lt;/strong&gt;vous vous apprêtez à supprimer un modérateur. En faisant ainsi, vous supprimerez définitivement l'accès à l'album pour cette personne.</label>
         <label id="Delete_modo_message" lang="en">&lt;strong&gt;Caution &lt;/strong&gt;you are about to delete a moderator. He will loose the access to the album</label>
-       
+
         <label id="Album_deletion_succeeded_message" lang="fr">Albums public et privé supprimés.</label>
         <label id="Album_deletion_succeeded_message" lang="en">Public and private albums deleted.</label>
         <label id="Album_edition_succeeded_message" lang="fr">Les propriétés de l'album ont été correctement mises à jour.</label>
@@ -446,7 +455,7 @@
         <label id="Stats_successfully_reset_message" lang="en">Statistics have successfully been reset</label>
         <label id="Assets_list" lang="fr">Liste des vidéos</label>
         <label id="Assets_list" lang="en">List of videos</label>
-        
+
         <!-- Stats -->
         <label id="Stats_No_stats" lang="en">No statistics to display</label>
         <label id="Stats_No_stats" lang="fr">Aucune statistique à afficher</label>
@@ -507,7 +516,7 @@
         <label id="year" lang="en">Year</label>
         <label id="all" lang="fr">Tout</label>
         <label id="all" lang="en">All</label>
-        
+
         <label id="month_01" lang="fr">janvier</label>
         <label id="month_01" lang="en">January</label>
         <label id="month_02" lang="fr">février</label>
@@ -532,7 +541,7 @@
         <label id="month_11" lang="en">November</label>
         <label id="month_12" lang="fr">décembre</label>
         <label id="month_12" lang="en">December</label>
-        
+
         <label id="short_month_01" lang="fr">Jan</label>
         <label id="short_month_01" lang="en">Jan</label>
         <label id="short_month_02" lang="fr">Fév</label>
@@ -557,15 +566,15 @@
         <label id="short_month_11" lang="en">Nov</label>
         <label id="short_month_12" lang="fr">Déc</label>
         <label id="short_month_12" lang="en">Dec</label>
-        
+
     </labels>
-    
+
     <!-- Messages are texts that are dynamically generated (errors, etc.) -->
     <messages>
         <!-- Random messages -->
         <message id="view_video" lang="fr">Voir la vidéo</message>
         <message id="view_video" lang="en">View video</message>
-        
+
         <!-- Errors -->
         <message id="error_mimetype" lang="fr">Le fichier soumis ne semble pas être de type video</message>
         <message id="error_mimetype" lang="en">The submitted file doesnt seem to be a movie</message>
@@ -606,9 +615,9 @@
         <message id="write_error" lang="fr">Une erreur est survenue à l'écriture du fichier sur le serveur</message>
         <message id="write_error" lang="en">An error occured while writting the file on the server</message>
     </messages>
-    
+
         <!-- update 2016/07/15 -->
-    <!-- information customized by organisation -->   
+    <!-- information customized by organisation -->
     <infos>
         <info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
         <info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" target="_blank" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a target="_blank" href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
@@ -621,20 +630,20 @@
         <info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
         <info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
         <info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
-        <info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>		
+        <info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>
 
         <info id="tuto" organization="© Université libre de Bruxelles" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
         <info id="tuto" organization="© Université libre de Bruxelles" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
         <info id="tuto" organization="© Université Catholique de Louvain" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://ezcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
         <info id="tuto" organization="© Université Catholique de Louvain" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://ezcast.uclouvain.be" target="_blank"&gt;UCL Podcast&lt;/a&gt;&quot;</info>
         <info id="tuto" organization="© Your organization name" lang="fr">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
-        <info id="tuto" organization="© Your organization name" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>		
+        <info id="tuto" organization="© Your organization name" lang="en">l'&lt;em&gt;Espace enseignants&lt;/em&gt; du site &quot;&lt;a href="http://podcast.ulb.ac.be" target="_blank"&gt;ULB Podcast&lt;/a&gt;&quot;</info>
 
         <info id="email" organization="© Université libre de Bruxelles" lang="fr">podcast@ulb.ac.be</info>
         <info id="email" organization="© Université libre de Bruxelles" lang="en">podcast@ulb.ac.be</info>
         <info id="email" organization="© Université Catholique de Louvain" lang="fr">podcast@uclouvain.be</info>
         <info id="email" organization="© Université Catholique de Louvain" lang="en">podcast@uclouvain.be</info>
         <info id="email" organization="© Your organization name" lang="fr">podcast@ulb.ac.be</info>
-        <info id="email" organization="© Your organization name" lang="en">podcast@ulb.ac.be</info>	
+        <info id="email" organization="© Your organization name" lang="en">podcast@ulb.ac.be</info>
     </infos>
 </data>

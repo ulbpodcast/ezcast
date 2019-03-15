@@ -86,7 +86,7 @@ $end_time=$assoc_metadata['duration'];
 <script>
 (function() {
   <?php if ($has_cam) {
-    echo "show_embed_player('".$album."', '".$asset."', 'low', 'cam', '" .
+    echo "`show_embed_player`('".$album."', '".$asset."', 'low', 'cam', '" .
     $asset_token. "', 'Popup_Player_" . $asset . "_cam', '100%', '100%');";
   }
 

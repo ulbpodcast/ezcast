@@ -29,7 +29,7 @@ function index($param = array())
         case 'ulb_code':
             popup_ulb_code();
             break;
-        
+
         case 'new_album':
             popup_new_album();
             break;
@@ -37,7 +37,7 @@ function index($param = array())
         case 'delete_album':
             popup_delete_album();
             break;
-        
+
         case 'reset_rss_feed':
             reset_rss_feed();
             break;
@@ -65,19 +65,19 @@ function index($param = array())
         case 'schedule_asset':
             schedule_asset();
             break;
-        
+
         case 'regen_title':
             regen_title();
             break;
-        
+
         case 'moderator_delete':
             moderator_delete();
             break;
-        
+
         case 'asset_stats':
             asset_stats();
             break;
-        
+
         case 'album_stats_reset':
             album_stats_reset();
             break;
@@ -85,7 +85,10 @@ function index($param = array())
         case 'copy_asset':
             copy_asset();
             break;
-        
+        case 'postedit_asset':
+            postedit_asset();
+            break;
+
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
             die;
@@ -373,7 +376,7 @@ function regen_title()
     $asset_name = $input['asset'];
     $album = $input['album'];
     $title = $input['title'];
-    
+
     require template_getpath('popup_regen_title.php');
 }
 
@@ -386,7 +389,7 @@ function moderator_delete()
     }
     $album = $input['album'];
     $id_user = $input['id_user'];
-    
+
     require template_getpath('popup_moderator_delete.php');
 }
 
@@ -394,13 +397,13 @@ function asset_stats()
 {
     global $input;
     global $video_split_time;
-    
+
     if (!isset($input['asset']) || !isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
         die;
     }
     require_once dirname(__FILE__) . '/../lib_sql_stats.php';
-    
+
     $asset = $input['asset'];
     $album = $input['album'];
     $asset_metadata = ezmam_asset_metadata_get($album, $asset);
@@ -408,7 +411,7 @@ function asset_stats()
     $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
     $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
     $all_view_time = db_stats_video_get_view_time($album, $asset);
-    
+
     $stats = array();
     if (count($all_view_time) > 0) {
         $data_view_time = array('cam' => array(), 'slide' => array());
@@ -430,20 +433,20 @@ function asset_stats()
     } else {
         $stats['display'] = false;
     }
-    
+
     require template_getpath('popup_asset_stats.php');
 }
 
 function album_stats_reset()
 {
     global $input;
-    
+
     if (!isset($input['album'])) {
         echo 'Usage: index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=ALBUM';
         die;
     }
     $album = $input['album'];
-    
+
     require template_getpath('popup_album_stats_reset.php');
 }
 
@@ -459,4 +462,41 @@ function copy_asset()
     $album = $input['album'];
 
     require template_getpath('popup_copy_asset.php');
+}
+function postedit_asset()
+{
+  global $input;
+  if (!isset($input['asset']) || !isset($input['album'])) {
+      echo 'Usage: index.php?action=show_popup&amp;popup=postedit_asset&amp;album=ALBUM&amp;asset=ASSET';
+      die;
+  }
+  $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
+  $asset_name = $input['asset'];
+  $album = $input['album'];
+
+
+  //
+
+      global $input;
+      global $video_split_time;
+
+      if (!isset($input['asset']) || !isset($input['album'])) {
+          echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
+          die;
+      }
+
+      $asset = $input['asset'];
+      $album = $input['album'];
+      $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+      $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
+      $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
+      $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
+
+
+
+
+
+  //
+
+  require template_getpath('popup_asset_postedit.php');
 }

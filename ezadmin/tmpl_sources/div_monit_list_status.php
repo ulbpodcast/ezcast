@@ -70,7 +70,7 @@ if (isset($pagination)) {
                             
                     // Remove parent
                     echo '<form name="form" method="POST" style="display: inline;">';
-                    echo '<input type="hidden" id="sesskey" name="sesskey" value="'.$_SESSION['sesskey'].'" />'
+                    echo '<input type="hidden" id="sesskey" name="sesskey" value="'.$_SESSION['sesskey'].'" />';
                     echo '<input type="hidden" name="current_asset" value="'.$children.'" />';
                     echo '<input type="hidden" name="modal_action" value="remove_parent">';
                     echo '<a href="#" onclick="this.parentElement.submit();">';

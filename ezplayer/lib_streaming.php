@@ -23,7 +23,8 @@ function asset_streaming_player_update($display = true)
     global $logger;
     
     $album = $_SESSION['album'];
-    $asset = $_SESSION['asset'];
+    //Fix session issue on type change => If multiple live on same browser  
+    $asset = $_SESSION['asset'] = (isset($input['asset'])) ? $input['asset'] : $_SESSION['asset'];
 
     ezmam_repository_path($repository_path);
 
@@ -52,6 +53,7 @@ function asset_streaming_player_update($display = true)
     }
     
     $base_dir = 'videos/' . suffix_remove($album) . '/' . $asset_meta['stream_name'] . '_' . $asset_token;
+
     $m3u8_live_stream = "$base_dir/$type/$m3u8_file";
     $m3u8_slide = "$base_dir/slide/$m3u8_file"; //may not exist
 
@@ -181,7 +183,7 @@ function asset_streaming_view($refresh_center = true)
     global $m3u8_live_stream;
     global $is_android;
     global $logger;
-    
+
     //$logger->log(EventType::TEST, LogLevel::ERROR, "test", array(basename(__FILE__));
     
     global $login_error; // used to display error when anonymous user login

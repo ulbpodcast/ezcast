@@ -30,6 +30,7 @@ $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\
 ?>
 <span id="comment_<?php echo $comment['id']; ?>">
     <form action="index.php" method="POST">
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
         <?php if ($comment['approval'] == '1') { ?>
             <div class="ribbon-img inline-block pull-right"></div>
             <div class="orange-title sm"><?php echo mb_strtoupper("®Professor_approved®", "UTF-8") ?><i class="slash-sm orange"> // </i></div>
@@ -65,6 +66,7 @@ $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\
         <div class="form" id="answer_comment_form_<?php echo $comment['id']; ?>" hidden>
             <div id='answer_comment_form_wrapper'>
                 <form action="index.php" method="post" id="submit_answer_comment_form_<?php echo $comment['id']; ?>">
+                    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
                     <input type="hidden" name="parent" id="answer_parent_<?php echo $comment['id']; ?>" value="<?php echo $comment['id']; ?>"/>
                     <input type="hidden" name="thread" id="answer_thread_<?php echo $comment['id']; ?>" value="<?php echo $comment['thread']; ?>"/>
                     <input type="hidden" name="nbChilds" id="answer_nbChilds_<?php echo $comment['id']; ?>" value="<?php echo $comment['nbChilds']; ?>"/>
@@ -90,11 +92,11 @@ $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\
         <span class="comment-options">
             <!-- ----- VOTE ------------------------------------ -->
             <div class="inline-block">
-                <div class="upvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '1');" ></div>
+                <div class="upvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '1', '<?php echo $_SESSION['sesskey']; ?>');" ></div>
                 <label class="pull-left badge-score"><?php echo sprintf("%02s", $comment['score']); ?></label>
-                <div class="downvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '-1');"></div>
+                <div class="downvote-button pull-left inline-block" onclick="javascript:thread_comment_vote('<?php echo $_SESSION['user_login'] ?>', <?php echo $comment['id'] ?>, '-1', '<?php echo $_SESSION['sesskey']; ?>');"></div>
                 <?php if (acl_has_album_moderation($thread['albumName']) || acl_is_admin()) {  ?>                
-                    <div style="padding-top: 5px;" class="copy-button <?php echo ($comment['approval'] == '0') ? '' : 'active' ?> inline-block" title="<?php echo ($comment['approval'] == '0') ? '®Answer_approval®' : '®Withdraw_approval®' ?>" onclick="javascript:thread_comment_approve(<?php echo $comment['id']; ?>)"></div>
+                    <div style="padding-top: 5px;" class="copy-button <?php echo ($comment['approval'] == '0') ? '' : 'active' ?> inline-block" title="<?php echo ($comment['approval'] == '0') ? '®Answer_approval®' : '®Withdraw_approval®' ?>" onclick="javascript:thread_comment_approve(<?php echo $comment['id']; ?>, '<?php echo $_SESSION['sesskey']; ?>')"></div>
                 <?php } ?>
                 
             </div>
@@ -106,7 +108,7 @@ $creationDateVerbose = (get_lang() == 'fr') ? $creationDate->format('j F Y à H\
                     <div class="inline-block">
                         <a class="edit-button green2 pull-right inline-block" title="®Edit_comment®" onclick="javascript:thread_comment_edit_form_prepare('<?php echo $comment['id']; ?>');"></a>
                         <?php if (acl_is_admin()) { ?>            
-                            <a class="delete-button green2 pull-right inline-block" title="®Delete_comment®" href="javascript:popup_thread_comment('<?php echo $comment['id']; ?>', 'delete');"></a> 
+                            <a class="delete-button green2 pull-right inline-block" title="®Delete_comment®" href="javascript:popup_thread_comment('<?php echo $comment['id']; ?>', 'delete', '<?php echo $_SESSION['sesskey']; ?>');"></a> 
                         <?php } ?>
        
                     </div>

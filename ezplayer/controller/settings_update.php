@@ -10,6 +10,11 @@ function index($param = array())
     global $input;
     global $ezplayer_url;
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $display_new_video_notification = ((isset($input['display_new_video_notification']) &&
             $input['display_new_video_notification'] === 'on') ? '1' : '0');
     $display_threads = ((isset($input['display_threads']) && $input['display_threads'] === 'on') ? '1' : '0');

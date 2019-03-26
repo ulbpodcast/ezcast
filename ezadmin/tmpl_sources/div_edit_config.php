@@ -3,6 +3,8 @@
 
 <form class="form-horizontal" method="post" action="index.php?action=edit_config">
     
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
+
     <!-- Displays alert, if any -->
     <?php if (isset($alert)) {
     echo $alert;
@@ -64,6 +66,36 @@
     echo 'checked="checked"';
 } ?> />
                     ®settings_use_user_name®
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Display control panel -->
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="enable_control_panel" id="enable_control_panel" 
+                        <?php if (array_key_exists('enable_control_panel', $params) && $params['enable_control_panel']) {
+    echo 'checked="checked"';
+} ?> />
+                    ®settings_control_panel®
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Display control panel with options -->
+    <div class="form-group">
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="enable_control_panel_options" id="enable_control_panel_options" 
+                        <?php if (array_key_exists('enable_control_panel_options', $params) && $params['enable_control_panel_options']) {
+    echo 'checked="checked"';
+} ?> />
+                    ®settings_control_panel_options®
                 </label>
             </div>
         </div>

@@ -68,13 +68,13 @@
             /**
              * This function is called whenever the user saves their change on an asset (Edit mode)
              */
-            function edit_asset_data(album, asset) {
+            function edit_asset_data(album, asset, sesskey) {
                 // First we retrieve the data
                 var title = encodeURIComponent(document.getElementById('title_' + asset + '_input').value);
                 var description = encodeURIComponent(document.getElementById('description_' + asset + '_input').value);
 
                 // Then we update them
-                makeRequest('index.php', '?action=edit_asset&album=' + album + '&asset=' + asset + '&title=' + title + '&description=' + description, 'asset_' + asset + '_details');
+                makeRequest('index.php', '?action=edit_asset&album=' + album + '&asset=' + asset + '&title=' + title + '&description=' + description, 'asset_' + asset + '_details&sesskey='+ sesskey);
 
                 // And finally we refresh the view
                 document.getElementById('asset_' + asset + '_title').innerHTML = ' | ' + decodeURIComponent(title);

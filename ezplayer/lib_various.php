@@ -279,9 +279,17 @@ function get_link_to_media($album, $asset, $media, $htmlentities = true, $itunes
         return false;
     }
 
-    $media_infos = explode('_', $media); // 'media' is like high_cam, so we want to extract the "high" part (quality) and the "cam" part (type)
-    $quality = $media_infos[0];
-    $type = $media_infos[1];
+    if (strpos($media, '_') !== false)
+    {
+        $media_infos = explode('_', $media); // 'media' is like high_cam, so we want to extract the "high" part (quality) and the "cam" part (type)
+        $quality = $media_infos[0];
+        $type = $media_infos[1];
+    }
+    else
+    {
+        $type = $media;
+        $quality = '';
+    }
 
     $resurl = $distribute_url;
     if ($itunes_friendly) {
@@ -508,9 +516,7 @@ function surround_url($string)
 function safe_text($string)
 {
     // remove php and javascript tags
-    $string = preg_replace('/(<\?{1}[pP\s]{1}.+\?>)/Us', "", $string);
-    $string = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $string);
-    
+    $string = preg_replace('/(<\?{1}[pP\s]{1}.+\?>)/Us', "", $string);    
     $string = str_replace('javascript', "-javascript-", $string);
     $string = str_replace('onmouseover', "-onmouseover-", $string);
     $string = str_replace('onclick', "-onclick-", $string);
@@ -521,6 +527,57 @@ function safe_text($string)
     $string = str_replace('onkeydown', "-onkeydown-", $string);
     $string = str_replace('onkeypress', "-onkeypress-", $string);
     $string = str_replace('onkeyup', "-onkeyup-", $string);
+    
+    //encode all html entities tags unless exeptions
+    
+    $string = str_replace('<', "&lt;", $string);
+    
+    $string = str_replace('&lt;em', "<em", $string);
+    $string = str_replace('&lt;/em', "</em", $string);
+    
+    $string = str_replace('&lt;strong', "<strong", $string);
+    $string = str_replace('&lt;/strong', "</strong", $string);
+    
+    $string = str_replace('&lt;p', "<p", $string);
+    $string = str_replace('&lt;/p', "</p", $string);
+    
+    $string = str_replace('&lt;span', '<span', $string);
+    $string = str_replace('&lt;/span', '</span', $string);
+    
+    $string = str_replace('&lt;li', "<li", $string);
+    $string = str_replace('&lt;/li', "</li", $string);
+    
+    $string = str_replace('&lt;ul', "<ul", $string);
+    $string = str_replace('&lt;/ul', "</ul", $string);
+    
+    $string = str_replace('&lt;ol', "<ol", $string);
+    $string = str_replace('&lt;/ol', "</ol", $string);
+    
+    $string = str_replace('&lt;p style="text-align: center;"', '<p style="text-align: center;"', $string);
+    
+    $string = str_replace('&lt;p style="text-align: left;"', '<p style="text-align: left;"', $string);
+    
+    $string = str_replace('&lt;p style="text-align: justify;"', '<p style="text-align: justify;"', $string);
+    
+    $string = str_replace('&lt;h1', "<h1", $string);
+    $string = str_replace('&lt;/h1', "</h1", $string);
+    
+    $string = str_replace('&lt;h2', "<h2", $string);
+    $string = str_replace('&lt;/h2', "</h2", $string);
+    
+    $string = str_replace('&lt;h3', "<h3", $string);
+    $string = str_replace('&lt;/h3', "</h3", $string);
+    
+    $string = str_replace('&lt;sub', "<sub", $string);
+    $string = str_replace('&lt;/sub', "</sub", $string);
+    
+    $string = str_replace('&lt;sup', "<sup", $string);
+    $string = str_replace('&lt;/sup', "</sup", $string);
+  
+    $string = str_replace('&lt;i style="font-size: 10px;"', '<i style="font-size: 10px;"', $string);
+    $string = str_replace('&lt;/i', "</i", $string);
+
+    
     $string = str_replace('href', "-href-", $string);
     $string = preg_replace('/<div\b[^>]*>/is', '&lt;div&gt;', $string);
     $string = preg_replace('/<\/div>/is', '&lt;/div&gt;', $string);

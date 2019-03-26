@@ -13,5 +13,11 @@ function index($param = array())
         log_append('warning', 'view_asset_details: tried to access album ' . $input['album'] . ' without permission');
         die;
     }
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     update_title($input['album'], $input['asset']);
 }

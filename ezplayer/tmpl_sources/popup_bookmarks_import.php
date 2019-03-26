@@ -38,6 +38,7 @@
                <input type="hidden" name="album" id="import_album" value="<?php echo $album; ?>"/>
         <input type="hidden" name="asset" id="import_asset" value="<?php echo $asset; ?>"/><br/>
         <input type="hidden" name="target" id="import_target" value="<?php echo $_SESSION['target']; ?>" />
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
         <ul>
             <li style="border-bottom: solid 1px #cccccc;"><input type="checkbox" onclick="toggle_checkboxes(this, 'import_selection[]')" name="check_all"/><span class="blue-title"><b>®Date®</b></span><span class="blue-title"><b>®Bookmark®</b></span></li>
 

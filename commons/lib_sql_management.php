@@ -122,6 +122,7 @@ function statements_get()
                       '(' . db_gettable('users') . '.recorder_passwd = "" OR '.db_gettable('users').'.recorder_passwd IS NULL) as passNotSet, ' .
                             db_gettable('users') . '.permissions, ' .
                             db_gettable('users') . '.origin ' .
+//                            db_gettable('users') . '.termsOfUses ' .
                             //db_gettable('users') . '.date_created ' .
                     'FROM ' . db_gettable('users') . ' ' .
                     'WHERE user_ID = :user_ID',
@@ -179,7 +180,8 @@ function statements_get()
                     'WHERE enabled = 1',
 
             'classrooms_list' =>
-                    'SELECT room_ID, name, IP, IP_remote ' .
+                    'SELECT room_ID, name, IP, IP_remote, ' .
+                    'user_name, base_dir, sub_dir '.
                     'FROM ' . db_gettable('classrooms'),
         
             'classrooms_from_name_get_ip' =>
@@ -218,7 +220,7 @@ function statements_get()
 
             'user_create' =>
                     'INSERT INTO ' . db_gettable('users') . '(user_ID, surname, forename, recorder_passwd, permissions, origin) ' .
-                    'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, \'internal\')',
+                    'VALUES (:user_ID, :surname, :forename, :recorder_passwd, :permissions, :origin)',
 
             'user_delete' =>
                     'DELETE FROM ' . db_gettable('users') . ' ' .
@@ -226,7 +228,7 @@ function statements_get()
 
             'user_update' =>
                     'UPDATE ' . db_gettable('users') . ' ' .
-                    'SET surname = :surname, forename = :forename, recorder_passwd = :recorder_passwd, permissions = :permissions' . ' ' .
+                    'SET surname = :surname, forename = :forename, recorder_passwd = :recorder_passwd, permissions = :permissions ' . ' ' .
                     'WHERE user_ID = :user_ID',
 
             'user_update_short' =>
@@ -234,9 +236,14 @@ function statements_get()
                     'SET surname = :surname, forename = :forename,  permissions = :permissions' . ' ' .
                     'WHERE user_ID = :user_ID',
         
+            'termsOfUseUpdate' =>
+                    'UPDATE ' . db_gettable('users') . ' ' .
+                    'SET termsOfUse = :termsOfUse' . ' ' .
+                    'WHERE user_ID = :user_ID',
+        
             'user_update_recorder_passwd' =>
                     'UPDATE ' . db_gettable('users') . ' ' .
-                    'SET recorder_passwd = :passwd' . ' ' .
+                    'SET recorder_passwd = :recorder_passwd' . ' ' .
                     'WHERE user_ID = :user_ID',
 
             'log_action' =>
@@ -244,8 +251,8 @@ function statements_get()
                     'VALUES (NOW(), :table, :message, :author)',
 
             'classroom_create' =>
-                    'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, ip_remote, enabled) ' .
-                    'VALUES (:room_ID, :name, :ip, :ip_remote, :enabled)',
+                    'INSERT INTO ' . db_gettable('classrooms') . '(room_ID, name, ip, ip_remote, user_name, base_dir, sub_dir, enabled) ' .
+                    'VALUES (:room_ID, :name, :ip, :ip_remote, :user_name, :base_dir, :sub_dir, :enabled)',
 
             'unlink_course' =>
                     'DELETE FROM ' . db_gettable('users_courses') . ' ' .
@@ -279,6 +286,15 @@ function statements_get()
                     'SELECT  * ' .
                     'FROM ' . db_gettable('streams') . ' ' .
                     'WHERE cours_id=:cours_id AND asset=:asset ',
+
+            'get_stream_nb' =>
+                    "SELECT * FROM ". db_gettable('streams') . " " .
+                    "WHERE ( status = 'recording' OR status = 'open' OR status = 'paused' ) ". 
+                    "AND (date_update > DATE_ADD(NOW(), INTERVAL -6 HOUR)) ".
+                    "GROUP BY classroom ".
+                    "ORDER BY status DESC",                      
+        
+        
 
             'in_recorder_update' =>
                 'UPDATE ' . db_gettable('courses') . ' ' .
@@ -440,9 +456,9 @@ function db_course_read($course_id)
 {
     global $statements;
     
-    $statements['course_read']->bindParam(':course_code', $course_id);
-    
+    $statements['course_read']->bindParam(':course_code', $course_id);    
     $statements['course_read']->execute();
+    
     return $statements['course_read']->fetch();
 }
 
@@ -812,14 +828,27 @@ function db_found_rows()
     return intval($res[0]);
 }
 
-function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions)
+/**
+ * creates a local user and/or add a ezrecorder password to an external (sso,ldap,...) user
+ * @global array $statements
+ * @param string $user_ID
+ * @param string $surname
+ * @param string $forename
+ * @param string $recorder_passwd (cleartext pw)
+ * @param boolean $permissions true if admin(allow to use 'runas')
+ * @return boolean true on success
+ */
+function db_user_create($user_ID, $surname, $forename, $recorder_passwd, $permissions,$origin='internal')
 {
     global $statements;
+    require_once __DIR__ .'/lib_pw.php'; //for pw encryption
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);                                                                                  
     $lowered_user_id = strtolower($user_ID);
     $statements['user_create']->bindParam(':user_ID', $lowered_user_id);
     $statements['user_create']->bindParam(':surname', $surname);
     $statements['user_create']->bindParam(':forename', $forename);
     $statements['user_create']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_create']->bindParam(':origin', $origin);
     $statements['user_create']->bindParam(':permissions', $permissions);
     return $statements['user_create']->execute();
 }
@@ -833,6 +862,7 @@ function db_user_delete($user_ID)
 function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permissions)
 {
     global $statements;
+    require_once __DIR__ .'/lib_pw.php'; //for pw encryption
     if (empty($recorder_passwd)) {
         $statements['user_update_short']->bindParam(':user_ID', $user_ID);
         $statements['user_update_short']->bindParam(':surname', $surname);
@@ -840,23 +870,35 @@ function db_user_update($user_ID, $surname, $forename, $recorder_passwd, $permis
         $statements['user_update_short']->bindParam(':permissions', $permissions);
         return $statements['user_update_short']->execute();
     }
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
     $statements['user_update']->bindParam(':user_ID', $user_ID);
     $statements['user_update']->bindParam(':surname', $surname);
     $statements['user_update']->bindParam(':forename', $forename);
-    $statements['user_update']->bindParam(':recorder_passwd', $recorder_passwd);
+    $statements['user_update']->bindParam(':recorder_passwd', $encrypted_passwd);
     $statements['user_update']->bindParam(':permissions', $permissions);
     return $statements['user_update']->execute();
 }
 
+function db_termsOfUseUpdate($user_ID,$termsOfUse){
+    global $statements;
+    
+    $statements['termsOfUseUpdate']->bindParam(':user_ID', $user_ID);
+    $statements['termsOfUseUpdate']->bindParam(':termsOfUse', $termsOfUse);
+    return $statements['termsOfUseUpdate']->execute();
+    
+}
+
+
 //return number of line affected, or false on error
 function db_user_set_recorder_passwd($user_ID, $recorder_passwd)
-{
-    $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
-    $encrypted_passwd = crypt($recorder_passwd, $des_seed);
+{ 
+  global $statements;
+  require_once __DIR__ .'/lib_pw.php'; //for pw encryption
+    $encrypted_passwd=pw_encrypt($user_ID,$recorder_passwd);
         
-    global $statements;
+                       
     $statements['user_update_recorder_passwd']->bindParam(':user_ID', $user_ID);
-    $statements['user_update_recorder_passwd']->bindParam(':passwd', $encrypted_passwd);
+    $statements['user_update_recorder_passwd']->bindParam(':recorder_passwd', $encrypted_passwd);
     $ok = $statements['user_update_recorder_passwd']->execute();
     if(!$ok)
         return false;
@@ -945,13 +987,16 @@ function db_logs_get($date_start, $date_end, $table, $author, $startElem = -1, $
     return $db_object->query($fullQuery);
 }
 
-function db_classroom_create($room_ID, $name, $ip, $ip_remote, $enabled)
+function db_classroom_create($room_ID, $name, $ip, $ip_remote, $user_name, $base_dir, $sub_dir, $enabled)
 {
     global $statements;
     $statements['classroom_create']->bindParam(':room_ID', $room_ID);
     $statements['classroom_create']->bindParam(':name', $name);
     $statements['classroom_create']->bindParam(':ip', $ip);
     $statements['classroom_create']->bindParam(':ip_remote', $ip_remote);
+    $statements['classroom_create']->bindParam(':user_name', $user_name);
+    $statements['classroom_create']->bindParam(':base_dir', $base_dir);
+    $statements['classroom_create']->bindParam(':sub_dir', $sub_dir);
     $statements['classroom_create']->bindParam(':enabled', $enabled);
     return $statements['classroom_create']->execute();
 }
@@ -1060,6 +1105,16 @@ function db_get_stream_info($cours_id, $asset)
     
     return $infos;
 }
+
+function db_get_stream_nb()
+{
+    global $statements;
+    $statements['get_stream_nb']->execute();
+    $res = $statements['get_stream_nb']->fetchAll();   
+    return count($res);   
+}
+
+
 function db_in_recorder_update($course,$value)
 {
     global $statements;

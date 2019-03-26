@@ -8,6 +8,12 @@ function index($param = array())
     if (empty($input['id'])) {
         die;
     }
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $classroom = trim($input['id']);
     
     if (db_classroom_update_enabled($classroom, $enable)) {

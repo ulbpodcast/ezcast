@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *

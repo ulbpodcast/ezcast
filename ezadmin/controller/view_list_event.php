@@ -11,6 +11,10 @@ function index($param = array())
     global $input;
     global $logger;
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
     
     if (array_key_exists('page', $input)) {
         $pagination = new Pagination($input['page'], 50);

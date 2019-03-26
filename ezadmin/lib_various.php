@@ -5,7 +5,7 @@
  * Copyright (C) 2016 Université libre de Bruxelles
  *
  * Written by Michel Jansens <mjansens@ulb.ac.be>
- * 		    Arnaud Wijns <awijns@ulb.ac.be>
+ *          Arnaud Wijns <awijns@ulb.ac.be>
  *                   Antoine Dewilde
  *                   Thibaut Roskam
  *
@@ -41,7 +41,9 @@ function parse_config_file()
         'recorders_option' => $classrooms_category_enabled,
         'add_users_option' => $add_users_enabled,
         'recorder_password_storage_option' => $recorder_password_storage_enabled,
-        'user_name_option' => $use_user_name
+        'user_name_option' => $use_user_name,
+        'enable_control_panel' => $enable_control_panel,
+        'enable_control_panel_options' => $enable_control_panel_options
     );
 
     return $res;
@@ -54,7 +56,7 @@ function parse_config_file()
  * @param type $recorder_password_storage_option
  * @param type $use_user_name_option
  */
-function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_user_name_option)
+function update_config_file($recorder_option, $add_users_option, $recorder_password_storage_option, $use_user_name_option, $control_panel, $control_panel_options)
 {
     $config = file_get_contents('config.inc');
 
@@ -62,11 +64,15 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
     $conf2 = ($add_users_option) ? 'true' : 'false';
     $conf3 = ($recorder_password_storage_option) ? 'true' : 'false';
     $conf4 = ($use_user_name_option) ? 'true' : 'false';
+    $conf5 = ($control_panel) ? 'true' : 'false';
+    $conf6 = ($control_panel_options) ? 'true' : 'false';
 
     $config = preg_replace('/\$classrooms_category_enabled = (.+);/', '\$classrooms_category_enabled = ' . $conf1 . ';', $config);
     $config = preg_replace('/\$add_users_enabled = (.+);/', '\$add_users_enabled = ' . $conf2 . ';', $config);
     $config = preg_replace('/\$recorder_password_storage_enabled = (.+);/', '\$recorder_password_storage_enabled = ' . $conf3 . ';', $config);
     $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf4 . ';', $config);
+    $config = preg_replace('/\$enable_control_panel = (.+);/', '\$enable_control_panel = ' . $conf5 . ';', $config);
+    $config = preg_replace('/\$enable_control_panel_options = (.+);/', '\$enable_control_panel_options = ' . $conf6 . ';', $config);
     
     file_put_contents('config.inc', $config);
 }
@@ -651,4 +657,103 @@ function array_increment_or_init(&$array, &$key)
     } else {
         $array[$key] = 1;
     }
+}
+
+function getipmobile($hosts)
+{
+    $ipmobile=false;
+    $i=0;
+    while($ipmobile == false && $i < count($hosts)){
+        exec("ping -c 1 " . $hosts[$i], $output, $result);
+        if ($result == 0)
+            $ipmobile=$hosts[$i];
+            
+        $i++;
+    }
+    return $ipmobile;
+}
+
+function test_connexion_url($ip)
+{
+    include 'config.inc';
+
+    $agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $ip_prefix.$ip.$ip_suffixe);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+    curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+    $resultat = curl_exec($ch);
+    if($resultat === false)
+        $value = false;
+    else
+        $value = true;
+    curl_close($ch);
+
+    return $value;
+}
+
+function getSpaceUsed($ip)
+{
+    $fp = fsockopen($ip, 80, $errno, $errstr, 0.1);
+
+    if($fp){
+        exec('ssh ezrecorder@'.$ip.' "df /"',$return,$return2);       
+        $values = explode(" " , $return[1]);
+        if( $values[8] != "")
+            $val = $values[8];
+        else if( $values[9] != "")
+            $val = $values[9];
+        
+        fclose($fp);
+    }
+    else
+        $val = 0;
+    
+    return $val;
+}
+
+function getRecordingStatus($ip)
+{
+    $fp = fsockopen($ip, 80, $errno, $errstr, 0.1);
+
+    if($fp){
+        exec('ssh ezrecorder@'.$ip.' "cat /Library/ezrecorder/modules/local_ffmpeg_hls/var/status"',$return,$return2);       
+        $status=$return[0];
+        if(!isset($status) || $status=="")
+            $status="Not used";
+
+        fclose($fp);
+    }
+    else
+        $status = "Error";
+    
+    return $status;         
+}
+
+function check_validation_text($text)
+{
+    include 'config.inc';
+
+    $text = trim($text);
+
+    if ($text == "") {
+        $return_value = false;
+    } elseif (preg_match($input_validation_regex, $text)) {
+        $return_value = true;
+    } else {
+        $return_value = false;
+    }
+
+    return $return_value;
+}
+
+function session_key_check($sessionkey)
+{
+    if (isset($_SESSION['sesskey']) && !empty($_SESSION['sesskey']) && isset($sessionkey) && !empty($sessionkey) && ($_SESSION['sesskey'] == $sessionkey))
+        return true;
+
+    return false;
 }

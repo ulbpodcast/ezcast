@@ -20,5 +20,5 @@ function index($param = array())
     include template_getpath('div_classroom_details.php');
     include template_getpath('div_main_footer.php');
 
-     */
+     */ 
 }

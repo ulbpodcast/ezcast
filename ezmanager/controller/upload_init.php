@@ -9,6 +9,7 @@ function index($param = array())
     global $accepted_media_types;
     global $upload_slice_size;
 
+
     $array = array();
     // 1) Sanity checks
     $title = trim($input['title']);
@@ -26,19 +27,38 @@ function index($param = array())
         die;
     }
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     // 2) Creating the folder in the queue, and the metadata for the media
     $record_date = date($dir_date_format);
     $tmp_name = $record_date . '_' . $input['album'];
 
     $moderation = ($input['moderation'] == 'false') ? 'false' : 'true';
 
+    $type_submitted = '';
+    $type = $input['type'];
+    if($input['type_media'] == 'audio')
+    {
+        $type = $input['type_media'];
+        $type_submitted = 'audio';
+    }
+    else
+    {
+        $type_submitted = 'cam';
+    }
+
+    file_put_contents('/usr/local/ezcast/ezmanager/var/test_audio.txt', $input['cam_filename'].PHP_EOL.$type_submitted.PHP_EOL.$type);
+
     $metadata = array(
         'course_name' => $input['album'],
         'origin' => 'SUBMIT',
         'title' => $input['title'],
         'description' => $input['description'],
-        'record_type' => $input['type'],
-        'submitted_cam' => isset($input['cam_filename']) ? $input['cam_filename'] : '',
+        'record_type' => $type,
+        'submitted_'.$type_submitted => isset($input['cam_filename']) ? $input['cam_filename'] : '',
         'submitted_slide' => isset($input['slide_filename']) ? $input['slide_filename'] : '',
         'moderation' => $moderation,
         'author' => $_SESSION['user_full_name'],

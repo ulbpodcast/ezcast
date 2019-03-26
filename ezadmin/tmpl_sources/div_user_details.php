@@ -5,6 +5,7 @@
     
     <div class="col-md-8">
         <form class="form-horizontal" method="POST">
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 
             <?php if (isset($error)) {
         ?>
@@ -55,6 +56,8 @@
         echo 'label-info';
     } elseif ($origin == 'external') {
         echo 'label-primary';
+    } elseif ($origin == 'SSO') {
+        echo 'label-success';
     } else {
         echo 'label-danger';
     } ?>
@@ -64,6 +67,8 @@
                             echo '®intern®';
                         } elseif ($origin == 'external') {
                             echo '®extern®';
+                        } elseif ($origin == 'SSO') {
+                            echo '®sso®';
                         } else {
                             echo '®error®';
                         } ?>
@@ -157,6 +162,7 @@
     <div class="col-md-2 col-md-offset-2">
         <form action="index.php?action=remove_user" method="POST" style="margin:0px;">
             <input type="hidden" name="user_ID" value="<?php echo $user_ID; ?>" />
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 
             <button type="button" class="btn btn-block btn-primary edit_mode">®edit_button®</button>
             <button type="button" class="btn btn-block edit_cancel">®cancel®</button>
@@ -184,7 +190,7 @@
         <tbody>
             <?php foreach ($courses as $c) {
                             ?>
-                <tr data-id="<?php echo $c['ID'] ?>" data-origin="<?php echo $u['origin'] ?>">
+                <tr data-id="<?php echo $c['ID'] ?>" data-origin="<?php echo $userinfo['origin'] ?>">
                     <td><?php if (isset($c['course_code_public']) && $c['course_code_public']!="") {
                                 echo $c['course_code_public'];
                             } else {
@@ -264,7 +270,7 @@
 
             var link = $this.parent().data("id");
 
-            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
+            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>", {
                 type: "post",
                 data: {
                     query: "unlink",
@@ -292,7 +298,7 @@
             var user = $this.prev().val();
             $this.prev().val('');
 
-            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>", {
+            $.ajax("index.php?action=link_unlink_course_user&user_ID=<?php echo $input['user_ID'] ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>", {
                 type: "post",
                 data: {
                     query: "link",

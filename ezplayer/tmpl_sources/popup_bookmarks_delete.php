@@ -44,6 +44,8 @@ include_once 'lib_print.php';
         <input type="hidden" name="album" id="delete_album" value="<?php echo $album; ?>"/>
         <input type="hidden" name="asset" id="delete_asset" value="<?php echo $asset_meta['record_date']; ?>"/>
         <input type="hidden" name="target" id="delete_target" value="<?php echo $tab; ?>"/><br/>
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
+        
         <ul>
             <li style="border-bottom: solid 1px #cccccc;">
                 <input type="checkbox" onclick="toggle_checkboxes(this, 'delete_selection[]')" name="check_all"/>

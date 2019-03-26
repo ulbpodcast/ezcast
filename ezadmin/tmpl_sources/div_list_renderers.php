@@ -33,7 +33,7 @@ require_once 'config.inc';
             $r = lib_scheduling_renderer_metadata($r);
         }
         //var_dump($r2); ?>
-        <tr class="">
+        <tr class="<?php echo $class; ?>">
             <td><?php if ($r['no_ping'] === true) {
             echo '<span title="®no_ping®"><span class="glyphicon glyphicon-warning-sign"></span></span>';
         }
@@ -62,6 +62,7 @@ require_once 'config.inc';
         <?php
     }
     ?>
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 </table>
 
 <script>
@@ -72,12 +73,14 @@ require_once 'config.inc';
             $this = $(this);
 
             var renderer = $this.parent().parent().find("td.renderer_name").text();
+            var sesskey = $("#sesskey").val();
 
             if ($this.hasClass('btn-success')) {
                 $.ajax("index.php?action=enable_renderer", {
                     type: "post",
                     data: {
-                        name: renderer
+                        name: renderer,
+                        sesskey: sesskey
                     },
                     success: function(jqXHR, textStatus) {
 
@@ -98,7 +101,8 @@ require_once 'config.inc';
                 $.ajax("index.php?action=disable_renderer", {
                     type: "post",
                     data: {
-                        name: renderer
+                        name: renderer,
+                        sesskey: sesskey
                     },
                     success: function(jqXHR, textStatus) {
 
@@ -126,11 +130,13 @@ require_once 'config.inc';
             var $this = $(this);
 
             var renderer = $this.parent().parent().find("td.renderer_name").text();
+            var sesskey = $("#sesskey").val();
 
             $.ajax("index.php?action=remove_renderer", {
                 type: "post",
                 data: {
-                    name: renderer
+                    name: renderer,
+                    sesskey: sesskey
                 },
                 success: function(jqXHR, textStatus) {
                     var data = JSON.parse(jqXHR);

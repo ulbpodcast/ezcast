@@ -55,22 +55,28 @@
         <th data-col="user_ID" <?php echo $input['col'] == 'user_ID' ? 'data-order="' . $input["order"] . '"' : '' ?> style="cursor:pointer;">®user_ID®<?php echo ($input['col'] == 'user_ID') ? ($input['order'] == 'ASC' ? ' <span class="glyphicon glyphicon-chevron-down"></span>' : ' <span class="glyphicon glyphicon-chevron-up"></span>') : ' <span class="glyphicon glyphicon-chevron-up" style="visibility: hidden;"></span>' ?></th>
         <th>®fullname®</th>
         <th>®origin®</th>
-        <th>®is_admin_title®</th>
+        <th style="text-align: center;">®is_admin_title®</th>
     </tr>
     
     <?php foreach ($users as $user) {
         ?>
         <tr>
-            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['user_ID']; ?></a></td>
-            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
+            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $user['user_ID']; ?></a></td>
+            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $user['user_ID']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $user['forename'] . ' ' . $user['surname']; ?></a></td>
             <td><span class="label <?php if ($user['origin'] == 'internal') {
             echo 'label-info';
+        } elseif ($user['origin'] == 'external'){
+            echo 'label-primary';
+        } elseif ($user['origin'] == 'SSO') {
+            echo 'label-success';
         } ?>"><?php if ($user['origin'] == 'internal') {
             echo '®intern®';
-        } else {
+        } elseif ($user['origin'] == 'external') {
             echo '®extern®';
+        } elseif ($user['origin'] == 'SSO') {
+            echo '®sso®';
         } ?></span></td>
-            <td><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
+            <td style="text-align: center;"><?php echo ($user['permissions'] != 0) ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
         </tr>
         <?php
     }

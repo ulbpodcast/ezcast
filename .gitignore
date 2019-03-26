@@ -25,3 +25,5 @@
 **/.php_cs.cache
 /commons/traces_analyzing/checked_file.txt
 .ftpconfig
+**/checked_file.txt
+cli_woluwe_generate_rss.sh

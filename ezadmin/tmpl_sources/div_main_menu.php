@@ -103,6 +103,11 @@ $options['Monitoring'] = array(
     )
 );
 
+if($enable_control_panel)
+{
+    array_push($options['Monitoring'], array('name' => '®list_cam®', 'action' => 'controller_camera'));
+}
+
 $options['Stats'] = array(
     array(
        'name' => '®stats_ezplayer_threads®',
@@ -151,7 +156,7 @@ $category_names = array(
                     echo ' active ';
                 } ?> ">
                 
-                <a href="index.php?&action=<?php echo $option['action'] ?>">
+                <a href="index.php?&action=<?php echo $option['action'] ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>">
                     <?php echo $option['name']; ?>
                 </a>
                 
@@ -161,10 +166,10 @@ $category_names = array(
     <?php
 } // end foreach?>
     <li class="nav-header" style="cursor: pointer;">®additional_options®</li>
-    <li class="sidebar" title="®push_changes_title®"><a style="<?php echo (isset($_SESSION['changes_to_push']) && $_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes">®push_changes®</a></li>
-    <li class="sidebar"><a href="index.php?action=sync_externals">®sync_externals®</a></li>
-    <li class="sidebar"><a href="index.php?action=db_updater">®db_updater®</a></li>
-    <li class="sidebar"><a href="?<?php echo SID."&action=logout"?>">®logout®</a></li>
+    <li class="sidebar" title="®push_changes_title®"><a style="<?php echo (isset($_SESSION['changes_to_push']) && $_SESSION['changes_to_push']) ? 'color: #dd0000;' : ''; ?>" href="index.php?action=push_changes&sesskey=<?php echo $_SESSION['sesskey']; ?>">®push_changes®</a></li>
+    <li class="sidebar"><a href="index.php?action=sync_externals&sesskey=<?php echo $_SESSION['sesskey']; ?>">®sync_externals®</a></li>
+    <li class="sidebar"><a href="index.php?action=db_updater&sesskey=<?php echo $_SESSION['sesskey']; ?>">®db_updater®</a></li>
+    <li class="sidebar"><a href="?<?php echo SID."&action=logout&sesskey=".$_SESSION['sesskey']; ?>">®logout®</a></li>
 </ul>
 <!-- <a class="btn" style="margin-top: 10px; width: 80%;" href="?<?php echo SID."&action=logout"?>">®logout®</a> -->
 </div>

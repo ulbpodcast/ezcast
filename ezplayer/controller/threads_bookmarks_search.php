@@ -26,6 +26,11 @@ function index($param = array())
     $level = $input['level'];
     $tab = $input['tab'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!isset($level) || is_nan($level) || $level < 0 || $level > 3) {
         $level = 0;
     }

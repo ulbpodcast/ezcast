@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -62,12 +62,12 @@ for every album the user can create.
             } else {
                 $course_code_public = $destination_name;
             }
-                        
+
             if ($album != $destination_name.'-priv') {
                 echo '<tr>';
                 echo '<td class="album_name col-md-4" style="font-weight: bold;">';
                 echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
-                                            $destination_name.'-priv'.'&asset='.$asset_name.'" ' .
+                                            $destination_name.'-priv'.'&asset='.$asset_name.'&sesskey='.$_SESSION["sesskey"].'" ' .
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#move_asset_'.$destination_name.'_priv"));$("#modal").modal("show"); }, 500);\' ' .
                                             'data-dismiss="modal" id="move_asset_'.$destination_name.'_priv" >';
@@ -83,7 +83,7 @@ for every album the user can create.
                 echo '<tr>';
                 echo '<td class="album_name col-md-2" style="font-weight: bold;">';
                 echo '<a href="index.php?action=move_asset&from='.$album.'&to='.
-                                            $destination_name.'-pub'.'&asset='.$asset_name.'" ' .
+                                            $destination_name.'-pub'.'&asset='.$asset_name.'&sesskey='.$_SESSION["sesskey"].'" ' .
                                             'onClick=\'setTimeout(function(){ display_bootstrap_modal($("#modal"), '.
                                                 '$("#move_asset_'.$destination_name.'_pub"));$("#modal").modal("show"); }, 500);\' ' .
                                             'data-dismiss="modal" id="move_asset_'.$destination_name.'_pub" >';

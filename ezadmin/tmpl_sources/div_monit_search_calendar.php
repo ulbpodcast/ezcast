@@ -4,7 +4,7 @@
     
     <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
     <input type="hidden" name="post" value="">
-    
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     
     <div class="form-group">
         <div class="row">

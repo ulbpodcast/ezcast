@@ -193,6 +193,7 @@ function push_admins_to_recorders_ezmanager(&$failed_cmd = array())
     global $ezmanager_subdir;
     global $ezplayer_basedir;
     global $ezplayer_subdir;
+    global $recorder_array;
 
     $success = true;
     
@@ -217,8 +218,8 @@ function push_admins_to_recorders_ezmanager(&$failed_cmd = array())
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 '.__DIR__.'/var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' .
-                    $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 '.__DIR__.'/var/admin.inc ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] . ':' .
+                    $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
             exec($cmd, $output, $return_var);
         }
     }
@@ -266,6 +267,7 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     global $recorder_basedir;
     global $recorder_subdir;
     global $recorder_password_storage_enabled;
+    global $recorder_array;
         
     if (!db_ready()) {
         $statements = statements_get();
@@ -278,10 +280,11 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     //htpasswd
     $htpasswd = '';
     $previous_user = "";
+    $user_added=array();
     foreach ($users as $u) {
-        if ($previous_user != $u['user_ID']) {
+        if (!isset($user_added[$u['user_ID']])) {
             $htpasswd .= $u['user_ID'] . ':' . $u['recorder_passwd'] . PHP_EOL;
-            $previous_user = $u['user_ID'];
+            $user_added[$u['user_ID']]=true;//prevent duplicate entries
         }
     }
     file_put_contents(__DIR__.'/var/htpasswd', $htpasswd);
@@ -306,15 +309,15 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' .
-                    $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/htpasswd ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] . ':' .
+                    $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
                 $error = true;
             }
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/courselist.php ' . $recorder_user . '@' . $c['IP'] .
-                    ':' . $recorder_basedir . $recorder_subdir;
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/courselist.php ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] .
+                    ':' . $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
@@ -325,6 +328,39 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
             $error = true;
         }
     }
-
+    
     return $error === false;
+}
+
+///// NOTIFICATION ALERT /////
+
+/**
+ * indicate/clear Changes have been made but not saved yet and should be pushed to ezrecorders
+ * @global string $ezrecorder_need_files_pushed_path
+ * @param boolean $enable
+ */
+function notify_changes($enable = true)
+{
+    global $ezrecorder_need_files_pushed_path;
+    if ($enable) {
+        if(isset($_SESSION)) $_SESSION['changes_to_push'] = true;
+        //create file whose presence will trigger push (by a cron)
+        touch($ezrecorder_need_files_pushed_path);
+    } else {
+        if(isset($_SESSION)) unset($_SESSION['changes_to_push']);
+        //remove file whose presence will trigger push (by a cron)
+        if(file_exists($ezrecorder_need_files_pushed_path))unlink($ezrecorder_need_files_pushed_path);
+    }
+}
+/**
+ * indicate/clear Changes have been made but not saved yet and should be pushed to ezrecorders
+ * @global string $ezrecorder_need_files_pushed_path
+ * @param boolean $enable
+ */
+function notify_changes_isset()
+{
+    global $ezrecorder_need_files_pushed_path;
+     
+    return file_exists($ezrecorder_need_files_pushed_path);//if file exists return true
+     
 }

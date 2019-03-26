@@ -174,7 +174,6 @@ function index($param = array())
     $_SESSION['ezplayer_mode'] = $ezplayer_mode; // used in div_thread_details.php
     $_SESSION['album'] = $album;
     $_SESSION['asset'] = $asset;
-    $_SESSION['asset_meta'] = $asset_meta;
     $_SESSION['timecode'] = $timecode;
     if ($seek && isset($thread_id)) {
         $_SESSION['current_thread'] = $thread_id;

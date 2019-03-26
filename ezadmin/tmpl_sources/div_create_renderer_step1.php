@@ -1,7 +1,7 @@
 <div class="page_title">®create_renderer_step_1®</div>
 
 <form method="POST" class="form-horizontal">
-    
+
     <?php if (isset($error)) {
     ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
@@ -12,7 +12,7 @@
     <?php
 } ?>
     
-    
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <input type="hidden" name="renderer_step" value="1"/>
     
     <div class="form-group">

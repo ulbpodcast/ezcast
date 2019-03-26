@@ -10,6 +10,11 @@ function index($param = array())
         die;
     }
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $name = trim($input['name']);
     
     if (renderer_update_enabled($name, $enable, $error)) {
@@ -23,5 +28,6 @@ function index($param = array())
     } else {
         db_log("renderers", 'Disabled renderer ' . $input['name'], $_SESSION['user_login']);
     }
+    push_renderers_to_ezmanager();
     //   notify_changes();
 }

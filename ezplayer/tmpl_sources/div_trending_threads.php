@@ -14,7 +14,7 @@ if (isset($threads_list) && sizeof($threads_list) > 0) {
             $editDate = (get_lang() == 'fr') ? new DateTimeFrench($thread['lastEditDate'], $DTZ) : new DateTime($thread['lastEditDate'], $DTZ);
             $editDateVerbose = (get_lang() == 'fr') ? $editDate->format('j F Y à H\hi') : $editDate->format("F j, Y, g:i a");
             //@TODO go to real asset
-            $meth_to_call = 'javascript:show_thread(\'' . $thread['albumName'] . '\', \'' . $thread['assetName'] . '\', \'' . $thread['timecode'] . '\', ' . $thread['id'] . ', \'\')'; ?>
+            $meth_to_call = 'javascript:show_thread(\'' . $thread['albumName'] . '\', \'' . $thread['assetName'] . '\', \'' . $thread['timecode'] . '\', ' . $thread['id'] . ',' . $_SESSION['sesskey'] . ', \'\')'; ?>
                 <div class="item-thread">
                     <div onclick="<?php echo $meth_to_call; ?>">
                         <div class="item-thread-content" >

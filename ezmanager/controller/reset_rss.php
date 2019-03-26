@@ -21,6 +21,11 @@ function index($param = array())
         die;
     }
     
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     //
     // We just have to reset the tokens ...
     //

@@ -17,6 +17,11 @@ function index($param = array()){
         $input['renderer_step'] = "default";
     }
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     switch ($input['renderer_step']) {
 
 

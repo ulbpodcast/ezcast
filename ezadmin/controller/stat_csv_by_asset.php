@@ -2,8 +2,15 @@
 
 function index($param = array())
 {
+    global $input;
+
     $filename = "./csv_assets.csv";
     $header = array('First post datetime', 'Album name', 'Asset', 'Discussions');
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
 
     $values = stat_threads_count_all_by_asset();
     $handle = fopen($filename, 'w');

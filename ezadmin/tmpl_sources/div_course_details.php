@@ -7,7 +7,7 @@
 
 <div class="col-md-8">
     <form class="form-horizontal" method="POST">
-        
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
         <?php if (isset($error)) {
     ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
@@ -37,7 +37,7 @@
                 <p class="view form-control-static"><?php echo $course_name; ?></p>
                 <div class="edit">
                     <input type="text" class="form-control" name="course_name" 
-                           value="<?php echo htmlspecialchars($course_name) ?>" />
+                           value="<?php echo $course_name ?>" />
                 </div>
             <?php
     } ?>
@@ -46,28 +46,32 @@
 
         <!-- Origin -->
         <div class="form-group">
-            <label class="col-md-3 control-label">®origin®</label>
-            <div class="col-sm-5">
-                <span class="label 
-                    <?php if ($origin == 'internal') {
-        echo 'label-info';
-    } elseif ($origin == 'external') {
-        echo 'label-primary';
-    } else {
-        echo 'label-danger';
-    } ?>
-                    ">
-                    <?php 
-                    if ($origin == 'internal') {
-                        echo '®intern®';
-                    } elseif ($origin == 'external') {
-                        echo '®extern®';
-                    } else {
-                        echo '®error®';
-                    } ?>
-                </span>
+                <label class="col-md-3 control-label">®origin®</label>
+                <div class="col-sm-5">
+                    <span class="label 
+                        <?php if ($origin == 'internal') {
+                            echo 'label-info';
+                        } elseif ($origin == 'external') {
+                            echo 'label-primary';
+                        } elseif ($origin == 'SSO') {
+                            echo 'label-success';
+                        } else {
+                            echo 'label-danger';
+                        } ?>
+                        ">
+                        <?php 
+                        if ($origin == 'internal') {
+                            echo '®intern®';
+                        } elseif ($origin == 'external') {
+                            echo '®extern®';
+                        } elseif ($origin == 'SSO') {
+                            echo '®sso®';
+                        } else {
+                            echo '®error®';
+                        } ?>
+                    </span>
+                </div>
             </div>
-        </div>
 
         <!-- Has albums -->
         <div class="form-group">
@@ -112,6 +116,7 @@
 <div class="col-md-2 col-md-offset-2">
     <form action="index.php?action=remove_course" method="POST" style="margin:0px;">
         <input type="hidden" name="course_code" value="<?php echo $course_code; ?>" />
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 
         <button type="button" class="btn btn-block btn-primary edit_mode">®edit_button®</button>
         <button type="button" class="btn btn-block edit_cancel">®cancel®</button>
@@ -141,14 +146,38 @@
     <?php foreach ($users as $u) {
                         ?>
         <tr data-id="<?php echo $u['ID'] ?>" data-origin="<?php echo $u['origin'] ?>">
-            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $u['user_ID']; ?>"><?php echo $u['user_ID']; ?></a></td>
+            <td><a href="index.php?action=view_user_details&amp;user_ID=<?php echo $u['user_ID']; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"><?php echo $u['user_ID']; ?></a></td>
             <td><?php echo $u['forename'] . ' ' . $u['surname']; ?></td>
             <td><span class="label <?php if ($u['origin'] == 'internal') {
                             echo 'label-info';
-                        } ?>"><?php if ($u['origin'] == 'internal') {
+                        }
+                        elseif($u['origin'] == 'external') 
+                        {
+                            echo 'label-primary';
+                        }
+                        elseif($u['origin'] == 'SSO') 
+                        {
+                            echo 'label-success';
+                        }
+                        else
+                        {
+                            echo 'label-danger';
+                        }
+                        ?>">
+                        <?php if ($u['origin'] == 'internal') {
                             echo '®intern®';
-                        } else {
+                        } 
+                        elseif($u['origin'] == 'external')
+                        {
                             echo '®extern®';
+                        }
+                        elseif($u['origin'] == 'SSO')
+                        {
+                            echo '®sso®';
+                        }
+                        else
+                        {
+                            echo '®error®';
                         } ?></span></td>
             <td class="unlink" style="cursor: pointer;"><?php if ($u['origin'] == 'internal') {
                             echo '<span class="glyphicon glyphicon-remove"></span> ®remove_link®';
@@ -212,14 +241,15 @@ $(function() {
         if(!confirm("®unlink_confirm®")) return false;
 
         var link = $this.parent().data("id");
-
+        var sesskey = $("#sesskey").val();
 
 
         $.ajax("index.php?action=link_unlink_user_course&course_code=<?php echo $input['course_code'] ?>", {
             type: "post",
             data: {
                 query: "unlink",
-                id: link         
+                id: link,
+                sesskey: sesskey         
             },
             success: function(jqXHR, textStatus) {
                 var data = JSON.parse(jqXHR);
@@ -239,12 +269,14 @@ $(function() {
 
         var user = $this.prev().val();
         $this.prev().val('');
+        var sesskey = $("#sesskey").val();
 
         $.ajax("index.php?action=link_unlink_user_course&course_code=<?php echo $input['course_code'] ?>", {
            type: "post",
            data: {
                query: "link",
-               id: user
+               id: user,
+               sesskey: sesskey
            },
            success: function(jqXHR, textStatus) {
 
@@ -257,11 +289,13 @@ $(function() {
 
                var $netid = $('<td></td>').text(data.netid);
                var $username = $('<td></td>').text(data.name);
+               var $origin = $('<td></td>').text(data.origin);
                var $delete = $('<td class="unlink" style="cursor:pointer;"><span class="glyphicon glyphicon-remove"></span>®remove_link®</td>');
 
                var $tr = $('<tr data-id="' + data.id + '"></tr>');
                $tr.append($netid);
                $tr.append($username);
+               $tr.append($origin);
                $tr.append($delete);
 
                $tr.hide();

@@ -33,9 +33,10 @@
             ®Error_album_not_found®
             <form action="index.php?action=bookmarks_album_export" method="post" name="export_album_bookmarks_form" onsubmit="return false">
                 <input type="hidden" name="album" value="<?php echo $album; ?>"/>
+                <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             </form>
             <br/>
-            <br/><a class="button" style="width:300px;" href="javascript: album_token_delete('<?php echo $album; ?>');">®Delete_album®</a>
+            <br/><a class="button" style="width:300px;" href="javascript: album_token_delete('<?php echo $album; ?>', '<?php echo $_SESSION['sesskey']; ?>');">®Delete_album®</a>
             <br/><a class="button" style="width:300px;" href="#" onclick="document.export_album_bookmarks_form.submit(); return false;">®Export_album_bookmarks®</a></li>
 
         </div>

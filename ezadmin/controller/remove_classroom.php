@@ -4,6 +4,11 @@ function index($param = array())
 {
     global $input;
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+    
     if (!db_classroom_delete(trim($input['id']))) {
         echo json_encode(array('error' => '1'));
     } else {

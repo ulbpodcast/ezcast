@@ -1,6 +1,8 @@
 <div class="page_title">®create_classroom®</div>
 
 <form method="POST" class="form-horizontal">
+
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     
     <?php if ($error) {
     ?>
@@ -15,14 +17,18 @@
     <div class="form-group">
         <label for="room_ID" class="col-sm-2 control-label">®classroom_id®</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="room_ID" value="<?php echo $room_ID; ?>"/>
+            <input type="text" class="form-control" name="room_ID" value="<?php if (isset($input) && array_key_exists('room_ID', $input)) {
+        echo htmlentities($input['room_ID']);
+    } ?>" maxlength="20"/>
         </div>
     </div>
     
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">®classroom_name®</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="name" value="<?php echo $name; ?>"/>
+            <input type="text" class="form-control" name="name" value="<?php if (isset($input) && array_key_exists('name', $input)) {
+        echo htmlentities($input['name']);
+    } ?>"/>
         </div>
     </div>
     
@@ -39,7 +45,28 @@
             <input type="text" class="form-control" name="ip_remote" value="<?php echo $ip_remote; ?>"/>
         </div>
     </div>
-    
+   
+    <div class="form-group">
+        <label for="user_name" class="col-sm-2 control-label">®classroom_user_name®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="user_name" value="<?php echo $user_name; ?>"/>
+        </div>
+    </div>
+
+     <div class="form-group">
+        <label for="base_dir" class="col-sm-2 control-label">®classroom_base_dir®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="base_dir" value="<?php echo $base_dir; ?>"/>
+        </div>
+    </div>
+
+     <div class="form-group">
+        <label for="sub_dir" class="col-sm-2 control-label">®classroom_sub_dir®</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="sub_dir" value="<?php echo $sub_dir; ?>"/>
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-sm-5 col-sm-offset-2">
             <div class="checkbox">

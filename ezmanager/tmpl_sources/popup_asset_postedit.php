@@ -98,6 +98,9 @@
 
               </div>
             </div>
+
+            <input type="button" class="btn" name="" value="test this shit" onclick="testFun();">
+
         </div>
     </center>
 </div>
@@ -285,7 +288,7 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
         var tArray=[];
         for (var i = 0; i < json.cutArray.length; i++) {
             console.log("passage for");
-            if ((json.curCut[0]>=json.cutArray[i][0]&&json.curCut[0]<json.cutArray[i][1])||(json.curCut[1]>json.cutArray[i][0]&&json.curCut[1]<=json.cutArray[i][1])||(json.curCut[0]<=json.cutArray[i][0]&&json.curCut[1]>=json.cutArray[i][1])) {
+            if ((json.curCut[0]>json.cutArray[i][0]&&json.curCut[0]<json.cutArray[i][1])||(json.curCut[1]>json.cutArray[i][0]&&json.curCut[1]<json.cutArray[i][1])||(json.curCut[0]<json.cutArray[i][0]&&json.curCut[1]>json.cutArray[i][1])) {
                 console.log("intersection avec le cut numero "+(i+1));
                 intersectedCut.push(i);
             }
@@ -333,10 +336,36 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
         $("#cutSlider").slider('destroy');
         initSlider(json.duration,json.cutArray,json.curCut);
         updateCutTable(json.cutArray);
-    });
-    $("#cutSlider-container").on('slide change','#cutSlider', function()
+    })
+
+})();
+
+// function activateButton() {
+//     $("#cutTable").on('click','.modBtn',function(event) {
+//         console.log("ici");
+//         var json=JSON.parse($("#data").val());
+//         var index=parseInt(this.id.substring(6,7));
+//         var tArray=json.cutArray;
+//         console.log("tArray "+tArray[0]);
+//         json.curCut=json.cutArray[this.id.substring(6,7)];
+//         tArray.splice
+//
+//         myJson=JSON.stringify(json);
+//         $("#data").val(myJson);
+//         setInputValue(json.curCut);
+//         $("#cutSlider").slider('destroy');
+//         initSlider(json.duration,json.cutArray,json.curCut);
+//         updateCutTable(json.cutArray);
+//
+//     });
+//     $(".delBtn").on('click',function(event) {
+//     });
+// }
+function activateSlider() {
+    $("#cutSlider").on('slide change', function()
     {
         var allVideoPlayer = document.getElementsByTagName("video");
+
         if ($("#cutSlider").slider('getValue')[0]!=$("#cutStart").val()) {
             for(var i = 0; i < allVideoPlayer.length; i++) {
                 var video = allVideoPlayer[i];
@@ -351,8 +380,7 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
         setInputValue($("#cutSlider").slider('getValue'));
         setJSONCut($("#cutSlider").slider('getValue'));
     });
-
-})();
+}
 
 function initJSON(duration,array,curCut)
 {
@@ -368,8 +396,9 @@ function initJSON(duration,array,curCut)
 function initSlider(duration,array,cut)
 {
     //init of the cutSlider
-    $("#cutSlider").slider({ id: "cutSliderSlider",  min: 0, max: duration, range: true, step: 0.01, value: [cut[0],cut[1]],rangeHighlights: updateCutSliderBackground(array)});
+    $("#cutSlider").slider({ id: "cutSliderSlider",  min: 0, max: duration, range: true, step: 0.01, value: [cut[0],cut[1]],rangeHighlights: updateCutSliderBackground(array) });
     $("#videoSlider").slider({ id: "videoSliderSlider", class: "container-grey", min: 0, max: duration, step: 0.01, value: 0});
+    activateSlider()
 }
 
 function setInputValue(array)
@@ -425,7 +454,6 @@ function updateCutSliderBackground(array)
         };
         tArray.push(json);
     }
-    console.log(tArray);
     return tArray;
 }
 
@@ -434,6 +462,21 @@ function updateCutTable(array) {
     for(i=0;i<array.length;i++){
       var cutNb=(i+1);
       $("#cutTableBody").append("<tr><td>"+cutNb+"</td><td>"+array[i][0]+"</td><td>"+array[i][1]+"</td><td><button type='button' id='modBtn"+i+"' class='btn modBtn'><i class='glyphicon glyphicon-edit'></i></button></td><td><button type='button' id='delBtn"+i+"' class='btn delBtn'><i class='glyphicon glyphicon-remove-sign'></i></button></td></tr>");
+      //activateButton();
     }
 }
+
+//test functions
+function printJSON() {
+}
+function testFun() {
+
+    for (var i = 0; i < 11; i++) {
+        setTimeout(function () {
+            console.log(i);
+        }, 1000);
+    }
+
+}
+
 </script>

@@ -1,5 +1,5 @@
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -28,15 +28,15 @@
 /**
  * Toggles the asset details visibility. If called when we open the div, this function will also retrieve the asset information
  */
-function show_asset_details(album, asset) {
+function show_asset_details(album, asset, sesskey) {
     var targetElement;
     targetElement = document.getElementById('asset_'+asset+'_details') ;
-    
+
     // Case 1: The div was hidden; we retrieve the info and display it
     if (targetElement.style.display == "none") {
         targetElement.style.display = "" ;
         targetElement.innerHTML = '<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>';
-        makeRequest('index.php', '?action=view_asset_details&album='+album+'&asset='+asset, 'asset_'+asset+'_details');
+        makeRequest('index.php', '?action=view_asset_details&album='+album+'&asset='+asset+'&sesskey='+sesskey, 'asset_'+asset+'_details');
         $('#asset_'+asset+'_line').addClass('active');
         var asset_glyphicon = $('#asset_'+asset+'_glyphicon');
         if(asset_glyphicon.hasClass('glyphicon-triangle')) {
@@ -83,7 +83,7 @@ function show_embed_player(album, asset, quality, type, token, div_player, width
     div_player = (typeof div_player !== 'undefined' ? div_player : 'Player_'+asset+'_'+type);
     width = (typeof width !== 'undefined' ? width : '185');
     height = (typeof height !== 'undefined' ? height : '149');
-    
+
     makeRequest('distribute.php', '?action=embed&album='+album+'&asset='+asset+'&type='+type+'&quality='+quality+
             '&origin=podman&token='+token+'&width='+width+'&height='+height, div_player);
 }

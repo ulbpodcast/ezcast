@@ -10,11 +10,19 @@
             <?php include 'div_main_header.php'; ?>
             <div id="global">
                 <p> 
+                    
+                    <?php if($sso_only && !$file_enabled) { 
+                        global $ezmanager_safe_url;
+                        header('Location: '.$ezmanager_safe_url.'/index.php?sso');
+                    }?>
+                    
                      <?php if($sso_enabled) { ?>
                     <div class="login-choices btn-center" >
                           <a class="btn-login btn-sso" href="<?php global $ezmanager_safe_url; echo $ezmanager_safe_url;
                           ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
+                           <?php if($file_enabled) { ?>
                           <a class="btn-login btn-login-default btn-default" href="#" id="default_auth_button" title="">®authLocal®</a>
+                           <?php }?>
                     </div>
                     <?php
 } ?>

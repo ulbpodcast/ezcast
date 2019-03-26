@@ -74,7 +74,7 @@
 
         <?php if (acl_user_is_logged()) {
                 ?>
-            <a href="index.php?action=logout" title="®Logout_title®">
+            <a href="index.php?action=logout&sesskey=<?php echo $_SESSION['sesskey']; ?>" title="®Logout_title®">
                 <span class="logout">®Logout®</span>
             </a>
         <?php
@@ -87,7 +87,7 @@
         <?php
             } ?>       
         <span style="float: right; margin: 1px 3px; font-size: 15px;">|</span>
-        <a href="index.php?action=view_help" target="_blank" title="®Help_title®">
+        <a href="index.php?action=view_help&sesskey=<?php echo $_SESSION['sesskey']; ?>" target="_blank" title="®Help_title®">
             <span class="logout green">®Help®</span>
         </a>
         <?php if (acl_user_is_logged()) {
@@ -116,6 +116,7 @@
         <?php
         } ?>
     </div>
+   
 </div>
 <?php if (!acl_user_is_logged()) {
             ?>

@@ -64,12 +64,20 @@
         <div class="login_background container">
             <?php include 'div_help_header.php'; ?>
             <div id="global" class="row">
+                
+                <?php if($sso_only && !$file_enabled) { 
+                    global $ezplayer_safe_url;
+                    header('Location: '.$ezplayer_safe_url.'/index.php?sso');
+                }?>
                 <?php if ($sso_enabled) {
             ?>
                 <div class="login-choices btn-center" >
                       <a class="btn-login btn-sso" href="<?php global $ezplayer_safe_url;
             echo $ezplayer_safe_url; ?>/index.php?sso"  id="btnSSO" title="Authentification SSO">®authSSO®</a>
+                        <?php if($file_enabled) { ?>
                       <a class="btn-login btn-default btn-login-default" href="#" id="default_auth_button" title="">®authLocal®</a>
+                        <?php }?>
+
                 </div>
                 <?php
         } ?>

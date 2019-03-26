@@ -45,6 +45,9 @@ $config['ssh']['timeout'] = 15;
 
 $repository_path="$repository_basedir/repository";
 
+//file to indicate changes have been made in ezrecorder passwd or course file (by an admin in ezadmin or a user in ezmanager)
+$ezrecorder_need_files_pushed_path="$repository_basedir/ezrecorder_need_files_pushed";
+
 if($streaming_video_alternate_server_enable_redirect && !$streaming_video_alternate_server_enable_sync) {
     // this should not happen except if you're using another solution to sync the files
     trigger_error('Possible wrong configuration ($streaming_video_alternate_server_enable_redirect enabled while $streaming_video_alternate_server_enable_sync disabled)', E_USER_WARNING);

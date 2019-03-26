@@ -9,6 +9,7 @@ chdir(__DIR__);
 include_once __DIR__.'/config.inc';
 include_once __DIR__.'/lib_ezmam.php';
 include_once __DIR__.'/lib_various.php';
+require_once __DIR__.'/../commons/config.inc';
 
 Logger::$print_logs = true;
 
@@ -156,6 +157,16 @@ if (strpos($record_type, "slide")!==false) {
         exit(6);
     }
 }
+//do we have a audio file?
+if (strpos($record_type, "audio")!==false) {
+    //insert original slide media in asset with attention to file extension/mimetype
+     $ok = originals_mam_insert_media($album_name, $asset_name, 'audio', $recording_metadata, $recording_dir);
+    if (!$ok) {
+        $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "audio media insertion failed for album $album_name", array("cli_mam_insert"), $asset);
+        set_asset_status_to_failure();
+        exit(6);
+    }
+}  
 //media(s) inserted into mam, so move the processing directory to mam_inserted
 $inserted_recording_dir=dirname(dirname($recording_dir)).'/mam_inserted/'.basename($recording_dir);
 if (file_exists($inserted_recording_dir)) { //This may happen if we re process an already processed asset
@@ -234,7 +245,12 @@ function originals_mam_insert_media($album_name, $asset_name, $camslide, &$recor
             }//default extension
         }
         if (ctype_alnum($ext)) { //an extension should not have bad chars
-            $mov_filepath=$recording_dir.'/'.$camslide.'.mov';
+//            put the audio file into cam for the video creation                                      
+            if($camslide=='audio') {
+                $mov_filepath=$recording_dir.'/'.'cam'.'.mov';
+            }
+            else 
+                $mov_filepath=$recording_dir.'/'.$camslide.'.mov';
             $goodext_filepath=$recording_dir.'/'.$camslide.'.'.$ext;
             //rename cam.mov into cam.mpg if submit was an .mpg file
             rename($mov_filepath, $goodext_filepath);

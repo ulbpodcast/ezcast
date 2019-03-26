@@ -6,6 +6,7 @@
 
 <?php
     global $apache_documentroot;
+    global $matomoScript;
     $custom_folder = "$apache_documentroot/ezplayer/css/custom/";
     $dir = new DirectoryIterator($custom_folder);
     foreach ($dir as $fileinfo) {
@@ -13,6 +14,10 @@
             echo '<link rel="stylesheet" type="text/css" href="css/custom/'.$fileinfo->getFilename().'"/>';
         }
     }
-?>
-<link rel="stylesheet" type="text/css" href="css/smartphone.css" />
+        
+    if($_SESSION['isPhone']){ ?>
+        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
+<?php } ?>	
 <script type="text/javascript" src="js/jQuery/jquery-2.1.3.min.js"></script>
+
+<?php echo $matomoScript; ?>

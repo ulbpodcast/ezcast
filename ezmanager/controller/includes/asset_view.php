@@ -152,6 +152,36 @@ function asset_view()
     $_SESSION['podman_album'] = $input['album'];
     $_SESSION['podman_asset'] = $input['asset'];
 
+    $filepath_m3u8 = '/var/www/html/ezplayer/videos/'.suffix_remove($album).'/'.$asset_name.'_'.$asset_token.'/';
+    if($record_type == 'slide'){
+        $filepath_m3u8 .= 'slide/low/live.m3u8';
+    } else {
+        $filepath_m3u8 .= 'cam/low/live.m3u8';
+    }
+    $interval = 0;
+    $displayButton = false;
+    
+    $timestamp_repo = filemtime($repository_path."/".$album.'/'.$asset_name);
+    $timestamp_repo = strval($timestamp_repo);
+    $now = strtotime('now');
+    $intervalCreation = abs($timestamp_repo - $now);
+    
+    if($intervalCreation>60){        
+        if(file_exists($filepath_m3u8))
+        {
+            $timestamp_folder = filemtime($filepath_m3u8);
+            $timestamp_folder = strval($timestamp_folder);
+            $now = strtotime('now');
+            $interval = abs($timestamp_folder - $now);
+            
+            if($interval > 30)
+                $displayButton = true; 
+        } 
+        else 
+            $displayButton = true;
+    }
+    
+
     global $enable_copy_asset;
     //
     // 4) Then display the asset and its content

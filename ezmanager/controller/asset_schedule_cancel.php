@@ -18,6 +18,11 @@ function index($param = array())
         die;
     }
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!acl_has_album_permissions($input['album'])) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
         log_append('warning', 'delete_asset: tried to access album ' . $input['album'] . ' without permission');

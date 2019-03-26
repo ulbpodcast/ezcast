@@ -13,16 +13,29 @@ function index($param = array())
     
     global $onlyRecording;
     global $onlyOnline;
+
+    global $input_validation_regex;
     
     $MAX_CLASSROOMS_PER_PAGE = 50;
     
     $onlyRecording = false;
     $onlyOnline = false;
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
     
-    if (isset($input['update'])) {
-        db_classroom_update(trim($input['a_room_ID']), $input['u_room_ID'], $input['u_name'], $input['u_ip'], $input['u_ip_remote']);
-        notify_changes(); //we must write new allowed classrooms IP's
+    if (isset($input['update']))
+    {
+        if (!check_validation_text($input['a_room_ID']) || !check_validation_text($input['u_room_ID'])) {
+            $error = template_get_message('error_validation_roomID', get_lang());
+        } elseif (!check_validation_text($input['u_name'])) {
+            $error = template_get_message('error_validation_name', get_lang());
+        } elseif (empty($error)) {
+            db_classroom_update(trim($input['a_room_ID']), $input['u_room_ID'], $input['u_name'], $input['u_ip'], $input['u_ip_remote']);
+            notify_changes(); //we must write new allowed classrooms IP's
+        }
     }
     
     if (array_key_exists('page', $input)) {

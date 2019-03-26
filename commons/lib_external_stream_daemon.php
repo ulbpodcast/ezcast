@@ -13,11 +13,12 @@ function ensure_external_stream_daemon_is_running($video_root_dir, $asset_token)
     }
    
     global $logger;
+    global $php_exec_path;
     $logger->log(EventType::MANAGER_EXTERNAL_STREAM, LogLevel::NOTICE, "Started external stream deamon for asset token $asset_token with video_root_dir $video_root_dir", array(__FUNCTION__));
     
     // Start daemon in background
     $log_folder = ExternalStreamDaemon::get_temp_folder($asset_token);
-    $command = PHP_BINARY . ' ' .__DIR__."/cli_external_stream_daemon.php $video_root_dir $asset_token &> $log_folder/sync.log &";
+    $command = $php_exec_path." ".__DIR__."/cli_external_stream_daemon.php $video_root_dir $asset_token &> $log_folder/sync.log &";
     file_put_contents("$log_folder/sync_command", $command . PHP_EOL);
     system($command);
 }

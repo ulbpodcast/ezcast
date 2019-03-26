@@ -52,5 +52,15 @@ $update_list = [
                         'UNIQUE KEY(`visibility`, `asset`,`album`)' .
                     ') ENGINE=InnoDB DEFAULT CHARSET=utf8;'
             )
-        )
+        ),
+    "1.0.1" =>
+        array("1.0.2",
+            array(
+                'ALTER TABLE !PREFIX!classrooms'.
+                ' ADD COLUMN `sub_dir` varchar(50) NOT NULL AFTER `IP_remote`,'.
+                ' ADD COLUMN `base_dir` varchar(50) NOT NULL AFTER `IP_remote`,'.
+                ' ADD COLUMN `user_name` varchar(50) NOT NULL AFTER `IP_remote`;',
+              
+            )
+        )    
 ];

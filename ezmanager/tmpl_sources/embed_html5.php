@@ -27,8 +27,8 @@
 
 <video src="<?php echo urldecode($media_url); ?>" 
        type="video/h264" 
-       width="<?php echo $width; ?>" 
-       height="<?php echo $height; ?>" 
+       width="100%" 
+       height="100%" 
        id="<?php echo $video_id; ?>" 
        controls controlsList="nodownload" 
 >

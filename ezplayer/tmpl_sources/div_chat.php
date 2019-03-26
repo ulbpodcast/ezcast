@@ -69,6 +69,7 @@
                     <input type="hidden" name="chat_album" id="chat_album" value="<?php echo $album; ?>"/>  
                     <input type="hidden" name="chat_asset" id="chat_asset" value="<?php echo $asset; ?>"/>
                     <input type="hidden" name="chat_timecode" id="chat_timecode" value=""/>
+                    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
                     <textarea placeholder="®Chat_placeholder®" name="chat_message" id="chat_message"></textarea>
                 </form>
                 <div class="chat_button">

@@ -1,4 +1,4 @@
-<!-- 
+<!--
 DEPRECATED
 
 Pops up for resetting RSS feed
@@ -15,7 +15,7 @@ You should not have to include this file yourself.
         <a class="btn btn-info" target="_blank" href="?action=view_help" role="button">®Help®</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#rss_confirm'));$('#modal').modal('show'); }, 500);"
-            href="index.php?action=reset_rss&album=<?php echo $album; ?>" 
+            href="index.php?action=reset_rss&album=<?php echo $album; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" 
             data-dismiss="modal" id="rss_confirm">
             ®OK®
         </a>

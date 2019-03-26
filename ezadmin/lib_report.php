@@ -1,14 +1,15 @@
 <?php
 
+require_once "./config.inc";
+require_once "../commons/config.inc";
+
 class Report
 {
-
+    
     // Constant
-    const EZCAST_FOLDER = "/var/lib/ezcast/";
-    const REPOSITOR_FOLDER = 'repository';
+    const REPOSITOR_FOLDER = '/repository';
     const TRACE_FOLDER = 'ezplayer/ezplayer_traces';
     
-    private static $IGNORED_COURSES = array('TEST', 'TEST-AW', 'APR-POD', 'DEMO');
     private static $IGNORED_FILES = array('.', '..', '.gitignore');
 
     const META_FILE_NAME = '_metadata.xml';
@@ -124,15 +125,17 @@ class Report
     
     private function repository_get_all()
     {
+        global $repository_basedir;
+
         $listFile = array();
-        $this->repository_get_xml(self::EZCAST_FOLDER.self::REPOSITOR_FOLDER, $listFile);
+        $this->repository_get_xml($repository_basedir.self::REPOSITOR_FOLDER, $listFile);
 
         foreach ($listFile as $filePath) {
             $xml = simplexml_load_file($filePath);
 
             $output_array = array();
             preg_match(
-                "/".preg_quote(self::EZCAST_FOLDER.self::REPOSITOR_FOLDER, '/')."\/(([\w-_]*)\-[^\-^\/]*)\/(\w*)\/_metadata.xml/",
+                "/".preg_quote($repository_basedir.self::REPOSITOR_FOLDER, '/')."\/(([\w-_]*)\-[^\-^\/]*)\/(\w*)\/_metadata.xml/",
                     $filePath,
                 $output_array
             );
@@ -188,11 +191,13 @@ class Report
         &$listCoursRecord,
         &$classroomRecordTime = -1
     ) {
+        global $courses_excluded_from_stats;
+
         $author = (String) $asset->author;
         $origin = (String) $asset->origin;
 
         $cours = (String) $asset->cours;
-        if (in_array($cours, self::$IGNORED_COURSES)) {
+        if (in_array($cours, $courses_excluded_from_stats)) {
             return;
         }
         
@@ -268,16 +273,18 @@ class Report
      */
     private function ezplayer_calcul_user_nbr()
     {
-        $res = scandir(self::EZCAST_FOLDER.'ezplayer/users');
+        global $repository_basedir;
+        $res = scandir($repository_basedir.'/ezplayer/users');
         $this->nbr_total_user = count(array_diff($res, self::$IGNORED_FILES));
     }
 
 
     private function ezplayer_trace_get_all()
     {
+        global $repository_basedir;
         // $listAction = array();
         $allFile = array();
-        $this->ezplayer_trace_get_file(self::EZCAST_FOLDER.'/'.self::TRACE_FOLDER, $allFile);
+        $this->ezplayer_trace_get_file($repository_basedir.'/'.self::TRACE_FOLDER, $allFile);
         foreach ($allFile as $file) {
             $traceFile = fopen($file, "r") or die("Unable to open file!");
 

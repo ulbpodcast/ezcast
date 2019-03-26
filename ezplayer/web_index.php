@@ -41,6 +41,7 @@ require_once '../commons/lib_auth.php';
 require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
 require_once '../commons/common.inc';
+require_once '../commons/config.inc';
 require_once 'lib_various.php';
 require_once 'lib_user_prefs.php';
 include_once 'lib_toc.php';
@@ -49,8 +50,22 @@ require_once 'lib_threads_pdo.php';
 require_once 'lib_chat_pdo.php';
 require_once 'lib_cache.php';
 require_once 'lib_acl.php';
+require_once '../commons/lib_mobile_detect.php';
+
+if ($maintenance_mode && !isset($_SESSION['user_is_admin'])){
+    include_once '../commons/maintenance_page.php';
+    die;
+}
+
+$detect = new Mobile_Detect();
+$_SESSION['isPhone'] = $detect->isMobile();
 
 $input = array_merge($_GET, $_POST);
+
+
+if(isset($input['lang']) && ($input['lang']=="fr" || $input['lang']=="en")){
+    set_lang($input['lang']);
+}
 
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
@@ -78,6 +93,18 @@ if (!isset($_SESSION['browser_name']) || !isset($_SESSION['browser_version']) ||
     $_SESSION['user_os'] = $os->getName();
     $_SESSION['user_os_version'] = $os->getVersion();
 }
+//print_r($input);
+//print_r($_SESSION);
+////die();
+//if((!isset($_SESSION['termsOfUses']) || $_SESSION['termsOfUses']!=1) && $input['action']!='acceptTermsOfUses' && $enable_termsOfUse){
+//    $_SESSION['redirect']=json_encode($input);
+//    view_termsOfUses_form();
+//    die();
+//}
+//if( isset($input['action']) && $input['action']=='acceptTermsOfUses'){
+//    requireController('acceptTermsOfUses.php');
+////    die();
+//}
 
 
 $logged_in = user_logged_in();
@@ -112,6 +139,8 @@ if (!$logged_in) {
     
     if (isset($input['action'])) {
         switch ($input['action']) {
+
+            
             // Handle login form
             case 'login':
                 if (!isset($input['login']) || !isset($input['passwd'])) {
@@ -157,7 +186,12 @@ if (!$logged_in) {
         }
     }
 }
-
+//print_r($_SESSION); die();
+else if(isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1 && ($input['action']!='acceptTermsOfUses') && $enable_termsOfUse){
+    view_termsOfUses_form();
+    $_SESSION['redirect']=json_encode($input);
+    die();
+}
 // From this point, user is logged in.
 
 // We check whether they specified an action to perform. If not, it means they landed
@@ -207,6 +241,13 @@ function load_page()
     
     $paramController = array();
     switch ($action) {
+        
+                    
+        case 'acceptTermsOfUses':
+            requireController('acceptTermsOfUses.php');
+        break;
+
+        
         // ============== L O G I N  /  L O G O U T =============== //
         // The only case when we could possibly arrive here with a session created
         // and a "login" action is when the user refreshed the page. In that case,
@@ -507,10 +548,12 @@ function user_anonymous_session()
     $_SESSION['ezplayer_anonymous'] = "user_logged_anonymous"; // "boolean" stating that we're logged
     $_SESSION['user_login'] = "anon";
     $_SESSION['user_full_name'] = "Anonyme";
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
+
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
-        if ($input['has_flash'] == 'N') {
+        if (isset($input['has_flash']) && $input['has_flash'] == 'N') {
             $_SESSION['has_flash'] = false;
         } else {
             $_SESSION['has_flash'] = true;
@@ -589,6 +632,7 @@ function user_login($login, $passwd)
         view_login_form();
         die;
     }
+//    print_r($res);die();
 
 
     // 1) Initializing session vars
@@ -597,11 +641,14 @@ function user_login($login, $passwd)
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
+    $_SESSION['termsOfUses'] = $res['termsOfUses'];
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
+
     $_SESSION['admin_enabled'] = false;
     //check flash plugin or GET parameter no_flash
     if (!isset($_SESSION['has_flash'])) {//no noflash param when login
         //check flash plugin
-        if ($input['has_flash'] == 'N') {
+        if (isset($input['has_flash']) && $input['has_flash'] == 'N') {
             $_SESSION['has_flash'] = false;
         } else {
             $_SESSION['has_flash'] = true;
@@ -653,7 +700,10 @@ function user_anonymous()
 {
     return (isset($_SESSION['ezplayer_anonymous']));
 }
+function view_termsOfUses_form(){
+    include_once template_getpath('div_termsOfUses.php');
 
+}
 /**
  * Displays the login form
  */
@@ -663,6 +713,7 @@ function view_login_form()
     global $error, $input;
     global $template_folder;
     global $auth_methods;
+    global $sso_only;
 
     //check if we receive a no_flash parameter (to disable flash progressbar on upload)
     if (isset($input['no_flash'])) {
@@ -674,10 +725,10 @@ function view_login_form()
     set_lang($lang);
     
     template_repository_path($template_folder . get_lang());
-    
     // template include goes here
     /* require_once template_getpath('login.php');*/
     $sso_enabled = in_array("sso", $auth_methods);
+    $file_enabled = ((in_array("file", $auth_methods) && !$sso_only)  || ($sso_only && isset($_GET["local"])) || (!$sso_enabled && in_array("file", $auth_methods)) );
     include_once template_getpath('login.php');
 }
 
@@ -706,8 +757,6 @@ function albums_view($refresh_page = true)
         }
     }
     $_SESSION['ezplayer_mode'] = 'view_main'; // used in 'main.php' and 'div_search.php'
-    $_SESSION['album'] = ''; // no album selected
-    $_SESSION['asset'] = ''; // no asset selected
     // init paths
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);
@@ -957,6 +1006,11 @@ function thread_details_update($display = true)
 {
     global $input;
     
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (array_key_exists('thread_id', $input) && $input['thread_id'] != null) {
         $id = $input['thread_id'];
         $_SESSION['current_thread'] = $id;

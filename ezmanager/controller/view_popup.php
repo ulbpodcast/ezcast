@@ -13,11 +13,6 @@ function index($param = array())
         die;
     }
 
-    if (!acl_session_key_check($input['sesskey'])) {
-        echo "Usage: Session key is not valid";
-        die;
-    }
-
     switch ($input['popup']) {
         case 'media_url':
             popup_media_url();
@@ -37,10 +32,6 @@ function index($param = array())
 
         case 'new_album':
             popup_new_album();
-            break;
-
-        case 'ezrecorder':
-            popup_ezrecorder();
             break;
 
         case 'delete_album':
@@ -94,6 +85,9 @@ function index($param = array())
         case 'copy_asset':
             copy_asset();
             break;
+        case 'postedit_asset':
+            postedit_asset();
+            break;
 
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
@@ -136,7 +130,6 @@ function popup_embed_code()
     global $repository_path;
     global $ezmanager_url;
     global $distribute_url;
-    global $embedIframed;
 
     ezmam_repository_path($repository_path);
     template_load_dictionnary('translations.xml');
@@ -165,11 +158,8 @@ function popup_embed_code()
     $type = $media_infos[1];
     $quality = $media_infos[0];
     //compute iframe size according to media size
-//    $iframe_height = $metadata['height'] + 40;
-//    $iframe_width = $metadata['width'] + 30;
-    //force width & heigth in youtube standart
-    $iframe_width = 560;
-    $iframe_height = 315;
+    $iframe_height = $metadata['height'] + 40;
+    $iframe_width = $metadata['width'] + 30;
     // Embed code
     $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] .
             '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
@@ -270,36 +260,15 @@ function popup_new_album()
     require_once template_getpath('popup_new_album.php');
 }
 
-function popup_ezrecorder()
-{
-    //$not_created_albums_with_descriptions = acl_authorized_albums_list_not_created(true); // Used to display the popup_new_album
-    $album= acl_authorized_albums_list_created($assoc = false);
-    $album_view=array();
-    foreach ($album as $album_name) {
-      $course_info=db_course_read($album_name);
-      if (isset($course_info['course_code_public']) && $course_info['course_code_public']!='') {
-            $course_code_public = $course_info['course_code_public'];
-        } else {
-            $course_code_public = $album_name;
-        }
-      $in_recorders=isset($course_info['in_recorders']) && $course_info['in_recorders']!=false;
-      array_push($album_view, array('course_code'=>$album_name,'course_code_public'=>$course_code_public,'in_recorders'=>$in_recorders));
-    }
-
-    //check if the user already has an ezrecorder pw
-    $user_info=db_user_read($_SESSION['user_login']);
-    $user_has_ezrecorder_pw = $user_info!=false && isset($user_info) && $user_info['passNotSet']!=true;
-    require_once template_getpath('popup_ezrecorder.php');
-}
-
 function popup_delete_album()
 {
     global $input;
-    if (!isset($input['album'])) {
-        echo 'Usage: index.php?action=show_popup&amp;popup=delete_album&amp;album=ALBUM';
+    if (!isset($input['album']) || !isset($input['album_id'])) {
+        echo 'Usage: index.php?action=show_popup&amp;popup=delete_album&amp;album=ALBUM&amp;album_id=ALBUM-ID';
         die;
     }
-    $album = $input['album'];
+    $album_name = $input['album'];
+    $album_id = $input['album_id'];
     require_once template_getpath('popup_delete_album.php');
 }
 
@@ -493,4 +462,41 @@ function copy_asset()
     $album = $input['album'];
 
     require template_getpath('popup_copy_asset.php');
+}
+function postedit_asset()
+{
+  global $input;
+  if (!isset($input['asset']) || !isset($input['album'])) {
+      echo 'Usage: index.php?action=show_popup&amp;popup=postedit_asset&amp;album=ALBUM&amp;asset=ASSET';
+      die;
+  }
+  $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
+  $asset_name = $input['asset'];
+  $album = $input['album'];
+
+
+  //
+
+      global $input;
+      global $video_split_time;
+
+      if (!isset($input['asset']) || !isset($input['album'])) {
+          echo 'Usage: index.php?action=show_popup&amp;popup=asset_stats&amp;album=ALBUM&amp;asset=ASSET';
+          die;
+      }
+
+      $asset = $input['asset'];
+      $album = $input['album'];
+      $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+      $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
+      $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
+      $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
+
+
+
+
+
+  //
+
+  require template_getpath('popup_asset_postedit.php');
 }

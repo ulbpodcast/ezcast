@@ -26,6 +26,11 @@ function index($param = array())
         die;
     }
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     ezmam_repository_path($repository_path);
 
     if (!ezmam_album_exists($input['album'])) {

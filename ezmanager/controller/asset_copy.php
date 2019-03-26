@@ -19,6 +19,12 @@ function index($param = array())
     //
     // Sanity checks
     //
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!isset($input['asset']) || !isset($input['from']) || !isset($input['to'])) {
         echo 'Usage: index.php?action=copy_asset&amp;from=SOURCE&amp;to=DESTINATION&amp;asset=ASSET';
         $logger->log(EventType::MANAGER_ASSET_COPY, LogLevel::WARNING, 'Asset copy called with missing args. Input: '

@@ -27,6 +27,6 @@
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     */ ?>
         <title>¤organization¤</title>
-        <link rel="shortcut icon" type="image/ico" href="images/Generale/favicon.ico" />
+        <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
     </head>
-    <body>
+    <body style="margin:0px !important">

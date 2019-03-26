@@ -45,9 +45,9 @@ if ($trace_on) {
                 break;
             case 'flowplayer':
                 ?>
-                <link rel="stylesheet" href="flowplayer/skin/skin.css">
-                <script src="flowplayer/flowplayer.min.js"></script>
-                <script src="flowplayer/hls.js"></script>
+                <link rel="stylesheet" href="flowplayer-6/skin/skin.css">
+                <script src="flowplayer-6/flowplayer.min.js"></script>
+                <script src="flowplayer-6/hls.js"></script>
                 <?php
                 break;
         }
@@ -116,8 +116,33 @@ if ($trace_on) {
                 // history handler for back/next buttons of the browser
                 window.onpopstate = function (event) {
                     if (event.state !== null) {
-                        var state = jQuery.parseJSON(JSON.stringify(event.state));
-                        window.location = state.url;
+                        var state = jQuery.parseJSON(JSON.stringify(event.state)),
+                        form,
+                        form_value = "",
+                        page,
+                        url_split;
+
+                        if(state.url.indexOf("?") >= 0) {
+                            url_split = state.url.split("?");
+                            page = url_split[0];
+                            
+                            var url_param = url_split[1].split("&"),
+                            name_value;
+
+                            for (var i = 0; i < url_param.length; i++)  {
+                                name_value = url_param[i].split("=");
+                                form_value += '<input type="hidden" name="' + name_value[0] + '" value="' + name_value[1] + '" />';
+                            }
+                        } else {
+                            page = state.url;
+                            form_value = '<input type="hidden" name="action" value="home" />';
+                        }
+
+                        form = '<form action="' + page + '" method="post">' + form_value + '</form>';
+
+                        var form_send = $(form);
+                        $('body').append(form_send);
+                        form_send.submit();
                     }
                 };
             });
@@ -154,13 +179,13 @@ if ($trace_on) {
              * @param {type} asset_token
              * @returns {undefined}
              */
-            function show_asset_details(album, asset, asset_token) {
+            function show_asset_details(album, asset, asset_token, sesskey) {
                 current_album = album;
                 current_asset = asset;
                 display_thread_details = false;
 
                 makeRequest('index.php', '?action=view_asset_details&album=' + album + '&asset=' + asset + '&asset_token=' + 
-                        asset_token + '&click=true', 'div_center');
+                        asset_token + '&click=true' + '&sesskey=' + sesskey, 'div_center');
                 //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + 
                 //      asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + 
                 //      "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
@@ -173,13 +198,12 @@ if ($trace_on) {
              * @param {type} asset_token
              * @returns {undefined}
              */
-            function show_asset_streaming(album, asset, asset_token) {
+            function show_asset_streaming(album, asset, asset_token, sesskey) {
                 current_album = album;
                 current_asset = asset;
                 display_thread_details = false;
-
                 makeRequest('index.php', '?action=view_asset_streaming&album=' + album + '&asset=' + asset + '&asset_token=' + 
-                        asset_token + '&click=true', 'div_center');
+                        asset_token + '&click=true' + '&sesskey=' + sesskey, 'div_center');
                 //   history.pushState({"key": "show-asset-details", "function": "show_asset_details(" + album + "," + 
                 //      asset + "," + asset_token + ")", "url": "index.php?action=view_asset_details&album=" + album + 
                 //      "&asset=" + asset + "&asset_token=" + asset_token}, 'asset-details', 'index.php?action=view_asset_details');
@@ -190,12 +214,13 @@ if ($trace_on) {
              * @param {type} threadId
              * @returns {Boolean}
              */
-            function show_thread(album, asset, timecode, threadId, commentId) {
+            function show_thread(album, asset, timecode, threadId, commentId, sesskey) {
                 if (album != null && asset != null) {
                     current_album = album;
                     current_asset = asset;
                 }
-                if (typeof fullscreen != 'undefined' && fullscreen) {
+                if (typeof fullscreen != 'undefined' && fullscreen)
+                {
                     video_fullscreen(false);
                 }
                 if (ezplayer_mode == 'view_asset_streaming')
@@ -205,7 +230,7 @@ if ($trace_on) {
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=view_asset_bookmark',
-                    data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true",
+                    data: 'album=' + album + '&asset=' + asset + "&t=" + timecode + "&thread_id=" + threadId + "&click=true" + '&sesskey=' + sesskey,
                     success: function (response) {
                         $('#div_center').html(response);
                         if (commentId != '') {
@@ -222,7 +247,7 @@ if ($trace_on) {
              * Displays the detail of a thread (from threads list)
              * @returns {Boolean}
              */
-            function show_thread_details(event, thread_id) {
+            function show_thread_details(event, thread_id, sesskey) {
                 if ($(event.target).is('a') || $(event.target).is('span.timecode'))
                     return;
 
@@ -230,7 +255,7 @@ if ($trace_on) {
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=view_thread_details&click=true',
-                    data: {'thread_id': thread_id},
+                    data: {'thread_id': thread_id, 'sesskey': sesskey},
                     success: function (response) {
                         $('#threads').html(response);
                         tinymce.remove('textarea');
@@ -243,7 +268,7 @@ if ($trace_on) {
              * @param {type} threadId
              * @returns {Boolean}
              */
-            function show_asset_bookmark(album, asset, timecode, type) {
+            function show_asset_bookmark(album, asset, timecode, type, sesskey) {
                 current_album = album;
                 current_asset = asset;
 
@@ -251,7 +276,7 @@ if ($trace_on) {
                     player_kill();
 
                 makeRequest('index.php', '?action=view_asset_bookmark&album=' + album + '&asset=' + asset + '&t=' + 
-                        timecode + '&type=' + type + '&click=true', 'div_center');
+                        timecode + '&type=' + type + '&click=true' + '&sesskey=' + sesskey, 'div_center');
                 close_popup();
             }
 
@@ -333,12 +358,12 @@ if ($trace_on) {
              * Submits the keyword to be searched to the server
              * @returns {Boolean}
              */
-            function keyword_search(keyword) {
+            function keyword_search(keyword, sesskey) {
                 $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=threads_bookmarks_search&click=true&origin=keyword',
-                    data: 'search=' + keyword + '&target=global&albums%5B%5D=&fields%5B%5D=keywords&tab%5B%5D=official&tab%5B%5D=custom&level=0',
+                    data: 'search=' + keyword + '&target=global&albums%5B%5D=&fields%5B%5D=keywords&tab%5B%5D=official&tab%5B%5D=custom&level=0' + '&sesskey=' + sesskey,
                     success: function (response) {
                         $('#div_popup').html(response);
                     }
@@ -356,19 +381,19 @@ if ($trace_on) {
              * @param {type} album
              * @returns {undefined}
              */
-            function album_token_delete(album) {
+            function album_token_delete(album, sesskey) {
                 makeRequest('index.php', '?action=album_token_delete' +
                         '&album=' + album +
-                        '&click=true', 'div_center');
+                        '&click=true' + '&sesskey=' + sesskey, 'div_center');
                 close_popup();
             }
 
             /**
              * Sets the album position (up/down)
              */
-            function album_token_move(album, index, upDown) {
+            function album_token_move(album, index, upDown, sesskey) {
                 makeRequest('index.php', '?action=album_token_move' +
-                        '&album=' + album + '&index=' + index + '&up_down=' + upDown + "&click=true", 'div_center');
+                        '&album=' + album + '&index=' + index + '&up_down=' + upDown + "&click=true" + '&sesskey=' + sesskey, 'div_center');
             }
 
             // ============== F O R M   V A L I D A T I O N ============= //
@@ -397,7 +422,11 @@ if ($trace_on) {
                     window.alert("®already_use_timecode®");
                     return false;
                 }
-                    
+                
+                if(level.value !== parseInt(level.value, 10))
+                {
+                    level.value = parseInt(level.value, 10);
+                }
 
                 if (isNaN(level.value)
                         || level.value < 1
@@ -420,6 +449,11 @@ if ($trace_on) {
                         || timecode.value < 0) {
                     window.alert('®Bad_timecode®');
                     return false;
+                }
+		
+                if(level.value !== parseInt(level.value, 10))
+                {
+                    level.value = parseInt(level.value, 10);
                 }
 
                 if (isNaN(level.value)
@@ -560,7 +594,14 @@ if ($trace_on) {
                 hiddenField.setAttribute("name", 'action');
                 hiddenField.setAttribute("value", 'admin_mode_update');
 
+                // adds a hidden field containing session key
+                var hiddenField2 = document.createElement("input");
+                hiddenField2.setAttribute("type", "hidden");
+                hiddenField2.setAttribute("name", 'sesskey');
+                hiddenField2.setAttribute("value", '<?php echo $_SESSION['sesskey']?>');
+
                 form.appendChild(hiddenField);
+                form.appendChild(hiddenField2);
 
                 // submits the form
                 document.body.appendChild(form);
@@ -618,12 +659,12 @@ if ($trace_on) {
              * @param {type} display the action to be shown in the modal window (delete | rss | ...)
              * @returns {undefined}  
              */
-            function popup_album(album, display) {
+            function popup_album(album, display, sesskey) {
                 $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=album_popup&click=true',
-                    data: 'album=' + album + '&display=' + display,
+                    data: 'album=' + album + '&display=' + display + '&sesskey=' + sesskey,
                     success: function (response) {
                         $('#div_popup').html(response);
                     }
@@ -635,12 +676,12 @@ if ($trace_on) {
              * Renders a modal window with a message related to an asset
              * @param {type} display the action to be shown in the modal window (share_link | share_time | ...)
              * @returns {undefined}             */
-            function popup_asset(album, asset, currentTime, type, display) {
+            function popup_asset(album, asset, currentTime, type, display, sesskey) {
                 $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
                 $.ajax({
                     type: 'POST',
                     url: 'index.php?action=asset_popup&click=true',
-                    data: 'album=' + album + '&asset=' + asset + '&time=' + currentTime + '&type=' + type + '&display=' + display,
+                    data: 'album=' + album + '&asset=' + asset + '&time=' + currentTime + '&type=' + type + '&display=' + display + '&sesskey=' + sesskey,
                     success: function (response) {
                         $('#div_popup').html(response);
                     }

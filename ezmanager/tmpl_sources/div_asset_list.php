@@ -51,20 +51,20 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 if (isset($metadata['origin']) && $metadata['origin'] === 'streaming') {
                     ?>
                     <div>
-                        <div id="asset_<?php echo $asset_name; ?>" class="ListButon ButtonTriangleProcessing"> 
-                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"> 
+                        <div id="asset_<?php echo $asset_name; ?>" class="ListButon ButtonTriangleProcessing">
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
                                 LIVE
-                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
+                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title">
                                     | <?php echo htmlspecialchars($title); ?>
-                                </span> 
-                            </a> 
+                                </span>
+                            </a>
                         </div>
-                        <div id="asset_<?php echo $asset_name ?>_clic" class="ListButon ButtonTriangleClicProcessing" style="display:none"> 
-                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');" >
+                        <div id="asset_<?php echo $asset_name ?>_clic" class="ListButon ButtonTriangleClicProcessing" style="display:none">
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>', '<?php echo $_SESSION['sesskey']; ?>');" >
                                 LIVE
-                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic"> 
+                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title_clic">
                                     | <?php echo htmlspecialchars($title); ?>
-                                </span> 
+                                </span>
                             </a>
                         </div>
                         <div id="asset_<?php echo $asset_name; ?>_details" class="asset_details" style="display: none;">
@@ -75,8 +75,10 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                 } else {
                     ?>
                     <div>
-                        <button role="button" id="is_downloadable_<?php echo $asset_name; ?>" 
-                            title="®Allow_download®" class="btn btn-xs download_small_button <?php 
+                        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>">
+                        <input type="hidden" id="is_sesskey_ok" name="is_sesskey_ok" value="">
+                        <button role="button" id="is_downloadable_<?php echo $asset_name; ?>"
+                            title="®Allow_download®" class="btn btn-xs download_small_button <?php
                                 echo (!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') ? "btn-success" : "btn-danger"; ?>"
                             onclick="update_download('<?php echo $album_name . (($public_album) ? '-pub' : '-priv') . "', '" .
                                 $asset_name; ?>')">
@@ -88,23 +90,23 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                         </button>
                         <?php if (isset($metadata['scheduled']) && $metadata["scheduled"] == true) {
                                     ?>
-                            <img src="images/page4/sched.png" style="float: right; width: 24px; padding: 3px;" 
+                            <img src="images/page4/sched.png" style="float: right; width: 24px; padding: 3px;"
                                 title="<?php echo $metadata['schedule_date']; ?>">
                         <?php
                                 } ?>
-                        <div id="asset_<?php echo $asset_name; ?>_line"  class="ListButon StatusButton StatusButton<?php 
+                        <div id="asset_<?php echo $asset_name; ?>_line"  class="ListButon StatusButton StatusButton<?php
                             if ($status == 'failed') {
                                 echo 'Error';
                             } elseif ($status == 'processing') {
                                 echo 'Processing';
                             } ?>">
-                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>');"
+                            <a href="javascript:show_asset_details('<?php echo $album_name_full . "', '" . $asset_name; ?>', '<?php echo $_SESSION['sesskey']; ?>');"
                                <?php if ($status == 'failed') {
                                 echo 'style="color: #d9534f;" ';
                             } elseif ($status == 'processing') {
                                 echo 'style="color: #5cb85c;" ';
-                            } ?> > 
-                                <span 
+                            } ?> >
+                                <span
                                     <?php if ($status == 'failed') {
                                 echo 'class="glyphicon glyphicon-warning-sign" ';
                             } elseif ($status == 'processing') {
@@ -112,15 +114,15 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                             } else {
                                 echo 'class="glyphicon glyphicon-triangle glyphicon-triangle-right" ';
                             } ?>
-                                    id="asset_<?php echo $asset_name; ?>_glyphicon" 
+                                    id="asset_<?php echo $asset_name; ?>_glyphicon"
                                     aria-hidden="true"></span>
-                                <?php echo $date; ?> 
-                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title"> 
+                                <?php echo $date; ?>
+                                <span class="TitrePodcast" id="asset_<?php echo $asset_name; ?>_title">
                                     | <?php echo htmlspecialchars($title); ?>
-                                </span> 
-                            </a> 
+                                </span>
+                            </a>
                         </div>
-                        
+
                         <div id="asset_<?php echo $asset_name; ?>_details" class="asset_details" style="display: none;">
                             <!-- Asset details go here -->
                         </div>
@@ -134,18 +136,23 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
 
 <script>
     function update_download(album, asset) {
-        var button = $('.download_small_button#is_downloadable_' + asset);
-        if(button.hasClass('btn-success')) {
-            button.removeClass('btn-success');
-            button.addClass('btn-danger');
-            button.text("®Download_forbidden®");
-        } else {
-            button.addClass('btn-success');
-            button.removeClass('btn-danger');
-            button.text("®Download_allowed®");
-        }
+        var sesskey = $("#sesskey").val();
         
-        console.log('asset_downloadable_set ' + album + ', ' + asset);
-        asset_downloadable_set(album, asset);
+        asset_downloadable_set(album, asset, sesskey);
+
+        var check = $("#is_sesskey_ok").val();
+
+        if (check == "true") {
+            var button = $('.download_small_button#is_downloadable_' + asset);
+            if(button.hasClass('btn-success')) {
+                button.removeClass('btn-success');
+                button.addClass('btn-danger');
+                button.text("®Download_forbidden®");
+            } else {
+                button.addClass('btn-success');
+                button.removeClass('btn-danger');
+                button.text("®Download_allowed®");
+            }
+        }
     }
 </script>

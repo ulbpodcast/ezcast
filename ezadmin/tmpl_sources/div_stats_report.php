@@ -4,6 +4,7 @@
 <form method="GET" class="search_event pagination hidden-print" style="width: 100%;">
     
     <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <input type="hidden" name="post" value="">
     
     
@@ -449,7 +450,7 @@
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'
                             . '<a class="hidden-print-link" target="_blank" '
-                                . 'href="index.php?action=view_course_details&course_code='.$cours.'" >'
+                                . 'href="index.php?action=view_course_details&course_code='.$cours.'&sesskey='.$_SESSION['sesskey'].'" >'
                             .$cours
                             . '</a></div>';
                         }
@@ -497,7 +498,7 @@
                             }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'
-                            . '<a href="index.php?action=view_course_details&course_code='.$cours.'"'
+                            . '<a href="index.php?action=view_course_details&course_code='.$cours.'&sesskey='.$_SESSION['sesskey'].'"'
                                 . ' class="hidden-print-link" target="_blank">'
                             .$cours
                             . '</a></div>';
@@ -933,7 +934,7 @@
                             }
                             echo '<div class="col-md-1 col-md-offset-1">'.$nbr.'</div>';
                             echo '<div class="col-md-10">'.
-                                    '<a href="./index.php?action=view_events&post=&asset='.$asset.'"'
+                                    '<a href="./index.php?action=view_events&post=&asset='.$asset.'&sesskey='.$_SESSION['sesskey'].'"'
                                     . 'target="_blank" class="hidden-print-link" >'.
                                     $asset
                                     .'</a></div>';

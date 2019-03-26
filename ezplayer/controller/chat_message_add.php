@@ -14,6 +14,11 @@ function index($param = array())
     global $input;
     global $repository_path;
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     ezmam_repository_path($repository_path);
 
     $album = $input['chat_album'];

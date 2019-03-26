@@ -21,8 +21,9 @@ swap('main_step_2', 'load_step_2')
             </div>
         <?php
 } ?>
-            
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" /> 
         <input type="hidden" name="renderer_step" value="2"/>
+        
         ®create_renderer_step_2_message® 
         <br/>(<?php echo $_SESSION['renderer_address'];?>)
         <br/><br/>

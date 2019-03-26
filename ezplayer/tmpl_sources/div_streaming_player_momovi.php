@@ -175,7 +175,8 @@
     var is_msie = navigator.userAgent.toLowerCase().indexOf('msie') > -1;
     var is_safari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
     var is_idevice = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
-    var poster = "images/Generale/poster-streaming.png";
+    var poster = "images/Generale/¤poster-streaming¤.png";
+
     var is_camslide = <?php echo json_encode($asset_meta['record_type'] == 'camslide'); ?>;
     var main_stream_url = "<?php echo $m3u8_live_stream; ?>";
     var current_type = "<?php echo $_SESSION['current_type']; ?>";
@@ -206,7 +207,7 @@
         $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
         $.ajax({
             type: 'POST',
-            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam'),
+            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam') + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>',
             success: function (response) {
                 $('#streaming_config_wrapper').html(response);
             }
@@ -217,7 +218,7 @@
         $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
         $.ajax({
             type: 'POST',
-            url: 'index.php?action=live_stream_popup&display=video_switch',
+            url: 'index.php?action=live_stream_popup&display=video_switch' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>',
             success: function (response) {
                 $('#div_popup').html(response);
             }

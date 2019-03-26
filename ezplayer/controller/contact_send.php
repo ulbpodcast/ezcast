@@ -12,6 +12,11 @@ function index($param = array())
     global $mailto_alert;
     global $antispam_filter_words;
     
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!isset($input['message']) || rtrim($input['message'] == '')) {
         return false;
     }
@@ -31,7 +36,7 @@ function index($param = array())
         $mail = $input['email'];
 
         $header = '------------------------------------------------------------' . PHP_EOL;
-        $header.= "from : $mail [" . $_SESSION['user_email'] . ']' . PHP_EOL;
+        $header.= 'from : $mail [' . $_SESSION['user_email'] . ']' . PHP_EOL;
         $header.= "Name: " . $_SESSION['user_full_name'] . PHP_EOL;
         $header.= "Netid: " . $_SESSION['user_login'] . PHP_EOL;
         $header.= "OS: " . $_SESSION['user_os'] . " - version: " . $_SESSION['user_os_version'] . PHP_EOL;

@@ -8,6 +8,7 @@ chdir(__DIR__);
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';
+require_once dirname(__FILE__) . '/../commons/config.inc';
 
 //always initialize repository path before using ezmam library
 ezmam_repository_path($repository_path);
@@ -56,6 +57,41 @@ foreach ($media_files as $filepath) {
         $res = high_low_media_mam_insert($album, $asset, $quality, $type, $resultprocessing_assoc, $render_dir);
     }
 }
+
+$asset_meta = ezmam_asset_metadata_get($album, $asset);
+
+//Consider audio file like cam type to put it into the cam video emplacement
+if($asset_meta["record_type"]=="audio"){
+    $asset_meta["record_type"]="cam";
+}
+
+//get the topprocess xml file to know if there is an audio file related
+$result_topProcessing_assoc = metadata2assoc_array($render_dir . "/toprocess.xml");
+
+//transfer the audio file(s) and put it into the repository
+if(isset($result_topProcessing_assoc['has_audio'])){
+//    alloc some metadata for the player
+    $asset_meta["has_audio"]=$result_topProcessing_assoc['has_audio'];
+    $media_meta['disposition']="file";
+    if($asset_meta["record_type"]=='camslide'){
+        $media_meta['filename']="audio_cam.mp3";
+        $res = ezmam_media_new($album, $asset, 'audio_cam', $media_meta, $render_dir . '/audio_cam.mp3');
+        if (!$res) {
+            myerror("could not add media to repository: " . ezmam_last_error());
+        }
+        $media_meta['filename']="audio_slide.mp3";
+        $res = ezmam_media_new($album, $asset, 'audio_slide', $media_meta, $render_dir . '/audio_slide.mp3');
+        if (!$res) {
+            myerror("could not add media to repository: " . ezmam_last_error());
+        }
+    }else {
+        $media_meta['filename']='audio_'.$asset_meta["record_type"].'.mp3';
+        $res = ezmam_media_new($album, $asset, 'audio_'.$asset_meta["record_type"], $media_meta, $render_dir . '/audio_'.$asset_meta["record_type"].'.mp3');
+        if (!$res) {
+            myerror("could not add media to repository: " . ezmam_last_error());
+        }
+    }
+}
 //check if qtinfo has been returned for the originals
 $originals_qtinfo_files = glob("$render_dir/original_*_qtinfo.xml");
 foreach ($originals_qtinfo_files as $qtinfo_filepath) {
@@ -78,7 +114,6 @@ foreach (glob($render_root_path . '/processed/' . basename($render_dir) . '/*') 
     }
 }
 
-$asset_meta = ezmam_asset_metadata_get($album, $asset);
 //if we found the duration of the encoded videos set the asset's duration
 if (isset($duration) && is_numeric($duration)) {
     $asset_meta['duration'] = round($duration);

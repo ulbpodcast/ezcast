@@ -24,6 +24,7 @@ $copyright = base64_decode($argv[3]);
 $organization_name = base64_decode($argv[4]);
 $id_album = base64_decode($argv[5]);
 if (!isset($id_album) || $id_album == '') {
+                                                    
     $id_album = base64_decode($argv[6]);
 }
 
@@ -58,9 +59,11 @@ if ($res) {
 } else {
     print "\n metadata import failed \n";
 }
+                                          
 
 if (isset($title_assoc['add_title']) && $title_assoc['add_title'] != 'false' && $title_assoc['add_title'] != '') {
     print "\n------------------------ Title exists------------------------\n";
+ 
     $months = array("janvier", "février", "mars", "avril", "mai", "juin",
     "juillet", "août", "septembre", "octobre", "novembre", "décembre");
     $date = explode('_', $title_assoc['record_date']);
@@ -107,6 +110,7 @@ if (isset($title_assoc['add_title']) && $title_assoc['add_title'] != 'false' && 
         $error += create_intro_parts($processing, $record_types, $duration_intro, $title_time, true);
         $error += create_list($processing, $record_types, true);
     } else {
+       
         $error += create_intro_parts($processing, $record_types, $duration_intro, $title_time, false);
         $error += create_list($processing, $record_types, false);
     }
@@ -142,6 +146,7 @@ if (isset($title_assoc['add_title']) && $title_assoc['add_title'] != 'false' && 
                 print("\n temps files deleted with success \n");
             } else {
                 print("\n delete temps files Failed \n");
+   
             }
         }
     }
@@ -177,6 +182,7 @@ function create_file_title($processing, $title_assoc, $record_types)
             print("\n meta for title creation : \n") ;
             print("\n".var_dump($meta)."\n");
             print("\n path to meta : " .$processing."/".$record_types[$i]."/_metadata.xml \n");
+  
         }
     }
     return $err;
@@ -203,6 +209,7 @@ function create_intro_parts($processing, $record_types, $duration_intro, $title_
             if (!$returncode) {
                 print("\n Create intro parts with success \n");
             } else {
+        
                 print("\n Create intro parts Failed \n");
                 $err++;
             }
@@ -220,8 +227,10 @@ function create_list($processing, $record_types, $hasintro)
             if ($hasintro && file_exists($processing."/".$record_types[$i]."/".$record_types[$i]."2.mov") && file_exists($processing."/".$record_types[$i]."/".$record_types[$i]."1.mov")  && file_exists($processing."/".$record_types[$i]."/title.mov")) {
                 $cmd = " printf \"%s\n\" \"file '".$processing."/".$record_types[$i]."/".$record_types[$i]."1.mov'\" \"file '".$processing."/".$record_types[$i]."/title.mov'\" \"file '".$processing."/".$record_types[$i]."/".$record_types[$i]."2.mov'\" > ".$processing."/".$record_types[$i]."/mylist.txt";
             } elseif (file_exists($processing."/".$record_types[$i]."/title.mov") && file_exists($processing."/".$record_types[$i]."/".$record_types[$i]."2.mov")) {
+                                                                                                                                                         
                 $cmd = " printf \"%s\n\" \"file '".$processing."/".$record_types[$i]."/title.mov'\" \"file '".$processing."/".$record_types[$i]."/".$record_types[$i]."2.mov'\" > ".$processing."/".$record_types[$i]."/mylist.txt";
             } else {
+        
                 print("\n Create list Failed \n");
                 $err++;
             }
@@ -233,6 +242,7 @@ function create_list($processing, $record_types, $hasintro)
             if (!$returncode) {
                 print("\n Created list with success \n");
             } else {
+         
                 print("\n Create list Failed \n");
                 $err++;
             }

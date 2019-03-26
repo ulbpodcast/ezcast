@@ -55,27 +55,27 @@
             <ul>
                 <?php
                 foreach ($assets_list as $index => $asset) {
-                    if (isset($asset['metadata']['status']) && $asset['metadata']['status'] == 'processed') {
+                    if ($asset['metadata']['status'] == 'processed') {
                         ?>
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 
                                href="javascript:show_asset_details('<?php echo $album; ?>', '<?php echo
-                                $asset['name']; ?>', '<?php echo $asset['token']; ?>');">
+                                $asset['name']; ?>', '<?php echo $asset['token']; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
                                 <b><?php print_info(substr(get_user_friendly_date($asset['metadata']['record_date'],'/',false,get_lang(),false), 0, 10)); ?></b> 
                                 <div style="display:inline-block; width: 16px; height:1px;"></div>
-                                <?php echo $asset['metadata']['title']; ?>
+                                <?php echo htmlentities($asset['metadata']['title']); ?>
                                 <span class="<?php if (acl_show_notifications() && !acl_is_watched($album,$asset['metadata']['record_date'])) { echo 'new';} ?>" title="®New_video®"></span>
                             </a>       
                         </li>
                         <?php
-                    } elseif (isset($asset['metadata']['origin']) && $asset['metadata']['origin'] == 'streaming') {
+                    } elseif ($asset['metadata']['origin'] == 'streaming') {
                         ?>
                         <li>
                             <a class="item" id="asset-<?php echo $asset['name']; ?>" 
-                               href="javascript:show_asset_streaming('<?php echo $album; ?>', '<?php echo $asset['name']; ?>', '<?php echo $asset['token']; ?>');">
+                               href="javascript:show_asset_streaming('<?php echo $album; ?>', '<?php echo $asset['name']; ?>', '<?php echo $asset['token']; ?>', '<?php echo $_SESSION['sesskey']; ?>');">
                                 <b style="display: inline-block; width: 56px;">LIVE</b> 
                                 <div style="display:inline-block; width: 16px; height:1px;"></div>
-                                <?php echo $asset['metadata']['title']; ?>
+                                <?php echo htmlentities($asset['metadata']['title']); ?>
                                 <span class="live_stream" title="®Live_stream®"></span>
                             </a>       
                         </li>

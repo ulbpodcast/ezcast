@@ -16,6 +16,11 @@ function index($param = array())
         die;
     }
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     //
     // The only important thing to do right now is delete both the public and private albums,
     // by calling ezmam

@@ -90,3 +90,37 @@ function media_submit_error($tmp_name)
     }
     return true;
 }
+
+function checkInitSubmitServiceVar(&$input,$ratio="auto",$downloadable="true",$add_title="false",$credits="false",$intro="",$keepQuality="",$type="cam",$moderation="false"){
+   global $TokenUploadServcice;
+   global $valid_extensions;
+    
+    if(isset($input['user_full_name']) && $input['user_full_name']!='' &&
+        isset($input['user_login']) && $input['user_login']!='' &&
+        isset($input['album']) && $input['album']!='' && ezmam_album_exists($input['album']."-pub" ) && 
+        isset($input['title']) && $input['title']!='' &&
+        isset($input['description']) && $input['description']!='' &&
+        isset($input['token'])  && $TokenUploadServcice!="" && $input['token'] == md5($TokenUploadServcice.$input['user_login'])){
+
+        //Check if user has the right to post video in this album
+        $users=db_course_get_users($input['album']);
+        for($i=0;$i<count($users);$i++){
+            $authorizedUsers[$i]=$users[$i]['user_ID'];            
+        }        
+        $_SESSION['user_full_name']=$input['user_full_name'];
+        $_SESSION['user_login']=$input['user_login'];
+
+        //init by default
+        $input['ratio']=$ratio;
+        $input['downloadable']=$downloadable;
+        $input['add_title']=$add_title;
+        $input['credits']=$credits;
+        $input['intro']=$intro;
+        $input['keepQuality']=$keepQuality;
+        $input['type']=$type;
+        $input['moderation']=$moderation;
+        return true;
+    }
+    else 
+        return false;
+}

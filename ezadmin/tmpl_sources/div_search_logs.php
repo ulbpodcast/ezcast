@@ -3,7 +3,7 @@
 <!-- Search form -->
 <form method="POST" action="index.php?action=view_logs" class="search_logs">
     <input type="hidden" name="post" value="1">
-    
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <!-- Date -->
     <div class="form-group">
         <div class="row">

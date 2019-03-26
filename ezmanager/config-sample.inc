@@ -62,7 +62,19 @@ $ezmanager_logs="$ezmanager_basedir/ezmanager.log";
 $title_max_length = 70; // Maximum number of characters for the title
 
 // used by ezmanager for asset submit
-$valid_extensions = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpeg4', 'avi', 'mpeg', 'flv', 'wmv', 'mka', 'mks', 'rmvb', 'divx', 'xvid', 'vob', 'mkv', 'f4v');
+//****   Video   ****
+$valid_extensions_video = array('mov', 'm4v', 'mp4', 'mpg4', 'mpg', 'nuv', 'ac3', 'mpeg4', 'avi', 'mpeg', 'flv', 'wmv', 'mka', 'mks', 'rmvb', 'divx', 'xvid', 'vob', 'mkv', 'f4v');
+$valid_mimeType_video = array('text/x-fortran','image/jp2', 'application/x-dosexec','application/octet-stream', 'video/quicktime','video/ogg','video/h264','video/x-f4v','video/x-m4v','video/x-flv','video/mp4','application/x-mpegURL','video/MP2T','video/3gpp','video/3gpp2','video/quicktime','	video/x-msvideo','video/x-ms-wmv','video/x-msvideo','video/mpeg','video/ogg','video/webm');
+//****   Audio   ****
+$valid_extensions_audio = array('wav','flac','mp3');
+$valid_mimeType_audio = array('audio/x-wav','audio/x-flac','audio/mpeg');
+
+$valid_extensions = array_merge($valid_extensions_video, $valid_extensions_audio);
+$valid_mimeType = array_merge($valid_mimeType_video, $valid_mimeType_audio);
+
+// activated option for check the mime Type to file uploaded
+$enable_verify_mimeType_extension = false;
+
 
 // used by web_index.php to set the size of each chunck of file that is uploaded via the submit form
 $upload_slice_size = 1024 * 1024;
@@ -72,3 +84,10 @@ $ezmanager_custom_logo = false;
 
 //allow using at address: /ezmanager/inscription.php
 $ezmanager_subscription_form = false;
+
+ 
+//the embed link is like an iframe if true, like an link else 
+$embedIframed=false;
+
+//token used as verification for external upload service
+$TokenUploadServcice="";

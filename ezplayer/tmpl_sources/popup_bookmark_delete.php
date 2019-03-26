@@ -40,7 +40,7 @@ include_once 'lib_print.php';
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
 <a href="javascript:bookmark_delete('<?php echo $bookmark['album'] ?>', '<?php echo $bookmark['asset'] ?>', '<?php 
-echo $bookmark['timecode'] ?>', '<?php echo $source ?>', '<?php echo $tab ?>');" class="delete-button-confirm">
+echo $bookmark['timecode'] ?>', '<?php echo $source ?>', '<?php echo $tab ?>', '<?php echo $_SESSION['sesskey']; ?>');" class="delete-button-confirm">
     ®Delete®
 </a>
 <a class="close-reveal-modal-button"  href="javascript:close_popup();">®Cancel®</a>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -31,24 +31,27 @@
        <input type="hidden" name="action" value="submit_media_infos"/>
        <input type="hidden" name="album" value="<?php echo $album; ?>"/>
        <input type="hidden" name="moderation" value="<?php echo $moderation; ?>"/>
+       <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
+
          <p>
              ®Album®: <?php echo $album; ?> (<?php echo ($moderation) ? '®Private_album®' : '®Public_album®'; ?>)
              <br/><br/>
-             <label>®Title®: 
+             <label>®Title®:
              <input name="title" type="text" style="width: 250px;" />
          </label>
              <br/><br/>
-             <label>®Type®: 
+             <label>®Type®:
                  <select name="type" style="width: 250px;">
                  <option value="cam">®Video®</option>
                  <option value="slide">®Slides®</option>
                  </select>
          </label><br/>
-         <br/><label>®Description®: 
+         <br/><label>®Description®:
                  <textarea name="description" rows="4" style="width: 250px;"  ></textarea>
              </label>
          <br/>
          <br/>
+         <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
          <input type="submit" name="®Next®" /></p>
    </form>
 </div>

@@ -3,8 +3,16 @@
 function index($param = array())
 {
     global $config;
-    $tail = shell_exec("bash -c 'tail -100 '".$config['paths']['logs']."'");
+    global $input;
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
+    $tail = shell_exec("bash -c 'tail -100 ".$config['paths']['logs']."'");
     $tail_array=explode("\n",$tail);
+
     require_once template_getpath('div_main_header.php');
     require_once template_getpath('div_renderer_logs.php');
     require_once template_getpath('div_main_footer.php');

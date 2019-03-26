@@ -23,6 +23,11 @@ function index($param = array())
     $bookmark_source = $input['source'];
     $bookmark_type = $input['type'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!acl_user_is_logged()) {
         return false;
     }

@@ -11,6 +11,11 @@ function index($param = array())
     $comment = intval($input['comment']);
     $vote_type = $input['vote_type'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $values = array(
         "login" => $login,
         "comment" => $comment,

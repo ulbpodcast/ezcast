@@ -422,3 +422,12 @@ function acl_is_archived($album, $asset)
     }
     return true;
 }
+
+
+function acl_session_key_check($sessionkey)
+{
+    if (isset($_SESSION['sesskey']) && !empty($_SESSION['sesskey']) && isset($sessionkey) && !empty($sessionkey) && ($_SESSION['sesskey'] == $sessionkey))
+        return true;
+
+    return false;
+}

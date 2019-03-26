@@ -11,11 +11,11 @@
  * @param {type} source the current page (asset | details)
  * @returns {undefined}
  */
-function bookmarks_sort(panel, order, source) {
+function bookmarks_sort(panel, order, source, sesskey) {
     $.ajax({
         type: 'POST',
         url: 'index.php?action=bookmarks_sort',
-        data: 'panel=' + panel + '&order=' + order + "&source=" + source + "&click=true",
+        data: 'panel=' + panel + '&order=' + order + "&source=" + source + "&click=true" + '&sesskey=' + sesskey,
         success: function (response) {
             $('#div_right').html(response);
         }
@@ -105,14 +105,15 @@ function bookmark_edit_form_submit(index, tab) {
  * @param {type} tab
  * @returns {undefined}
  */
-function bookmark_delete(album, asset, timecode, source, tab) {
+function bookmark_delete(album, asset, timecode, source, tab, sesskey) {
     makeRequest('index.php', '?action=bookmark_delete' +
             '&album=' + album +
             '&asset=' + asset +
             '&timecode=' + timecode +
             '&source=' + source +
             '&tab=' + tab +
-            "&click=true", 'div_right');
+            "&click=true"
+            + '&sesskey=' + sesskey, 'div_right');
     close_popup();
 }
 
@@ -122,11 +123,11 @@ function bookmark_delete(album, asset, timecode, source, tab) {
  * @param {type} asset
  * @returns {undefined}
  */
-function bookmarks_delete_all(album, asset) {
+function bookmarks_delete_all(album, asset, sesskey) {
     makeRequest('index.php', '?action=bookmarks_delete_all' +
             '&album=' + album +
             '&asset=' + asset +
-            "&click=true", 'div_center');
+            "&click=true" + '&sesskey=' + sesskey, 'div_center');
 }
 
 /**
@@ -142,7 +143,7 @@ function bookmarks_delete_all(album, asset) {
  * @param {type} tab
  * @returns {undefined}
  */
-function bookmark_copy(album, asset, timecode, title, description, keywords, level, source, tab) {
+function bookmark_copy(album, asset, timecode, title, description, keywords, level, source, tab, sesskey) {
     current_tab = 'toc';
     makeRequest('index.php', '?action=bookmark_copy' +
             '&album=' + album +
@@ -154,7 +155,8 @@ function bookmark_copy(album, asset, timecode, title, description, keywords, lev
             '&level=' + level +
             '&source=' + source +
             '&tab=' + tab +
-            "&click=true", 'div_right');
+            "&click=true"
+            + '&sesskey=' + sesskey, 'div_right');
     close_popup();
 }
 
@@ -253,11 +255,11 @@ function bookmarks_scroll(direction, element) {
  * Renders a modal window for importing bookmarks (xml files)
  * @returns {undefined}
  */
-function popup_bookmarks_import() {
+function popup_bookmarks_import(sesskey) {
     $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
     $.ajax({
         type: 'POST',
-        url: 'index.php?action=bookmarks_upload_prepare',
+        url: 'index.php?action=bookmarks_upload_prepare&sesskey=' + sesskey,
         success: function (response) {
             $('#div_popup').html(response);
         }
@@ -275,12 +277,12 @@ function popup_bookmarks_import() {
  * @param {type} display the action to be shown in the modal window (delete | copy | ...)
  * @returns {undefined}
  */
-function popup_bookmark(album, asset, timecode, tab, source, display) {
+function popup_bookmark(album, asset, timecode, tab, source, display, sesskey) {
     $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
     $.ajax({
         type: 'POST',
         url: 'index.php?action=bookmark_popup&click=true',
-        data: 'album=' + album + '&asset=' + asset + '&timecode=' + timecode + '&tab=' + tab + '&source=' + source + '&display=' + display,
+        data: 'album=' + album + '&asset=' + asset + '&timecode=' + timecode + '&tab=' + tab + '&source=' + source + '&display=' + display + '&sesskey=' + sesskey,
         success: function (response) {
             $('#div_popup').html(response);
         }
@@ -300,12 +302,12 @@ function popup_bookmark(album, asset, timecode, tab, source, display) {
  * @param {type} display the action to be shown in the modal window (delete | export | ...)
  * @returns {undefined}
  */
-function popup_bookmarks(album, asset, tab, source, display) {
+function popup_bookmarks(album, asset, tab, source, display, sesskey) {
     $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
     $.ajax({
         type: 'POST',
         url: 'index.php?action=bookmarks_popup&click=true',
-        data: 'album=' + album + '&asset=' + asset + '&tab=' + tab + '&source=' + source + '&display=' + display,
+        data: 'album=' + album + '&asset=' + asset + '&tab=' + tab + '&source=' + source + '&display=' + display + '&sesskey=' + sesskey,
         success: function (response) {
             $('#div_popup').html(response);
         }

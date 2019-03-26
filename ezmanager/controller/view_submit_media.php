@@ -1,6 +1,5 @@
 <?php
 
-
 function index($param = array())
 {
     global $dir_date_format;
@@ -11,6 +10,19 @@ function index($param = array())
     global $default_add_title;
     global $titlings;
     global $default_downloadable;
+    global $enable_audio_submit;
+    global $valid_extensions_video;
+    global $valid_mimeType_video;
+    global $valid_extensions_audio;
+    global $valid_mimeType_audio;
+    global $enable_verify_mimeType_extension;
+    global $input;
+
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
 
     $album = suffix_remove($_SESSION['podman_album']);
     $moderation = album_is_private($_SESSION['podman_album']);

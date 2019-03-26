@@ -7,6 +7,11 @@ include_once '../commons/view_helpers/helper_pagination.php';
 function index($param = array())
 {
     global $input;
+
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
     
     $pagination = new Pagination();
     if (isset($input['post']) && !empty($input['post'])) {

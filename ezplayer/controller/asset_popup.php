@@ -18,6 +18,11 @@ function index($param = array())
     $type = $input['type'];
     $display = $input['display'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     ezmam_repository_path($repository_path);
 
     $asset_meta = ezmam_asset_metadata_get($album, $asset);
@@ -35,9 +40,20 @@ function index($param = array())
             if ($type == 'cam') {
                 $asset_meta['high_src'] = get_link_to_media($album, $asset, 'high_cam') . '&origin=link';
                 $asset_meta['low_src'] = get_link_to_media($album, $asset, 'low_cam') . '&origin=link';
-            } else {
+            } 
+            else if($type == 'slide')
+            {
                 $asset_meta['high_src'] = get_link_to_media($album, $asset, 'high_slide') . '&origin=link';
                 $asset_meta['low_src'] = get_link_to_media($album, $asset, 'low_slide') . '&origin=link';
+            }
+            else if($type == 'audiocam' || $type == 'audioslide')
+            {
+                $asset_meta['cam_audio_src'] = get_link_to_media($album, $asset, "".$type."") . '&origin=link';
+            }
+            else
+            {
+                $asset_meta['cam_audio_src'] = get_link_to_media($album, $asset, 'audiocam') . '&origin=link';
+                $asset_meta['slide_audio_src'] = get_link_to_media($album, $asset, 'audioslide') . '&origin=link';
             }
             include_once template_getpath('popup_asset_download.php');
             break;

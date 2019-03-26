@@ -30,5 +30,5 @@
 <br/><p>®Delete_discussion_message®</p>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
-<a href="javascript:thread_delete(<?php echo $thread['id'] ?>,'<?php echo $thread['albumName'] ?>','<?php echo $thread['assetName']; ?>');" class="delete-button-confirm">®Delete®</a>
+<a href="javascript:thread_delete(<?php echo $thread['id'] ?>,'<?php echo $thread['albumName'] ?>','<?php echo $thread['assetName']; ?>', '<?php echo $_SESSION['sesskey']; ?>');" class="delete-button-confirm">®Delete®</a>
 <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>

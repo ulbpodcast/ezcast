@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -31,8 +31,8 @@ It is part of div_asset_details and has been split apart for readability.
 -->
 <h1>®Video®</h1>
 <!-- Player and video thumbnail -->
-<div class="Video-slide-Button" id="Player_<?php echo $asset; ?>_cam"> 
-    <a href="javascript:show_embed_player('<?php echo $album . "', '" . $asset; ?>', 'low', 'cam', '<?php echo $asset_token; ?>');" 
+<div class="Video-slide-Button" id="Player_<?php echo $asset; ?>_cam">
+    <a href="javascript:show_embed_player('<?php echo $album . "', '" . $asset; ?>', 'low', 'cam', '<?php echo $asset_token; ?>');"
        onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image10','','images/page4/BRegarderVideo.png',1)">
         <img src="images/page4/ARegarderVideo.png" name="Image10" width="187" height="109" title="®Watch_video®" border="0" id="Image10" />
     </a>
@@ -51,9 +51,9 @@ It is part of div_asset_details and has been split apart for readability.
 
 
 <!--div class="Publication" id="Publication_<?php // echo $asset;?>_1" style="display:none">
-    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php
         // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=high_cam');">+ ®high_res®</a></p>
-    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=media_url&amp;album=<?php
         // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=low_cam');">+ ®low_res®</a></p>
 </div-->
 
@@ -61,10 +61,10 @@ It is part of div_asset_details and has been split apart for readability.
 <!--span class="ButtonEmbed"> <a href="javascript:visibilite('Embed_<?php // echo $asset;?>_1');">®Embed®</a> </span>
 
 <div class="Embed" id="Embed_<?php // echo $asset;?>_1" style="display:none">
-    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php
         // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=high_cam');">+ ®high_res®</a>
     </p>
-    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
+    <p><a href="javascript:show_popup_from_outer_div('index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php
         // echo $album;?>&amp;asset=<?php // echo $asset;?>&amp;media=low_cam');">+ ®low_res®</a>
     </p>
 
@@ -74,15 +74,15 @@ It is part of div_asset_details and has been split apart for readability.
     <span class="ButtonDownload"> <a href="javascript:visibilite('Download_<?php echo $asset; ?>_1');">®Download®</a> </span>
     <div class="Download" id="Download_<?php echo $asset; ?>_1" style="display:none;">
         <p>
-            <a class="greyLink" href="index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_cam"
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=media_url&amp;album=<?php
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_cam&sesskey=<?php echo $_SESSION['sesskey']; ?>"
             data-remote="false" data-toggle="modal" data-target="#modal" >
                 ®high_res®
             </a>
         </p>
         <p>
-            <a class="greyLink" href="index.php?action=show_popup&amp;popup=media_url&amp;album=<?php 
-                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_cam" data-remote="false" 
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=media_url&amp;album=<?php
+                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_cam&sesskey=<?php echo $_SESSION['sesskey']; ?>" data-remote="false"
                 data-toggle="modal" data-target="#modal" >
                 ®low_res®
             </a>
@@ -93,44 +93,43 @@ It is part of div_asset_details and has been split apart for readability.
 
     <div class="Embed" id="Embed_<?php echo $asset; ?>_1" style="display:none;">
         <p>
-            <a class="greyLink" href="index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
-                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_cam"
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php
+                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_cam&sesskey=<?php echo $_SESSION['sesskey']; ?>"
                 data-remote="false" data-toggle="modal" data-target="#modal" >
                 ®high_res®
             </a>
         </p>
         <p>
-            <a class="greyLink" href="index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php 
-                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_cam"
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=embed_code&amp;album=<?php
+                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_cam&sesskey=<?php echo $_SESSION['sesskey']; ?>"
                 data-remote="false" data-toggle="modal" data-target="#modal" >
                 ®low_res®
             </a>
         </p>
     </div>
-    
-    <span class="ButtonEZplayer"> 
-        <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>" 
+
+    <span class="ButtonEZplayer">
+        <a href="index.php?action=show_popup&amp;popup=ezplayer_link&amp;album=<?php echo $album; ?>&amp;asset=<?php echo $asset; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>"
            data-remote="false" data-toggle="modal" data-target="#modal">
             EZplayer
         </a>
     </span>
-    
+
     <span class="ButtonULBCode"> <a href="javascript:visibilite('ULBcode_<?php echo $asset; ?>_1');">®ULBcode®</a> </span>
     <div class="ULBcode" id="ULBcode_<?php echo $asset; ?>_1" style="display:none;">
         <p>
-            <a class="greyLink" href="index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
-            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_cam"
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php
+            echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=high_cam&sesskey=<?php echo $_SESSION['sesskey']; ?>"
             data-remote="false" data-toggle="modal" data-target="#modal" >
                 ®high_res®
             </a>
         </p>
         <p>
-            <a class="greyLink" href="index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php 
-                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_cam"
+            <a class="greyLink" href="index.php?action=show_popup&amp;popup=ulb_code&amp;album=<?php
+                echo $album; ?>&amp;asset=<?php echo $asset; ?>&amp;media=low_cam&sesskey=<?php echo $_SESSION['sesskey']; ?>"
                 data-remote="false" data-toggle="modal" data-target="#modal" >
                 ®low_res®
             </a>
         </p>
     </div>
 </div>
-

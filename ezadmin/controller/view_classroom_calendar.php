@@ -11,6 +11,11 @@ function index($param = array())
     global $max_count;
     global $MIN_TIME_RECORD;
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $error_asset = array('Error_date' => array(),
                         'Error_time' => array());
     $max_count = 0;

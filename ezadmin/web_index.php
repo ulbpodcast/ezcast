@@ -25,8 +25,26 @@ require_once '../commons/lib_template.php';
 require_once '../commons/lib_various.php';
 require_once 'lib_various.php';
 require_once __DIR__.'/../commons/lib_scheduling.php';
+require_once __DIR__.'/lib_push_changes.php';
 
 $input = array_merge($_GET, $_POST);
+
+if (!isset($recorder_array))
+{
+    $list=db_classrooms_list();
+    foreach ($list as $room) {
+        if (empty($room['user_name'])){
+            $recorder_array[$room['IP']]['user']=$recorder_user;
+            $recorder_array[$room['IP']]['basedir']=$recorder_basedir;
+            $recorder_array[$room['IP']]['subdir']=$recorder_subdir;
+        }else{
+            $recorder_array[$room['IP']]['user']=$room['user_name'];
+            $recorder_array[$room['IP']]['basedir']=$room['base_dir'];
+            $recorder_array[$room['IP']]['subdir']=$room['sub_dir'];
+        }
+    }
+    //echo '<pre>' . var_export($recorder_array, true) . '</pre>';
+}
 
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
@@ -35,8 +53,14 @@ template_load_dictionnary('translations.xml');
 //
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
+
+    if($input['action'] == 'wake_up_mobile'){
+        requireController('wake_up_mobileUnit.php');
+        index(array());
+
+    }
     // Step 2: Logging in a user who already submitted the form
-    if (isset($input['action']) && $input['action'] == 'login') {
+    elseif (isset($input['action']) && $input['action'] == 'login') {
         if (!isset($input['login']) || !isset($input['passwd'])) {
             error_print_message(template_get_message('empty_username_password', get_lang()));
             die;
@@ -270,6 +294,15 @@ else {
             requireController('get_classrooms_status.php');
             break;
         
+        case 'controller_camera':
+            requireController('controller_camera.php');
+            break;
+        case 'view_camera':
+            requireController('view_camera.php');
+            break;
+        case 'wake_up_mobile':
+            requireController('wake_up_mobileUnit.php');
+            break;
         
         // No action selected: we choose to display the homepage again
         default:
@@ -407,6 +440,7 @@ function user_login($login, $passwd)
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
+    $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     // 3) Setting correct language
     set_lang($input['lang']);
@@ -421,19 +455,4 @@ function user_login($login, $passwd)
 
     header("Location: " . $ezadmin_url);
     albums_view();
-}
-
-
-///// NOTIFICATION ALERT /////
-
-/**
- * Changes have been made but not saved yet: we display an alert
- */
-function notify_changes($enable = true)
-{
-    if ($enable) {
-        $_SESSION['changes_to_push'] = true;
-    } else {
-        unset($_SESSION['changes_to_push']);
-    }
 }

@@ -62,7 +62,7 @@ echo '</script>';
                    data-date-viewmode="years" data-date-minviewmode="months" />-->
         </div>
         <a id="submit-month-search" class="btn btn-success btn-search" 
-           onclick="javascript:getStatsByMonth()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
+           onclick="javascript:getStatsByMonth('<?php echo $_SESSION['sesskey']; ?>')"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
     </div>
     <br/>
     <div id="month-stats">                
@@ -81,7 +81,7 @@ echo '</script>';
         <input type="number" min="1" id="nDays" class="form-control"></input> 
     </div>
     <a id="submit-nDays-search" class="btn btn-success btn-search"
-       onclick="javascript:getStatsByNDays()"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
+       onclick="javascript:getStatsByNDays('<?php echo $_SESSION['sesskey']; ?>')"> <span class="glyphicon glyphicon-search icon-white"></span> ®search®</a>               
 </div>
 <br/>
 <div id="nDays-stats" class="stats">                
@@ -95,6 +95,7 @@ echo '</script>';
 
     <div>
         <form action="index.php?action=get_csv_assets" method="post" id="csv_assets_form" name="csv_assets_form" onsubmit="return false">
+            <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
             <a id="submit-csvAssets-search" class="btn btn-info btn-search" 
                onclick="document.csv_assets_form.submit();
                        return false;"> <span class="icon-file icon-white"></span>®stats_discussions_by_asset®</a>

@@ -3,6 +3,7 @@
 <form method="GET" class="search_event pagination" style="width: 100%;">
     
     <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <input type="hidden" name="post" value="">
     
     

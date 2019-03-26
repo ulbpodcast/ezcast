@@ -4,6 +4,7 @@
     
     <input type="hidden" name="action" value="<?php echo $input['action']; ?>" >
     <input type="hidden" name="post" value="">
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     
     
     <div class="form-group">
@@ -157,7 +158,8 @@
         };
     
     vm.eventClicked = function(event) {
-        document.location.href="index.php?action=view_track_asset&post=&startDate=0&asset="+event.asset+"&view_all=on";
+        var sesskey = '<?php echo $_SESSION['sesskey']; ?>';
+        document.location.href="index.php?action=view_track_asset&post=&startDate=0&asset="+event.asset+"&view_all=on&sesskey="+sesskey;
         };
         
 

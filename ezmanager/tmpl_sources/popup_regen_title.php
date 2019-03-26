@@ -7,7 +7,7 @@
     <center>
         <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
         <a class="btn btn-default" onclick="setTimeout(function(){ display_bootstrap_modal($('#modal'), $('#regen_title'));}, 500);"
-            href="index.php?action=regen_title&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>" 
+            href="index.php?action=regen_title&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" 
             data-dismiss="modal" id="regen_title">
             ®OK®
         </a>

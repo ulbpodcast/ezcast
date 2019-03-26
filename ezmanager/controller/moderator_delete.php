@@ -14,12 +14,12 @@ function index($param = array())
     global $basedir;
     global $input;
     global $logger;
-       
+
     require_once $basedir.'/commons/lib_sql_management.php';
 
     $album = $input['album'];
     $iduser = $input['iduser'];
-    
+
     if (!acl_has_album_permissions($album)) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
         $logger->log(
@@ -31,13 +31,18 @@ function index($param = array())
          );
         die;
     }
-    
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     db_users_courses_delete_row($album, $iduser);
-    
+
     // $album = suffix_remove($_SESSION['podman_album']);
     $tbusercourse = users_courses_get_users($album);
-    
-    header('Location: index.php?action=view_list_moderator&album='.$album);
-     
+
+    header('Location: index.php?action=view_list_moderator&album='.$album.'&sesskey='.$_SESSION['sesskey']);
+
     die;
 }

@@ -7,6 +7,26 @@
 include_once __DIR__.'/config.inc';
 include_once __DIR__.'/lib_ezmam.php';
 
+require_once __DIR__ . '/../commons/lib_sql_management.php';
+
+if (!isset($recorder_array))
+{
+    $list=db_classrooms_list();
+    foreach ($list as $room) {
+        if (empty($room[user_name])){
+            $recorder_array[$room['IP']]['user']=$recorder_user;
+            $recorder_array[$room['IP']]['basedir']=$recorder_basedir;
+            $recorder_array[$room['IP']]['subdir']=$recorder_subdir;
+        }else{
+            $recorder_array[$room['IP']]['user']=$room['user_name'];
+            $recorder_array[$room['IP']]['basedir']=$room['base_dir'];
+            $recorder_array[$room['IP']]['subdir']=$room['sub_dir'];
+        }
+    }
+    //echo '<pre>' . var_export($recorder_array, true) . '</pre>';
+}
+
+
 Logger::$print_logs = true;
 
 /*
@@ -114,7 +134,7 @@ do {
             //todo: check return value from rsync, do not retry in case of file not found
             
             // download metadata
-            $res = rsync_fetch_record($caller_ip, $meta_file, $recorder_user, $destrecording_path);
+            $res = rsync_fetch_record($caller_ip, $meta_file, $recorder_array[$caller_ip]['user'], $destrecording_path);
             $meta_ok = $res == 0;
             
             //download cam movie if available/needed
@@ -184,7 +204,7 @@ else {
     $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::NOTICE, "Asset download successfully finished", array(basename(__FILE__)), $asset);
 
     // Finalize recording on the remote recorder
-    $cmd = "$ssh_pgm -oBatchMode=yes $recorder_user@$caller_ip \"$recorder_php_cli $recorder_basedir/cli_upload_finished.php $asset\"";
+    $cmd = "$ssh_pgm -oBatchMode=yes $recorder_array[$caller_ip]['user']@$caller_ip \"$recorder_php_cli $recorder_basedir/cli_upload_finished.php $asset\"";
     $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::DEBUG, "Calling recorder for assset finalization: $cmd", array(basename(__FILE__)), $asset);
     $output = system($cmd, $return_val);
     if ($return_val != 0) {
@@ -218,6 +238,7 @@ function fetch_record_from($download_info_array, $dest_dir, $camslide)
     global $dir_date_format;
     global $asset;
     global $logger;
+    global $caller_ip;
 
     $download_protocol = $download_info_array['protocol'];
     $src_file = $download_info_array['filename'];
@@ -225,7 +246,8 @@ function fetch_record_from($download_info_array, $dest_dir, $camslide)
     print date($dir_date_format) . "\n";
     switch ($download_protocol) {
         case "rsync":
-            $remote_ip = $download_info_array['ip'];
+//            $remote_ip = $download_info_array['ip'];
+            $remote_ip = $caller_ip;
             $remote_username = $download_info_array['username'];
             if (!isset($remote_ip) || $remote_ip == '' || !isset($remote_username) || $remote_username == '') {
                 $logger->log(EventType::MANAGER_UPLOAD_TO_EZCAST, LogLevel::CRITICAL, "Error : missing required param : rsync -e ssh -tv --partial-dir=<DIR> <REMOTE_USERNAME>@<REMOTE_IP>:<FILENAME> <DEST_DIR>", array(basename(__FILE__)), $asset);

@@ -48,10 +48,10 @@ function acl_init($netid)
     // initializing ezmam (we'll need it later)
     global $repository_path;
     ezmam_repository_path($repository_path);
-    
+
     // Retrieving the permissions
     acl_update_permissions_list();
-    
+
     // All is set, we're good to go
     return true;
 }
@@ -82,11 +82,11 @@ function acl_update_permissions_list()
     foreach ($existing_albums as $album) {
         array_push($existing_courses_id, suffix_remove($album));
     }
-    
+
     /*print_r($courses_id_list_for_author);
     echo '<br/>';
     print_r($existing_courses_id);*/
-    
+
     // By comparing $courses_list_for_autor and $existing_albums, we're able
     // to infer which album has already been created and which hasn't
     // So we store this information in various arrays
@@ -94,13 +94,13 @@ function acl_update_permissions_list()
     $albums_created_array_descriptions = array(); // Album created (name as a key and description as a value)
     $albums_not_created_array = array();
     $albums_not_created_array_descriptions = array();
-    
+
     // For each course an author can manage, we check whether or not albums exist
     foreach ($courses_id_list_for_author as $course) {
         $course_infos = explode('|', $course, 2); // courses_list gives us the information as name|description, so we need to change that
         $course_id = $course_infos[0];
         $course_description = $course_infos[1];
-        
+
         if (in_array($course_id, $existing_courses_id)) {
             $albums_created_array[] = $course_id;
             $albums_created_array_descriptions[$course_id] = $course_description;
@@ -109,7 +109,7 @@ function acl_update_permissions_list()
             $albums_not_created_array_descriptions[$course_id] = $course_description;
         }
     }
-    
+
     // Finally, we save the information in session vars
     $_SESSION['acl_created_albums'] = $albums_created_array; // Array of all created albums, by album name
     $_SESSION['acl_created_albums_descriptions'] = $albums_created_array_descriptions; // Associative array listing all album names (key) and description (value)
@@ -130,7 +130,7 @@ function acl_has_album_permissions($album)
         error_print_message('Error: acl_has_album_permissions: You are not logged in');
         return false;
     }
-    
+
     return (in_array(suffix_remove($album), $_SESSION['acl_permitted_albums']));
 }
 
@@ -144,7 +144,7 @@ function acl_authorized_albums_list($assoc = false)
         error_print_message('Error: acl_authorized_albums_list: You are not logged in');
         return false;
     }
-    
+
     if ($assoc) {
         return $_SESSION['acl_permitted_albums_descriptions'];
     } else {
@@ -162,7 +162,7 @@ function acl_authorized_albums_list_created($assoc = false)
         error_print_message('Error: acl_authorized_albums_list_created: You are not logged in');
         return false;
     }
-    
+
     if ($assoc) {
         return $_SESSION['acl_created_albums_descriptions'];
     } else {
@@ -180,7 +180,7 @@ function acl_authorized_albums_list_not_created($assoc = false)
         error_print_message('Error: acl_authorized_albums_list_not_created: You are not logged in');
         return false;
     }
-    
+
     if ($assoc) {
         return $_SESSION['acl_not_created_albums_descriptions'];
     } else {
@@ -191,4 +191,12 @@ function acl_authorized_albums_list_not_created($assoc = false)
 function acl_user_is_logged()
 {
     return (isset($_SESSION['podman_logged']) && !empty($_SESSION['podman_logged']));
+}
+
+function acl_session_key_check($sessionkey)
+{
+    if (isset($_SESSION['sesskey']) && !empty($_SESSION['sesskey']) && isset($sessionkey) && !empty($sessionkey) && ($_SESSION['sesskey'] == $sessionkey))
+        return true;
+
+    return false;
 }

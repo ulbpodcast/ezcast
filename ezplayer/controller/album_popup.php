@@ -13,6 +13,11 @@ function index($param = array())
     global $repository_path;
     global $ezmanager_url;
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     ezmam_repository_path($repository_path);
     $album = acl_token_get($input['album']);
 

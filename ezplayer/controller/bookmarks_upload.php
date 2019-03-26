@@ -17,6 +17,12 @@ function index($param = array())
     global $bookmarks_validation_file;
     global $album;
     global $asset;
+    global $input;
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
 
     $album = $_POST['album']; // the album user wants to import in
     $asset = $_POST['asset']; // the asset user wants to import in

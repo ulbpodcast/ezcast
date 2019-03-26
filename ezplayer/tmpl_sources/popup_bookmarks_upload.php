@@ -44,6 +44,7 @@
         <input type="hidden" name="album" value="<?php echo $album; ?>" />
         <input type="hidden" name="asset" value="<?php echo $asset; ?>" />
         <input type="hidden" name="target" id="import_target" value="" />
+        <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
 
         <script>
             // Render and style the file input 

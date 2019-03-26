@@ -12,11 +12,17 @@ function index($param = array())
     if (!$trace_on || !$display_trace_stats) {
         die;
     }
-   
+
     if (!isset($input['album'])) {
         echo "Usage: index.php?action=album_stats_reset&album=ALBUM";
         die;
     }
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     require_once dirname(__FILE__) . '/../lib_sql_stats.php';
     db_stats_album_hide($input['album']);
     

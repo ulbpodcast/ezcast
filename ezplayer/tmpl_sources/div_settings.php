@@ -30,6 +30,7 @@ acl_update_settings();
 <form name="submit_settings_form" action="<?php global $ezplayer_safe_url;
 echo $ezplayer_safe_url; ?>/index.php" method="post">
     <input type="hidden" name="action" value="settings_update" />
+    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>" />
     <table>
         <th><span class="title left">Notifications</span></th><br/>
         <tr>
@@ -47,6 +48,38 @@ echo $ezplayer_safe_url; ?>/index.php" method="post">
             <td><span>®Show_discussions®</span><td>
             <td><input id="settings_display_threads" name="display_threads" 
                        type="checkbox" <?php echo acl_display_threads() ? 'checked' : '' ?>/></td>
+        </tr>
+        <tr>
+            <td><span>®ezplayer_langue®</span><td>
+            <td>
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <?php
+                            if(!empty($_SESSION['lang']))
+                            {
+                                $lang = $_SESSION['lang'];
+                            }
+                            else if(!empty($input['lang']))
+                            {
+                                $lang = $input['lang'];
+                            }
+                        ?>
+                        <select class="lang form-control" name="lang" tabindex="3" 
+                                onchange="document.location.href = './index.php?lang='+this.value;">
+                            <option value="fr" <?php if ($lang == 'fr') {
+                          echo 'selected="selected"';
+                      } ?>>
+                                Français
+                            </option>
+                            <option value="en" <?php if ($lang == 'en') {
+                          echo 'selected="selected"';
+                      } ?>>
+                                English
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </td>
         </tr>
         <tr>
             <td></td>

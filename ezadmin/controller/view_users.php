@@ -4,16 +4,21 @@ function index($param = array())
 {
     global $input;
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $users = array();
 
     if (isset($input['post'])) {
         $user_ID = db_sanitize($input['user_ID']);
         $forename = db_sanitize($input['forename']);
         $surname = db_sanitize($input['surname']);
-        $intern = $input['intern'] ? 1 : 0;
-        $extern = $input['extern'] ? 1 : 0;
-        $is_admin = $input['is_admin'] ? 1 : 0;
-        $is_not_admin = $input['is_not_admin'] ? 1 : 0;
+        $intern = (isset($input['intern'])&& $input['intern']) ? 1 : 0;
+        $extern = (isset($input['extern'])&& $input['extern']) ? 1 : 0;
+        $is_admin = (isset($input['is_admin'])&& $input['is_admin']) ? 1 : 0;
+        $is_not_admin = (isset($input['is_not_admin'])&& $input['is_not_admin']) ? 1 : 0;
         $page = intval($input['page']);
         $col = addslashes($input['col']);
         $order = $input['order'] == 'ASC' ? 'ASC' : 'DESC';

@@ -17,6 +17,11 @@ function index($param = array())
     $selection = $input['delete_selection'];
     $target = $input['target'];
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     // init paths
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);

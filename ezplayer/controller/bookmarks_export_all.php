@@ -16,6 +16,11 @@ function index($param = array())
     global $user_files_path;
     global $repository_path;
 
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $album = $input['album'];
     if ($export_asset) {
         $asset = $input['asset'];

@@ -7,13 +7,24 @@
 function index($param = array())
 {
     global $accepted_media_types;
+    global $valid_mimeType;
+    global $valid_mimeType_video;
+    global $valid_mimeType_audio;
+    global $enable_verify_mimeType_extension;
     global $upload_slice_size;
+    global $input;
 
     $array = array();
 
     $index = $_SERVER['HTTP_X_INDEX'];
     $id = $_SERVER['HTTP_X_ID'];
     $type = $_SERVER['HTTP_X_TYPE'];
+    $type_media = $_SERVER['HTTP_X_TYPE_MEDIA'];
+
+    if (!acl_session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
 
     if (!isset($id) || empty($id) || !isset($_SESSION[$id])) {
         log_append('warning', 'upload_chunk: ' . ' current upload id is not set or not valid');
@@ -22,7 +33,7 @@ function index($param = array())
         die;
     }
 
-    $path = $_SESSION[$id]['path'];
+     $path= $_SESSION[$id]['path'];
 
     // path must be in proper format
     if (!isset($path)) {
@@ -31,6 +42,7 @@ function index($param = array())
         echo json_encode($array);
         die;
     }
+
 
     // type must be in proper format
     if (!isset($type) || !in_array($type, $accepted_media_types)) {
@@ -84,13 +96,23 @@ function index($param = array())
 
     // the incoming stream is put at the end of the file
     $input = fopen("php://input", "r");
+
+
     if ($input == false) {
         log_append('warning', "error opening php input stream");
         $array["error"] = template_get_message('write_error', get_lang());
         echo json_encode($array);
         die;
     }
-    
+//
+//    if(!in_array(mime_content_type($input),$valid_mimeType)){
+//        log_append('error', "Mimetype is not valid");
+//        $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($input);
+//        echo json_encode($array);
+//        die;
+//    }
+//
+
     if (!file_exists($target) || filesize($target) <= 2048000000) {
         /*  $fp = fopen($target, "a");
           while ($data = fread($input, $upload_slice_size)) {
@@ -113,6 +135,25 @@ function index($param = array())
         $target = "$path/" . $type . '/' . $type . '-' . $index;
         $input = fopen("php://input", "r");
         file_put_contents($target, $input);
+
+    }
+
+    if ($enable_verify_mimeType_extension) {
+        if ($type_media == 'video') {
+            if (!in_array(mime_content_type($target),$valid_mimeType_video)){
+                log_append('error', "Mimetype is not valid");
+                $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
+                echo json_encode($array);
+                die;
+            }
+        } elseif ($type_media == 'audio') {
+            if (!in_array(mime_content_type($target),$valid_mimeType_audio)){
+                log_append('error', "Mimetype is not valid");
+                $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
+                echo json_encode($array);
+                die;
+            }
+        }
     }
 
     if ($res === false) {

@@ -391,6 +391,10 @@ function video_event_volume(video) {
     if(video.muted && video.volume != 0) {
         video.volume = 0;
     }
+    if(!video.muted && video.volume == 0)
+    {
+        video.volume = 1;
+    }
 }
 
 // handles buffer errors that occur in Chrome after the following process:
@@ -1082,7 +1086,7 @@ function player_bookmarks_panel_resize() {
 // displays and adapts the size of bookmarks panel
 function player_bookmarks_panel_show() {
     if (fullscreen) {
-        $('video, #bookmark_form, #thread_form').animate({
+        $('video, #bookmark_form, #thread_form,#main_player').animate({
             width: ($(window).width() - panel_width) + 'px'
         });
         $('#div_right').animate({
@@ -1091,7 +1095,8 @@ function player_bookmarks_panel_show() {
         $('#video_notifications').addClass('panel-active');
     } else {
         $('#div_right').css('height', '652px');
-        $('video, .video_controls, #bookmark_form, #thread_form, #video_player').animate({
+        $('#div_right').css('display','block');
+        $('video, .video_controls, #bookmark_form, #thread_form, #video_player,#main_player').animate({
             width: '699px'
         });
         $('#side_wrapper').animate({
@@ -1112,12 +1117,13 @@ function player_bookmarks_panel_hide() {
         $('#div_right').animate({
             right: '-300px'
         });
-        $('video, #bookmark_form, #thread_form').animate({
+        $('video, #bookmark_form, #thread_form, #main_player').animate({
             width: '100%'
         });
     } else {
         $('#div_right').css('overflow', 'hidden');
-        $('video, .video_controls, #bookmark_form, #thread_form, #video_player').animate({
+        $('#div_right').css('display','none');
+        $('video, .video_controls, #bookmark_form, #thread_form, #video_player, #main_player').animate({
             width: '930px'
         });
         $('#side_wrapper').animate({

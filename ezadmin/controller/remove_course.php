@@ -4,6 +4,11 @@ function index($param = array())
 {
     global $input;
 
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     if (!db_course_delete($input['course_code'])) {
         redirectToController('view_course_details');
         return;

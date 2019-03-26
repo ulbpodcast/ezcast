@@ -30,6 +30,6 @@
 <br/><p>®Delete_album_message®</p>
 <a class="close-reveal-modal" href="javascript:close_popup();">&#215;</a>
 <br/>
-<a href="javascript:album_token_delete('<?php echo $album['album']; ?>');" class="delete-button-confirm">®Delete®</a>
+<a href="javascript:album_token_delete('<?php echo $album['album']; ?>', '<?php echo $_SESSION['sesskey']; ?>');" class="delete-button-confirm">®Delete®</a>
 <a class="close-reveal-modal-button" href="javascript:close_popup();">®Cancel®</a>
 

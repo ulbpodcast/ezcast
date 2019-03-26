@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
 
@@ -41,10 +41,13 @@
         <label id="service_description" lang="en">Video player interface</label>
         <label id="ezplayer_page_title" lang="fr">EZplayer</label>
         <label id="ezplayer_page_title" lang="en">EZplayer</label>
+
         
         <!-- Useful keywords -->
         <label id="Netid" lang="fr">Netid</label>
         <label id="Netid" lang="en">Netid</label>
+        <label id="ezplayer_langue" lang="fr">Langue</label>
+        <label id="ezplayer_langue" lang="en">language</label>
         <label id="Password" lang="fr">Mot de passe</label>
         <label id="Password" lang="en">Password</label>
         <label id="All" lang="fr">Tout</label>
@@ -194,6 +197,8 @@
         <label id="Slides" lang="en">Slides</label>
         <label id="The_slides" lang="fr">le diaporama</label>
         <label id="The_slides" lang="en">the slides</label>
+        <label id="Audio" lang="fr">Audio</label>
+        <label id="Audio" lang="en">Audio</label>
         <label id="Bookmark" lang="fr">Signet</label>
         <label id="Bookmark" lang="en">Bookmark</label>
         <label id="Information" lang="fr">Informations</label>
@@ -279,7 +284,13 @@
         <label id="Download_movie" lang="fr">Télécharger la vidéo</label>
         <label id="Download_movie" lang="en">Download movie</label>   
         <label id="Download_slide" lang="fr">Télécharger le diaporama</label>
-        <label id="Download_slide" lang="en">Download slide</label>   
+        <label id="Download_slide" lang="en">Download slide</label>
+        <label id="Download_audio" lang="fr">Télécharger l'audio</label>
+        <label id="Download_audio" lang="en">Download audio</label>
+        <label id="Download_audio_cam" lang="fr">Télécharger l'audio vidéo</label>
+        <label id="Download_audio_cam" lang="en">Download video audio</label>    
+        <label id="Download_audio_slide" lang="fr">Télécharger l'audio diaporama</label>
+        <label id="Download_audio_slide" lang="en">Download slide audio</label>
         <label id="Embed" lang="fr">Embed</label>
         <label id="Embed" lang="en">Embed</label>
         <label id="Allow_download" lang="fr">Autoriser le téléchargement</label>
@@ -865,50 +876,50 @@
     <infos>
 		<info id="developed_by" organization="© Université libre de Bruxelles" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
 		<info id="developed_by" organization="© Université libre de Bruxelles" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Université Catholique de Louvain" lang="fr">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
-		<info id="developed_by" organization="© Université Catholique de Louvain" lang="en">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="Université Catholique de Louvain" lang="fr">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
+		<info id="developed_by" organization="Université Catholique de Louvain" lang="en">&lt;a href="http://ezcast.uclouvain.be" &gt;UCL Podcast&lt;/a&gt; is a solution powered by &lt;a href="http://ezcast.ulb.ac.be"&gt;EZcast&lt;/a&gt;</info>
 		<info id="developed_by" organization="© Your organization name" lang="fr">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; est une solution propulsée par &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
 		<info id="developed_by" organization="© Your organization name" lang="en">&lt;a href="http://ezcast.ulb.ac.be" &gt;EZcast&lt;/a&gt; is a solution powered by &lt;a href="http://podcast.ulb.ac.be"&gt;ULB Podcast&lt;/a&gt;</info>
 		<info id="organization" organization="© Université libre de Bruxelles" lang="fr">ULB Podcast</info>
 		<info id="organization" organization="© Université libre de Bruxelles" lang="en">ULB Podcast</info>
-		<info id="organization" organization="© Université Catholique de Louvain" lang="fr">UCL Podcast</info>
-		<info id="organization" organization="© Université Catholique de Louvain" lang="en">UCL Podcast</info>
+		<info id="organization" organization="Université Catholique de Louvain" lang="fr">UCL Podcast</info>
+		<info id="organization" organization="Université Catholique de Louvain" lang="en">UCL Podcast</info>
 		<info id="organization" organization="© Your organization name" lang="fr">Your organization Podcast</info>
 		<info id="organization" organization="© Your organization name" lang="en">Your organization Podcast</info>		
 		
 		<info id="report_success" organization="© Université libre de Bruxelles" lang="fr">Le message suivant a été transmis à l'équipe ULB Podcast et sera traité dans les meilleurs délais</info>
 		<info id="report_success" organization="© Université libre de Bruxelles" lang="en">The following message has been sent to the ULB Podcast team and will be processed as soon as possible</info>
-		<info id="report_success" organization="© Université Catholique de Louvain" lang="fr">Le message suivant a été transmis à l'équipe UCL Podcast et sera traité dans les meilleurs délais</info>
-		<info id="report_success" organization="© Université Catholique de Louvain" lang="en">The following message has been sent to the UCL Podcast team and will be processed as soon as possible</info>
+		<info id="report_success" organization="Université Catholique de Louvain" lang="fr">Le message suivant a été transmis à l'équipe UCL Podcast et sera traité dans les meilleurs délais</info>
+		<info id="report_success" organization="Université Catholique de Louvain" lang="en">The following message has been sent to the UCL Podcast team and will be processed as soon as possible</info>
 		<info id="report_success" organization="© Your organization name" lang="fr">Le message suivant a été transmis à l'équipe Podcast de votre organisation et sera traité dans les meilleurs délais</info>
 		<info id="report_success" organization="© Your organization name" lang="en">The following message has been sent to your organization Podcast team and will be processed as soon as possible</info>	
 		
 		
 		<info id="serveur_player" organization="© Université libre de Bruxelles" lang="fr">https://podcast.ulb.ac.be/ezplayer/</info>
 		<info id="serveur_player" organization="© Université libre de Bruxelles" lang="en">https://podcast.ulb.ac.be/ezplayer/</info>
-		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="fr">https://ezcast.uclouvain.be/ezplayer/</info>
-		<info id="serveur_player" organization="© Université Catholique de Louvain" lang="en">https://ezcast.uclouvain.be/ezplayer/</info>
+		<info id="serveur_player" organization="Université Catholique de Louvain" lang="fr">https://ezcast.uclouvain.be/ezplayer/</info>
+		<info id="serveur_player" organization="Université Catholique de Louvain" lang="en">https://ezcast.uclouvain.be/ezplayer/</info>
 		<info id="serveur_player" organization="© Your organization name" lang="fr">https://podcast.ulb.ac.be/ezplayer/</info>
 		<info id="serveur_player" organization="© Your organization name" lang="en">https://podcast.ulb.ac.be/ezplayer/</info>		
 
 		<info id="tuto" organization="© Université libre de Bruxelles" lang="fr">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
 		<info id="tuto" organization="© Université libre de Bruxelles" lang="en">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Université Catholique de Louvain" lang="fr">http://ezcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
-		<info id="tuto" organization="© Université Catholique de Louvain" lang="en">http://ezcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="Université Catholique de Louvain" lang="fr">http://ezcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
+		<info id="tuto" organization="Université Catholique de Louvain" lang="en">http://ezcast.uclouvain.be/pdf/Tutoriel_EZplayer.pdf</info>
 		<info id="tuto" organization="© Your organization name" lang="fr">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
 		<info id="tuto" organization="© Your organization name" lang="en">http://podcast.ulb.ac.be/site/pdf/Tutoriel_EZplayer.pdf</info>
 		
 		<info id="poster" organization="© Université libre de Bruxelles" lang="fr">poster</info>
 		<info id="poster" organization="© Université libre de Bruxelles" lang="en">poster</info>
-		<info id="poster" organization="© Université Catholique de Louvain" lang="fr">poster-ucl</info>
-		<info id="poster" organization="© Université Catholique de Louvain" lang="en">poster-ucl</info>
+		<info id="poster" organization="Université Catholique de Louvain" lang="fr">poster-ucl</info>
+		<info id="poster" organization="Université Catholique de Louvain" lang="en">poster-ucl</info>
 		<info id="poster" organization="© Your organization name" lang="fr">poster</info>
 		<info id="poster" organization="© Your organization name" lang="en">poster</info>
 		
 		<info id="poster-streaming" organization="© Université libre de Bruxelles" lang="fr">poster-streaming</info>
 		<info id="poster-streaming" organization="© Université libre de Bruxelles" lang="en">poster-streaming</info>
-		<info id="poster-streaming" organization="© Université Catholique de Louvain" lang="fr">poster-ucl-streaming</info>
-		<info id="poster-streaming" organization="© Université Catholique de Louvain" lang="en">poster-ucl-streaming</info>
+		<info id="poster-streaming" organization="Université Catholique de Louvain" lang="fr">poster-ucl-streaming</info>
+		<info id="poster-streaming" organization="Université Catholique de Louvain" lang="en">poster-ucl-streaming</info>
 		<info id="poster-streaming" organization="© Your organization name" lang="fr">poster-streaming</info>
 		<info id="poster-streaming" organization="© Your organization name" lang="en">poster-streaming</info>
 		

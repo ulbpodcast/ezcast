@@ -42,15 +42,17 @@ $ezmanager_url = "$application_url/ezmanager";
 $ezmanager_safe_url = "$application_safe_url/ezmanager";
 $ezplayer_url = "$application_url/ezplayer";
 $ezplayer_safe_url = "$application_safe_url/ezplayer";
-$distribute_url = "$ezmanager_url/distribute.php";
+$distribute_url = "$ezmanager_safe_url/distribute.php";
 
 // Absolute paths 
 $repository_basedir = "/var/lib/ezcast";
 $basedir = "/usr/local/ezcast";
-
+$php_exec_path="/usr/bin/php";
 // Database info
 $db_type = 'mysql';
 $db_host = 'localhost';
+$db_port = "";
+                                            
 $db_login = "ezcast";
 $db_passwd = "";
 $db_name = "ezcast";
@@ -77,6 +79,8 @@ $mailto_alert = "mail@your.organization"; //who to call in case of problem in th
  * - sso : SimpleSAMLphp
  */
 $auth_methods = array("file", "ldap");
+$sso_only=false; 
+$forbidden_users=array();                             
 
 $ldap_institution="";	//empty by default   "ucl" for ucl.					
 # JSON FILES FOR LDAP
@@ -125,7 +129,7 @@ $sso_ssp_lib = "/var/simplesamlphp/lib";
 $sso_ssp_sp = "default-sp";
 $sso_ssp_att_name = "sn";
 $sso_ssp_att_firstname = "givenName";
-//$sso_ssp_att_email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+$sso_ssp_att_email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
 $sso_ssp_att_email = "mail";
 $sso_ssp_att_login = "uid";
 
@@ -135,6 +139,9 @@ $ezplayer_trace_path = $repository_basedir . '/ezplayer/ezplayer_traces/';
 $video_split_time = 30; // Time in second to send information that user watch a video
 $display_trace_stats = false; // Display or not stat on ezmanager
 
+//Transcoding streaming video live  !!!!WARNING $repository_basedir has to be shared between the two servers && remote server must have right to write in "$repository_basedir/streamEncode"
+$transcodeStreaming=false;                                            
+$externalClients=array();        // use : $externalClients=array("user1@ip", "user2@ip")        !!!! ssh link must be establish between ezcast && those clients                                                                                            
 
 // -- Alternate server as streaming distribution source -- //
 
@@ -169,6 +176,8 @@ $max_album_label_size=50;
 
 $enable_anon_access_control = false; //Enable the user to choose if the album is accessible from anonym or not
 $default_anon_access = 'false'; //default value when a video is uploaded
+//dysplay the terms of use at the first connection or anonym
+$enable_termsOfUse=false;                      
 
 // If not in config simple
 if(basename(__FILE__) != "config-sample.inc") {
@@ -176,3 +185,15 @@ if(basename(__FILE__) != "config-sample.inc") {
     require_once(__DIR__ . '/common.inc');
     require_once('logger_server.php');
 }
+// Various parameters
+$accepted_languages = array('fr', 'en'); // Accepted parameters for the language to use
+$accepted_file_extensions = array('.html', '.xhtml', '.xml', '.htm', '.php'); // File with these extensions will be considered as template files
+
+//Parameters for inclusion of audio files
+$enable_audio_submit=false;                 //Accept audio files in EZmanager submit form
+$enable_ezplayer_audio_download=false;      // enable the viewer to download mp3 files if exist
+
+$maintenance_mode = false;
+
+
+$matomoScript="";

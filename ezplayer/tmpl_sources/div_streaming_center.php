@@ -31,7 +31,7 @@
    current_asset='<?php echo $_SESSION['asset']; ?>';
     asset_token='<?php echo $_SESSION['asset_token']; ?>';
 
-    history.pushState({"url": 'index.php?action=view_streaming&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>'}, '', '');
+    history.pushState({"url": 'index.php?action=view_streaming&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>'}, '', '');
 
     var chat_timer = window.setInterval(function () {
         if (ezplayer_mode == 'view_asset_streaming') {

@@ -1,0 +1,36 @@
+.header {
+
+    background-color: #032f5d !important;
+
+}
+
+/*page d'accueil*/
+
+.accueilEzcast{
+	margin:auto;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -135px;
+	text-align: center;
+}
+
+.logo img {
+    max-height: 100px !important;
+}
+
+#ezcast_logo{
+    height:50px;
+}
+#orga_logo{
+    height:30px;    
+}
+
+#organisation_logo{
+   height:30px !important;
+}
+
+.header_content a {
+    color: white;
+}

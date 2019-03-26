@@ -23,11 +23,13 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 ?>
 <div id="streaming_config">
-    <link rel="stylesheet" href="flowplayer/skin/skin.css">
-    <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
-		
+    <link rel="stylesheet" href="flowplayer-6/skin/skin.css">
+    <?php if($_SESSION['isPhone']){  ?>
+        <link rel="stylesheet" type="text/css" href="css/smartphone.css" />
+	<?php } ?>	
     <div id="video_player" class="streaming remove_full">
         <div id="streaming_video"></div>
         <div class="video_controls streaming">
@@ -89,9 +91,9 @@
         swfHls: 'flowplayer-6/flowplayerhls.swf',
         live: true,
         autoplay: true,
-        fullscreen: false,
-        share: false,
-        embed: false
+        fullscreen: true,
+        embed: false,
+        share:false
 
     });
 
@@ -123,12 +125,14 @@
 
     function switch_do() {
         // Request to the server
+        var asset = '<?php echo $asset_meta['stream_name']; ?>';
+
         close_popup();
         player_kill();
         $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
         $.ajax({
             type: 'POST',
-            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam'),
+            url: 'index.php?action=streaming_config_update' + '&type=' + ((current_type == 'cam') ? 'slide' : 'cam') + '&asset=' + asset + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>',
             success: function (response) {
                 $('#streaming_config_wrapper').html(response);
                 player_streaming_fullscreen(fullscreen);
@@ -140,7 +144,7 @@
         $('#div_popup').html('<div style="text-align: center;"><img src="images/loading_white.gif" alt="loading..." /></div>');
         $.ajax({
             type: 'POST',
-            url: 'index.php?action=live_stream_popup&display=video_switch',
+            url: 'index.php?action=live_stream_popup&display=video_switch' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>',
             success: function (response) {
                 $('#div_popup').html(response);
             }

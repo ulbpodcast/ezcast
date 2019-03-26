@@ -196,7 +196,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 <?php
                 } ?>                
                 <li>
-                    <a class="share-button" href="javascript:popup_asset(current_album, current_asset, time, type, 'share_time')" title="®Share_time®" 
+                    <a class="share-button" href="javascript:popup_asset(current_album, current_asset, time, type, 'share_time', '<?php echo $_SESSION['sesskey']; ?>')" title="®Share_time®" 
                        onclick="player_video_link()"></a>
                 </li>      
                 <li>

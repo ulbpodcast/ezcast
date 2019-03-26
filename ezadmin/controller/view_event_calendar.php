@@ -11,6 +11,11 @@ function index($param = array())
 {
     global $input;
     
+    if (!session_key_check($input['sesskey'])) {
+        echo "Usage: Session key is not valid";
+        die;
+    }
+
     $classRoom = false;
     $sqlDateEvent = array();
     if (array_key_exists('post', $input) && array_key_exists('classroom', $input) &&

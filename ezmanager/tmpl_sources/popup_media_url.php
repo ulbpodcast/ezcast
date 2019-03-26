@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * EZCAST EZmanager
 *
@@ -26,7 +26,7 @@
 ?>
 
 
-<!-- 
+<!--
 This is the popup displaying the URL to the media.
 You should not have to use this file on your own; if you do, make sure the variable $media_url and $media_url_web are defined
 -->

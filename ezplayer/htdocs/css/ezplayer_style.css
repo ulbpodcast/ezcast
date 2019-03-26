@@ -350,6 +350,8 @@ body {
     padding-left: 12px;
     display: block;
     height:50px;
+    display: flex;
+    align-items: center;
 }
 
 .logo a{
@@ -785,7 +787,7 @@ body {
     position: relative;
     width: 699px;
     height: 566px;
-    z-index: 750;
+    z-index: 851;
     top: 0px;
     left: 0px;
     background: #000000;
@@ -1731,7 +1733,7 @@ body {
 }
 
 .download-button{
-    display: inline-block;
+    display: inline-table;
     width: 225px;
     text-align: center;
 }
@@ -2362,7 +2364,7 @@ body {
 
 #search{
     position: absolute;
-    z-index: 95;
+    z-index: 855;
     right: 0px;
     width: 228px;
     padding: 5px 3px;
@@ -2593,7 +2595,7 @@ body {
     min-height: 80px;
     top: 0px;
     right: 0px;
-    z-index: 760;
+    /*z-index: 800;*/
 }
 
 #side_menu{    

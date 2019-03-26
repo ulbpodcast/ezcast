@@ -27,9 +27,11 @@
  * @package ezcast.commons.lib.auth
  */
 include "config.inc";
+ 
 foreach ($auth_methods as $method) {
     include dirname(__FILE__)."/lib_auth_$method.php";
 }
+
 
 /*
  * This library uses various libraries to authenticate the user
@@ -49,65 +51,87 @@ foreach ($auth_methods as $method) {
 function checkauth($login, $passwd)
 {
     global $auth_methods;
-
+    global $forbidden_users;    
+    
     $auth_methods_length = count($auth_methods);
     $login = trim($login);
-    
-    //check if runas admin login
-    $login_parts = explode("/", $login);
 
-    //simple login
-    if (count($login_parts) == 1) {
-        $index = 0;
-        $auth_user = false;
-        // authenticates user (fallback on every available methods)
-        while ($index < $auth_methods_length && $auth_user === false) {
-            $check_auth = $auth_methods[$index] . "_checkauth";
-            $auth_user = $check_auth($login, $passwd);
-            $index++;
-        }
-        // user has not been authenticated using all available methods
-        if ($auth_user === false) {
-            checkauth_last_error("Authentication failure");
-        }
-        // returns user info or false if user has not been found
-        return $auth_user;
-        // admin run as login
-    } else {
-        //runas_login identification where user <login> wants to act as another one
-        $real_login = $login_parts[0];
-        $runas_login = $login_parts[1];
+    
+
+            
+    if(!in_array($login, $forbidden_users)){
+
+        //check if runas admin login
+        $login_parts = explode("/", $login);
+
         
-        $index = 0;
-        $auth_admin = false;
-        // loops on every available methods to authenticate the admin
-        while ($index < $auth_methods_length && $auth_admin === false) {
-            $check_auth = $auth_methods[$index] . "_checkauth";
-            $auth_admin = $check_auth($real_login, $passwd);
-            $index++;
-        }
-        // admin has not been authenticated
-        if ($auth_admin === false) {
-            checkauth_last_error("Authentication failure");
-            return false;
-            // admin has been authenticated
-        } else {
+        //simple login
+        if (count($login_parts) == 1) {
+
             $index = 0;
             $auth_user = false;
-            // loops on every available methods to get user info
+            // authenticates user (fallback on every available methods)
             while ($index < $auth_methods_length && $auth_user === false) {
-                $getinfo = $auth_methods[$index] . "_getinfo";
-                $auth_user = $getinfo($runas_login);
+                $check_auth = $auth_methods[$index] . "_checkauth";
+                $auth_user = $check_auth($login, $passwd);
                 $index++;
             }
-            // user does not exit
+            // user has not been authenticated using all available methods
             if ($auth_user === false) {
                 checkauth_last_error("Authentication failure");
-            } else {
-                $auth_user["real_login"] = $real_login;
             }
+            $auth_user['user_is_admin']=isAdmin($login);
             // returns user info or false if user has not been found
             return $auth_user;
+            // admin run as login
+        } else {
+
+            array_push($auth_methods, 'file');
+            $auth_methods_length++;
+            
+            //runas_login identification where user <login> wants to act as another one
+            $real_login = $login_parts[0];
+            $runas_login = $login_parts[1];
+
+            $index = 0;
+            $auth_admin = false;
+            
+            if($sso_only)
+                $auth_admin = file_checkauth($real_login, $passwd);
+            else{               
+            // loops on every available methods to authenticate the admin
+                while ($index < $auth_methods_length && $auth_admin === false) {
+                    $check_auth = $auth_methods[$index] . "_checkauth";
+                    $auth_admin = $check_auth($real_login, $passwd);
+                    $index++;
+                }
+             }
+
+            
+            // admin has not been authenticated
+            if ($auth_admin === false) {
+                checkauth_last_error("Authentication failure");
+                return false;
+                // admin has been authenticated
+            } else {
+                $index = 0;
+                $auth_user = false;
+                // loops on every available methods to get user info
+                while ($index < $auth_methods_length && $auth_user === false) {
+                    $getinfo = $auth_methods[$index] . "_getinfo";
+                    $auth_user = $getinfo($runas_login);
+                    $index++;
+                }
+                // user does not exit
+                if ($auth_user === false) {
+                    checkauth_last_error("Authentication failure");
+                } else {
+                    $auth_user["real_login"] = $real_login;
+                }
+                // returns user info or false if user has not been found
+                $auth_user['user_is_admin']=isAdmin($real_login);
+                return $auth_user;
+            }
         }
     }
 }
@@ -128,4 +152,13 @@ function checkauth_last_error($msg = "")
         $last_error = $msg;
         return true;
     }
+}
+
+function isAdmin($username){
+    include 'admin.inc'; //file containing an assoc array of admin users
+    if (isset($admin[$username]))
+        return true;
+
+    else 
+        return false;
 }

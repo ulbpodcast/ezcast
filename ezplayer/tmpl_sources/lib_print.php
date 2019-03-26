@@ -59,7 +59,7 @@ function print_search($keywords)
     // transforms each keyword in a search link
     foreach ($keywords_array as $keyword) {
         $comma = ($keywords != '') ? ',' : '';
-        $tmp = "$comma<a href=\"#\" onclick=\"keyword_search('$keyword');\">$keyword</a>";
+        $tmp = "$comma<a href=\"#\" onclick=\"keyword_search('$keyword', '".$_SESSION['sesskey']."');\">$keyword</a>";
         $keywords .= $tmp;
     }
     echo $keywords;
@@ -105,8 +105,7 @@ function print_new_video($count)
  */
 function replace_links($string)
 {
-    // "\**" to remove old system with '*'
-    return preg_replace("/\**(https?\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)\**/", '<a href="$1" ' . 'target="_blank" ' . 'onclick="server_trace(new Array(\'3\', \'description_link\', current_album, current_asset, current_tab));" ' .'>$1</a>', $string);
+    return preg_replace("/\**((?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$]))\**/i", '<a href="$1" ' . 'target="_blank" ' . 'onclick="server_trace(new Array(\'3\', \'description_link\', current_album, current_asset, current_tab));" ' .'>$1</a>', $string);    
 }
 
 /**

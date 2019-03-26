@@ -31,18 +31,18 @@
     <center>
         <div class="container-fluid container-relative container-grey">
             <div class="row centered">
-                <div class="col-sm-1 centered">
+                <div class="col-xs-1 centered">
                     <button type="button" id="btnPlay" class="btn">
                         <i id="btnPlayIcon" class="glyphicon glyphicon-play"></i>
                     </button>
                 </div>
-                <div class="col-sm-10 centered">
+                <div class="col-xs-10 centered">
 
                     <div class="container container-relative  container-grey" id="videoSlider-container">
                         <input id="videoSlider" type="text"/><br/>
                     </div>
                 </div>
-                <div class="col-sm-1 centered">
+                <div class="col-xs-1 centered">
                 </div>
             </div>
         </div>
@@ -98,9 +98,6 @@
 
               </div>
             </div>
-
-            <input type="button" class="btn" name="" value="test this shit" onclick="printJSON();">
-
         </div>
     </center>
 </div>
@@ -109,10 +106,11 @@
     <table id="cutTable" class="table table-striped">
       <thead>
         <tr>
-          <th>cutNumber</th>
-          <th>Start</th>
-          <th>end</th>
-          <th></th>
+          <th id="cutNumberTh">cutNumber</th>
+          <th id="cutStartTh">Start</th>
+          <th id="cutStopTh">end</th>
+          <th id="cutModTh"></th>
+          <th id="cutDelTh"></th>
         </tr>
       </thead>
       <tbody id="cutTableBody">
@@ -122,6 +120,7 @@
 
 </div>
 <input type="hidden" id="data">
+<input type="hidden" id="preview" value="0">
 <div class="modal-footer">
   <button type="button" class="btn btn-default" data-dismiss="modal">®Update®</button>
   <button type="button" class="btn btn-default" data-dismiss="modal">®Cancel®</button>
@@ -131,37 +130,26 @@
 <script>
 //video INIT
 var testArray=[[10.4,25.87],[45.34,105.43]];
-var occ=0;
-(function() {
-    console.log("document ready passage");
-
+(function()
+    {
     //initialisation
-
         var videos=document.getElementsByTagName("video");
         console.log(videos);
         var video=videos[0];
         video.addEventListener('loadedmetadata',function() {
             var allVideoPlayer = document.getElementsByTagName("video");
             var duration=allVideoPlayer[0].duration;
-            initJSON(duration,testArray);
+            var firstCut=[0,duration]
+            initJSON(duration,testArray,firstCut);
             var json=JSON.parse($("#data").val());
-            initSlider();
+            initSlider(json.duration,json.cutArray,json.curCut);
             setInputsMinMax();
-            initTable(json.cutArray);
+            updateCutTable(json.cutArray);
     //end initialisation
         });
-    //console.log(slider);
-    $("#cutSlider").on('slide change', function()
-    {
-        console.log($("#cutSlider").slider('getValue'));
-        setInputValue($("#cutSlider").slider('getValue'));
-        setJSONCut($("#cutSlider").slider('getValue'));
-    });
-
     $("#cutStart").on('change', function() {
         var array=sortInputs(parseFloat($("#cutStart").val()),parseFloat($("#cutStop").val()));
         setInputValue(array);
-        console.log(array);
         setJSONCut(array);
         updateCutSlider(array);
     });
@@ -169,13 +157,11 @@ var occ=0;
     $("#cutStop").on('change', function() {
         var array=sortInputs(parseFloat($("#cutStart").val()),parseFloat($("#cutStop").val()));
         setInputValue(array);
-        console.log(array);
         setJSONCut(array);
         updateCutSlider(array);
     });
 
     $("#btnPlay").on('click', function() {
-        console.log("click button pressed");
         var allVideoPlayer = document.getElementsByTagName("video");
         if (allVideoPlayer[0].paused) {
             for(var i = 0; i < allVideoPlayer.length; i++) {
@@ -194,16 +180,31 @@ var occ=0;
     });
 
     $("#video_cam").on('timeupdate',function() {
-        console.log("appel video.timeupdate ");
         if (!$("#video_cam")[0].paused) {
             $("#videoSlider").slider('setValue',$("#video_cam")[0].currentTime,true);
         }
-
+        console.log("preview state = " + $("#preview").val());
+        if ($("#preview").val()==="1") {
+            var json=JSON.parse($("#data").val());
+            if($("#video_cam")[0].currentTime>json.curCut[0]&&$("#video_cam")[0].currentTime<json.curCut[1]){
+                var allVideoPlayer = document.getElementsByTagName("video");
+                for(var i = 0; i < allVideoPlayer.length; i++) {
+                    var video = allVideoPlayer[i];
+                    video.currentTime=json.curCut[1];
+                 }
+            }
+            else if ($("#video_cam")[0].currentTime>(json.curCut[1]+10)) {
+                var allVideoPlayer = document.getElementsByTagName("video");
+                for(var i = 0; i < allVideoPlayer.length; i++) {
+                    var video = allVideoPlayer[i];
+                    video.pause();
+                 }
+                 $("#preview").val("0");
+            }
+        }
     });
     $("#videoSlider").on('change', function(e)
     {
-        console.log(e);
-        console.log("appel videoSlider.change");
         var newTime=$("#videoSlider").slider('getValue');
         var allVideoPlayer = document.getElementsByTagName("video");
         if (!allVideoPlayer[0].paused) {
@@ -215,16 +216,47 @@ var occ=0;
         }
         for(var i = 0; i < allVideoPlayer.length; i++) {
             var video = allVideoPlayer[i];
-            console.log($("#videoSlider").slider('getValue'));
             video.currentTime=newTime;
          }
     });
-    $("#cutPreviewBtn").on('click', function() {
+    $("#cutTable").on('click','.modBtn',function(event) {
         var json=JSON.parse($("#data").val());
-        var prevTime=$("#video_cam")[0].currentTime;
+        var index=parseInt(this.id.substring(6,7));
+        var tArray=json.cutArray;
+        console.log("tArray "+tArray[0]);
+        json.curCut=json.cutArray[this.id.substring(6,7)];
+        tArray.splice(index,1);
+        json.cutArray=tArray;
+        myJson=JSON.stringify(json);
+        $("#data").val(myJson);
+        setInputValue(json.curCut);
+        $("#cutSlider").slider('destroy');
+        initSlider(json.duration,json.cutArray,json.curCut);
+        updateCutTable(json.cutArray);
+
+    }).on('click','.delBtn',function(event) {
+        var json=JSON.parse($("#data").val());
+        var index=parseInt(this.id.substring(6,7));
+        var tArray=json.cutArray;
+        console.log("tArray "+tArray[0]);
+        tArray.splice(index,1);
+        json.cutArray=tArray;
+        myJson=JSON.stringify(json);
+        $("#data").val(myJson);
+        setInputValue(json.curCut);
+        $("#cutSlider").slider('destroy');
+        initSlider(json.duration,json.cutArray,json.curCut);
+        updateCutTable(json.cutArray);
+
+    });
+    $("#cutPreviewBtn").on('click', function() {
+        $("#preview").val("1");
+        var json=JSON.parse($("#data").val());
+        // var prevTime=$("#video_cam")[0].currentTime;
         var allVideoPlayer = document.getElementsByTagName("video");
-        console.log(allVideoPlayer);
+        // console.log(allVideoPlayer);
         if (allVideoPlayer[0].paused) {
+
             for(var i = 0; i < allVideoPlayer.length; i++) {
                 console.log(allVideoPlayer[i]);
                 console.log(json.curCut[0]);
@@ -234,24 +266,6 @@ var occ=0;
                 video.currentTime=(json.curCut[0]-5);
                 video.play();
              }
-             while ($("#video_cam")[0].currentTime<json.curCut[0]) {
-                 console.log(video.currentTime+" "+json.curCut[0]);
-                setTimeout(1000);
-             }
-             for(var i = 0; i < allVideoPlayer.length; i++) {
-                 var video = allVideoPlayer[i];
-                 video.pause();
-                 video.currentTime=json.curCut[1];
-                 video.play();
-              }
-              // while ($("#video_cam")[0].currentTime<json.curCut[1]+10) {
-              //     setTimeout(1000);
-              // }
-              for(var i = 0; i < allVideoPlayer.length; i++) {
-                var video = allVideoPlayer[i];
-                  video.pause();
-
-               }
         } else {
             for(var i = 0; i < allVideoPlayer.length; i++) {
                 var video = allVideoPlayer[i];
@@ -260,35 +274,102 @@ var occ=0;
                 video.currentTime=json.curCut[0];
 
              }
+             $("#preview").val("0");
         }
-    })
+    });
+    $("#cutValid").on('click', function() {
+        console.log("appel");
+        var test = false;
+        var intersectedCut=[];
+        var json=JSON.parse($("#data").val());
+        var tArray=[];
+        for (var i = 0; i < json.cutArray.length; i++) {
+            console.log("passage for");
+            if ((json.curCut[0]>=json.cutArray[i][0]&&json.curCut[0]<json.cutArray[i][1])||(json.curCut[1]>json.cutArray[i][0]&&json.curCut[1]<=json.cutArray[i][1])||(json.curCut[0]<=json.cutArray[i][0]&&json.curCut[1]>=json.cutArray[i][1])) {
+                console.log("intersection avec le cut numero "+(i+1));
+                intersectedCut.push(i);
+            }
+        }
+        console.log(intersectedCut);
+        if (intersectedCut.length!=0) {
+            for (var i = 0; i < intersectedCut[0]; i++) {
+                tArray.push(json.cutArray[i]);
+            }
+            var cutToValid=[];
+            if (json.curCut[0]<json.cutArray[intersectedCut[0]][0]) {
+                cutToValid.push(json.curCut[0]);
+            }else{
+                cutToValid.push(json.cutArray[intersectedCut[0]][0]);
+            }
+            if (json.curCut[1]>json.cutArray[intersectedCut[(intersectedCut.length-1)]][1]) {
+                cutToValid.push(json.curCut[1]);
+            } else {
+                cutToValid.push(json.cutArray[intersectedCut[(intersectedCut.length-1)]][1]);
+            }
+            tArray.push(cutToValid);
+            for (var i = (intersectedCut[(intersectedCut.length-1)]+1); i < json.cutArray.length; i++) {
+                tArray.push(json.cutArray[i]);
+            }
+            console.log(tArray);
+        }else{
+            var inserted = false;
+            for (var i = 0; i < json.cutArray.length; i++) {
+                if ((json.curCut[0]<json.cutArray[i][0])&&!inserted) {
+                    tArray.push(json.curCut);
+                    inserted=true;
+                }
+                tArray.push(json.cutArray[i]);
+            }
+            if (!inserted) {
+                tArray.push(json.curCut);
+            }
+            console.log(tArray);
+        }
+        json.cutArray=tArray;
+        json.curCut=[0,json.duration]
+        myJson=JSON.stringify(json);
+        $("#data").val(myJson);
+        setInputValue(json.curCut);
+        $("#cutSlider").slider('destroy');
+        initSlider(json.duration,json.cutArray,json.curCut);
+        updateCutTable(json.cutArray);
+    });
+    $("#cutSlider-container").on('slide change','#cutSlider', function()
+    {
+        var allVideoPlayer = document.getElementsByTagName("video");
+        if ($("#cutSlider").slider('getValue')[0]!=$("#cutStart").val()) {
+            for(var i = 0; i < allVideoPlayer.length; i++) {
+                var video = allVideoPlayer[i];
+                video.currentTime=$("#cutSlider").slider('getValue')[0];
+            }
+        }else if ($("#cutSlider").slider('getValue')[1]!=$("#cutStop").val()) {
+            for(var i = 0; i < allVideoPlayer.length; i++) {
+                var video = allVideoPlayer[i];
+                video.currentTime=$("#cutSlider").slider('getValue')[1];
+            }
+        }
+        setInputValue($("#cutSlider").slider('getValue'));
+        setJSONCut($("#cutSlider").slider('getValue'));
+    });
+
 })();
 
-function initJSON(duration,array)
+function initJSON(duration,array,curCut)
 {
-    // var allVideoPlayer = document.getElementsByTagName("video");
-    // var max=allVideoPlayer[0].duration;
-    var json=JSON.parse('{"duration":'+duration+',"cutArray":[],"curCut":[0,'+duration+']}');
-
-    console.log(json);
+    var json=JSON.parse('{"duration":'+duration+',"cutArray":[],"curCut":['+curCut[0]+','+curCut[1]+']}');
     //test array integration to delete
     for (var i = 0; i < array.length; i++) {
         json.cutArray.push(array[i]);
     }
     myJson=JSON.stringify(json);
     $("#data").val(myJson);
-    console.log($("#data").val());
 }
 
-function initSlider()
+function initSlider(duration,array,cut)
 {
     //init of the cutSlider
-    console.log("init slider passage");
-    var json=JSON.parse($("#data").val());
-
-    $("#cutSlider").slider({ id: "cutSliderSlider",  min: 0, max: json.duration, range: true, step: 0.01, value: [0,json.duration],rangeHighlights: updateCutSliderBackground(json.cutArray) });
-    $("#videoSlider").slider({ id: "videoSliderSlider", class: "container-grey", min: 0, max: json.duration, step: 0.01, value: 0});
-    //updateCutSliderBackground(json.cutArray);
+    $("#cutSlider").slider({ id: "cutSliderSlider",  min: 0, max: duration, range: true, step: 0.01, value: [cut[0],cut[1]],rangeHighlights: updateCutSliderBackground(array)});
+    $("#videoSlider").slider({ id: "videoSliderSlider", class: "container-grey", min: 0, max: duration, step: 0.01, value: 0});
 }
 
 function setInputValue(array)
@@ -299,23 +380,23 @@ function setInputValue(array)
 
 function setInputsMinMax()
 {
-    var json=JSON.parse($("#data").val());
+    var json = JSON.parse($("#data").val());
     $("#cutStart").attr({
-       "max" : json.curCut[1],        // substitute your own
-       "min" : 0          // values (or variables) here
+       "max" : json.curCut[1],
+       "min" : 0
     });
     $("#cutStop").attr({
-       "max" : json.duration,        // substitute your own
-       "min" : json.curCut[0]          // values (or variables) here
+       "max" : json.duration,
+       "min" : json.curCut[0]
     });
 }
 
 function sortInputs(start,stop)
 {
     if (start<=stop) {
-        var array=[start,stop];
+        var array = [start,stop];
     }else {
-        var array=[stop,start];
+        var array = [stop,start];
     }
     return array;
 }
@@ -323,9 +404,9 @@ function sortInputs(start,stop)
 function setJSONCut(array)
 {
     var json=JSON.parse($("#data").val());
-    json.curCut[0]=array[0];
-    json.curCut[1]=array[1];
-    myJson=JSON.stringify(json);
+    json.curCut[0] = array[0];
+    json.curCut[1] = array[1];
+    myJson = JSON.stringify(json);
     $("#data").val(myJson);
 }
 
@@ -336,10 +417,9 @@ function updateCutSlider(array)
 
 function updateCutSliderBackground(array)
 {
-    console.log("update slider background");
     var tArray=[];
     for (var i = 0; i < array.length; i++) {
-        var json={
+        var json = {
             "start":array[i][0],
             "end":array[i][1]
         };
@@ -347,15 +427,13 @@ function updateCutSliderBackground(array)
     }
     console.log(tArray);
     return tArray;
-
 }
 
-//test functions
-function printJSON() {
-    console.log($("#data").val());
+function updateCutTable(array) {
+    $("#cutTableBody").empty();
+    for(i=0;i<array.length;i++){
+      var cutNb=(i+1);
+      $("#cutTableBody").append("<tr><td>"+cutNb+"</td><td>"+array[i][0]+"</td><td>"+array[i][1]+"</td><td><button type='button' id='modBtn"+i+"' class='btn modBtn'><i class='glyphicon glyphicon-edit'></i></button></td><td><button type='button' id='delBtn"+i+"' class='btn delBtn'><i class='glyphicon glyphicon-remove-sign'></i></button></td></tr>");
+    }
 }
-function testFun() {
-
-}
-
 </script>

@@ -1,5 +1,6 @@
 #cutSliderSlider.slider-horizontal{
-  width:100%; /* sample value - set it as you like*/
+  width:100%;
+  
 }
 #cutSliderSlider .slider-track-high {
 	background: rgba(0,0,0,0);
@@ -58,4 +59,25 @@
 #curCutDiv{
     border-radius: 15px;
     padding:10px;
+}
+#cutNumberTh{
+    width:20%
+}
+#cutStartTh{
+    width:35%
+}
+#cutStopTh{
+    width:35%
+}
+#cutModTh{
+    width:10%
+}
+#cutDelTh{
+    width:10%
+}
+td{
+    text-align: center;
+}
+th{
+    text-align: center;
 }

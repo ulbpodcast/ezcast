@@ -69,10 +69,7 @@
         </div>
         <div class="container-fluid container-relative">
             <div class="row">
-                <div class="col-sm-1">
-
-                </div>
-                <div class="col-sm-10 centered">
+                <div class="col-sm-10 centered col-sm-offset-1">
                     <div class="container container-relative" id="cutSlider-container">
                         <input id="cutSlider" type="text"/><br/>
                     </div>
@@ -82,10 +79,7 @@
                 </div>
             </div>
             <div class="row">
-              <div class="col-sm-1">
-
-              </div>
-              <div class="col-sm-4 centered">
+              <div class="col-sm-4 centered col-sm-offset-1">
                   <input class="btn" id="cutPreviewBtn" type="button" name="" value="preview">
               </div>
               <div class="col-sm-2">
@@ -98,9 +92,6 @@
 
               </div>
             </div>
-
-            <input type="button" class="btn" name="" value="test this shit" onclick="testFun();">
-
         </div>
     </center>
 </div>
@@ -132,7 +123,7 @@
 
 <script>
 //video INIT
-var testArray=[[10.4,25.87],[45.34,105.43]];
+
 (function()
     {
     //initialisation
@@ -143,7 +134,11 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
             var allVideoPlayer = document.getElementsByTagName("video");
             var duration=allVideoPlayer[0].duration;
             var firstCut=[0,duration]
-            initJSON(duration,testArray,firstCut);
+            var array=[];
+            if (true) {
+                //to be fill later when input from already existing cut exist
+            }
+            initJSON(duration,array,firstCut);
             var json=JSON.parse($("#data").val());
             initSlider(json.duration,json.cutArray,json.curCut);
             setInputsMinMax();
@@ -151,17 +146,31 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
     //end initialisation
         });
     $("#cutStart").on('change', function() {
-        var array=sortInputs(parseFloat($("#cutStart").val()),parseFloat($("#cutStop").val()));
-        setInputValue(array);
-        setJSONCut(array);
-        updateCutSlider(array);
+        var start=parseFloat($("#cutStart").val());
+        var stop=parseFloat($("#cutStop").val());
+        if (!(isNaN(start))&&!(isNaN(stop))) {
+            var array=sortInputs(start,stop);
+            setInputValue(array);
+            setJSONCut(array);
+            updateCutSlider(array);
+        }else{
+            var json=JSON.parse($("#data").val());
+            setInputValue(json.curCut);
+        }
     });
 
     $("#cutStop").on('change', function() {
-        var array=sortInputs(parseFloat($("#cutStart").val()),parseFloat($("#cutStop").val()));
-        setInputValue(array);
-        setJSONCut(array);
-        updateCutSlider(array);
+        var start=parseFloat($("#cutStart").val());
+        var stop=parseFloat($("#cutStop").val());
+        if (!(isNaN(start))&&!(isNaN(stop))) {
+            var array=sortInputs(start,stop);
+            setInputValue(array);
+            setJSONCut(array);
+            updateCutSlider(array);
+        }else{
+            var json=JSON.parse($("#data").val());
+            setInputValue(json.curCut);
+        }
     });
 
     $("#btnPlay").on('click', function() {
@@ -185,6 +194,18 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
     $("#video_cam").on('timeupdate',function() {
         if (!$("#video_cam")[0].paused) {
             $("#videoSlider").slider('setValue',$("#video_cam")[0].currentTime,true);
+        }else {
+            if ($("#preview").val()==="1") {
+                var json=JSON.parse($("#data").val());
+                var allVideoPlayer = document.getElementsByTagName("video");
+                for(var i = 0; i < allVideoPlayer.length; i++) {
+                    var video = allVideoPlayer[i];
+                    video.currentTime=json.curCut[0];
+                 }
+                 $("#videoSlider").slider('setValue',$("#video_cam")[0].currentTime,true);
+                 $("#preview").val("0");
+                 console.log("set to 0");
+            }
         }
         console.log("preview state = " + $("#preview").val());
         if ($("#preview").val()==="1") {
@@ -201,8 +222,11 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
                 for(var i = 0; i < allVideoPlayer.length; i++) {
                     var video = allVideoPlayer[i];
                     video.pause();
+                    video.currentTime=json.curCut[0];
                  }
                  $("#preview").val("0");
+                 $("#videoSlider").slider('setValue',$("#video_cam")[0].currentTime,true);
+                 console.log("test");
             }
         }
     });
@@ -259,14 +283,15 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
         var allVideoPlayer = document.getElementsByTagName("video");
         // console.log(allVideoPlayer);
         if (allVideoPlayer[0].paused) {
-
+            var start=(json.curCut[0]-5);
+            if (start<0) {
+                start=0;
+            }
             for(var i = 0; i < allVideoPlayer.length; i++) {
-                console.log(allVideoPlayer[i]);
-                console.log(json.curCut[0]);
-                console.log((json.curCut[0]-5));
+
                 var video = allVideoPlayer[i];
                 console.log(video);
-                video.currentTime=(json.curCut[0]-5);
+                video.currentTime=start;
                 video.play();
              }
         } else {
@@ -285,84 +310,62 @@ var testArray=[[10.4,25.87],[45.34,105.43]];
         var test = false;
         var intersectedCut=[];
         var json=JSON.parse($("#data").val());
-        var tArray=[];
-        for (var i = 0; i < json.cutArray.length; i++) {
-            console.log("passage for");
-            if ((json.curCut[0]>json.cutArray[i][0]&&json.curCut[0]<json.cutArray[i][1])||(json.curCut[1]>json.cutArray[i][0]&&json.curCut[1]<json.cutArray[i][1])||(json.curCut[0]<json.cutArray[i][0]&&json.curCut[1]>json.cutArray[i][1])) {
-                console.log("intersection avec le cut numero "+(i+1));
-                intersectedCut.push(i);
-            }
-        }
-        console.log(intersectedCut);
-        if (intersectedCut.length!=0) {
-            for (var i = 0; i < intersectedCut[0]; i++) {
-                tArray.push(json.cutArray[i]);
-            }
-            var cutToValid=[];
-            if (json.curCut[0]<json.cutArray[intersectedCut[0]][0]) {
-                cutToValid.push(json.curCut[0]);
-            }else{
-                cutToValid.push(json.cutArray[intersectedCut[0]][0]);
-            }
-            if (json.curCut[1]>json.cutArray[intersectedCut[(intersectedCut.length-1)]][1]) {
-                cutToValid.push(json.curCut[1]);
-            } else {
-                cutToValid.push(json.cutArray[intersectedCut[(intersectedCut.length-1)]][1]);
-            }
-            tArray.push(cutToValid);
-            for (var i = (intersectedCut[(intersectedCut.length-1)]+1); i < json.cutArray.length; i++) {
-                tArray.push(json.cutArray[i]);
-            }
-            console.log(tArray);
-        }else{
-            var inserted = false;
+        if ((json.curCut[0]!=json.curCut[1])&&!(isNaN(json.curCut[0]))&&!(isNaN(json.curCut[0]))&&(typeof json.curCut[0]!=undefined)&&(typeof json.curCut[1]!=undefined)&&(json.curCut[0]!=null)&&(json.curCut[1]!=null)) {
+
+
+            var tArray=[];
             for (var i = 0; i < json.cutArray.length; i++) {
-                if ((json.curCut[0]<json.cutArray[i][0])&&!inserted) {
-                    tArray.push(json.curCut);
-                    inserted=true;
+                if ((json.curCut[0]>=json.cutArray[i][0]&&json.curCut[0]<=json.cutArray[i][1])||(json.curCut[1]>=json.cutArray[i][0]&&json.curCut[1]<=json.cutArray[i][1])||(json.curCut[0]<=json.cutArray[i][0]&&json.curCut[1]>=json.cutArray[i][1])) {
+                    console.log("intersection avec le cut numero "+(i+1));
+                    intersectedCut.push(i);
                 }
-                tArray.push(json.cutArray[i]);
             }
-            if (!inserted) {
-                tArray.push(json.curCut);
+            console.log(intersectedCut);
+            if (intersectedCut.length!=0) {
+                for (var i = 0; i < intersectedCut[0]; i++) {
+                    tArray.push(json.cutArray[i]);
+                }
+                var cutToValid=[];
+                if (json.curCut[0]<json.cutArray[intersectedCut[0]][0]) {
+                    cutToValid.push(json.curCut[0]);
+                }else{
+                    cutToValid.push(json.cutArray[intersectedCut[0]][0]);
+                }
+                if (json.curCut[1]>json.cutArray[intersectedCut[(intersectedCut.length-1)]][1]) {
+                    cutToValid.push(json.curCut[1]);
+                } else {
+                    cutToValid.push(json.cutArray[intersectedCut[(intersectedCut.length-1)]][1]);
+                }
+                tArray.push(cutToValid);
+                for (var i = (intersectedCut[(intersectedCut.length-1)]+1); i < json.cutArray.length; i++) {
+                    tArray.push(json.cutArray[i]);
+                }
+                console.log(tArray);
+            }else{
+                var inserted = false;
+                for (var i = 0; i < json.cutArray.length; i++) {
+                    if ((json.curCut[0]<json.cutArray[i][0])&&!inserted) {
+                        tArray.push(json.curCut);
+                        inserted=true;
+                    }
+                    tArray.push(json.cutArray[i]);
+                }
+                if (!inserted) {
+                    tArray.push(json.curCut);
+                }
+                console.log(tArray);
             }
-            console.log(tArray);
+            json.cutArray=tArray;
+            json.curCut=[0,json.duration]
+            myJson=JSON.stringify(json);
+            $("#data").val(myJson);
+            setInputValue(json.curCut);
+            $("#cutSlider").slider('destroy');
+            initSlider(json.duration,json.cutArray,json.curCut);
+            updateCutTable(json.cutArray);
         }
-        json.cutArray=tArray;
-        json.curCut=[0,json.duration]
-        myJson=JSON.stringify(json);
-        $("#data").val(myJson);
-        setInputValue(json.curCut);
-        $("#cutSlider").slider('destroy');
-        initSlider(json.duration,json.cutArray,json.curCut);
-        updateCutTable(json.cutArray);
-    })
-
-})();
-
-// function activateButton() {
-//     $("#cutTable").on('click','.modBtn',function(event) {
-//         console.log("ici");
-//         var json=JSON.parse($("#data").val());
-//         var index=parseInt(this.id.substring(6,7));
-//         var tArray=json.cutArray;
-//         console.log("tArray "+tArray[0]);
-//         json.curCut=json.cutArray[this.id.substring(6,7)];
-//         tArray.splice
-//
-//         myJson=JSON.stringify(json);
-//         $("#data").val(myJson);
-//         setInputValue(json.curCut);
-//         $("#cutSlider").slider('destroy');
-//         initSlider(json.duration,json.cutArray,json.curCut);
-//         updateCutTable(json.cutArray);
-//
-//     });
-//     $(".delBtn").on('click',function(event) {
-//     });
-// }
-function activateSlider() {
-    $("#cutSlider").on('slide change', function()
+    });
+    $("#cutSlider-container").on('slide change','#cutSlider', function()
     {
         var allVideoPlayer = document.getElementsByTagName("video");
 
@@ -371,6 +374,7 @@ function activateSlider() {
                 var video = allVideoPlayer[i];
                 video.currentTime=$("#cutSlider").slider('getValue')[0];
             }
+
         }else if ($("#cutSlider").slider('getValue')[1]!=$("#cutStop").val()) {
             for(var i = 0; i < allVideoPlayer.length; i++) {
                 var video = allVideoPlayer[i];
@@ -379,8 +383,13 @@ function activateSlider() {
         }
         setInputValue($("#cutSlider").slider('getValue'));
         setJSONCut($("#cutSlider").slider('getValue'));
+        $("#videoSlider").slider('setValue',$("#video_cam")[0].currentTime,true);
     });
-}
+
+})();
+
+
+
 
 function initJSON(duration,array,curCut)
 {
@@ -396,9 +405,10 @@ function initJSON(duration,array,curCut)
 function initSlider(duration,array,cut)
 {
     //init of the cutSlider
+    //console.log({ id: "cutSliderSlider",  min: 0, max: duration, range: true, step: 0.01, value: [cut[0],cut[1]],rangeHighlights: updateCutSliderBackground(array) });
     $("#cutSlider").slider({ id: "cutSliderSlider",  min: 0, max: duration, range: true, step: 0.01, value: [cut[0],cut[1]],rangeHighlights: updateCutSliderBackground(array) });
     $("#videoSlider").slider({ id: "videoSliderSlider", class: "container-grey", min: 0, max: duration, step: 0.01, value: 0});
-    activateSlider()
+
 }
 
 function setInputValue(array)
@@ -462,7 +472,7 @@ function updateCutTable(array) {
     for(i=0;i<array.length;i++){
       var cutNb=(i+1);
       $("#cutTableBody").append("<tr><td>"+cutNb+"</td><td>"+array[i][0]+"</td><td>"+array[i][1]+"</td><td><button type='button' id='modBtn"+i+"' class='btn modBtn'><i class='glyphicon glyphicon-edit'></i></button></td><td><button type='button' id='delBtn"+i+"' class='btn delBtn'><i class='glyphicon glyphicon-remove-sign'></i></button></td></tr>");
-      //activateButton();
+
     }
 }
 

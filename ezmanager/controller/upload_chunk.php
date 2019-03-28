@@ -7,6 +7,7 @@
 function index($param = array())
 {
     global $accepted_media_types;
+    global $valid_mimeType;                       
     global $upload_slice_size;
 
     $array = array();
@@ -113,6 +114,13 @@ function index($param = array())
         $target = "$path/" . $type . '/' . $type . '-' . $index;
         $input = fopen("php://input", "r");
         file_put_contents($target, $input);
+    }
+    
+    if(!in_array(mime_content_type($target),$valid_mimeType)){
+        log_append('error', "Mimetype is not valid");
+        $array["error"] = template_get_message('mimetype_error', get_lang()).' type:'.mime_content_type($target);
+        echo json_encode($array);
+        die;    
     }
 
     if ($res === false) {

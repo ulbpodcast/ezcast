@@ -89,9 +89,7 @@ require_once 'config.inc';
 
              echo '<span class="label '.$color_pourcentage.'" style="font-size:100%;">Espace disque utilisé : '.$poucentage.'%</span>
             </div>' ; 
-	        /*<div class="">
-	            <h4>Flux RTSP</h4> <div class="well">rtsp://admincam:b7N_rYg6@'.$ip.':554/Src/MediaInput/stream_2</div>
-	        </div>*/        
+       
 	   echo '</div>
 
 	    <script type="text/javascript">

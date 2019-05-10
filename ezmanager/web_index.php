@@ -41,14 +41,14 @@ if (isset($input['album']) && !acl_has_album_permissions($input['album']) && $in
 
 //service post from webservice
 if (isset($input['action']) && $input['action'] == 'postVideo'  ) {
-        
+
         if(checkInitSubmitServiceVar($input)){
 //            requireController('postVideo_service.php');
             requireController('submit_media.php');
             index($paramController);
             die;
         }
-        else{      
+        else{
             view_login_form();
             die;
         }
@@ -59,7 +59,7 @@ if (isset($input['action']) && $input['action'] == 'postVideo'  ) {
 //
 // If we're not logged in, we try to log in or display the login form
 if (!user_logged_in()) {
-    
+
 //    if( ((isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1) ||  !isset($_SESSION['termsOfUses']))  && $enable_termsOfUse){
 //        view_termsOfUses_form();
 //        $_SESSION['redirect']=json_encode($input);
@@ -135,7 +135,7 @@ else {
         $input['tokenmanager'] = $_SESSION['add_moderator_token'];
         $_SESSION['add_moderator'] = 'false';
     }
-        
+
 
 
     $action = $input['action'];
@@ -147,13 +147,13 @@ else {
      */
     global $service; //true if we're currently running a service.
     $service = false;
-    
+
     //
     // Actions
     //
     // Controller goes here
-    
-    
+
+
     $paramController = array();
     switch ($action) {
         // The user clicked on an album, we display its content to them
@@ -179,7 +179,7 @@ else {
         case 'update_ezrecorder':
             $service = true;
             requireController('update_ezrecorder.php');
-            break;    
+            break;
         // Display the update page
         case 'view_update':
             requireController('view_update.php');
@@ -203,19 +203,19 @@ else {
             $service = true;
             requireController('reset_rss.php');
             break;
-        
+
         case 'view_stats':
             requireController('view_stats.php');
             break;
-        
+
         case 'view_ezplayer_link':
             requireController('view_ezplayer_link.php');
             break;
-        
+
         case 'view_ezmanager_link':
             requireController('view_ezmanager_link.php');
             break;
-        
+
         //The users wants to upload an asset into the current album, show lets show him the upload form
         case 'submit_media_progress_bar':
             $service = true;
@@ -229,7 +229,7 @@ else {
         case 'view_edit_album':
             requireController('view_edit_album.php');
             break;
-            
+
         case 'view_list_moderator':
             requireController('moderator_management.php');
             break;
@@ -279,6 +279,16 @@ else {
             $service = true;
             requireController('asset_downloadable_set.php');
             break;
+
+        case 'postedit_asset':
+                    $service = true;
+                    requireController('asset_postedit.php');
+                    break;
+
+        case 'submit_postedit':
+                    $service = true;
+                    requireController('submit_postedit.php');
+                    break;
 
         case 'delete_asset':
             $service = true;
@@ -343,16 +353,16 @@ else {
             requireController('album_add_moderator.php');
             // redraw_page();
             break;
-            
+
         case 'regen_title':
             $service = true;
             requireController('asset_title_regen.php');
             break;
-            
+
         case 'delete_user_course':
             requireController('moderator_delete.php');
             break;
-        
+
         case 'album_stats_reset':
             requireController('album_stats_reset.php');
             break;
@@ -370,7 +380,7 @@ else {
             // TODO: check session var here
             albums_view();
     }
-    
+
     // Call the function to view the page
     index($paramController);
 }
@@ -408,10 +418,10 @@ function view_login_form()
         $_SESSION['has_flash'] = false;
     }
     $url = $ezmanager_url;
-    // template include goes here    
+    // template include goes here
     $sso_enabled = in_array("sso", $auth_methods);
     $file_enabled = ((in_array("file", $auth_methods) && !$sso_only)  || ($sso_only && isset($_GET["local"])) || (!$sso_enabled && in_array("file", $auth_methods)) );
-    
+
     include_once template_getpath('login.php');
 }
 
@@ -443,7 +453,7 @@ function albums_view()
 
     $_SESSION['podman_mode'] = 'view_main';
 
-    global $album;   
+    global $album;
     global $input;
 
     include_once template_getpath('main.php');
@@ -490,13 +500,13 @@ function redraw_page()
         $album_name_full = $_SESSION['podman_album'];
         $metadata = ezmam_album_metadata_get($_SESSION['podman_album']);
         $title = choose_title_from_metadata($metadata);
-        
+
         if (isset($metadata['id'])) {
             $album_id = $metadata['id'];
         } else {
             $album_id = $metadata['name'];
         }
-        
+
         if (isset($metadata['course_code_public']) && $metadata['course_code_public']!="") {
             $course_code_public = $metadata['course_code_public'];
         }
@@ -563,9 +573,9 @@ function user_login($login, $passwd)
 
      $res = checkauth(strtolower($login), $passwd);
     if($res){
-      //auth succeeded but if it is a runas, we still need to check if user is in admin.inc  
+      //auth succeeded but if it is a runas, we still need to check if user is in admin.inc
       $login_parts = explode("/", $login);
-    
+
       // checks if runas
       if (count($login_parts) == 2) {
         if (!file_exists('admin.inc')) {
@@ -600,7 +610,7 @@ function user_login($login, $passwd)
     $_SESSION['termsOfUses'] = $res['termsOfUses'];
     if(isset( $res['user_is_admin']) && $res['user_is_admin'] != '')
         $_SESSION['user_is_admin'] = $res['user_is_admin'];
-    
+
     $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     //check flash plugin or GET parameter no_flash
@@ -622,9 +632,9 @@ function user_login($login, $passwd)
         error_print_message(template_get_message('not_registered', get_lang()), false);
         log_append('warning', $res['login'] . ' tried to access ezmanager but doesn\'t have permission to manage any album.');
         session_destroy();
-        
+
         //MOFIF !!!!!!!!!!!
-        header("Location: https://ezcast.uclouvain.be?noPerm"); 
+        header("Location: https://ezcast.uclouvain.be?noPerm");
 //        view_login_form();
         die;
     }

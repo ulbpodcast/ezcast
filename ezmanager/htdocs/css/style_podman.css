@@ -1,5 +1,5 @@
 /*
-* EZCAST EZmanager 
+* EZCAST EZmanager
 *
 * Copyright (C) 2016 Université libre de Bruxelles
 *
@@ -22,7 +22,7 @@
 * License along with this software; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-    
+
 /*---------------------------------------------- Generale ----------------------------------------------*/
 
 img, a, fieldset, ul, li, p, h1, h2, h3, h4, h5, h6, div{
@@ -43,7 +43,7 @@ html{
 body{
     min-height:100%;
     font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;
-        
+
 }
 
 .container {
@@ -64,8 +64,8 @@ body{
     padding: 0px 10px;
 }
 
-#login_form{ 
-  
+#login_form{
+
     font-family: Trebuchet,"Trebuchet MS",Arial,Helvetica,Sans-serif;
     font-size:12px;
     /*  color:#000000;  */
@@ -90,7 +90,7 @@ body{
     text-align: right;
     display: inline-block;
     margin-bottom: 15px;
-       */               
+       */
 }
 
 #login_form h2{
@@ -195,7 +195,7 @@ body{
 }
 
 .header_content a:hover {
-    text-decoration:none;   
+    text-decoration:none;
     color: #004C93;
 }
 
@@ -209,7 +209,7 @@ body{
 }
 
 .logo img {
-    max-height: 20px; 
+    max-height: 20px;
 }
 
 /*---------------------------------------------- Main [fin] ----------------------------------------------*/
@@ -358,9 +358,9 @@ body{
 /*-- bouton info album --*/
 
 .asset_details{
-    border-bottom-width: thin; 
-    border-bottom-style: dotted; 
-    border-bottom-color: #CFCFCF; 
+    border-bottom-width: thin;
+    border-bottom-style: dotted;
+    border-bottom-color: #CFCFCF;
     padding-left: 27px;
 }
 
@@ -393,7 +393,7 @@ body{
 }
 
 .ButtonSoumettreAlbum a:hover{
-    color:#004C93; 
+    color:#004C93;
 }
 
 /*-- bouton info album [Fin]--*/
@@ -503,6 +503,15 @@ body{
 
 .LigneButtonRight.LigneButton .dropdown-menu li {
     margin-left: 5px;
+}
+
+.ButtonPostEditAlbum a{
+    background-image:url(../images/page4/BPostEdit.png);
+}
+
+.ButtonPostEditAlbum a:hover{
+    background-image:url(../images/page4/BPostEdit.png);
+    color:#ED6A56;
 }
 
 .ButtonSuppAlbum a{
@@ -639,7 +648,7 @@ img.dropdown-icon {
 }
 
 .custom-checkbox + label{
-    float: right; 
+    float: right;
     margin-right: 8px;
     width: 32px;
     height: 20px;
@@ -704,11 +713,11 @@ img.dropdown-icon {
     text-decoration:none;
 }
 
-.ButtonPlus a, 
-.ButtonEmbed a, 
-.ButtonEZplayer a, 
-.ButtonPublication a, 
-.ButtonDownload a, 
+.ButtonPlus a,
+.ButtonEmbed a,
+.ButtonEZplayer a,
+.ButtonPublication a,
+.ButtonDownload a,
 .ButtonULBCode a{
     display:block;
     background-repeat:no-repeat;
@@ -721,26 +730,26 @@ img.dropdown-icon {
     padding-top:5px;
 }
 
-.ButtonPlus a:hover, 
-.ButtonEmbed a:hover, 
-.ButtonEZplayer a:hover, 
-.ButtonPublication a:hover, 
-.ButtonDownload a:hover, 
+.ButtonPlus a:hover,
+.ButtonEmbed a:hover,
+.ButtonEZplayer a:hover,
+.ButtonPublication a:hover,
+.ButtonDownload a:hover,
 .ButtonULBCode a:hover{
     color:#004C93;
     font-size:12px;
 }
 
 
-.ButtonPlus a{    
+.ButtonPlus a{
     background-image:url(../images/page4/AInfos.png);
     margin-top:5px;
 }
 
 
 .ButtonPlus a:hover {
-    background-image:url(../images/page4/BInfos.png); 
-    margin-top:5px;   
+    background-image:url(../images/page4/BInfos.png);
+    margin-top:5px;
 }
 
 .ButtonEmbed a{
@@ -768,19 +777,19 @@ img.dropdown-icon {
 }
 
 .ButtonDownload a{
-    background-image:url(../images/page4/AFlecheBackg.png);    
+    background-image:url(../images/page4/AFlecheBackg.png);
 }
 
 .ButtonDownload a:hover{
-    background-image:url(../images/page4/BFlecheBackg.png);    
+    background-image:url(../images/page4/BFlecheBackg.png);
 }
 
-.ButtonULBCode a{    
-    background-image:url(../images/page4/ASlash.png);  
+.ButtonULBCode a{
+    background-image:url(../images/page4/ASlash.png);
 }
 
 .ButtonULBCode a:hover{
-    background-image:url(../images/page4/BSlash.png);      
+    background-image:url(../images/page4/BSlash.png);
 }
 
 .ButtonHD a, .ButtonSD a{
@@ -788,20 +797,20 @@ img.dropdown-icon {
     background-repeat:no-repeat;
     background-position: top;
     height:20px;
-    width:20px; 
+    width:20px;
     padding-left:8px;
     padding-right:8px;
-    padding-top:5px; 
+    padding-top:5px;
        /* margin-top:-6px; */
        /* padding-bottom: 10px; */
 }
 
 .ButtonHD a {
-    background-image:url(../images/AHD.png);    
+    background-image:url(../images/AHD.png);
 }
 
 .ButtonSD a {
-    background-image:url(../images/ASD.png);    
+    background-image:url(../images/ASD.png);
 }
 
 .ButtonHD a:hover, .ButtonSD a:hover{
@@ -809,7 +818,7 @@ img.dropdown-icon {
     background-repeat:no-repeat;
     background-position: top;
     height:20px;
-    width:20px; 
+    width:20px;
     padding-left:8px;
     padding-right:8px;
     /*    margin-top:-6px; */
@@ -838,7 +847,7 @@ img.dropdown-icon {
 }
 /*--bouton creer fin --*/
 
- 
+
 #div_center {
     min-height:600px;
     margin-bottom: 120px;
@@ -1020,19 +1029,19 @@ img.dropdown-icon {
 }
 
 .footer_mention{
-    font-size: 10px; 
-    color: #7BB3B6; 
-    margin: 13px 5px; 
+    font-size: 10px;
+    color: #7BB3B6;
+    margin: 13px 5px;
     float: left;
 }
 .footer_mention a {
-    text-decoration: none; 
-    color: #BBBBBB; 
-    padding: 0px; 
+    text-decoration: none;
+    color: #BBBBBB;
+    padding: 0px;
     margin: 0px;
 }
 .footer_mention a:hover {
-    color: #7BB3B6; 
+    color: #7BB3B6;
 }
 
 
@@ -1053,9 +1062,9 @@ img.dropdown-icon {
 }
 
 
- 
+
  /* --- [//] dans le footer*/
-.bleuPod{ 
+.bleuPod{
     color:#999999;
 }
 /*--Footer [FIN]--*/
@@ -1064,12 +1073,12 @@ img.dropdown-icon {
 /* Submit form */
 
 #submit_form {
-    border:0; 
-    margin:0; 
-    padding:0;    
+    border:0;
+    margin:0;
+    padding:0;
 }
 
-#form {    
+#form {
     margin:0 auto;
     width:350px;
     padding:14px;
@@ -1101,7 +1110,7 @@ img.dropdown-icon {
     padding-right:10px; */
 }
 
-.ButtonMoreOptions a {    
+.ButtonMoreOptions a {
     background-image:url(../images/page4/ATriangleBackg.png);
 }
 
@@ -1152,8 +1161,8 @@ img.dropdown-icon {
     width:100px;
 }
 
-#form input, 
-#form textarea, 
+#form input,
+#form textarea,
 #form select,
 #form button{
     float:left;
@@ -1246,7 +1255,7 @@ input.file {
 }
 
 .spacer{
-    clear:both; 
+    clear:both;
     height:1px;
 }
 
@@ -1259,16 +1268,16 @@ a.info{
     text-decoration:none;
     cursor: help;
 }
- 
+
 a.info:hover{
     z-index:25;
     background-color:#FFF
 }
- 
+
 a.info span{
-    display: none           
+    display: none
 }
- 
+
 a.info:hover span{
     display:block;
     position:absolute;
@@ -1416,8 +1425,8 @@ a.info:hover span{
 }
 
 .Bouton span{
-    background:transparent url(../images/page4/BoutonLeft.png) no-repeat; 
-    line-height:25px; 
+    background:transparent url(../images/page4/BoutonLeft.png) no-repeat;
+    line-height:25px;
     padding-left:11px;
     padding-top: 5px;
     padding-bottom: 7px;
@@ -1443,13 +1452,13 @@ a.greyLink {
     padding-left: 4px;
 }
 
-a.greyLink:hover {    
+a.greyLink:hover {
     border-color:#004B93;
     color:#FF6600;
     text-decoration:none;
 }
 
-a.greyLink.ezplayer:hover {    
+a.greyLink.ezplayer:hover {
     color:#74afb0;
     text-decoration:none;
 }
@@ -1485,7 +1494,7 @@ a.greyLink.ezplayer:hover {
         min-height: auto;
         display: block;
     }
-    
+
     .nav-sidebar {
         margin-left: -15px;
         margin-right: -15px;
@@ -1534,3 +1543,9 @@ a.greyLink.ezplayer:hover {
     margin-right: 2px;
 }
 
+/* #cutSlider .slider-handle.custom {
+    background-color: blue;
+    width: 10px !important;
+    height: 50px !important;
+    border-radius: 5% !important;
+} */

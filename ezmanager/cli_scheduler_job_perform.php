@@ -33,6 +33,7 @@ $job_dir = basename($job['location']);
 
 // Send the video to the renderer download dir
 $cmd = $rsync_pgm . ' -L -r -e ssh -tv  --partial-dir=' . $renderer['downloading_dir'] . ' ' . $job['location'] . ' ' . $renderer['client'] . '@' . $renderer['host'] .  ':' . $renderer['downloaded_dir']  . ' 2>&1';
+
 echo $cmd . PHP_EOL;
 // try 3 times
 for ($i = 0; $i < 3; $i++) {
@@ -67,8 +68,14 @@ if ($err) {
 }
 $logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "Successfully sent videos for job $uid. Location: ". $job['location'], array(basename(__FILE__)));
 
-// Launch the rendering
-$cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['launch'] . ' ' . $job_dir . ' 2>&1"';
+// Launch the rendering or the post editing
+if ($job['status']=='postedit') {
+    $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['home'] . '/postedit.bash ' . $job_dir . ' 2>&1"';
+}else {
+    $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['launch'] . ' ' . $job_dir . ' 2>&1"';
+
+}
+
 $t1=time();
 echo $cmd . PHP_EOL;
 exec($cmd, $cmdoutput, $returncode);
@@ -96,7 +103,7 @@ echo "Retrieving from renderer..." . PHP_EOL;
 $asset_meta['status']='encoded';
 $res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
 
-$cmd = $rsync_pgm . ' -L -r -e ssh -tv  --partial-dir=' . $render_finished_partial_upload_dir  . ' ' . $renderer['client'] . '@' . $renderer['host'] . ':' . $renderer['processed_dir'] . '/' . $job_dir . ' ' . dirname($job['location'] . ' 2>&1');
+$cmd = $rsync_pgm . ' -L -r -e ssh -tv  --partial-dir=' . $render_finished_partial_upload_dir  . ' ' . $renderer['client'] . '@' . $renderer['host'] . ':' . $renderer['processed_dir'] . '/' . $job_dir . ' ' . dirname($job['location']) . ' 2>&1';
 
 // try 3 times
 for ($i = 0; $i < 3; $i++) {
@@ -109,8 +116,10 @@ for ($i = 0; $i < 3; $i++) {
     }
 }
 
+
 // Retrieve fail
 if ($err) {
+
     $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Failed to retrieve resulting videos for job $uid. Album $album. Asset: $asset. Cmd was: $cmd", array(basename(__FILE__)));
     lib_scheduling_error('Scheduler::job_perform[fail]{rsync: ' . $cmd . '}('  . $err . ') |::>' . implode("\n", $out) . ' <::|');
     lib_scheduling_file_move(lib_scheduling_config('processing-path') . '/' . $job['basename'], lib_scheduling_config('failed-path') . '/' . $job['basename']);
@@ -161,10 +170,10 @@ function job_perform_shutdown_function()
     global $job;
     global $cmd;
     global $logger;
-    
+
     //include if not already
     require_once(__DIR__.'/../commons/custom_error_handling.php');
-    
+
     $error = error_get_last();
     // fatal error, E_ERROR === 1
     if (is_critical_error($error['type'])) {
@@ -183,7 +192,7 @@ function job_perform_shutdown_function()
         global $uid;
         $logger->log(EventType::MANAGER_RENDERING, LogLevel::CRITICAL, "Rendering script crashed for job $uid. More completed output in $file", array(basename(__FILE__)));
     }
-    
+
     //call default shutdown_handler
     shutdown_handler();
 }

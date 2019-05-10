@@ -23,7 +23,7 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-         
+
 require_once "../commons/config.inc";
 
 $appname="ezplayer";
@@ -38,7 +38,7 @@ $default_display_thread = true;
 $default_display_thread_notif = true;
 $default_display_count = true;
 
-$accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
+$accepted_media_qualities = array('high', 'low', 'processed', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)
 
 $template_folder = 'tmpl/';
@@ -46,10 +46,10 @@ $ezplayer_logs = $basedir . '/ezplayer/ezplayer.log';
 
 $valid_extensions = array('xml'); // accepted extensions for imported bookmarks
 
-$cache_limit = 5; // number of trending threads that are displayed on level 2 
+$cache_limit = 5; // number of trending threads that are displayed on level 2
 
 $streaming_video_player = "flowplayer"; // defines the video player to use for live stream ('momovi' | 'flowplayer')
-$allow_url_anon = false; //kept for compat, should be removed later 
+$allow_url_anon = false; //kept for compat, should be removed later
 
 $antispam_filter_words = array(); //contact message with words in this array will be ignored
 

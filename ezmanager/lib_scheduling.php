@@ -114,6 +114,7 @@ function scheduler_schedule()
  */
 function scheduler_append($job)
 {
+
     if (!$job['created']) {
         $job['created'] = date('Y-m-d H:i:s');
     }
@@ -401,6 +402,7 @@ function lib_scheduling_job_read($file)
  */
 function lib_scheduling_job_write($job, $dir)
 {
+
     // default name
     if (!$job['name']) {
         $job['name'] = 'no_name';
@@ -411,10 +413,10 @@ function lib_scheduling_job_write($job, $dir)
         $job['basename'] = lib_scheduling_file_safe($job['created'] . '_' . $job['sender']  . '_' . $job['name']) . '.xml';
     }
 
-    // do not write the basename neither the status(redondant)
+    // do not write the basename but the status(redondant) is now used
     $basename = $job['basename'];
     unset($job['basename']);
-    unset($job['status']);
+    // unset($job['status']);
 
     $xml = new SimpleXMLElement("<job></job>");
 
@@ -802,6 +804,7 @@ function lib_scheduling_renderer_ssh($renderer, $cmd)
     $ssh_pgm=lib_scheduling_config('ssh-path');
 
     $ssh_cmd = $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $cmd . '"';
+
     exec($ssh_cmd, $output, $ret);
     if ($ret) {
         lib_scheduling_alert($ssh_cmd);
@@ -822,11 +825,11 @@ function lib_scheduling_renderer_assign($renderer, $job)
     $job['renderer'] = $renderer['host'];
     $queue_path = lib_scheduling_config('queue-path');
     $processing_path = lib_scheduling_config('processing-path');
-    
+
     if (!lib_scheduling_job_write($job, $queue_path)) {
         return false;
     }
-    
+
     if (!lib_scheduling_file_move($queue_path . '/' . $job['basename'], $processing_path . '/' . $job['basename'])) {
         return false;
     }
@@ -964,7 +967,7 @@ function lib_scheduling_config($name)
     global $config;
     global $ssh_pgm;
     global $php_cli_cmd;
-    
+
     switch ($name) {
         case 'scheduler-path':
             return $config['paths']['scheduler'];

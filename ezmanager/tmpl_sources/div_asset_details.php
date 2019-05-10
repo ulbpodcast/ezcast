@@ -141,6 +141,19 @@ function print_info($info, $suffix = '')
                 </span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
+              <li>
+                <span class="ButtonPostEditAlbum">
+                    <?php if ($status != 'processing' && $status != 'error') {
+                      echo '<a href="index.php?action=show_popup&amp;popup=postedit_asset&amp;title='.urlencode($title).
+                                        '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
+                                        'data-target="#modal">';
+                      } else {
+                      echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
+                                        ' data-toggle="modal" data-target="#modal">';
+                      } ?>
+                    ®EditVideo®</a>
+                </span>
+              </li>
               <li><span class="ButtonSuppAlbum">
                         <?php if ($status != 'processing' && $status != 'error') {
         echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).

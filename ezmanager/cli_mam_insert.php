@@ -85,10 +85,10 @@ if (!ezmam_album_exists($album_name)) {
     } else {
         $course_code_public = htmlspecialchars($input['course_code']);
     }
-            
+
     $label = $courseinfo['course_name'];
     $course_id = $courseinfo['course_code'];
-     
+
     $ok = ezmam_course_create_repository($course_id, $course_code_public, $label, $label, 'course');
     if (!$ok) {
         $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Album $album_name did not exist and creation failed", array("cli_mam_insert"), $asset);
@@ -166,7 +166,7 @@ if (strpos($record_type, "audio")!==false) {
         set_asset_status_to_failure();
         exit(6);
     }
-}  
+}
 //media(s) inserted into mam, so move the processing directory to mam_inserted
 $inserted_recording_dir=dirname(dirname($recording_dir)).'/mam_inserted/'.basename($recording_dir);
 if (file_exists($inserted_recording_dir)) { //This may happen if we re process an already processed asset
@@ -185,18 +185,15 @@ if (file_exists($inserted_recording_dir)) { //This may happen if we re process a
 //now launch cam and/or slide video processing
 
 
-//infos neccessaires: quelle intro, info titre , input movie , closing credits
-// intro donnees dans les metadata de l'album? ou global semeur?
-// info titre tirees des meta de l'asset
-//input movie donnee par le media
 $cmd="$php_cli_cmd $submit_intro_title_movie_pgm $album_name $asset_name";
+
 system($cmd, $returncode);
 if ($returncode) {
     $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Command $cmd failed with result $returncode", array("cli_mam_insert"), $asset);
     set_asset_status_to_failure();
     exit(7);
 }
-    
+
 //
 function set_asset_status_to_failure()
 {
@@ -216,7 +213,6 @@ function originals_mam_insert_media($album_name, $asset_name, $camslide, &$recor
 {
     global $logger;
     global $asset;
-      
     $media_name='original_'.$camslide;
     //initialize media metadata and media metadata
     $media_meta['author']=$recording_metadata['author'];
@@ -245,11 +241,11 @@ function originals_mam_insert_media($album_name, $asset_name, $camslide, &$recor
             }//default extension
         }
         if (ctype_alnum($ext)) { //an extension should not have bad chars
-//            put the audio file into cam for the video creation                                      
+//            put the audio file into cam for the video creation
             if($camslide=='audio') {
                 $mov_filepath=$recording_dir.'/'.'cam'.'.mov';
             }
-            else 
+            else
                 $mov_filepath=$recording_dir.'/'.$camslide.'.mov';
             $goodext_filepath=$recording_dir.'/'.$camslide.'.'.$ext;
             //rename cam.mov into cam.mpg if submit was an .mpg file
@@ -273,18 +269,19 @@ function originals_mam_insert_media($album_name, $asset_name, $camslide, &$recor
             return false;
         }
     }
-  
+
     $asset_name_with_course = basename($recording_dir);
-  
+
     $filesize = round(filesize($media_file_path)/1048576);
     $media_meta['file_size'] = $filesize;
     $ok = ezmam_media_new($album_name, $asset_name, $media_name, $media_meta, $media_file_path);
+    
     if (!$ok) {
         $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::CRITICAL, "Error adding original_$camslide:".  ezmam_last_error(), array("cli_mam_insert"), $asset);
         return false;
     } else {
         $logger->log(EventType::MANAGER_MAM_INSERT, LogLevel::NOTICE, "$camslide media inserted in repository in $album_name $asset_name $media_name. Last error:" . ezmam_last_error(), array("cli_mam_insert"), $asset_name_with_course);
     }
-      
+
     return true;
 }

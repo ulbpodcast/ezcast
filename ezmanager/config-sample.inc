@@ -15,12 +15,15 @@ $streaming_asset_delete_pgm="$ezmanager_basedir/cli_streaming_asset_delete.php";
 $submit_upload_dir="$repository_basedir/queues/submit_uploads";
 $submit_upload_ok_dir="$repository_basedir/queues/submit_uploads_ok";
 $submit_upload_failed_dir="$repository_basedir/queues/submit_uploads_failed";
+$submit_postedit_dir="$repository_basedir/queues/postedit_uploads";
 
 $max_download_retries=500;//number of rsync retries
 //what program to call when downloading from classroom or uploading from user
 $recorder_mam_insert_pgm="$ezmanager_basedir/cli_mam_insert.php";
 //pgm called by maminsert
 $submit_intro_title_movie_pgm="$ezmanager_basedir/cli_submit_intro_title_movie.php";
+//pgm called to do a postedit
+$submit_post_edit_pgm="$ezmanager_basedir/cli_submit_postedit.php";
 $render_root_path="$repository_basedir/queues/rendering/";
 $render_finished_partial_upload_dir="$repository_basedir/queues/rendering/uploading";
 $render_finished_upload_dir="$repository_basedir/queues/rendering/processed";
@@ -49,11 +52,11 @@ $enable_copy_asset = false; //allow copying asset into other albums
 $enable_course_creation = false; //enable the possibility for a ezmanager user to create his own course
 $enable_channel_creation = false; //enable the possibility for a ezmanager user to define his album as a channel
 
-$enable_moderator = false;  //enable the possibility to share album and manage moderator on ezmanager 
+$enable_moderator = false;  //enable the possibility to share album and manage moderator on ezmanager
 
 $regenerate_title_mode = 'none';  //When moving an asset, auto regenerate title. Possible option : none: no update / auto: update auto if modif / manual: button in ezmanager to modif
 // used by lib_ezmam (ezmanager)
-$accepted_media_qualities = array('high', 'low', 'ezplayer'); // Media quality prefixes accepted by the distribution script
+$accepted_media_qualities = array('high', 'low', 'processed', 'ezplayer'); // Media quality prefixes accepted by the distribution script
 $accepted_media_types = array('cam', 'slide');    // Media types accepted by the distribution script (todo: upload)
 
 $ezmanager_logs="$ezmanager_basedir/ezmanager.log";
@@ -85,8 +88,8 @@ $ezmanager_custom_logo = false;
 //allow using at address: /ezmanager/inscription.php
 $ezmanager_subscription_form = false;
 
- 
-//the embed link is like an iframe if true, like an link else 
+
+//the embed link is like an iframe if true, like an link else
 $embedIframed=false;
 
 //token used as verification for external upload service

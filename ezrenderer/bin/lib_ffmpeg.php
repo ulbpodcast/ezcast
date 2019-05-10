@@ -1,7 +1,7 @@
 <?php
 
 /*
- * interfaces ffmpeg commandline tool 
+ * interfaces ffmpeg commandline tool
  * All path should be absolute
  */
 include_once 'config.inc';
@@ -12,7 +12,7 @@ if ($encoding_pgm['name'] == 'ffmpeg_built_in_aac') {
 
 /**
  * concatenates multiple video files without re-encoding (as a reference movie)
- * @global string $ffmpegpath 
+ * @global string $ffmpegpath
  * @param type $movie_array an array containing movies to concatenate (requires absolute paths)
  * @param type $output name of the output video
  * @return 0 on success, else an error message
@@ -71,7 +71,7 @@ function movie_extract_audiotrack($moviein, $audiomovieout) {
     $moviein = escape_path($moviein);
     $audiomovieout = escape_path($audiomovieout);
     /**
-     * -i : input file 
+     * -i : input file
      * -vn : no video
      * -ac : audio channels
      * -ar : audio sample rate
@@ -133,7 +133,7 @@ function movie_add_audiotrack($moviein, $audiomovie, $movieout) {
     $audiomovie = escape_path($audiomovie);
     // -i : input sources
     // -vcodec copy : keep the current video codec
-    // -acodec copy : keep the current audio codec 
+    // -acodec copy : keep the current audio codec
     $cmd = "$ffmpegpath -i $moviein -i $audiomovie -vcodec copy -acodec copy $movieout";
     exec($cmd, $cmdoutput, $returncode);
     //check returncode
@@ -158,7 +158,7 @@ function movie_qtinfo($moviein, &$qtinfo) {
         return "input movie not found $moviein";
     $moviein = escape_path($moviein);
 
-    // ffprobe gathers information from multimedia streams 
+    // ffprobe gathers information from multimedia streams
     // -v quiet : loglevel shows nothing (no error or warning)
     // -print_format : information given in json
     // -show_format : gives information about the container format of the input multimedia stream
@@ -171,7 +171,7 @@ function movie_qtinfo($moviein, &$qtinfo) {
     if ($returncode)
         return join("\n", $cmdoutput); //error
 
-        
+
 //ffprobe cmd went ok
     //analyses output and saves some specific information we'll need later
     $qtinfo = json_decode(preg_replace("/[^[:alnum:][:punct:] ]/", "", implode($cmdoutput)), true);
@@ -254,10 +254,10 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
      * -vf : video filters
      * -y : overwrites movie if existing yet
      */
-    
+
     //if timecode negative, put 0 on the right time
     //If start tim negative, it rectifies the begintime to not create a corrupted begining
-     
+
     $cmd= $ffmpegpath.' -i '.$moviein.' 2>&1 | grep "Duration"';
     $return=shell_exec( $cmd );
     $return2=explode(",", $return);
@@ -266,7 +266,7 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
     $start="";
     if($startTime>0)
         $start="-ss $startTime";
-    
+
   if($gpu_enabled &&  (($width/$height)==(16/9) || ($width/$height)==(4/3) ) ){
         //ENCODE
         $cmd = "$ffmpegpath -y -hwaccel cuvid -i $moviein -r 25 $start -fpre $encoder -vf $video_filter -ar 44100 -ac 2  -vcodec h264_nvenc -rc vbr_hq -b:v 8M -maxrate:v 10M -y $aac_codec $movieout";
@@ -484,11 +484,11 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
      * generates input video stream for titling :
      *      -loop : better image rendering
      *      -r  : frame rate
-     *      -i  : input file (image) for title 
+     *      -i  : input file (image) for title
      *      -t  : duration in secondes
      *      -fpre : video preset file (settings used to encode the video)
      */
-    
+
     $cmd = $ffmpegpath . ' -ar 44100 -ac 2 -f s16le -t ' . $duration . ' -i /dev/zero ' .
             '-loop 1 -r 25 -i ' . $imagein . ' -t ' . $duration . ' -vf "' . $video_filter . '" -fpre ' . $encoder . ' ' . $aac_codec . ' -pix_fmt yuv420p -y ' . $movieout;
 
@@ -507,7 +507,7 @@ function movie_title_from_image($movieout, $imagein, $encoder, $duration = 8) {
  * @return type
  */
 function escape_path($path, $escapeshellarg = true) {
-    $newpath = str_replace("//", "/", $path); //removes multiple / 
+    $newpath = str_replace("//", "/", $path); //removes multiple /
     return ($escapeshellarg) ? escapeshellarg($newpath) : $newpath;
 }
 
@@ -522,7 +522,7 @@ function movie_moov_atom($moviein, $movieout) {
     global $ffmpegpath;
     /**
      * -i : input file
-     * -movflags faststart : plugin for ffmpeg 
+     * -movflags faststart : plugin for ffmpeg
      * -c copy : keep the audio and video codecs (no re-encoding)
      * -y : overwrite the movie if it exists yet
      */
@@ -562,7 +562,7 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
     $ffmpeg_params = array();
     $startime = 0;
     $duration = 0;
-    // prepares parameters for ffmpeg 
+    // prepares parameters for ffmpeg
     foreach ($cutlist_array as $index => $value) {
 
         switch ($value) {
@@ -577,7 +577,7 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
                 if ($startime != 0 && $index > $startime) {
                     $duration = $index - $startime;
                     $ffmpeg_params[] = (($startime - $bias) < 0) ? (array( 0 , $duration - abs($startime - $bias))) : (array( $startime - $bias , $duration));
-                    
+
                     $startime = 0;
                 }
                 break;
@@ -588,18 +588,18 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
     if ($startime != 0){
         $ffmpeg_params[] = (($startime - $bias) < 0) ? (array( 0 , -1)) : (array( $startime - $bias , -1));
     }
-    
+
     chdir($movie_path);
 
     $tmp_dir = 'tmpdir';
     mkdir("./$tmp_dir");
-    
+
     // creates each recording segments to be concatenated
     foreach ($ffmpeg_params as $index => $params) {
         $try = 0;
         $part_duration = -5;
         // sometimes, ffmpeg doesn't extract the recording segment properly
-        // This results in a shortened segment which may cause problems in the final rendering 
+        // This results in a shortened segment which may cause problems in the final rendering
         // We then loop on segment extraction to make sure it has the expected duration
         while ($try < 3 && $part_duration < $params[1]) {
             // extracts the recording segment from the full recording
@@ -629,7 +629,55 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
     }
 }
 
+function movie_cut_from_json($movie_path, $movie_in, $cutlist_array, $bias = 0) {
+    global $ffmpegpath;
+    //extract cutarray from json
+    $ffmpeg_params = array();
+    $startime = 0;
+    $duration = 0;
+    chdir($movie_path);
 
+    $tmp_dir = 'tmpdir';
+
+    mkdir("./$tmp_dir");
+
+    // creates each recording segments to be concatenated
+    foreach ($cutlist_array as $index => $params) {
+        $try = 0;
+        $part_duration = -5;
+        $duration = $params[1]-$params[0];
+        // sometimes, ffmpeg doesn't extract the recording segment properly
+        // This results in a shortened segment which may cause problems in the final rendering
+        // We then loop on segment extraction to make sure it has the expected duration
+        while ($try < 3 && $part_duration < ($params[1]-$params[0])) {
+            // extracts the recording segment from the full recording
+            // -ss : the segment starts at $param[0] seconds of the full video
+            // -t  : the segment lasts $param[1] seconds long
+            // -c  : audio and video codecs are copied
+            // -y  : the segment is replaced if already existing
+            $more_params = ($try >= 1) ? ' -probesize 1000000 -analyzeduration 1000000 ' : ''; // increase analyze duration
+            $more_params .= ($try >= 2) ? ' -pix_fmt yuv420p ' : ''; // defines pixel format, which is often lacking
+            $ext = file_extension_get($movie_in);
+            $ext = $ext['ext'];
+            $cmd = "$ffmpegpath  -i $movie_in -ss " . $params[0] . (($params[1] !== -1 ) ? " -to " . $params[1] : '') ." -y $tmp_dir/part-$index.$ext";
+            // ffmpeg -ss 00:00:03 -t 00:00:08 -i movie.mp4 -acodec copy -vcodec copy -async 1 cut.mp4
+            print "*************************************************************************" . PHP_EOL .
+                    $cmd . PHP_EOL .
+                    "*************************************************************************" . PHP_EOL;
+            exec($cmd, $cmdoutput, $returncode);
+            // the segment has been extracted, we verify here its duration
+            // $cmd = "$ffmpegpath -i $tmp_dir/part-$index.$ext 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g'";
+            $cmd= "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $tmp_dir/part-$index.$ext";
+            $part_duration = system($cmd); // duration in HH:MM:SS
+            // sscanf($part_duration, "%d:%d:%d", $hours, $minutes, $seconds);
+            // $part_duration = $hours * 3600 + $minutes * 60 + $seconds; // duration in seconds
+            $try++;
+            print "--------------------------------------------------------------------------" . PHP_EOL .
+                    "Try [$try]: duration found : $part_duration - expected : " . ($params[1]-$params[0]) . PHP_EOL .
+                    "--------------------------------------------------------------------------" . PHP_EOL;
+        }
+    }
+}
 /**
  * scans a filename and extract 'name' and 'ext'(ension) parts return them in an assoc array
  * @param <type> $filename

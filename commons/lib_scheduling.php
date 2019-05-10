@@ -37,7 +37,7 @@ $semaphore = my_sem_get(lib_scheduling_config('sem-key'));
 function scheduler_schedule()
 {
     global $logger;
-    
+
     lib_scheduling_notice('Scheduler::schedule[start]');
 
     // init the queue (get all the jobs from the scheduler queue folder)
@@ -396,10 +396,10 @@ function lib_scheduling_job_write($job, $dir)
         $job['basename'] = lib_scheduling_file_safe($job['created'] . '_' . $job['sender']  . '_' . $job['name']) . '.xml';
     }
 
-    // do not write the basename neither the status(redondant)
+    // do not write the basename but the status(redondant) is now used
     $basename = $job['basename'];
     unset($job['basename']);
-    unset($job['status']);
+    // unset($job['status']);
 
     $xml = new SimpleXMLElement("<job></job>");
 
@@ -461,7 +461,7 @@ function lib_scheduling_job_remove_from_list(&$jobs, $job)
             $index = $i;
         }
     }
-    
+
     if ($index > -1) {
         array_splice($jobs, $index, 1);
     }
@@ -552,7 +552,7 @@ function lib_scheduling_queue_has_higher_priority_than($first, $second)
     if ($first['priority'] == $second['priority']) {
         return strtotime($first['created']) - strtotime($second['created']);
     }
-    
+
     return $first['priority'] - $second['priority'];
 }
 
@@ -639,7 +639,7 @@ function lib_scheduling_renderer_generate($renderers)
                 $res .= "    '$key' => '$value',\n";
             }
         }
-            
+
         $res .= "  ),\n";
     }
 
@@ -808,17 +808,17 @@ function lib_scheduling_renderer_assign($renderer, $job)
 {
     global $php_cli_cmd;
     global $logger;
-    
+
     $job['sent'] = date('Y-m-d H:i:s');
     $job['renderer'] = $renderer['host'];
     $queue_path = lib_scheduling_config('queue-path');
     $processing_path = lib_scheduling_config('processing-path');
-    
+
     if (!lib_scheduling_job_write($job, $queue_path)) {
         $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::ERROR, "Failed to write " . $job['uid'] . " in queue $queue_path", array(__FUNCTION__));
         return false;
     }
-    
+
     //move job from queue into "processing" dir
     if (!lib_scheduling_file_move($queue_path . '/' . $job['basename'], $processing_path . '/' . $job['basename'])) {
         $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::ERROR, "Failed to move " . $job['uid'] . " to processing dir $processing_path", array(__FUNCTION__));
@@ -832,10 +832,10 @@ function lib_scheduling_renderer_assign($renderer, $job)
         $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::ERROR, "Failed to assign " . $job['uid'] . " to renderer " .$renderer['host'] . ". Cmd was $cmd", array(__FUNCTION__));
         return false;
     }
-    
+
     $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::DEBUG, "Assigned job ".$job['uid']." to renderer ".$renderer['host'], array(__FUNCTION__));
     $logger->log(EventType::MANAGER_SCHEDULING, LogLevel::DEBUG, "Call to cli_scheduler_job_perform with cmd: $cmd", array(__FUNCTION__));
-    
+
     return true;
 }
 
@@ -903,6 +903,11 @@ function lib_scheduling_sema_release()
 
 function lib_scheduling_file_move($from, $to)
 {
+    //do a backup
+    if (file_exists($to))
+    {
+        rename($to, $to."_".date('Y_m_d_H\hi'));
+    }
     return rename($from, $to);
 }
 
@@ -949,7 +954,7 @@ function lib_scheduling_file_safe($filename)
 function lib_scheduling_config($name)
 {
     global $config;
-    
+
     switch ($name) {
         case 'scheduler-path':
             return $config['paths']['scheduler'];

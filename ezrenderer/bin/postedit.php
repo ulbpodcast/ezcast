@@ -1,5 +1,6 @@
-
 <?php
+
+
 
 /*
  * EZCAST EZrenderer
@@ -38,6 +39,7 @@ include_once __DIR__ . "/lib_metadata.php";
 include_once __DIR__ . "/lib_ffmpeg.php";
 include_once __DIR__ . "/lib_gd.php";
 include_once __DIR__ . "/lib_audio_sync.php";
+// include_once __DIR__ . "/intro_title_movie.php";
 
 if ($argc != 2) {
     echo "usage: " . $argv[0] . " <directory_name>\n";
@@ -54,13 +56,11 @@ $processed = $processed_dir . '/' . $argv[1];
 $fail = $failed_dir . '/' . time() . $argv[1];
 
 print "\n//////////////////////////////// START RENDERING /////////////////////////////////////////////";
-print "\nRunning intro_title_movie.php on: $processing\n";
+print "\nRunning postedit.php on: $processing\n";
 
 print "\n------------------------ get processing info ----------------------\n";
 
 $toprocess_assoc = metadata2assoc_array($processing . "/toprocess.xml");
-$toprocess_assoc_log=print_r($toprocess_assoc , TRUE);
-
 if (isset($toprocess_assoc['add_title']))
     $add_title = $toprocess_assoc['add_title'];
 else
@@ -70,27 +70,27 @@ if (!isset($toprocess_assoc["ratio"]) || $toprocess_assoc["ratio"] == '')
     $toprocess_assoc["ratio"] = 'auto';
 
 // new assoc array for status update and return info
-$processing_assoc['status'] = "processing intro-title-movie";
+$processing_assoc['status'] = "processing postedit";
 $processing_assoc['render_pid'] = getmypid();
 $res = assoc_array2metadata_file($processing_assoc, $processing . '/processing.xml');
 if (!$res)
     myerror("couldnt write to $processing/processing.xml");
 
 // get the path to movies
-$originals = array(
+$processeds = array(
     'cam' => $processing . '/cam.mov',
     'slide' => $processing . '/slide.mov',
     'audio' => $processing . '/audio.mp3',
 );
 
-if (isset($toprocess_assoc['original_slide'])) {
-    $originals['slide'] = $processing . substr($toprocess_assoc['original_slide'], strrpos($toprocess_assoc['original_slide'], '/'));
+if (isset($toprocess_assoc['processed_slide'])) {
+    $processeds['slide'] = $processing . substr($toprocess_assoc['processed_slide'], strrpos($toprocess_assoc['processed_slide'], '/'));
 }
-if (isset($toprocess_assoc['original_cam'])) {
-    $originals['cam'] = $processing . substr($toprocess_assoc['original_cam'], strrpos($toprocess_assoc['original_cam'], '/'));
+if (isset($toprocess_assoc['processed_cam'])) {
+    $processeds['cam'] = $processing . substr($toprocess_assoc['processed_cam'], strrpos($toprocess_assoc['processed_cam'], '/'));
 }
-if (isset($toprocess_assoc['original_audio'])) {
-    $originals['audio'] = $processing . substr($toprocess_assoc['original_audio'], strrpos($toprocess_assoc['original_audio'], '/'));
+if (isset($toprocess_assoc['processed_audio'])) {
+    $processeds['audio'] = $processing . substr($toprocess_assoc['processed_audio'], strrpos($toprocess_assoc['processed_audio'], '/'));
 }
 
 
@@ -99,12 +99,12 @@ if($enable_audio_sync){
 	sync_video($processing);
 }
 
-if (!file_exists($originals['cam']))
-    unset($originals['cam']);
-if (!file_exists($originals['slide']))
-    unset($originals['slide']);
-if (!file_exists($originals['audio']))
-    unset($originals['audio']);
+if (!file_exists($processeds['cam']))
+    unset($processeds['cam']);
+if (!file_exists($processeds['slide']))
+    unset($processeds['slide']);
+if (!file_exists($processeds['audio']))
+    unset($processeds['audio']);
 
 // read the title meta file and validate its content
 print "\n------------------------ get title info ------------------------\n";
@@ -112,24 +112,81 @@ $res = get_title_info($processing, "title.xml", $title_assoc);
 
 //fwrite(fopen('./'.time().'.dump_input', 'w'), print_r($title_assoc, true));
 
+
+//set the cut array
+$cutlist_array=[];
+$startime=0;
+$duration=0;
+$cutlist_file=$processing."/_cutlist.json";
+if (!file_exists($cutlist_file)) {
+    myerror('_cutlist file is not set ' . $cutlist_file);
+    die;
+}
+// get the video Length
+$cmd;
+$campath;
+if (isset($processeds['cam'])) {
+    $campath=$processeds['cam'];
+}else{
+    $campath=$processeds['slide'];
+}
+$cmd = $ffprobepath.' -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 '.$campath;
+$duration_string = shell_exec($cmd);
+if (!is_null($duration_string))
+    $duration = abs(floatval($duration_string));
+else
+    print "Get duration of ".$campath." failed.  cmd: ".$cmd. PHP_EOL ;
+//get the json to an array
+$jsonStr=file_get_contents($cutlist_file);
+
+try {
+
+        $stdClass=json_decode($jsonStr);
+    } catch (Exception $e) {
+        error_print_message('cutarray not a well formatted JSON');
+        die;
+    }
+$cutArray=get_object_vars($stdClass)['cutArray'];
+if ($cutArray[0][0]!=0) {
+    $tmp_array=[];
+    array_push($tmp_array,$startime);
+    array_push($tmp_array,$cutArray[0][0]);
+    array_push($cutlist_array,$tmp_array);
+}
+for ($i=1; $i < sizeof($cutArray); $i++) {
+    $tmp_array=[];
+    array_push($tmp_array,$cutArray[$i-1][1]);
+    array_push($tmp_array,$cutArray[$i][0]);
+    array_push($cutlist_array,$tmp_array);
+}
+if ($cutArray[sizeof($cutArray)-1][1]!=round($duration,2)) {
+    $tmp_array=[];
+    array_push($tmp_array,$cutArray[sizeof($cutArray)-1][1]);
+    array_push($tmp_array,$duration);
+    array_push($cutlist_array,$tmp_array);
+}
+
+
 // handle slide movie combine intro title and movie and encode them in 'high' and 'low' flavors
 $types = array('slide', 'cam','audio');
-$original_qtinfo = array();
+$processed_qtinfo = array();
 foreach ($types as $type) {
-    if (isset($originals[$type])) {
-        if (!isset($original_qtinfo) || !isset($original_qtinfo[$type])) {
-            $original_qtinfo[$type] = array();
-            if (movie_qtinfo($originals[$type], $original_qtinfo[$type]))
-                myerror('couldn\'t get info for movie ' . $originals[$type]);
+    if (isset($processeds[$type])) {
+        if (!isset($processed_qtinfo) || !isset($processed_qtinfo[$type])) {
+            $processed_qtinfo[$type] = array();
+            if (movie_qtinfo($processeds[$type], $processed_qtinfo[$type]))
+                myerror('couldn\'t get info for movie ' . $processeds[$type]);
         }
         //save original movie info
-        assoc_array2metadata_file($original_qtinfo[$type], $processing . "/original_{$type}_qtinfo.xml");
+        assoc_array2metadata_file($processed_qtinfo[$type], $processing . "/processed_{$type}_qtinfo.xml");
         print "\n====================== [START] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ========================\n\n";
-        itm_intro_title_movie($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie']);
-        //itm_intro_title_movie($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
+        pe_postedit($type,$processing, $processeds[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie'],$cutlist_array);
+
+        //itm_postedit($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
         print "======================= [END] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ===========================\n\n";
     }
 }
+// die;
 //die();
 
 processing_status('processed');
@@ -153,6 +210,8 @@ $blacklist = array(
     'annotated_movie.mov',
     'cam_transcoded.mov',
     'slide_transcoded.mov',
+    'transcoded_cam.mov',
+    'transcoded_slide.mov',
     'output_ref_movie.mov',
     'title.mov',
     'title.jpg',
@@ -175,36 +234,6 @@ print "\n//////////////////////////////// end of the list //////////////////////
 
 exit(0); //quit successfully
 
-// choose intro or outro movie
-//returns false on failure
-function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $width, $height) {
-
-    switch ($aspectRatio) {
-        case "16:9":
-        case "16:10":
-        case "3:2":
-        case "4:3":
-        case "5:3":
-        case "5:4":
-        case "8:5":
-            $movie = $movies_dir . "/$movie_name" . "/" . $movies_list[$aspectRatio];
-            break;
-        default :
-            if ($height && $width) {
-                $ratio = $width / $height;
-                $aspectRatio = (abs($ratio - 1.77) <= abs($ratio - 1.33)) ? '16:9' : '4:3';
-            }
-            $movie = $movies_dir . "/$movie_name" . "/" . $movies_list[$aspectRatio];
-            break;
-    }
-
-    if (!is_file($movie)) {
-        print "choose_movie: file $movie did not exists, use default instead" . PHP_EOL;
-        $movie = $movies_dir . "/$movie_name" . "/" . $movies_list['default'];
-    }
-
-    return $movie;
-}
 
 /**
  * @global type $procdirpath
@@ -225,9 +254,64 @@ function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $wid
  * @param string $credits name of credits file (or empty string if no intro needed)
  * @abstract process movie with addition of intro, outro and title if present.
  */
-function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_title, $credits) {
+function pe_postedit($camslide, $path, $moviein, &$title_assoc, $intro, $add_title, $credits, $cutlist_array) {
     global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies, $imageAudioFilePath,$enable_render_audio_from_video,$enableMimeTypeCheck,$video_mimeTypes,$audio_mimeTypes;
 
+
+
+
+
+    $files_to_edit = array();
+        // cuts the original assets in multiple parts
+    mkdir($path . '/tmpdir');
+    if (isset($cutlist_array) && $cutlist_array != '') {
+        movie_cut_from_json($path, $moviein, $cutlist_array);
+    } else {
+        $ext = file_extension_get($moviein);
+        copy($path . '/' . $file['filename'], $path . '/tmpdir/part-0.' . $ext['ext']);
+    }
+    $movie_array = array();
+    $dir = new DirectoryIterator($path . '/tmpdir');
+    foreach ($dir as $fileinfo) {
+        if (!$fileinfo->isDot()) {
+            $movie_array[] = $path . '/tmpdir/' . $fileinfo->getFilename();
+        }
+    }
+    // $movie_array=sort($movie_array);
+    $sorted_movie_array = array();
+    foreach($movie_array as $index => $array_path){
+        $done=false;
+        $true_index=intval(get_str_btw_str($array_path,"part-",".mov"));
+
+        if (!$done&&sizeof($sorted_movie_array)==0) {
+            array_push($sorted_movie_array,$array_path);
+            $done=true;
+        }
+        if (!$done&&$true_index<intval(get_str_btw_str($sorted_movie_array[0],"part-",".mov"))) {
+            array_unshift($sorted_movie_array,$array_path);
+            $done=true;
+        }
+        if (!$done&&$true_index>intval(get_str_btw_str($sorted_movie_array[sizeof($sorted_movie_array)-1],"part-",".mov"))) {
+            array_push($sorted_movie_array,$array_path);
+            $done=true;
+        }
+        if (!$done) {
+            for ($i=1; $i < sizeof($sorted_movie_array); $i++) {
+                if (!$done&&$true_index<intval(get_str_btw_str($sorted_movie_array[$i],"part-",".mov"))) {
+                    array_insert($sorted_movie_array, $i, $array_path);
+                    $done=true;
+                }
+            }
+        }
+
+    }
+
+    movie_join_array($sorted_movie_array, $path . '/transcoded_' . $camslide . '.mov' );
+    exec("rm -rf " . $path . '/tmpdir');
+    exec("rm -rf " . $path . '/*count*');
+
+
+    $moviein=$path . '/transcoded_' . $camslide . '.mov';
     if ( $enableMimeTypeCheck && ($toprocess_assoc["record_type"]!='audio') && !in_array(mime_content_type($moviein),$video_mimeTypes)) {
         myerror("mimetypeExcepted not found", false);
         exit(1);
@@ -277,8 +361,6 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
     $high_qtinfo_path = $processing . '/high_' . $camslide . '_qtinfo.xml';
     $low_movieout = $processing . '/low_' . $camslide . '.mov';
     $low_qtinfo_path = $processing . '/low_' . $camslide . '_qtinfo.xml';
-    $processed_movieout = $processing . '/processed_' . $camslide . '.mov';
-    $processed_qtinfo_path = $processing . '/processed_' . $camslide . '_qtinfo.xml';
 
     $qualities[] = ($toprocess_assoc['super_highres'] == 'on') ? 'superhigh' : 'high';
     $qualities[] = 'low';
@@ -288,25 +370,9 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         print "\n------------------------ transcoding $moviein in $quality quality ------------------------\n";
         $encoder = '';
         // determines the appropriate encoder to use for the desired quality and transcodes the video
-        $transcoded_movie = itm_handle_movie($moviein, $camslide, $quality, $toprocess_assoc['ratio'], $encoder);
+        $transcoded_movie = pe_handle_movie($moviein, $camslide, $quality, $toprocess_assoc['ratio'], $encoder);
         $dt = time() - $t1;
         print "\n------------------------ encoding $transcoded_movie ($quality) took $dt seconds ------------------------\n";
-
-        //copying the high output before intro to processed occurence
-        if ($quality=='high'||$quality=='superhigh') {
-            print "\n------------------------ copying $transcoded_movie to processed occurence ------------------------\n";
-            safe_copy($transcoded_movie , $processing . '/processed_' . $camslide . '.mov');
-            // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded
-            $res = movie_moov_atom($annotated_movie, $processed_movieout);
-            if ($res)
-                myerror("couldn't relocate MOOV atom for movie $processed_movieout");
-            //get qtinfo for high movie and save them
-            $res = movie_qtinfo($processed_movieout, $processed_qtinfo);
-            if ($res)
-                myerror("couldn't get info for movie $processed_movieout");
-            $res = assoc_array2metadata_file($processed_qtinfo, $processed_qtinfo_path);
-
-        }
 
         $movies_to_join = array(); //list of movie parts to merge (for intro-title-movie))
         //check if we have an intro movie to prepend
@@ -361,7 +427,6 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
             }
         }
 
-//        die();
         //join main movie
         array_push($movies_to_join, $transcoded_movie);
 
@@ -426,64 +491,24 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         }
     }
 }
-
-/**
- * get a picture associated with each chapter transition and put it in $destdir
- * @param string $moviein absolute path to movie file
- * @param string $chapterfile absolute path to chapter xml file
- * @param string $destdir path to directory that will be filled with png chapter images
- * @return bool
- */
-function itm_get_chapters_images($moviein, $chapterfile, $destdir) {
-    @ $xml = simplexml_load_file($chapterfile);
-    if ($xml === false)
-        return false;
-    $idx = 1;
-    foreach ($xml->array->dict as $key) {
-        $pictureout = $destdir . '/chapter' . $idx . '.png';
-        $ok = movie_getposterimage($moviein, $pictureout, (float) $key->real);
-        $idx+=1;
+function get_str_btw_str($source,$start,$end){
+    $start_len=strlen($start);
+    $end_len=strlen($end);
+    return substr($source,strrpos($source,$start)+$start_len,(strlen($source)-((strrpos($source,$start)+$start_len)+(strlen($source)-strrpos($source, $end)))));
+}
+function array_insert(&$array, $position, $insert)
+{
+    if (is_int($position)) {
+        array_splice($array, $position, 0, $insert);
+    } else {
+        $pos   = array_search($position, array_keys($array));
+        $array = array_merge(
+            array_slice($array, 0, $pos),
+            $insert,
+            array_slice($array, $pos)
+        );
     }
-    return true;
 }
-
-/**
- * saves the status of the processing
- * @global string $procdirpath path of the processing directory
- * @global array $processing_assoc info of current processing
- * @param string $status
- * @return bool
- */
-function processing_status($status) {
-    global $processing, $processing_assoc;
-
-    $processing_assoc['status'] = $status;
-    $res = assoc_array2metadata_file($processing_assoc, $processing . '/processing.xml');
-    return $res;
-}
-
-/**
- *
- * @param string_path $title_meta_path
- * @param assoc_array $title_assoc
- * @return bool true on success
- * @desc load the title (xml) info and validate it. parameters should be in title,author,date,organization,copyright
- */
-function get_processing_info($processing_info_path, $processing_filename, &$processing_assoc) {
-    global $intros_dir, $credits_dir, $processing;
-    $processing_assoc = metadata2assoc_array($processing_info_path . "/" . $processing_filename);
-    if (!is_array($processing_assoc))
-        myerror("processing info file read error $processing_info_path/$processing_filename\n");
-    if (!is_dir($intros_dir . "/" . $processing_assoc['intro_movie']))
-        myerror("intro_movie not found\n");
-    if (!is_dir($credits_dir . "/" . $processing_assoc['credits_movie']))
-        myerror("credits_movie not found\n");
-    if (!is_file($processing . "/" . $processing_assoc['input_movie_file']))
-        myerror("input_movie_file not found\n");
-    return true;
-}
-
-
 /**
  * look at the movies, transcode them and return path to transcoded movies
  * @global string $processing
@@ -499,7 +524,7 @@ function get_processing_info($processing_info_path, $processing_filename, &$proc
  * @param $encoder receives the encoder used to transcode the video
  * @return string path to transcoded movie or original movie
  */
-function itm_handle_movie($movie, $camslide, $quality, $ratio, &$encoder) {
+function pe_handle_movie($movie, $camslide, $quality, $ratio, &$encoder) {
     global $processing, $accepted_video_sizes, $video_high_transcoders, $original_qtinfo;
 
     $qtinfo = $original_qtinfo[$camslide];
@@ -548,7 +573,6 @@ function itm_handle_movie($movie, $camslide, $quality, $ratio, &$encoder) {
     print "\n----------------- [END] transcoding $camslide ---------------------\n";
     return $movieout;
 }
-
 function myerror($msg, $exit = true) {
 
     global $procdirpath;
@@ -560,56 +584,20 @@ function myerror($msg, $exit = true) {
     if($exit)
         exit(1); //return error code
 }
-
 /**
- * delete the contents of a directory recursively (BUT DOES NOT DELETE THE DIRECTORY ITSELF)
- * @param <type> $path
- * @param <type> $recursive
+ * saves the status of the processing
+ * @global string $procdirpath path of the processing directory
+ * @global array $processing_assoc info of current processing
+ * @param string $status
+ * @return bool
  */
-function dir_empty($path, $recursive = false) {
+function processing_status($status) {
+    global $processing, $processing_assoc;
 
-    $dh = opendir($path);
-    while (($file = readdir($dh)) !== false) {
-        if ($file != "." && $file != "..") {
-            $filepath = $path . '/' . $file;
-            $isdir = is_dir($path . '/' . $file);
-            if (is_dir($path . '/' . $file)) {
-                if ($recursive == true) {
-                    dir_empty($path . "/" . $file, false); //recursively delete
-                    rmdir($path . "/" . $file);
-                }
-            } else {
-                print "unlink $filepath\n";
-                unlink($path . '/' . $file);
-            }
-        }
-    }
-    return true;
+    $processing_assoc['status'] = $status;
+    $res = assoc_array2metadata_file($processing_assoc, $processing . '/processing.xml');
+    return $res;
 }
-
-function safe_copy($from, $to, $recursif = false) {
-
-    $recursif ? $recursif = '-r ' : $recursif = '';
-    processing_status("copy $from to $to dir");
-    print "\n====================== [START] copy $from to $to ========================\n";
-    $repeat = 50;
-    do {
-        $cmd = "cp $recursif $from $to";
-        exec($cmd, $cmdoutput, $returncode);
-        if ($returncode) {
-            print "\n**************************";
-            print "\n* ERROR COPY FILE: code $returncode *";
-            print "\n**************************";
-        }
-        $repeat-=1;
-    } while ($repeat > 0 && $returncode);
-    if (!$returncode) {
-        print "\nFile copied from $from to $to\n";
-    }
-    print "\n======================= [END] copy $from to $to ===========================\n";
-    return (!$returncode ? true : false);
-}
-
 //return false on success, else an error message
 function safe_movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = true) {
     $repeat = 1;
@@ -632,3 +620,34 @@ function safe_movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing
     print PHP_EOL . "safe_movie_encode returns $res" . PHP_EOL;
     return $res;
 }
+// choose intro or outro movie
+//returns false on failure
+function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $width, $height) {
+
+    switch ($aspectRatio) {
+        case "16:9":
+        case "16:10":
+        case "3:2":
+        case "4:3":
+        case "5:3":
+        case "5:4":
+        case "8:5":
+            $movie = $movies_dir . "/$movie_name" . "/" . $movies_list[$aspectRatio];
+            break;
+        default :
+            if ($height && $width) {
+                $ratio = $width / $height;
+                $aspectRatio = (abs($ratio - 1.77) <= abs($ratio - 1.33)) ? '16:9' : '4:3';
+            }
+            $movie = $movies_dir . "/$movie_name" . "/" . $movies_list[$aspectRatio];
+            break;
+    }
+
+    if (!is_file($movie)) {
+        print "choose_movie: file $movie did not exists, use default instead" . PHP_EOL;
+        $movie = $movies_dir . "/$movie_name" . "/" . $movies_list['default'];
+    }
+
+    return $movie;
+}
+?>

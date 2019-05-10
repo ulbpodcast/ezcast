@@ -517,7 +517,6 @@ function postedit_asset()
   $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
   $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
   $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
-  file_put_contents("/home/ezcast/debug_kef.log", "value of \$has_cam : $has_cam \n", FILE_APPEND);
 
   require template_getpath('popup_asset_postedit.php');
 }

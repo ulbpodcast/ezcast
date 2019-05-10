@@ -41,7 +41,6 @@ if (!is_dir($new_asset_dir)) {
     echo "new asset directory not found";
     die;
 }
-
 $new_asset_array = require_once $new_asset_dir . '/torender.inc';
 
 
@@ -112,7 +111,6 @@ foreach ($record_types as $record_type) {
         }
     }
 }
-
 foreach ($files_to_edit as $key => $file) {
     // cuts the original assets in multiple parts
     mkdir($file['path'] . '/tmpdir');
@@ -122,6 +120,10 @@ foreach ($files_to_edit as $key => $file) {
         $ext = file_extension_get($file['filename']);
         copy($file['path'] . '/' . $file['filename'], $file['path'] . '/tmpdir/part-0.' . $ext['ext']);
     }
+
+////////////////////////////////////////Start processed creation/////////////////////////////////////////
+
+//////////////////////////////////////////////////stop processed creation//////////////////////////////////////////////////////
 
     if (strpos($key, 'original') === false) {
         // encodes the jingle
@@ -170,7 +172,7 @@ foreach ($files_to_edit as $key => $file) {
         movie_join_array($movie_array, $file['path'] . '/' . $file['filename']);
         exec("rm -rf " . $file['path'] . '/tmpdir');
         exec("rm -rf " . $file['path'] . '/*count*');
-        
+
         $video_meta = metadata2assoc_array($file['path'] . '/_metadata.xml');
         movie_qtinfo($file['path'] . '/' . $file['filename'], $qtinfo);
         $video_meta['duration'] = $qtinfo['duration'];

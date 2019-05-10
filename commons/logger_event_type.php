@@ -68,6 +68,7 @@ class EventType
     const MANAGER_MODO_DELETE                = "manager_modo_delete";
     const MANAGER_EZMAM_CREATE_COURSE        = "manager_ezmam_create_course";
     const MANAGER_SUBSCRIPTION_FORM          = "manager_subscription_form";
+    const MANAGER_SUBMIT_POSTEDIT          = "manager_submit_postedit";
     
     // EZRenderer
     

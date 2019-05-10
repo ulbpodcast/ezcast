@@ -12,7 +12,7 @@ function index($param = array())
     if (!isset($input['index'])) {
         die();
     }
-    
+
     $array = array();
 
     $index = $input['index'];
@@ -60,6 +60,7 @@ function index($param = array())
     //all files finished
     if ($finished) {
         $recording_metadata = metadata2assoc_array($path."/metadata.xml");
+
         $album = "";
         if ($recording_metadata) {
             $album = $recording_metadata['course_name'];
@@ -68,7 +69,6 @@ function index($param = array())
 
         // Calling cli_mam_insert.php so that it adds the file into ezmam
         $cmd = 'echo "' . $php_cli_cmd . ' ' . $recorder_mam_insert_pgm . ' ' . $path . ' >>' . $path . '/mam_insert.log 2>&1"|at now';
-
         exec($cmd, $output, $ret);
 
         $logger->log(

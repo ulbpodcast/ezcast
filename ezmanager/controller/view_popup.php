@@ -95,6 +95,10 @@ function index($param = array())
             copy_asset();
             break;
 
+        case 'postedit_asset':
+            postedit_asset();
+            break;
+
         default:
             error_print_message('view_popup: content of popup ' . $input['popup'] . ' not found');
             die;
@@ -493,4 +497,26 @@ function copy_asset()
     $album = $input['album'];
 
     require template_getpath('popup_copy_asset.php');
+}
+
+function postedit_asset()
+{
+  global $input;
+  if (!isset($input['asset']) || !isset($input['album'])) {
+      echo 'Usage: index.php?action=show_popup&amp;popup=postedit_asset&amp;album=ALBUM&amp;asset=ASSET';
+      die;
+  }
+  $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
+  $asset_name = $input['asset'];
+
+  global $video_split_time;
+
+  $asset = $input['asset'];
+  $album = $input['album'];
+  $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+  $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
+  $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
+  $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
+
+  require template_getpath('popup_asset_postedit.php');
 }

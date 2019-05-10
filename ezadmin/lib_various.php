@@ -73,7 +73,7 @@ function update_config_file($recorder_option, $add_users_option, $recorder_passw
     $config = preg_replace('/\$use_user_name = (.+);/', '\$use_user_name = ' . $conf4 . ';', $config);
     $config = preg_replace('/\$enable_control_panel = (.+);/', '\$enable_control_panel = ' . $conf5 . ';', $config);
     $config = preg_replace('/\$enable_control_panel_options = (.+);/', '\$enable_control_panel_options = ' . $conf6 . ';', $config);
-    
+
     file_put_contents('config.inc', $config);
 }
 
@@ -269,7 +269,7 @@ function renderer_update_enabled($name, $enable, &$error)
  * @return bool true on success
  */
 function renderers_push()
-{   
+{
     $res=copy('./renderers.inc', '../commons/renderers.inc');
     return $res;
 }
@@ -455,11 +455,12 @@ function ipstr2num($ipstr, &$net1, &$net2, &$subnet, &$node)
 
 function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts = true)
 {
-    include 'config.inc';
+    //include '../commons/config.inc';
+    include '../commons/config.inc';
     //check if hostname is real
     $ip_int=  ip2long($hostname); //is it an IP address?
     if($ip_int===false){
-      //its not an IP, check if hostname exists  
+      //its not an IP, check if hostname exists
       $ip =  gethostbyname($hostname);
       if($ip==$hostname){
         //hostname doesn't resolve
@@ -468,12 +469,12 @@ function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts
     }
     // test the SSH connection
     exec(
-  
+
         "ssh -o ConnectTimeout=$timeout -o BatchMode=yes " . $username . "@" . $hostname . " \"echo ok\"",
             $output,
-  
+
         $returncode
-  
+
     );
 
     if ($update_known_hosts && $returncode) {
@@ -489,13 +490,14 @@ function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts
 
         // changes user's relative path in absolute path (required for file_exists(...))
         $ssh_known_hosts = exec("echo `echo $ssh_known_hosts`");
-
+        //error_log("\$ssh_known_hosts   ".$ssh_known_hosts);
         // retrieves SSH public key of remote renderer
         exec("ssh-keyscan -T $timeout " . $hostname, $output, $returncode);
         if (!$returncode) {
             // adds renderer SSH key to known_hosts file (if not there yet)
             if (!file_exists($ssh_known_hosts) || strpos(file_get_contents($ssh_known_hosts), $output[0]) === false) {
                 exec("echo $output[0] >> $ssh_known_hosts", $output, $returncode);
+                error_log($returncode);
                 if ($returncode) {
                     // could not add SSH public key from remote renderer to known_hosts file
                     return "known_hosts_error";
@@ -514,6 +516,7 @@ function ssh_connection_test($username, $hostname, $timeout, $update_known_hosts
                 $output,
             $returncode
         );
+        error_log(" returncode final sshtest   ".$returncode);
         return $returncode ? false : true;
     } elseif ($returncode) {
         return false;
@@ -667,7 +670,7 @@ function getipmobile($hosts)
         exec("ping -c 1 " . $hosts[$i], $output, $result);
         if ($result == 0)
             $ipmobile=$hosts[$i];
-            
+
         $i++;
     }
     return $ipmobile;
@@ -700,18 +703,18 @@ function getSpaceUsed($ip)
     $fp = fsockopen($ip, 80, $errno, $errstr, 0.1);
 
     if($fp){
-        exec('ssh ezrecorder@'.$ip.' "df /"',$return,$return2);       
+        exec('ssh ezrecorder@'.$ip.' "df /"',$return,$return2);
         $values = explode(" " , $return[1]);
         if( $values[8] != "")
             $val = $values[8];
         else if( $values[9] != "")
             $val = $values[9];
-        
+
         fclose($fp);
     }
     else
         $val = 0;
-    
+
     return $val;
 }
 
@@ -720,7 +723,7 @@ function getRecordingStatus($ip)
     $fp = fsockopen($ip, 80, $errno, $errstr, 0.1);
 
     if($fp){
-        exec('ssh ezrecorder@'.$ip.' "cat /Library/ezrecorder/modules/local_ffmpeg_hls/var/status"',$return,$return2);       
+        exec('ssh ezrecorder@'.$ip.' "cat /Library/ezrecorder/modules/local_ffmpeg_hls/var/status"',$return,$return2);
         $status=$return[0];
         if(!isset($status) || $status=="")
             $status="Not used";
@@ -729,8 +732,8 @@ function getRecordingStatus($ip)
     }
     else
         $status = "Error";
-    
-    return $status;         
+
+    return $status;
 }
 
 function check_validation_text($text)

@@ -83,7 +83,7 @@ function stepOne(){
     global $apache_username;
     global $ssh_public_key;
     global $ssh_timeout;
-    
+
     $renderer_name = $input['renderer_name'];
     $renderer_address = $input['renderer_address'];
     $renderer_user = $input['renderer_user'];
@@ -138,7 +138,7 @@ function stepTwo(){
     global $input;
     global $ssh_public_key;
     global $ssh_timeout;
-    
+
     if (isset($input['submit_step_2_prev']) && $input['submit_step_2_prev']) {
         // back to step 1
         $input['renderer_name'] = $_SESSION['renderer_name'];
@@ -150,10 +150,10 @@ function stepTwo(){
         include template_getpath('div_main_footer.php');
     } else {
         $ssh_public_key = $_SESSION['renderer_ssh_key'];
-
+        error_log($_SESSION['renderer_ssh_key']);
         // test the SSH connection
         $res = ssh_connection_test($_SESSION['renderer_user'], $_SESSION['renderer_address'], $ssh_timeout);
-
+        error_log($res);
         if ($res === true) {
             // SSH connection is correctly set. Ask for more information on remote renderer
             // set default values
@@ -199,7 +199,7 @@ function stepThree(){
     global $ssh_public_key;
     global $ssh_timeout;
     global $renderers_options;
-    
+
     if (isset($input['submit_step_3_prev']) && $input['submit_step_3_prev']) {
         // back to step 2
         $ssh_public_key = $_SESSION['renderer_ssh_key'];
@@ -328,7 +328,7 @@ function stepFour(){
     global $ssh_timeout;
     global $basedir;
     global $output;
-    
+
     $input['renderer_root_path'] = $_SESSION['renderer_root_path'];
     $input['renderer_php'] = $_SESSION['renderer_php'];
     $input['renderer_rsync'] = $_SESSION['renderer_rsync'];
@@ -407,10 +407,10 @@ function stepFour(){
                 die;
             } else {
                 // renderers.inc files have been updated
-                
+
                     echo json_encode("<div class='green'>" . template_get_message('load_step_4_update_success', get_lang()) . "</div>");
                     die;
-                 
+
             }
         }
     }

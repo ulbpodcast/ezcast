@@ -14,6 +14,7 @@
 include_once 'config.inc';
 include_once 'lib_ezmam.php';
 include_once 'lib_various.php';
+// include_once 'cli_submit_intro_title_movie.php';
 require_once __DIR__.'/../commons/lib_scheduling.php';
 
 Logger::$print_logs = true;
@@ -23,9 +24,9 @@ ezmam_repository_path($repository_path);
 
 if ($argc!=3) {
     echo "Usage: ".$argv[0]." <album_name> <asset_time>" . PHP_EOL;
-    echo "Example php cli_submit_intro_title_movie.php MOOC-G3-pub 2016_09_26_10h40" . PHP_EOL;
+    echo "Example php cli_submit_postedit.php MOOC-G3-pub 2016_09_26_10h40" . PHP_EOL;
 
-    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::WARNING, __FILE__ ." called with wrong argc count: $argc. argv: " . json_encode($argv), array("cli_submit_intro_title_movie"));
+    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::WARNING, __FILE__ ." called with wrong argc count: $argc. argv: " . json_encode($argv), array("cli_submit_postedit"));
     exit(1);
 }
 
@@ -34,12 +35,18 @@ $asset=$argv[2];
 
 //check if given asset exists
 if (!ezmam_asset_exists($album, $asset)) {
-    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "ezmam did not find referenced asset (album: $album, asset: $asset)", array("cli_submit_intro_title_movie"), $asset);
+    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "ezmam did not find referenced asset (album: $album, asset: $asset)", array("cli_submit_postedit"), $asset);
+    exit(2);
+}
+
+//check if cutlist exists
+if (!ezmam_cutlist_exists($album, $asset)) {
+    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "ezmam did not find referenced asset cutlist (album: $album, asset: $asset)", array("cli_submit_postedit"), $asset);
     exit(2);
 }
 
 //create directory used to transmit the (video) rendering/processing work to one of the renderers
-$processing_dir_name=$asset."_".$album."_intro_title_movie";
+$processing_dir_name=$asset."_".$album."_postedit";
 $render_dir=$render_root_path."/processing/".$processing_dir_name;
 if (!file_exists($render_dir)) {
     mkdir($render_dir);
@@ -47,7 +54,7 @@ if (!file_exists($render_dir)) {
 }
 
 $path_to_videos = $repository_path.'/'.$album.'/'.$asset;
-$medias = submit_itm_get_medias($album, $asset);
+$medias = submit_pe_get_medias($album, $asset);
 
 foreach ($medias as $media_name => $media_path) {
     exec('ln -s '.$repository_path.'/'.$media_path.' '.$render_dir.'/', $output, $val);
@@ -59,7 +66,7 @@ $album_meta = ezmam_album_metadata_get($album);
 //put title info into $render_dir/title.xml
 //generate title description
 
-$res=submit_itm_set_title($album_meta, $asset_meta, $render_dir);
+$res=submit_pe_set_title($album_meta, $asset_meta, $render_dir);
 
 if (!isset($asset_meta['intro'])) {
     if (isset($album_meta['intro'])) {
@@ -71,7 +78,7 @@ if (!isset($asset_meta['intro'])) {
     $intro = $asset_meta['intro'];
 }
 $asset_meta['intro'] = $intro;
-ezmam_asset_meta_set($album.'/'.$asset, $asset_meta);
+// ezmam_asset_meta_set($album.'/'.$asset, $asset_meta);
 
 
 
@@ -104,8 +111,9 @@ if (!isset($asset_meta['add_title'])) {
 //input movie file is in the repository
 //output movie will be in the renderer in $render_dir
 
-$processing_assoc=array('submit_date'=>date($dir_date_format),
-     'status'=>'submit',
+$processing_assoc=array('postedit_date'=>date($dir_date_format),
+     'status'=>'postedit',
+     // 'postedit_author' => $_SESSION['user_full_name']
      'origin'=>$asset_meta['origin'],
      'record_type'=>$asset_meta['record_type'],
      'server_pid'=>(string)getmypid(),
@@ -125,23 +133,31 @@ if (isset($asset_meta['submitted_filename'])) {
 }
 
 //get list of medias and (relative) path in the form 'original_cam'=>'<albumname>/<assetname>/<medianame>/<filename>
-$media_path_assoc=submit_itm_get_medias($album, $asset);
+$media_path_assoc=submit_pe_get_medias($album, $asset);
+
 //add medias original_cam and/or original_slide and their relative path in the repository:
-
 $processing_assoc=array_merge($processing_assoc, $media_path_assoc);
-
 $res=assoc_array2metadata_file($processing_assoc, $render_dir."/toprocess.xml");
 
 //fix permissions
 chmod($render_dir."/toprocess.xml", 0775);
 if ($res==0) {
-    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "Could not write processing metadata in $render_dir/toprocess.xml", array("cli_submit_intro_title_movie"), $asset);
+    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "Could not write processing metadata in $render_dir/toprocess.xml", array("cli_submit_postedit"), $asset);
     exit(3);
 }
 
+$res=copy($path_to_videos."/_cutlist.json", $render_dir."/_cutlist.json");
+//fix permissions
+chmod($render_dir."/_cutlist.json", 0775);
+if ($res==0) {
+    $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "Could not write cutlist json in $render_dir/_cutlist.json", array("cli_submit_postedit"), $asset);
+    exit(3);
+}
+
+
 // Append the new job
 $ok = scheduler_append(array(
-  'status' => 'submit',
+  'status' => 'postedit',
   'location' => $render_dir,
   'origin' => $asset_meta['origin'],
   'sender' => $asset_meta['author'],
@@ -160,7 +176,7 @@ scheduler_schedule();
 $pos = strrpos($album, "-");
 $album_without_mod = substr($album, 0, $pos);
 $asset_name = $asset . '_' . $album_without_mod;
-$logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::INFO, "Successfully scheduled rendering job", array("cli_submit_intro_title_movie"), $asset_name);
+$logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::INFO, "Successfully scheduled rendering job", array("cli_submit_postedit"), $asset_name);
 exit(0);
 
 /**
@@ -170,7 +186,7 @@ exit(0);
  * @param string $asset_meta
  * @param string $render_dir
  */
-function submit_itm_set_title($album_meta, $asset_meta, $render_dir)
+function submit_pe_set_title($album_meta, $asset_meta, $render_dir)
 {
     global $organization_name,$copyright,$movie_keywords;
     global $logger;
@@ -195,35 +211,35 @@ function submit_itm_set_title($album_meta, $asset_meta, $render_dir)
     //write the title xml file to the "shared directory"
     $res=assoc_array2metadata_file($title_info, $render_dir."/title.xml");
     if (!$res) {
-        $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "Could not write title metadata to $render_dir/title.xml", array("cli_submit_intro_title_movie"));
+        $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::CRITICAL, "Could not write title metadata to $render_dir/title.xml", array("cli_submit_postedit"));
         exit(4);
     }
     return $res;
 }
 
 /**
- * returns an assoc array of original medias relative path
+ * returns an assoc array of processed medias relative path
  * @global string $repository_path
  * @param string $album
  * @param string $asset
  */
-function submit_itm_get_medias($album, $asset)
+function submit_pe_get_medias($album, $asset)
 {
     global $repository_path;
     global $logger;
 
     $medias=array();
-    //scan all of asset's media for originals
+    //scan all of asset's media for processed
     $media_meta_list=ezmam_media_list_metadata_assoc($album, $asset);
     foreach ($media_meta_list as $media => $media_meta) {
-        if (substr($media, 0, 9)=="original_" && $media_meta['disposition']=="file") {
-            //its an original and its a movie
+        if (substr($media, 0, 10)=="processed_" && $media_meta['disposition']=="file") {
+            //its an processed and its a movie
             // $media_type=substr($media,9);//cam or slide
             //add an assoc element: media=>relativepath_to_media
             $medias[$media]=ezmam_media_getpath($album, $asset, $media, true);
             $file_path = $repository_path."/".$medias[$media];
             if (!(file_exists($file_path))) {
-                $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::ERROR, "File/dir $file_path does not exists", array("cli_submit_intro_title_movie"));
+                $logger->log(EventType::MANAGER_SUBMIT_RENDERING, LogLevel::ERROR, "File/dir $file_path does not exists", array("cli_submit_postedit"));
             }
         }//endif original
     }//end foreach media

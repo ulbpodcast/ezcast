@@ -46,13 +46,14 @@ if ($status != "processed") {
 }
 //intro-title-movie and compress high/low done, so lets insert them in our asset
 $media_files = glob("$render_dir/*.mov");
+
 //scan for all rendered medias (starting with 'high_' or 'low_' and continues with 'slide_' or 'cam_')
 foreach ($media_files as $filepath) {
     $filename = basename($filepath);
     list($quality, $type) = explode("_", $filename); // first part is high/low
     list($type, $ext) = explode('.', $type); //second part is cam/slide third part is extension (.mov)
-    //look for (low|high)_(cam|slide).mov movie filename
-    if (in_array($quality, array('high', 'low')) && in_array($type, array('cam', 'slide')) && $ext == 'mov') {
+    //look for (low|high|processed)_(cam|slide).mov movie filename
+    if (in_array($quality, array('high', 'low', 'processed')) && in_array($type, array('cam', 'slide')) && $ext == 'mov') {
         //set 'high' media metadata
         $res = high_low_media_mam_insert($album, $asset, $quality, $type, $resultprocessing_assoc, $render_dir);
     }

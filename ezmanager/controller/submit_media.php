@@ -45,12 +45,13 @@ function index($param = array())
 
     // 2) Creating the folder in the queue, and the metadata for the media
     $tmp_name = date($dir_date_format) . '_' . $input['album'];
+
     if ($input['moderation'] == 'false') {
         $moderation = "false";
     } else {
         $moderation = "true";
     }
-    
+
     $metadata = array(
         'course_name' => $input['album'],
         'origin' => 'SUBMIT',
@@ -101,9 +102,9 @@ function index($param = array())
             "todo",
             $input['album'],
             ""
-        );    
+        );
     }
-         
+
     exec($cmd, $output, $ret);
 
     if ($ret != 0) {

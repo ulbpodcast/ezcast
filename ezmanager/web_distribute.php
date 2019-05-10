@@ -75,20 +75,20 @@ switch ($input['action']) {
     case 'embed_link':
         view_embed_link();
         break;
-    
+
     // The user wants to view a media in streaming. Send an iframe containing the videos.
     case 'embed':
         view_embed();
         break;
-    
+
     case 'embed_player':
         view_embed_player();
         break;
-    
+
     default:
         error_print_http(400);
         break;
-    
+
 }
 
 //
@@ -238,7 +238,7 @@ function view_media()
             $input['quality'] = 'high';
         }
     }
-   
+
 
     if($input['quality'] != 'audio')
     {
@@ -328,7 +328,7 @@ function view_media()
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Length: ' . filesize($media_handle));
         header('Accept-Ranges: bytes');
-        
+
         //fpassthru($fh);
         // flush();
         // readfile($file);
@@ -488,7 +488,7 @@ function view_embed()
         } else { // Otherwise, if it accepts HTML5, we display the HTML5 browser
             require_once template_getpath('embed_html5.php');
         }
-        
+
         require_once template_getpath('embed_footer.php');
     }
 }

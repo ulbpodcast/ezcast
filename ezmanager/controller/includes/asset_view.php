@@ -8,7 +8,7 @@ function asset_view()
     global $ezmanager_url;
     global $trace_on;
     global $display_trace_stats;
-    
+
 
     // Setting up various variables we'll need later
     if (isset($input['album'])) {
@@ -108,13 +108,13 @@ function asset_view()
     } elseif (isset($media_metadata['high_slide'])) {
         $duration = $media_metadata['high_slide']['duration'];
     }
-    
+
     if (!isset($duration) || empty($duration)) {
         $duration = "Error getting duration";
     } else {
         $duration = get_user_friendly_duration($duration);
     }
-    
+
     $record_type = $asset_metadata['record_type'];
 
     // Finally, we set up the URLs and view counts to the different media
@@ -160,29 +160,30 @@ function asset_view()
     }
     $interval = 0;
     $displayButton = false;
-    
+
     $timestamp_repo = filemtime($repository_path."/".$album.'/'.$asset_name);
     $timestamp_repo = strval($timestamp_repo);
     $now = strtotime('now');
     $intervalCreation = abs($timestamp_repo - $now);
-    
-    if($intervalCreation>60){        
+
+    if($intervalCreation>60){
         if(file_exists($filepath_m3u8))
         {
             $timestamp_folder = filemtime($filepath_m3u8);
             $timestamp_folder = strval($timestamp_folder);
             $now = strtotime('now');
             $interval = abs($timestamp_folder - $now);
-            
+
             if($interval > 30)
-                $displayButton = true; 
-        } 
-        else 
+                $displayButton = true;
+        }
+        else
             $displayButton = true;
     }
-    
+
 
     global $enable_copy_asset;
+    global $enable_postedit;
     //
     // 4) Then display the asset and its content
     //

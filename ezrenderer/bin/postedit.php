@@ -1,4 +1,5 @@
 <?php
+file_put_contents("/home/ezcast/debug_kef.log", "call to postedit.php\n", FILE_APPEND);
 
 
 
@@ -61,6 +62,9 @@ print "\nRunning postedit.php on: $processing\n";
 print "\n------------------------ get processing info ----------------------\n";
 
 $toprocess_assoc = metadata2assoc_array($processing . "/toprocess.xml");
+$toprocess_assoc_log=print_r($toprocess_assoc , TRUE);
+file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    content  of process_assoc : $toprocess_assoc_log  \n", FILE_APPEND);
+
 if (isset($toprocess_assoc['add_title']))
     $add_title = $toprocess_assoc['add_title'];
 else
@@ -132,60 +136,106 @@ if (isset($processeds['cam'])) {
 }
 $cmd = $ffprobepath.' -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 '.$campath;
 $duration_string = shell_exec($cmd);
-if (!is_null($duration_string))
+if (!is_null($duration_string)){
     $duration = abs(floatval($duration_string));
-else
+}
+
+else{
     print "Get duration of ".$campath." failed.  cmd: ".$cmd. PHP_EOL ;
+}
+
 //get the json to an array
 $jsonStr=file_get_contents($cutlist_file);
+file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    formatted json : $jsonStr \n", FILE_APPEND);
 
 try {
 
         $stdClass=json_decode($jsonStr);
     } catch (Exception $e) {
         error_print_message('cutarray not a well formatted JSON');
+        file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    not a well formatted json : $jsonStr \n", FILE_APPEND);
+
         die;
     }
 $cutArray=get_object_vars($stdClass)['cutArray'];
-if ($cutArray[0][0]!=0) {
-    $tmp_array=[];
-    array_push($tmp_array,$startime);
-    array_push($tmp_array,$cutArray[0][0]);
-    array_push($cutlist_array,$tmp_array);
-}
-for ($i=1; $i < sizeof($cutArray); $i++) {
-    $tmp_array=[];
-    array_push($tmp_array,$cutArray[$i-1][1]);
-    array_push($tmp_array,$cutArray[$i][0]);
-    array_push($cutlist_array,$tmp_array);
-}
-if ($cutArray[sizeof($cutArray)-1][1]!=round($duration,2)) {
-    $tmp_array=[];
-    array_push($tmp_array,$cutArray[sizeof($cutArray)-1][1]);
-    array_push($tmp_array,$duration);
-    array_push($cutlist_array,$tmp_array);
-}
+file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    size of cutarray :".sizeof($cutArray)." \n", FILE_APPEND);
 
+if (isset($cutArray)&&sizeof($cutArray)!=0) {
+    if ($cutArray[0][0]!=0) {
+        $tmp_array=[];
+        array_push($tmp_array,$startime);
+        array_push($tmp_array,$cutArray[0][0]);
+        array_push($cutlist_array,$tmp_array);
+        $tmp_array_log=print_r($tmp_array,true);
+        file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    content  of \$tmp_array : $tmp_array_log  \n", FILE_APPEND);
+    }
+    for ($i=1; $i < sizeof($cutArray); $i++) {
+        $tmp_array=[];
+        array_push($tmp_array,$cutArray[$i-1][1]);
+        array_push($tmp_array,$cutArray[$i][0]);
+        array_push($cutlist_array,$tmp_array);
+        $tmp_array_log=print_r($tmp_array,true);
+        file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    content  of \$tmp_array : $tmp_array_log  \n", FILE_APPEND);
+    }
+    if ($cutArray[sizeof($cutArray)-1][1]!=round($duration,2)) {
+        $tmp_array=[];
+        array_push($tmp_array,$cutArray[sizeof($cutArray)-1][1]);
+        array_push($tmp_array,$duration);
+        array_push($cutlist_array,$tmp_array);
+        $tmp_array_log=print_r($tmp_array,true);
+        file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    content  of \$tmp_array : $tmp_array_log  \n", FILE_APPEND);
 
-// handle slide movie combine intro title and movie and encode them in 'high' and 'low' flavors
-$types = array('slide', 'cam','audio');
-$processed_qtinfo = array();
-foreach ($types as $type) {
-    if (isset($processeds[$type])) {
-        if (!isset($processed_qtinfo) || !isset($processed_qtinfo[$type])) {
-            $processed_qtinfo[$type] = array();
-            if (movie_qtinfo($processeds[$type], $processed_qtinfo[$type]))
-                myerror('couldn\'t get info for movie ' . $processeds[$type]);
+    }
+    $cutlist_array_log=print_r($cutlist_array,true);
+    file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    content  of \$cutlist_array : $cutlist_array_log  \n", FILE_APPEND);
+    // handle slide movie combine intro title and movie and encode them in 'high' and 'low' flavors
+    $types = array('slide', 'cam','audio');
+    $processed_qtinfo = array();
+    foreach ($types as $type) {
+        if (isset($processeds[$type])) {
+            if (!isset($processed_qtinfo) || !isset($processed_qtinfo[$type])) {
+                $processed_qtinfo[$type] = array();
+                if (movie_qtinfo($processeds[$type], $processed_qtinfo[$type]))
+                    myerror('couldn\'t get info for movie ' . $processeds[$type]);
+            }
+            //save original movie info
+            assoc_array2metadata_file($processed_qtinfo[$type], $processing . "/processed_{$type}_qtinfo.xml");
+            print "\n====================== [START] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ========================\n\n";
+            pe_postedit($type,$processing, $processeds[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie'],$cutlist_array);
+
+            //itm_postedit($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
+            print "======================= [END] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ===========================\n\n";
         }
-        //save original movie info
-        assoc_array2metadata_file($processed_qtinfo[$type], $processing . "/processed_{$type}_qtinfo.xml");
-        print "\n====================== [START] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ========================\n\n";
-        pe_postedit($type,$processing, $processeds[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie'],$cutlist_array);
+    }
+} else {
+    // handle slide movie combine intro title and movie and encode them in 'high' and 'low' flavors
+    file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    try to pass in the else for no cut processing \n", FILE_APPEND);
 
-        //itm_postedit($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
-        print "======================= [END] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ===========================\n\n";
+    $types = array('slide', 'cam','audio');
+    $processed_qtinfo = array();
+    foreach ($types as $type) {
+        if (isset($processeds[$type])) {
+            if (!isset($processed_qtinfo) || !isset($processed_qtinfo[$type])) {
+                $processed_qtinfo[$type] = array();
+                if (movie_qtinfo($processeds[$type], $processed_qtinfo[$type]))
+                    myerror('couldn\'t get info for movie ' . $processeds[$type]);
+            }
+            //save original movie info
+            assoc_array2metadata_file($processed_qtinfo[$type], $processing . "/processed_{$type}_qtinfo.xml");
+            print "\n====================== [START] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ========================\n\n";
+            itm_intro_title_movie($type, $processeds[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie']);
+
+            //itm_postedit($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
+            print "======================= [END] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ===========================\n\n";
+        }
     }
 }
+
+
+
+
+
+
 // die;
 //die();
 
@@ -260,6 +310,8 @@ function pe_postedit($camslide, $path, $moviein, &$title_assoc, $intro, $add_tit
 
 
 
+    //$new_asset_array = require_once '/Users/ezcastrender/ezrenderer/queues/processing/2015_08_05_11h26_PODC-I-021-priv/torender.inc';
+    //$rendering_dir = $processing_dir . '/' . $new_asset_array['new_asset'] . '_' . $new_asset_array['new_album'];
 
     $files_to_edit = array();
         // cuts the original assets in multiple parts
@@ -278,10 +330,12 @@ function pe_postedit($camslide, $path, $moviein, &$title_assoc, $intro, $add_tit
         }
     }
     // $movie_array=sort($movie_array);
+    file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    content  of \$movie_array :". print_r($movie_array,true) ." \n", FILE_APPEND);
     $sorted_movie_array = array();
     foreach($movie_array as $index => $array_path){
         $done=false;
         $true_index=intval(get_str_btw_str($array_path,"part-",".mov"));
+        file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    val  of \$true_index : $true_index \n", FILE_APPEND);
 
         if (!$done&&sizeof($sorted_movie_array)==0) {
             array_push($sorted_movie_array,$array_path);
@@ -305,6 +359,7 @@ function pe_postedit($camslide, $path, $moviein, &$title_assoc, $intro, $add_tit
         }
 
     }
+    file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    content  of \$sorted_movie_array :". print_r($sorted_movie_array,true) ." \n", FILE_APPEND);
 
     movie_join_array($sorted_movie_array, $path . '/transcoded_' . $camslide . '.mov' );
     exec("rm -rf " . $path . '/tmpdir');
@@ -374,6 +429,22 @@ function pe_postedit($camslide, $path, $moviein, &$title_assoc, $intro, $add_tit
         $dt = time() - $t1;
         print "\n------------------------ encoding $transcoded_movie ($quality) took $dt seconds ------------------------\n";
 
+        // //copying the high output before intro to processed occurence
+        // if ($quality=='high'||$quality=='superhigh') {
+        //     print "\n------------------------ copying $transcoded_movie to processed occurence ------------------------\n";
+        //     safe_copy($transcoded_movie , $processing . '/processed_' . $camslide . '.mov');
+        //     // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded
+        //     $res = movie_moov_atom($annotated_movie, $processed_movieout);
+        //     if ($res)
+        //         myerror("couldn't relocate MOOV atom for movie $processed_movieout");
+        //     //get qtinfo for high movie and save them
+        //     $res = movie_qtinfo($processed_movieout, $processed_qtinfo);
+        //     if ($res)
+        //         myerror("couldn't get info for movie $processed_movieout");
+        //     $res = assoc_array2metadata_file($processed_qtinfo, $processed_qtinfo_path);
+        //
+        // }
+
         $movies_to_join = array(); //list of movie parts to merge (for intro-title-movie))
         //check if we have an intro movie to prepend
         if (trim($intro) != "") {
@@ -427,6 +498,7 @@ function pe_postedit($camslide, $path, $moviein, &$title_assoc, $intro, $add_tit
             }
         }
 
+//        die();
         //join main movie
         array_push($movies_to_join, $transcoded_movie);
 
@@ -494,6 +566,11 @@ function pe_postedit($camslide, $path, $moviein, &$title_assoc, $intro, $add_tit
 function get_str_btw_str($source,$start,$end){
     $start_len=strlen($start);
     $end_len=strlen($end);
+
+    file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    value of the lenght : ".(strlen($source)-((strrpos($source,$start)+$start_len)+(strlen($source)-strrpos($source, $end))))."\n", FILE_APPEND);
+
+    file_put_contents("/home/ezcast/debug_kef.log", "postedit.php    return of get_str_btw_str : ".substr($source,strrpos($source,$start)+$start_len,(strlen($source)-((strrpos($source,$start)+$start_len)+(strlen($source)-strrpos($source, $end)))))."\n", FILE_APPEND);
+
     return substr($source,strrpos($source,$start)+$start_len,(strlen($source)-((strrpos($source,$start)+$start_len)+(strlen($source)-strrpos($source, $end)))));
 }
 function array_insert(&$array, $position, $insert)
@@ -649,5 +726,291 @@ function choose_movie($aspectRatio, $movies_dir, $movie_name, $movies_list, $wid
     }
 
     return $movie;
+}
+
+/**
+ * @global type $procdirpath
+ * @global string $intro_dir
+ * @global type $toprocess_assoc
+ * @global string $processing
+ * @global type $processing_dir
+ * @global type $titleqtz
+ * @global type $tempdir
+ * @global type $superhigh_encoder
+ * @global type $high_encoder
+ * @global type $low_encoder
+ * @param string $camslide
+ * @param path $moviein
+ * @param assoc_array $title_assoc description of title to add (or false if no title)
+ * @param string $intro name of intro file (or empty string if no intro needed)
+ * @param bool $add_title
+ * @param string $credits name of credits file (or empty string if no intro needed)
+ * @abstract process movie with addition of intro, outro and title if present.
+ */
+function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_title, $credits) {
+    global $processing, $intros_dir, $credits_dir, $toprocess_assoc, $processing, $original_qtinfo, $intro_movies, $credits_movies, $imageAudioFilePath,$enable_render_audio_from_video,$enableMimeTypeCheck,$video_mimeTypes,$audio_mimeTypes;
+
+    if ( $enableMimeTypeCheck && ($toprocess_assoc["record_type"]!='audio') && !in_array(mime_content_type($moviein),$video_mimeTypes)) {
+        myerror("mimetypeExcepted not found", false);
+        exit(1);
+    }
+    if ( $enableMimeTypeCheck && $toprocess_assoc["record_type"]=='audio' && !in_array(mime_content_type($moviein),$audio_mimeTypes)) {
+        myerror("mimetypeExcepted not found", false);
+        exit(1);
+    }
+    $qtinfo = $original_qtinfo[$camslide];
+//    generate video from sound submited and image
+    if ($toprocess_assoc["record_type"] == "audio" ) {
+        $movieout = $processing .'/cam.mp4';
+        $audioin = $moviein;
+        if (generateVideoFromSound($audioin, $movieout, $imageAudioFilePath)) {
+//          add some metadata top toprocess.xml
+            $moviein = $movieout;
+            $camslide = 'cam';
+            $intro = '';
+            $credits = '';
+            $add_title = 'false';
+            $toprocess_assoc["record_type"] = "cam";
+            $toprocess_assoc["has_audio"] = "true";
+            assoc_array2metadata_file($toprocess_assoc,$processing . "/toprocess.xml");
+            $path_parts = pathinfo($moviein);
+            $audioout = $path_parts['dirname'].'/audio_'.$camslide.'.mp3';
+            if (getAudioFromVideo($moviein, $audioout)) {
+//              Indicate that there is a audio file for ezplayer
+                $toprocess_assoc["has_audio"] = "true";
+                assoc_array2metadata_file($toprocess_assoc,$processing . "/toprocess.xml");
+            }
+        }
+    }
+    else if ($enable_render_audio_from_video) {
+        $path_parts = pathinfo($moviein);
+        $audioout = $path_parts['dirname'].'/audio_'.$camslide.'.mp3';
+        if (getAudioFromVideo($moviein, $audioout)) {
+//            indicate that there is a audio file for ezplayer
+            $toprocess_assoc["has_audio"] = "true";
+            assoc_array2metadata_file($toprocess_assoc,$processing . "/toprocess.xml");
+        }
+    }
+
+    if (isset($toprocess_assoc['ratio']) && $toprocess_assoc['ratio'] != 'auto')
+        $qtinfo["aspectRatio"] = $toprocess_assoc['ratio'];
+
+    $high_movieout = $processing . '/high_' . $camslide . '.mov';
+    $high_qtinfo_path = $processing . '/high_' . $camslide . '_qtinfo.xml';
+    $low_movieout = $processing . '/low_' . $camslide . '.mov';
+    $low_qtinfo_path = $processing . '/low_' . $camslide . '_qtinfo.xml';
+    $processed_movieout = $processing . '/processed_' . $camslide . '.mov';
+    $processed_qtinfo_path = $processing . '/processed_' . $camslide . '_qtinfo.xml';
+
+    $qualities[] = ($toprocess_assoc['super_highres'] == 'on') ? 'superhigh' : 'high';
+    $qualities[] = 'low';
+
+    foreach ($qualities as $quality) {
+        $t1 = time();
+        print "\n------------------------ transcoding $moviein in $quality quality ------------------------\n";
+        $encoder = '';
+        // determines the appropriate encoder to use for the desired quality and transcodes the video
+        $transcoded_movie = itm_handle_movie($moviein, $camslide, $quality, $toprocess_assoc['ratio'], $encoder);
+        $dt = time() - $t1;
+        print "\n------------------------ encoding $transcoded_movie ($quality) took $dt seconds ------------------------\n";
+
+        //copying the high output before intro to processed occurence
+        if (($quality=='high'||$quality=='superhigh')&& $enable_postedit) {
+            print "\n------------------------ copying $transcoded_movie to processed occurence ------------------------\n";
+            safe_copy($transcoded_movie , $processing . '/processed_' . $camslide . '.mov');
+            // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded
+            $res = movie_moov_atom($annotated_movie, $processed_movieout);
+            if ($res)
+                myerror("couldn't relocate MOOV atom for movie $processed_movieout");
+            //get qtinfo for high movie and save them
+            $res = movie_qtinfo($processed_movieout, $processed_qtinfo);
+            if ($res)
+                myerror("couldn't get info for movie $processed_movieout");
+            $res = assoc_array2metadata_file($processed_qtinfo, $processed_qtinfo_path);
+
+        }
+
+        $movies_to_join = array(); //list of movie parts to merge (for intro-title-movie))
+        //check if we have an intro movie to prepend
+        if (trim($intro) != "") {
+            //encodes original intro movie using the same encoder as for the video
+            $intro_movie = choose_movie($qtinfo["aspectRatio"], $intros_dir, $intro, $intro_movies, $qtinfo["width"], $qtinfo["height"]);
+
+            $transcoded_intro = $processing . "/transcoded_intro.mov";
+
+            print "\n----------------- transcoding intro with encoder $encoder ---------------------\n\n";
+            $res = safe_movie_encode($intro_movie, $transcoded_intro, $encoder, false);
+            if($res == false)
+            {
+                print "Adding intro $intro_movie to join array. Res: $res" . PHP_EOL;
+                array_push($movies_to_join, $transcoded_intro);
+            } else
+                print "\n\nSkipping $quality intro encoder: $encoder\n";
+
+            print "\n\n$quality intro encoder: $encoder\n";
+        }
+
+        //if we have a title to add, generate it
+        if ($add_title != 'false') {
+            //generate title movie using the same encoder as for the video
+            print "\n------------------------ generating title ------------------------\n";
+            $title_movieout = $processing . "/title.mov";
+            $title_movieout_temp = $processing . "/title_temp.mov";
+            $title_image = $processing . "/title.jpg";
+
+            $encoder_values = explode('_', $encoder);
+            $resolution_values = explode('x', $encoder_values[2]);
+            $width = $resolution_values[0];
+            $height = $resolution_values[1];
+            $ratio = explode(":", $qtinfo["aspectRatio"]);
+            if ($ratio[0] > 0 && $ratio[1] > 0)
+                $height = $resolution_values[0] * $ratio[1] / $ratio[0];
+
+            processing_status("title $camslide");
+            $res = gd_image_create($title_assoc, $width, $height, $title_image);
+            if (!$res || !file_exists($title_image)) {
+                myerror("couldn't generate title $title_image", false);
+                $title_image = false;
+            }
+            if($title_image) {
+            //   $res = movie_title($title_movieout, $title_assoc, $encoder, 8); //duration is hardcoded to 8
+                $res = movie_title_from_image($title_movieout_temp, $title_image, $encoder);
+                $res2 = safe_movie_encode($title_movieout_temp, $title_movieout, $encoder, false);
+                if ($res)
+                    myerror("couldn't generate title $title_movieout", false);
+                else
+                    array_push($movies_to_join, $title_movieout);
+            }
+        }
+
+//        die();
+        //join main movie
+        array_push($movies_to_join, $transcoded_movie);
+
+        //if we have a outro to add, generate it
+        if (trim($credits) != "") {
+            //encodes original credits movie using the same encoder as for the video
+            $credits_movie = choose_movie($qtinfo["aspectRatio"], $credits_dir, $credits, $credits_movies, $qtinfo["width"], $qtinfo["height"]);
+            $transcoded_credits = $processing . "/transcoded_credits.mov";
+
+            print "\n----------------- transcoding credits with encoder $encoder ---------------------\n\n";
+            if(safe_movie_encode($credits_movie, $transcoded_credits, $encoder, false) == false)
+                array_push($movies_to_join, $transcoded_credits);
+            else
+                print "\n\nSkipping $quality credits encoder: $encoder\n";
+
+            print "\n\n$quality credits encoder: $encoder\n";
+        }
+
+        //add the real movie part to intro, title and credits if they are present (intro , title, input_movie, credits)
+        if (count($movies_to_join) > 1) {
+            //var_dump($movies_to_join);
+            $outputrefmovie = $processing . "/output_ref_movie.mov";
+            print "\n------------------------ joining intro title movie parts ---------------------\n";
+            var_dump($movies_to_join);
+            $res = movie_join_array($movies_to_join, $outputrefmovie);
+            if ($res)
+                myerror("couldn't join movie $outputrefmovie. Result: $res");
+        } else {
+            //movie without intro nor title so no join needed
+            $outputrefmovie = $transcoded_movie;
+        }
+        $annotated_movie = $processing . '/annotated_movie.mov';
+        //set title, author,... in movie
+        print "\n\n------------------------ Annotate $quality $camslide ---------------------\n";
+        $res = movie_annotate($outputrefmovie, $annotated_movie, $title_assoc['title'], $title_assoc['date'], $title_assoc['description'], $title_assoc['author'], $title_assoc['keywords'], $title_assoc['copyright']);
+        if ($res) {
+            myerror("couldn't annotate movie $outputrefmovie. Res: $res", false);
+            $annotated_movie = $outputrefmovie; //skip and try to continue anyway with the previous video file
+        }
+
+        print "\n\n------------------------ Relocate MOOV atom $quality $camslide ---------------------\n";
+        if ($quality != 'low') {
+            // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded
+            $res = movie_moov_atom($annotated_movie, $high_movieout);
+            if ($res)
+                myerror("couldn't relocate MOOV atom for movie $high_movieout");
+            //get qtinfo for high movie and save them
+            $res = movie_qtinfo($high_movieout, $high_qtinfo);
+            if ($res)
+                myerror("couldn't get info for movie $high_movieout");
+            $res = assoc_array2metadata_file($high_qtinfo, $high_qtinfo_path);
+        } else {
+            // relocates the MOOV atom in the video to allow playback to begin before the file is completely downloaded
+            $res = movie_moov_atom($annotated_movie, $low_movieout);
+            if ($res)
+                myerror("couldn't relocate MOOV atom for movie $low_movieout");
+            //get qtinfo for high movie and save them
+            $res = movie_qtinfo($low_movieout, $low_qtinfo);
+            if ($res)
+                myerror("couldn't get info for movie $low_movieout");
+            $res = assoc_array2metadata_file($low_qtinfo, $low_qtinfo_path);
+        }
+    }
+}
+
+/**
+ * look at the movies, transcode them and return path to transcoded movies
+ * @global string $processing
+ * @global <type> $accepted_video_sizes
+ * @global <type> $video_high_encoders
+ * @global <type> $original_qtinfo
+ * @global string $intro_dir
+ * @param pathtomovie $movie
+ * @param $camslide
+ * @param string $quality if superhigh the movie keeps its original resolution,
+ * if high the movie is transcoded to the nearest standard resolution,
+ * if low the movie is transcoded to the lowest resolution
+ * @param $encoder receives the encoder used to transcode the video
+ * @return string path to transcoded movie or original movie
+ */
+function itm_handle_movie($movie, $camslide, $quality, $ratio, &$encoder) {
+    global $processing, $accepted_video_sizes, $video_high_transcoders, $original_qtinfo;
+
+    $qtinfo = $original_qtinfo[$camslide];
+    $height = $qtinfo['height'];
+    $width = $qtinfo['width'];
+    $letterboxing = true;
+
+    if (!isset($ratio) || $ratio == 'auto') {
+        if ($height != 0) {
+            $ratio = $width / $height;
+            $ratio = (abs($ratio - 1.77) <= abs($ratio - 1.33)) ? '16:9' : '4:3';
+        } else {
+            $ratio = '16:9';
+        }
+    } else {
+        $letterboxing = false;
+    }
+
+    //WARNING THIS CONDITION IS STRANGE BECAUSE OF THE LOW DEFINITION PARAMETERS IN CONFIG.... IF THE VIDEO IS NOT 16:9 OR 4/3 (phone for instance !!!!!
+    if ($quality == 'high' || ($quality == 'low' && ($width / $height)!= (16/9) && ($width / $height)!= (4/3) ) ) {
+        $vididx = 0;
+        $count = count($accepted_video_sizes[$ratio]);
+        while ($vididx < $count && $width > $accepted_video_sizes[$ratio][$vididx]) {
+            $vididx += 1;
+        }
+        $vididx = ($vididx == $count) ? $vididx - 1 : $vididx;
+        $good_width = $accepted_video_sizes[$ratio][$vididx];
+        $encoder = $video_high_transcoders[$ratio][(string) $good_width];
+        print "\nSize: ${width}x$height
+               \nQuality: $quality
+               \nGood_width: $good_width
+               \nEncoder: $encoder\n";
+    } else if ($quality == 'low') {
+        $encoder = $video_high_transcoders[$ratio]['low'];
+    } else {
+        $encoder = $video_high_transcoders[$ratio]['super_highres'] . $width . 'x' . $height;
+    }
+
+    //we need to transcode
+    processing_status("transcoding $camslide");
+    print "\n----------------- [START] transcoding $camslide ---------------------\n\n";
+    $movieout = $processing . "/{$camslide}_transcoded.mov";
+    $res = safe_movie_encode($movie, $movieout, $encoder, $qtinfo, $letterboxing);
+    if ($res != false)
+        myerror("transcoding error with movie $movie encoder $encoder\n");
+    print "\n----------------- [END] transcoding $camslide ---------------------\n";
+    return $movieout;
 }
 ?>

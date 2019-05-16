@@ -236,6 +236,15 @@
         <label id="asset_copy_success" lang="fr"> Copie démarrée avec succès </label>
         <label id="asset_copy_success" lang="en"> Asset copy was successfully started </label>
 
+        <label id="Beginning" lang="fr">Début</label>
+        <label id="Beginning" lang="en">Beginning</label>
+        <label id="End" lang="fr">Fin</label>
+        <label id="End" lang="en">End</label>
+        <label id="CutFusionWarning" lang="fr">Vous allez fusionner cette coupure avec une ou plusieurs coupure(s) existante(s).</label>
+        <label id="CutFusionWarning" lang="en">You are about to merge this cut with one or several already saved cut(s)</label>
+        <label id="CutNumber" lang="fr">Numéro de la coupure</label>
+        <label id="CutNumber" lang="en">Cut number</label>
+
 
 
         <!-- Actions and buttons -->
@@ -319,6 +328,11 @@
         <label id="authLocal" lang="en">Local Authentication</label>
         <label id="EditVideo" lang="fr">Editer la vidéo</label>
         <label id="EditVideo" lang="en">Edit the video</label>
+        <label id="CutValid" lang="fr">Valider la coupure</label>
+        <label id="CutValid" lang="en">Valid the current cut</label>
+        <label id="Preview" lang="fr">Prévisualiser</label>
+        <label id="Preview" lang="en">Preview</label>
+
 
         <!-- Titles -->
         <label id="Asset_sched_succeeded_title" lang="fr">Programmation d'asset terminée</label>

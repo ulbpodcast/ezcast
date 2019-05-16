@@ -22,9 +22,6 @@ function index($param = array())
     $album=$input['album'];
     $asset=$input['asset'];
     $jsonStr=$input['cutArray'];
-    
-    print_r($input);
-    // die();
 
     if (!isset($album) || empty($album) || !ezmam_album_exists($album)) {
         if (!ezmam_album_exists($album)) {

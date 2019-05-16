@@ -141,9 +141,10 @@ function print_info($info, $suffix = '')
                 </span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
+                <?php if ($enable_postedit && (ezmam_media_getpath($album,$asset_name,"processed_cam") || ezmam_media_getpath($album,$asset_name,"processed_slide"))){?>
               <li>
                 <span class="ButtonPostEditAlbum">
-                    <?php if ($status != 'processing' && $status != 'error') {
+                    <?php if ( $status != 'processing' && $status != 'error' ) {
                       echo '<a href="index.php?action=show_popup&amp;popup=postedit_asset&amp;title='.urlencode($title).
                                         '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                         'data-target="#modal">';
@@ -154,6 +155,7 @@ function print_info($info, $suffix = '')
                     ®EditVideo®</a>
                 </span>
               </li>
+              <?php } ?>
               <li><span class="ButtonSuppAlbum">
                         <?php if ($status != 'processing' && $status != 'error') {
         echo '<a href="index.php?action=show_popup&amp;popup=delete_asset&amp;title='.urlencode($title).

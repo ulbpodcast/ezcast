@@ -59,6 +59,7 @@ print "\nRunning intro_title_movie.php on: $processing\n";
 print "\n------------------------ get processing info ----------------------\n";
 
 $toprocess_assoc = metadata2assoc_array($processing . "/toprocess.xml");
+$toprocess_assoc_log=print_r($toprocess_assoc , TRUE);
 
 if (isset($toprocess_assoc['add_title']))
     $add_title = $toprocess_assoc['add_title'];

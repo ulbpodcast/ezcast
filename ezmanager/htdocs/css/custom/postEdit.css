@@ -1,0 +1,82 @@
+#cutSliderSlider.slider-horizontal{
+  width:100%;
+
+}
+#cutSliderSlider .slider-track-high {
+	background: rgba(0,0,0,0);
+}
+
+#cutSliderSlider .slider-track-low {
+	background: rgba(0,0,0,0);
+}
+
+#cutSliderSlider .slider-selection {
+	background: yellow;
+}
+#cutSliderSlider .slider-rangeHighlight {
+	background: red;
+}
+#videoSliderSlider.slider-horizontal{
+    width:100%;
+    /* background: grey; */
+}
+#videoSliderSlider .slider-selection{
+    background: blue;
+}
+.container-relative{
+    position:relative;
+}
+#cutSlider-container{
+    /* width:80%; */
+}
+#videoSlider-container{
+    /* width:80%; */
+    /* background: grey; */
+}
+.container-grey{
+    background-color: grey;
+}
+#videoDiv{
+    border-radius: 15px;
+    padding:10px;
+}
+.centered{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fixed-height{
+    height: 34px;
+}
+#curCutDiv{
+    border-radius: 15px;
+    padding:10px;
+}
+#cutNumberTh{
+    width:20%
+}
+#cutStartTh{
+    width:35%
+}
+#cutStopTh{
+    width:35%
+}
+#cutModTh{
+    width:10%
+}
+#cutDelTh{
+    width:10%
+}
+td{
+    text-align: center;
+    vertical-align: center;
+}
+th{
+    text-align: center;
+    vertical-align: center;
+}
+#cutsFusionModal{
+}
+#modal-dialog-id{
+
+}

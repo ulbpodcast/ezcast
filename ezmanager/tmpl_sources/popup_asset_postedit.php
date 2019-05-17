@@ -121,11 +121,15 @@
         </table>
     </div>
     <input type="hidden" id="data">
-    <input type="hidden" id="preview" value="0">
+    <input type="hidden" id="preview" value="-1">
+    <input type="hidden" id="previewCut" value="0">
     <input type="hidden" id="fusionValue" value="">
     <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
 </div>
 <div class="modal-footer">
+    <button type="button" class="btn btn-default" id="cutlistPreviewBtn">
+        ®Preview®
+    </button>
     <button type="button" class="btn btn-default" data-dismiss="modal" id="asset_postedit">
         ®Valid®
     </button>
@@ -197,52 +201,78 @@ $("#modal").on('shown.bs.modal',function()
     //Event on the first video timechange
     $(".firstVideo").on('timeupdate',function()
     {
+
         if (!$(".firstVideo")[0].paused)
         {
             $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
-        }else
+        }
+        var json=JSON.parse($("#data").val());
+        var modal = document.getElementById("myModal");
+        var allVideoPlayer = modal.getElementsByTagName("video");
+        if ($("#previewCut").val()==="1")
         {
-            if ($("#preview").val()==="1")
-            {
-                var json=JSON.parse($("#data").val());
-                var modal = document.getElementById("myModal");
-                var allVideoPlayer = modal.getElementsByTagName("video");
+            if ($(".firstVideo")[0].paused) {
+
                 for(var i = 0; i < allVideoPlayer.length; i++)
                 {
                     var video = allVideoPlayer[i];
                     video.currentTime=json.curCut[0];
                 }
                 $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
-                $("#preview").val("0");
+                $("#previewCut").val("0");
+            } else {
+                if($(".firstVideo")[0].currentTime>json.curCut[0]&&$(".firstVideo")[0].currentTime<json.curCut[1])
+                {
+                    if (json.curCut[1]==json.duration) {
+
+                        for(var i = 0; i < allVideoPlayer.length; i++)
+                        {
+                            var video = allVideoPlayer[i];
+                            video.pause();
+                        }
+                    } else {
+
+                        for(var i = 0; i < allVideoPlayer.length; i++)
+                        {
+                            var video = allVideoPlayer[i];
+                            video.currentTime=json.curCut[1];
+                        }
+                    }
+                }
+                else if ($(".firstVideo")[0].currentTime>(json.curCut[1]+10))
+                {
+
+                    for(var i = 0; i < allVideoPlayer.length; i++)
+                    {
+                        var video = allVideoPlayer[i];
+                        video.pause();
+                        video.currentTime=json.curCut[0];
+                    }
+                    $("#previewCut").val("0");
+                    $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
+                    $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
+                }
             }
         }
-        if ($("#preview").val()==="1")
-        {
-            var json=JSON.parse($("#data").val());
-            if($(".firstVideo")[0].currentTime>json.curCut[0]&&$(".firstVideo")[0].currentTime<json.curCut[1])
-            {
-                var modal = document.getElementById("myModal");
-                var allVideoPlayer = modal.getElementsByTagName("video");
-                for(var i = 0; i < allVideoPlayer.length; i++)
-                {
-                    var video = allVideoPlayer[i];
-                    video.currentTime=json.curCut[1];
+        if ($("#preview").val()!=-1 ) {
+            if ($("#preview").val()<json.cutArray.length) {
+                if (!$(".firstVideo")[0].paused) {
+                    if ($(".firstVideo")[0].currentTime>(json.cutArray[$("#preview").val()][0])) {
+                        for(var i = 0; i < allVideoPlayer.length; i++)
+                        {
+                            var video = allVideoPlayer[i];
+                            video.currentTime=json.cutArray[$("#preview").val()][1];
+                            $("#preview").val(parseInt($("#preview").val())+1);
+                        }
+                    }
                 }
-            }
-            else if ($(".firstVideo")[0].currentTime>(json.curCut[1]+10))
-            {
-                var modal = document.getElementById("myModal");
-                var allVideoPlayer = modal.getElementsByTagName("video");
-                for(var i = 0; i < allVideoPlayer.length; i++)
-                {
-                    var video = allVideoPlayer[i];
-                    video.pause();
-                    video.currentTime=json.curCut[0];
+                else {
+                    $("#preview").val(-1);
                 }
-                $("#preview").val("0");
-                $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
-                $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
+            } else {
+                $("#preview").val(-1);
             }
+
         }
     });
     // Event on the video slider
@@ -293,16 +323,28 @@ $("#modal").on('shown.bs.modal',function()
     //Event on the preview Button
     $("#cutPreviewBtn").off('click').on('click', function()
     {
-        $("#preview").val("1");
-        var json=JSON.parse($("#data").val());
         var modal = document.getElementById("myModal");
         var allVideoPlayer = modal.getElementsByTagName("video");
+        if ($("#previewCut").val() == 0 && !allVideoPlayer[0].paused) {
+            for (var i = 0; i < allVideoPlayer.length; i++)
+            {
+                var video = allVideoPlayer[i];
+                video.pause();
+            }
+        }
+        $("#previewCut").val("1");
+        var json=JSON.parse($("#data").val());
         if (allVideoPlayer[0].paused)
         {
-            var start=(json.curCut[0]-5);
-            if (start<0)
-            {
-                start=0;
+            var start;
+            if (json.curCut[0]==0) {
+                var start=json.curCut[1];
+            }else {
+                var start=(json.curCut[0]-5);
+                if (start<0)
+                {
+                    start=0;
+                }
             }
             for(var i = 0; i < allVideoPlayer.length; i++)
             {
@@ -320,7 +362,51 @@ $("#modal").on('shown.bs.modal',function()
                 video.currentTime=json.curCut[0];
             }
             $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
-            $("#preview").val("0");
+            $("#previewCut").val("0");
+        }
+    });
+
+    $("#cutlistPreviewBtn").off('click').on('click', function()
+    {
+        var modal = document.getElementById("myModal");
+        var allVideoPlayer = modal.getElementsByTagName("video");
+        if ($("#preview").val() == -1 && !allVideoPlayer[0].paused) {
+            for (var i = 0; i < allVideoPlayer.length; i++)
+            {
+                var video = allVideoPlayer[i];
+                video.pause();
+            }
+        }
+        $("#preview").val("0");
+        var json=JSON.parse($("#data").val());
+        if (allVideoPlayer[0].paused)
+        {
+            var start;
+            if (json.cutArray[0][0]==0) {
+                var start=json.cutArray[0][1];
+            }else {
+                var start=(json.cutArray[0][0]-5);
+                if (start<0)
+                {
+                    start=0;
+                }
+            }
+            for(var i = 0; i < allVideoPlayer.length; i++)
+            {
+                var video = allVideoPlayer[i];
+                video.currentTime=start;
+                video.play();
+            }
+            $("#btnPlayIcon").attr('class', "glyphicon glyphicon-pause");
+        } else
+        {
+            for (var i = 0; i < allVideoPlayer.length; i++)
+            {
+                var video = allVideoPlayer[i];
+                video.pause();
+            }
+            $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
+            $("#preview").val("-1");
         }
     });
     //Show the fusion confirmation modal

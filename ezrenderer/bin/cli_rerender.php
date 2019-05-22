@@ -41,6 +41,7 @@ if (!is_dir($new_asset_dir)) {
     echo "new asset directory not found";
     die;
 }
+file_put_contents("/home/ezcast/debug_kef.log", "new asset dir in cli_rerender : $new_asset_dir  \n", FILE_APPEND);
 $new_asset_array = require_once $new_asset_dir . '/torender.inc';
 
 

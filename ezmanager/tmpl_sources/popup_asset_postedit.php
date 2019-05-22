@@ -14,7 +14,7 @@
                 echo '
                 <video class="';
                 echo ($has_cam) ? "firstVideo" :"";
-                echo '" src="/ezmanager/distribute.php?action=media&amp;album='.$album.'&amp;asset='.$asset.'&amp;type=cam&amp;quality=processed&amp;token='.$asset_token.'&amp;origin=embed" type="video/h264" width="100%" height="100%" id="video_cam" controlslist="nodownload">';
+                echo ' postedit_video" src="/ezmanager/distribute.php?action=media&amp;album='.$album.'&amp;asset='.$asset.'&amp;type=cam&amp;quality=processed&amp;token='.$asset_token.'&amp;origin=embed" type="video/h264" width="100%" height="100%" id="video_cam" controlslist="nodownload">';
                 ?>
             </div>
             <?php
@@ -27,7 +27,7 @@
                 echo '
                 <video class="';
                 echo (!$has_cam) ? "firstVideo" :"";
-                echo '" src="/ezmanager/distribute.php?action=media&amp;album='.$album.'&amp;asset='.$asset.'&amp;type=slide&amp;quality=processed&amp;token='.$asset_token.'&amp;origin=embed" type="video/h264" width="100%" height="100%" id="video_slide" muted controlslist="nodownload">
+                echo ' postedit_video" src="/ezmanager/distribute.php?action=media&amp;album='.$album.'&amp;asset='.$asset.'&amp;type=slide&amp;quality=processed&amp;token='.$asset_token.'&amp;origin=embed" type="video/h264" width="100%" height="100%" id="video_slide" muted controlslist="nodownload">
                 ';
                 ?>
             </div>
@@ -65,9 +65,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <input class="col-sm-3" id="cutStart" type="number" name="" value="">
+                    <input class="col-sm-3" id="cutStart" type="number">
                     <div class="col-sm-2"></div>
-                    <input class="col-sm-3" id="cutStop" type="number" name="" value="">
+                    <input class="col-sm-3" id="cutStop" type="number">
                     <div class="col-sm-2"></div>
                 </div>
             </div>
@@ -92,12 +92,12 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-4 centered col-sm-offset-1">
-                      <input class="btn" id="cutPreviewBtn" type="button" name="" value="®Preview®">
+                      <input class="btn" id="cutPreviewBtn" type="button" value="®Preview®">
                   </div>
                   <div class="col-sm-2">
                   </div>
                   <div class="col-sm-4 centered">
-                      <input class="btn" id="cutValid" type="button" name="" value="®CutValid®">
+                      <input class="btn" id="cutValid" type="button" value="®CutValid®">
                   </div>
                   <div class="col-sm-1">
                   </div>
@@ -146,22 +146,17 @@ $("#modal").on('shown.bs.modal',function()
             toggleVideosPlay();
         });
         console.log("modal load init");
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
-        // {
-        //     console.log("video load");
-        // });
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         var duration=allVideoPlayer[0].duration;
         var firstCut=[0,duration]
-        console.log(firstCut);
         var array=[];
         if (true)
         {
             //to be fill later when input from already existing cut exist
         }
-        initJSON(duration,array,firstCut);
-        var json=JSON.parse($("#data").val());
-        initSlider(json.duration,json.cutArray,json.curCut);
+        var json = initJSON(duration,array,firstCut);
+        // var json=JSON.parse($("#data").val());
+        setSlider(json.duration,json.cutArray,json.curCut);
         setInputsMinMax();
         updateCutTable(json.cutArray);
         cutFusionOtherBtn(true);
@@ -207,8 +202,7 @@ $("#modal").on('shown.bs.modal',function()
             $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
         }
         var json=JSON.parse($("#data").val());
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         if ($("#previewCut").val()==="1")
         {
             if ($(".firstVideo")[0].paused) {
@@ -221,7 +215,7 @@ $("#modal").on('shown.bs.modal',function()
                 $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
                 $("#previewCut").val("0");
             } else {
-                if($(".firstVideo")[0].currentTime>json.curCut[0]&&$(".firstVideo")[0].currentTime<json.curCut[1])
+                if($(".firstVideo")[0].currentTime > json.curCut[0] && $(".firstVideo")[0].currentTime < json.curCut[1])
                 {
                     if (json.curCut[1]==json.duration) {
 
@@ -254,33 +248,26 @@ $("#modal").on('shown.bs.modal',function()
                 }
             }
         }
-        if ($("#preview").val()!=-1 ) {
-            if ($("#preview").val()<json.cutArray.length) {
-                if (!$(".firstVideo")[0].paused) {
-                    if ($(".firstVideo")[0].currentTime>(json.cutArray[$("#preview").val()][0])) {
-                        for(var i = 0; i < allVideoPlayer.length; i++)
-                        {
-                            var video = allVideoPlayer[i];
-                            video.currentTime=json.cutArray[$("#preview").val()][1];
-                            $("#preview").val(parseInt($("#preview").val())+1);
-                        }
-                    }
-                }
-                else {
-                    $("#preview").val(-1);
+
+        if ($("#preview").val() != -1 )
+        {
+            if ($("#preview").val()<json.cutArray.length && !$(".firstVideo")[0].paused && $(".firstVideo")[0].currentTime>(json.cutArray[$("#preview").val()][0])) {
+                for(var i = 0; i < allVideoPlayer.length; i++)
+                {
+                    var video = allVideoPlayer[i];
+                    video.currentTime=json.cutArray[$("#preview").val()][1];
+                    $("#preview").val(parseInt($("#preview").val())+1);
                 }
             } else {
                 $("#preview").val(-1);
             }
-
         }
     });
     // Event on the video slider
     $("#videoSlider").off('change').on('change', function(e)
     {
         var newTime=$("#videoSlider").slider('getValue');
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         if (!allVideoPlayer[0].paused)
         {
             for(var i = 0; i < allVideoPlayer.length; i++)
@@ -301,9 +288,10 @@ $("#modal").on('shown.bs.modal',function()
     {
         console.log("edition de la coupure");
         var json=JSON.parse($("#data").val());
-        var index=parseInt(this.id.substring(6,7));
+        var index=parseInt(this.id.substring(6 , this.id.length));
+        console.log("index = "+this.id.substring(6 , this.id.length));
         var tArray=json.cutArray;
-        json.curCut=json.cutArray[this.id.substring(6,7)];
+        json.curCut=json.cutArray[index];
         tArray.splice(index,1);
         json.cutArray=tArray;
         updateFromJson(json);
@@ -323,8 +311,7 @@ $("#modal").on('shown.bs.modal',function()
     //Event on the preview Button
     $("#cutPreviewBtn").off('click').on('click', function()
     {
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         if ($("#previewCut").val() == 0 && !allVideoPlayer[0].paused) {
             for (var i = 0; i < allVideoPlayer.length; i++)
             {
@@ -368,8 +355,7 @@ $("#modal").on('shown.bs.modal',function()
 
     $("#cutlistPreviewBtn").off('click').on('click', function()
     {
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         if ($("#preview").val() == -1 && !allVideoPlayer[0].paused) {
             for (var i = 0; i < allVideoPlayer.length; i++)
             {
@@ -409,13 +395,6 @@ $("#modal").on('shown.bs.modal',function()
             $("#preview").val("-1");
         }
     });
-    //Show the fusion confirmation modal
-    $("#cutsFusionModal").on('shown.bs.modal', function(event)
-    {
-        var json=JSON.parse($("#data").val());
-        var fusionJson=JSON.parse($("#fusionValue").val());
-        updateFusionTable(json.curCut,fusionJson.cutFusionArray);
-    });
     //test the cut and insert it in the cuttable and the cutarray in the right position
     $("#cutValid").off('click').on('click', function()
     {
@@ -426,7 +405,7 @@ $("#modal").on('shown.bs.modal',function()
         //testing integrity of the current cut before insertion
         if ((json.curCut[0] != json.curCut[1])
             && !(isNaN(json.curCut[0]))
-            && !(isNaN(json.curCut[0]))
+            && !(isNaN(json.curCut[1]))
             && (typeof json.curCut[0] != undefined)
             && (typeof json.curCut[1] != undefined)
             && (json.curCut[0]!=null)
@@ -487,8 +466,7 @@ $("#modal").on('shown.bs.modal',function()
     //fire change on cutslider event on the video and the curCut input
     $("#cutSlider-container").off('slide change').on('slide change','#cutSlider', function()
     {
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         if ($("#cutSlider").slider('getValue')[0] != $("#cutStart").val())
         {
             for(var i = 0; i < allVideoPlayer.length; i++)
@@ -559,8 +537,7 @@ $("#modal").on('shown.bs.modal',function()
     $("#modal").off('hidden.bs.modal').on('hidden.bs.modal',function()
     {
         console.log("trigger hidden");
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         console.log(allVideoPlayer +"status : pause="+allVideoPlayer[0].paused);
         if (!allVideoPlayer[0].paused)
         {
@@ -595,8 +572,7 @@ $("#modal").on('shown.bs.modal',function()
     }
     function toggleVideosPlay()
     {
-        var modal = document.getElementById("myModal");
-        var allVideoPlayer = modal.getElementsByTagName("video");
+        var allVideoPlayer = document.getElementsByClassName("postedit_video");
         if (allVideoPlayer[0].paused)
         {
             for(var i = 0; i < allVideoPlayer.length; i++)
@@ -625,10 +601,11 @@ $("#modal").on('shown.bs.modal',function()
         }
         myJson=JSON.stringify(json);
         $("#data").val(myJson);
+        return json;
     }
 
     //init the 2 slider
-    function initSlider(duration,array,cut)
+    function setSlider(duration,array,cut)
     {
         $("#cutSlider").slider(
         {
@@ -710,14 +687,13 @@ $("#modal").on('shown.bs.modal',function()
         return tArray;
     }
 
-    function updateCutTable(array,tableField)
+    function updateCutTable(array)
     {
         console.log("update cuttable");
         $("#cutTableBody").empty();
         for(i=0;i<array.length;i++)
         {
-          var cutNb=(i+1);
-          $("#cutTableBody").append("<tr><td>"+cutNb+"</td><td>"+array[i][0]+"</td><td>"+array[i][1]+"</td><td><button type='button' id='modBtn"+i+"' class='btn modBtn'><i class='glyphicon glyphicon-edit'></i></button></td><td><button type='button' id='delBtn"+i+"' class='btn delBtn'><i class='glyphicon glyphicon-remove-sign'></i></button></td></tr>");
+          $("#cutTableBody").append("<tr><td>"+(i+1)+"</td><td>"+array[i][0]+"</td><td>"+array[i][1]+"</td><td><button type='button' id='modBtn"+i+"' class='btn modBtn'><i class='glyphicon glyphicon-edit'></i></button></td><td><button type='button' id='delBtn"+i+"' class='btn delBtn'><i class='glyphicon glyphicon-remove-sign'></i></button></td></tr>");
         }
     }
 
@@ -740,7 +716,7 @@ $("#modal").on('shown.bs.modal',function()
         $("#data").val(myJson);
         setInputValue(json.curCut);
         $("#cutSlider").slider('destroy');
-        initSlider(json.duration,json.cutArray,json.curCut);
+        setSlider(json.duration,json.cutArray,json.curCut);
     }
 
     function submit_postedit_form()

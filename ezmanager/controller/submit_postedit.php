@@ -72,7 +72,7 @@ function index($param = array())
         error_print_message('cutarray first arg is false');
         die;
     }
-    for ($i=1; $i < sizeof($cutArray); $i++) {
+    for ($i=1; $i < count($cutArray); $i++) {
         if ($cutArray[$i-1][1]>$cutArray[$i][0]||$cutArray[$i][0]>$cutArray[$i][1]||$cutArray[$i][1]>$duration) {
             error_print_message('cutarray is false');
             die;

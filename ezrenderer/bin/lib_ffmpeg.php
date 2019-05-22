@@ -19,6 +19,8 @@ if ($encoding_pgm['name'] == 'ffmpeg_built_in_aac') {
  */
 function movie_join_array($movie_array, $output) {
     global $ffmpegpath;
+    file_put_contents("/home/ezcast/debug_kef.log", " lib_ffmpeg.php   call to movie join array\n", FILE_APPEND);
+
 
     // creates a string containing all video files to join
     $filename_list = '';
@@ -543,54 +545,57 @@ function movie_moov_atom($moviein, $movieout) {
 
 /* * ***************** E D I T I O N   F U N C T I O N S ********************* */
 
-function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
+function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0, $postedit = false) {
     global $ffmpegpath;
-
-    // converts the associative array in regular array
-    foreach ($cutlist as $key => $values) {
-        if (is_string($values)) {
-            $cutlist_array[$values] = $key;
-        } else if (is_array($values)) {
-            foreach ($values as $value) {
-                $cutlist_array[$value] = $key;
-            }
-        }
-    }
-    // sorts array on index
-    ksort($cutlist_array);
-
     $ffmpeg_params = array();
     $startime = 0;
     $duration = 0;
-    // prepares parameters for ffmpeg
-    foreach ($cutlist_array as $index => $value) {
-
-        switch ($value) {
-            case 'start' :
-            case 'resume':
-                if ($startime == 0) {
-                    $startime = $index;
+    if (!$postedit) {
+        // converts the associative array in regular array
+        foreach ($cutlist as $key => $values) {
+            if (is_string($values)) {
+                $cutlist_array[$values] = $key;
+            } else if (is_array($values)) {
+                foreach ($values as $value) {
+                    $cutlist_array[$value] = $key;
                 }
-                break;
-            case 'pause' :
-            case 'stop':
-                if ($startime != 0 && $index > $startime) {
-                    $duration = $index - $startime;
-                    $ffmpeg_params[] = (($startime - $bias) < 0) ? (array( 0 , $duration - abs($startime - $bias))) : (array( $startime - $bias , $duration));
+            }
+        }
+        foreach ($cutlist_array as $index => $value) {
 
-                    $startime = 0;
-                }
+            switch ($value) {
+                case 'start' :
+                case 'resume':
+                    if ($startime == 0) {
+                        $startime = $index;
+                    }
+                    break;
+                case 'pause' :
+                case 'stop':
+                    if ($startime != 0 && $index > $startime) {
+                        $duration = $index - $startime;
+                        $ffmpeg_params[] = (($startime - $bias) < 0) ? (array( 0 , $duration - abs($startime - $bias))) : (array( $startime - $bias , $duration));
+
+                        $startime = 0;
+                    }
+                    break;
+            }
+            if ($value == 'stop')
                 break;
         }
-        if ($value == 'stop')
-            break;
+        // sorts array on index
+        ksort($cutlist_array);
+    } else {
+        $ffmpeg_params=$cutlist;
     }
+
+    // prepares parameters for ffmpeg
+
     if ($startime != 0){
         $ffmpeg_params[] = (($startime - $bias) < 0) ? (array( 0 , -1)) : (array( $startime - $bias , -1));
     }
 
     chdir($movie_path);
-
     $tmp_dir = 'tmpdir';
     mkdir("./$tmp_dir");
 
@@ -598,10 +603,16 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
     foreach ($ffmpeg_params as $index => $params) {
         $try = 0;
         $part_duration = -5;
+        if ($postedit) {
+            $duration = $params[1]-$params[0];
+        } else {
+            $duration = $params[1];
+        }
+
         // sometimes, ffmpeg doesn't extract the recording segment properly
         // This results in a shortened segment which may cause problems in the final rendering
         // We then loop on segment extraction to make sure it has the expected duration
-        while ($try < 3 && $part_duration < $params[1]) {
+        while ($try < 3 && $part_duration < $duration) {
             // extracts the recording segment from the full recording
             // -ss : the segment starts at $param[0] seconds of the full video
             // -t  : the segment lasts $param[1] seconds long
@@ -611,16 +622,29 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
             $more_params .= ($try >= 2) ? ' -pix_fmt yuv420p ' : ''; // defines pixel format, which is often lacking
             $ext = file_extension_get($movie_in);
             $ext = $ext['ext'];
-            $cmd = "$ffmpegpath -ss " . $params[0] . (($params[1] !== -1 ) ? " -i $movie_path/$movie_in  -t " . $params[1] : '') . $more_params . " -c copy -y $tmp_dir/part-$index.$ext; wait";
+            if ($postedit) {
+                $cmd = "$ffmpegpath  -i $movie_in -ss " . $params[0] . (($params[1] !== -1 ) ? " -to " . $params[1] : '') ." -y $tmp_dir/part-$index.$ext";
+            } else {
+                $cmd = "$ffmpegpath -ss " . $params[0] . (($params[1] !== -1 ) ? " -i $movie_path/$movie_in  -t " . $params[1] : '') . $more_params . " -c copy -y $tmp_dir/part-$index.$ext; wait";
+            }
+
             print "*************************************************************************" . PHP_EOL .
                     $cmd . PHP_EOL .
                     "*************************************************************************" . PHP_EOL;
             exec($cmd, $cmdoutput, $returncode);
             // the segment has been extracted, we verify here its duration
-            $cmd = "$ffmpegpath -i $tmp_dir/part-$index.$ext 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g'";
+            if ($postedit) {
+                $cmd= "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $tmp_dir/part-$index.$ext";
+            } else {
+                $cmd = "$ffmpegpath -i $tmp_dir/part-$index.$ext 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g'";
+            }
+
             $part_duration = system($cmd); // duration in HH:MM:SS
-            sscanf($part_duration, "%d:%d:%d", $hours, $minutes, $seconds);
-            $part_duration = $hours * 3600 + $minutes * 60 + $seconds; // duration in seconds
+            if ( !$postedit) {
+                sscanf($part_duration, "%d:%d:%d", $hours, $minutes, $seconds);
+                $part_duration = $hours * 3600 + $minutes * 60 + $seconds; // duration in seconds
+            }
+
             $try++;
             print "--------------------------------------------------------------------------" . PHP_EOL .
                     "Try [$try]: duration found : $part_duration - expected : " . $params[1] . PHP_EOL .
@@ -629,55 +653,7 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0) {
     }
 }
 
-function movie_cut_from_json($movie_path, $movie_in, $cutlist_array, $bias = 0) {
-    global $ffmpegpath;
-    //extract cutarray from json
-    $ffmpeg_params = array();
-    $startime = 0;
-    $duration = 0;
-    chdir($movie_path);
 
-    $tmp_dir = 'tmpdir';
-
-    mkdir("./$tmp_dir");
-
-    // creates each recording segments to be concatenated
-    foreach ($cutlist_array as $index => $params) {
-        $try = 0;
-        $part_duration = -5;
-        $duration = $params[1]-$params[0];
-        // sometimes, ffmpeg doesn't extract the recording segment properly
-        // This results in a shortened segment which may cause problems in the final rendering
-        // We then loop on segment extraction to make sure it has the expected duration
-        while ($try < 3 && $part_duration < ($params[1]-$params[0])) {
-            // extracts the recording segment from the full recording
-            // -ss : the segment starts at $param[0] seconds of the full video
-            // -t  : the segment lasts $param[1] seconds long
-            // -c  : audio and video codecs are copied
-            // -y  : the segment is replaced if already existing
-            $more_params = ($try >= 1) ? ' -probesize 1000000 -analyzeduration 1000000 ' : ''; // increase analyze duration
-            $more_params .= ($try >= 2) ? ' -pix_fmt yuv420p ' : ''; // defines pixel format, which is often lacking
-            $ext = file_extension_get($movie_in);
-            $ext = $ext['ext'];
-            $cmd = "$ffmpegpath  -i $movie_in -ss " . $params[0] . (($params[1] !== -1 ) ? " -to " . $params[1] : '') ." -y $tmp_dir/part-$index.$ext";
-            // ffmpeg -ss 00:00:03 -t 00:00:08 -i movie.mp4 -acodec copy -vcodec copy -async 1 cut.mp4
-            print "*************************************************************************" . PHP_EOL .
-                    $cmd . PHP_EOL .
-                    "*************************************************************************" . PHP_EOL;
-            exec($cmd, $cmdoutput, $returncode);
-            // the segment has been extracted, we verify here its duration
-            // $cmd = "$ffmpegpath -i $tmp_dir/part-$index.$ext 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g'";
-            $cmd= "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $tmp_dir/part-$index.$ext";
-            $part_duration = system($cmd); // duration in HH:MM:SS
-            // sscanf($part_duration, "%d:%d:%d", $hours, $minutes, $seconds);
-            // $part_duration = $hours * 3600 + $minutes * 60 + $seconds; // duration in seconds
-            $try++;
-            print "--------------------------------------------------------------------------" . PHP_EOL .
-                    "Try [$try]: duration found : $part_duration - expected : " . ($params[1]-$params[0]) . PHP_EOL .
-                    "--------------------------------------------------------------------------" . PHP_EOL;
-        }
-    }
-}
 /**
  * scans a filename and extract 'name' and 'ext'(ension) parts return them in an assoc array
  * @param <type> $filename

@@ -156,6 +156,8 @@ if ($res==0) {
 
 
 // Append the new job
+$asset_meta['status'] = 'processing';
+$res=ezmam_asset_metadata_set($album, $asset, $asset_meta);
 $ok = scheduler_append(array(
   'status' => 'postedit',
   'location' => $render_dir,

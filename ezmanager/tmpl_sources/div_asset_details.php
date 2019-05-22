@@ -149,8 +149,8 @@ function print_info($info, $suffix = '')
                                         '&amp;album='.urlencode($album).'&amp;asset='.urlencode($asset_name).'&sesskey='.$_SESSION["sesskey"].'" data-remove="false" data-toggle="modal" '.
                                         'data-target="#modal">';
                       } else {
-                      echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available" data-remove="false"' .
-                                        ' data-toggle="modal" data-target="#modal">';
+                      echo '<a href="index.php?action=show_popup&amp;popup=popup_not_available&sesskey='.$_SESSION["sesskey"].'" data-remove="false"' .
+                                              ' data-toggle="modal" data-target="#modal">';
                       } ?>
                     ®EditVideo®</a>
                 </span>

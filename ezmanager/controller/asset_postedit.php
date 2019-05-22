@@ -36,19 +36,13 @@ function index($param = array())
 
     //test validite cutArray
 
-    $toDie=false;
-    for ($i=0; $i < sizeof($cutArray); $i++) {
-        if ($cutArray[$i][0]>=$cutArray[$i][1]||$cutArray[$i][0]<0||$cutArray[$i][1]>$duration) {
-            $toDie=true;
+    $error=false;
+    for ($i=0; $i < count($cutArray); $i++) {
+        if (($cutArray[$i][0] >= $cutArray[$i][1] || $cutArray[$i][0] < 0 || $cutArray[$i][1] > $duration) || ($i>0 && $cutArray[$i][0]<$cutArray[$i-1][1])) {
+            $error=true;
         }
-        if ($i>0) {
-            if ($cutArray[$i][0]<$cutArray[$i-1][1]) {
-                $toDie=true;
-            }
-        }
-
     }
-    if ($toDie) {
+    if ($error) {
         error_print_message(template_get_message('Unauthorized', get_lang()));
         log_append('warning', 'asset_postedit: array send to postedit album ' . $input['album'] . ' corrupted');
         die;

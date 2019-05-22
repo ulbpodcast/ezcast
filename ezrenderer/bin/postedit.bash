@@ -1,3 +1,3 @@
 #!/bin/bash
-cd !PATH/bin
-!PHP_PATH ./postedit.php $1
+cd /home/ezcast/ezrenderer/bin
+/usr/bin/php ./intro_title_movie.php $1

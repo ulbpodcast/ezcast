@@ -280,10 +280,10 @@ else {
             requireController('asset_downloadable_set.php');
             break;
 
-        case 'postedit_asset':
-                    $service = true;
-                    requireController('asset_postedit.php');
-                    break;
+        // case 'postedit_asset':
+        //             $service = true;
+        //             requireController('asset_postedit.php');
+        //             break;
 
         case 'submit_postedit':
                     $service = true;

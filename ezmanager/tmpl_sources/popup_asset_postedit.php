@@ -165,6 +165,7 @@ $("#modal").on('shown.bs.modal',function()
     updateCutTable(json.cutArray);
     cutFusionOtherBtn(true);
     $("#cutsFusionAlert").hide();
+    setInputValue(json.curCut);
 
     //Events on the cut inputs
     $("#cutStart", "#cutStop").off('change').on('change', function()

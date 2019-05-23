@@ -644,9 +644,9 @@ function get_processing_info($processing_info_path, $processing_filename, &$proc
  * @return string path to transcoded movie or original movie
  */
 function itm_handle_movie($movie, $camslide, $quality, $ratio, &$encoder) {
-    global $processing, $accepted_video_sizes, $video_high_transcoders, $original_qtinfo;
+    global $processing, $accepted_video_sizes, $video_high_transcoders, $working_vids_qtinfo;
 
-    $qtinfo = $original_qtinfo[$camslide];
+    $qtinfo = $working_vids_qtinfo[$camslide];
     $height = $qtinfo['height'];
     $width = $qtinfo['width'];
     $letterboxing = true;

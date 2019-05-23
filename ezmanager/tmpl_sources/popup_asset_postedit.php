@@ -92,7 +92,7 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-4 centered col-sm-offset-1">
-                      <input class="btn" id="cutPreviewBtn" type="button" value="®Preview®">
+                      <input class="btn" id="cutPreviewBtn" type="button" value="®CutPreview®">
                   </div>
                   <div class="col-sm-2">
                   </div>
@@ -124,7 +124,8 @@
     <input type="hidden" id="preview" value="-1">
     <input type="hidden" id="previewCut" value="0">
     <input type="hidden" id="fusionValue" value="">
-    <input type="hidden" id="sesskey" name="sesskey" value="<?php echo $_SESSION['sesskey']; ?>"/>
+    <input type="hidden" id="previous_cutarray" value='<?php echo (isset($cutlist_json) && !empty($cutlist_json)) ? $cutlist_json:"";?>'>
+    <input type="hidden" id="sesskey" name="sesskey" value='<?php echo $_SESSION['sesskey']; ?>'/>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" id="cutlistPreviewBtn">
@@ -149,9 +150,14 @@ $("#modal").on('shown.bs.modal',function()
     var duration = allVideoPlayer[0].duration;
     var firstCut = [0,duration];
     var array = [];
-    if (true)
+    if ($("#previous_cutarray").val()!="")
     {
-        //to be fill later when input from already existing cut exist
+        var tmp_array = JSON.parse($("#previous_cutarray").val());
+        array= tmp_array['cutArray'];
+        console.log(array);
+    }else {
+        console.log(<?php $cutlist_json ?>);
+        console.log("json not set");
     }
     var json = initJSON(duration,array,firstCut);
     setSlider(json.duration,json.cutArray,json.curCut);
@@ -743,7 +749,6 @@ $("#modal").on('shown.bs.modal',function()
         {
             refresh_album_view();
         }, 100);
-
     }
 });
 </script>

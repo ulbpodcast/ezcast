@@ -330,6 +330,8 @@
         <label id="EditVideo" lang="en">Edit the video</label>
         <label id="CutValid" lang="fr">Valider la coupure</label>
         <label id="CutValid" lang="en">Valid the current cut</label>
+        <label id="CutPreview" lang="fr">Prévisualiser la coupure</label>
+        <label id="CutPreview" lang="en">Cut Preview</label>
         <label id="Preview" lang="fr">Prévisualiser</label>
         <label id="Preview" lang="en">Preview</label>
 

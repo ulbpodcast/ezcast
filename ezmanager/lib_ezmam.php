@@ -2342,6 +2342,21 @@ function ezmam_set_cutlist($album,$asset,$jsonStr)
     }
 
 }
+ 
+function ezmam_get_cutlist($album,$asset)
+{
+    $repository_path = ezmam_repository_path();
+    if ($repository_path === false) {
+        return false;
+    }
+    $path = $repository_path . "/" . $album;
+    if ($asset != "") {
+        $path .= "/" . $asset ;
+    }
+
+    $path.="/_cutlist.json";
+    return $path;
+}
 
 /**
  * Adds the metadata for the incoming submitted media into postedit queue.

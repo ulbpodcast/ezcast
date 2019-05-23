@@ -509,10 +509,14 @@ function postedit_asset()
   $created_albums_list_with_descriptions = acl_authorized_albums_list_created(true);
   $asset_name = $input['asset'];
 
-  global $video_split_time;
 
+  global $video_split_time;
+  $cutlist_json;
   $asset = $input['asset'];
   $album = $input['album'];
+  if (file_exists(ezmam_get_cutlist($album,$asset))) {
+      $cutlist_json = file_get_contents(ezmam_get_cutlist($album,$asset));
+  }
   $asset_metadata = ezmam_asset_metadata_get($album, $asset);
   $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
   $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides

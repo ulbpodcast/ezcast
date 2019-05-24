@@ -72,8 +72,6 @@ $intro_title_movie = str_replace("!PATH", $current_dir, $intro_title_movie);
 $intro_title_movie = str_replace("!PHP_PATH", $php_cmd, $intro_title_movie);
 file_put_contents($current_dir . "/bin/intro_title_movie.bash", $intro_title_movie);
 
-file_put_contents($current_dir . "/bin/postedit.bash", $intro_title_movie);
-
 chmod($current_dir . "/bin/intro_title_movie.bash", 0755);
-chmod($current_dir . "/bin/postedit.bash", 0755);
+
 echo "0";

@@ -68,13 +68,9 @@ if ($err) {
 }
 $logger->log(EventType::MANAGER_RENDERING, LogLevel::DEBUG, "Successfully sent videos for job $uid. Location: ". $job['location'], array(basename(__FILE__)));
 
-// Launch the rendering or the post editing
-if ($job['status']=='postedit') {
-    $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['home'] . '/postedit.bash ' . $job_dir . ' 2>&1"';
-}else {
+
     $cmd= $ssh_pgm . ' -oBatchMode=yes ' . $renderer['client'] . '@' . $renderer['host'] . ' "' . $renderer['launch'] . ' ' . $job_dir . ' 2>&1"';
 
-}
 
 $t1=time();
 echo $cmd . PHP_EOL;

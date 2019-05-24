@@ -154,10 +154,6 @@ $("#modal").on('shown.bs.modal',function()
     {
         var tmp_array = JSON.parse($("#previous_cutarray").val());
         array= tmp_array['cutArray'];
-        console.log(array);
-    }else {
-        console.log(<?php $cutlist_json ?>);
-        console.log("json not set");
     }
     var json = initJSON(duration,array,firstCut);
     setSlider(json.duration,json.cutArray,json.curCut);
@@ -167,8 +163,8 @@ $("#modal").on('shown.bs.modal',function()
     $("#cutsFusionAlert").hide();
     setInputValue(json.curCut);
 
-    //Events on the cut inputs
-    $("#cutStart", "#cutStop").off('change').on('change', function()
+    //Events on the cut inputs to update the cutslider and the video current time
+    $("#cutStart , #cutStop").off('change').on('change', function()
     {
         var start = parseFloat($("#cutStart").val());
         var stop = parseFloat($("#cutStop").val());
@@ -203,9 +199,8 @@ $("#modal").on('shown.bs.modal',function()
 
     //Event on the first video timechange to update the video slider
     // Will jump or pause the video if the preview or cutpreview was clicked
-    $(".firstVideo").on('timeupdate',function()
+    $(".firstVideo").off('timeupdate').on('timeupdate',function(e)
     {
-
         if (!$(".firstVideo")[0].paused)
         {
             $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
@@ -233,6 +228,7 @@ $("#modal").on('shown.bs.modal',function()
                             var video = allVideoPlayer[i];
                             video.pause();
                         }
+                        $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
                     } else {
 
                         for(var i = 0; i < allVideoPlayer.length; i++)
@@ -264,11 +260,20 @@ $("#modal").on('shown.bs.modal',function()
                 for(var i = 0; i < allVideoPlayer.length; i++)
                 {
                     var video = allVideoPlayer[i];
-                    video.currentTime=json.cutArray[$("#preview").val()][1];
+                    if (json.cutArray[$("#preview").val()][1]==json.duration) {
+                        video.pause();
+                        $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
+                    } else {
+                        video.currentTime=json.cutArray[$("#preview").val()][1];
+                    }
                     $("#preview").val(parseInt($("#preview").val())+1);
                 }
-            } else if ($("#preview").val() >= json.cutArray.length) {
-                $("#preview").val(-1);
+            } else {
+                if ($(".firstVideo")[0].paused) {
+                    $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
+                    $("#preview").val(-1);
+                    $("#videoSlider").slider('setValue',$(".firstVideo")[0].currentTime,true);
+                }
             }
         }
     });
@@ -286,14 +291,15 @@ $("#modal").on('shown.bs.modal',function()
             }
             $("#btnPlayIcon").attr('class', "glyphicon glyphicon-play");
         }
-        for(var i = 0; i < allVideoPlayer.length; i++)
-        {
-            var video = allVideoPlayer[i];
-            video.currentTime=newTime;
+        else{
+            for(var i = 0; i < allVideoPlayer.length; i++)
+            {
+                var video = allVideoPlayer[i];
+                video.currentTime=newTime;
+            }
         }
     });
     //Event on the cutTable Buttons
-    //
     //will set the current cut to the cut clicked and delete the cut from the table
     $("#cutTable").off('click').on('click','.modBtn',function(event)
     {
@@ -306,7 +312,6 @@ $("#modal").on('shown.bs.modal',function()
         updateFromJson(json);
         updateCutTable(json.cutArray);
     })
-    //
     //will delete the cut from the table
     .on('click','.delBtn',function(event)
     {
@@ -318,8 +323,6 @@ $("#modal").on('shown.bs.modal',function()
         updateFromJson(json);
         updateCutTable(json.cutArray);
     });
-
-
     //Event on the cut preview Button
     //set the preview tag on 1 then start the player(s)
     $("#cutPreviewBtn").off('click').on('click', function()
@@ -636,6 +639,7 @@ $("#modal").on('shown.bs.modal',function()
             value: [cut[0],cut[1]],
             rangeHighlights: updateCutSliderBackground(array)
         });
+        $("#cutSliderSlider > .slider-handle").css({"border-radius":"0%","width":"4px","margin-left":"-2px"});
         $("#videoSlider").slider(
         {
             id: "videoSliderSlider",

@@ -53,7 +53,7 @@ rename($downloaded, $processing);
 $processed = $processed_dir . '/' . $argv[1];
 $fail = $failed_dir . '/' . time() . $argv[1];
 $postedit = false;
-//test if the cutlist.json existe and therefor taking the postedit way
+//test if the _cutlist.json existe and therefor taking the postedit way
 $cutlist_file=$processing."/_cutlist.json";
 if (file_exists($cutlist_file)) {
     $postedit = true;
@@ -88,28 +88,26 @@ $working_vids = array(
     'slide' => $processing . '/slide.mov',
     'audio' => $processing . '/audio.mp3',
 );
-if ($postedit) {
-    if (isset($toprocess_assoc['processed_slide'])) {
-        $working_vids['slide'] = $processing . substr($toprocess_assoc['processed_slide'], strrpos($toprocess_assoc['processed_slide'], '/'));
-    }
-    if (isset($toprocess_assoc['processed_cam'])) {
-        $working_vids['cam'] = $processing . substr($toprocess_assoc['processed_cam'], strrpos($toprocess_assoc['processed_cam'], '/'));
-    }
-    if (isset($toprocess_assoc['processed_audio'])) {
-        $working_vids['audio'] = $processing . substr($toprocess_assoc['processed_audio'], strrpos($toprocess_assoc['processed_audio'], '/'));
-    }
 
-} else {
-    if (isset($toprocess_assoc['original_slide'])) {
-        $working_vids['slide'] = $processing . substr($toprocess_assoc['original_slide'], strrpos($toprocess_assoc['original_slide'], '/'));
-    }
-    if (isset($toprocess_assoc['original_cam'])) {
-        $working_vids['cam'] = $processing . substr($toprocess_assoc['original_cam'], strrpos($toprocess_assoc['original_cam'], '/'));
-    }
-    if (isset($toprocess_assoc['original_audio'])) {
-        $working_vids['audio'] = $processing . substr($toprocess_assoc['original_audio'], strrpos($toprocess_assoc['original_audio'], '/'));
-    }
+//set the original or processed video as source after checking the presence of the _cutlist.json
+$typeVideo = 'original';
+
+if ($postedit) {
+    $typeVideo = 'processed';
 }
+
+
+if (isset($toprocess_assoc[$typeVideo.'_slide'])) {
+    $working_vids['slide'] = $processing . substr($toprocess_assoc[$typeVideo.'_slide'], strrpos($toprocess_assoc[$typeVideo.'_slide'], '/'));
+}
+if (isset($toprocess_assoc[$typeVideo.'_cam'])) {
+    $working_vids['cam'] = $processing . substr($toprocess_assoc[$typeVideo.'_cam'], strrpos($toprocess_assoc[$typeVideo.'_cam'], '/'));
+}
+if (isset($toprocess_assoc[$typeVideo.'_audio'])) {
+    $working_vids['audio'] = $processing . substr($toprocess_assoc[$typeVideo.'_audio'], strrpos($toprocess_assoc[$typeVideo.'_audio'], '/'));
+}
+
+
 
 
 
@@ -204,23 +202,20 @@ foreach ($types as $type) {
                 myerror('couldn\'t get info for movie ' . $working_vids[$type]);
         }
         //save original movie info
-        if ($postedit) {
-            assoc_array2metadata_file($working_vids_qtinfo[$type], $processing . "/processed_{$type}_qtinfo.xml");
 
-        } else {
-            assoc_array2metadata_file($working_vids_qtinfo[$type], $processing . "/original_{$type}_qtinfo.xml");
-        }
+        assoc_array2metadata_file($working_vids_qtinfo[$type], $processing . "/{$typeVideo}_{$type}_qtinfo.xml");
+
+
 
         print "\n====================== [START] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ========================\n\n";
         if ($postedit) {
             itm_intro_title_movie($type, $working_vids[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie'],$processing ,$cutlist_array ,true);
         }else {
             itm_intro_title_movie($type, $working_vids[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title, $toprocess_assoc['credits_movie']);
-        }        //itm_intro_title_movie($type, $originals[$type], $title_assoc, $toprocess_assoc['intro_movie'], $add_title);
+        }
         print "======================= [END] Combines intro - title - movie - credits and encodes them in HD and LD (slide) ===========================\n\n";
     }
 }
-//die();
 
 processing_status('processed');
 
@@ -436,7 +431,7 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
         $dt = time() - $t1;
         print "\n------------------------ encoding $transcoded_movie ($quality) took $dt seconds ------------------------\n";
 
-        //copying the high output before intro to processed occurence
+        //copying the high output before intro to processed backup
         if (( $quality == 'high' || $quality == 'superhigh' ) && $enable_postedit && !$postedit) {
             print "\n------------------------ copying $transcoded_movie to processed occurence ------------------------\n";
             safe_copy($transcoded_movie , $processing . '/processed_' . $camslide . '.mov');
@@ -495,7 +490,6 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
                 $title_image = false;
             }
             if($title_image) {
-            //   $res = movie_title($title_movieout, $title_assoc, $encoder, 8); //duration is hardcoded to 8
                 $res = movie_title_from_image($title_movieout_temp, $title_image, $encoder);
                 $res2 = safe_movie_encode($title_movieout_temp, $title_movieout, $encoder, false);
                 if ($res)
@@ -504,8 +498,6 @@ function itm_intro_title_movie($camslide, $moviein, &$title_assoc, $intro, $add_
                     array_push($movies_to_join, $title_movieout);
             }
         }
-
-//        die();
         //join main movie
         array_push($movies_to_join, $transcoded_movie);
 

@@ -271,6 +271,8 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
 
   if($gpu_enabled &&  (($width/$height)==(16/9) || ($width/$height)==(4/3) ) ){
         //ENCODE
+        $video_filter = "scale=$width:$height";
+
         $cmd = "$ffmpegpath -y -hwaccel cuvid -i $moviein -r 25 $start -fpre $encoder -vf $video_filter -ar 44100 -ac 2  -vcodec h264_nvenc -rc vbr_hq -b:v 8M -maxrate:v 10M -y $aac_codec $movieout";
         //JUST COPY TO BE ENCODED IN CONCAT
         //$cmd = "$ffmpegpath -i $moviein -vcodec copy -acodec copy -y $movieout";
@@ -547,6 +549,8 @@ function movie_moov_atom($moviein, $movieout) {
 
 function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0, $postedit = false) {
     global $ffmpegpath;
+    global $gpu_enabled;
+
     $ffmpeg_params = array();
     $startime = 0;
     $duration = 0;
@@ -623,7 +627,15 @@ function movie_cut($movie_path, $movie_in, $cutlist, $bias = 0, $postedit = fals
             $ext = file_extension_get($movie_in);
             $ext = $ext['ext'];
             if ($postedit) {
-                $cmd = "$ffmpegpath  -i $movie_in -ss " . $params[0] . (($params[1] !== -1 ) ? " -to " . $params[1] : '') ." -y $tmp_dir/part-$index.$ext";
+                if($gpu_enabled){
+                    // $cmd = "$ffmpegpath  -i $movie_in -ss " . $params[0] . (($params[1] !== -1 ) ? " -to " . $params[1] : '') ." -y $tmp_dir/part-$index.$ext";
+                    $cmd = "$ffmpegpath -y -hwaccel cuvid  -i $movie_in -ss " . $params[0] . (($params[1] !== -1 ) ? " -to " . $params[1] : '') ." -y $tmp_dir/part-$index.$ext";
+                }
+                else{
+                    $cmd = "$ffmpegpath  -i $movie_in -ss " . $params[0] . (($params[1] !== -1 ) ? " -to " . $params[1] : '') ." -y $tmp_dir/part-$index.$ext";
+                }
+            
+            
             } else {
                 $cmd = "$ffmpegpath -ss " . $params[0] . (($params[1] !== -1 ) ? " -i $movie_path/$movie_in  -t " . $params[1] : '') . $more_params . " -c copy -y $tmp_dir/part-$index.$ext; wait";
             }

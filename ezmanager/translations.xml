@@ -242,6 +242,10 @@
         <label id="End" lang="en">End</label>
         <label id="CutFusionWarning" lang="fr">Vous allez fusionner cette coupure avec une ou plusieurs coupure(s) existante(s).</label>
         <label id="CutFusionWarning" lang="en">You are about to merge this cut with one or several already saved cut(s)</label>
+        <label id="CutFullMovieWarning" lang="fr">Impossible de couper la totalité de la video.</label>
+        <label id="CutFullMovieWarning" lang="en">Impossible to cut the full movie</label>
+
+
         <label id="CutNumber" lang="fr">Numéro de la coupure</label>
         <label id="CutNumber" lang="en">Cut number</label>
 

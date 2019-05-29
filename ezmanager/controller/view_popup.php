@@ -502,6 +502,8 @@ function copy_asset()
 function postedit_asset()
 {
   global $input;
+  global $repository_path;
+
   if (!isset($input['asset']) || !isset($input['album'])) {
       echo 'Usage: index.php?action=show_popup&amp;popup=postedit_asset&amp;album=ALBUM&amp;asset=ASSET';
       die;
@@ -521,6 +523,14 @@ function postedit_asset()
   $has_cam = (strpos($asset_metadata['record_type'], 'cam') !== false); // Whether or not the asset has a "live-action" video
   $has_slides = (strpos($asset_metadata['record_type'], 'slide') !== false); // Whether or not the asset has slides
   $asset_token = ezmam_asset_token_get($album, $asset); // Asset token, used for embedded media player (preview)
+  $firstVideoMeta;
+  $album_path = $repository_path . "/" . $album;
 
+  if ($asset_metadata['record_type'] == 'cam' || $asset_metadata['record_type'] == 'camslide') {
+      $firstVideoMeta = metadata2assoc_array($album_path .'/'.$asset. "/processed_cam/_metadata.xml");
+  } else {
+      $firstVideoMeta = metadata2assoc_array($album_path .'/'.$asset. "/processed_slide/_metadata.xml");
+  }
+  $duration = round(floatval($firstVideoMeta['duration']),2);
   require template_getpath('popup_asset_postedit.php');
 }

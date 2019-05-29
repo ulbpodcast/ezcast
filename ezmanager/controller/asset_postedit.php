@@ -55,6 +55,13 @@ function index($param = array())
 
     $album_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
     $asset_metadata = metadata2assoc_array($album_path .'/'.$asset. "/_metadata.xml");
+    $firstVideoMeta;
+    if ($asset_metadata['record_type'] == 'cam' || $asset_metadata['record_type'] == 'camslide') {
+        $firstVideoMeta = metadata2assoc_array($album_path .'/'.$asset. "/original_cam/_metadata.xml");
+    } else {
+        $firstVideoMeta = metadata2assoc_array($album_path .'/'.$asset. "/original_slide/_metadata.xml");
+    }
+    $duration = round($firstVideoMeta['duration']);
 
 
   }

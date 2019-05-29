@@ -90,6 +90,11 @@
                         <button type="button" name="cutsFusionCancel" class="btn" id="cutsFusionCancel">®Cancel®</button>
                     </div>
                 </div>
+                <div class="alert alert-danger" id="cutFullMovieAlert" style="display:none;">
+                    <div class="" id="cutFullMovieMessage">
+                        <p>®CutFullMovieWarning®</p>
+                    </div>
+                </div>
                 <div class="row">
                   <div class="col-sm-4 centered col-sm-offset-1">
                       <input class="btn" id="cutPreviewBtn" type="button" value="®CutPreview®">
@@ -147,7 +152,8 @@ $("#modal").on('shown.bs.modal',function()
         toggleVideosPlay();
     });
     var allVideoPlayer = document.getElementsByClassName("postedit_video");
-    var duration = allVideoPlayer[0].duration;
+    var duration = <?php echo $duration; ?> ;
+    // var duration = allVideoPlayer[0].duration;
     var firstCut = [0,duration];
     var array = [];
     if ($("#previous_cutarray").val()!="")
@@ -428,56 +434,64 @@ $("#modal").on('shown.bs.modal',function()
             && (json.curCut[0]!=null)
             && (json.curCut[1]!=null))
         {
-            //counting the number of intersected cuts
-            var tArray=[];
-            for (var i = 0; i < json.cutArray.length; i++)
-            {
-                if ((json.curCut[0] >= json.cutArray[i][0]
-                        && json.curCut[0] <= json.cutArray[i][1])
-                    || (json.curCut[1] >= json.cutArray[i][0]
-                        && json.curCut[1] <= json.cutArray[i][1])
-                    || (json.curCut[0] <= json.cutArray[i][0]
-                        &&json.curCut[1] >= json.cutArray[i][1]))
-                {
-                    intersectedCut.push(i);
-                }
-            }
-            //calling the validation alert if there is at least one intersected cut
-            if (intersectedCut.length!=0)
-            {
-                var fusionJson=JSON.parse('{"cutFusionArray":[]}');
-                for (var i = 0; i < intersectedCut.length; i++)
-                {
-                    var curTArray=[intersectedCut[i],
-                        json.cutArray[intersectedCut[i]][0],
-                        json.cutArray[intersectedCut[i]][1]];
-                    fusionJson.cutFusionArray.push(curTArray);
-                }
-                $("#fusionValue").val(JSON.stringify(fusionJson));
-                $("#cutsFusionAlert").show();
-                cutFusionOtherBtn(false);
-            //inserting the current cut in the correct position in the cut Array
-            }else{
-                var inserted = false;
+            if (json.curCut[0] == 0 && json.curCut[1]==json.duration) {
+                $("#cutFullMovieAlert").show();
+                setTimeout(function(){$("#cutFullMovieAlert").hide()},3000);
+            } else {
+                //counting the number of intersected cuts
+                var tArray=[];
                 for (var i = 0; i < json.cutArray.length; i++)
                 {
-                    if ((json.curCut[0] < json.cutArray[i][0])
-                        && !inserted)
+                    if ((json.curCut[0] >= json.cutArray[i][0]
+                            && json.curCut[0] <= json.cutArray[i][1])
+                        || (json.curCut[1] >= json.cutArray[i][0]
+                            && json.curCut[1] <= json.cutArray[i][1])
+                        || (json.curCut[0] <= json.cutArray[i][0]
+                            &&json.curCut[1] >= json.cutArray[i][1]))
+                    {
+                        intersectedCut.push(i);
+                    }
+                }
+                //calling the validation alert if there is at least one intersected cut
+                if (intersectedCut.length!=0)
+                {
+                    var fusionJson=JSON.parse('{"cutFusionArray":[]}');
+                    for (var i = 0; i < intersectedCut.length; i++)
+                    {
+                        var curTArray=[intersectedCut[i],
+                            json.cutArray[intersectedCut[i]][0],
+                            json.cutArray[intersectedCut[i]][1]];
+                        fusionJson.cutFusionArray.push(curTArray);
+                    }
+                    $("#fusionValue").val(JSON.stringify(fusionJson));
+                    $("#cutsFusionAlert").show();
+                    cutFusionOtherBtn(false);
+                //inserting the current cut in the correct position in the cut Array
+                }else{
+                    var inserted = false;
+                    for (var i = 0; i < json.cutArray.length; i++)
+                    {
+                        if ((json.curCut[0] < json.cutArray[i][0])
+                            && !inserted)
+                        {
+                            tArray.push(json.curCut);
+                            inserted=true;
+                        }
+                        tArray.push(json.cutArray[i]);
+                    }
+                    if (!inserted)
                     {
                         tArray.push(json.curCut);
-                        inserted=true;
                     }
-                    tArray.push(json.cutArray[i]);
+                    json.cutArray=tArray;
+                    json.curCut=[0,json.duration];
+                    updateFromJson(json);
+                    updateCutTable(json.cutArray);
                 }
-                if (!inserted)
-                {
-                    tArray.push(json.curCut);
-                }
-                json.cutArray=tArray;
-                json.curCut=[0,json.duration];
-                updateFromJson(json);
-                updateCutTable(json.cutArray);
             }
+
+
+
         }
     });
     //fire change on cutslider event on the video and the curCut input

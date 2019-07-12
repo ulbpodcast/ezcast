@@ -17,7 +17,7 @@ if (!isset($recorder_array))
 {
     $list=db_classrooms_list();
     foreach ($list as $room) {
-        if (empty($room[user_name])){
+        if (empty($room['user_name'])){
             $recorder_array[$room['IP']]['user']=$recorder_user;
             $recorder_array[$room['IP']]['basedir']=$recorder_basedir;
             $recorder_array[$room['IP']]['subdir']=$recorder_subdir;

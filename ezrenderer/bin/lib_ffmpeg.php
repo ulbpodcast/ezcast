@@ -269,7 +269,7 @@ function movie_encode($moviein, $movieout, $encoder, $qtinfo, $letterboxing = tr
     
   if($gpu_enabled &&  (($width/$height)==(16/9) || ($width/$height)==(4/3) ) ){
         //ENCODE
-        $cmd = "$ffmpegpath -y -hwaccel cuvid -i $moviein -r 25 $start -fpre $encoder -vf $video_filter -ar 44100 -ac 2  -vcodec h264_nvenc -rc vbr_hq -b:v 8M -maxrate:v 10M -y $aac_codec $movieout";
+        $cmd = "$ffmpegpath -y -hwaccel cuvid -i $moviein -r 25 $start -fpre $encoder -vf $video_filter -ar 44100 -ac 2  -vcodec h264_nvenc -rc vbr_hq -b:v 8M -maxrate:v 10M -max_muxing_queue_size 1024 -y $aac_codec $movieout";
         //JUST COPY TO BE ENCODED IN CONCAT
         //$cmd = "$ffmpegpath -i $moviein -vcodec copy -acodec copy -y $movieout";
     }else

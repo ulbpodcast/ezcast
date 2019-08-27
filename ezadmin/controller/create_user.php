@@ -13,8 +13,7 @@ function index($param = array())
         $user_ID = $input['user_ID'];
         $surname = $input['surname'];
         $forename = $input['forename'];
-        $des_seed = chr(rand(33, 126)) . chr(rand(33, 126));
-        $recorder_passwd = crypt($input['recorder_passwd'], $des_seed);
+        $recorder_passwd = $input['recorder_passwd'];
         $permissions = $input['permissions'] ? 1 : 0;
         $is_ezadmin = $input['is_ezadmin'] ? 1 : 0;
 

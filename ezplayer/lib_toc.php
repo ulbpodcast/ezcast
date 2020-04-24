@@ -27,7 +27,7 @@
 /**
 * @package ezcast.ezplayer.lib.toc
 */
-     
+
 require_once 'config.inc';
 require_once __DIR__.'/../commons/lib_error.php';
 require_once 'lib_various.php';
@@ -60,7 +60,11 @@ function toc_bookmarks_search($search, $fields, $level, $albums, $asset = '')
     } else {
         if (isset($albums) && count($albums) > 0) {
             foreach ($albums as $album) {
-                $bookmarks = array_merge($bookmarks, toc_album_bookmarks_list_get($album));
+                $list = toc_album_bookmarks_list_get($album);
+                if($list != FALSE){
+
+                  $bookmarks = array_merge($bookmarks, $list);
+                }
             }
         }
     }
@@ -151,7 +155,7 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection)
 {
     $bookmarks_list;
     $selected_bookmarks = array();
-    
+
     if (!isset($album) || $album == '') {
         //echo "(1)";
         return false;
@@ -162,7 +166,7 @@ function toc_asset_bookmarks_selection_get($album, $asset, $selection)
     } else {
         $bookmarks_list = toc_asset_bookmark_list_get($album, $asset);
     }
-    
+
     if ($bookmarks_list == false) {
         //echo "(2)";
         return false;
@@ -284,14 +288,14 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
 
     if ($count > 0) {
         $index = -1;
-        
+
         // loop while the asset is older than the reference asset
         do {
             ++$index;
             $asset_ref = $bookmarks_list[$index]['asset'];
             $timecode_ref = $bookmarks_list[$index]['timecode'];
         } while ($index < ($count-1) && $asset > $asset_ref);
-        
+
         // if the asset already contains bookmarks, loop while
         // timecode is bigger than reference timecode
         while ($index < ($count-1) && $asset == $asset_ref && $timecode > $timecode_ref) {
@@ -307,7 +311,7 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
             --$index;
         }
     }
-    
+
     // extract keywords from the description
     $keywords_array = get_keywords($description);
     // and save them as keywords
@@ -317,7 +321,7 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
         }
         $keywords .= $keyword;
     }
-    
+
     // surround every url by '*' for url recognition in EZplayer
     $description = surround_url($description);
     // add a bookmark at the specified index in the albums list

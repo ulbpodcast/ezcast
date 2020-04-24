@@ -91,7 +91,12 @@ function index($param = array())
     }
 
     if (in_array('official', $tab)) { // searches in official bookmarks
-        $bookmarks_toc = array_merge($bookmarks_toc, toc_bookmarks_search($search, $fields, $level, $albums, $asset));
+        $searchBook = toc_bookmarks_search($search, $fields, $level, $albums, $asset);
+
+        if(!empty($searchBook)){
+
+          $bookmarks_toc = array_merge($bookmarks_toc, $searchBook);
+        }
     }
     if (in_array('custom', $tab)) { // searches in personal bookmarks
         $bookmarks = user_prefs_bookmarks_search($_SESSION['user_login'], $search, $fields, $level, $albums, $asset);
@@ -101,11 +106,19 @@ function index($param = array())
     }
 
     $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
+
+    $searchimploded = $search;
+
+    if (!empty($search) && count($search) > 1) {
+
+        $searchImploded = implode(', ', $search);
+    }
+
     trace_append(array($lvl,
         $input['origin'] == 'keyword' ? 'keyword_search' : 'bookmarks_search',
         $_SESSION['album'] == '' ? '-' : $_SESSION['album'],
         $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'],
-        implode(', ', $search),
+        $searchimploded,
         $target,
         implode(", ", $fields),
         implode(", ", $fields_thread),

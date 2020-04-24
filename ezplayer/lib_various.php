@@ -464,7 +464,7 @@ function surround_url($string)
     // all prefixes we want to surround
     $patterns = array('http://', 'https://', 'www.', 'mailto:');
     $end_of_line = array(' ', PHP_EOL, '<', '>', '(', ')', '[', ']', '{', '}', '"', '\'');
-    
+
     while ($pos >= 0) {
         // finds the first occurence of each pattern
         $pos_array = array();
@@ -491,7 +491,7 @@ function surround_url($string)
                 }
                 // adds a '*' at the end of the url
                 $string = substr($string, 0, $pos) . "**" . substr($string, $pos);
-                
+
                 $pos+=2;
             } else { // the url is already surrounded, just move to the next '*' tag
                 $tmp_pos = stripos(substr($string, $pos), '**');
@@ -516,7 +516,7 @@ function surround_url($string)
 function safe_text($string)
 {
     // remove php and javascript tags
-    $string = preg_replace('/(<\?{1}[pP\s]{1}.+\?>)/Us', "", $string);    
+    $string = preg_replace('/(<\?{1}[pP\s]{1}.+\?>)/Us', "", $string);
     $string = str_replace('javascript', "-javascript-", $string);
     $string = str_replace('onmouseover', "-onmouseover-", $string);
     $string = str_replace('onclick', "-onclick-", $string);
@@ -527,63 +527,63 @@ function safe_text($string)
     $string = str_replace('onkeydown', "-onkeydown-", $string);
     $string = str_replace('onkeypress', "-onkeypress-", $string);
     $string = str_replace('onkeyup', "-onkeyup-", $string);
-    
+
     //encode all html entities tags unless exeptions
-    
+
     $string = str_replace('<', "&lt;", $string);
-    
+
     $string = str_replace('&lt;em', "<em", $string);
     $string = str_replace('&lt;/em', "</em", $string);
-    
+
     $string = str_replace('&lt;strong', "<strong", $string);
     $string = str_replace('&lt;/strong', "</strong", $string);
-    
+
     $string = str_replace('&lt;p', "<p", $string);
     $string = str_replace('&lt;/p', "</p", $string);
-    
+
     $string = str_replace('&lt;span', '<span', $string);
     $string = str_replace('&lt;/span', '</span', $string);
-    
+
     $string = str_replace('&lt;li', "<li", $string);
     $string = str_replace('&lt;/li', "</li", $string);
-    
+
     $string = str_replace('&lt;ul', "<ul", $string);
     $string = str_replace('&lt;/ul', "</ul", $string);
-    
+
     $string = str_replace('&lt;ol', "<ol", $string);
     $string = str_replace('&lt;/ol', "</ol", $string);
-    
+
     $string = str_replace('&lt;p style="text-align: center;"', '<p style="text-align: center;"', $string);
-    
+
     $string = str_replace('&lt;p style="text-align: left;"', '<p style="text-align: left;"', $string);
-    
+
     $string = str_replace('&lt;p style="text-align: justify;"', '<p style="text-align: justify;"', $string);
-    
+
     $string = str_replace('&lt;h1', "<h1", $string);
     $string = str_replace('&lt;/h1', "</h1", $string);
-    
+
     $string = str_replace('&lt;h2', "<h2", $string);
     $string = str_replace('&lt;/h2', "</h2", $string);
-    
+
     $string = str_replace('&lt;h3', "<h3", $string);
     $string = str_replace('&lt;/h3', "</h3", $string);
-    
+
     $string = str_replace('&lt;sub', "<sub", $string);
     $string = str_replace('&lt;/sub', "</sub", $string);
-    
+
     $string = str_replace('&lt;sup', "<sup", $string);
     $string = str_replace('&lt;/sup', "</sup", $string);
-  
+
     $string = str_replace('&lt;i style="font-size: 10px;"', '<i style="font-size: 10px;"', $string);
     $string = str_replace('&lt;/i', "</i", $string);
 
-    
+
     $string = str_replace('href', "-href-", $string);
     $string = preg_replace('/<div\b[^>]*>/is', '&lt;div&gt;', $string);
     $string = preg_replace('/<\/div>/is', '&lt;/div&gt;', $string);
     // prevent mysql injections
     $string = htmlspecialchars($string, ENT_QUOTES);
-     
+
     return $string;
 }
 
@@ -738,52 +738,53 @@ function search_in_array($search, $bookmarks, $fields, $level)
     // give a score to each bookmark, according to certain rules.
     $relevancy = false;
     $score = 0;
+    if(!empty($bookmarks)){
+      foreach ($bookmarks as $index => &$bookmark) {
+          if ($level == 0 || $bookmark['level'] == $level) {
+              foreach ($search as $word) {
+                  foreach ($fields as $field) {
+                      // Does the field contain the word ?
+                      $offset = stripos($bookmark[$field], $word);
+                      if ($offset !== false) {
+                          if ($relevancy) {
+                              // the word has been found, we increment the score
+                              $last_index = $offset + strlen($word);
+                              $score++;
 
-    foreach ($bookmarks as $index => &$bookmark) {
-        if ($level == 0 || $bookmark['level'] == $level) {
-            foreach ($search as $word) {
-                foreach ($fields as $field) {
-                    // Does the field contain the word ?
-                    $offset = stripos($bookmark[$field], $word);
-                    if ($offset !== false) {
-                        if ($relevancy) {
-                            // the word has been found, we increment the score
-                            $last_index = $offset + strlen($word);
-                            $score++;
+                              // there is nothing before and/or after the word, we increment the score
+                              if ($offset == 0) {
+                                  $score++;
+                              }
+                              if ($last_index == strlen($bookmark[$field])) {
+                                  $score++;
+                              }
+                              if ($offset > 0 && $bookmark[$field][$offset - 1] == ' ') {
+                                  $score++;
+                              }
+                              if ($last_index < strlen($bookmark[$field]) && $bookmark[$field][$last_index] == ' ') {
+                                  $score++;
+                              }
 
-                            // there is nothing before and/or after the word, we increment the score
-                            if ($offset == 0) {
-                                $score++;
-                            }
-                            if ($last_index == strlen($bookmark[$field])) {
-                                $score++;
-                            }
-                            if ($offset > 0 && $bookmark[$field][$offset - 1] == ' ') {
-                                $score++;
-                            }
-                            if ($last_index < strlen($bookmark[$field]) && $bookmark[$field][$last_index] == ' ') {
-                                $score++;
-                            }
-
-                            // There are multiple occurences of the word, we increment the score
-                            $count = substr_count(strtoupper($bookmark[$field]), strtoupper($word));
-                            if ($count > 1) {
-                                $score += ($count - 1) * 2;
-                            }
-                        } else {
-                            $score++;
-                            break 2;
-                        }
-                    }
-                }
-            }
-        }
-        if ($score == 0) {
-            unset($bookmarks[$index]);
-        } else {
-            $bookmark['score'] = $score;
-        }
-        $score = 0;
+                              // There are multiple occurences of the word, we increment the score
+                              $count = substr_count(strtoupper($bookmark[$field]), strtoupper($word));
+                              if ($count > 1) {
+                                  $score += ($count - 1) * 2;
+                              }
+                          } else {
+                              $score++;
+                              break 2;
+                          }
+                      }
+                  }
+              }
+          }
+          if ($score == 0) {
+              unset($bookmarks[$index]);
+          } else {
+              $bookmark['score'] = $score;
+          }
+          $score = 0;
+      }
     }
     return (is_array($bookmarks)) ? array_values($bookmarks) : null;
 }

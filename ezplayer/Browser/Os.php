@@ -1,7 +1,5 @@
 <?php
 
-use InvalidArgumentException;
-
 /**
  * OS Detection
  *

@@ -122,14 +122,14 @@ if(isset($input['loging'])){
     requireController('user_logout.php');
     logout();
     $logged_in = false;
-    view_login_form();   
+    view_login_form();
 }
 
 
 // If we're not logged in, we try to log in or display the login form
 if (!$logged_in) {
     // global $repository_path;
-    
+
     // if the url contains the parameter 'anon' the session is assumsed as anonymous
     if (($allow_url_anon && isset($input['anon']) && $input['anon'] == true) ||
             // Log as anonymous if user tries to access an album and it has been set as accessible as anonymous
@@ -137,11 +137,11 @@ if (!$logged_in) {
         user_anonymous_session();
         $logged_in = true;
     }
-    
+
     if (isset($input['action'])) {
         switch ($input['action']) {
 
-            
+
             // Handle login form
             case 'login':
                 if (!isset($input['login']) || !isset($input['passwd'])) {
@@ -171,8 +171,8 @@ if (!$logged_in) {
                 break;
         }
     }
-    
-    
+
+
     if (!$logged_in) {
         //Just display the login form
         if (isset($_GET["sso"])) {
@@ -203,7 +203,7 @@ else if(isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1 && ($inpu
      $first_connexion = !isset($_COOKIE['has_connected_once']);
      // Cookie life: one year
      //setcookie('has_connected_once', true, time() + (365 * 24 * 60 * 60));
-    
+
      redraw_page();
  }
 
@@ -226,7 +226,7 @@ function load_page()
     global $input;
     $action = $input['action'];
     $redraw = false;
-    
+
     /**
      * Until pages and services are divided, mark some action as services
      * A service = action not returning a page.
@@ -234,21 +234,21 @@ function load_page()
      */
     global $service; //true if we're currently running a service.
     $service = false;
-    
+
     //
     // Actions
     //
     // Controller goes here
-    
+
     $paramController = array();
     switch ($action) {
-        
-                    
+
+
         case 'acceptTermsOfUses':
             requireController('acceptTermsOfUses.php');
         break;
 
-        
+
         // ============== L O G I N  /  L O G O U T =============== //
         // The only case when we could possibly arrive here with a session created
         // and a "login" action is when the user refreshed the page. In that case,
@@ -308,15 +308,15 @@ function load_page()
         case 'streaming_config_update':
             requireController('asset_streaming_player_update.php');
             break;
-        
+
         case 'streaming_chat_update':
             requireController('asset_streaming_chat_update.php');
             break;
-        
+
         case 'streaming_chat_get_last':
             requireController('asset_streaming_chat_get_last.php');
             break;
-        
+
         case 'chat_message_add':
             requireController('chat_message_add.php');
             break;
@@ -524,11 +524,11 @@ function load_page()
             albums_view();
             return;
     }
-    
-    
+
+
     // Call the function to view the page
     index($paramController);
-    
+
     db_close();
 }
 
@@ -642,7 +642,11 @@ function user_login($login, $passwd)
     $_SESSION['user_real_login'] = $res['real_login'];
     $_SESSION['user_full_name'] = $res['full_name'];
     $_SESSION['user_email'] = $res['email'];
-    $_SESSION['termsOfUses'] = $res['termsOfUses'];
+
+    if (isset($res['termsOfUses'])) {
+
+      $_SESSION['termsOfUses'] = $res['termsOfUses'];
+    }
     $_SESSION['sesskey'] = md5(strtotime("now").''.$_SESSION['user_login']);
 
     $_SESSION['admin_enabled'] = false;
@@ -721,10 +725,10 @@ function view_login_form()
         $_SESSION['has_flash'] = false;
     }
     $url = $ezplayer_url;
-    
+
     $lang = isset($input['lang']) ? $input['lang'] : 'fr';
     set_lang($lang);
-    
+
     template_repository_path($template_folder . get_lang());
     // template include goes here
     /* require_once template_getpath('login.php');*/
@@ -769,7 +773,7 @@ function albums_view($refresh_page = true)
             $moderated_tokens[$index]['album'] = $album . '-pub';
             $moderated_tokens[$index]['title'] = get_album_title($album . '-pub');
             $moderated_tokens[$index]['token'] = ezmam_album_token_get($album . '-pub');
-              
+
             $album_title = ezmam_album_metadata_get($album . '-pub');
             if (isset($album_title['course_code_public'])) {
                 $moderated_tokens[$index]['course_code_public'] = $album_title['course_code_public'];
@@ -812,7 +816,13 @@ function redraw_page()
     global $distribute_url;
     ezmam_repository_path($repository_path);
 
-    $action = $_SESSION['ezplayer_mode'];
+
+    if (isset($_SESSION['ezplayer_mode'])) {
+
+      $action = $_SESSION['ezplayer_mode'];
+    }
+
+
     $redraw = true;
 
     // Whatever happens, the first thing to do is display the whole page.
@@ -893,7 +903,7 @@ function bookmarks_list_update($display = true, &$official_bookmarks = array(), 
     }
     // sorts the bookmarks following user's prefs
     $order = acl_value_get("official_bm_order");
-    if (isset($order) && $order != '' && $order != $default_official_bm_order) {
+    if (isset($order) && $order != '' && $order != $default_official_bm_order && $official_bookmarks != FALSE) {
         $official_bookmarks = array_reverse($official_bookmarks);
     }
 
@@ -1006,7 +1016,7 @@ function trace_append($array)
 function thread_details_update($display = true)
 {
     global $input;
-    
+
     if (!acl_session_key_check($input['sesskey'])) {
         echo "Usage: Session key is not valid";
         die;
@@ -1022,7 +1032,7 @@ function thread_details_update($display = true)
     $thread = thread_select_by_id($id);
     $thread['best_comment'] = comment_select_best($id);
     $thread['comments'] = comment_select_by_thread($id);
-    
+
 
     if ($display) {
         include template_getpath('div_thread_details.php');

@@ -118,7 +118,7 @@ function index($param = array())
         $input['origin'] == 'keyword' ? 'keyword_search' : 'bookmarks_search',
         $_SESSION['album'] == '' ? '-' : $_SESSION['album'],
         $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'],
-        $searchimploded,
+        $searchImploded,
         $target,
         implode(", ", $fields),
         implode(", ", $fields_thread),

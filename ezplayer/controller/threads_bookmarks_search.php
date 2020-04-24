@@ -107,18 +107,11 @@ function index($param = array())
 
     $lvl = ($_SESSION['album'] != '' && $_SESSION['asset'] != '') ? 3 : (($_SESSION['album'] != '') ? 2 : 1);
 
-    $searchimploded = $search;
-
-    if (!empty($search) && count($search) > 1) {
-
-        $searchImploded = implode(', ', $search);
-    }
-
     trace_append(array($lvl,
         $input['origin'] == 'keyword' ? 'keyword_search' : 'bookmarks_search',
         $_SESSION['album'] == '' ? '-' : $_SESSION['album'],
         $_SESSION['asset'] == '' ? '-' : $_SESSION['asset'],
-        $searchImploded,
+        json_encode($search),
         $target,
         implode(", ", $fields),
         implode(", ", $fields_thread),

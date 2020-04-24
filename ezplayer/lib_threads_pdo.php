@@ -411,7 +411,7 @@ function thread_search($words, $fields, $albums, $asset = '')
 
     if (in_array('title', $fields)) {
         // search in threads titles
-        
+
         $where = $where_base;
         if (count($words) > 0) {
             $where .= ' AND ( ';
@@ -902,8 +902,8 @@ function comment_insert($values)
     }
 
     thread_update_lastEdit($values['thread'], $values['authorFullName']);
-    cache_album_threads_unset($album);
-    log_append('Create comment: ', 'Create comment with title = ' . $values['title']);
+    // cache_album_threads_unset($album);
+    log_append('Create comment: ', 'Create comment with title = ' .(isset($values['title'])?  $values['title'] : ''));
 
     return $res;
 }
@@ -1072,7 +1072,7 @@ function comment_update_approval($_comId)
 function comment_approval_remove($comment_id)
 {
     global $statements;
-        
+
     $approval = '0';
     $statements['comment_update_approval']->bindParam(':approval', $approval);
     $statements['comment_update_approval']->bindParam(':id', $comment_id);
@@ -1109,18 +1109,18 @@ function comment_select_best($thread_id = '')
 function vote_insert($values)
 {
     global $statements;
-    
-    
+
+
     $statements['vote_user_get']->bindParam(":login", $values['login']);
     $statements['vote_user_get']->bindParam(":comment", $values['comment']);
     $statements['vote_user_get']->execute();
     $votePlayer = $statements['vote_user_get']->fetch();
     $double = false;
-    
+
     // If player already vote and vote same that now
     if ($votePlayer['row'] > 0 && $votePlayer['voteType'] == $values['voteType']) {
         $values['voteType'] = -$values['voteType'];
-        
+
         $res = 0;
         // cancel vote
         $statements['vote_cancel']->bindParam(":login", $values['login']);
@@ -1133,14 +1133,14 @@ function vote_insert($values)
         $statements['vote_insert']->bindParam(":voteType", $values['voteType']);
         $statements['vote_insert']->execute();
         $res = $values['voteType'];
-        
+
         // If already vote, double the value
         if ($votePlayer['row'] > 0) {
             $double = true;
         }
     }
     comment_update_score($values['comment'], $values['voteType'] == '1', $double);
-    
+
     return $res;
 }
 
@@ -1181,12 +1181,12 @@ function comment_score_init($comment_id)
 function comment_update_score($_id, $up, $double = false)
 {
     global $statements;
-    
+
     $strStatement = 'comment_update_score_';
     if ($double) {
         $strStatement .= 'double_';
     }
-    
+
     if ($up) {
         $strStatement.= 'up';
     } else {
@@ -1194,7 +1194,7 @@ function comment_update_score($_id, $up, $double = false)
     }
     $statements[$strStatement]->bindParam(':id', $_id);
     $res = $statements[$strStatement]->execute();
-    
+
     return $res;
 }
 

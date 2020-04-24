@@ -26,6 +26,10 @@
 
 include_once 'lib_print.php';
 
+$title = $_SESSION['asset'];
+if (isset($asset_meta['title'])) {
+  $title = $asset_meta['title'];
+}
 ?>
 <!-- #side_menu
     Contains the buttons used to navigate through the pages.
@@ -41,6 +45,7 @@ include_once 'lib_print.php';
 
     ?>;
     var current_asset_name = '<?php echo $title; ?>';
+
     var current_album = '<?php echo $_SESSION['album']; ?>';
     var current_asset = '<?php echo $_SESSION['asset']; ?>';
     var session_key = '<?php echo $_SESSION['sesskey']; ?>';

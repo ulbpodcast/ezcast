@@ -224,7 +224,12 @@ else {
 function load_page()
 {
     global $input;
-    $action = $input['action'];
+
+    $action = '';
+    if (isset($input['action'])) {
+
+      $action = $input['action'];
+    }
     $redraw = false;
 
     /**

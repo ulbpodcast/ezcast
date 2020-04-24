@@ -16,14 +16,16 @@ function index($param = array())
 
 		if(file_exists($url))
 		{
-			$array = json_decode(file_get_contents($url), true);
+			$array = json_decode(file_get_contents($url), TRUE);
+			if(!empty($array)) {
 
-			foreach ($array as $key => $value)
-			{
-				$tab_json[$key] = $value;
-				if(count($value) >= 0)
+				foreach ($array as $key => $value)
 				{
-					$count = count($value);
+					$tab_json[$key] = $value;
+					if(count($value) >= 0)
+					{
+						$count = count($value);
+					}
 				}
 			}
 		}
@@ -80,4 +82,3 @@ function check_email($email)
 {
 	return preg_match('/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i', $email);
 }
-	

@@ -38,18 +38,18 @@ function sso_checkauth($login, $password)
     session_start();
     session_regenerate_id(); //Regenerating SID
 
-     
+
     try {
         // Autoload simplesamlphp classes.
         if (!file_exists("{$sso_ssp_lib}/_autoload.php")) {
             throw(new Exception("simpleSAMLphp lib loader file does not exist: ".
             "{$sso_ssp_lib}/_autoload.php"));
         }
-       
+
         include_once("{$sso_ssp_lib}/_autoload.php");
 
        // $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
-        $sso_ssp_auth = new SimpleSAML\Auth\Simple($sso_ssp_sp);        
+        $sso_ssp_auth = new SimpleSAML\Auth\Simple($sso_ssp_sp);
 
         // Take the user to IdP and authenticate.
         $sso_ssp_auth->requireAuth();
@@ -59,7 +59,7 @@ function sso_checkauth($login, $password)
         throw(new Exception("SSO authentication failed: ". $e->getMessage()));
         return false;
     }
-     
+
     if (!$valid_saml_session) {
         // Not valid session. Redirect a user to Identity Provider
         try {
@@ -72,14 +72,14 @@ function sso_checkauth($login, $password)
             return false;
         }
     }
-     
-     
+
+
     // At this point, the user is authenticated by the Identity Provider, and has access
     // to the attributes received with SAML assertion.
     $attributes = $sso_ssp_auth->getAttributes();
 
 
-             
+
     // restore previous session
     session_write_close();
     session_id($sesId);
@@ -88,7 +88,7 @@ function sso_checkauth($login, $password)
 
     $_SESSION['sso_ssp_auth'] = $sso_ssp_auth;
 
-     
+
     // Do something with assertion data.
     /* initialization of userinfo based on sso attributes */
     $userinfo['full_name'] = $attributes[$sso_ssp_att_name][0]." ".$attributes[$sso_ssp_att_firstname][0];
@@ -114,8 +114,8 @@ function sso_checkauth($login, $password)
     /*------------UCL METHOD TO CHECK RIGHTS-------------*/
 
     //Check if the User have the right to enter ezmanager, Even if he don't have any courses
-    if (in_array("staff", $userinfo['group'])) {        
-        $userinfo['ismanager'] = 'true';        
+    if (in_array("staff", $userinfo['group'])) {
+        $userinfo['ismanager'] = 'true';
     }
     global $db_object;
     // add user in table Users
@@ -124,22 +124,26 @@ function sso_checkauth($login, $password)
         db_user_create($attributes[$sso_ssp_att_login][0], $attributes[$sso_ssp_att_name][0] ,$attributes[$sso_ssp_att_firstname][0] , "", "0","SSO");
         $userinfo['termsOfUses'] = 0;
     }
-    else
+    else{
+      if(isset($user['termsOfUse'])){
+
         $userinfo['termsOfUses'] = $user['termsOfUse'];     
-    
+      }
+    }
 
 
-      
-    /*----------------END UCL METHOD------------------*/   
-      
-      
-      
-      
+
+
+    /*----------------END UCL METHOD------------------*/
+
+
+
+
     // Create user_sso information, if doesn't exist, or update last login date
     //
     try {
         require_once __DIR__.'/../commons/lib_database.php';
-        global $db_object;        
+        global $db_object;
 
         db_prepare();
 
@@ -153,7 +157,7 @@ function sso_checkauth($login, $password)
             $reqSQL->bindParam(2, $attributes[$sso_ssp_att_name][0], PDO::PARAM_STR);
             $reqSQL->bindParam(3, $attributes[$sso_ssp_att_firstname][0], PDO::PARAM_STR);
             $reqSQL->bindParam(4, $attributes[$sso_ssp_att_email][0], PDO::PARAM_STR);
-            
+
         } else {
             $reqSQL = $db_object->prepare('UPDATE  ezcast_sso_users SET last_time=NOW() WHERE  user_ID=?');
             $reqSQL->bindParam(1, $attributes[$sso_ssp_att_login][0], PDO::PARAM_STR);
@@ -172,17 +176,17 @@ function sso_logout()
     global $sso_ssp_lib;
     global $sso_ssp_sp;
     global $sso_ssp_auth;
-    
+
     include_once("{$sso_ssp_lib}/_autoload.php");
-    
+
     session_write_close();
     session_name("PHPSESSID");  //needed to solve problem between session name (take tke ezName session)
     session_start();
     session_regenerate_id();
-    
+
    // $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
     $sso_ssp_auth = new SimpleSAML\Auth\Simple($sso_ssp_sp);
- 
+
     $sso_ssp_auth->requireAuth();
 
     $sso_ssp_auth->logout();
@@ -204,7 +208,7 @@ function sso_getinfo($login)
         $reqSQL = $db_object->prepare('SELECT * FROM ezcast_sso_users WHERE user_ID=:login');
         $reqSQL->bindParam(":login", $login, PDO::PARAM_STR);
         $reqSQL->execute();
-        
+
         if ($reqSQL->rowCount() == 1) {
             $row = $reqSQL->fetch(PDO::FETCH_ASSOC);
             $userinfo['full_name'] = $row['surname']." ".$row['forename'];

@@ -663,7 +663,12 @@ function user_login($login, $passwd)
     acl_init($login);
 
     // 3) Setting correct language
-    set_lang($input['lang']);
+    $lang = 'fr';
+    if(isset($input['lang'])){
+
+      $lang = $input['lang'];
+    }
+    set_lang($lang);
 
 
     // 4) Resetting the template path to the one of the language chosen

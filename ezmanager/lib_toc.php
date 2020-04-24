@@ -27,7 +27,7 @@
  * License along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-     
+
 include_once dirname(__FILE__) . '/config.inc';
 include_once __DIR__.'/../commons/lib_error.php';
 include_once dirname(__FILE__) . '/lib_various.php';
@@ -261,7 +261,7 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
             --$index;
         }
     }
-    
+
     // extract keywords from the description
     $keywords_array = get_keywords($description);
     // and save them as keywords
@@ -271,7 +271,7 @@ function toc_asset_bookmark_add($album, $asset, $timecode, $title = '', $descrip
         }
         $keywords .= $keyword;
     }
-    
+
     // surround every url by '*' for url recognition in EZplayer
     $description = surround_url($description);
     // add a bookmark at the specified index in the albums list
@@ -329,8 +329,10 @@ function toc_album_bookmarks_add($bookmarks)
                 // loop while the asset is older than the reference asset
                 while ($index < $count && $bookmark['asset'] > $asset_ref) {
                     ++$index;
-                    $asset_ref = $bookmarks_list[$index]['asset'];
-                    $timecode_ref = $bookmarks_list[$index]['timecode'];
+                    if(isset($bookmarks_list[$index])) {
+                        $asset_ref = $bookmarks_list[$index]['asset'];
+                        $timecode_ref = $bookmarks_list[$index]['timecode'];
+                    }
                 }
                 // if the asset already contains bookmarks, loop while
                 // timecode is bigger than reference timecode
@@ -338,8 +340,12 @@ function toc_album_bookmarks_add($bookmarks)
                 && $bookmark['asset'] == $asset_ref
                 && $bookmark['timecode'] >= $timecode_ref) {
                     ++$index;
-                    $timecode_ref = $bookmarks_list[$index]['timecode'];
-                    $asset_ref = $bookmarks_list[$index]['asset'];
+
+                    if(isset($bookmarks_list[$index])) {
+
+                      $timecode_ref = $bookmarks_list[$index]['timecode'];
+                      $asset_ref = $bookmarks_list[$index]['asset'];
+                    }
                 }
 
                 if ($index < 0) { // no bookmark yet
@@ -521,7 +527,7 @@ function toc_album_bookmarks_delete_all($album)
     if (file_exists($bookmarks_file)) {
         unlink($bookmarks_file);
     }
-    
+
     return true;
 }
 

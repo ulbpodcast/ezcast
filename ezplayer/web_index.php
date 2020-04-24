@@ -52,6 +52,7 @@ require_once 'lib_cache.php';
 require_once 'lib_acl.php';
 require_once '../commons/lib_mobile_detect.php';
 
+
 if ($maintenance_mode && !isset($_SESSION['user_is_admin'])){
     include_once '../commons/maintenance_page.php';
     die;
@@ -201,7 +202,7 @@ else if(isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1 && ($inpu
      global $first_connexion;
      $first_connexion = !isset($_COOKIE['has_connected_once']);
      // Cookie life: one year
-     setcookie('has_connected_once', true, time() + (365 * 24 * 60 * 60));
+     //setcookie('has_connected_once', true, time() + (365 * 24 * 60 * 60));
     
      redraw_page();
  }

@@ -112,7 +112,7 @@ function acl_update_watched_assets()
     
     ezmam_repository_path($repository_path);
     user_prefs_repository_path($user_files_path);
-    
+    $global_count = [];
     $watched_assets = array();
     if (acl_user_is_logged()) {
         $album_tokens_list = acl_album_tokens_get();

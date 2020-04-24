@@ -55,14 +55,17 @@ echo $ezplayer_safe_url; ?>/index.php" method="post">
                 <div class="form-group">
                     <div class="col-sm-9 col-sm-offset-3">
                         <?php
-                            if(!empty($_SESSION['lang']))
+                            if(isset($_SESSION['lang']) && !empty($_SESSION['lang']))
                             {
                                 $lang = $_SESSION['lang'];
                             }
-                            else if(!empty($input['lang']))
+                            else if(isset($input['lang']) && !empty($input['lang']))
                             {
                                 $lang = $input['lang'];
                             }
+			    else {
+				$lang = 'fr';
+			    }
                         ?>
                         <select class="lang form-control" name="lang" tabindex="3" 
                                 onchange="document.location.href = './index.php?lang='+this.value;">

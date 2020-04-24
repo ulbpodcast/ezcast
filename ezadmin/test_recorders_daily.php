@@ -15,7 +15,6 @@ $check_list=db_classrooms_list_enabled();
 $result_str = "SSH connects results: <br/><br/>".PHP_EOL.PHP_EOL;
 
 foreach($check_list as $to_check) {
-//    echo(json_encode($to_check));
   $ip = $to_check["IP"];
   $name = $to_check["name"];
  
@@ -30,9 +29,9 @@ foreach($check_list as $to_check) {
     $result_str .= "<font color=\"green\">OK</font>". PHP_EOL . "<br/>";  
     $df=getSpaceUsed($ip);
     if($df>80)
-        $result_str .=  "=> <font color=\"red\">HArd drive almost Full ( ".getSpaceUsed($ip).")</font>". PHP_EOL . "<br/>";  
+        $result_str .=  "=> <font color=\"red\">HArd drive almost Full ( ".getSpaceUsed($ip)."%)</font>". PHP_EOL . "<br/>";  
     else     
-        $result_str .= "=> <font color=\"green\">Hard drive : ".getSpaceUsed($ip)."</font>". PHP_EOL . "<br/>";
+        $result_str .= "=> <font color=\"green\">Hard drive : ".getSpaceUsed($ip)."%</font>". PHP_EOL . "<br/>";
 
   } else {  
     $result_str .= "<font color=\"red\">FAILED</font>". PHP_EOL. "<br/>";
@@ -45,8 +44,20 @@ foreach($check_list as $to_check) {
 
 echo $result_str;
 
-$headers[] = 'MIME-Version: 1.0';
-$headers[] = 'Content-type: text/html; charset= utf8';
-$headers[] = 'From: Podcast UCLouvain <podcast@uclouvain.be>';
+$mail_str = "( echo 'To: ".$adress_mail_information_recorder." ; echo 'Subject: Classrooms availability check'; echo 'Content-Type: text/html'; echo 'MIME-Version: 1.0'; echo ''; echo '$result_str'; )";
 
-mail($adress_mail_information_recorder,'ClassRooms availability check', $result_str, implode("\r\n", $headers));
+
+
+$to_email = $adress_mail_information_recorder;
+   $subject = "EZrecorder info disk usages";
+   $body = $result_str;
+   $headers  = 'MIME-Version: 1.0' . "\r\n";
+   $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+ 
+   if ( mail($to_email, $subject, $body, $headers)) {
+      echo("Email successfully sent to $to_email...");
+   } else {
+      echo("Email sending failed...");
+   }
+
+

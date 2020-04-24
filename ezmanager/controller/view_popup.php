@@ -165,16 +165,15 @@ function popup_embed_code()
     $type = $media_infos[1];
     $quality = $media_infos[0];
     //compute iframe size according to media size
-//    $iframe_height = $metadata['height'] + 40;
-//    $iframe_width = $metadata['width'] + 30;
+  //  $iframe_height = $metadata['height'] + 40;
+  //  $iframe_width = $metadata['width'] + 30;
     //force width & heigth in youtube standart
     $iframe_width = 560;
     $iframe_height = 315;
     // Embed code
     $link_target = $distribute_url . '?action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] .
             '&amp;type=' . $type . '&amp;quality=' . $quality . '&amp;token=' . $token;
-    $embed_code_web = '<iframe width="' . $iframe_width . '" height="' . $iframe_height .
-            '" style="padding: 0;" frameborder="0" scrolling="no" allowfullscreen="true" src="' . $distribute_url . '?action=embed&album=' .
+    $embed_code_web = '<iframe width="' . $iframe_width . '" height="'.$iframe_height.'"  style="padding: 0;" allowfullscreen="allowfullscreen" frameborder="0" scrolling="no" src="' . $distribute_url . '?action=embed&album=' .
             $input['album'] . '&asset=' . $input['asset'] . '&type=' . $type . '&quality=' . $quality . '&token=' .
             $token . '&width=' . $metadata['width'] . '&height=' . $metadata['height'] . '&lang=' . get_lang() .
             '"><a href="' . $link_target . '">' . template_get_message('view_video', get_lang()) . '</a></iframe>';

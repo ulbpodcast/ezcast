@@ -32,7 +32,7 @@ if (isset($input['lang'])) {
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 
-if (isset($input['album']) && !acl_has_album_permissions($input['album']) && $input['action']!='album_create' && $input['action']!='add_moderator' && $input['action']!='postVideo') {
+if (isset($input['album']) && !acl_has_album_permissions($input['album']) && $input['action']!='album_create' && $input['action']!='add_moderator' && $input['action'] != 'asset_downloadable_set' && $input['action']!='postVideo') {
     error_print_message("NON! ".template_get_message('Unauthorized', get_lang()));
     log_append('warning', $input['action'].': tried to access album ' . $input['album'] . ' without permission');
     die;
@@ -562,7 +562,7 @@ function user_login($login, $passwd)
     }
 
      $res = checkauth(strtolower($login), $passwd);
-    if($res){
+    if($res && isset($res['login']) && !empty($res['login'])){
       //auth succeeded but if it is a runas, we still need to check if user is in admin.inc  
       $login_parts = explode("/", $login);
     

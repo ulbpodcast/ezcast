@@ -29,23 +29,6 @@ require_once __DIR__.'/lib_push_changes.php';
 
 $input = array_merge($_GET, $_POST);
 
-if (!isset($recorder_array))
-{
-    $list=db_classrooms_list();
-    foreach ($list as $room) {
-        if (empty($room['user_name'])){
-            $recorder_array[$room['IP']]['user']=$recorder_user;
-            $recorder_array[$room['IP']]['basedir']=$recorder_basedir;
-            $recorder_array[$room['IP']]['subdir']=$recorder_subdir;
-        }else{
-            $recorder_array[$room['IP']]['user']=$room['user_name'];
-            $recorder_array[$room['IP']]['basedir']=$room['base_dir'];
-            $recorder_array[$room['IP']]['subdir']=$room['sub_dir'];
-        }
-    }
-    //echo '<pre>' . var_export($recorder_array, true) . '</pre>';
-}
-
 template_repository_path($template_folder . get_lang());
 template_load_dictionnary('translations.xml');
 //

@@ -81,7 +81,7 @@ function index($param = array())
     // Sanity checks
     //
     if (!isset($album) || !ezmam_album_exists($album)) {
-        if ($input['click']) { // refresh a part of the page
+        if (isset($input['click']) &&  $input['click']) { // refresh a part of the page
             include_once template_getpath('error_album_not_found.php');
         } else { // refresh the whole page
             $error_path = template_getpath('error_album_not_found.php');
@@ -115,7 +115,7 @@ function index($param = array())
                 include_once template_getpath('main.php');
             }
             log_append('warning', $ezplayer_mode . ': tried to access asset ' . $input['asset'] . 'in album ' . $input['album'] . ' with invalid token ' .
-                    $input['asset_token']);
+                    $input['token']);
             die;
         }
     }
@@ -140,14 +140,14 @@ function index($param = array())
         $asset_meta['high_cam_src'] = get_link_to_media($album, $asset, 'high_cam');
         $asset_meta['low_cam_src'] = get_link_to_media($album, $asset, 'low_cam');
         // #t=$timecode stands for W3C temporal Media Fragments URI (working in Firefox and Chrome)
-        $asset_meta['src'] = $asset_meta['low_cam_src'] . '&origin=' . $appname . "#t=" . $timecode;
+        $asset_meta['src'] = $asset_meta['high_cam_src'] . '&origin=' . $appname . "#t=" . $timecode;
     }
 
     if ($asset_meta['record_type'] == 'camslide' || $asset_meta['record_type'] == 'slide') {
         $asset_meta['high_slide_src'] = get_link_to_media($album, $asset, 'high_slide');
         $asset_meta['low_slide_src'] = get_link_to_media($album, $asset, 'low_slide');
         if ($asset_meta['record_type'] == 'slide') {
-            $asset_meta['src'] = $asset_meta['low_slide_src'] . '&origin=' . $appname . "#t=" . $timecode;
+            $asset_meta['src'] = $asset_meta['high_slide_src'] . '&origin=' . $appname . "#t=" . $timecode;
         }
     }
     /*

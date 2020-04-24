@@ -869,7 +869,7 @@ if ($trace_on) {
             </div><!-- global -->
 
             <?php
-            if ($_SESSION["show_message"]) {
+            if (isset($_SESSION["show_message"]) && $_SESSION["show_message"]) {
                 include_once template_getpath('popup_message_of_day.php'); ?>
                 <script>
                     $('#popup_message_of_day').reveal($(this).data());

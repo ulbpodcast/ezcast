@@ -42,15 +42,18 @@ function index($param = array())
     if (file_exists($range_count_path . '/' . $date . '_' . $type . '.php')) {
         $array = include_once $range_count_path . '/' . $date . '_' . $type . '.php';
     }
-    $index = ((int) ($time / 3)) - 1;
-    if ($index >= 0) {
+    if(is_array($array) && !empty($array)){
+      $index = ((int) ($time / 3)) - 1;
+      if ($index >= 0) {
         if (isset($array[$index]) && $array[$index] != '') {
             $array[$index] ++;
         } else {
             $array[$index] = 1;
         }
+      }
+
+      ksort($array);
     }
-    ksort($array);
     $range_count_str = "<?php return ";
     $range_count_str .= var_export($array, true);
     $range_count_str .= "; ?>";

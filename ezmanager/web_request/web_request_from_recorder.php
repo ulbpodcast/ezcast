@@ -11,25 +11,6 @@ require_once "web_request.php";
 require_once __DIR__."/../../commons/lib_external_stream_daemon.php";
 require_once __DIR__."/../../commons/lib_sql_management.php";
 
-//require_once __DIR__ . '/../commons/lib_sql_management.php';
-
-if (!isset($recorder_array))
-{
-    $list=db_classrooms_list();
-    foreach ($list as $room) {
-        if (empty($room['user_name'])){
-            $recorder_array[$room['IP']]['user']=$recorder_user;
-            $recorder_array[$room['IP']]['basedir']=$recorder_basedir;
-            $recorder_array[$room['IP']]['subdir']=$recorder_subdir;
-        }else{
-            $recorder_array[$room['IP']]['user']=$room['user_name'];
-            $recorder_array[$room['IP']]['basedir']=$room['base_dir'];
-            $recorder_array[$room['IP']]['subdir']=$room['sub_dir'];
-        }
-    }
-    //echo '<pre>' . var_export($recorder_array, true) . '</pre>';
-}
-
 if (!is_authorized_caller()) {
     print "not talking to you ($caller_ip)";
     die;
@@ -94,7 +75,6 @@ function download_from_recorder()
     global $php_cli_cmd;
     global $recorder_download_pgm;
     global $logger;
-    global $recorder_array;
     
             
     //get input parameters
@@ -113,7 +93,7 @@ function download_from_recorder()
     if (!isset($recorder_php_cli) || $recorder_php_cli == '') {
         $logger->log(EventType::MANAGER_REQUEST_FROM_RECORDER, LogLevel::WARNING, "Recorder did not provide its php_cli, trying to get it (or default to 'php')", array(__FUNCTION__));
 
-        $cmd = "$ssh_pgm -o BatchMode=yes $recorder_array[$caller_ip]['user']@$caller_ip \"which php\"";
+        $cmd = "$ssh_pgm -o BatchMode=yes $recorder_user@$caller_ip \"which php\"";
         $recorder_php_cli = exec($cmd);
         if ($recorder_php_cli == '') {
             $recorder_php_cli = "php";

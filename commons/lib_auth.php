@@ -80,8 +80,10 @@ function checkauth($login, $passwd)
             if ($auth_user === false) {
                 checkauth_last_error("Authentication failure");
             }
-            $auth_user['user_is_admin']=isAdmin($login);
-            // returns user info or false if user has not been found
+	    else {        
+    		$auth_user['user_is_admin']=isAdmin($login);
+           }
+	    // returns user info or false if user has not been found
             return $auth_user;
             // admin run as login
         } else {

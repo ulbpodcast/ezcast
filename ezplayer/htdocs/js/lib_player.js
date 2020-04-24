@@ -187,7 +187,7 @@ $(window).bind('resize', function (e) {
  * @param {type} start_time
  * @returns {undefined}
  */
-function player_prepare(current_quality, current_type, start_time) {
+function player_prepare(current_quality, current_type, start_time, sesskey) {
     // Notification panel starts hidden
     $('#video_notifications').hide();
 
@@ -199,7 +199,7 @@ function player_prepare(current_quality, current_type, start_time) {
     camslide = (max === 2);
     // set the current type being played
     type = (current_type !== '') ? current_type : 'cam';
-    quality = (current_quality !== '') ? current_quality : 'low';
+    quality = (current_quality !== '') ? current_quality : 'high';
 
     document.getElementById('video_player').onmousedown = function (elem) {
         ++mouse_down;
@@ -209,7 +209,7 @@ function player_prepare(current_quality, current_type, start_time) {
     };
 
     for (var i = 0; i < max; i++) {
-        video_listener_add(videos[i], start_time);
+        video_listener_add(videos[i], start_time, sesskey);
     }
 
     // Browser fullscreen event
@@ -229,7 +229,7 @@ function player_prepare(current_quality, current_type, start_time) {
     }
 }
 
-function video_listener_add(video, start_time) {
+function video_listener_add(video, start_time, sesskey) {
     
     video.addEventListener("seeking", function () {
         var current_time = Math.round(this.currentTime);
@@ -241,7 +241,7 @@ function video_listener_add(video, start_time) {
     // --> loads the thread notifications to be displayed over the player
     video.addEventListener("timeupdate", function () {
         var current_time = Math.round(this.currentTime);
-        video_event_update_time(this, current_time);
+        video_event_update_time(this, current_time, sesskey);
     });
     
     // when the video is played
@@ -317,7 +317,7 @@ function end_seeked() {
     }
 }
 
-function video_event_update_time(video, current_time) {
+function video_event_update_time(video, current_time, sesskey) {
     if(current_time == time) {
         return;
     }
@@ -335,7 +335,7 @@ function video_event_update_time(video, current_time) {
     last_time = time;
     time = current_time;
     
-    threads_notif_display();
+    threads_notif_display(sesskey);
 }
 
 function trace_video_play_time(stop_time) {
@@ -416,7 +416,7 @@ function video_event_data_loaded(event) {
 
 
 
-function threads_notif_display() {
+function threads_notif_display(sesskey) {
     if (display_threads_notif) {
         var html_value = "<ul>";
         var i = 0;
@@ -436,7 +436,7 @@ function threads_notif_display() {
                     html_value += "<li id='notif_" + id + "' class ='notification_item'>" +
                             "<span class='span-link red' onclick='javascript:player_thread_notification_remove(" + 
                                 timecode + ", " + id + ")' >x</span>" +
-                            "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true)'> " +
+                            "<span class='notification-item-title' onclick='javascript:thread_details_update(" + id + ", true, \""  + sesskey + "\" )'> " +
                             threads_array[timecode][id] + "</span>" +
                             "</li>";
                 }
@@ -456,7 +456,8 @@ function threads_notif_display() {
 
 // Sends the current time and type to the server to be saved as an array
 function player_range_count_update(current_time, current_type) {
-    $.ajax({
+/*  
+  $.ajax({
         type: 'POST',
         url: 'index.php?action=asset_range_count_update',
         data: {time: current_time,
@@ -464,6 +465,7 @@ function player_range_count_update(current_time, current_type) {
             album: current_album,
             asset: current_asset}
     });
+*/
 }
 
 /**
@@ -476,7 +478,7 @@ function player_video_type_set(media_type) {
         return;
     
     if (quality != 'high' && quality != 'low')
-        quality = 'low';
+        quality = 'high';
 
     var to_show;
     var to_hide;
@@ -545,8 +547,8 @@ function player_video_quality_set(media_quality) {
 
     if (media_quality != "high" && media_quality != "low")
         return;
-    if (media_quality == quality)
-        return;
+   // if (media_quality == quality)
+     //   return;
 
     var video;
     if (camslide && type == 'slide') {
@@ -1095,7 +1097,6 @@ function player_bookmarks_panel_show() {
         $('#video_notifications').addClass('panel-active');
     } else {
         $('#div_right').css('height', '652px');
-        $('#div_right').css('display','block');
         $('video, .video_controls, #bookmark_form, #thread_form, #video_player,#main_player').animate({
             width: '699px'
         });
@@ -1103,8 +1104,10 @@ function player_bookmarks_panel_show() {
             right: '0px'
         }, function () {
             $('#div_right').css('overflow', 'visible');
-        });
+	 });
     }
+    $('#div_right').css('z-index','801');
+
     $('.panel-button').addClass('active');
     if (camslide)
         (type == 'slide') ? $('#main_video').hide() : $('#secondary_video').hide();
@@ -1122,7 +1125,6 @@ function player_bookmarks_panel_hide() {
         });
     } else {
         $('#div_right').css('overflow', 'hidden');
-        $('#div_right').css('display','none');
         $('video, .video_controls, #bookmark_form, #thread_form, #video_player, #main_player').animate({
             width: '930px'
         });
@@ -1136,7 +1138,7 @@ function player_bookmarks_panel_hide() {
     if (camslide)
         (type == 'slide') ? $('#main_video').hide() : $('#secondary_video').hide();
     show_panel = false;
-
+    $('#div_right').css('z-index', '700');
 }
 
 // shows/hides the bookmarks panel

@@ -438,12 +438,6 @@
         <label id="classroom_remote_ip" lang="en">[IP (slave)]</label>
         <label id="classroom_enabled" lang="fr">Activé</label>
         <label id="classroom_enabled" lang="en">Activate</label>
-        <label id="classroom_user_name" lang="fr">Nom utilisateur</label>
-        <label id="classroom_user_name" lang="en">Username</label>
-        <label id="classroom_base_dir" lang="fr">Répertoire de base</label>
-        <label id="classroom_base_dir" lang="en">Base directory</label>
-        <label id="classroom_sub_dir" lang="fr">Sous répétoire</label>
-        <label id="classroom_sub_dir" lang="en">Sub directory</label>
         <label id="classroom_ignore_ssh_check" lang="fr">Ignorer check SSH</label>
         <label id="classroom_ignore_ssh_check" lang="en">Ignore SSH check</label>
         <label id="classroom_record_cam" lang="fr">Cam</label>
@@ -1045,12 +1039,6 @@
         <message id="missing_room_id" lang="en">The room ID cannot be blank</message>
         <message id="missing_ip" lang="fr">L'IP ne peut pas être vide.</message>
         <message id="missing_ip" lang="en">The IP cannot be blank</message>
-        <message id="missing_user_name" lang="fr">Le nom d'utilisateur ne peut pas être vide.</message>
-        <message id="missing_user_name" lang="en">The username cannot be blank</message>
-        <message id="missing_base_dir" lang="fr">Le répertoire de base ne peut pas être vide.</message>
-        <message id="missing_base_dir" lang="en">The base directory cannot be blank</message>
-        <message id="missing_sub_dir" lang="fr">Le sous répertoire ne peut pas être vide.</message>
-        <message id="missing_sub_dir" lang="en">The sub directory cannot be blank</message>
         <message id="format_ip" lang="fr">L'IP doit respecter le format "255.255.255.255".</message>
         <message id="format_ip" lang="en">The IP must follow the format "255.255.255.255".</message>
         <message id="missing_course_code" lang="fr">Le mnémonique ne peut pas être vide.</message>

@@ -114,6 +114,7 @@ function index($param = array())
 //
 
     if (!file_exists($target) || filesize($target) <= 2048000000) {
+
         /*  $fp = fopen($target, "a");
           while ($data = fread($input, $upload_slice_size)) {
           fwrite($fp, $data);
@@ -134,7 +135,7 @@ function index($param = array())
         }
         $target = "$path/" . $type . '/' . $type . '-' . $index;
         $input = fopen("php://input", "r");
-        file_put_contents($target, $input);
+        $res = file_put_contents($target, $input);
 
     }
 
@@ -156,7 +157,8 @@ function index($param = array())
         }
     }
 
-    if ($res === false) {
+    if (!isset($res) || $res === false) {
+
         log_append('warning', 'upload_chunk: ' . "error while writting chunk $index");
         $array["error"] = template_get_message('write_error', get_lang());
         echo json_encode($array);

@@ -45,7 +45,7 @@ include_once 'lib_print.php';
     history.pushState({"url": 'index.php?action=view_asset_details&album=' + current_album + '&asset=' + current_asset + '&asset_token=' + '<?php echo $_SESSION['asset_token']; ?>' + '&sesskey=' + '<?php echo $_SESSION['sesskey']; ?>'}, '', '');
 
 <?php global $show_panel;
-    if ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) && (!isset($official_bookmarks) || sizeof($official_bookmarks) == 0)
+    if ((!isset($personal_bookmarks) || empty($personal_bookmarks) ) && (!isset($official_bookmarks) || empty($official_bookmarks) )
         && !isset($show_panel)) {
         $hiden_side = true; ?>
         show_panel = false;
@@ -55,8 +55,8 @@ include_once 'lib_print.php';
         show_panel = true;
 <?php
     }
-if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || sizeof($personal_bookmarks) == 0) &&
-        (isset($official_bookmarks) && sizeof($official_bookmarks) != 0))) {
+if (!acl_user_is_logged() || ((!isset($personal_bookmarks) || (isset($personal_bookmarks) && (empty($personal_bookmarks) )) &&
+        (isset($official_bookmarks) && !empty($official_bookmarks))))) {
     ?>
         current_tab = 'toc';
 <?php

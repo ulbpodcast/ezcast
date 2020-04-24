@@ -80,7 +80,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
                         <button role="button" id="is_downloadable_<?php echo $asset_name; ?>"
                             title="®Allow_download®" class="btn btn-xs download_small_button <?php
                                 echo (!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') ? "btn-success" : "btn-danger"; ?>"
-                            onclick="update_download('<?php echo $album_name . (($public_album) ? '-pub' : '-priv') . "', '" .
+                            onclick="update_download('<?php echo $album_id . (($public_album) ? '-pub' : '-priv') . "', '" .
                                 $asset_name; ?>')">
                             <?php if (!isset($metadata['downloadable']) || $metadata['downloadable'] !== 'false') {
                                     echo "®Download_allowed®";

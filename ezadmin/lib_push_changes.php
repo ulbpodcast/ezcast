@@ -3,7 +3,7 @@
 require_once(__DIR__ . '/../commons/config.inc');
 require_once(__DIR__ . '/../commons/lib_sql_management.php');
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -11,11 +11,11 @@ require_once(__DIR__ . '/../commons/lib_sql_management.php');
 
 
 //return errors in array
-function push_changes() 
+function push_changes()
 {
     global $logger;
     $failed_cmd = array();
-    
+
     // Save additional users into ezmanager
     push_users_to_ezmanager($failed_cmd);
     // Save changes to classroom into ezmanager
@@ -25,7 +25,7 @@ function push_changes()
 
     // Save admins into ezmanager & recorders
     push_admins_to_recorders_ezmanager($failed_cmd);
-    
+
     $logger->log(EventType::TEST, LogLevel::NOTICE, "Pushed changes to manager & recorders", array(basename(__FILE__)));
     return $failed_cmd;
 }
@@ -61,7 +61,7 @@ function push_users_to_ezmanager(&$errors = array())
         array_push($errors, "Failed to write var/pwfile.inc ");
         return false;
     }
-        
+
 
     // Copying on ezmanager
     if (empty($ezmanager_host) || !isset($ezmanager_host)) {
@@ -193,10 +193,9 @@ function push_admins_to_recorders_ezmanager(&$failed_cmd = array())
     global $ezmanager_subdir;
     global $ezplayer_basedir;
     global $ezplayer_subdir;
-    global $recorder_array;
 
     $success = true;
-    
+
     if (!db_ready()) {
         require_once __DIR__ . '/../commons/lib_sql_management.php';
         $stmts = statements_get();
@@ -211,15 +210,15 @@ function push_admins_to_recorders_ezmanager(&$failed_cmd = array())
     foreach ($admins as $a) {
         $admins_str .= '$admin[\'' . $a['user_ID'] . '\']=true;' . PHP_EOL;
     }
-    
+
     file_put_contents(__DIR__.'/var/admin.inc', $admins_str);
 
     // Copying on recorders
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 '.__DIR__.'/var/admin.inc ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] . ':' .
-                    $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
+            $cmd = 'scp -o ConnectTimeout=10 '.__DIR__.'/var/admin.inc ' . $recorder_user . '@' . $c['IP'] . ':' .
+                    $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
         }
     }
@@ -267,8 +266,7 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
     global $recorder_basedir;
     global $recorder_subdir;
     global $recorder_password_storage_enabled;
-    global $recorder_array;
-        
+
     if (!db_ready()) {
         $statements = statements_get();
         db_prepare($statements);
@@ -291,7 +289,7 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
 
     //courselist.php
     $courselist = '<?php' . PHP_EOL;
-    
+
     foreach ($users as $u) {
         $courseCode = (isset($u['course_code_public']) && !empty($u['course_code_public'])) ? $u['course_code_public'] : $u['course_code'];
         $title = (isset($u['shortname']) && !empty($u['shortname'])) ? $u['shortname'] : $u['course_name'];
@@ -299,25 +297,25 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'full_name\']="' . $u['forename'] . ' ' . $u['surname'] . '";' . PHP_EOL;
         $courselist .= '$users[\'' . $u['user_ID'] . '\'][\'email\']="";' . PHP_EOL;
     }
-    
+
     $courselist .= '?>';
     file_put_contents(__DIR__.'/var/courselist.php', $courselist);
-    
+
     // Upload all this on server
     $return_var = 0;
     $error = false;
     foreach ($classrooms as $c) {
         exec('ping -c 1 ' . $c['IP'], $output, $return_val);
         if ($return_val == 0) {
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/htpasswd ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] . ':' .
-                    $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/htpasswd ' . $recorder_user . '@' . $c['IP'] . ':' .
+                    $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
                 $error = true;
             }
-            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/courselist.php ' . $recorder_array[$c['IP']]['user'] . '@' . $c['IP'] .
-                    ':' . $recorder_array[$c['IP']]['basedir'] . $recorder_array[$c['IP']]['subdir'];
+            $cmd = 'scp -o ConnectTimeout=10 -o BatchMode=yes '.__DIR__.'/var/courselist.php ' . $recorder_user . '@' . $c['IP'] .
+                    ':' . $recorder_basedir . $recorder_subdir;
             exec($cmd, $output, $return_var);
             if ($return_var != 0) {
                 array_push($failed_cmd, $cmd);
@@ -328,7 +326,7 @@ function push_users_courses_to_recorder(&$failed_cmd = array())
             $error = true;
         }
     }
-    
+
     return $error === false;
 }
 
@@ -360,7 +358,7 @@ function notify_changes($enable = true)
 function notify_changes_isset()
 {
     global $ezrecorder_need_files_pushed_path;
-     
+
     return file_exists($ezrecorder_need_files_pushed_path);//if file exists return true
-     
+
 }

@@ -76,7 +76,11 @@ switch (strtolower($_SESSION['browser_name'])) {
         } ?>
         <div class="right-arrow"></div><?php print_info($asset_meta['title']); ?>
     </div>
-
+    <script>
+        $(document).ready(function(){
+                $('#video_player').bind('contextmenu',function() { return false; });
+        });
+    </script>
     <div id="video_player" class="remove_full">
         <!-- #main_video : HTML5 video player.
             There is no selected source by default.
@@ -147,7 +151,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 ?>
             time = <?php echo(isset($timecode) ? $timecode : 0) ?>;
 
-            player_prepare('low', type, time);
+            player_prepare('low', type, time,  '<?php echo $_SESSION['sesskey']; ?>' );
         </script>
 
 <?php require template_getpath('div_bookmark_form.php'); ?>
@@ -171,8 +175,8 @@ switch (strtolower($_SESSION['browser_name'])) {
 <?php
                 } ?>
                 <li>
-                    <a class="high-button" title="®Watch_high®" href="javascript:player_video_quality_set('high');"></a>
-                    <a class="low-button active" title="®Watch_low®" href="javascript:player_video_quality_set('low');"></a>
+                    <a class="high-button active " title="®Watch_high®" href="javascript:player_video_quality_set('high');"></a>
+                    <a class="low-button" title="®Watch_low®" href="javascript:player_video_quality_set('low');"></a>
                 </li>
                     <?php if (acl_user_is_logged()) {
                     ?>
@@ -196,8 +200,7 @@ switch (strtolower($_SESSION['browser_name'])) {
 <?php
                 } ?>                
                 <li>
-                    <a class="share-button" href="javascript:popup_asset(current_album, current_asset, time, type, 'share_time', '<?php echo $_SESSION['sesskey']; ?>')" title="®Share_time®" 
-                       onclick="player_video_link()"></a>
+                        <a class="share-button" href="javascript:popup_asset(current_album, current_asset, time, type, 'share_time', '<?php echo $_SESSION['sesskey']; ?>')" title="®Share_time®" onclick="player_video_link()"></a>
                 </li>      
                 <li>
                     <a class="fullscreen-button" href="javascript:player_video_fullscreen(!fullscreen);" title="®Toggle_fullscreen®" ></a>

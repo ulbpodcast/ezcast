@@ -48,7 +48,7 @@
             <ul class="search_albums">
                 <?php foreach ($search_albums as $selected_album) {
                 ?>
-                    <li><label><input tabindex='4' type="checkbox" name="albums[]" <?php if ($_SESSION['album'] == '' || $_SESSION['album'] == $selected_album) {
+                    <li><label><input tabindex='4' type="checkbox" name="albums[]" <?php if (isset($_SESSION['album']) && ($_SESSION['album'] == '' || $_SESSION['album'] == $selected_album)) {
                     echo 'checked';
                 } ?>  value="<?php echo $selected_album ?>"/><?php echo get_album_title($selected_album); ?></label></li>
                 <?php

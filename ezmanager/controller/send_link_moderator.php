@@ -16,7 +16,7 @@ function index($param = array())
 
 		if(file_exists($url))
 		{
-			$array = json_decode(file_get_contents($url));
+			$array = json_decode(file_get_contents($url), true);
 
 			foreach ($array as $key => $value)
 			{
@@ -48,7 +48,7 @@ function index($param = array())
 				$message .= "".$_POST['url']."&tokenmanager=".$str_shuffle.PHP_EOL.PHP_EOL;
 				$message .= "Bien à vous,".PHP_EOL."".$_SESSION['user_full_name']."";
 				//file_put_contents('/usr/local/ezcast/ezmanager/var/textLien.txt', $message);
-				mail($destinataire, utf8_decode($sujet), utf8_decode($message), 'From: podcast@uclouvain.be'); // on envois le mail
+				mail($destinataire, utf8_decode($sujet), utf8_decode($message)); // on envois le mail
 			}
 			else
 			{

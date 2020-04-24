@@ -471,8 +471,7 @@ function view_embed()
         echo '<iframe style="padding: 0; z-index: 100;" frameborder="0" scrolling="no" allowfullscreen src="distribute.php?' .
                 'action=embed&amp;album=' . $input['album'] . '&amp;asset=' . $input['asset'] . '&amp;type=' .
                 $input['type'] . '&amp;quality=' . $input['quality'] . '&amp;token=' . $input['token'] . '&amp;width=' .
-                $width . '&amp;height=' . $height . '&amp;origin=' . $origin . '" width="' . $width . '" height="' .
-                $height . '"></iframe>';
+                $width . '&amp;height=' . $height . '&amp;origin=' . $origin . '" width="' . $width . '" height="'.$height.'"></iframe>';
     } else {
         template_repository_path($template_folder . 'en');
         require_once template_getpath('embed_header.php');

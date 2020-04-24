@@ -48,11 +48,12 @@ function sso_checkauth($login, $password)
        
         include_once("{$sso_ssp_lib}/_autoload.php");
 
-        $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
-     
+       // $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
+        $sso_ssp_auth = new SimpleSAML\Auth\Simple($sso_ssp_sp);        
+
         // Take the user to IdP and authenticate.
         $sso_ssp_auth->requireAuth();
-        //$valid_saml_session = $sso_ssp_auth->isAuthenticated();
+        $valid_saml_session = $sso_ssp_auth->isAuthenticated();
     } catch (Exception $e) {
         // SimpleSAMLphp is not configured correctly.
         throw(new Exception("SSO authentication failed: ". $e->getMessage()));
@@ -62,7 +63,8 @@ function sso_checkauth($login, $password)
     if (!$valid_saml_session) {
         // Not valid session. Redirect a user to Identity Provider
         try {
-            $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
+           // $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
+	    $sso_ssp_auth = new SimpleSAML\Auth\Simple($sso_ssp_sp);
             $sso_ssp_auth->requireAuth();
         } catch (Exception $e) {
             // SimpleSAMLphp is not configured correctly.
@@ -178,7 +180,8 @@ function sso_logout()
     session_start();
     session_regenerate_id();
     
-    $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
+   // $sso_ssp_auth = new SimpleSAML_Auth_Simple($sso_ssp_sp);
+    $sso_ssp_auth = new SimpleSAML\Auth\Simple($sso_ssp_sp);
  
     $sso_ssp_auth->requireAuth();
 

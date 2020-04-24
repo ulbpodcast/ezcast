@@ -139,8 +139,8 @@
         <label id="Status" lang="en">Status</label>
         <label id="File" lang="fr">Fichier</label>
         <label id="File" lang="en">File</label>
-        <label id="File_info" lang="fr">Max. 2Go</label>
-        <label id="File_info" lang="en">Max. 2Go</label>
+        <label id="File_info" lang="fr">Max. 8Go</label>
+        <label id="File_info" lang="en">Max. 8Go</label>
         <label id="Filename" lang="fr">Nom de fichier</label>
         <label id="Filename" lang="en">Filename</label>
         <label id="Filesize_HD" lang="fr">Taille du fichier (HD)</label>

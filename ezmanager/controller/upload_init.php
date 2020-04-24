@@ -50,7 +50,6 @@ function index($param = array())
         $type_submitted = 'cam';
     }
 
-    file_put_contents('/usr/local/ezcast/ezmanager/var/test_audio.txt', $input['cam_filename'].PHP_EOL.$type_submitted.PHP_EOL.$type);
 
     $metadata = array(
         'course_name' => $input['album'],
@@ -66,6 +65,7 @@ function index($param = array())
         'record_date' => $record_date,
         'super_highres' => $input['keepQuality'],
         'intro' => $input['intro'],
+        'credits' => $input['credits'],
         //currently no user option to input credits //'credits' => $input['credits'],
         'add_title' => $input['add_title'],
         'downloadable' => $input['downloadable'],

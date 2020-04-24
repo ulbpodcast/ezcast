@@ -4,7 +4,7 @@
     If no param => just ping each IP to check if it respond
 */
 require_once("./commons/lib_sql_management.php");
-require_once("./commons/config");
+require_once("./commons/config.inc");
 
 //get list of recorder from DB
 $classList=db_classrooms_list();

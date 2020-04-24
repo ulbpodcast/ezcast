@@ -1726,7 +1726,11 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '')
         return false;
     }
 
-    $byte_range = $_SERVER['HTTP_RANGE'];
+    $byte_range = null;
+    if(isset($_SERVER['HTTP_RANGE'])){
+		
+      $byte_range = $_SERVER['HTTP_RANGE'];
+    }
     if (!isset($byte_range) || $byte_range == '' || $byte_range === 'bytes=0-' || $byte_range == 'bytes=0-1') {
         $viewcount_file = dirname(ezmam_media_getpath($album, $asset, $media, false)) . '/_view_count';
         $handle = fopen($viewcount_file, "c");

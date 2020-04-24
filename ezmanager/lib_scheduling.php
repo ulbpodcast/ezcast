@@ -833,6 +833,7 @@ function lib_scheduling_renderer_assign($renderer, $job)
 
     system('echo "' . lib_scheduling_config('php-path') . ' ' . dirname(__FILE__) . '/cli_scheduler_job_perform.php ' . $job['uid'] . '" | at now');
 
+
     return true;
 }
 

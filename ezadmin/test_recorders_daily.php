@@ -15,7 +15,6 @@ $check_list=db_classrooms_list_enabled();
 $result_str = "SSH connects results: <br/><br/>".PHP_EOL.PHP_EOL;
 
 foreach($check_list as $to_check) {
-//    echo(json_encode($to_check));
   $ip = $to_check["IP"];
   $name = $to_check["name"];
  
@@ -46,4 +45,19 @@ foreach($check_list as $to_check) {
 echo $result_str;
 
 $mail_str = "( echo 'To: ".$adress_mail_information_recorder." ; echo 'Subject: Classrooms availability check'; echo 'Content-Type: text/html'; echo 'MIME-Version: 1.0'; echo ''; echo '$result_str'; )";
-system("$mail_str | /usr/sbin/sendmail -t -f ".$mailto_alert);
+
+
+
+$to_email = $adress_mail_information_recorder;
+   $subject = "EZrecorder info disk usages";
+   $body = $result_str;
+   $headers  = 'MIME-Version: 1.0' . "\r\n";
+   $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+ 
+   if ( mail($to_email, $subject, $body, $headers)) {
+      echo("Email successfully sent to $to_email...");
+   } else {
+      echo("Email sending failed...");
+   }
+
+

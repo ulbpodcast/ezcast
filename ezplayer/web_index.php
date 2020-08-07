@@ -203,7 +203,6 @@ else if(isset($_SESSION['termsOfUses']) && $_SESSION['termsOfUses']!=1 && ($inpu
      $first_connexion = !isset($_COOKIE['has_connected_once']);
      // Cookie life: one year
      //setcookie('has_connected_once', true, time() + (365 * 24 * 60 * 60));
-
      redraw_page();
  }
 

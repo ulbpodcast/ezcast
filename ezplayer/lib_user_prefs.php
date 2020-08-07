@@ -224,7 +224,7 @@ function user_prefs_tokens_add($user, $tokens_array)
 // checks if the array contains the token
 function token_array_contains(&$array, $token)
 {
-    if (count($array) == 0) {
+    if (empty($array)) {
         return false;
     }
     

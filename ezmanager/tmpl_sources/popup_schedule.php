@@ -52,7 +52,7 @@ for every album the user can create.
         <p>®Asset_sched_remove®</p>
     </div>
     <div class="modal-footer">
-        <a class="btn btn-default" href="?action=cancel_schedule_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>">
+        <a class="btn btn-default" href="?action=cancel_schedule_asset&album=<?php echo $album; ?>&asset=<?php echo $asset_name; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>">
             ®Delete_sched®
         </a>
     </div>

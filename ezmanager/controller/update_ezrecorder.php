@@ -19,7 +19,7 @@ $modif=false;
 foreach ($album as $album_name) {
    $course_info=db_course_read($album_name);
    $in_recorders=isset($course_info['in_recorders']) && $course_info['in_recorders']!=false;
-   $input_in_recorders=isset($input["recorder_access"][$album_name]) && $input["recorder_access"][$album_name]=="on";
+   $input_in_recorders=(isset($input["recorder_access"][$album_name]) && $input["recorder_access"][$album_name]=="on");
    //check box is ticked. Was it ticked before?  
    if  ($input_in_recorders xor $in_recorders){
      //the value has been changed so record it

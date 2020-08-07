@@ -1351,6 +1351,8 @@ function ezmam_asset_token_create($album, $asset)
  */
 function ezmam_album_token_check($album, $token)
 {
+//	return true;
+
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/_token')) {
         ezmam_last_error('Access denied: token does not exist');
         return false;
@@ -1415,6 +1417,7 @@ function ezmam_asset_token_get($album, $asset)
  */
 function ezmam_asset_token_check($album, $asset, $token)
 {
+//return true;
     if (!file_exists(ezmam_repository_path() . '/' . $album . '/' . $asset . '/_token')) {
         ezmam_last_error('Access denied: token does not exist');
         return false;

@@ -1114,8 +1114,11 @@ function db_get_stream_nb()
 function db_in_recorder_update($course,$value)
 {
     global $statements;
+    $value = (int)$value;
     $statements['in_recorder_update']->bindParam(':course_code', $course);
     $statements['in_recorder_update']->bindParam(':in_recorders', $value);
 
-    return $statements['in_recorder_update']->execute();
+
+  return $statements['in_recorder_update']->execute();
+
 }

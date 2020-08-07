@@ -58,7 +58,7 @@ Before calling this template, please define the following variables:
                                         </a>
                                     </li>
                                 <?php
-                                            } ?>
+                                            } /* ?>
                                 <li class="dropdown-background-icon-button ButtonResetBroadcast">
                                     <a href="index.php?action=show_popup&amp;popup=reset_rss_feed&amp;album=<?php
                                         echo $album_name_full; ?>&sesskey=<?php echo $_SESSION['sesskey']; ?>" data-remote="false" data-toggle="modal"
@@ -66,7 +66,7 @@ Before calling this template, please define the following variables:
                                         ®Reset_broadcast_link®
                                     </a>
                                 </li>
-                                <?php if ($trace_on && $display_trace_stats) {
+                                <?php  */ if ($trace_on && $display_trace_stats) {
                                             ?>
                                     <li class="dropdown-background-icon-button ButtonResetStats">
                                         <a href="index.php?action=show_popup&amp;popup=album_stats_reset&amp;album=<?php

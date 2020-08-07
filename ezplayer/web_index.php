@@ -687,11 +687,13 @@ function user_login($login, $passwd)
 
     // 6) Displaying the page
     //    view_main();
-    if (count($_SESSION['first_input']) > 0) {
-        $ezplayer_url .= '/index.php?';
-    }
-    foreach ($_SESSION['first_input'] as $key => $value) {
-        $ezplayer_url .= "$key=$value&";
+    if(isset($_SESSION['first_input'])) {
+        if (count($_SESSION['first_input']) > 0) {
+            $ezplayer_url .= '/index.php?';
+        }
+        foreach ($_SESSION['first_input'] as $key => $value) {
+            $ezplayer_url .= "$key=$value&";
+        }
     }
     header("Location: " . $ezplayer_url);
     load_page();

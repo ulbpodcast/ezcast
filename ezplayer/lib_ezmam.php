@@ -680,6 +680,7 @@ function ezmam_asset_list_metadata($album)
 
     $asset_list = array();
     $idx = 0;
+    $idxUsed = [];
     $album_path = $repository_path . "/" . $album;
     //$dh=opendir($album_path);
     $dh = scandir($album_path, 1);
@@ -692,9 +693,23 @@ function ezmam_asset_list_metadata($album)
             if (is_dir($album_path . "/" . $file)) {
                 //if its a directory add it to the list
                 $asset = $file; //the album ref name is the directory name
+                $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+
+                if (isset($asset_metadata['order'])) {
+
+                  $idx = (int)$asset_metadata['order'];
+                }
+                while(in_array($idx, $idxUsed)) {
+
+                  $idx++;
+                }
+
                 $asset_list[$idx]['name'] = $asset;
-                $asset_list[$idx]['metadata'] = ezmam_asset_metadata_get($album, $asset);
-                $idx+=1;
+                $asset_list[$idx]['metadata'] = $asset_metadata;
+
+                $idxUsed[] = $idx;
+
+                // $idx+=1;
             }
         }
     }//end while
@@ -1637,7 +1652,7 @@ function ezmam_album_allow_anonymous($album)
     if (!$enable_anon_access_control) {
         return false;
     }
-    
+
     $meta = ezmam_album_metadata_get($album);
     return isset($meta['anon_access']) && $meta['anon_access'] == 'true';
 }

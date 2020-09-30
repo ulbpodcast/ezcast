@@ -889,8 +889,6 @@ function ezmam_asset_list_metadata($album)
 
                   ezmam_asset_metadata_set($album, $asset, $asset_metadata, FALSE);
                 }
-
-
             }
         }
     }//end while

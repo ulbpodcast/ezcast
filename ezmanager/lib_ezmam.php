@@ -869,7 +869,7 @@ function ezmam_asset_list_metadata($album)
                 }
                 else {
 
-                  $idx = $asset_metadata['order'];
+                  $idx = (int)$asset_metadata['order'];
 
                   // increment idx until not used
                   while(in_array($idx, $idxUsed)) {

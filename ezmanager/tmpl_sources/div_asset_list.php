@@ -137,7 +137,7 @@ all the assets for the selected album, and the metadata thereof (ordered in chro
 <script>
     function update_download(album, asset) {
         var sesskey = $("#sesskey").val();
-        
+
         asset_downloadable_set(album, asset, sesskey);
 
         var check = $("#is_sesskey_ok").val();

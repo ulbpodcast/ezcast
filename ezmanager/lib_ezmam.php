@@ -116,14 +116,14 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
         error_print_message("wrong type");
         return false;
     }
-        
+
     global $dir_date_format;
     global $default_intro;
     global $default_add_title;
     global $default_downloadable;
     global $default_credits;
     global $repository_path;
-        
+
     $metadata = array(
         'id' => $course_id,
         'course_code_public' => $course_code,
@@ -138,7 +138,7 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
         'type' => $album_type,
         'official' => 'false'
     );
-    
+
     // Create both the private and public album
     ezmam_repository_path($repository_path);
     $album_names = array($course_id . '-priv', $course_id . '-pub');
@@ -150,20 +150,20 @@ function ezmam_course_create_repository($course_id, $course_code, $name, $full_t
             return false;
         }
     }
-   
+
     return true;
 }
 
 function ezmam_course_create_db($course_id, $course_code_public, $label, $in_recorders, $owner = null)
 {
     global $logger;
-    
+
     $valid = db_course_create($course_id, $course_code_public, $label, $in_recorders);
     if (!$valid) {
         $logger->log(EventType::MANAGER_EZMAM_CREATE_COURSE, LogLevel::ERROR, "Could not create course $course_id ($course_code_public) in db", array(__FUNCTION__));
         return false;
     }
-    
+
     if ($owner) {
         $valid2 = db_users_courses_create($course_id, $owner);
         if (!$valid2) {
@@ -244,15 +244,15 @@ function ezmam_album_list()
         if ($file[0] == '.' || $file[0] == "_") { //filter out names starting with . (including '.' and '..' )or _
             continue;
         }
-        
+
         $dir = $repository_path . "/" . $file;
         if (!is_dir($dir)) {
             continue;
         }
-        
+
         array_push($album_list, $file); //if its a directory add it to the list
     }
-    
+
     return $album_list;
 }
 
@@ -287,7 +287,7 @@ function ezmam_album_list_metadata()
 function ezmam_album_course_public_name_get($album)
 {
     global $logger;
-    
+
     $album_metadata = ezmam_album_metadata_get($album);
     if (isset($album_metadata['course_code_public'])
        && $album_metadata['course_code_public'] != '') {
@@ -317,7 +317,7 @@ function ezmam_album_metadata_get($album)
     }
     $album_path = $repository_path . "/" . $album;
     $assoc_metadata = metadata2assoc_array($album_path . "/_metadata.xml");
-  
+
     return $assoc_metadata;
 }
 
@@ -843,21 +843,44 @@ function ezmam_asset_list_metadata($album)
 
     $asset_list = array();
     $idx = 0;
+    $idxUsed = [];
     $album_path = $repository_path . "/" . $album;
     //$dh=opendir($album_path);
     $dh = scandir($album_path, 1);
     if (!$dh) {
         return false;
     }
+
     //while (($file = readdir($dh)) !== false) {
     foreach ($dh as $file) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
             if (is_dir($album_path . "/" . $file)) {
                 //if its a directory add it to the list
                 $asset = $file; //the album ref name is the directory name
+
+                $asset_metadata = ezmam_asset_metadata_get($album, $asset);
+
+                //if no order found in metadata, add it
+                if (!isset($asset_metadata['order'])) {
+
+                  $idx+=1;
+                  $asset_metadata['order'] = $idx;
+                  ezmam_asset_metadata_set($album, $asset, $asset_metadata);
+                }
+                else {
+
+                  $idx = $asset_metadata['order'];
+
+                  // increment idx until not used
+                  while(in_array($idx, $idxUsed)) {
+
+                    $idx++;
+                  }
+                }
                 $asset_list[$idx]['name'] = $asset;
-                $asset_list[$idx]['metadata'] = ezmam_asset_metadata_get($album, $asset);
-                $idx+=1;
+                $asset_list[$idx]['metadata'] = $asset_metadata;
+                $idxUsed[] = $idx;
+
             }
         }
     }//end while
@@ -952,7 +975,7 @@ function ezmam_asset_status_set_properties($album, $asset, $change_key, $value)
     if (!$metadata_assoc_array) {
         return false;
     }
-    
+
     $found = false;
     foreach ($metadata_assoc_array as $key => $val) {
         if ($key == $change_key) {
@@ -961,11 +984,11 @@ function ezmam_asset_status_set_properties($album, $asset, $change_key, $value)
             break;
         }
     }
-    
+
     if (!$found) {
         return false;
     }
-    
+
     $res = ezmam_asset_metadata_set($album, $asset, $metadata_assoc_array);
     return $res;
 }
@@ -981,7 +1004,7 @@ function ezmam_asset_status_set_properties($album, $asset, $change_key, $value)
 function ezmam_asset_new($album_name, $asset_name, $metadata)
 {
     global $logger;
-    
+
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -1036,7 +1059,7 @@ function rrmdir($dir)
     if (!is_dir($dir)) {
         return;
     }
-         
+
     $objects = scandir($dir);
     foreach ($objects as $object) {
         if ($object != "." && $object != "..") {
@@ -1045,7 +1068,7 @@ function rrmdir($dir)
             } else {
                 $ok = unlink($dir."/".$object);
             }
-            
+
             if ($ok == false) {
                 return false;
             }
@@ -1053,7 +1076,7 @@ function rrmdir($dir)
     }
     return rmdir($dir);
 }
-    
+
 /**
  * Removes an asset from the repository
  * @param string $asset_name
@@ -1064,7 +1087,7 @@ function rrmdir($dir)
 function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true)
 {
     global $logger;
-    
+
     // Sanity checks
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
@@ -1099,7 +1122,7 @@ function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true)
             }
         }
     }
-    
+
     // Then we delete it and all remaining files in it
     $res = rrmdir($path);
     if (!$res) {
@@ -1116,7 +1139,7 @@ function ezmam_asset_delete($album_name, $asset_time, $rebuild_rss = true)
     $album_meta = ezmam_album_metadata_get($album_name);
     $course = trim($album_meta['name']);
     $asset_name = get_asset_name($course, $asset_time);
-    
+
     // And finally we log the operation
     log_append('asset_delete', 'Asset: ' . $asset_time . ', Album: ' . $album_name);
     $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::NOTICE, 'Deleted asset: ' . $asset_time . ', album: ' . $album_name, array(basename(__FUNCTION__)), $asset_name);
@@ -1148,7 +1171,7 @@ function ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, &$src
         ezmam_last_error("ezmam_asset_move: there is already an asset with that name in dest album $album_dst $asset_time");
         return false;
     }
-     
+
     // moving the asset
     $src_path = $repository_path . '/' . $album_src;
     $dst_path = $repository_path . '/' . $album_dst;
@@ -1160,7 +1183,7 @@ function ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, &$src
         ezmam_last_error("ezmam_asset_move: $dst_path is not a directory");
         return false;
     }
-    
+
     return true;
 }
 
@@ -1174,7 +1197,7 @@ function ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, &$src
 function ezmam_asset_move($asset_time, $album_src, $album_dst)
 {
     global $logger;
-    
+
     $src_path = '';
     $dst_path = '';
     if (!ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, $src_path, $dst_path)) {
@@ -1183,7 +1206,7 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst)
     $album_meta = ezmam_album_metadata_get($album_src);
     $course = trim($album_meta['name']);
     $asset_name = get_asset_name($course, $asset_time);
-          
+
     $res = rename($src_path . '/' . $asset_time, $dst_path . '/' . $asset_time);
     if (!$res) {
         ezmam_last_error("could not move asset");
@@ -1199,7 +1222,7 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst)
     ezmam_rss_generate($album_dst, "high");
     ezmam_rss_generate($album_dst, "low");
     ezmam_rss_generate($album_dst, "ezplayer");
-    
+
     return true;
 }
 
@@ -1213,17 +1236,17 @@ function ezmam_asset_move($asset_time, $album_src, $album_dst)
 function ezmam_asset_copy($asset_time, $album_src, $album_dst)
 {
     global $logger;
-    
+
     $src_path = '';
     $dst_path = '';
     if (!ezmam_copy_or_move_get_paths($asset_time, $album_src, $album_dst, $src_path, $dst_path)) {
         return false;
     } //ezmam_copy_or_move_get_paths handles ezmam_last_error
-   
+
     $album_meta = ezmam_album_metadata_get($album_src);
     $course = trim($album_meta['name']);
     $asset_name = get_asset_name($course, $asset_time);
-          
+
     //Copy Asset in background, and pass the metadata status to processing during the copy.
     $final_cmd = 'nohup sh -c "'.
             "mkdir -p $dst_path/$asset_time && ".
@@ -1244,7 +1267,7 @@ function ezmam_asset_copy($asset_time, $album_src, $album_dst)
     ezmam_rss_generate($album_dst, "high");
     ezmam_rss_generate($album_dst, "low");
     ezmam_rss_generate($album_dst, "ezplayer");
-    
+
     return true;
 }
 
@@ -1270,7 +1293,7 @@ function ezmam_asset_publish($private_album, $asset_name)
     $public_album = suffix_replace($private_album);
     $res = ezmam_asset_move($asset_name, $private_album, $public_album);
     //logging done in ezmam_asset_move
-    
+
     return $res;
 }
 
@@ -1295,7 +1318,7 @@ function ezmam_asset_unpublish($public_album, $asset_name)
     $private_album = suffix_replace($public_album);
     $res = ezmam_asset_move($asset_name, $public_album, $private_album);
     //logging done in ezmam_asset_move
-    
+
     return $res;
 }
 
@@ -1324,12 +1347,12 @@ function ezmam_backup_media($album_name, $asset_name, $media_name)
     }
     $media_dir = $repository_path . "/" . $album_name . "/" . $asset_name . "/" . $media_name;
     $media_dir_backup = $repository_path . "/" . $album_name . "/" . $asset_name . "/." . $media_name . "." . time(); //add a . before it so that its ignored in submit_itm_get_medias
-    
+
     $exists = file_exists($repository_path . "/" . $album_name . "/" . $asset_name . "/" . $media_name);
     if (!$exists) {
         return false;
     }
-    
+
     $rename = rename($media_dir, $media_dir_backup);
     return $rename;
 }
@@ -1728,7 +1751,7 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '')
 
     $byte_range = null;
     if(isset($_SERVER['HTTP_RANGE'])){
-		
+
       $byte_range = $_SERVER['HTTP_RANGE'];
     }
     if (!isset($byte_range) || $byte_range == '' || $byte_range === 'bytes=0-' || $byte_range == 'bytes=0-1') {
@@ -1827,7 +1850,7 @@ function ezmam_media_viewcount_increment($album, $asset, $media, $origin = '')
 function ezmam_media_delete($album_name, $asset_name, $media_name)
 {
     global $logger;
-    
+
     $repository_path = ezmam_repository_path();
     if ($repository_path === false) {
         return false;
@@ -1878,7 +1901,7 @@ function ezmam_media_delete($album_name, $asset_name, $media_name)
         ezmam_last_error("Unable to delete folder $path");
         return false;
     }
-    
+
     $logger->log(EventType::MANAGER_ASSET_DELETE, LogLevel::NOTICE, "Deleted media: '$media_name' from asset '$asset_name', album: '$album_name'", array(basename(__FILE__)), $asset_name);
 
     return true;

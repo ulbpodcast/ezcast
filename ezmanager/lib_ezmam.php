@@ -887,6 +887,8 @@ function ezmam_asset_list_metadata($album)
         }
     }//end while
     var_dump($asset_list);
+    ksort($asset_list);
+    var_dump($asset_list);
     return $asset_list;
 }
 

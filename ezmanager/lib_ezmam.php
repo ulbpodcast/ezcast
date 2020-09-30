@@ -865,7 +865,6 @@ function ezmam_asset_list_metadata($album)
 
                   $idx+=1;
                   $asset_metadata['order'] = $idx;
-                  $asset_metadata['order'] = $idx;
                   ezmam_asset_metadata_set($album, $asset, $asset_metadata);
                 }
                 else {

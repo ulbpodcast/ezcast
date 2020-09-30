@@ -713,6 +713,7 @@ function ezmam_asset_list_metadata($album)
             }
         }
     }//end while
+    ksort($asset_list);
     return $asset_list;
 }
 

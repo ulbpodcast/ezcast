@@ -858,9 +858,8 @@ function ezmam_asset_list_metadata($album)
     if(!isset($album_meta['order'])) {
       $album_meta['order'] = [];
     }
-    $album_order = json_decode($album_meta['order'],TRUE);
-    // var_dump($album_order);die;
-    //while (($file = readdir($dh)) !== false) {
+    $album_order = json_decode($album_meta['order'], TRUE);
+
     foreach ($dh as $file) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _
             if (is_dir($album_path . "/" . $file)) {
@@ -897,8 +896,6 @@ function ezmam_asset_list_metadata($album)
     }//end while
 
     $album_meta['order'] = json_encode($album_order, TRUE);
-    // $album_meta['order'] = [];
-
 
     //Write metadata file.
     if($orderChanged) {

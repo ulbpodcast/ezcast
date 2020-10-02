@@ -683,6 +683,13 @@ function ezmam_asset_list_metadata($album)
     $idxUsed = [];
     $album_path = $repository_path . "/" . $album;
 
+    $album_meta = ezmam_album_metadata_get($album);
+
+    if(!isset($album_meta['order'])) {
+      $album_meta['order'] = [];
+    }
+    $album_order = json_decode($album_meta['order'], TRUE);
+
     //$dh=opendir($album_path);
     $dh = scandir($album_path, 1);
     if (!$dh) {
@@ -696,14 +703,22 @@ function ezmam_asset_list_metadata($album)
                 $asset = $file; //the album ref name is the directory name
                 $asset_metadata = ezmam_asset_metadata_get($album, $asset);
 
-                if (isset($asset_metadata['order'])) {
-
-                  $idx = (int)$asset_metadata['order'];
-                }
-                while(in_array($idx, $idxUsed)) {
+                //if no order found in metadata, add it
+                if (!isset($album_order[$asset])) {
 
                   $idx++;
                 }
+                else {
+                  //get order from metadata.
+                  $idx = (int)$album_order[$asset];
+
+                  // increment idx until not used
+                  while(in_array($idx, $idxUsed)) {
+                    $idx++;
+                  }
+                }
+                // put asset order in metadata array
+                $album_order[$asset] = $idx;
 
                 $asset_list[$idx]['name'] = $asset;
                 $asset_list[$idx]['metadata'] = $asset_metadata;

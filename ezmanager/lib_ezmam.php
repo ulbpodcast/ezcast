@@ -859,7 +859,7 @@ function ezmam_asset_list_metadata($album)
       $album_meta['order'] = [];
     }
     $album_order = json_decode($album_meta['order'],TRUE);
-    var_dump($album_order);die;
+    // var_dump($album_order);die;
     //while (($file = readdir($dh)) !== false) {
     foreach ($dh as $file) {
         if ($file[0] != '.' && $file[0] != "_") { //filter out names starting with . (including '.' and '..' )or _

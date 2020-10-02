@@ -881,7 +881,7 @@ function ezmam_asset_list_metadata($album)
                   }
                 }
                 // put asset order in metadata array
-                $album_meta['order'][$asset]['order'] = $idx;
+                $album_meta['order'][$asset] = ['order' => $idx];
 
                 $asset_list[$idx]['name'] = $asset;
                 $asset_list[$idx]['metadata'] = $asset_metadata;

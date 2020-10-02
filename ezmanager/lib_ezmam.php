@@ -897,7 +897,7 @@ function ezmam_asset_list_metadata($album)
     }//end while
 
     $album_meta['order'] = json_encode($album_order, TRUE);
-    $album_meta['order'] = [];
+    // $album_meta['order'] = [];
 
 
     //Write metadata file.

@@ -682,6 +682,7 @@ function ezmam_asset_list_metadata($album)
     $idx = 0;
     $idxUsed = [];
     $album_path = $repository_path . "/" . $album;
+
     //$dh=opendir($album_path);
     $dh = scandir($album_path, 1);
     if (!$dh) {

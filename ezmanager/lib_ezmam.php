@@ -846,6 +846,9 @@ function ezmam_asset_list_metadata($album)
     $idxUsed = [];
     $orderChanged = FALSE;
     $album_path = $repository_path . "/" . $album;
+
+    $album_meta = ezmam_album_metadata_get($album);
+
     //$dh=opendir($album_path);
     $dh = scandir($album_path, 1);
     if (!$dh) {
@@ -862,14 +865,14 @@ function ezmam_asset_list_metadata($album)
                 $asset_metadata = ezmam_asset_metadata_get($album, $asset);
 
                 //if no order found in metadata, add it
-                if (!isset($asset_metadata['order'])) {
+                if (!isset($album_meta['order'][$asset]['order'])) {
 
                   $idx++;
                   $orderChanged = TRUE;
                 }
                 else {
                   //get order from metadata.
-                  $idx = (int)$asset_metadata['order'];
+                  $idx = (int)$album_meta['order'][$asset]['order'];
 
                   // increment idx until not used
                   while(in_array($idx, $idxUsed)) {
@@ -878,20 +881,23 @@ function ezmam_asset_list_metadata($album)
                   }
                 }
                 // put asset order in metadata array
-                $asset_metadata['order'] = $idx;
+                $album_meta['order'][$asset]['order'] = $idx;
 
                 $asset_list[$idx]['name'] = $asset;
                 $asset_list[$idx]['metadata'] = $asset_metadata;
                 $idxUsed[] = $idx;
 
-                //Write metadata file.
-                if($orderChanged) {
-
-                  ezmam_asset_metadata_set($album, $asset, $asset_metadata, FALSE);
-                }
             }
         }
     }//end while
+
+    //Write metadata file.
+    if($orderChanged) {
+
+      ezmam_album_metadata_set($album, $album_meta);
+    }
+
+
     ksort($asset_list);
     return $asset_list;
 }

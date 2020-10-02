@@ -359,7 +359,7 @@ function ezmam_asset_meta_set($asset, $metadata_assoc_array)
  * @return bool (true on success)
  * @desc saves the given metadata
  */
-function ezmam_album_metadata_set($album, $metadata_assoc_array, $logging = true)
+function ezmam_album_metadata_set($album, $metadata_assoc_array, $logging = true, $regen_rss = TRUE)
 {
     $repository_path = ezmam_repository_path();
     // Sanity checks
@@ -387,12 +387,13 @@ function ezmam_album_metadata_set($album, $metadata_assoc_array, $logging = true
         }
         log_append('album_metadata_set', 'Album: ' . $album . ', New metadata: ' . $metadata_str);
     }
+    if ($regen_rss) {
 
-    // Rebuilding the RSS
-    ezmam_rss_generate($album, "high");
-    ezmam_rss_generate($album, "low");
-    ezmam_rss_generate($album, "ezplayer");
-
+      // Rebuilding the RSS
+      ezmam_rss_generate($album, "high");
+      ezmam_rss_generate($album, "low");
+      ezmam_rss_generate($album, "ezplayer");
+    }
     return $res;
 }
 
@@ -894,7 +895,7 @@ function ezmam_asset_list_metadata($album)
     //Write metadata file.
     if($orderChanged) {
 
-      ezmam_album_metadata_set($album, $album_meta);
+      ezmam_album_metadata_set($album, $album_meta, TRUE, FALSE);
     }
 
 

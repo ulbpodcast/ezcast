@@ -858,7 +858,7 @@ function ezmam_asset_list_metadata($album)
     if(!isset($album_meta['order'])) {
       $album_meta['order'] = [];
     }
-    $album_order = json_decode($album_meta['order']);
+    $album_order = json_decode($album_meta['order'],TRUE);
     var_dump($album_order);die;
     //while (($file = readdir($dh)) !== false) {
     foreach ($dh as $file) {

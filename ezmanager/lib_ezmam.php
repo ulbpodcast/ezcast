@@ -898,7 +898,7 @@ function ezmam_asset_list_metadata($album)
 
     //Write metadata file.
     if($orderChanged) {
-      $album_meta['order'] = [];
+      // $album_meta['order'] = [];
       ezmam_album_metadata_set($album, $album_meta, TRUE, FALSE);
     }
 

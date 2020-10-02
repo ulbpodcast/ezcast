@@ -858,7 +858,7 @@ function ezmam_asset_list_metadata($album)
     if(!isset($album_meta['order'])) {
       $album_meta['order'] = [];
     }
-    $album_order = $album_meta['order'];
+    $album_order = json_decode($album_meta['order']);
 
     //while (($file = readdir($dh)) !== false) {
     foreach ($dh as $file) {
@@ -886,7 +886,7 @@ function ezmam_asset_list_metadata($album)
                   }
                 }
                 // put asset order in metadata array
-                $album_meta['order'][$asset] = $idx;
+                $album_order[$asset] = $idx;
 
                 $asset_list[$idx]['name'] = $asset;
                 $asset_list[$idx]['metadata'] = $asset_metadata;
@@ -895,6 +895,10 @@ function ezmam_asset_list_metadata($album)
             }
         }
     }//end while
+
+    $album_meta['order'] = json_encode($album_order, TRUE);
+    $album_meta['order'] = [];
+
 
     //Write metadata file.
     if($orderChanged) {

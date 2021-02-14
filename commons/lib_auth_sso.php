@@ -20,6 +20,7 @@ function sso_checkauth($login, $password)
     global $sso_ssp_att_firstname;
     global $sso_ssp_att_email;
     global $sso_ssp_att_login;
+    global $sso_ssp_att_group;
 
     if (!isset($_GET['sso'])) {
         return false;
@@ -94,22 +95,16 @@ function sso_checkauth($login, $password)
     $userinfo['full_name'] = $attributes[$sso_ssp_att_name][0]." ".$attributes[$sso_ssp_att_firstname][0];
     $userinfo['email'] = $attributes[$sso_ssp_att_email][0];
     $userinfo['login'] = $attributes[$sso_ssp_att_login][0];
-    $userinfo['group'] = $attributes['eduPersonAffiliation'];
+    $userinfo['group'] = $attributes[$sso_ssp_att_group];
 
     $userinfo['real_login'] = $userinfo['login'];
 
-
     //IF idp error and everithing is null  ==> return "error"
-    if (!isset($attributes[$sso_ssp_att_name][0])  || !isset($attributes['eduPersonAffiliation']) || !isset($attributes[$sso_ssp_att_login][0]) || !isset($attributes[$sso_ssp_att_email][0])
-       || $attributes[$sso_ssp_att_name][0] ==''  || $attributes['eduPersonAffiliation'] == '' || $attributes[$sso_ssp_att_login][0] == '' || $attributes[$sso_ssp_att_email][0] =='') {
+    if (!isset($attributes[$sso_ssp_att_name][0])  || !isset($attributes[$sso_ssp_att_group]) || !isset($attributes[$sso_ssp_att_login][0]) || !isset($attributes[$sso_ssp_att_email][0])
+       || $attributes[$sso_ssp_att_name][0] ==''  || $attributes[$sso_ssp_att_group] == '' || $attributes[$sso_ssp_att_login][0] == '' || $attributes[$sso_ssp_att_email][0] =='') {
 
         return 'error';
     }
-
-
-
-
-
 
     /*------------UCL METHOD TO CHECK RIGHTS-------------*/
 
@@ -117,6 +112,7 @@ function sso_checkauth($login, $password)
     if (in_array("staff", $userinfo['group'])) {
         $userinfo['ismanager'] = 'true';
     }
+
     global $db_object;
     // add user in table Users
     $user = db_user_read($attributes[$sso_ssp_att_login][0]);
